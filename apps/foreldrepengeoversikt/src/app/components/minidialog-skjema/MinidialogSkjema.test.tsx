@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './MinidialogSkjema.stories';
@@ -19,14 +19,14 @@ describe('<MinidialogSkjema>', () => {
         await userEvent.click(screen.getByText('Nei'));
 
         expect(
-            await screen.findByText(
+            screen.getByText(
                 'Saken vil bli behandlet med de opplysningene vi har tilgjengelig. Vi sender deg et vedtak når saken er ferdig behandlet.',
             ),
         ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send'));
 
-        await waitFor(() => expect(send).toHaveBeenCalledTimes(1));
+        expect(send).toHaveBeenCalledTimes(1);
         expect(send).toHaveBeenNthCalledWith(1, {
             brukerTekst: {
                 dokumentType: 'I000114',
@@ -52,13 +52,11 @@ describe('<MinidialogSkjema>', () => {
 
         await userEvent.click(screen.getByLabelText('Ja'));
 
-        expect(await screen.findByText('Svar på tilbakebetalingen:')).toBeInTheDocument();
+        expect(screen.getByText('Svar på tilbakebetalingen:')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send'));
 
-        expect(
-            await screen.findAllByText('Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.'),
-        ).toHaveLength(2);
+        expect(screen.getAllByText('Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.')).toHaveLength(2);
 
         expect(screen.getByText('Last opp fil')).toBeInTheDocument();
 
@@ -75,7 +73,7 @@ describe('<MinidialogSkjema>', () => {
 
         await userEvent.click(screen.getByText('Send'));
 
-        await waitFor(() => expect(send).toHaveBeenCalledTimes(1));
+        expect(send).toHaveBeenCalledTimes(1);
         expect(send).toHaveBeenNthCalledWith(1, {
             brukerTekst: {
                 dokumentType: 'I000114',

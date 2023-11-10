@@ -5,127 +5,119 @@ import * as stories from './EgenNæring.stories';
 import dayjs from 'dayjs';
 
 const { Default } = composeStories(stories);
-const SØKNAD_TITTEL = 'Søknad om svangerskapspenger';
-const HVILKEN_TYPE_VIRKSOMHET = 'Hvilken type virksomhet har du?';
-const FISKE = 'Fiske';
-const HVA_HETER_VIRKSOMHETEN = 'Hva heter virksomheten?';
-const REGISTRERT_I_NORGE = 'Er virksomheten registrert i Norge?';
-const ORGNUMMER = 'Hva er organisasjonsnummeret?';
-const HVILKET_LAND = 'I hvilket land er virksomheten din registrert i?';
-const STARTDATO = 'Når startet du virksomheten?';
-const JOBBER_DU_DER_FORTSATT = 'Jobber du der fortsatt?';
-const JA = 'Ja';
-const NEI = 'Nei';
-const SLUTTDATO = 'Når avsluttet du virksomheten?';
-const NÆRINGSRESULTAT = 'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?';
-const FERDIGLIKNENDE_ÅR = 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?';
-const YRKERAKTIV = 'Når ble du yrkesaktiv?';
-const NESTE_STEG = 'Neste steg';
 
 describe('<Arbeid som selvstendig næringsdrivende>', () => {
-    const user = userEvent.setup();
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(HVILKEN_TYPE_VIRKSOMHET)).toBeInTheDocument();
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.queryAllByText('Du må oppgi type virksomhet du har.')[0]).toBeInTheDocument();
-        expect(await screen.queryAllByText('Du må oppgi navnet på virksomheten din')[0]).toBeInTheDocument();
-        expect(await screen.queryAllByText('Du må oppgi om virksomheten er registrert i Norge')[0]).toBeInTheDocument();
-        expect(await screen.queryAllByText('Du må oppgi en startdato.')[0]).toBeInTheDocument();
-        expect(await screen.queryAllByText('Du må oppgi om virksomheten din er pågående.')[0]).toBeInTheDocument();
-        expect(await screen.queryAllByText('Du må oppgi næringsresultat de siste 12 månedene.')[0]).toBeInTheDocument();
+        expect(screen.queryAllByText('Du må oppgi type virksomhet du har.')[0]).toBeInTheDocument();
+        expect(screen.queryAllByText('Du må oppgi navnet på virksomheten din')[0]).toBeInTheDocument();
+        expect(screen.queryAllByText('Du må oppgi om virksomheten er registrert i Norge')[0]).toBeInTheDocument();
+        expect(screen.queryAllByText('Du må oppgi en startdato.')[0]).toBeInTheDocument();
+        expect(screen.queryAllByText('Du må oppgi om virksomheten din er pågående.')[0]).toBeInTheDocument();
+        expect(screen.queryAllByText('Du må oppgi næringsresultat de siste 12 månedene.')[0]).toBeInTheDocument();
         expect(
-            await screen.queryAllByText(
-                'Du må oppgi om du har begynt å jobbe i løpet av de 3 siste ferdigliknede årene.',
-            )[0],
+            screen.queryAllByText('Du må oppgi om du har begynt å jobbe i løpet av de 3 siste ferdigliknede årene.')[0],
         ).toBeInTheDocument();
     });
+
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(HVILKEN_TYPE_VIRKSOMHET)).toBeInTheDocument();
-        await user.click(screen.getByText(FISKE));
+        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Fiske'));
 
-        expect(await screen.findByText(HVA_HETER_VIRKSOMHETEN)).toBeInTheDocument();
-        const virksomhetsnavnInput = screen.getByLabelText(HVA_HETER_VIRKSOMHETEN);
-        await user.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
-        await user.tab();
+        expect(screen.getByText('Hva heter virksomheten?')).toBeInTheDocument();
+        const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
+        await userEvent.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
+        await userEvent.tab();
 
-        expect(await screen.findByText(REGISTRERT_I_NORGE)).toBeInTheDocument();
-        await user.click(screen.getAllByText(JA)[0]);
+        expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[0]);
 
-        expect(await screen.findByText(ORGNUMMER)).toBeInTheDocument();
-        const orgnummerInput = screen.getByLabelText(ORGNUMMER);
-        await user.type(orgnummerInput, '997519485');
-        await user.tab();
+        expect(screen.getByText('Hva er organisasjonsnummeret?')).toBeInTheDocument();
+        const orgnummerInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
+        await userEvent.type(orgnummerInput, '997519485');
+        await userEvent.tab();
 
-        const startdatoInput = screen.getByLabelText(STARTDATO);
-        await user.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
-        await user.tab();
+        const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
+        await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
 
-        expect(await screen.findByText(JOBBER_DU_DER_FORTSATT)).toBeInTheDocument();
-        await user.click(screen.getAllByText(JA)[1]);
+        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[1]);
 
-        expect(await screen.findByText(NÆRINGSRESULTAT)).toBeInTheDocument();
-        const næringsresultatInput = screen.getByLabelText(NÆRINGSRESULTAT);
-        await user.type(næringsresultatInput, '1000');
-        await user.tab();
+        expect(
+            screen.getByText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
+        ).toBeInTheDocument();
+        const næringsresultatInput = screen.getByLabelText(
+            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
+        );
+        await userEvent.type(næringsresultatInput, '1000');
+        await userEvent.tab();
 
-        expect(await screen.findByText(FERDIGLIKNENDE_ÅR)).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[0]);
+        expect(
+            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Nei')[0]);
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.queryByText('Du må oppgi organisasjonsnummer.')).not.toBeInTheDocument();
-        expect(await screen.queryByText('Du må oppgi næringsresultat de siste 12 månedene.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må oppgi organisasjonsnummer.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må oppgi næringsresultat de siste 12 månedene.')).not.toBeInTheDocument();
     });
+
     it('validering av dato på feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(STARTDATO)).toBeInTheDocument();
-        const startdatoInput = screen.getByLabelText(STARTDATO);
-        await user.type(startdatoInput, 'ikemfke');
-        await user.tab();
+        expect(await screen.findByText('Når startet du virksomheten?')).toBeInTheDocument();
+        const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
+        await userEvent.type(startdatoInput, 'ikemfke');
+        await userEvent.tab();
 
-        expect(await screen.findByText(JOBBER_DU_DER_FORTSATT)).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[1]);
+        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Nei')[1]);
 
-        expect(await screen.findByText(SLUTTDATO)).toBeInTheDocument();
-        const sluttdatoInput = screen.getByLabelText(SLUTTDATO);
-        await user.type(sluttdatoInput, 'sjnkf');
-        await user.tab();
-
-        expect(await screen.findByText(FERDIGLIKNENDE_ÅR)).toBeInTheDocument();
-        await user.click(screen.getAllByText(JA)[2]);
-
-        expect(await screen.findByText(YRKERAKTIV)).toBeInTheDocument();
-        const yrkesaktidDatoInput = screen.getByLabelText(YRKERAKTIV);
-        await user.type(yrkesaktidDatoInput, 'sjnkf');
-        await user.tab();
-
-        await user.click(screen.getByText(NESTE_STEG));
+        expect(screen.getByText('Når avsluttet du virksomheten?')).toBeInTheDocument();
+        const sluttdatoInput = screen.getByLabelText('Når avsluttet du virksomheten?');
+        await userEvent.type(sluttdatoInput, 'sjnkf');
+        await userEvent.tab();
 
         expect(
-            await screen.getAllByText('Startdatoen må være en gyldig dato på formatet dd.mm.åååå.')[0],
+            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[2]);
+
+        expect(screen.getByText('Når ble du yrkesaktiv?')).toBeInTheDocument();
+        const yrkesaktidDatoInput = screen.getByLabelText('Når ble du yrkesaktiv?');
+        await userEvent.type(yrkesaktidDatoInput, 'sjnkf');
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(
+            screen.getAllByText('Startdatoen må være en gyldig dato på formatet dd.mm.åååå.')[0],
         ).toBeInTheDocument();
         expect(
-            await screen.getAllByText('Sluttdatoen må være en gyldig dato på formatet dd.mm.åååå.')[0],
+            screen.getAllByText('Sluttdatoen må være en gyldig dato på formatet dd.mm.åååå.')[0],
         ).toBeInTheDocument();
     });
+
     it('skal vise feilmelding når land ikke er utfylt', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(REGISTRERT_I_NORGE)).toBeInTheDocument();
-        await user.click(screen.getAllByText(NEI)[0]);
+        expect(await screen.findByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Nei')[0]);
 
-        expect(await screen.findByText(HVILKET_LAND)).toBeInTheDocument();
+        expect(screen.getByText('I hvilket land er virksomheten din registrert i?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.queryAllByText('Du må oppgi hvilket land næringen er registert i.')[0]).toBeInTheDocument();
+        expect(screen.queryAllByText('Du må oppgi hvilket land næringen er registert i.')[0]).toBeInTheDocument();
     });
 });

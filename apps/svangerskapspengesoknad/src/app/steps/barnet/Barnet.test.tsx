@@ -5,179 +5,178 @@ import * as stories from './Barnet.stories';
 import dayjs from 'dayjs';
 
 const { Default } = composeStories(stories);
-const ER_BARNET_FØDT = 'Er barnet født?';
-const SØKNAD_TITTEL = 'Søknad om svangerskapspenger';
-const JA = 'Ja';
-const NEI = 'Nei';
-const FØDSELSDATO = 'Fødselsdato';
-const TERMINDATO = 'Termindato';
-const NESTE_STEG = 'Neste steg';
+
 describe('<Barnet>', () => {
-    const user = userEvent.setup();
     it('skal ikke måtte oppgi fødselsdato om barnet ikke er født', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(screen.getByText('Er barnet født?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NEI));
+        await userEvent.click(screen.getByText('Nei'));
 
-        expect(await screen.queryByText(FØDSELSDATO)).not.toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
+        expect(screen.queryByText('Fødselsdato')).not.toBeInTheDocument();
+        expect(screen.getByText('Termindato')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.queryByText('Du må oppgi fødselsdato.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må oppgi fødselsdato.')).not.toBeInTheDocument();
     });
+
     it('skal måtte oppgi fødselsdato om barnet er født', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(screen.getByText('Er barnet født?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(JA));
+        await userEvent.click(screen.getByText('Ja'));
 
-        expect(await screen.findByText(FØDSELSDATO)).toBeInTheDocument();
+        expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getAllByText('Du må oppgi fødselsdato.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi fødselsdato.')[0]).toBeInTheDocument();
     });
+
     it('validering av for tidlig termindato (lengre enn 1 måned siden)', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(screen.getByText('Er barnet født?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NEI));
+        await userEvent.click(screen.getByText('Nei'));
 
-        expect(await screen.queryByText(FØDSELSDATO)).not.toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
+        expect(screen.queryByText('Fødselsdato')).not.toBeInTheDocument();
+        expect(screen.getByText('Termindato')).toBeInTheDocument();
 
-        const termindatoInput = screen.getByLabelText(TERMINDATO);
-        await user.type(termindatoInput, dayjs().subtract(1, 'month').subtract(1, 'day').format('DD.MM.YYYY'));
-        await user.tab();
-        await user.click(screen.getByText(NESTE_STEG));
+        const termindatoInput = screen.getByLabelText('Termindato');
+        await userEvent.type(termindatoInput, dayjs().subtract(1, 'month').subtract(1, 'day').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.getAllByText(
-                'Termindato er mer enn 1 måned siden. Vennligst oppgi barnets/barnas fødselsdato.',
-            )[0],
+            screen.getAllByText('Termindato er mer enn 1 måned siden. Vennligst oppgi barnets/barnas fødselsdato.')[0],
         ).toBeInTheDocument();
     });
+
     it('validering av for tidlig termindato og manglende fødselsdato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(screen.getByText('Er barnet født?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(JA));
+        await userEvent.click(screen.getByText('Ja'));
 
-        expect(await screen.findByText(FØDSELSDATO)).toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
+        expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
+        expect(screen.getByText('Termindato')).toBeInTheDocument();
 
-        const termindatoInput = screen.getByLabelText(TERMINDATO);
-        await user.type(termindatoInput, dayjs().subtract(1, 'month').subtract(1, 'day').toString());
-        await user.click(screen.getByText(NESTE_STEG));
+        const termindatoInput = screen.getByLabelText('Termindato');
+        await userEvent.type(termindatoInput, dayjs().subtract(1, 'month').subtract(1, 'day').toString());
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getAllByText('Du må oppgi fødselsdato.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi fødselsdato.')[0]).toBeInTheDocument();
     });
+
     it('validering av manglende termindato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(screen.getByText('Er barnet født?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NEI));
+        await userEvent.click(screen.getByText('Nei'));
 
-        expect(await screen.queryByText(FØDSELSDATO)).not.toBeInTheDocument();
-        expect(await screen.findByText(TERMINDATO)).toBeInTheDocument();
+        expect(screen.queryByText('Fødselsdato')).not.toBeInTheDocument();
+        expect(screen.getByText('Termindato')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getAllByText('Du må oppgi termindato.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi termindato.')[0]).toBeInTheDocument();
     });
+
     it('validering av for sen termindato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
 
-        const termindatoInput = screen.getByLabelText(TERMINDATO);
-        await user.type(termindatoInput, dayjs().add(9, 'months').add(1, 'days').format('DD.MM.YYYY'));
-        await user.click(screen.getByText(NESTE_STEG));
+        const termindatoInput = screen.getByLabelText('Termindato');
+        await userEvent.type(termindatoInput, dayjs().add(9, 'months').add(1, 'days').format('DD.MM.YYYY'));
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getAllByText('Du kan ikke søke så langt frem i tid.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du kan ikke søke så langt frem i tid.')[0]).toBeInTheDocument();
     });
+
     it('validering av termindato på feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-        await user.click(screen.getByText(NEI));
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
 
-        const termindatoInput = screen.getByLabelText(TERMINDATO);
-        await user.type(termindatoInput, 'bla bla');
-        await user.click(screen.getByText(NESTE_STEG));
+        const termindatoInput = screen.getByLabelText('Termindato');
+        await userEvent.type(termindatoInput, 'bla bla');
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(
-            await screen.getAllByText('Termindato må være en gyldig dato på formatet dd.mm.åååå.')[0],
-        ).toBeInTheDocument();
+        expect(screen.getAllByText('Termindato må være en gyldig dato på formatet dd.mm.åååå.')[0]).toBeInTheDocument();
     });
+
     it('validering av for tidlig fødselsdato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-        await user.click(screen.getByText(JA));
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
 
-        const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
-        const termindatoInput = screen.getByLabelText(TERMINDATO);
-        await user.type(fødselsdatoInput, dayjs('2024-05-19').format('DD.MM.YYYY'));
-        await user.type(termindatoInput, dayjs('2023-10-18').format('DD.MM.YYYY'));
-        await user.click(screen.getByText(NESTE_STEG));
+        const fødselsdatoInput = screen.getByLabelText('Fødselsdato');
+        const termindatoInput = screen.getByLabelText('Termindato');
+        await userEvent.type(fødselsdatoInput, dayjs('2024-05-19').format('DD.MM.YYYY'));
+        await userEvent.type(termindatoInput, dayjs('2023-10-18').format('DD.MM.YYYY'));
+        await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.getAllByText('Termindatoen kan ikke være tidligere enn 1 måned før fødselsdatoen.')[0],
+            screen.getAllByText('Termindatoen kan ikke være tidligere enn 1 måned før fødselsdatoen.')[0],
         ).toBeInTheDocument();
         vi.useRealTimers();
     });
+
     it('validering av for sen fødselsdato', async () => {
         render(<Default />);
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-        await user.click(screen.getByText(JA));
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
 
-        const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
-        const termindatoInput = screen.getByLabelText(TERMINDATO);
-        await user.type(fødselsdatoInput, dayjs('2023-10-18').format('DD.MM.YYYY'));
-        await user.type(termindatoInput, dayjs('2024-05-19').format('DD.MM.YYYY'));
-        await user.click(screen.getByText(NESTE_STEG));
+        const fødselsdatoInput = screen.getByLabelText('Fødselsdato');
+        const termindatoInput = screen.getByLabelText('Termindato');
+        await userEvent.type(fødselsdatoInput, dayjs('2023-10-18').format('DD.MM.YYYY'));
+        await userEvent.type(termindatoInput, dayjs('2024-05-19').format('DD.MM.YYYY'));
+        await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.getAllByText('Termindatoen kan ikke være senere enn 6 måneder etter fødselsdatoen.')[0],
+            screen.getAllByText('Termindatoen kan ikke være senere enn 6 måneder etter fødselsdatoen.')[0],
         ).toBeInTheDocument();
         vi.useRealTimers();
     });
+
     it('validering av manglende fødselsdato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-        await user.click(screen.getByText(JA));
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getAllByText('Du må oppgi fødselsdato.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi fødselsdato.')[0]).toBeInTheDocument();
     });
+
     it('validering av fødselsdato på feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(ER_BARNET_FØDT)).toBeInTheDocument();
-        await user.click(screen.getByText(JA));
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
 
-        const fødselsdatoInput = screen.getByLabelText(FØDSELSDATO);
-        await user.type(fødselsdatoInput, 'bla bla');
-        await user.click(screen.getByText(NESTE_STEG));
+        const fødselsdatoInput = screen.getByLabelText('Fødselsdato');
+        await userEvent.type(fødselsdatoInput, 'bla bla');
+        await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.getAllByText('Fødselsdato må være en gyldig dato på formatet dd.mm.åååå.')[0],
+            screen.getAllByText('Fødselsdato må være en gyldig dato på formatet dd.mm.åååå.')[0],
         ).toBeInTheDocument();
     });
 });

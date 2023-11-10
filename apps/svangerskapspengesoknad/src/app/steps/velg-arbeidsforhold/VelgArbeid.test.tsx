@@ -18,9 +18,10 @@ describe('<Velg arbeid>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.findAllByText('Du må velge hvilket arbeidsforhold du ønsker å søke svangerskapspenger for.'),
+            screen.getAllByText('Du må velge hvilket arbeidsforhold du ønsker å søke svangerskapspenger for.'),
         ).toHaveLength(2);
     });
+
     it('skal ikke vise feilmelding', async () => {
         render(<Default />);
 
@@ -28,13 +29,14 @@ describe('<Velg arbeid>', () => {
 
         await userEvent.click(screen.getByText('Sykehuset i Vestfold'));
 
-        expect(await screen.findByText('Neste steg')).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.queryByText('Du må velge hvilket arbeidsforhold du ønsker å søke svangerskapspenger for.'),
+            screen.queryByText('Du må velge hvilket arbeidsforhold du ønsker å søke svangerskapspenger for.'),
         ).not.toBeInTheDocument();
     });
+
     it('skal ikke vise infoboks når kunn ett arbeidsforhold er valgt', async () => {
         render(<Default />);
         expect(await screen.findByText('Sykehuset i Vestfold')).toBeInTheDocument();
@@ -43,6 +45,7 @@ describe('<Velg arbeid>', () => {
 
         expect(screen.queryByText('Du vil nå gå gjennom hvert arbeidsforhold og gjøre dette:')).not.toBeInTheDocument();
     });
+
     it('skal vise infoboks når mer enn ett arbeidsforhold er valgt', async () => {
         render(<Default />);
         expect(await screen.findByText('Sykehuset i Vestfold')).toBeInTheDocument();
@@ -50,8 +53,6 @@ describe('<Velg arbeid>', () => {
         await userEvent.click(screen.getByText('Sykehuset i Vestfold'));
         await userEvent.click(screen.getByText('Omsorgspartner Vestfold AS'));
 
-        expect(
-            await screen.findByText('Du vil nå gå gjennom hvert arbeidsforhold og gjøre dette:'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Du vil nå gå gjennom hvert arbeidsforhold og gjøre dette:')).toBeInTheDocument();
     });
 });

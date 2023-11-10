@@ -65,9 +65,7 @@ const PeriodeVisning: FunctionComponent<Props> = ({
             <div className={bem.element('topRow')}>
                 <Label>{labelText}</Label>
                 <div className={bem.element('arbeidsgiverNavn')}>
-                    <BodyShort>
-                        <BodyShort>{periode.arbeidsforhold.navn.toUpperCase()}</BodyShort>
-                    </BodyShort>
+                    <BodyShort>{periode.arbeidsforhold.navn.toUpperCase()}</BodyShort>
                 </div>
             </div>
             <Block padBottom="m">

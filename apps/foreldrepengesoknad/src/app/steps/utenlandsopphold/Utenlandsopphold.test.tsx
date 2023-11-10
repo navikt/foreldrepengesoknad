@@ -6,96 +6,91 @@ import * as stories from './Utenlandsopphold.stories';
 
 const { Default } = composeStories(stories);
 
-const HVOR_SKAL_DU_BO_LABEL = 'Hvor skal du bo de neste 12 månedene?';
-const LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP = 'Legg til nytt utenlandsopphold';
-const GÅ_VIDERE_KNAPP = 'Neste steg';
-
 describe('<Utenlandsopphold>', () => {
     it('skal kun bo og har bodd i Norge', async () => {
-        const user = userEvent.setup();
         render(<Default />);
 
-        expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
+        expect(await screen.findByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Kun bo i Norge'));
+        await userEvent.click(screen.getByText('Kun bo i Norge'));
 
-        expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
+        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
-        await user.click(screen.getByText('Kun bodd i Norge'));
+        await userEvent.click(screen.getByText('Kun bodd i Norge'));
 
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal bo i utlandet helt eller delvis', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
+        expect(await screen.findByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Bo i utlandet helt eller delvis'));
 
-        expect(await screen.findByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Legg til nytt utenlandsopphold')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
+        await userEvent.click(screen.getByText('Legg til nytt utenlandsopphold'));
 
-        expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
+        expect(screen.getByText('Tidsrom')).toBeInTheDocument();
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
         await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
-        userEvent.tab();
+        await userEvent.tab();
 
-        expect(await screen.findByText('Til og med')).toBeInTheDocument();
+        expect(screen.getByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
         await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(await screen.findByText('Hvilket land skal du bo i?')).toBeInTheDocument();
+        expect(screen.getByText('Hvilket land skal du bo i?')).toBeInTheDocument();
         const hvilkeLandInput = screen.getByLabelText('Hvilket land skal du bo i?');
         await userEvent.type(hvilkeLandInput, 'Aruba');
 
-        expect(await screen.findByText('Legg til')).toBeInTheDocument();
+        expect(screen.getByText('Legg til')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Legg til'));
 
-        expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Kun bodd i Norge'));
 
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal ha bodd i utlandet helt eller delvis', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(HVOR_SKAL_DU_BO_LABEL)).toBeInTheDocument();
+        expect(await screen.findByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Kun bo i Norge'));
 
-        expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Bodd i utlandet helt eller delvis'));
 
-        expect(await screen.findByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Legg til nytt utenlandsopphold')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText(LEGG_TIL_NYTT_UTENLANDSOPPHOLD_KNAPP));
+        await userEvent.click(screen.getByText('Legg til nytt utenlandsopphold'));
 
-        expect(await screen.findByText('Tidsrom')).toBeInTheDocument();
+        expect(screen.getByText('Tidsrom')).toBeInTheDocument();
 
         const fraOgMedInput = screen.getByLabelText('Fra og med');
         await userEvent.type(fraOgMedInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(await screen.findByText('Til og med')).toBeInTheDocument();
+        expect(screen.getByText('Til og med')).toBeInTheDocument();
         const tilOgMedInput = screen.getByLabelText('Til og med');
         await userEvent.type(tilOgMedInput, dayjs().add(1, 'years').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(await screen.findByText('Hvilket land bodde du i?')).toBeInTheDocument();
+        expect(screen.getByText('Hvilket land bodde du i?')).toBeInTheDocument();
         const hvilkeLandInput = screen.getByLabelText('Hvilket land bodde du i?');
         await userEvent.type(hvilkeLandInput, 'Aruba');
 
-        expect(await screen.findByText('Legg til')).toBeInTheDocument();
+        expect(screen.getByText('Legg til')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Legg til'));
 
-        expect(await screen.findByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 });

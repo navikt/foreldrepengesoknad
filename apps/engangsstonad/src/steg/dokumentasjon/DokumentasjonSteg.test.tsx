@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -20,7 +20,7 @@ describe('<DokumentasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi terminbekreftelse dato')).toHaveLength(2);
 
         const terminbekreftelse = utils.getByLabelText('Når fikk du terminbekreftelsen?');
@@ -38,7 +38,6 @@ describe('<DokumentasjonSteg>', () => {
         });
 
         await userEvent.click(screen.getByText('Neste steg'));
-        await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 terminbekreftelsedato: dayjs().format(ISO_DATE_FORMAT),
@@ -84,7 +83,6 @@ describe('<DokumentasjonSteg>', () => {
         });
 
         await userEvent.click(screen.getByText('Neste steg'));
-        await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 vedlegg: [

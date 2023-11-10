@@ -5,38 +5,36 @@ import { render, screen } from '@testing-library/react';
 
 const { Default } = composeStories(stories);
 
-const SØKNAD_TITTEL = 'Søknad om svangerskapspenger';
-const OPPSUMMERING = 'Oppsummering';
-const VILKÅR =
-    'Opplysningene jeg har oppgitt stemmer og jeg har gjort meg kjent med vilkårene for å motta svangerskapspenger.';
-const SEND = 'Send søknaden';
-
 describe('<Oppsummering>', () => {
-    const user = userEvent.setup();
-
     it('skal vise feilmelding når vilkår ikke er godkjent', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(await screen.findByText(OPPSUMMERING)).toBeInTheDocument();
-        expect(await screen.findByText(SEND)).toBeInTheDocument();
-        await user.click(screen.getByText(SEND));
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(screen.getByText('Oppsummering')).toBeInTheDocument();
+        expect(screen.getByText('Send søknaden')).toBeInTheDocument();
 
-        expect(
-            await screen.getAllByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')[0],
-        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Send søknaden'));
+
+        expect(screen.getAllByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')[0]).toBeInTheDocument();
     });
     it('skal ikke vise feilmelding, vilkår er godkjent', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(VILKÅR)).toBeInTheDocument();
-        await user.click(screen.getByLabelText(VILKÅR));
-
-        expect(await screen.findByText(SEND)).toBeInTheDocument();
-        await user.click(screen.getByText(SEND));
-
         expect(
-            await screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.'),
-        ).not.toBeInTheDocument();
+            await screen.findByText(
+                'Opplysningene jeg har oppgitt stemmer og jeg har gjort meg kjent med vilkårene for å motta svangerskapspenger.',
+            ),
+        ).toBeInTheDocument();
+        await userEvent.click(
+            screen.getByLabelText(
+                'Opplysningene jeg har oppgitt stemmer og jeg har gjort meg kjent med vilkårene for å motta svangerskapspenger.',
+            ),
+        );
+
+        expect(screen.getByText('Send søknaden')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Send søknaden'));
+
+        expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
     });
 });

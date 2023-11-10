@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './UtenlandsoppholdSteg.stories';
@@ -19,7 +19,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
 
         expect(screen.getAllByText('Du må oppgi hvor du har bodd de siste 12 månedene')).toHaveLength(2);
         expect(screen.getAllByText('Du må oppgi hvor du skal bo de neste 12 månedene')).toHaveLength(2);
@@ -37,7 +37,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(3));
+        expect(nesteStegFn).toHaveBeenCalledTimes(3);
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
                 harBoddUtenforNorgeSiste12Mnd: false,
@@ -72,7 +72,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(2));
+        expect(nesteStegFn).toHaveBeenCalledTimes(2);
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
                 harBoddUtenforNorgeSiste12Mnd: true,
@@ -102,7 +102,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(2));
+        expect(nesteStegFn).toHaveBeenCalledTimes(2);
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
                 harBoddUtenforNorgeSiste12Mnd: false,
@@ -132,7 +132,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(nesteStegFn).toHaveBeenCalledTimes(1));
+        expect(nesteStegFn).toHaveBeenCalledTimes(1);
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
                 harBoddUtenforNorgeSiste12Mnd: true,
