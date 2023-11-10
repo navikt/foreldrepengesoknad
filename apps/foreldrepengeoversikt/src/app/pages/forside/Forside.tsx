@@ -11,9 +11,13 @@ import { Alert, Heading } from '@navikt/ds-react';
 
 import './forside.css';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
-import { useGetIsRedirectedFromSøknad, useSetIsRedirectedFromSøknad } from 'app/hooks/useIsRedirectedFromSøknad';
+import {
+    useGetRedirectedFromSøknadsnummer,
+    useSetRedirectedFromSøknadsnummer,
+} from 'app/hooks/useRedirectedFromSøknadsnummer';
 import { useNavigate, useParams } from 'react-router-dom';
-import { RedirectSource } from 'app/types/RedirectSource';
+import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
+import Bankkonto from 'app/types/Bankkonto';
 
 interface Props {
     alleYtelser: Sak[];
@@ -22,6 +26,7 @@ interface Props {
     oppdatertData: boolean;
     storageData: any;
     isFirstRender: React.MutableRefObject<boolean>;
+    bankkonto: Bankkonto | undefined;
 }
 
 const Forside: React.FunctionComponent<Props> = ({
@@ -31,22 +36,28 @@ const Forside: React.FunctionComponent<Props> = ({
     oppdatertData,
     storageData,
     isFirstRender,
+    bankkonto,
 }) => {
     const bem = bemUtils('forside');
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
 
     const params = useParams();
-    useSetIsRedirectedFromSøknad(params.redirect, isFirstRender);
+    useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
     const navigate = useNavigate();
     if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
         navigate(OversiktRoutes.HOVEDSIDE);
     }
-    const redirectedFromSoknad = useGetIsRedirectedFromSøknad();
+    const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
     return (
         <div className={bem.block}>
             <Block padBottom="xl">
-                {redirectedFromSoknad && (
-                    <BekreftelseSendtSøknad oppdatertData={oppdatertData} tidslinjehendelser={[]} />
+                {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
+                    <BekreftelseSendtSøknad
+                        oppdatertData={oppdatertData}
+                        tidslinjehendelser={[]}
+                        bankkonto={bankkonto}
+                        ytelse={undefined}
+                    />
                 )}
                 {!oppdatertData && (
                     <Alert variant="warning">

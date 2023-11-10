@@ -17,7 +17,7 @@ interface Props {
     padding?: Padding;
     showSkeleton?: boolean;
     skeletonProps?: SkeletonProps;
-    marginBottom?: 'default' | 'small';
+    marginBottom?: 'default' | 'small' | 'medium' | 'large';
 }
 
 const ContentSection: FunctionComponent<Props> = ({

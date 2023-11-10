@@ -1,4 +1,4 @@
-import { bemUtils, intlUtils } from '@navikt/fp-common';
+import { bemUtils, intlUtils, links } from '@navikt/fp-common';
 
 import './snarveier.css';
 import { useIntl } from 'react-intl';
@@ -99,6 +99,11 @@ const Snarveier: React.FunctionComponent<Props> = ({ saker }) => {
                     <LinkPanel href={getKlageLink(ytelse)} border={false} className={bem.element('linkPanel')}>
                         <LinkPanel.Title className={bem.element('linkTitle')}>
                             <div>{intlUtils(intl, 'snarveier.slikKlagerDu')}</div>
+                        </LinkPanel.Title>
+                    </LinkPanel>
+                    <LinkPanel href={links.brukerprofil} border={false} className={bem.element('linkPanel')}>
+                        <LinkPanel.Title className={bem.element('linkTitle')}>
+                            <div>{intlUtils(intl, 'snarveier.kontonummer')}</div>
                         </LinkPanel.Title>
                     </LinkPanel>
                 </div>
