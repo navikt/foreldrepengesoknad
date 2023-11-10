@@ -25,7 +25,10 @@ import { RequestStatus } from 'app/types/RequestStatus';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
 import { Alert } from '@navikt/ds-react';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
-import { useGetIsRedirectedFromSøknad, useSetIsRedirectedFromSøknad } from 'app/hooks/useIsRedirectedFromSøknad';
+import {
+    useGetRedirectedFromSøknadsnummer,
+    useSetRedirectedFromSøknadsnummer,
+} from 'app/hooks/useRedirectedFromSøknadsnummer';
 import React from 'react';
 import { RedirectSource } from 'app/types/RedirectSource';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
@@ -54,18 +57,15 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const params = useParams();
     const navigate = useNavigate();
 
-    useSetIsRedirectedFromSøknad(params.redirect, isFirstRender);
+    useSetRedirectedFromSøknadsnummer(params.redirect, params.saksnummer, isFirstRender);
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
 
     const alleSaker = getAlleYtelser(saker);
-    console.log(alleSaker);
-    console.log(params);
     const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
-    console.log(gjeldendeSak);
     useSetSelectedSak(gjeldendeSak);
 
-    const redirectedFromSoknad = useGetIsRedirectedFromSøknad();
+    const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
     const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
@@ -101,10 +101,12 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
     }
 
+    const nettoppSendtInnDenneSøknaden = redirectedFromSøknadsnummer === params.saksnummer;
+
     if (!oppdatertData) {
         return (
             <div className={bem.block}>
-                {redirectedFromSoknad && (
+                {nettoppSendtInnDenneSøknaden && (
                     <BekreftelseSendtSøknad
                         oppdatertData={oppdatertData}
                         tidslinjehendelser={[]}
@@ -137,7 +139,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     return (
         <div className={bem.block}>
-            {redirectedFromSoknad && (
+            {nettoppSendtInnDenneSøknaden && (
                 <BekreftelseSendtSøknad
                     oppdatertData={oppdatertData}
                     tidslinjehendelser={tidslinjeHendelserData}

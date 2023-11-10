@@ -3,7 +3,7 @@ import { bemUtils } from '@navikt/fp-common';
 import OversiktRoutes from 'app/routes/routes';
 import './ettersend-dokumenter.css';
 import { Link } from 'react-router-dom';
-import { HddDownIcon } from '@navikt/aksel-icons';
+import { FilesIcon } from '@navikt/aksel-icons';
 
 const EttersendDokumenter = () => {
     const bem = bemUtils('ettersend-dokumenter');
@@ -15,7 +15,7 @@ const EttersendDokumenter = () => {
             className={bem.element('linkPanel')}
         >
             <HStack gap="1">
-                <HddDownIcon className={bem.element('icon')} width={52} height={52} color="#0056B4" />
+                <FilesIcon className={bem.element('icon')} width={52} height={52} color="#0056B4" />
                 <LinkPanel.Title as="h2" className={bem.element('link')}>
                     Ettersend dokumentasjon
                 </LinkPanel.Title>
