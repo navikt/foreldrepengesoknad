@@ -588,3 +588,25 @@ export const getAlleTidslinjehendelser = (
 
     return [...tidslinjeHendelser].sort(sorterTidslinjehendelser);
 };
+
+export const getRelevantNyTidslinjehendelse = (
+    tidslinjehendelser: Tidslinjehendelse[] | undefined,
+): Tidslinjehendelse | undefined => {
+    const søknadHendelser = [
+        TidslinjehendelseType.FØRSTEGANGSSØKNAD,
+        TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY,
+        TidslinjehendelseType.ENDRINGSSØKNAD,
+    ];
+    const sorterteHendelser = tidslinjehendelser
+        ? [...tidslinjehendelser].sort(sorterTidslinjehendelser).reverse()
+        : undefined;
+    const relevantNyHendelse = sorterteHendelser
+        ? sorterteHendelser.find(
+              (hendelse: Tidslinjehendelse) =>
+                  søknadHendelser.includes(hendelse.tidslinjeHendelseType) &&
+                  hendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad')) &&
+                  dayjs(hendelse.opprettet).isSameOrAfter(dayjs().subtract(1, 'd')),
+          )
+        : undefined;
+    return relevantNyHendelse;
+};

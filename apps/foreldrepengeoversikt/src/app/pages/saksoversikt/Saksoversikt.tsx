@@ -32,6 +32,7 @@ import {
 import React from 'react';
 import { RedirectSource } from 'app/types/RedirectSource';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
+import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 
 const EMPTY_ARRAY = [] as Skjemanummer[];
 
@@ -101,15 +102,17 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
     }
 
-    const nettoppSendtInnDenneSøknaden = redirectedFromSøknadsnummer === params.saksnummer;
+    const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserData);
+    const nettoppSendtInnSøknad =
+        redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
 
     if (!oppdatertData) {
         return (
             <div className={bem.block}>
-                {nettoppSendtInnDenneSøknaden && (
+                {nettoppSendtInnSøknad && (
                     <BekreftelseSendtSøknad
                         oppdatertData={oppdatertData}
-                        tidslinjehendelser={[]}
+                        relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
                         bankkonto={søkerinfo.søker.bankkonto}
                         ytelse={undefined}
                     />
@@ -139,10 +142,10 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     return (
         <div className={bem.block}>
-            {nettoppSendtInnDenneSøknaden && (
+            {nettoppSendtInnSøknad && (
                 <BekreftelseSendtSøknad
                     oppdatertData={oppdatertData}
-                    tidslinjehendelser={tidslinjeHendelserData}
+                    relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
                     bankkonto={søkerinfo.søker.bankkonto}
                     ytelse={gjeldendeSak.ytelse}
                 />

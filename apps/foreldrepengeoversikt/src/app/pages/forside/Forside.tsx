@@ -54,7 +54,7 @@ const Forside: React.FunctionComponent<Props> = ({
                 {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
                     <BekreftelseSendtSøknad
                         oppdatertData={oppdatertData}
-                        tidslinjehendelser={[]}
+                        relevantNyTidslinjehendelse={undefined}
                         bankkonto={bankkonto}
                         ytelse={undefined}
                     />
