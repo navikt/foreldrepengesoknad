@@ -373,6 +373,8 @@
     "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektDato": "Oppgi dato for endringa",
     "inntektsinformasjon.egenNæringModal.inntektEtterEndring": "Oppgi næringsinntekta di etter endringa. Oppgi årsinntekta i heile kroner.",
     "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring": "Her kan du skrive kort kva som har endra seg i verksemda eller arbeidssituasjonen din",
+    "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt.readmoreTittel": "Kva siktar ein til med varig endring?",
+    "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt.readmoreTekst": "Med varig endring meiner me at noko er forandra i arbeidssituasjonen eller verksemda di. Dette kan vera ei omlegging av korleis du jobbar, ei utviding av drifta di, eller ei konkret endring i marknaden din. Ei inntektsendring åleine (økt eller redusert inntekt) er ikkje nok for å telja som ei varig endring.",
     "inntektsinformasjon.egenNæringModal.harRegnskapsfører": "Har du rekneskapsførar?",
     "inntektsinformasjon.egenNæringModal.regnskapsførerNavn": "Rekneskapsførar namn",
     "inntektsinformasjon.egenNæringModal.regnskapsførerTlf": "Rekneskapsførar telefonnummer",

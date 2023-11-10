@@ -34,10 +34,10 @@ const EsDispatchContext = createContext<Dispatch | undefined>(undefined);
 interface OwnProps {
     children: ReactNode;
     initialState?: EsDataMap;
-    testDispatcher?: (action: Action) => void;
+    onDispatch?: (action: Action) => void;
 }
 
-export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialState, testDispatcher }): JSX.Element => {
+export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialState, onDispatch }): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: State, action: Action) => {
         switch (action.type) {
             case 'update':
@@ -54,12 +54,12 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
 
     const dispatchWrapper = useCallback(
         (a: Action) => {
-            if (testDispatcher) {
-                testDispatcher(a);
+            if (onDispatch) {
+                onDispatch(a);
             }
             dispatch(a);
         },
-        [testDispatcher],
+        [onDispatch],
     );
 
     return (

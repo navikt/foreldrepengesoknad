@@ -1,7 +1,7 @@
 import { Block, ISOStringToDate, intlUtils, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
     validateEgenNæringVarigEndringBeskrivelse,
     validateEgenNæringVarigEndringDato,
@@ -14,6 +14,7 @@ import {
 } from 'app/steps/egen-næring/egenNæringFormConfig';
 import dayjs from 'dayjs';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 interface Props {
     visibility: QuestionVisibility<EgenNæringFormField, undefined>;
@@ -39,6 +40,11 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ visibility, formValu
                         )
                     }
                 />
+                <ReadMore header={intlUtils(intl, 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel')}>
+                    <BodyShort>
+                        <FormattedMessage id="egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info"></FormattedMessage>
+                    </BodyShort>
+                </ReadMore>
             </Block>
             <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringVarigEndringDato)}>
                 <EgenNæringFormComponents.DatePicker

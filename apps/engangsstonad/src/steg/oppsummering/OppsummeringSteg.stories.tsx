@@ -5,9 +5,8 @@ import { AttachmentType, Skjemanummer, ISO_DATE_FORMAT } from '@navikt/fp-consta
 import { initAmplitude } from '@navikt/fp-metrics';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
-import withRouter from 'storybookHelpers/withRouter';
-import EsContextStorybookHelper from 'storybookHelpers/EsContextStorybookHelper';
-import { EsDataType } from 'appData/EsDataContext';
+import withRouter from 'storybook/decorators/withRouter';
+import { EsDataContext, EsDataType } from 'appData/EsDataContext';
 import { Kjønn } from 'types/Person';
 import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
@@ -80,7 +79,7 @@ const Template: StoryFn<{
 }) => {
     initAmplitude();
     return (
-        <EsContextStorybookHelper
+        <EsDataContext
             initialState={{
                 [EsDataType.OM_BARNET]: omBarnet,
                 [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
@@ -90,7 +89,7 @@ const Template: StoryFn<{
             }}
         >
             <OppsummeringSteg person={person} sendSøknad={sendSøknad} />
-        </EsContextStorybookHelper>
+        </EsDataContext>
     );
 };
 

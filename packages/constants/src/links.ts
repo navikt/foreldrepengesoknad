@@ -18,4 +18,5 @@ export const links = {
     barn: 'https://www.nav.no/barn',
     foreldrepengerUtland: 'https://www.nav.no/foreldrepenger#utland',
     engangsstonadHvem: 'https://www.nav.no/engangsstonad#hvem',
+    scanneDokument: 'https://www.nav.no/brukerstotte#bilde-vedlegg',
 };

@@ -18,7 +18,7 @@ import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapsp
 import { useEffect } from 'react';
 import { LocaleNo } from '@navikt/fp-types';
 
-interface Props {
+export interface Props {
     onChangeLocale: (locale: LocaleNo) => void;
     locale: LocaleNo;
 }

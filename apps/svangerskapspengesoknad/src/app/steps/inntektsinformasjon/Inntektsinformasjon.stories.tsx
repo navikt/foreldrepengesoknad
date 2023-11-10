@@ -1,5 +1,4 @@
 import { StoryFn } from '@storybook/react';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
 import withRouterProvider from 'storybook/decorators/withRouter';
 import Inntektsinformasjon from './Inntektsinformasjon';
@@ -10,7 +9,7 @@ import _context from 'storybook/storydata/soknad/soknad.json';
 const defaultExport = {
     title: 'steps/Inntektsinformasjon',
     component: Inntektsinformasjon,
-    decorators: [withIntlProvider, withSvangerskapspengerContextProvider, withRouterProvider],
+    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;

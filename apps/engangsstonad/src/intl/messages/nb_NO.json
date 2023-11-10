@@ -91,7 +91,6 @@
 
     "DokumentasjonSteg.MinstEttDokumentAdopsjon": "Du må laste opp bekreftelse på adopsjon",
     "DokumentasjonSteg.MinstEttDokumentTermin": "Du må laste opp bekreftelse på termindato",
-    "DokumentasjonSteg.HvordanTaBilder": "Hvordan ta bilde av vedlegg med mobilen",
     "TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi": "Du må oppgi terminbekreftelse dato",
     "TerminDokPanel.Validering.TerminBekreftelsedato": "TerminBekreftelsedato må være en gyldig dato på formatet dd.mm.åååå",
     "TerminDokPanel.Validering.TerminBekreftelsedato.MåVæreIdagEllerTidligere": "Datoen på terminbekreftelsen kan ikke være frem i tid.",

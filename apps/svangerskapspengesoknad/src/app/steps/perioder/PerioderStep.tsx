@@ -40,7 +40,8 @@ import {
     getDefaultMonth,
 } from 'app/utils/dateUtils';
 import { getRadioOptionsTomType } from '../tilrettelegging/tilretteleggingStepUtils';
-interface Props {
+
+export interface Props {
     id: string;
     navn: string;
 }

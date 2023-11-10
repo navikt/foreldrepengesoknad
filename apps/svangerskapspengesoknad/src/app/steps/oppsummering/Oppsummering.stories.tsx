@@ -1,5 +1,4 @@
 import { StoryFn } from '@storybook/react';
-import withIntlProvider from 'storybook/decorators/withIntl';
 import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
 import withRouterProvider from 'storybook/decorators/withRouter';
 import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
@@ -11,7 +10,7 @@ import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 const defaultExport = {
     title: 'steps/Oppsummering',
     component: Oppsummering,
-    decorators: [withRouterProvider, withIntlProvider, withSvangerskapspengerContextProvider],
+    decorators: [withRouterProvider, withSvangerskapspengerContextProvider],
 };
 
 export default defaultExport;

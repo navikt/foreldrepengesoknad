@@ -8,7 +8,7 @@ import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
-import { Dekningsgrad, formaterDato, hasValue } from '@navikt/fp-common';
+import { Attachment, Dekningsgrad, formaterDato, hasValue } from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/SakerOppslag';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { RequestStatus } from 'app/types/RequestState';
@@ -211,7 +211,7 @@ const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspe
     };
 };
 
-function sendSøknad(søknad: SøknadForInnsending | EndringssøknadForInnsending, fnr: string, signal: AbortSignal) {
+const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsending, fnr: string, signal: AbortSignal) => {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
     return getAxiosInstance(fnr).post(url, søknad, {
@@ -222,7 +222,22 @@ function sendSøknad(søknad: SøknadForInnsending | EndringssøknadForInnsendin
         },
         signal,
     });
-}
+};
+
+const deleteMellomlagretSøknad = (fnr: string, signal: AbortSignal) => {
+    return getAxiosInstance(fnr).delete('/storage', { withCredentials: true, signal });
+};
+
+const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: AbortSignal) => {
+    const attachmentUUIDs = vedlegg.reduce((result: string[], current: Attachment) => {
+        if (current.uuid) {
+            result.push(current.uuid);
+        }
+
+        return result;
+    }, []);
+    return getAxiosInstance(fnr).delete('/storage/vedlegg', { withCredentials: true, data: attachmentUUIDs, signal });
+};
 
 const Api = {
     useGetUttakskontoer,
@@ -234,6 +249,8 @@ const Api = {
     useSøkerinfo,
     sendSøknad,
     useGetSaker,
+    deleteMellomlagretSøknad,
+    deleteMellomlagredeVedlegg,
 };
 
 export default Api;
