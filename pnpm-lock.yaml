@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -65,8 +69,8 @@ importers:
         specifier: ^7.64.0
         version: 7.64.0
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.0
+        version: 1.6.0
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -139,7 +143,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)(vite@4.4.9)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -166,7 +170,7 @@ importers:
         version: 10.4.15(postcss@8.4.28)
       axios-mock-adapter:
         specifier: 1.21.5
-        version: 1.21.5(axios@1.4.0)
+        version: 1.21.5(axios@1.6.0)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -196,7 +200,7 @@ importers:
         version: 5.1.6
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.1.6)(vite@4.4.9)
@@ -205,7 +209,7 @@ importers:
         version: 1.8.1(eslint@8.38.0)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   apps/foreldrepengeoversikt:
     dependencies:
@@ -261,8 +265,8 @@ importers:
         specifier: ^8.21.9
         version: 8.21.9
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.0
+        version: 1.6.0
       babel-runtime:
         specifier: ^6.26.0
         version: 6.26.0
@@ -431,7 +435,7 @@ importers:
         version: 10.4.15(postcss@8.4.28)
       axios-mock-adapter:
         specifier: ^1.21.5
-        version: 1.21.5(axios@1.4.0)
+        version: 1.21.5(axios@1.6.0)
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -565,8 +569,8 @@ importers:
         specifier: ^8.21.9
         version: 8.21.9
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.0
+        version: 1.6.0
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
@@ -690,7 +694,7 @@ importers:
         version: 9.3.1
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -744,7 +748,7 @@ importers:
         version: 10.4.15(postcss@8.4.28)
       axios-mock-adapter:
         specifier: ^1.21.5
-        version: 1.21.5(axios@1.4.0)
+        version: 1.21.5(axios@1.6.0)
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -866,8 +870,8 @@ importers:
         specifier: ^8.21.9
         version: 8.21.9
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.0
+        version: 1.6.0
       babel-polyfill:
         specifier: ^6.26.0
         version: 6.26.0
@@ -1003,7 +1007,7 @@ importers:
         version: 9.3.1
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1057,7 +1061,7 @@ importers:
         version: 10.4.15(postcss@8.4.28)
       axios-mock-adapter:
         specifier: 1.21.5
-        version: 1.21.5(axios@1.4.0)
+        version: 1.21.5(axios@1.6.0)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1102,7 +1106,7 @@ importers:
         version: 5.1.6
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.1.6)(vite@4.4.9)
@@ -1111,7 +1115,7 @@ importers:
         version: 1.8.1(eslint@8.38.0)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/api:
     dependencies:
@@ -1119,8 +1123,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.0
+        version: 1.6.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1243,7 +1247,7 @@ importers:
     devDependencies:
       '@navikt/ds-codemod':
         specifier: 3.4.2
-        version: 3.4.2(@babel/preset-env@7.22.10)(@types/node@20.5.0)
+        version: 3.4.2(@babel/preset-env@7.22.10)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -1267,7 +1271,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1291,13 +1295,13 @@ importers:
         version: 5.2.2
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/fp-common:
     dependencies:
@@ -1412,7 +1416,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1570,7 +1574,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1600,13 +1604,13 @@ importers:
         version: 5.2.2
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/utils:
     dependencies:
@@ -1668,7 +1672,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1692,13 +1696,13 @@ importers:
         version: 5.2.2
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/uttaksplan:
     dependencies:
@@ -1753,7 +1757,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1780,13 +1784,13 @@ importers:
         version: link:../tsconfig
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/validation:
     dependencies:
@@ -3987,7 +3991,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.1.6)
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     dev: true
 
   /@joshwooding/vite-plugin-react-docgen-typescript@0.2.1(typescript@5.2.2)(vite@4.4.9):
@@ -4004,7 +4008,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.2.2)
       typescript: 5.2.2
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     dev: false
 
   /@jridgewell/gen-mapping@0.3.3:
@@ -4059,6 +4063,31 @@ packages:
   /@navikt/aksel-icons@4.12.1:
     resolution: {integrity: sha512-OCCKfb3dtk2gUBKdzbJiMkM4PfYZZXL3tfNHKJLn8QDpt+x6zdsaJWwTPc/pyDrl/quVGN3oPBHZ+3+7r/YtVw==}
     dev: false
+
+  /@navikt/ds-codemod@3.4.2(@babel/preset-env@7.22.10):
+    resolution: {integrity: sha512-et6jHI9VgfT54OTg3T5waTt0QPDWE5cMKgUjrCBYF6W5bH+L5R+7bq0CGbsu6h2DqVRxQbzQgqqkJMh4xmu1Fg==}
+    engines: {node: '>=12.0.0'}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.0
+      cheerio: 1.0.0-rc.9
+      execa: 4.0.3
+      globby: 11.0.1
+      inquirer: 7.3.3
+      is-git-clean: 1.1.0
+      jest: 29.5.0(@types/node@18.17.1)
+      jscodeshift: 0.13.1(@babel/preset-env@7.22.10)
+      jscodeshift-add-imports: 1.0.10(jscodeshift@0.13.1)
+      lodash: 4.17.21
+      meow: 7.0.1
+      prettier: 2.8.8
+    transitivePeerDependencies:
+      - '@babel/preset-env'
+      - '@types/node'
+      - node-notifier
+      - supports-color
+      - ts-node
+    dev: true
 
   /@navikt/ds-codemod@3.4.2(@babel/preset-env@7.22.10)(@types/node@20.5.0):
     resolution: {integrity: sha512-et6jHI9VgfT54OTg3T5waTt0QPDWE5cMKgUjrCBYF6W5bH+L5R+7bq0CGbsu6h2DqVRxQbzQgqqkJMh4xmu1Fg==}
@@ -5572,7 +5601,7 @@ packages:
       remark-slug: 6.1.0
       rollup: 3.28.0
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -5613,7 +5642,7 @@ packages:
       remark-slug: 6.1.0
       rollup: 3.28.0
       typescript: 5.2.2
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -6110,7 +6139,7 @@ packages:
       react: 18.2.0
       react-docgen: 6.0.0-alpha.3
       react-dom: 18.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -6138,7 +6167,7 @@ packages:
       react: 18.2.0
       react-docgen: 6.0.0-alpha.3
       react-dom: 18.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -6430,6 +6459,35 @@ packages:
       vitest: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
     dev: true
 
+  /@testing-library/jest-dom@6.0.0(vitest@0.34.2):
+    resolution: {integrity: sha512-Ye2R3+/oM27jir8CzYPmuWdavTaKwNZcu0d22L9pO/vnOYE0wmrtpw79TQJa8H6gV8/i7yd+pLaqeLlA0rTMfg==}
+    engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
+    peerDependencies:
+      '@jest/globals': '>= 28'
+      '@types/jest': '>= 28'
+      jest: '>= 28'
+      vitest: '>= 0.32'
+    peerDependenciesMeta:
+      '@jest/globals':
+        optional: true
+      '@types/jest':
+        optional: true
+      jest:
+        optional: true
+      vitest:
+        optional: true
+    dependencies:
+      '@adobe/css-tools': 4.2.0
+      '@babel/runtime': 7.22.10
+      aria-query: 5.1.3
+      chalk: 3.0.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.5.16
+      lodash: 4.17.21
+      redent: 3.0.0
+      vitest: 0.34.2(jsdom@22.1.0)(less@4.2.0)
+    dev: true
+
   /@testing-library/react@14.0.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-S04gSNJbYE30TlIMLTzv6QCTzt9AqIF5y6s6SzVFILNcNvbV/jU96GeiTPillGQo+Ny64M/5PV7klNYYgv5Dfg==}
     engines: {node: '>=14'}
@@ -6687,6 +6745,7 @@ packages:
 
   /@types/node@18.17.1:
     resolution: {integrity: sha512-xlR1jahfizdplZYRU59JlUx9uzF1ARa8jbhM11ccpCJya8kvos5jwdm2ZAgxSCwOl0fq21svP18EVwPBXMQudw==}
+    dev: true
 
   /@types/node@20.5.0:
     resolution: {integrity: sha512-Mgq7eCtoTjT89FqNoTzzXg2XvCi5VMhRV6+I2aYanc6kQCBImeNaAYRs/DyoVqk1YEUJK5gN9VO7HRIdz4Wo3Q==}
@@ -6984,7 +7043,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.10)
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -6998,7 +7057,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.10)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.10)
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7592,12 +7651,12 @@ packages:
     resolution: {integrity: sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==}
     dev: false
 
-  /axios-mock-adapter@1.21.5(axios@1.4.0):
+  /axios-mock-adapter@1.21.5(axios@1.6.0):
     resolution: {integrity: sha512-5NI1V/VK+8+JeTF8niqOowuysA4b8mGzdlMN/QnTnoXbYh4HZSNiopsDclN2g/m85+G++IrEtUdZaQ3GnaMsSA==}
     peerDependencies:
       axios: '>= 0.17.0'
     dependencies:
-      axios: 1.4.0
+      axios: 1.6.0
       fast-deep-equal: 3.1.3
       is-buffer: 2.0.5
     dev: true
@@ -7611,8 +7670,8 @@ packages:
       - debug
     dev: true
 
-  /axios@1.4.0:
-    resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
+  /axios@1.6.0:
+    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
@@ -13537,6 +13596,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
 
   /pinkie-promise@2.0.1:
     resolution: {integrity: sha512-0Gni6D4UcLTbv9c57DfxDGdr41XfgUjqWZu492f0cIGr16zDU06BWP/RAEvOuo7CQ0CNjHaLlM59YJJFm3NWlw==}
@@ -13829,6 +13889,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     optional: true
 
   /pseudomap@1.0.2:
@@ -14802,6 +14863,7 @@ packages:
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    requiresBuild: true
     optional: true
 
   /saxes@6.0.0:
@@ -16421,7 +16483,7 @@ packages:
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.8
@@ -16491,7 +16553,7 @@ packages:
       '@types/eslint': 8.37.0
       eslint: 8.38.0
       rollup: 2.79.1
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     dev: true
 
   /vite@4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1):
@@ -16530,6 +16592,7 @@ packages:
       sass: 1.65.1
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /vite@4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1):
     resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
@@ -16567,7 +16630,6 @@ packages:
       sass: 1.65.1
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /vitest@0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1):
     resolution: {integrity: sha512-WgaIvBbjsSYMq/oiMlXUI7KflELmzM43BEvkdC/8b5CAod4ryAiY2z8uR6Crbi5Pjnu5oOmhKa9sy7uk6paBxQ==}
@@ -16614,6 +16676,72 @@ packages:
       chai: 4.3.7
       debug: 4.3.4
       happy-dom: 10.10.2
+      jsdom: 22.1.0
+      local-pkg: 0.4.3
+      magic-string: 0.30.2
+      pathe: 1.1.1
+      picocolors: 1.0.0
+      std-env: 3.3.3
+      strip-literal: 1.0.1
+      tinybench: 2.5.0
+      tinypool: 0.7.0
+      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite-node: 0.34.2(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      why-is-node-running: 2.2.2
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
+  /vitest@0.34.2(jsdom@22.1.0)(less@4.2.0):
+    resolution: {integrity: sha512-WgaIvBbjsSYMq/oiMlXUI7KflELmzM43BEvkdC/8b5CAod4ryAiY2z8uR6Crbi5Pjnu5oOmhKa9sy7uk6paBxQ==}
+    engines: {node: '>=v14.18.0'}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@vitest/browser': '*'
+      '@vitest/ui': '*'
+      happy-dom: '*'
+      jsdom: '*'
+      playwright: '*'
+      safaridriver: '*'
+      webdriverio: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+      playwright:
+        optional: true
+      safaridriver:
+        optional: true
+      webdriverio:
+        optional: true
+    dependencies:
+      '@types/chai': 4.3.5
+      '@types/chai-subset': 1.3.3
+      '@types/node': 18.17.1
+      '@vitest/expect': 0.34.2
+      '@vitest/runner': 0.34.2
+      '@vitest/snapshot': 0.34.2
+      '@vitest/spy': 0.34.2
+      '@vitest/utils': 0.34.2
+      acorn: 8.10.0
+      acorn-walk: 8.2.0
+      cac: 6.7.14
+      chai: 4.3.7
+      debug: 4.3.4
       jsdom: 22.1.0
       local-pkg: 0.4.3
       magic-string: 0.30.2
@@ -17032,7 +17160,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
