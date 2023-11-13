@@ -8,10 +8,10 @@ import ContentWrapper from '../contentWrapper/ContentWrapper';
 export interface Props {
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     errorMessage: string;
-    tryAgainCallback: () => void;
+    retryCallback: () => void;
 }
 
-const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, tryAgainCallback }) => {
+const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, retryCallback }) => {
     //TODO Bytt ut div under med Box frå ds-react når oppdatert til siste versjon
     return (
         <UiIntlProvider>
@@ -39,7 +39,7 @@ const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, tryAgainCa
                                     <FormattedMessage id="ErrorPage.Contact" />
                                 </Button>
                             </Link>
-                            <Button type="button" variant="primary" onClick={tryAgainCallback}>
+                            <Button type="button" variant="primary" onClick={retryCallback}>
                                 <FormattedMessage id="ErrorPage.TryAgain" />
                             </Button>
                         </HStack>
