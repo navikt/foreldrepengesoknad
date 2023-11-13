@@ -40,6 +40,9 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
         });
 
         if (perioderISkjæringstidspunktet) {
+            if (perioderISkjæringstidspunktet.some((p) => p.stillingsprosent === 0)) {
+                return 100;
+            }
             const totalProsent = perioderISkjæringstidspunktet.reduce(
                 (ar, { stillingsprosent }) => ar + stillingsprosent,
                 0,

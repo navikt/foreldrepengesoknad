@@ -1,5 +1,5 @@
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { getUnikeArbeidsforhold } from '../arbeidsforholdUtils';
+import { getTotalStillingsprosentPåSkjæringstidspunktet, getUnikeArbeidsforhold } from '../arbeidsforholdUtils';
 
 describe('getUnikeArbeidsforhold', () => {
     it('Skal finne to unike arbeidsforhold der første er avsluttet og andre pågående', () => {
@@ -69,5 +69,46 @@ describe('getUnikeArbeidsforhold', () => {
         expect(unike.length).toEqual(1);
         expect(unike[0].fom).toEqual('2016-08-26');
         expect(unike[0].tom).toBeUndefined();
+    });
+});
+
+describe('getTotalStillingsprosentPåSkjæringstidspunktet', () => {
+    const stillinger = [
+        { fom: '2023-05-01', stillingsprosent: 10 },
+        { fom: '2023-07-01', tom: '2023-11-01', stillingsprosent: 20 },
+        { fom: '2023-09-01', stillingsprosent: 30 },
+    ];
+    it('Skal summere sammen stillingsprosent for 2 stillinger fordi den ene har ikke startet ennå', () => {
+        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, '2023-07-02');
+        expect(summertProsent).toEqual(30);
+    });
+    it('Skal summere sammen stillingsprosent for 3 stillinger', () => {
+        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, '2023-09-02');
+        expect(summertProsent).toEqual(60);
+    });
+    it('Skal summere sammen stillingsprosent for 2 stillinger fordi en er avsluttet', () => {
+        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, '2023-11-02');
+        expect(summertProsent).toEqual(40);
+    });
+    const stillingerMedNullProsent = [
+        { fom: '2023-06-01', tom: '2023-12-01', stillingsprosent: 0 },
+        { fom: '2023-08-01', tom: '2023-11-01', stillingsprosent: 0 },
+        { fom: '2023-10-01', stillingsprosent: 30 },
+    ];
+    it('Skal returnere 100% fordi den ene stillingen som er aktiv da er på 0%', () => {
+        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-06-02');
+        expect(summertProsent).toEqual(100);
+    });
+    it('Skal returnere 100% fordi begge de aktive stillingene er 0%', () => {
+        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-08-02');
+        expect(summertProsent).toEqual(100);
+    });
+    it('Skal returnere 100% fordi noen av de aktive stillingene er 100%', () => {
+        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-10-30');
+        expect(summertProsent).toEqual(100);
+    });
+    it('Skal returnere 30% fordi stillingene som er 0% er avsluttet', () => {
+        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-12-02');
+        expect(summertProsent).toEqual(30);
     });
 });
