@@ -139,7 +139,9 @@ const Oppsummering = () => {
 
                 try {
                     await Api.deleteMellomlagretSøknad(fnr, abortSignal);
-                    await Api.deleteMellomlagredeVedlegg(fnr, cleanedSøknad.vedlegg, abortSignal);
+                    if (cleanedSøknad.vedlegg.length > 0) {
+                        await Api.deleteMellomlagredeVedlegg(fnr, cleanedSøknad.vedlegg, abortSignal);
+                    }
                 } catch (error) {
                     // Vi bryr oss ikke om feil her. Logges bare i backend
                 }
