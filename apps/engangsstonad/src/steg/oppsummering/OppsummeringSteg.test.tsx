@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
-import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OppsummeringSteg.stories';
 
@@ -50,18 +50,7 @@ describe('<OppsummeringSteg>', () => {
         const abortController = new AbortController();
 
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(
-            1,
-            abortController.signal,
-            {
-                antallBarn: 1,
-                erBarnetFødt: true,
-                fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-            },
-            { vedlegg: [] },
-            undefined,
-            undefined,
-        );
+        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 
     it('skal vise opplysninger om adopsjon og så sende søknad', async () => {

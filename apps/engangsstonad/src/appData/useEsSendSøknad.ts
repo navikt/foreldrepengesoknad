@@ -7,8 +7,8 @@ import Kvittering from 'types/Kvittering';
 import { EsDataType, useEsStateAllDataFn } from './EsDataContext';
 import Api from './api';
 
+// TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
 const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
-    // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
     const vedleggreferanser = dokumentasjon?.vedlegg.map((v) => v.id) || [];
     if (erAdopsjon(omBarnet)) {
         return {
@@ -42,10 +42,10 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     throw Error('Det er feil i data om barnet');
 };
 
-const useEsSendData = (locale: LocaleAll, setKvittering: (kvittering: Kvittering | (() => never)) => void) => {
+const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering | (() => never)) => void) => {
     const hentData = useEsStateAllDataFn();
 
-    const sendData = useCallback(
+    const sendSøknad = useCallback(
         async (abortSignal: AbortSignal) => {
             const omBarnet = notEmpty(hentData(EsDataType.OM_BARNET));
             const dokumentasjon = hentData(EsDataType.DOKUMENTASJON);
@@ -76,7 +76,7 @@ const useEsSendData = (locale: LocaleAll, setKvittering: (kvittering: Kvittering
         [hentData, locale, setKvittering],
     );
 
-    return sendData;
+    return sendSøknad;
 };
 
-export default useEsSendData;
+export default useEsSendSøknad;

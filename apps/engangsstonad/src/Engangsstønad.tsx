@@ -19,7 +19,7 @@ import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
 import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import useEsSendData from 'appData/useEsSendData';
+import useEsSendSøknad from 'appData/useEsSendSøknad';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -38,7 +38,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
 
     const { data: person, loading, error } = useRequest<Person>(Api.getPerson);
 
-    const sendSøknad = useEsSendData(locale, setKvittering);
+    const sendSøknad = useEsSendSøknad(locale, setKvittering);
 
     if (kvittering) {
         if (Environment.INNSYN) {
