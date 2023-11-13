@@ -65,8 +65,8 @@ importers:
         specifier: ^7.64.0
         version: 7.64.0
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.1
+        version: 1.6.1
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -166,7 +166,7 @@ importers:
         version: 10.4.15(postcss@8.4.28)
       axios-mock-adapter:
         specifier: 1.21.5
-        version: 1.21.5(axios@1.4.0)
+        version: 1.21.5(axios@1.6.1)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -196,7 +196,7 @@ importers:
         version: 5.1.6
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.1.6)(vite@4.4.9)
@@ -261,8 +261,8 @@ importers:
         specifier: ^8.21.9
         version: 8.21.9
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.1
+        version: 1.6.1
       babel-runtime:
         specifier: ^6.26.0
         version: 6.26.0
@@ -431,7 +431,7 @@ importers:
         version: 10.4.15(postcss@8.4.28)
       axios-mock-adapter:
         specifier: ^1.21.5
-        version: 1.21.5(axios@1.4.0)
+        version: 1.21.5(axios@1.6.1)
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -565,8 +565,8 @@ importers:
         specifier: ^8.21.9
         version: 8.21.9
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.1
+        version: 1.6.1
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
@@ -744,7 +744,7 @@ importers:
         version: 10.4.15(postcss@8.4.28)
       axios-mock-adapter:
         specifier: ^1.21.5
-        version: 1.21.5(axios@1.4.0)
+        version: 1.21.5(axios@1.6.1)
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -866,8 +866,8 @@ importers:
         specifier: ^8.21.9
         version: 8.21.9
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.1
+        version: 1.6.1
       babel-polyfill:
         specifier: ^6.26.0
         version: 6.26.0
@@ -1057,7 +1057,7 @@ importers:
         version: 10.4.15(postcss@8.4.28)
       axios-mock-adapter:
         specifier: 1.21.5
-        version: 1.21.5(axios@1.4.0)
+        version: 1.21.5(axios@1.6.1)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1102,7 +1102,7 @@ importers:
         version: 5.1.6
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.1.6)(vite@4.4.9)
@@ -1119,8 +1119,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       axios:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.1
+        version: 1.6.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1291,7 +1291,7 @@ importers:
         version: 5.2.2
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
@@ -1600,7 +1600,7 @@ importers:
         version: 5.2.2
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
@@ -1692,7 +1692,7 @@ importers:
         version: 5.2.2
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
@@ -1780,7 +1780,7 @@ importers:
         version: link:../tsconfig
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vite-plugin-checker:
         specifier: ^0.6.1
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
@@ -3987,7 +3987,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.1.6)
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     dev: true
 
   /@joshwooding/vite-plugin-react-docgen-typescript@0.2.1(typescript@5.2.2)(vite@4.4.9):
@@ -4004,7 +4004,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.2.2)
       typescript: 5.2.2
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     dev: false
 
   /@jridgewell/gen-mapping@0.3.3:
@@ -5572,7 +5572,7 @@ packages:
       remark-slug: 6.1.0
       rollup: 3.28.0
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -5613,7 +5613,7 @@ packages:
       remark-slug: 6.1.0
       rollup: 3.28.0
       typescript: 5.2.2
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -6110,7 +6110,7 @@ packages:
       react: 18.2.0
       react-docgen: 6.0.0-alpha.3
       react-dom: 18.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -6138,7 +6138,7 @@ packages:
       react: 18.2.0
       react-docgen: 6.0.0-alpha.3
       react-dom: 18.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -6687,6 +6687,7 @@ packages:
 
   /@types/node@18.17.1:
     resolution: {integrity: sha512-xlR1jahfizdplZYRU59JlUx9uzF1ARa8jbhM11ccpCJya8kvos5jwdm2ZAgxSCwOl0fq21svP18EVwPBXMQudw==}
+    dev: true
 
   /@types/node@20.5.0:
     resolution: {integrity: sha512-Mgq7eCtoTjT89FqNoTzzXg2XvCi5VMhRV6+I2aYanc6kQCBImeNaAYRs/DyoVqk1YEUJK5gN9VO7HRIdz4Wo3Q==}
@@ -6984,7 +6985,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.10)
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -6998,7 +6999,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.10)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.10)
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7592,12 +7593,12 @@ packages:
     resolution: {integrity: sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==}
     dev: false
 
-  /axios-mock-adapter@1.21.5(axios@1.4.0):
+  /axios-mock-adapter@1.21.5(axios@1.6.1):
     resolution: {integrity: sha512-5NI1V/VK+8+JeTF8niqOowuysA4b8mGzdlMN/QnTnoXbYh4HZSNiopsDclN2g/m85+G++IrEtUdZaQ3GnaMsSA==}
     peerDependencies:
       axios: '>= 0.17.0'
     dependencies:
-      axios: 1.4.0
+      axios: 1.6.1
       fast-deep-equal: 3.1.3
       is-buffer: 2.0.5
     dev: true
@@ -7611,8 +7612,8 @@ packages:
       - debug
     dev: true
 
-  /axios@1.4.0:
-    resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
+  /axios@1.6.1:
+    resolution: {integrity: sha512-vfBmhDpKafglh0EldBEbVuoe7DyAavGSLWhuSm5ZSEKQnHhBf0xAAwybbNH1IkrJNGnS/VG4I5yxig1pCEXE4g==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
@@ -16421,7 +16422,7 @@ packages:
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       typescript: 5.1.6
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.8
@@ -16491,7 +16492,7 @@ packages:
       '@types/eslint': 8.37.0
       eslint: 8.38.0
       rollup: 2.79.1
-      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
     dev: true
 
   /vite@4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1):
@@ -16530,6 +16531,7 @@ packages:
       sass: 1.65.1
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /vite@4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1):
     resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
@@ -16567,7 +16569,6 @@ packages:
       sass: 1.65.1
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /vitest@0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1):
     resolution: {integrity: sha512-WgaIvBbjsSYMq/oiMlXUI7KflELmzM43BEvkdC/8b5CAod4ryAiY2z8uR6Crbi5Pjnu5oOmhKa9sy7uk6paBxQ==}
