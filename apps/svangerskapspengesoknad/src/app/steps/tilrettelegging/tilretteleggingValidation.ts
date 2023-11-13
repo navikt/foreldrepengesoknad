@@ -3,9 +3,11 @@ import { SkjemaelementFeil, formatDate, intlUtils, validateTextInputField } from
 import {
     Arbeidsforholdstype,
     PeriodeMedVariasjon,
+    Stilling,
     TilOgMedDatoType,
     TilretteleggingstypeOptions,
 } from 'app/types/Tilrettelegging';
+import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'app/utils/arbeidsforholdUtils';
 import { dagenFør, tiMånederSidenDato } from 'app/utils/dateUtils';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'app/utils/validationUtils';
@@ -25,13 +27,13 @@ export const validerStillingsprosentInput = (intl: IntlShape, value: string) => 
     return undefined;
 };
 
-export const validateStillingsprosentPerioder =
+export const validateStillingsprosentPåPerioder =
     (
         intl: IntlShape,
-        opprinneligStillingsProsent: number,
         måSøkeSendeNySøknad: boolean,
         periodeDerTilbakeIFullJobb: PeriodeMedVariasjon | undefined,
         allePerioder: PeriodeMedVariasjon[] | undefined,
+        opprinneligStillingsProsent: number,
     ) =>
     (value: string) => {
         const valideringsFeil = validerStillingsprosentInput(intl, value);
@@ -85,7 +87,7 @@ export const validateStillingsprosentPerioder =
     };
 
 export const validateStillingsprosentEnDelvisPeriode =
-    (intl: IntlShape, opprinneligStillingsProsent: number) => (value: string) => {
+    (intl: IntlShape, fom: string | undefined, stillinger: Stilling[]) => (value: string) => {
         const initValidering = validerStillingsprosentInput(intl, value);
         if (initValidering) {
             return initValidering;
@@ -95,6 +97,7 @@ export const validateStillingsprosentEnDelvisPeriode =
         if (stillingsprosent <= 0) {
             return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreStørreEnn0');
         }
+        const opprinneligStillingsProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, fom);
         if (opprinneligStillingsProsent === 0 && stillingsprosent >= 100) {
             return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEnn100Prosent', {
                 prosent: opprinneligStillingsProsent,

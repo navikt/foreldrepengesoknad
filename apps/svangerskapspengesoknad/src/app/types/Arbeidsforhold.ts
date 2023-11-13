@@ -1,4 +1,4 @@
-import { Arbeidsforholdstype } from './Tilrettelegging';
+import { Arbeidsforholdstype, Stilling } from './Tilrettelegging';
 
 export interface ArbeidsforholdFrilansDTO {
     type: Arbeidsforholdstype.FRILANSER;
@@ -36,6 +36,16 @@ interface Arbeidsforhold {
     fom: string;
     tom?: string;
     stillingsprosent: number;
+}
+
+export interface UnikArbeidsforhold {
+    id: string;
+    arbeidsgiverNavn: string;
+    arbeidsgiverId: string;
+    arbeidsgiverIdType: string;
+    fom: string;
+    tom?: string;
+    stillinger: Stilling[];
 }
 
 export default Arbeidsforhold;

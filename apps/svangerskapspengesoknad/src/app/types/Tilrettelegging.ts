@@ -20,11 +20,17 @@ export enum Arbeidsforholdstype {
     'PRIVAT' = 'privat',
 }
 
+export interface Stilling {
+    fom: string;
+    tom?: string;
+    stillingsprosent: number;
+}
+
 export interface ArbeidsforholdForTilrettelegging {
     arbeidsgiverId?: string;
     type: Arbeidsforholdstype;
     navn: string;
-    opprinneligstillingsprosent: number;
+    stillinger: Stilling[];
     startdato: string;
     sluttdato?: string;
 }

@@ -1,5 +1,5 @@
 import { intlUtils } from '@navikt/fp-common';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { Søker } from 'app/types/Søker';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
@@ -8,8 +8,9 @@ import { hasValue } from './validationUtils';
 import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
 import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
-import Tilrettelegging from 'app/types/Tilrettelegging';
+import Tilrettelegging, { Stilling } from 'app/types/Tilrettelegging';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { isISODateString } from '@navikt/ds-datepicker';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
@@ -25,37 +26,59 @@ const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
     return arbeidsforhold.arbeidsgiverId || '';
 };
 
-const getUnikStillingsprosent = (likeArbeidsforhold: Arbeidsforhold[]): number => {
-    const stillingsprosenterIOverlappendePerioder = likeArbeidsforhold.map((p) => {
-        const overlappendePerioder = likeArbeidsforhold.filter(
-            (a) =>
-                dayjs(p.fom).isBetween(dayjs(a.fom), dayjs(a.tom), 'day', '[]') ||
-                dayjs(p.tom).isBetween(dayjs(a.fom), dayjs(a.tom), 'day', '[]'),
-        );
-        if (overlappendePerioder) {
-            return overlappendePerioder.reduce((ar, { stillingsprosent }) => ar + stillingsprosent, 0);
-        } else {
-            return p.stillingsprosent;
+export const getTotalStillingsprosentPåSkjæringstidspunktet = (
+    stillinger: Stilling[],
+    skjæringstidspunkt: string | undefined,
+): number => {
+    if (hasValue(skjæringstidspunkt) && isISODateString(skjæringstidspunkt)) {
+        const perioderISkjæringstidspunktet = stillinger.filter((p) => {
+            if (!p.tom) {
+                return dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
+            } else {
+                return dayjs(skjæringstidspunkt).isBetween(dayjs(p.fom), dayjs(p.tom), 'day', '[]');
+            }
+        });
+
+        if (perioderISkjæringstidspunktet) {
+            const totalProsent = perioderISkjæringstidspunktet.reduce(
+                (ar, { stillingsprosent }) => ar + stillingsprosent,
+                0,
+            );
+            return totalProsent || 100;
         }
+    }
+    return 100;
+};
+
+export const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]): Stilling[] => {
+    const perioderMedStillingsprosent = likeArbeidsforhold.map((p) => {
+        return {
+            fom: p.fom,
+            tom: p.tom,
+            stillingsprosent: p.stillingsprosent,
+        };
     });
-    return Math.max(...stillingsprosenterIOverlappendePerioder);
+    return perioderMedStillingsprosent;
 };
 
 export const getUnikeArbeidsforhold = (
     arbeidsforhold: Arbeidsforhold[] | undefined,
     termindato: string,
-): Arbeidsforhold[] => {
+): UnikArbeidsforhold[] => {
     if (arbeidsforhold !== undefined && arbeidsforhold.length > 0) {
         const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
 
         const unike = uniqBy(aktiveArbeidsforhold, getArbeidsgiverId).map((forhold) => ({
-            ...forhold,
+            id: forhold.id,
             fom: forhold.fom,
             tom: forhold.tom,
             guid: forhold.id,
             arbeidsgiverNavn: forhold.arbeidsgiverNavn,
+            arbeidsgiverId: forhold.arbeidsgiverId,
+            arbeidsgiverIdType: forhold.arbeidsgiverIdType,
+            stillinger: [{ fom: forhold.fom, tom: forhold.tom, stillingsprosent: forhold.stillingsprosent }],
         }));
-        const unikeMedSummertStillingsprosentOgDatoer = unike.map((arbeid) => {
+        const unikeMedStillinger = unike.map((arbeid) => {
             const likeArbeidsforhold = aktiveArbeidsforhold.filter(
                 (a) => getArbeidsgiverId(a) === arbeid.arbeidsgiverId,
             );
@@ -63,17 +86,17 @@ export const getUnikeArbeidsforhold = (
                 const alleTom = likeArbeidsforhold.map((a) => a.tom);
                 return {
                     ...arbeid,
-                    stillingsprosent: getUnikStillingsprosent(likeArbeidsforhold),
                     fom: dateToISOString(dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.toDate()),
                     tom: alleTom.includes(undefined)
                         ? undefined
                         : dateToISOString(dayjs.max(alleTom.map((tom) => dayjs(tom)))!.toDate()),
+                    stillinger: getStillingerForLikeArbeidsforhold(likeArbeidsforhold),
                 };
             } else {
                 return arbeid;
             }
         });
-        return unikeMedSummertStillingsprosentOgDatoer;
+        return unikeMedStillinger;
     }
 
     return [];
@@ -85,11 +108,11 @@ export const søkerHarKunEtAktivtArbeid = (
     erFrilanser: boolean,
     harEgenNæring: boolean,
 ) => {
-    const aktiveArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
+    const aktiveUnikeArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
     return (
-        (aktiveArbeidsforhold.length === 1 && !erFrilanser && !harEgenNæring) ||
-        (aktiveArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
-        (aktiveArbeidsforhold.length === 0 && !erFrilanser && harEgenNæring)
+        (aktiveUnikeArbeidsforhold.length === 1 && !erFrilanser && !harEgenNæring) ||
+        (aktiveUnikeArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
+        (aktiveUnikeArbeidsforhold.length === 0 && !erFrilanser && harEgenNæring)
     );
 };
 
