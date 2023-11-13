@@ -204,6 +204,7 @@ export const getOpprinneligStillingsprosent = (
     allePerioder: PeriodeMedVariasjon[] | undefined,
     stillinger: Stilling[],
 ) => {
-    const førstePeriodeFom = allePerioder?.sort(sorterTilretteleggingsperioder)[0].fom;
+    const sorterePerioder = allePerioder ? [...allePerioder].sort(sorterTilretteleggingsperioder) : undefined;
+    const førstePeriodeFom = sorterePerioder && sorterePerioder.length > 0 ? sorterePerioder[0].fom : undefined;
     return førstePeriodeFom ? getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, førstePeriodeFom) : 100;
 };
