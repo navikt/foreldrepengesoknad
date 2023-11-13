@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Loader } from '@navikt/ds-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { LocaleAll } from '@navikt/fp-types';
-import { useRequest } from '@navikt/fp-api';
-import { erMyndig, redirect } from '@navikt/fp-utils';
+import { Kvittering, LocaleAll } from '@navikt/fp-types';
+import { ApiAccessError, createApi, useRequest } from '@navikt/fp-api';
+import { erMyndig, redirect, redirectToLogin } from '@navikt/fp-utils';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 
-import Api from 'appData/api';
 import { Path } from 'appData/paths';
 import Environment from 'appData/Environment';
-import Kvittering from 'types/Kvittering';
 import Person from './types/Person';
 import SøkersituasjonSteg from './steg/sokersituasjon/SøkersituasjonSteg';
 import Velkommen from './velkommen/Velkommen';
@@ -20,6 +19,8 @@ import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import useEsSendSøknad from 'appData/useEsSendSøknad';
+
+export const esApi = createApi(Environment.REST_API_URL);
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -36,9 +37,9 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     const [erVelkommen, setVelkommen] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { data: person, loading, error } = useRequest<Person>(Api.getPerson);
+    const { data: person, loading, error: errorHentPerson } = useRequest<Person>(esApi, '/personinfo');
 
-    const sendSøknad = useEsSendSøknad(locale, setKvittering);
+    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
 
     if (kvittering) {
         if (Environment.INNSYN) {
@@ -52,8 +53,10 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         return <div>Redirected to Innsyn</div>;
     }
 
-    if (error !== null) {
-        if (error.response?.status === 401 || error.response?.status === 403) {
+    if (errorHentPerson || errorSendSøknad) {
+        const error = notEmpty(errorHentPerson || errorSendSøknad);
+        if (error instanceof ApiAccessError) {
+            redirectToLogin(Environment.LOGIN_URL);
             return <Spinner />;
         }
         return (

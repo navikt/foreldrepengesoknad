@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
-import { LocaleAll } from '@navikt/fp-types';
+import { useCallback, useMemo, useState } from 'react';
+import { AxiosInstance } from 'axios';
+import { Kvittering, LocaleAll } from '@navikt/fp-types';
+import { sendApplication, ApiAccessError, ApiGeneralError, isApiError } from '@navikt/fp-api';
 import { notEmpty } from '@navikt/fp-validation';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
-import Kvittering from 'types/Kvittering';
 import { EsDataType, useEsStateAllDataFn } from './EsDataContext';
-import Api from './api';
 
 // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
 const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
@@ -42,8 +42,14 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     throw Error('Det er feil i data om barnet');
 };
 
-const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering | (() => never)) => void) => {
+const useEsSendSøknad = (
+    esApi: AxiosInstance,
+    locale: LocaleAll,
+    setKvittering: (kvittering: Kvittering | (() => never)) => void,
+) => {
     const hentData = useEsStateAllDataFn();
+
+    const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
     const sendSøknad = useCallback(
         async (abortSignal: AbortSignal) => {
@@ -64,19 +70,26 @@ const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvitter
             };
 
             try {
-                const kvittering = await Api.sendSøknad(abortSignal, '/soknad/engangssoknad', søknad);
+                const kvittering = await sendApplication(esApi, abortSignal, '/soknad/engangssoknad', søknad);
                 setKvittering(kvittering);
-            } catch (error) {
-                // Kast feilmelding inne funksjon som set state => hack for å at ErrorBoundary skal snappa opp feilen
-                setKvittering(() => {
-                    throw error;
-                });
+            } catch (error: unknown) {
+                if (isApiError(error)) {
+                    setError(error);
+                } else {
+                    throw new Error('This should never happen');
+                }
             }
         },
-        [hentData, locale, setKvittering],
+        [hentData, locale, setKvittering, esApi],
     );
 
-    return sendSøknad;
+    return useMemo(
+        () => ({
+            sendSøknad,
+            errorSendSøknad: error,
+        }),
+        [sendSøknad, error],
+    );
 };
 
 export default useEsSendSøknad;
