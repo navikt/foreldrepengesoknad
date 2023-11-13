@@ -3,7 +3,7 @@
     "Umyndig.Pageheading.Foreldrepenger": "Søknad om foreldrepenger",
     "Umyndig.Pageheading.Svangerskapspenger": "Søknad om svangerskapspenger",
     "Umyndig.Tittel": "Fordi du er under 18 år, må du senda papirsøknad",
-    "Umyndig.Tekst": "Fordi du er under 18 år, må ein av foreldrene dine eller ein føresatt skriva under på søknaden din samen med deg. Derfor må du fylla ut søknaden på papir og senda den i posten til NAV.",
+    "Umyndig.Tekst": "Fordi du er under 18 år, må ein av foreldrene dine eller ein føresatt skrive under på søknaden din samen med deg. Derfor må du fylle ut søknaden på papir og sende den i posten til NAV.",
     "Umyndig.Knapp.Papirsøknad": "Gå til papirsøknaden",
 
     "ErrorSummaryFp.Tittel": "Du må rette opp i følgende feil:",
@@ -29,11 +29,11 @@
     "ErrorPage.ErrorMessage": "Feilmelding",
 
     "ScanDocumentInfo.Tittel": "Korleis ta bilde av vedlegg med mobilen?",
-    "ScanDocumentInfo.Del1": "Har du eit dokument på papir, kan du ta eit bilde av dokumentet for å senda det til oss.",
+    "ScanDocumentInfo.Del1": "Har du eit dokument på papir, kan du ta eit bilde av dokumentet for å sende det til oss.",
     "ScanDocumentInfo.Liste.Punkt1": "Ta bilde av dokumentet med smarttelefonen eller nettbrettet.",
     "ScanDocumentInfo.Liste.Punkt2": "Sjekk at dokumentet er lett å lese.",
-    "ScanDocumentInfo.Liste.Punkt3": "Bruker du PC eller Mac, kan du senda bilete(ne) til din private e-postkonto og lagra biletet på eininga di.",
+    "ScanDocumentInfo.Liste.Punkt3": "Bruker du PC eller Mac, kan du sende bilete(ne) til din private e-postkonto og lagra biletet på eininga di.",
     "ScanDocumentInfo.Liste.Punkt4": "Last opp bilete(ne).",
-    "ScanDocumentInfo.Del2": "Har du skanner, kan du skanne dokument.",
+    "ScanDocumentInfo.Del2": "Har du skannar, kan du skanne dokument.",
     "ScanDocumentInfo.Link": "Meir informasjon om å senda vedlegg på nav.no."
 }
