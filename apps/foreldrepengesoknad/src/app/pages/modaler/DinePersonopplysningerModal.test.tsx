@@ -5,8 +5,8 @@ import * as stories from './DinePersonopplysningerModal.stories';
 const { Default } = composeStories(stories);
 
 describe('<DinePersonopplysningerModal>', () => {
-    it('skal vise modal for dine personopplysninger', () => {
+    it('skal vise modal for dine personopplysninger', async () => {
         render(<Default />);
-        expect(screen.getByText('Slik behandler NAV personopplysningene dine')).toBeInTheDocument();
+        expect(await screen.findByText('Slik behandler NAV personopplysningene dine')).toBeInTheDocument();
     });
 });

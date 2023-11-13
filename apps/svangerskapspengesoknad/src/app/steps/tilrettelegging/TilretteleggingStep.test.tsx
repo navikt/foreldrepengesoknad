@@ -5,171 +5,168 @@ import * as stories from './TilretteleggingStep.stories';
 import dayjs from 'dayjs';
 
 const { Default } = composeStories(stories);
-const SØKNAD_TITTEL = 'Søknad om svangerskapspenger';
-const TILRETTELEGGINGSDATO = 'Fra hvilken dato har du behov for tilrettelegging eller omplassering?';
-const TERMINDATO = '2024-02-18';
-const HVOR_MYE_KAN_DU_JOBBE = 'Hvor mye kan du jobbe?';
-const REDUSERT = 'Du kan jobbe med redusert arbeidstid';
-const SAMME_STILLINGSPROSENT = 'Skal du ha den samme stillingsprosenten gjennom hele svangerskapet?';
-const JA = 'Ja';
-const HVILKEN_STILLINGSPROSENT = 'Hvilken stillingsprosent skal du jobbe?';
-const FRA_DATO_REDUSERT = 'Fra hvilken dato skal du jobbe redusert?';
-const TIL_DATO_REDUSERT = 'Frem til hvilken dato skal du jobbe redusert?';
-const FREM_TIL_DATO = 'Frem til en dato';
-const DATO_TILBAKE = 'Dato du skal tilbake til din opprinnelige stillingsprosent';
-const IKKE_JOBBE = 'Du kan ikke jobbe';
-const FRA_DATO_BORTE_FRA_JOBB = 'Fra hvilken dato skal du være borte fra jobb?';
-const NESTE_STEG = 'Neste steg';
+
 describe('<Behov for tilrettelegging>', () => {
     const user = userEvent.setup();
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(SØKNAD_TITTEL)).toBeInTheDocument();
-        expect(screen.getByText(TILRETTELEGGINGSDATO)).toBeInTheDocument();
-
-        await user.click(screen.getByText(NESTE_STEG));
-
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
         expect(
-            await screen.getAllByText('Du må oppgi startdatoen for behov for tilrettelegging.')[0],
+            screen.getByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
         ).toBeInTheDocument();
-        expect(await screen.getAllByText('Du må oppgi hvor mye du kan jobbe.')[0]).toBeInTheDocument();
+
+        await user.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Du må oppgi startdatoen for behov for tilrettelegging.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi hvor mye du kan jobbe.')[0]).toBeInTheDocument();
     });
+
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
         render(<Default />);
-        expect(await screen.findByText(TILRETTELEGGINGSDATO)).toBeInTheDocument();
+        expect(
+            await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
+        ).toBeInTheDocument();
 
-        const tilretteleggingsdatoInput = screen.getByLabelText(TILRETTELEGGINGSDATO);
+        const tilretteleggingsdatoInput = screen.getByLabelText(
+            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        );
         await user.type(tilretteleggingsdatoInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
         await user.tab();
 
-        expect(await screen.findByText(HVOR_MYE_KAN_DU_JOBBE)).toBeInTheDocument();
+        expect(screen.getByText('Hvor mye kan du jobbe?')).toBeInTheDocument();
         // Fiks skrivefeil i mmye
-        await user.click(screen.getByText(REDUSERT));
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Neste steg'));
 
-        expect(
-            await screen.queryByText('Du må oppgi startdatoen for behov for tilrettelegging.'),
-        ).not.toBeInTheDocument();
-        expect(await screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må oppgi startdatoen for behov for tilrettelegging.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
     });
+
     it('validering av for sen tilrettelegging', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(TILRETTELEGGINGSDATO)).toBeInTheDocument();
+        expect(
+            await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
+        ).toBeInTheDocument();
 
-        const tilretteleggingsdatoInput = screen.getByLabelText(TILRETTELEGGINGSDATO);
+        const tilretteleggingsdatoInput = screen.getByLabelText(
+            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        );
         await user.type(
             tilretteleggingsdatoInput,
-            dayjs(TERMINDATO).subtract(2, 'weeks').subtract(6, 'days').format('DD.MM.YYYY'),
+            dayjs('2024-02-18').subtract(2, 'weeks').subtract(6, 'days').format('DD.MM.YYYY'),
         );
         await user.tab();
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.getAllByText(
-                'Startdatoen for behov for tilrettelegging må være mer enn 3 uker før termindato.',
-            )[0],
+            screen.getAllByText('Startdatoen for behov for tilrettelegging må være mer enn 3 uker før termindato.')[0],
         ).toBeInTheDocument();
     });
+
     it('redusert valgt', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
-        await user.click(screen.getByText(REDUSERT));
+        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getByText(SAMME_STILLINGSPROSENT)).toBeInTheDocument();
+        expect(
+            screen.getByText('Skal du ha den samme stillingsprosenten gjennom hele svangerskapet?'),
+        ).toBeInTheDocument();
     });
+
     it('spørsmål om fra-dato vises når man har valgt at man ikke kan jobbe', async () => {
         render(<Default />);
-        expect(await screen.findByText(IKKE_JOBBE)).toBeInTheDocument();
-        await user.click(screen.getByText(IKKE_JOBBE));
+        expect(await screen.findByText('Du kan ikke jobbe')).toBeInTheDocument();
+        await user.click(screen.getByText('Du kan ikke jobbe'));
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getByText(FRA_DATO_BORTE_FRA_JOBB)).toBeInTheDocument();
+        expect(screen.getByText('Fra hvilken dato skal du være borte fra jobb?')).toBeInTheDocument();
     });
+
     it('redusert valgt, ikke oppgitt stillingsprosent', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
-        await user.click(screen.getByText(REDUSERT));
+        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Du må oppgi om du skal ha den samme stillingsprosenten gjennom hele svangerskapet.',
             )[0],
         ).toBeInTheDocument();
     });
+
     it('spørsmål om stillingsprosent skal vises når redusert arbeidstid og samme stillingsprosent er valgt', async () => {
         render(<Default />);
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
+        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
 
-        await user.click(screen.getByText(REDUSERT));
-        await user.click(screen.getByText(JA));
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Ja'));
 
-        expect(await screen.getByText(HVILKEN_STILLINGSPROSENT)).toBeInTheDocument();
+        expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
     });
+
     it('feilmelding ved ikke oppgitt stillingsprosent', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
+        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
 
-        await user.click(screen.getByText(REDUSERT));
-        await user.click(screen.getByText(JA));
-        expect(await screen.findByText(HVILKEN_STILLINGSPROSENT)).toBeInTheDocument();
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Ja'));
+        expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')[0]).toBeInTheDocument();
     });
     it('feilmelding ved stillingsprosent i feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
+        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
 
-        await user.click(screen.getByText(REDUSERT));
-        await user.click(screen.getByText(JA));
-        expect(await screen.findByText(HVILKEN_STILLINGSPROSENT)).toBeInTheDocument();
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Ja'));
+        expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
 
-        const stillingsprosentInput = screen.getByLabelText(HVILKEN_STILLINGSPROSENT);
+        const stillingsprosentInput = screen.getByLabelText('Hvilken stillingsprosent skal du jobbe?');
         await user.type(stillingsprosentInput, 'bla bla');
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
-        expect(await screen.getAllByText('Stillingsprosent må være et tall.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Stillingsprosent må være et tall.')[0]).toBeInTheDocument();
     });
     it('feilmelding ved ikke oppgitt redusert fra-dato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
+        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
 
-        await user.click(screen.getByText(REDUSERT));
-        await user.click(screen.getByText(JA));
-        expect(await screen.findByText(FRA_DATO_REDUSERT)).toBeInTheDocument();
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Ja'));
+        expect(screen.getByText('Fra hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
-        expect(
-            await screen.getAllByText('Du må oppgi fra hvilken dato du skal jobbe redusert.')[0],
-        ).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi fra hvilken dato du skal jobbe redusert.')[0]).toBeInTheDocument();
     });
     it('feilmelding ved ikke oppgitt redusert til-dato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
+        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
 
-        await user.click(screen.getByText(REDUSERT));
-        await user.click(screen.getByText(JA));
-        expect(await screen.findByText(TIL_DATO_REDUSERT)).toBeInTheDocument();
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Ja'));
+        expect(screen.getByText('Frem til hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Du må oppgi om du skal jobbe redusert frem til tre uker før termin eller frem til en annen dato.',
             )[0],
         ).toBeInTheDocument();
@@ -178,50 +175,57 @@ describe('<Behov for tilrettelegging>', () => {
     it('redusert frem til en dato valgt', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
+        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
 
-        await user.click(screen.getByText(REDUSERT));
-        await user.click(screen.getByText(JA));
-        expect(await screen.findByText(TIL_DATO_REDUSERT)).toBeInTheDocument();
-        await user.click(screen.getByText(FREM_TIL_DATO));
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Ja'));
+        expect(screen.getByText('Frem til hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
+        await user.click(screen.getByText('Frem til en dato'));
+        await user.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText(DATO_TILBAKE)).toBeInTheDocument();
+        expect(screen.getByText('Dato du skal tilbake til din opprinnelige stillingsprosent')).toBeInTheDocument();
     });
+
     it('validering av dato på feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText(TILRETTELEGGINGSDATO)).toBeInTheDocument();
+        expect(
+            await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
+        ).toBeInTheDocument();
 
-        expect(await screen.findByText(REDUSERT)).toBeInTheDocument();
+        expect(screen.getByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
 
-        await user.click(screen.getByText(REDUSERT));
-        await user.click(screen.getByText(JA));
-        expect(await screen.findByText(FRA_DATO_REDUSERT)).toBeInTheDocument();
-        await user.click(screen.getByText(FREM_TIL_DATO));
+        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Ja'));
 
-        const tilretteleggingsdatoInput = screen.getByLabelText(TILRETTELEGGINGSDATO);
-        const fraDatoRedusertInput = screen.getByLabelText(FRA_DATO_REDUSERT);
-        const tilbakeDatoInput = screen.getByLabelText(DATO_TILBAKE);
+        expect(screen.getByText('Fra hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
+
+        await user.click(screen.getByText('Frem til en dato'));
+
+        const tilretteleggingsdatoInput = screen.getByLabelText(
+            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        );
+        const fraDatoRedusertInput = screen.getByLabelText('Fra hvilken dato skal du jobbe redusert?');
+        const tilbakeDatoInput = screen.getByLabelText('Dato du skal tilbake til din opprinnelige stillingsprosent');
 
         await user.type(tilretteleggingsdatoInput, 'fdkmv');
         await user.type(fraDatoRedusertInput, 'fdkmv');
         await user.type(tilbakeDatoInput, 'fdkmv');
 
-        await user.click(screen.getByText(NESTE_STEG));
+        await user.click(screen.getByText('Neste steg'));
 
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Startdatoen for behov for tilrettelegging må være en gyldig dato på formatet dd.mm.åååå.',
             )[0],
         ).toBeInTheDocument();
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Datoen du skal begynne å jobbe redusert må være en gyldig dato på formatet dd.mm.åååå.',
             )[0],
         ).toBeInTheDocument();
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Datoen du skal tilbake til din opprinnelige stillingsprosent må være på formatet dd.mm.åååå.',
             )[0],
         ).toBeInTheDocument();

@@ -55,11 +55,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
             return <Spinner />;
         }
         return (
-            <ErrorPage
-                appName="Engangsstønad"
-                errorMessage={error.message}
-                tryAgainCallback={() => location.reload()}
-            />
+            <ErrorPage appName="Engangsstønad" errorMessage={error.message} retryCallback={() => location.reload()} />
         );
     }
 

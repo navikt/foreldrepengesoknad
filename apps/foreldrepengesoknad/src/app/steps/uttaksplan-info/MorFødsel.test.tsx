@@ -10,19 +10,12 @@ const {
     UttaksplanMedFlerbarnsukerTvillinger,
 } = composeStories(stories);
 
-const PERIODE_LENGDE_LABEL_IKKE_DELT_UTTAK = 'Hvor lang periode med foreldrepenger ønsker du?';
-const PERIODE_LENGDE_LABEL_DELT_UTTAK = 'Hvor lang periode med foreldrepenger har dere valgt?';
-const GÅ_VIDERE_KNAPP = 'Neste steg';
-const PERIODE_START_DATOFELT = 'Når ønsker du å starte perioden?';
-const UKER_FELLESPERIODE_LABEL = 'Hvor mange uker skal du ha av fellesperioden?';
-const IKKE_FORELDREPENGER_FØR_TERMIN = 'Jeg tok ikke ut foreldrepenger før termin';
-
 describe('<UttaksplanInfo_MorFødsel>', () => {
     it('skal fylle ut dekningsgrad før en kan gå videre når en har aleneomsorg', async () => {
         render(<UttaksplanMedAleneomsorg />);
 
-        expect(await screen.findByText(PERIODE_LENGDE_LABEL_IKKE_DELT_UTTAK)).toBeInTheDocument();
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
+        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('3 + 56 uker')).toBeInTheDocument();
@@ -32,16 +25,16 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
                 'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
-        expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
-        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvor mange uker skal du ha av fellesperioden?')).not.toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal vise info om at stønadsperioden er forlenget når en har prematur fødsel', async () => {
         render(<UttaksplanMedPrematurFødsel />);
 
-        expect(await screen.findByText(PERIODE_LENGDE_LABEL_IKKE_DELT_UTTAK)).toBeInTheDocument();
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
+        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
         expect(
             screen.getByText(
                 'Stønadsperioden din er forlenget med 8 uker og 3 dager siden du har født før svangerskapsuke 33.',
@@ -56,19 +49,19 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
                 'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
-        expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
-        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvor mange uker skal du ha av fellesperioden?')).not.toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal vise info om delt uttak ved valg av 100 prosent foreldrepenger', async () => {
         render(<UttaksplanMedDeltUttak />);
 
-        expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
         expect(screen.queryByText('TALENTFULL MYGGs del')).not.toBeInTheDocument();
-        expect(screen.queryByText(PERIODE_START_DATOFELT)).not.toBeInTheDocument();
-        expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(screen.queryByText('Når ønsker du å starte perioden?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvor mange uker skal du ha av fellesperioden?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
@@ -81,19 +74,19 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
 
         expect(screen.getByText('8 av 16 uker med fellesperiode')).toBeInTheDocument();
 
-        expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
-        expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
-        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvor mange uker skal du ha av fellesperioden?')[0]).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal vise veileder info om mor velger å ikke ta foreldrepenger før fødsel', async () => {
         render(<UttaksplanMedDeltUttak />);
-        expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText(IKKE_FORELDREPENGER_FØR_TERMIN));
+        await userEvent.click(screen.getByText('Jeg tok ikke ut foreldrepenger før termin'));
         expect(
             await screen.findByText(
                 'Når du ikke starter foreldrepengeperioden 3 uker før termindato mister du rett til foreldrepenger disse dagene.',
@@ -103,24 +96,24 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
 
     it('skal vise info om delt uttak ved valg av 80 prosent foreldrepenger', async () => {
         render(<UttaksplanMedDeltUttak />);
-        expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
 
-        expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
-        expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
-        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvor mange uker skal du ha av fellesperioden?')[0]).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal vise info om tvillingsfødsel ved valg av 100 prosent foreldrepenger', async () => {
         render(<UttaksplanMedFlerbarnsukerTvillinger />);
-        expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
         expect(screen.queryByText('TALENTFULL MYGGs del')).not.toBeInTheDocument();
-        expect(screen.queryByText(PERIODE_START_DATOFELT)).not.toBeInTheDocument();
-        expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(screen.queryByText('Når ønsker du å starte perioden?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvor mange uker skal du ha av fellesperioden?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('66 uker med 100 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
@@ -136,19 +129,19 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('17 av 33 uker med fellesperiode')).toBeInTheDocument();
 
-        expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
-        expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
-        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvor mange uker skal du ha av fellesperioden?')[0]).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 
     it('skal vise info om tvillingsfødsel ved valg av 80 prosent foreldrepenger', async () => {
         render(<UttaksplanMedFlerbarnsukerTvillinger />);
 
-        expect(await screen.findByText(PERIODE_LENGDE_LABEL_DELT_UTTAK)).toBeInTheDocument();
+        expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
         expect(screen.queryByText('TALENTFULL MYGGs del')).not.toBeInTheDocument();
-        expect(screen.queryByText(PERIODE_START_DATOFELT)).not.toBeInTheDocument();
-        expect(screen.queryByText(UKER_FELLESPERIODE_LABEL)).not.toBeInTheDocument();
-        expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
+        expect(screen.queryByText('Når ønsker du å starte perioden?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvor mange uker skal du ha av fellesperioden?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('80 uker med 80 prosent foreldrepenger'));
         expect(await screen.findByText('TALENTFULL MYGGs del')).toBeInTheDocument();
@@ -164,8 +157,8 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('20 av 39 uker med fellesperiode')).toBeInTheDocument();
 
-        expect(screen.getByText(PERIODE_START_DATOFELT)).toBeInTheDocument();
-        expect(screen.getAllByText(UKER_FELLESPERIODE_LABEL)[0]).toBeInTheDocument();
-        expect(screen.getByText(GÅ_VIDERE_KNAPP)).toBeInTheDocument();
+        expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvor mange uker skal du ha av fellesperioden?')[0]).toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 });

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './SøkersituasjonSteg.stories';
@@ -18,14 +18,14 @@ describe('<SøkersituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi hva som gjelder for deg')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Fødsel'));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        await waitFor(() => expect(gåTilNesteSide).toHaveBeenCalledTimes(1));
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 situasjon: 'fødsel',

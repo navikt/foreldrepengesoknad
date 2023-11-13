@@ -7,10 +7,12 @@ const { Default } = composeStories(stories);
 
 describe('<Forside>', () => {
     it('skal ikke kunne gå videre uten å ha godkjent vilkår', async () => {
-        const user = userEvent.setup();
         render(<Default />);
+
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        await user.click(screen.getByText('Start søknaden'));
-        expect(await screen.findByText('Du må bekrefte at du har lest og forstått dine plikter.')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start søknaden'));
+
+        expect(screen.getByText('Du må bekrefte at du har lest og forstått dine plikter.')).toBeInTheDocument();
     });
 });
