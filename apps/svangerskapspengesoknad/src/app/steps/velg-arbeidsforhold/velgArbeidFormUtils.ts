@@ -2,7 +2,7 @@ import { VelgArbeidFormData } from './velgArbeidFormConfig';
 import { Søker } from 'app/types/Søker';
 import { intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
@@ -25,9 +25,9 @@ export const getNæringTilretteleggingOption = (
             arbeidsgiverId: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
             type: Arbeidsforholdstype.SELVSTENDIG,
             navn: næring.navnPåNæringen,
-            opprinneligstillingsprosent: 100,
             startdato: næring.tidsperiode.fom,
             sluttdato: næring.tidsperiode.tom,
+            stillinger: [{ fom: næring.tidsperiode.fom, tom: næring.tidsperiode.tom, stillingsprosent: 100 }],
         },
         vedlegg: næringTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
@@ -58,7 +58,7 @@ export const getFrilansTilretteleggingOption = (
             navn: frilansId,
             type: Arbeidsforholdstype.FRILANSER,
             startdato: frilans.oppstart,
-            opprinneligstillingsprosent: 100,
+            stillinger: [{ fom: frilans.oppstart, tom: undefined, stillingsprosent: 100 }],
         },
         vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
@@ -84,7 +84,7 @@ export const getArbeidsforholdTilretteleggingOptions = (
     intl: IntlShape,
 ): Tilrettelegging[] => {
     const unikeArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
-    const arbeidsforholdOptions = unikeArbeidsforhold.map((forhold) => {
+    const arbeidsforholdOptions = unikeArbeidsforhold.map((forhold: UnikArbeidsforhold) => {
         const tilretteleggingFraState = tilrettelegginger.find((t) => t.id == forhold.id);
         return {
             id: tilretteleggingFraState?.id ?? forhold.id,
@@ -98,7 +98,7 @@ export const getArbeidsforholdTilretteleggingOptions = (
                     forhold.arbeidsgiverIdType === 'orgnr' || forhold.arbeidsgiverNavn
                         ? forhold.arbeidsgiverNavn
                         : intlUtils(intl, 'privat.arbeidsgiver'),
-                opprinneligstillingsprosent: forhold.stillingsprosent,
+                stillinger: forhold.stillinger,
                 startdato: forhold.fom,
                 sluttdato: forhold.tom,
             },
