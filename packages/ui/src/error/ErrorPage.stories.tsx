@@ -14,7 +14,7 @@ const Template: StoryFn<{
         <ErrorPage
             appName="Engangsstønad"
             errorMessage="Kall mot url: ‘/hjelpemidler/barnebriller/api/vilkarsgrunnlag’ feilet,  At S.kallFeilet"
-            tryAgainCallback={søkPåNytt}
+            retryCallback={søkPåNytt}
         />
     );
 };
