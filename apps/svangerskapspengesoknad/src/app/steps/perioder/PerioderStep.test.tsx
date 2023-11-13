@@ -178,7 +178,7 @@ describe('<Perioder>', () => {
         await user.click(screen.getByText('Neste steg'));
         expect(
             await screen.getAllByText(
-                'Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på 30%.',
+                'Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på 30 %.',
             )[0],
         ).toBeInTheDocument();
     });
@@ -202,7 +202,7 @@ describe('<Perioder>', () => {
         await user.click(screen.getByText('Neste steg'));
         expect(
             await screen.getAllByText(
-                'Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på 100%.',
+                'Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på 100 %.',
             )[0],
         ).toBeInTheDocument();
     });
@@ -257,7 +257,7 @@ describe('<Perioder>', () => {
         await user.click(screen.getByText('Neste steg'));
         expect(
             await screen.getAllByText(
-                'Du kan ikke kun legge til perioder der du jobber din opprinnelige stillingsprosent på 100%. Da har du ikke behov for svangerskapspenger.',
+                'Du kan ikke kun legge til perioder der du jobber din opprinnelige stillingsprosent på 100 %. Da har du ikke behov for svangerskapspenger.',
                 { exact: false },
             )[0],
         ).toBeInTheDocument();
