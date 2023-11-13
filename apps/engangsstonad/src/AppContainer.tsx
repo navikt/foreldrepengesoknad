@@ -21,7 +21,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 
 dayjs.locale(localeFromSessionStorage);
 
-const tryAgainCallback = () => location.reload();
+const retryCallback = () => location.reload();
 
 const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleAll>(localeFromSessionStorage);
@@ -33,7 +33,7 @@ const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Engangsstønad" tryAgainCallback={tryAgainCallback}>
+            <ErrorBoundary appName="Engangsstønad" retryCallback={retryCallback}>
                 <BrowserRouter>
                     <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
                 </BrowserRouter>

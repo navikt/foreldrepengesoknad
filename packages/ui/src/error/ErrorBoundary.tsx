@@ -5,7 +5,7 @@ import ErrorPage from './ErrorPage';
 interface Props {
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     children: React.ReactNode;
-    tryAgainCallback: () => void;
+    retryCallback: () => void;
 }
 
 interface State {
@@ -31,12 +31,12 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     render() {
-        const { appName, tryAgainCallback } = this.props;
+        const { appName, retryCallback } = this.props;
         const { errorMessage, errorInfo } = this.state;
 
         if (this.state.hasError) {
             return errorMessage ? (
-                <ErrorPage appName={appName} errorMessage={errorMessage} tryAgainCallback={tryAgainCallback} />
+                <ErrorPage appName={appName} errorMessage={errorMessage} retryCallback={retryCallback} />
             ) : (
                 <div>{errorMessage || errorInfo}</div>
             );
