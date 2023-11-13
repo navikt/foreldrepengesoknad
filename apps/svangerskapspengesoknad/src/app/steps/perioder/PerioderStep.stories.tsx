@@ -32,6 +32,7 @@ const contextWithArbeidsforhold = {
                 id: '263929546-6215-9868-5127-161910165730101',
                 arbeidsforhold: {
                     navn: 'Omsorgspartner Vestfold AS',
+                    stillinger: [{ fom: '2019-01-01', stillingsprosent: 100 }],
                 },
                 type: Tilretteleggingstype.DELVIS,
                 delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
