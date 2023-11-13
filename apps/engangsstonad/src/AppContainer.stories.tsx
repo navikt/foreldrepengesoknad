@@ -3,9 +3,9 @@ import MockAdapter from 'axios-mock-adapter';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { attachmentApi } from '@navikt/fp-api';
 
-import { engangsstønadApi } from 'appData/api';
 import Person, { Kjønn } from 'types/Person';
 import AppContainer from './AppContainer';
+import { esApi } from './Engangsstønad';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -22,7 +22,7 @@ export default {
 const Template: StoryFn<{ person: Person }> = ({ person }) => {
     initAmplitude();
 
-    const apiMock = new MockAdapter(engangsstønadApi);
+    const apiMock = new MockAdapter(esApi);
     apiMock.onGet('/personinfo').reply(200, person);
     apiMock.onPost('/soknad/engangssoknad').reply(200, kvittering);
 

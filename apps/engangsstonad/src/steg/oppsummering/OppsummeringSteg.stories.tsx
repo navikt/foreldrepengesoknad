@@ -57,13 +57,7 @@ export default {
 };
 
 const Template: StoryFn<{
-    sendSøknad: (
-        abortSignal: AbortSignal,
-        omBarnet: OmBarnet,
-        dokumentasjon?: Dokumentasjon,
-        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
-        senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    ) => Promise<void>;
+    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
