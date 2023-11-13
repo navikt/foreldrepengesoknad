@@ -4,7 +4,7 @@ import { composeStories } from '@storybook/react';
 import * as stories from './PerioderStep.stories';
 import dayjs from 'dayjs';
 
-const { Default } = composeStories(stories);
+const { Default, FlereStillinger } = composeStories(stories);
 const SØKNAD_TITTEL = 'Søknad om svangerskapspenger';
 const FRA_DATO = 'Du skal jobbe fra:';
 const TIL_DATO = 'Til:';
@@ -167,5 +167,109 @@ describe('<Perioder>', () => {
         await user.click(screen.getByText(NESTE_STEG));
 
         expect(await screen.getAllByText('Perioden overlapper med perioden ' + nyPeriode + '.')[0]).toBeInTheDocument();
+    });
+    it('stillingsprosenten skal valideres mot samlet stillingsprosent (30%) på skjæringstidspunktet', async () => {
+        render(<FlereStillinger />);
+
+        expect(await screen.findByText(FRA_DATO)).toBeInTheDocument();
+        const førsteDatoFom = screen.getByText(FRA_DATO);
+        await user.type(førsteDatoFom, dayjs('2023-10-02').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText(FREM_TIL_DATO));
+        expect(await screen.findByText(TOM)).toBeInTheDocument();
+        const førsteDatoTom = screen.getByText(TOM);
+        await user.type(førsteDatoTom, dayjs('2023-10-09').format('DD.MM.YYYY'));
+        await user.tab();
+
+        const stillingInput = screen.getByText(STILLINGSPROSENT);
+        await user.type(stillingInput, '40');
+        await user.tab();
+        await user.click(screen.getByText(NESTE_STEG));
+        expect(
+            await screen.getAllByText(
+                'Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på 30%.',
+            )[0],
+        ).toBeInTheDocument();
+    });
+    it('stillingsprosenten skal valideres mot samlet stillingsprosent (100%) fordi et av stillingsprosentene på skjæringstidspunktet er på 0%', async () => {
+        render(<FlereStillinger />);
+
+        expect(await screen.findByText(FRA_DATO)).toBeInTheDocument();
+        const førsteDatoFom = screen.getByText(FRA_DATO);
+        await user.type(førsteDatoFom, dayjs('2023-11-02').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText(FREM_TIL_DATO));
+        expect(await screen.findByText(TOM)).toBeInTheDocument();
+        const førsteDatoTom = screen.getByText(TOM);
+        await user.type(førsteDatoTom, dayjs('2023-11-09').format('DD.MM.YYYY'));
+        await user.tab();
+
+        const stillingInput = screen.getByText(STILLINGSPROSENT);
+        await user.type(stillingInput, '101');
+        await user.tab();
+        await user.click(screen.getByText(NESTE_STEG));
+        expect(
+            await screen.getAllByText(
+                'Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på 100%.',
+            )[0],
+        ).toBeInTheDocument();
+    });
+    it('Det skal ikke være lov å legge til ny periode etter en periode full tilrettelegging', async () => {
+        render(<FlereStillinger />);
+
+        expect(await screen.findByText(FRA_DATO)).toBeInTheDocument();
+        const førsteDatoFom = screen.getByText(FRA_DATO);
+        await user.type(førsteDatoFom, dayjs('2023-11-02').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText(FREM_TIL_DATO));
+        expect(await screen.findByText(TOM)).toBeInTheDocument();
+        const førsteDatoTom = screen.getByText(TOM);
+        await user.type(førsteDatoTom, dayjs('2023-11-09').format('DD.MM.YYYY'));
+        await user.tab();
+
+        const stillingInput = screen.getByText(STILLINGSPROSENT);
+        await user.type(stillingInput, '100');
+        await user.tab();
+
+        await user.click(screen.getByText(LEGG_TIL_NY_PERIODE));
+        const stillingInput2 = screen.getAllByText(STILLINGSPROSENT)[1];
+        await user.type(stillingInput2, '10');
+
+        await user.click(screen.getByText(NESTE_STEG));
+        expect(
+            await screen.getAllByText(
+                'Du må sende ny søknad hvis du skal jobbe redusert etter perioden som starter 02.11.2023',
+                { exact: false },
+            )[0],
+        ).toBeInTheDocument();
+    });
+    it('Det skal ikke være lov å gå videre med kun full tilrettelegging', async () => {
+        render(<FlereStillinger />);
+
+        expect(await screen.findByText(FRA_DATO)).toBeInTheDocument();
+        const førsteDatoFom = screen.getByText(FRA_DATO);
+        await user.type(førsteDatoFom, dayjs('2023-11-02').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText(FREM_TIL_DATO));
+        expect(await screen.findByText(TOM)).toBeInTheDocument();
+        const førsteDatoTom = screen.getByText(TOM);
+        await user.type(førsteDatoTom, dayjs('2023-11-09').format('DD.MM.YYYY'));
+        await user.tab();
+
+        const stillingInput = screen.getByText(STILLINGSPROSENT);
+        await user.type(stillingInput, '100');
+        await user.tab();
+
+        await user.click(screen.getByText(NESTE_STEG));
+        expect(
+            await screen.getAllByText(
+                'Du kan ikke kun legge til perioder der du jobber din opprinnelige stillingsprosent på 100%. Da har du ikke behov for svangerskapspenger.',
+                { exact: false },
+            )[0],
+        ).toBeInTheDocument();
     });
 });
