@@ -8,7 +8,6 @@ import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 
 import Api from 'appData/api';
 import { Path } from 'appData/paths';
-import { EsDataContext } from 'appData/EsDataContext';
 import Environment from 'appData/Environment';
 import Kvittering from 'types/Kvittering';
 import Person from './types/Person';
@@ -20,6 +19,7 @@ import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
 import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
+import useEsSendData from 'appData/useEsSendData';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -37,6 +37,8 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { data: person, loading, error } = useRequest<Person>(Api.getPerson);
+
+    const sendSøknad = useEsSendData(locale, setKvittering);
 
     if (kvittering) {
         if (Environment.INNSYN) {
@@ -67,40 +69,36 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         return <Umyndig appnavn="Engangsstønad" />;
     }
 
-    const sendSøknad = Api.getSendSøknad(locale, setKvittering);
-
     return (
-        <EsDataContext>
-            <Routes>
-                {!erVelkommen && <Route path="*" element={<Navigate to={Path.VELKOMMEN} />} />}
-                <Route
-                    path={Path.VELKOMMEN}
-                    element={
-                        <Velkommen
-                            locale={locale}
-                            onChangeLocale={onChangeLocale}
-                            startSøknad={setVelkommen}
-                            erVelkommen={erVelkommen}
-                        />
-                    }
-                />
-                {erVelkommen && (
-                    <>
-                        <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
-                        <Route path={Path.OM_BARNET} element={<OmBarnetSteg kjønn={person.kjønn} />} />
-                        <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
-                        <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
-                        <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
-                        <Route path={Path.TIDLIGERE_UTENLANDSOPPHOLD} element={<TidligereUtenlandsoppholdSteg />} />
-                        <Route path={Path.SENERE_UTENLANDSOPPHOLD} element={<SenereUtenlandsoppholdSteg />} />
-                        <Route
-                            path={Path.OPPSUMMERING}
-                            element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
-                        />
-                    </>
-                )}
-            </Routes>
-        </EsDataContext>
+        <Routes>
+            {!erVelkommen && <Route path="*" element={<Navigate to={Path.VELKOMMEN} />} />}
+            <Route
+                path={Path.VELKOMMEN}
+                element={
+                    <Velkommen
+                        locale={locale}
+                        onChangeLocale={onChangeLocale}
+                        startSøknad={setVelkommen}
+                        erVelkommen={erVelkommen}
+                    />
+                }
+            />
+            {erVelkommen && (
+                <>
+                    <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
+                    <Route path={Path.OM_BARNET} element={<OmBarnetSteg kjønn={person.kjønn} />} />
+                    <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
+                    <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
+                    <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
+                    <Route path={Path.TIDLIGERE_UTENLANDSOPPHOLD} element={<TidligereUtenlandsoppholdSteg />} />
+                    <Route path={Path.SENERE_UTENLANDSOPPHOLD} element={<SenereUtenlandsoppholdSteg />} />
+                    <Route
+                        path={Path.OPPSUMMERING}
+                        element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
+                    />
+                </>
+            )}
+        </Routes>
     );
 };
 

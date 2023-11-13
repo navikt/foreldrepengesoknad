@@ -8,9 +8,6 @@ import Person from 'types/Person';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepData from 'appData/useStepData';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
-import { OmBarnet } from 'types/OmBarnet';
-import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
-import Dokumentasjon from 'types/Dokumentasjon';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
@@ -21,13 +18,7 @@ const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string)
 
 export interface Props {
     person: Person;
-    sendSøknad: (
-        abortSignal: AbortSignal,
-        omBarnet: OmBarnet,
-        dokumentasjon?: Dokumentasjon,
-        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
-        senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    ) => Promise<void>;
+    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
 }
 
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
@@ -52,18 +43,10 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                 setIsError(true);
             } else {
                 setButtonsDisabled(true);
-                sendSøknad(abortSignal, omBarnet, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
+                sendSøknad(abortSignal);
             }
         },
-        [
-            isChecked,
-            abortSignal,
-            dokumentasjon,
-            omBarnet,
-            sendSøknad,
-            senereUtenlandsopphold,
-            tidligereUtenlandsopphold,
-        ],
+        [isChecked, abortSignal, sendSøknad],
     );
 
     return (
