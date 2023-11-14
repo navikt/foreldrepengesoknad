@@ -1,2 +1,0 @@
-import{j as e}from"./jsx-runtime-4ca860c5.js";import{c as p}from"./fridagerUtils-4be4c76f.js";import"./index-61bf1805.js";import"./UiIntlProvider-e3064779.js";import"./_baseToString-42dba5cf.js";import"./_createSet-13baae69.js";const r=({children:t})=>{const o=p("content");return e.jsx("div",{className:o.block,children:t})};try{r.displayName="ContentWrapper",r.__docgenInfo={description:"",displayName:"ContentWrapper",props:{}}}catch{}export{r as C};
-//# sourceMappingURL=ContentWrapper-b04a5669.js.map
