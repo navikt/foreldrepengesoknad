@@ -20,13 +20,14 @@ export const useRequest = <T>(instance: AxiosInstance, url: string) => {
                 if (isAxiosError(err)) {
                     if (err.response?.status === 401 || err.response?.status === 403) {
                         setError(new ApiAccessError());
+                    } else {
+                        setError(new ApiGeneralError(err.message));
                     }
+                } else if (err instanceof Error) {
                     setError(new ApiGeneralError(err.message));
+                } else {
+                    setError(new ApiGeneralError(String(err)));
                 }
-                if (err instanceof Error) {
-                    setError(new ApiGeneralError(err.message));
-                }
-                setError(new ApiGeneralError(String(err)));
             } finally {
                 setLoading(false);
             }
