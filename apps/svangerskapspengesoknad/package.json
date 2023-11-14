@@ -22,7 +22,7 @@
         "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
         "@formatjs/intl-datetimeformat": "^6.10.0",
         "@formatjs/intl-numberformat": "^8.7.0",
-        "@formatjs/intl-pluralrules": "^5.2.4",
+        "@formatjs/intl-pluralrules": "^5.2.10",
         "@formatjs/intl-relativetimeformat": "^11.2.4",
         "@navikt/aksel-icons": "^4.12.1",
         "@navikt/ds-css": "4.12.1",
