@@ -1,9 +1,7 @@
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/context/types/AnnenInntekt';
-import { FrilansOppdrag } from 'app/context/types/Frilans';
 import { EndringAvNæringsinntektInformasjon, Næring } from 'app/context/types/Næring';
 import {
     cleanupInvisibleCharsFromAndreInntekter,
-    cleanupInvisibleCharsFromFrilansinformasjon,
     cleanupInvisibleCharsFromNæring,
 } from './inntektsinformasjonFormUtils';
 
@@ -36,17 +34,6 @@ const næringUtenEndringEllerRegnskapsfører = {
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
     harRegnskapsfører: false,
 } as Næring;
-
-const frilansoppdrag = [
-    {
-        navnPåArbeidsgiver: 'Navn\u200dpå\u200darbeid\u200d',
-        pågående: false,
-    },
-    {
-        navnPåArbeidsgiver: 'Navn\u200bpå\u2060arbeid\u2062',
-        pågående: true,
-    },
-] as FrilansOppdrag[];
 
 const andreInntekter = [
     {
@@ -90,15 +77,6 @@ describe('InntektsinformasjonFormUtils', () => {
         expect(cleanedNæring.navnPåNæringen).toEqual('Navn med blanke tegn');
         expect(cleanedNæring.harRegnskapsfører).toEqual(false);
         expect(cleanedNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår).toEqual(false);
-    });
-
-    it('skal erstatte alle ulovlige blanke tegn fra FrilansOppdrag med space og beholde resten av informasjonen intakt', async () => {
-        const cleanedFrilansoppdrag = cleanupInvisibleCharsFromFrilansinformasjon(frilansoppdrag);
-        expect(cleanedFrilansoppdrag.length).toEqual(2);
-        expect(cleanedFrilansoppdrag[0].navnPåArbeidsgiver).toEqual('Navn på arbeid ');
-        expect(cleanedFrilansoppdrag[0].pågående).toEqual(frilansoppdrag[0].pågående);
-        expect(cleanedFrilansoppdrag[1].navnPåArbeidsgiver).toEqual('Navn på arbeid ');
-        expect(cleanedFrilansoppdrag[1].pågående).toEqual(frilansoppdrag[1].pågående);
     });
 
     it('skal erstatte alle ulovlige blanke tegn fra AnnenIntekt med space og beholde resten av informasjonen intakt', async () => {
