@@ -7,15 +7,15 @@ import { useCustomIntl } from '@navikt/fp-ui';
 import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import useEsNavigator from 'appData/useEsNavigator';
-import useStepData from 'appData/useStepData';
+import useStepConfig from 'appData/useStepConfig';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { Søkersituasjon, SøkersituasjonEnum } from '@navikt/fp-types';
 
 const SøkersituasjonSteg: React.FunctionComponent = () => {
     const { i18n } = useCustomIntl();
 
-    const stepData = useStepData();
+    const stepConfig = useStepConfig();
     const navigator = useEsNavigator();
 
     const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
@@ -40,10 +40,8 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
     return (
         <Step
             bannerTitle={i18n('Søknad.Pageheading')}
-            pageTitle={i18n('SøkersituasjonSteg.Søkersituasjon')}
             onCancel={navigator.avbrytSøknad}
-            steps={stepData.stepConfig}
-            activeStepId={stepData.activeStepId}
+            steps={stepConfig}
             useNoTempSavingText
         >
             <Form formMethods={formMethods} onSubmit={lagre}>

@@ -15,8 +15,8 @@ import {
     isRequired,
     isValidDate,
 } from '@navikt/fp-validation';
-import { useCustomIntl } from '@navikt/fp-ui';
-import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import useUtenlandsoppholdIntl from '../intl/useUtenlandsoppholdIntl';
 
 interface OwnProps {
     index: number;
@@ -24,7 +24,7 @@ interface OwnProps {
 }
 
 const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
-    const { i18n } = useCustomIntl();
+    const { i18n } = useUtenlandsoppholdIntl();
 
     const {
         watch,

@@ -8,14 +8,14 @@ import { I18nFn, useCustomIntl } from '@navikt/fp-ui';
 // TODO Denne bør flyttast ut
 const getPathToLabelMap = (i18n: I18nFn) =>
     ({
-        [Path.SØKERSITUASJON]: i18n('SøkersituasjonSteg.Søkersituasjon'),
-        [Path.OM_BARNET]: i18n('OmBarnetSteg.OmBarnet'),
-        [Path.TERMINBEKREFTELSE]: i18n('UseStepData.Termin'),
-        [Path.ADOPSJONSBEKREFTELSE]: i18n('UseStepData.Adopsjon'),
-        [Path.UTENLANDSOPPHOLD]: i18n('UtenlandsoppholdSteg.Utenlandsopphold'),
-        [Path.TIDLIGERE_UTENLANDSOPPHOLD]: i18n('TidligereUtenlandsoppholdSteg.Tidligere'),
-        [Path.SENERE_UTENLANDSOPPHOLD]: i18n('SenereUtenlandsoppholdSteg.Fremtidig'),
-        [Path.OPPSUMMERING]: i18n('OppsummeringSteg.Oppsummering'),
+        [Path.SØKERSITUASJON]: i18n('UseStepConfig.Søkersituasjon'),
+        [Path.OM_BARNET]: i18n('UseStepConfig.OmBarnet'),
+        [Path.TERMINBEKREFTELSE]: i18n('UseStepConfig.Termin'),
+        [Path.ADOPSJONSBEKREFTELSE]: i18n('UseStepConfig.Adopsjon'),
+        [Path.UTENLANDSOPPHOLD]: i18n('UseStepConfig.Utenlandsopphold'),
+        [Path.TIDLIGERE_UTENLANDSOPPHOLD]: i18n('UseStepConfig.TidligereUtenlandsopphold'),
+        [Path.SENERE_UTENLANDSOPPHOLD]: i18n('UseStepConfig.FremtidigUtenlandsopphold'),
+        [Path.OPPSUMMERING]: i18n('UseStepConfig.Oppsummering'),
     }) as Record<string, string>;
 
 const isAfterStep = (previousStepPath: Path, currentStepPath: Path): boolean => {
@@ -71,7 +71,7 @@ const showDokumentasjonStep = (
     return false;
 };
 
-const useStepData = () => {
+const useStepConfig = () => {
     const { i18n } = useCustomIntl();
     const pathToLabelMap = getPathToLabelMap(i18n);
 
@@ -96,16 +96,15 @@ const useStepData = () => {
     );
 
     return useMemo(
-        () => ({
-            activeStepId: currentPath,
-            stepConfig: appPathList.map((p, index) => ({
+        () =>
+            appPathList.map((p, index) => ({
+                index,
                 id: p,
                 label: pathToLabelMap[p],
-                index,
+                isSelected: p === currentPath,
             })),
-        }),
         [appPathList, currentPath, pathToLabelMap],
     );
 };
 
-export default useStepData;
+export default useStepConfig;

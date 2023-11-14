@@ -55,6 +55,9 @@ importers:
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@navikt/fp-utenlandsopphold':
+        specifier: workspace:*
+        version: link:../../packages/utenlandsopphold
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -1580,6 +1583,112 @@ importers:
       '@types/bytes':
         specifier: ^3.1.1
         version: 3.1.1
+      '@types/react':
+        specifier: ^18.2.20
+        version: 18.2.20
+      '@vitejs/plugin-react':
+        specifier: ^4.0.4
+        version: 4.0.4(vite@4.4.9)
+      fast-glob:
+        specifier: ^3.3.1
+        version: 3.3.1
+      storybook:
+        specifier: 7.3.1
+        version: 7.3.1
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^5.1.6
+        version: 5.2.2
+      vite:
+        specifier: ^4.4.9
+        version: 4.4.9(@types/node@20.5.0)(less@4.2.0)(sass@1.65.1)
+      vite-plugin-checker:
+        specifier: ^0.6.1
+        version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
+      vitest:
+        specifier: ^0.34.2
+        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+
+  packages/utenlandsopphold:
+    dependencies:
+      '@navikt/aksel-icons':
+        specifier: ^4.12.1
+        version: 4.12.1
+      '@navikt/ds-css':
+        specifier: 4.12.1
+        version: 4.12.1
+      '@navikt/ds-react':
+        specifier: 4.12.1
+        version: 4.12.1(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/fp-common':
+        specifier: workspace:*
+        version: link:../fp-common
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@navikt/fp-form-hooks':
+        specifier: workspace:*
+        version: link:../form-hooks
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@navikt/fp-validation':
+        specifier: workspace:*
+        version: link:../validation
+      dayjs:
+        specifier: ^1.11.9
+        version: 1.11.9
+      intl-messageformat:
+        specifier: ^10.5.4
+        version: 10.5.4
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: 7.45.4
+        version: 7.45.4(react@18.2.0)
+      react-intl:
+        specifier: ^6.4.4
+        version: 6.4.4(react@18.2.0)(typescript@5.2.2)
+    devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 6.3.0
+        version: 6.3.0(ts-jest@29.1.1)
+      '@navikt/eslint-config-fp-selvbetjening':
+        specifier: workspace:*
+        version: link:../eslint-config-custom
+      '@storybook/addon-essentials':
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-interactions':
+        specifier: ^7.3.1
+        version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-links':
+        specifier: ^7.2.1
+        version: 7.2.1(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/builder-vite':
+        specifier: ^7.3.1
+        version: 7.3.1(typescript@5.2.2)(vite@4.4.9)
+      '@storybook/react':
+        specifier: ^7.2.1
+        version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+      '@testing-library/jest-dom':
+        specifier: ^6.0.0
+        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+      '@testing-library/react':
+        specifier: ^14.0.0
+        version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@testing-library/user-event':
+        specifier: ^14.4.3
+        version: 14.4.3(@testing-library/dom@9.3.1)
       '@types/react':
         specifier: ^18.2.20
         version: 18.2.20

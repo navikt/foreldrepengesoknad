@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { useEsStateResetFn } from './EsDataContext';
 import { Path } from './paths';
-import useStepData from './useStepData';
+import useStepConfig from './useStepConfig';
 
 const useEsNavigator = () => {
     const navigate = useNavigate();
-    const { activeStepId, stepConfig } = useStepData();
+    const stepConfig = useStepConfig();
     const resetEsData = useEsStateResetFn();
+
+    const activeStepId = stepConfig.find((sc) => sc.isSelected);
 
     useEffect(() => {
         logAmplitudeEvent('sidevisning', {
@@ -19,10 +21,10 @@ const useEsNavigator = () => {
     }, [activeStepId]);
 
     const goToPreviousDefaultStep = useCallback(() => {
-        const index = stepConfig.findIndex((s) => s.id === activeStepId) - 1;
+        const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id || Path.VELKOMMEN;
         navigate(previousPath);
-    }, [navigate, stepConfig, activeStepId]);
+    }, [navigate, stepConfig]);
 
     const goToNextStep = useCallback(
         (path: Path) => {
@@ -32,10 +34,10 @@ const useEsNavigator = () => {
     );
 
     const goToNextDefaultStep = useCallback(() => {
-        const index = stepConfig.findIndex((s) => s.id === activeStepId) + 1;
+        const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
         navigate(nextPath);
-    }, [navigate, stepConfig, activeStepId]);
+    }, [navigate, stepConfig]);
 
     const avbrytSøknad = useCallback(() => {
         resetEsData();

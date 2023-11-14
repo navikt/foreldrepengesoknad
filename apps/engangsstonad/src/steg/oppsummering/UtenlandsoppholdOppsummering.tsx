@@ -4,13 +4,13 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
 import { useCustomIntl } from '@navikt/fp-ui';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+import LandOppsummering from './LandOppsummering';
 import {
     Utenlandsopphold,
+    UtenlandsoppholdPeriode,
     UtenlandsoppholdSenere,
     UtenlandsoppholdTidligere,
-    UtenlandsoppholdPeriode,
-} from 'types/Utenlandsopphold';
-import LandOppsummering from './LandOppsummering';
+} from '@navikt/fp-types';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');

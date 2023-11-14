@@ -5,6 +5,7 @@ import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { createCountryOptions, formatDate } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { DATE_1_YEAR_FROM_NOW, DATE_TODAY } from '@navikt/fp-constants';
 import {
     isAfterOrSame,
@@ -15,9 +16,8 @@ import {
     isRequired,
     isValidDate,
 } from '@navikt/fp-validation';
-import { useCustomIntl } from '@navikt/fp-ui';
 
-import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
+import useUtenlandsoppholdIntl from '../intl/useUtenlandsoppholdIntl';
 
 interface OwnProps {
     index: number;
@@ -25,7 +25,7 @@ interface OwnProps {
 }
 
 const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
-    const { i18n } = useCustomIntl();
+    const { i18n } = useUtenlandsoppholdIntl();
 
     const {
         watch,
