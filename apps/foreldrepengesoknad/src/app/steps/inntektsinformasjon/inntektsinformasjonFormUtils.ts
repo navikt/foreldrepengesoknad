@@ -19,19 +19,6 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
 };
 
-const cleanUpRegnskapsførerNæring = (næring: Næring): Næring => {
-    if (næring.harRegnskapsfører) {
-        return {
-            ...næring,
-            regnskapsfører: {
-                ...næring.regnskapsfører!,
-                navn: replaceInvisibleCharsWithSpace(næring.regnskapsfører!.navn),
-            },
-        };
-    }
-    return næring;
-};
-
 export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
     const cleanedNavn = replaceInvisibleCharsWithSpace(næring.navnPåNæringen);
     if (næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår) {
@@ -41,13 +28,13 @@ export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
         };
 
         return {
-            ...cleanUpRegnskapsførerNæring(næring),
+            ...næring,
             navnPåNæringen: cleanedNavn,
             endringAvNæringsinntektInformasjon: cleanedEndringInformasjon,
         };
     }
     return {
-        ...cleanUpRegnskapsførerNæring(næring),
+        ...næring,
         navnPåNæringen: cleanedNavn,
     };
 };

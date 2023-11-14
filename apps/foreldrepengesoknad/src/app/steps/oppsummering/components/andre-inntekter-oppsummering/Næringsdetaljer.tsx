@@ -21,8 +21,6 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår,
         endringAvNæringsinntektInformasjon,
-        harRegnskapsfører,
-        regnskapsfører,
     } = næring;
 
     return (
@@ -78,37 +76,6 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
                         <BodyShort>{endringAvNæringsinntektInformasjon!.forklaring}</BodyShort>
                     </OppsummeringsPunkt>
                 </>
-            )}
-            {harRegnskapsfører === true && regnskapsfører && (
-                <>
-                    <OppsummeringsPunkt
-                        title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn')}
-                    >
-                        <BodyShort>{regnskapsfører.navn}</BodyShort>
-                    </OppsummeringsPunkt>
-                    <OppsummeringsPunkt
-                        title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf')}
-                    >
-                        <BodyShort>{regnskapsfører.telefonnummer}</BodyShort>
-                    </OppsummeringsPunkt>
-                    <OppsummeringsPunkt
-                        title={intlUtils(
-                            intl,
-                            'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie',
-                        )}
-                    >
-                        <BodyShort>
-                            {regnskapsfører.erNærVennEllerFamilie ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
-                        </BodyShort>
-                    </OppsummeringsPunkt>
-                </>
-            )}
-            {harRegnskapsfører === false && (
-                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsfører')}>
-                    <BodyShort>
-                        {intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører')}
-                    </BodyShort>
-                </OppsummeringsPunkt>
             )}
         </>
     );

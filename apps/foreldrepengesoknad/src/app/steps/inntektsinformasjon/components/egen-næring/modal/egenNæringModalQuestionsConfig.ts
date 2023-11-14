@@ -86,35 +86,6 @@ const EgenNæringModalFormConfig: QuestionConfig<EgenNæringModalFormData, EgenN
         isAnswered: ({ forklaringEndring }) => hasValue(forklaringEndring),
         visibilityFilter: ({ inntektEtterEndring }) => hasValue(inntektEtterEndring),
     },
-    [EgenNæringModalFormField.harRegnskapsfører]: {
-        isIncluded: () => true,
-        isAnswered: ({ harRegnskapsfører }) => harRegnskapsfører !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({
-            yrkesAktivDato,
-            forklaringEndring,
-            harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
-            hattVarigEndringAvNæringsinntektSiste4Kalenderår,
-        }) =>
-            hasValue(yrkesAktivDato) ||
-            hasValue(forklaringEndring) ||
-            harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.NO ||
-            hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.NO,
-    },
-    [EgenNæringModalFormField.navnRegnskapsfører]: {
-        isIncluded: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.YES,
-        isAnswered: ({ navnRegnskapsfører }) => hasValue(navnRegnskapsfører),
-        visibilityFilter: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.YES,
-    },
-    [EgenNæringModalFormField.telefonRegnskapsfører]: {
-        isIncluded: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.YES,
-        isAnswered: ({ telefonRegnskapsfører }) => hasValue(telefonRegnskapsfører),
-        visibilityFilter: ({ navnRegnskapsfører }) => hasValue(navnRegnskapsfører),
-    },
-    [EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie]: {
-        isIncluded: ({ harRegnskapsfører }) => harRegnskapsfører === YesOrNo.YES,
-        isAnswered: ({ regnskapsførerNærVennEllerFamilie }) => regnskapsførerNærVennEllerFamilie !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ telefonRegnskapsfører }) => hasValue(telefonRegnskapsfører),
-    },
 };
 
 const egenNæringModalQuestionsConfig = Questions<EgenNæringModalFormData, EgenNæringModalFormField>(

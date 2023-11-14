@@ -17,10 +17,6 @@ export enum EgenNæringModalFormField {
     datoForEndring = 'datoForEndring',
     inntektEtterEndring = 'inntektEtterEndring',
     forklaringEndring = 'forklaringEndring',
-    harRegnskapsfører = 'harRegnskapsfører',
-    navnRegnskapsfører = 'navnRegnskapsfører',
-    telefonRegnskapsfører = 'telefonRegnskapsfører',
-    regnskapsførerNærVennEllerFamilie = 'regnskapsførerNærVennEllerFamilie',
 }
 
 export interface EgenNæringModalFormData {
@@ -39,10 +35,6 @@ export interface EgenNæringModalFormData {
     [EgenNæringModalFormField.datoForEndring]: string;
     [EgenNæringModalFormField.inntektEtterEndring]: string;
     [EgenNæringModalFormField.forklaringEndring]: string;
-    [EgenNæringModalFormField.harRegnskapsfører]: YesOrNo;
-    [EgenNæringModalFormField.navnRegnskapsfører]: string;
-    [EgenNæringModalFormField.telefonRegnskapsfører]: string;
-    [EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie]: YesOrNo;
 }
 
 export const EgenNæringModalFormComponents = getTypedFormComponents<

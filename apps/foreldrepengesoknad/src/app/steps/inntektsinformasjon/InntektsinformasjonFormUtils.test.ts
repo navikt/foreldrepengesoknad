@@ -19,20 +19,13 @@ const næring = {
         næringsinntektEtterEndring: 130000,
         forklaring: 'Forklaring\u0009med blanke\u0009tegn',
     } as EndringAvNæringsinntektInformasjon,
-    harRegnskapsfører: true,
-    regnskapsfører: {
-        navn: 'Regnskapsfører\u034Fmed blanke\u00adtegn',
-        telefonnummer: '123456',
-        erNærVennEllerFamilie: false,
-    },
 } as Næring;
 
-const næringUtenEndringEllerRegnskapsfører = {
+const næringUtenEndring = {
     næringsinntekt: 220000,
     pågående: true,
     navnPåNæringen: 'Navn\u2002med blanke\u2003tegn',
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
-    harRegnskapsfører: false,
 } as Næring;
 
 const andreInntekter = [
@@ -64,18 +57,15 @@ describe('InntektsinformasjonFormUtils', () => {
         const cleanedNæring = cleanupInvisibleCharsFromNæring(næring);
         expect(cleanedNæring.navnPåNæringen).toEqual('Navn med blanke tegn');
         expect(cleanedNæring.endringAvNæringsinntektInformasjon!.forklaring).toEqual(cleanedForklaring);
-        expect(cleanedNæring.regnskapsfører!.navn).toEqual('Regnskapsfører med blanke tegn');
         expect(cleanedNæring.oppstartsdato).toEqual(næring.oppstartsdato);
-        expect(cleanedNæring.regnskapsfører!.telefonnummer).toEqual(næring.regnskapsfører?.telefonnummer);
         expect(cleanedNæring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring).toEqual(
             næring.endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring,
         );
     });
 
-    it('skal ikke feile med manglende info om regnskapsfører eller endring', async () => {
-        const cleanedNæring = cleanupInvisibleCharsFromNæring(næringUtenEndringEllerRegnskapsfører);
+    it('skal ikke feile med manglende info om endring', async () => {
+        const cleanedNæring = cleanupInvisibleCharsFromNæring(næringUtenEndring);
         expect(cleanedNæring.navnPåNæringen).toEqual('Navn med blanke tegn');
-        expect(cleanedNæring.harRegnskapsfører).toEqual(false);
         expect(cleanedNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår).toEqual(false);
     });
 

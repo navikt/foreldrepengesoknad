@@ -5,7 +5,7 @@ import {
     hasValue,
 } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { Næring, EndringAvNæringsinntektInformasjon, Næringsrelasjon } from 'app/context/types/Næring';
+import { Næring, EndringAvNæringsinntektInformasjon } from 'app/context/types/Næring';
 import { date4YearsAgo } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
@@ -27,10 +27,6 @@ export const initialEgenNæringModalValues: EgenNæringModalFormData = {
     [EgenNæringModalFormField.datoForEndring]: '',
     [EgenNæringModalFormField.inntektEtterEndring]: '',
     [EgenNæringModalFormField.forklaringEndring]: '',
-    [EgenNæringModalFormField.harRegnskapsfører]: YesOrNo.UNANSWERED,
-    [EgenNæringModalFormField.navnRegnskapsfører]: '',
-    [EgenNæringModalFormField.telefonRegnskapsfører]: '',
-    [EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie]: YesOrNo.UNANSWERED,
 };
 
 export const cleanupEgenNæringForm = (
@@ -77,20 +73,6 @@ export const cleanupEgenNæringForm = (
         forklaringEndring: visibility.isVisible(EgenNæringModalFormField.forklaringEndring)
             ? values.forklaringEndring
             : initialEgenNæringModalValues.forklaringEndring,
-        harRegnskapsfører: visibility.isVisible(EgenNæringModalFormField.harRegnskapsfører)
-            ? values.harRegnskapsfører
-            : initialEgenNæringModalValues.harRegnskapsfører,
-        navnRegnskapsfører: visibility.isVisible(EgenNæringModalFormField.navnRegnskapsfører)
-            ? values.navnRegnskapsfører
-            : initialEgenNæringModalValues.navnRegnskapsfører,
-        telefonRegnskapsfører: visibility.isVisible(EgenNæringModalFormField.telefonRegnskapsfører)
-            ? values.telefonRegnskapsfører
-            : initialEgenNæringModalValues.telefonRegnskapsfører,
-        regnskapsførerNærVennEllerFamilie: visibility.isVisible(
-            EgenNæringModalFormField.regnskapsførerNærVennEllerFamilie,
-        )
-            ? values.regnskapsførerNærVennEllerFamilie
-            : initialEgenNæringModalValues.regnskapsførerNærVennEllerFamilie,
     };
 };
 
@@ -128,32 +110,17 @@ export const getInitialEgenNæringModalValues = (næring: Næring | undefined): 
         forklaringEndring: næring.endringAvNæringsinntektInformasjon
             ? næring.endringAvNæringsinntektInformasjon.forklaring
             : '',
-        harRegnskapsfører: convertBooleanOrUndefinedToYesOrNo(næring.harRegnskapsfører),
-        navnRegnskapsfører: næring.regnskapsfører ? næring.regnskapsfører.navn : '',
-        telefonRegnskapsfører: næring.regnskapsfører ? næring.regnskapsfører.telefonnummer : '',
-        regnskapsførerNærVennEllerFamilie: convertBooleanOrUndefinedToYesOrNo(
-            næring.regnskapsfører ? næring.regnskapsfører.erNærVennEllerFamilie : undefined,
-        ),
     };
 };
 
 export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæringModalFormData>): Næring => {
     let endringAvNæringsinntektInformasjon: EndringAvNæringsinntektInformasjon | undefined = undefined;
-    let regnskapsfører: Næringsrelasjon | undefined = undefined;
 
     if (values.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES) {
         endringAvNæringsinntektInformasjon = {
             dato: ISOStringToDate(values.datoForEndring)!,
             forklaring: values.forklaringEndring!,
             næringsinntektEtterEndring: parseInt(values.inntektEtterEndring!),
-        };
-    }
-
-    if (values.harRegnskapsfører === YesOrNo.YES) {
-        regnskapsfører = {
-            navn: values.navnRegnskapsfører!,
-            telefonnummer: values.telefonRegnskapsfører!,
-            erNærVennEllerFamilie: convertYesOrNoOrUndefinedToBoolean(values.regnskapsførerNærVennEllerFamilie)!,
         };
     }
 
@@ -177,8 +144,6 @@ export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæring
         ),
         oppstartsdato: hasValue(values.yrkesAktivDato) ? ISOStringToDate(values.yrkesAktivDato) : undefined,
         endringAvNæringsinntektInformasjon: endringAvNæringsinntektInformasjon,
-        harRegnskapsfører: convertYesOrNoOrUndefinedToBoolean(values.harRegnskapsfører)!,
-        regnskapsfører: regnskapsfører,
     };
 };
 
