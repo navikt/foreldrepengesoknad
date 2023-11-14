@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -142,7 +146,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)(vite@4.4.9)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -208,7 +212,7 @@ importers:
         version: 1.8.1(eslint@8.38.0)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   apps/foreldrepengeoversikt:
     dependencies:
@@ -658,8 +662,8 @@ importers:
         specifier: ^6.15.0
         version: 6.15.0(react-dom@18.2.0)(react@18.2.0)
       react-scroll:
-        specifier: ^1.8.9
-        version: 1.8.9(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.9.0
+        version: 1.9.0(react-dom@18.2.0)(react@18.2.0)
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
@@ -693,7 +697,7 @@ importers:
         version: 9.3.1
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -734,8 +738,8 @@ importers:
         specifier: ^3.16.0
         version: 3.16.0
       '@types/react-scroll':
-        specifier: ^1.8.7
-        version: 1.8.7
+        specifier: ^1.8.10
+        version: 1.8.10
       '@types/react-transition-group':
         specifier: ^4.4.6
         version: 4.4.6
@@ -962,8 +966,8 @@ importers:
         specifier: ^6.15.0
         version: 6.15.0(react-dom@18.2.0)(react@18.2.0)
       react-scroll:
-        specifier: ^1.8.9
-        version: 1.8.9(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.9.0
+        version: 1.9.0(react-dom@18.2.0)(react@18.2.0)
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
@@ -1006,7 +1010,7 @@ importers:
         version: 9.3.1
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1114,7 +1118,7 @@ importers:
         version: 1.8.1(eslint@8.38.0)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/api:
     dependencies:
@@ -1246,7 +1250,7 @@ importers:
     devDependencies:
       '@navikt/ds-codemod':
         specifier: 3.4.2
-        version: 3.4.2(@babel/preset-env@7.22.10)(@types/node@20.5.0)
+        version: 3.4.2(@babel/preset-env@7.22.10)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -1270,7 +1274,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1300,7 +1304,7 @@ importers:
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/fp-common:
     dependencies:
@@ -1415,7 +1419,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1573,7 +1577,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1609,7 +1613,7 @@ importers:
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/utenlandsopphold:
     dependencies:
@@ -1682,7 +1686,7 @@ importers:
         version: 7.3.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1715,7 +1719,7 @@ importers:
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/utils:
     dependencies:
@@ -1777,7 +1781,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1807,7 +1811,7 @@ importers:
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/uttaksplan:
     dependencies:
@@ -1862,7 +1866,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.0.0
-        version: 6.0.0(jest@29.5.0)(vitest@0.34.2)
+        version: 6.0.0(vitest@0.34.2)
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -1895,7 +1899,7 @@ importers:
         version: 0.6.1(eslint@8.38.0)(typescript@5.2.2)(vite@4.4.9)
       vitest:
         specifier: ^0.34.2
-        version: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
+        version: 0.34.2(jsdom@22.1.0)(less@4.2.0)
 
   packages/validation:
     dependencies:
@@ -4168,6 +4172,31 @@ packages:
   /@navikt/aksel-icons@4.12.1:
     resolution: {integrity: sha512-OCCKfb3dtk2gUBKdzbJiMkM4PfYZZXL3tfNHKJLn8QDpt+x6zdsaJWwTPc/pyDrl/quVGN3oPBHZ+3+7r/YtVw==}
     dev: false
+
+  /@navikt/ds-codemod@3.4.2(@babel/preset-env@7.22.10):
+    resolution: {integrity: sha512-et6jHI9VgfT54OTg3T5waTt0QPDWE5cMKgUjrCBYF6W5bH+L5R+7bq0CGbsu6h2DqVRxQbzQgqqkJMh4xmu1Fg==}
+    engines: {node: '>=12.0.0'}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.0
+      cheerio: 1.0.0-rc.9
+      execa: 4.0.3
+      globby: 11.0.1
+      inquirer: 7.3.3
+      is-git-clean: 1.1.0
+      jest: 29.5.0(@types/node@18.17.1)
+      jscodeshift: 0.13.1(@babel/preset-env@7.22.10)
+      jscodeshift-add-imports: 1.0.10(jscodeshift@0.13.1)
+      lodash: 4.17.21
+      meow: 7.0.1
+      prettier: 2.8.8
+    transitivePeerDependencies:
+      - '@babel/preset-env'
+      - '@types/node'
+      - node-notifier
+      - supports-color
+      - ts-node
+    dev: true
 
   /@navikt/ds-codemod@3.4.2(@babel/preset-env@7.22.10)(@types/node@20.5.0):
     resolution: {integrity: sha512-et6jHI9VgfT54OTg3T5waTt0QPDWE5cMKgUjrCBYF6W5bH+L5R+7bq0CGbsu6h2DqVRxQbzQgqqkJMh4xmu1Fg==}
@@ -6539,6 +6568,35 @@ packages:
       vitest: 0.34.2(happy-dom@10.10.2)(jsdom@22.1.0)(less@4.2.0)(sass@1.65.1)
     dev: true
 
+  /@testing-library/jest-dom@6.0.0(vitest@0.34.2):
+    resolution: {integrity: sha512-Ye2R3+/oM27jir8CzYPmuWdavTaKwNZcu0d22L9pO/vnOYE0wmrtpw79TQJa8H6gV8/i7yd+pLaqeLlA0rTMfg==}
+    engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
+    peerDependencies:
+      '@jest/globals': '>= 28'
+      '@types/jest': '>= 28'
+      jest: '>= 28'
+      vitest: '>= 0.32'
+    peerDependenciesMeta:
+      '@jest/globals':
+        optional: true
+      '@types/jest':
+        optional: true
+      jest:
+        optional: true
+      vitest:
+        optional: true
+    dependencies:
+      '@adobe/css-tools': 4.2.0
+      '@babel/runtime': 7.22.10
+      aria-query: 5.1.3
+      chalk: 3.0.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.5.16
+      lodash: 4.17.21
+      redent: 3.0.0
+      vitest: 0.34.2(jsdom@22.1.0)(less@4.2.0)
+    dev: true
+
   /@testing-library/react@14.0.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-S04gSNJbYE30TlIMLTzv6QCTzt9AqIF5y6s6SzVFILNcNvbV/jU96GeiTPillGQo+Ny64M/5PV7klNYYgv5Dfg==}
     engines: {node: '>=14'}
@@ -6880,8 +6938,8 @@ packages:
       '@types/react': 18.2.20
     dev: true
 
-  /@types/react-scroll@1.8.7:
-    resolution: {integrity: sha512-BB8g+hQL7OtBPWg/NcES6p5u6vduZonGl1BxrsGUwcefE53pfI0pFDd1lRFndgEUE6whYdFfhD+j0sZZT/6brQ==}
+  /@types/react-scroll@1.8.10:
+    resolution: {integrity: sha512-RD4Z7grbdNGOKwKnUBKar6zNxqaW3n8m9QSrfvljW+gmkj1GArb8AFBomVr6xMOgHPD3v1uV3BrIf01py57daQ==}
     dependencies:
       '@types/react': 18.2.20
     dev: true
@@ -13939,6 +13997,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     optional: true
 
   /pseudomap@1.0.2:
@@ -14397,8 +14456,8 @@ packages:
       '@remix-run/router': 1.8.0
       react: 18.2.0
 
-  /react-scroll@1.8.9(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-9m7ztraiX/l6L7erzYAD3fhnveNckei6/NkWfqwN2e0FRdoE2W6Pk4oi2Nah7mWpPCPAeIgegfaqZACTimPOwg==}
+  /react-scroll@1.9.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-mamNcaX9Ng+JeSbBu97nWwRhYvL2oba+xR2GxvyXsbDeGP+gkYIKZ+aDMMj/n20TbV9SCWm/H7nyuNTSiXA6yA==}
     peerDependencies:
       react: ^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0
@@ -14912,6 +14971,7 @@ packages:
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    requiresBuild: true
     optional: true
 
   /saxes@6.0.0:
@@ -16746,6 +16806,72 @@ packages:
       - terser
     dev: true
 
+  /vitest@0.34.2(jsdom@22.1.0)(less@4.2.0):
+    resolution: {integrity: sha512-WgaIvBbjsSYMq/oiMlXUI7KflELmzM43BEvkdC/8b5CAod4ryAiY2z8uR6Crbi5Pjnu5oOmhKa9sy7uk6paBxQ==}
+    engines: {node: '>=v14.18.0'}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@vitest/browser': '*'
+      '@vitest/ui': '*'
+      happy-dom: '*'
+      jsdom: '*'
+      playwright: '*'
+      safaridriver: '*'
+      webdriverio: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+      playwright:
+        optional: true
+      safaridriver:
+        optional: true
+      webdriverio:
+        optional: true
+    dependencies:
+      '@types/chai': 4.3.5
+      '@types/chai-subset': 1.3.3
+      '@types/node': 18.17.1
+      '@vitest/expect': 0.34.2
+      '@vitest/runner': 0.34.2
+      '@vitest/snapshot': 0.34.2
+      '@vitest/spy': 0.34.2
+      '@vitest/utils': 0.34.2
+      acorn: 8.10.0
+      acorn-walk: 8.2.0
+      cac: 6.7.14
+      chai: 4.3.7
+      debug: 4.3.4
+      jsdom: 22.1.0
+      local-pkg: 0.4.3
+      magic-string: 0.30.2
+      pathe: 1.1.1
+      picocolors: 1.0.0
+      std-env: 3.3.3
+      strip-literal: 1.0.1
+      tinybench: 2.5.0
+      tinypool: 0.7.0
+      vite: 4.4.9(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      vite-node: 0.34.2(@types/node@18.17.1)(less@4.2.0)(sass@1.65.1)
+      why-is-node-running: 2.2.2
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
   /vscode-jsonrpc@6.0.0:
     resolution: {integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==}
     engines: {node: '>=8.0.0 || >=10.0.0'}
@@ -17142,7 +17268,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
