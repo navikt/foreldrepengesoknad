@@ -261,8 +261,6 @@ MedArbeidsforholdOgAndreInntekter.args = {
                 frilansInformasjon: {
                     jobberFremdelesSomFrilans: true,
                     oppstart: ISOStringToDate('2019-01-01'),
-                    harJobbetForNærVennEllerFamilieSiste10Mnd: false,
-                    oppdragForNæreVennerEllerFamilieSiste10Mnd: [],
                 },
             },
         },
@@ -289,43 +287,6 @@ MedArbeidsforholdOgAndreInntekter.args = {
             },
         ],
     } as SøkerinfoDTO,
-};
-
-export const MedArbeidsforholdOgAndreInntekterJobbetForNærFamilie = Template.bind({});
-MedArbeidsforholdOgAndreInntekterJobbetForNærFamilie.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            søker: {
-                ...context.søknad.søker,
-                harJobbetSomFrilansSiste10Mnd: true,
-                frilansInformasjon: {
-                    jobberFremdelesSomFrilans: true,
-                    oppstart: ISOStringToDate('2019-01-01'),
-                    harJobbetForNærVennEllerFamilieSiste10Mnd: true,
-                    oppdragForNæreVennerEllerFamilieSiste10Mnd: [
-                        {
-                            navnPåArbeidsgiver: 'Auto Joachim Bilpleie',
-                            pågående: true,
-                            tidsperiode: {
-                                fom: ISOStringToDate('2019-01-01'),
-                            },
-                        },
-                        {
-                            navnPåArbeidsgiver: 'Taco Express',
-                            pågående: false,
-                            tidsperiode: {
-                                fom: ISOStringToDate('2018-01-01'),
-                                tom: ISOStringToDate('2021-01-01'),
-                            },
-                        },
-                    ],
-                },
-            },
-        },
-    } as ForeldrepengesøknadContextState,
-    søkerinfo,
 };
 
 export const MedSelvstendigNæringsdrivende = Template.bind({});
