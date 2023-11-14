@@ -1,8 +1,7 @@
+import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { createContext, useReducer, FunctionComponent, ReactNode, useContext, useCallback } from 'react';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
-import { Søkersituasjon } from 'types/Søkersituasjon';
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 
 export enum EsDataType {
     SØKERSITUASJON = 'SØKERSITUASJON',

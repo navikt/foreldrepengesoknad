@@ -2,11 +2,11 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
 import withRouter from 'storybook/decorators/withRouter';
 import { Path } from 'appData/paths';
 import OmBarnetSteg from './OmBarnetSteg';
+import { SøkersituasjonEnum } from '@navikt/fp-types';
 
 export default {
     title: 'OmBarnetSteg',

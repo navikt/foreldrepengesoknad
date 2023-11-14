@@ -6,31 +6,14 @@ import * as stories from './UtenlandsoppholdSteg.stories';
 const { Default } = composeStories(stories);
 
 describe('<UtenlandsoppholdSteg>', () => {
-    it('skal vise feilmeldinger når en prøver å gå videre uten å oppgi obligatoriske felter', async () => {
-        render(<Default />);
-
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
-        expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
-        expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
-
-        expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
-        expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
-        expect(screen.getByText('Utenlandsopphold og støtte fra NAV')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-
-        expect(screen.getAllByText('Du må oppgi hvor du har bodd de siste 12 månedene')).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi hvor du skal bo de neste 12 månedene')).toHaveLength(2);
-    });
-
     it('skal oppgi at en har bodd i Norge og skal bo i Norge', async () => {
         const nesteStegFn = vi.fn();
 
         render(<Default gåTilNesteSide={nesteStegFn} />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
+        expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
         await userEvent.click(screen.getByText('Jeg skal bo i Norge'));

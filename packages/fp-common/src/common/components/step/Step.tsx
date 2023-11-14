@@ -10,10 +10,10 @@ import ProgressStepper from '../progress-stepper/ProgressStepper';
 import './step.less';
 
 export interface StepProps {
-    pageTitle: string;
+    pageTitle?: string;
     bannerTitle?: string;
     steps: StepIndicatorStep[];
-    activeStepId: string;
+    activeStepId?: string;
     children: React.ReactNode;
     showStepIndicator?: boolean;
     topContentRenderer?: () => React.ReactElement<any>;
@@ -39,12 +39,15 @@ const Step: React.FunctionComponent<StepProps> = ({
     infoMessage,
     useNoTempSavingText,
 }) => {
-    const currentStepIndex = steps.findIndex((s) => s.id === activeStepId);
+    const currentStepIndex = steps.findIndex((s) => s.id === activeStepId || s.isSelected);
+
+    const title = pageTitle || steps[currentStepIndex].label;
+
     const bem = bemUtils('step');
     return (
         <Page
             className={bem.block}
-            title={pageTitle}
+            title={title}
             ariaLabel={pageAriaLabel}
             topContentRenderer={() => (
                 <>
@@ -68,7 +71,7 @@ const Step: React.FunctionComponent<StepProps> = ({
                     </div>
                 </Block>
             )}
-            <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${pageTitle}`}>
+            <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
                 <Block>{children}</Block>
 
                 {(onCancel || onContinueLater) && (

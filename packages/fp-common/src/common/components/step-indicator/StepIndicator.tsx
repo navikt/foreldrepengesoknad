@@ -7,6 +7,7 @@ export interface StepIndicatorStep {
     id: string;
     index: number;
     label: string;
+    isSelected?: boolean;
 }
 
 interface Props {

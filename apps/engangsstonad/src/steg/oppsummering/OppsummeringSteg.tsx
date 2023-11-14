@@ -6,7 +6,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Person from 'types/Person';
 import useEsNavigator from 'appData/useEsNavigator';
-import useStepData from 'appData/useStepData';
+import useStepConfig from 'appData/useStepConfig';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
@@ -24,7 +24,7 @@ export interface Props {
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
     const { i18n } = useCustomIntl();
 
-    const stepData = useStepData();
+    const stepConfig = useStepConfig();
     const navigator = useEsNavigator();
 
     const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
@@ -52,10 +52,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     return (
         <Step
             bannerTitle={i18n('Søknad.Pageheading')}
-            pageTitle={i18n('OppsummeringSteg.Oppsummering')}
             onCancel={navigator.avbrytSøknad}
-            steps={stepData.stepConfig}
-            activeStepId={stepData.activeStepId}
+            steps={stepConfig}
             useNoTempSavingText
         >
             <VStack gap="10">
@@ -66,7 +64,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                             <BodyShort>{person.fnr}</BodyShort>
                         </VStack>
                     </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={i18n('OmBarnetSteg.OmBarnet')}>
+                    <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.OmBarnet')}>
                         <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                     </Oppsummeringspunkt>
                     <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.Utenlandsopphold')}>

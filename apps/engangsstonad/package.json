@@ -30,6 +30,7 @@
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
+        "@navikt/fp-utenlandsopphold": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@sentry/browser": "^7.64.0",
