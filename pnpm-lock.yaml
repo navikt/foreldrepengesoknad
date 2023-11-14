@@ -1631,27 +1631,15 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../form-hooks
-      '@navikt/fp-metrics':
-        specifier: workspace:*
-        version: link:../metrics
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
-      '@navikt/fp-ui':
-        specifier: workspace:*
-        version: link:../ui
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../utils
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
-      '@sentry/browser':
-        specifier: ^7.64.0
-        version: 7.64.0
-      bytes:
-        specifier: ^3.1.2
-        version: 3.1.2
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
@@ -1677,9 +1665,6 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
-      '@navikt/fp-utils-test':
-        specifier: workspace:*
-        version: link:../utils-test
       '@storybook/addon-essentials':
         specifier: ^7.3.1
         version: 7.3.1(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -1704,9 +1689,6 @@ importers:
       '@testing-library/user-event':
         specifier: ^14.4.3
         version: 14.4.3(@testing-library/dom@9.3.1)
-      '@types/bytes':
-        specifier: ^3.1.1
-        version: 3.1.1
       '@types/react':
         specifier: ^18.2.20
         version: 18.2.20
