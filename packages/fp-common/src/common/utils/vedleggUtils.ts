@@ -1,5 +1,5 @@
 import { guid } from './guid';
-import { Attachment, AttachmentType, InnsendingsType, Periode, Skjemanummer } from '../types';
+import { Attachment, AttachmentType, InnsendingsType, Skjemanummer } from '../types';
 
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 
@@ -101,21 +101,4 @@ export const extractAttachments = (søknad: unknown, foundAttachments: Attachmen
     });
 
     return ret;
-};
-
-export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
-    uttaksplan.forEach((p1: Periode) => {
-        if (p1.vedlegg) {
-            const vedleggIdRefs = p1.vedlegg.map((a: Attachment) => a.id);
-            uttaksplan.forEach((p2) => {
-                if (p1 !== p2 && p1.vedlegg && p2.vedlegg) {
-                    p2.vedlegg.forEach((a2) => {
-                        if (vedleggIdRefs.includes(a2.id)) {
-                            p2.vedlegg!.splice(p2.vedlegg!.indexOf(a2), 1);
-                        }
-                    });
-                }
-            });
-        }
-    });
 };

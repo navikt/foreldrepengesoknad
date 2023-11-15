@@ -2,7 +2,6 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import {
     AnnenForelder,
     Arbeidsforhold,
-    Attachment,
     Barn,
     BarnFraNesteSak,
     Block,
@@ -82,7 +81,6 @@ interface Props {
     familiehendelsesdatoNesteSak: Date | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
     minsterettUkerToTette: number | undefined;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 export interface PeriodeValidState {
@@ -126,7 +124,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
     familiehendelsesdatoNesteSak,
     førsteUttaksdagNesteBarnsSak,
     minsterettUkerToTette,
-    saveAttachment,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -227,8 +224,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
         }
     };
 
-    const vedleggForSenEndring = []!; //TODO: handleBegrunnelseVedleggChange
-
     const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderSomSkalSendesInn);
 
     const handleBegrunnelseTekstChange = (begrunnelse: string) => {
@@ -324,7 +319,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     utsettelserIPlan={utsettelserIPlan}
                     barnFraNesteSak={barnFraNesteSak}
                     perioderErGyldige={perioderErGyldige}
-                    saveAttachment={saveAttachment}
                 />
             </Block>
 
@@ -358,9 +352,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                             ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
                             : ''
                     }
-                    vedlegg={vedleggForSenEndring}
                     onBegrunnelseTekstChange={handleBegrunnelseTekstChange}
-                    //onVedleggChange={handleBegrunnelseVedleggChange}
                 />
             )}
             <SlettUttaksplanModal

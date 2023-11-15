@@ -1,8 +1,6 @@
 import {
     AnnenForelder,
-    Attachment,
     AttachmentType,
-    InnsendingsType,
     MissingAttachment,
     MorsAktivitet,
     Overføringsperiode,
@@ -39,11 +37,6 @@ const createMissingAttachment = (
     };
 };
 
-const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
-    attachments === undefined ||
-    attachments.length === 0 ||
-    (type !== undefined && attachments.find((a) => a.type === type) === undefined);
-
 export const shouldPeriodeHaveAttachment = (
     periode: Periode,
     søkerErFarEllerMedmor: boolean,
@@ -71,10 +64,7 @@ export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søk
         søknadsinfo.annenForelder,
     );
 
-    return (
-        shouldHave &&
-        isAttachmentMissing(periode.vedlegg?.filter((p) => p.innsendingsType !== InnsendingsType.SEND_SENERE))
-    );
+    return shouldHave;
 };
 
 export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): MissingAttachment[] => {
@@ -237,27 +227,21 @@ const missingAttachmentForAktivitetskrav = (
     const erSamtidigUttak = isUttaksperiode(periode) ? periode.ønskerSamtidigUttak : undefined;
     const morErForSyk = isUttaksperiode(periode) ? periode.erMorForSyk : undefined;
     const konto = isUttaksperiode(periode) ? periode.konto : undefined;
-    return (
-        aktivitetskravMorSkalBesvares(
-            ønskerFlerBarnsdager,
-            erSamtidigUttak,
-            morErForSyk,
-            periode.type,
-            konto,
-            søkerErMor,
-            søknadsinfo.søkerErAleneOmOmsorg,
-            søknadsinfo.annenForelder.kanIkkeOppgis,
-            søknadsinfo.søkerHarMidlertidigOmsorg,
-            periode.tidsperiode,
-            søknadsinfo.familiehendelsesdato,
-            søknadsinfo.termindato,
-            søknadsinfo.søkersituasjon.situasjon,
-            søknadsinfo.stønadskontoer,
-            !søknadsinfo.morHarRett,
-        ) &&
-        isAttachmentMissing(
-            periode.vedlegg?.filter((p) => p.innsendingsType !== InnsendingsType.SEND_SENERE),
-            AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-        )
+    return aktivitetskravMorSkalBesvares(
+        ønskerFlerBarnsdager,
+        erSamtidigUttak,
+        morErForSyk,
+        periode.type,
+        konto,
+        søkerErMor,
+        søknadsinfo.søkerErAleneOmOmsorg,
+        søknadsinfo.annenForelder.kanIkkeOppgis,
+        søknadsinfo.søkerHarMidlertidigOmsorg,
+        periode.tidsperiode,
+        søknadsinfo.familiehendelsesdato,
+        søknadsinfo.termindato,
+        søknadsinfo.søkersituasjon.situasjon,
+        søknadsinfo.stønadskontoer,
+        !søknadsinfo.morHarRett,
     );
 };

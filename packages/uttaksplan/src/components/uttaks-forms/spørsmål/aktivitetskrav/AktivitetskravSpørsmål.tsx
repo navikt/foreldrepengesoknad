@@ -1,11 +1,7 @@
 import {
-    Attachment,
-    AttachmentType,
     Block,
-    FormikFileUploader,
     MorsAktivitet,
     NavnPåForeldre,
-    Skjemanummer,
     getNavnGenitivEierform,
     hasValue,
     intlUtils,
@@ -19,15 +15,9 @@ import { BodyShort, GuidePanel } from '@navikt/ds-react';
 
 interface Props {
     fieldName: PeriodeUttakFormField | PeriodeUtsettelseFormField;
-    vedleggFieldName:
-        | PeriodeUttakFormField.aktivitetskravMorDokumentasjon
-        | PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon;
     FormComponents: any;
     navnPåForeldre: NavnPåForeldre;
     aktivitetskravMorValue: MorsAktivitet | '';
-    aktivitetskravVedlegg: Attachment[];
-    isOpen: boolean;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const getVeilederTekst = (
@@ -139,34 +129,11 @@ const renderOptions = (intl: IntlShape) => {
         ));
 };
 
-export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skjemanummer => {
-    switch (morsAktivitet) {
-        case MorsAktivitet.Innlagt:
-            return Skjemanummer.DOK_INNLEGGELSE;
-        case MorsAktivitet.Kvalifiseringsprogrammet:
-            return Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
-        case MorsAktivitet.Introduksjonsprogrammet:
-            return Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET;
-        case MorsAktivitet.ArbeidOgUtdanning:
-        case MorsAktivitet.Arbeid:
-        case MorsAktivitet.TrengerHjelp:
-            return Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
-        case MorsAktivitet.Utdanning:
-            return Skjemanummer.BEKREFTELSE_FRA_STUDIESTED;
-        default:
-            return Skjemanummer.ANNET;
-    }
-};
-
 const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
     fieldName,
-    vedleggFieldName,
     navnPåForeldre,
     aktivitetskravMorValue,
-    aktivitetskravVedlegg,
     FormComponents,
-    isOpen,
-    saveAttachment,
 }) => {
     const intl = useIntl();
 
@@ -209,18 +176,6 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                         />
                     </BodyShort>
                 </GuidePanel>
-            </Block>
-
-            <Block padBottom="l" visible={hasValue(aktivitetskravMorValue) && isOpen}>
-                <FormikFileUploader
-                    legend="Dokumentasjon for mors aktivitet"
-                    label="Last opp dokumentasjon for mors aktivitet"
-                    name={vedleggFieldName}
-                    attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-                    skjemanummer={getMorsAktivitetSkjemanummer(aktivitetskravMorValue as MorsAktivitet)}
-                    attachments={aktivitetskravVedlegg}
-                    saveAttachment={saveAttachment}
-                />
             </Block>
         </>
     );

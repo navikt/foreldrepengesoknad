@@ -1,5 +1,4 @@
-import { Attachment, AttachmentType, Block, intlUtils, Skjemanummer, UtsettelseÅrsakType } from '@navikt/fp-common';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
+import { Block, intlUtils, UtsettelseÅrsakType } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import {
@@ -15,7 +14,6 @@ interface Props {
     erFarEllerMedmor: boolean;
     tidsperiodenErInnenforFørsteSeksUker: boolean;
     utsettelseårsak: UtsettelseÅrsakType | '';
-    vedlegg: Attachment[];
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     isOpen: boolean;
@@ -113,65 +111,6 @@ const getUtsettelseÅrsakOptions = (
     return defaultRadios;
 };
 
-const getUtsettelseårsakSkjemanummer = (årsak: UtsettelseÅrsakType | '') => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-            return Skjemanummer.DOK_OVERFØRING_FOR_SYK;
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-            return Skjemanummer.DOK_INNLEGGELSE;
-        case UtsettelseÅrsakType.HvØvelse:
-            return Skjemanummer.HV_ØVELSE;
-        case UtsettelseÅrsakType.NavTiltak:
-            return Skjemanummer.NAV_TILTAK;
-        default:
-            return Skjemanummer.ANNET;
-    }
-};
-
-const showAttachmentUploader = (årsak: UtsettelseÅrsakType | ''): boolean => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-        case UtsettelseÅrsakType.HvØvelse:
-        case UtsettelseÅrsakType.NavTiltak:
-            return true;
-        default:
-            return false;
-    }
-};
-
-const getAttachmentUploaderLabel = (årsak: UtsettelseÅrsakType | ''): string => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-            return 'Last opp dokumentasjon for sykdom';
-        case UtsettelseÅrsakType.HvØvelse:
-            return 'Last opp dokumentasjon for HV-øvelse';
-        case UtsettelseÅrsakType.NavTiltak:
-            return 'Last opp dokumentasjon for NAV tiltak';
-        default:
-            return '';
-    }
-};
-
-const getAttachmentUploaderType = (årsak: UtsettelseÅrsakType | ''): AttachmentType => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-            return AttachmentType.UTSETTELSE_SYKDOM;
-        case UtsettelseÅrsakType.HvØvelse:
-            return AttachmentType.HV_ØVELSE;
-        case UtsettelseÅrsakType.NavTiltak:
-            return AttachmentType.NAV_TILTAK;
-        default:
-            return AttachmentType.UTSETTELSE_SYKDOM; // Should never happen
-    }
-};
-
 const getVeilederTekst = (årsak: UtsettelseÅrsakType | ''): React.ReactElement => {
     switch (årsak) {
         case UtsettelseÅrsakType.Sykdom:
@@ -193,10 +132,8 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     erFarEllerMedmor,
     tidsperiodenErInnenforFørsteSeksUker,
     utsettelseårsak,
-    vedlegg,
     erMorUfør,
     søkerErFarEllerMedmorOgKunDeHarRett,
-    isOpen,
 }) => {
     const intl = useIntl();
     const årsakOptions = getUtsettelseÅrsakOptions(
@@ -248,18 +185,8 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
                     }}
                 />
             </Block>
-            <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak)}>
+            <Block padBottom="l">
                 <GuidePanel>{getVeilederTekst(utsettelseårsak)}</GuidePanel>
-            </Block>
-            <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak) && isOpen}>
-                <FormikFileUploader
-                    legend="Dokumentasjon for utsettelsesårsak"
-                    label={getAttachmentUploaderLabel(utsettelseårsak)}
-                    name={PeriodeUtsettelseFormField.vedlegg}
-                    attachments={vedlegg || []}
-                    attachmentType={getAttachmentUploaderType(utsettelseårsak)}
-                    skjemanummer={getUtsettelseårsakSkjemanummer(utsettelseårsak)}
-                />
             </Block>
         </>
     );

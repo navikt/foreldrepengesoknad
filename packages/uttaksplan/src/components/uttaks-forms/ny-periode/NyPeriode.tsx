@@ -1,7 +1,6 @@
 import {
     AnnenForelder,
     Arbeidsforhold,
-    Attachment,
     Block,
     NavnPåForeldre,
     Periode,
@@ -40,7 +39,6 @@ interface Props {
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -66,7 +64,6 @@ const NyPeriode: FunctionComponent<Props> = ({
     antallBarn,
     utsettelserIPlan,
     intl,
-    saveAttachment,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -105,7 +102,6 @@ const NyPeriode: FunctionComponent<Props> = ({
                 utsettelserIPlan={utsettelserIPlan}
                 intl={intl}
                 isOpen={true}
-                saveAttachment={saveAttachment}
             />
         </>
     ) : (
@@ -126,7 +122,6 @@ const NyPeriode: FunctionComponent<Props> = ({
             utsettelserIPlan={utsettelserIPlan}
             setPerioderErGyldige={setPerioderErGyldige}
             isOpen={true}
-            saveAttachment={saveAttachment}
         />
     );
 };

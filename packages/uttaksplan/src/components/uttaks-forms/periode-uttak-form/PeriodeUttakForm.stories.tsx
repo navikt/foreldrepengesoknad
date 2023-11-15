@@ -119,7 +119,7 @@ const defaultInput = {
 };
 
 const Template: StoryFn<Props> = (args) => {
-    return <PeriodeUttakForm {...args} saveAttachment={() => null} />;
+    return <PeriodeUttakForm {...args} />;
 };
 
 export const NyPeriodeForMorEttBarnDeltUttakINorge = Template.bind({});

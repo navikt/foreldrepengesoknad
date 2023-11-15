@@ -16,7 +16,6 @@ import {
     isValidTidsperiode,
     ISOStringToDate,
     getSlettPeriodeTekst,
-    Attachment,
     PeriodeValidState,
 } from '@navikt/fp-common';
 import { Dispatch, FunctionComponent, useEffect, useState } from 'react';
@@ -65,7 +64,6 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     isOpen: boolean;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -86,7 +84,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     utsettelserIPlan,
     setPerioderErGyldige,
     isOpen,
-    saveAttachment,
 }) => {
     const intl = useIntl();
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -203,7 +200,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         tom: values.tom!,
                                     }).erInnenforFørsteSeksUker(familiehendelsesdato)}
                                     utsettelseårsak={values.årsak!}
-                                    vedlegg={values.vedlegg!}
                                     erMorUfør={erMorUfør}
                                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                     isOpen={isOpen}
@@ -231,13 +227,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             >
                                 <AktivitetskravSpørsmål
                                     aktivitetskravMorValue={values.morsAktivitetIPerioden!}
-                                    aktivitetskravVedlegg={values.morsAktivitetIPeriodenDokumentasjon!}
                                     fieldName={PeriodeUtsettelseFormField.morsAktivitetIPerioden}
                                     navnPåForeldre={navnPåForeldre}
                                     FormComponents={PeriodeUtsettelseFormComponents}
-                                    vedleggFieldName={PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon}
-                                    isOpen={isOpen}
-                                    saveAttachment={saveAttachment}
                                 />
                             </Block>
                             <Block

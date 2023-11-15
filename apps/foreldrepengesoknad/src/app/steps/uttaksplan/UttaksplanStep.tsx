@@ -51,11 +51,6 @@ import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tillegg
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
-
-// import {
-//     getVisAutomatiskJusteringForm,
-//     getKanJustereAutomatiskVedFødsel,
-// } from 'uttaksplan/components/automatisk-justering-form/automatiskJusteringUtils';
 import { FormikValues } from 'formik';
 import {
     getStartdatoFørstePeriodeAnnenPart,
@@ -71,7 +66,6 @@ import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Link } from 'react-router-dom';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttaksplan';
-import AttachmentApi from '../../api/attachmentApi';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import {
     getKanJustereAutomatiskVedFødsel,
@@ -595,7 +589,6 @@ const UttaksplanStep = () => {
                             handleResetUttaksplan={handleResetUttaksplan}
                             termindato={termindato}
                             barn={barn}
-                            saveAttachment={AttachmentApi.saveAttachment}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                             barnFraNesteSak={barnFraNesteSak}

@@ -1,4 +1,4 @@
-import { Attachment, Block, intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
@@ -8,12 +8,10 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 interface Props {
     fieldName: PeriodeUttakFormField;
     erMorForSyk: YesOrNo;
-    vedlegg: Attachment[];
     navnMor: string;
-    isOpen: boolean;
 }
 
-const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSyk, navnMor, vedlegg, isOpen }) => {
+const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSyk, navnMor }) => {
     const intl = useIntl();
 
     return (
@@ -32,7 +30,7 @@ const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSy
                 />
             </Block>
             <Block padBottom="l" visible={erMorForSyk === YesOrNo.YES}>
-                <MorErForSykDokumentasjonOpplastning navnMor={navnMor} vedlegg={vedlegg} isOpen={isOpen} />
+                <MorErForSykDokumentasjonOpplastning navnMor={navnMor} />
             </Block>
         </>
     );

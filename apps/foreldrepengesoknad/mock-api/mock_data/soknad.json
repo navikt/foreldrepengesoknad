@@ -3,24 +3,26 @@
         "type": "foreldrepenger",
         "harGodkjentVilkår": true,
         "søkersituasjon": {
-            "situasjon": "adopsjon",
+            "situasjon": "fødsel",
             "rolle": "far"
         },
         "barn": {
-            "type": "født",
+            "type": "ufødt",
             "antallBarn": 1,
-            "fødselsdatoer": ["2023-02-01T00:00:00.000Z"]
+            "termindato": "2023-12-14T00:00:00.000Z"
         },
         "annenForelder": {
-            "fornavn": "annen forelder",
-            "etternavn": "",
-            "fnr": "05489305072",
+            "etternavn": "morsen",
+            "fornavn": "MOR",
+            "fnr": "02068629902",
+            "utenlandskFnr": false,
+            "kanIkkeOppgis": false,
             "harRettPåForeldrepengerINorge": true,
             "harRettPåForeldrepengerIEØS": false,
-            "kanIkkeOppgis": false,
-            "erUfør": false
+            "erInformertOmSøknaden": true
         },
         "søker": {
+            "erAleneOmOmsorg": false,
             "språkkode": "nb"
         },
         "informasjonOmUtenlandsopphold": {
@@ -28,14 +30,147 @@
             "senereOpphold": []
         },
         "erEndringssøknad": false,
-        "uttaksplan": [],
+        "dekningsgrad": "100",
+        "uttaksplan": [
+            {
+                "id": "10020991-08516-10537-3889-035610830520",
+                "type": "periodeUtenUttak",
+                "tidsperiode": {
+                    "fom": "2023-12-14T00:00:00.000Z",
+                    "tom": "2024-01-05T00:00:00.000Z"
+                }
+            },
+            {
+                "id": "275003252-6005-0670-02043-00599099954999",
+                "forelder": "farMedmor",
+                "konto": "FEDREKVOTE",
+                "tidsperiode": {
+                    "fom": "2024-01-08T00:00:00.000Z",
+                    "tom": "2024-01-19T00:00:00.000Z"
+                },
+                "type": "uttak",
+                "erArbeidstaker": false,
+                "gradert": false,
+                "orgnumre": [],
+                "ønskerSamtidigUttak": true,
+                "samtidigUttakProsent": "100",
+                "vedlegg": []
+            },
+            {
+                "id": "2983004128-9371-6228-23050-45672846601405",
+                "type": "periodeUtenUttak",
+                "tidsperiode": {
+                    "fom": "2024-01-22T00:00:00.000Z",
+                    "tom": "2024-03-08T00:00:00.000Z"
+                }
+            },
+            {
+                "id": "19921835-1963-7070-05469-2602855869958",
+                "type": "overføring",
+                "forelder": "farMedmor",
+                "konto": "MØDREKVOTE",
+                "tidsperiode": {
+                    "fom": "2024-03-11T00:00:00.000Z",
+                    "tom": "2024-03-29T00:00:00.000Z"
+                },
+                "årsak": "INSTITUSJONSOPPHOLD_ANNEN_FORELDER",
+                "vedlegg": [
+                    {
+                        "id": "V28463803089047932459410229126558920",
+                        "file": {
+                            "name": "",
+                            "size": ""
+                        },
+                        "filename": "",
+                        "filesize": "",
+                        "uploaded": false,
+                        "pending": false,
+                        "type": "dokumentasjonOverføringAvKvote",
+                        "skjemanummer": "I000023",
+                        "innsendingsType": "SEND_SENERE"
+                    }
+                ]
+            }
+        ],
         "harGodkjentOppsummering": false,
         "vedlegg": [],
-        "tilleggsopplysninger": {}
+        "tilleggsopplysninger": {
+            "begrunnelseForSenEndring": {
+                "tekst": "asdasdasd",
+                "ekstraInformasjon": "SYKDOM"
+            }
+        }
     },
     "version": 5,
-    "currentRoute": "/soknad/sokersituasjon",
-    "perioderSomSkalSendesInn": [],
+    "currentRoute": "/soknad/uttaksplan",
+    "uttaksplanInfo": {
+        "antallDagerFellesperiode": "0",
+        "antallUkerFellesperiode": "0",
+        "farMedmorsFørsteDag": "2024-01-08",
+        "morsSisteDag": ""
+    },
+    "antallUkerIUttaksplan": 79,
+    "perioderSomSkalSendesInn": [
+        {
+            "id": "10020991-08516-10537-3889-035610830520",
+            "type": "periodeUtenUttak",
+            "tidsperiode": {
+                "fom": "2023-12-14T00:00:00.000Z",
+                "tom": "2024-01-05T00:00:00.000Z"
+            }
+        },
+        {
+            "id": "275003252-6005-0670-02043-00599099954999",
+            "forelder": "farMedmor",
+            "konto": "FEDREKVOTE",
+            "tidsperiode": {
+                "fom": "2024-01-08T00:00:00.000Z",
+                "tom": "2024-01-19T00:00:00.000Z"
+            },
+            "type": "uttak",
+            "erArbeidstaker": false,
+            "gradert": false,
+            "orgnumre": [],
+            "ønskerSamtidigUttak": true,
+            "samtidigUttakProsent": "100",
+            "vedlegg": []
+        },
+        {
+            "id": "2983004128-9371-6228-23050-45672846601405",
+            "type": "periodeUtenUttak",
+            "tidsperiode": {
+                "fom": "2024-01-22T00:00:00.000Z",
+                "tom": "2024-03-08T00:00:00.000Z"
+            }
+        },
+        {
+            "id": "19921835-1963-7070-05469-2602855869958",
+            "type": "overføring",
+            "forelder": "farMedmor",
+            "konto": "MØDREKVOTE",
+            "tidsperiode": {
+                "fom": "2024-03-11T00:00:00.000Z",
+                "tom": "2024-03-29T00:00:00.000Z"
+            },
+            "årsak": "INSTITUSJONSOPPHOLD_ANNEN_FORELDER",
+            "vedlegg": [
+                {
+                    "id": "V28463803089047932459410229126558920",
+                    "file": {
+                        "name": "",
+                        "size": ""
+                    },
+                    "filename": "",
+                    "filesize": "",
+                    "uploaded": false,
+                    "pending": false,
+                    "type": "dokumentasjonOverføringAvKvote",
+                    "skjemanummer": "I000023",
+                    "innsendingsType": "SEND_SENERE"
+                }
+            ]
+        }
+    ],
     "harUttaksplanBlittSlettet": false,
-    "søknadGjelderEtNyttBarn": false
+    "søknadGjelderEtNyttBarn": true
 }

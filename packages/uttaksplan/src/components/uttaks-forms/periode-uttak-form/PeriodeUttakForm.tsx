@@ -3,7 +3,6 @@ import {
     andreAugust2022ReglerGjelder,
     AnnenForelder,
     Arbeidsforhold,
-    Attachment,
     bemUtils,
     Block,
     Forelder,
@@ -87,7 +86,6 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
     isOpen: boolean;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
@@ -160,7 +158,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     utsettelserIPlan,
     intl,
     isOpen,
-    saveAttachment,
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -386,7 +383,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 visible={visibility.isVisible(PeriodeUttakFormField.overføringsårsak)}
                             >
                                 <OverføringsårsakSpørsmål
-                                    vedlegg={values.overføringsdokumentasjon!}
                                     navnAnnenForelder={navnPåAnnenForelder}
                                     erEndringssøknad={erEndringssøknad}
                                     valgtOverføringsårsak={values.overføringsårsak!}
@@ -401,8 +397,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     fieldName={PeriodeUttakFormField.uttakRundtFødselÅrsak}
                                     uttakRundtFødselÅrsak={values.uttakRundtFødselÅrsak!}
                                     navnMor={navnPåForeldre.mor}
-                                    vedlegg={values.erMorForSykDokumentasjon!}
-                                    isOpen={isOpen}
                                 />
                             </Block>
                             {startDatoPeriodeRundtFødselFarMedmor !== undefined &&
@@ -439,8 +433,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     fieldName={PeriodeUttakFormField.erMorForSyk}
                                     erMorForSyk={values.erMorForSyk!}
                                     navnMor={navnPåForeldre.mor}
-                                    vedlegg={values.erMorForSykDokumentasjon!}
-                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
@@ -463,11 +455,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     fieldName={PeriodeUttakFormField.aktivitetskravMor}
                                     navnPåForeldre={navnPåForeldre}
                                     aktivitetskravMorValue={values.aktivitetskravMor!}
-                                    aktivitetskravVedlegg={values.aktivitetskravMorDokumentasjon!}
                                     FormComponents={PeriodeUttakFormComponents}
-                                    vedleggFieldName={PeriodeUttakFormField.aktivitetskravMorDokumentasjon}
-                                    isOpen={isOpen}
-                                    saveAttachment={saveAttachment}
                                 />
                             </Block>
                             <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.skalHaGradering)}>

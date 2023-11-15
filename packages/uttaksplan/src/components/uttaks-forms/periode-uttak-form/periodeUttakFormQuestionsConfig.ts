@@ -310,22 +310,10 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
         isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).overføringsårsakSkalBesvares(),
         visibilityFilter: ({ values }) => hasValue(values.konto),
     },
-    [PeriodeUttakFormField.overføringsdokumentasjon]: {
-        isAnswered: ({ values }) => values.overføringsdokumentasjon.length >= 0,
-        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).overføringsårsakSkalBesvares(),
-        visibilityFilter: ({ values }) => hasValue(values.overføringsårsak),
-    },
     [PeriodeUttakFormField.aktivitetskravMor]: {
         isAnswered: ({ values }) => hasValue(values.aktivitetskravMor),
         isIncluded: ({ values, regelProps }) =>
             getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares(),
-        visibilityFilter: ({ values, regelProps }) =>
-            skalViseAktivitetskrav(getUttakSkjemaregler(values, regelProps), values),
-    },
-    [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: {
-        isAnswered: ({ values }) => values.aktivitetskravMorDokumentasjon.length >= 0,
-        isIncluded: ({ values, regelProps, isOpen }) =>
-            getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares() && isOpen,
         visibilityFilter: ({ values, regelProps }) =>
             skalViseAktivitetskrav(getUttakSkjemaregler(values, regelProps), values),
     },

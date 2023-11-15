@@ -10,7 +10,6 @@ import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysninge
 import { harTilleggsopplysningerGyldigeCharsTest } from './tester/harTilleggsopplysningerGyldigeCharsTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
-import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
 import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
@@ -54,7 +53,6 @@ export enum UttaksplanRegelKey {
     'begrunnelseVedForSenEndringHarUgyldigeChars' = 'begrunnelseVedForSenEndringHarUgyldigeChars',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
-    'perioderManglerVedlegg' = 'manglendeVedlegg',
     'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
     'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
@@ -155,12 +153,6 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksplanDatoSomIkkeErUttaksdag,
-    },
-    {
-        key: UttaksplanRegelKey.perioderManglerVedlegg,
-        alvorlighet: RegelAlvorlighet.ADVARSEL,
-        test: harPerioderManglendeVedleggTest,
-        slåsSammenVedOppsummering: true,
     },
     {
         key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,

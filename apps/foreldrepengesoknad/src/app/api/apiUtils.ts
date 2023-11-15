@@ -38,7 +38,6 @@ import {
     isUttaksperiode,
     isValidTidsperiode,
     removeAttachmentsWithUploadError,
-    removeDuplicateAttachments,
     sorterPerioder,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
@@ -373,8 +372,6 @@ export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): Søk
         ...rest,
     };
 
-    removeDuplicateAttachments(cleanedSøknad.uttaksplan);
-
     return mapAttachmentsToSøknadForInnsending(cleanedSøknad) as SøknadForInnsending; //TODO vedleggForSenEndring
 };
 
@@ -462,8 +459,6 @@ export const cleanEndringssøknad = (
         tilleggsopplysninger: cleanTilleggsopplysninger(søknad.tilleggsopplysninger),
         ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
     };
-
-    removeDuplicateAttachments(cleanedSøknad.uttaksplan);
 
     return mapAttachmentsToSøknadForInnsending(cleanedSøknad);
 };

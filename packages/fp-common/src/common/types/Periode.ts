@@ -24,7 +24,6 @@ export interface PeriodeBase {
     id: string;
     type: Periodetype;
     tidsperiode: TidsperiodeDate;
-    vedlegg?: Attachment[];
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
