@@ -52,9 +52,14 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
                         <BodyLong>
-                            {søkersituasjon === 'fødsel' && <FormattedMessage id="UtenlandsoppholdSteg.InfoFodsel" />}
-                            {søkersituasjon === 'adopsjon' && (
-                                <FormattedMessage id="UtenlandsoppholdSteg.InfoAdopsjon" />
+                            {stønadstype === 'Foreldrepenger' && (
+                                <FormattedMessage id="UtenlandsoppholdSteg.InfoOppholdFp" />
+                            )}
+                            {stønadstype === 'Engangsstønad' && søkersituasjon === 'fødsel' && (
+                                <FormattedMessage id="UtenlandsoppholdSteg.InfoFodselEs" />
+                            )}
+                            {stønadstype === 'Engangsstønad' && søkersituasjon === 'adopsjon' && (
+                                <FormattedMessage id="UtenlandsoppholdSteg.InfoAdopsjonEs" />
                             )}
                         </BodyLong>
                         <RadioGroup
@@ -121,8 +126,8 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                                                     </Link>
                                                 )}
                                                 {stønadstype === 'Foreldrepenger' && (
-                                                    <Link href={links.engangsstonadHvem}>
-                                                        nav.no/engangsstonad#hvem
+                                                    <Link href={links.foreldrepengerUtland}>
+                                                        nav.no/foreldrepenger#utland
                                                     </Link>
                                                 )}
                                             </BodyShort>

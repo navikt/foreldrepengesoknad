@@ -60,7 +60,12 @@ const foreldrepengesøknadReducer = (
                 søknad: {
                     ...state.søknad,
                     informasjonOmUtenlandsopphold: {
-                        ...state.søknad.informasjonOmUtenlandsopphold,
+                        tidligereOpphold: action.payload.iNorgeSiste12Mnd
+                            ? state.søknad.informasjonOmUtenlandsopphold.tidligereOpphold
+                            : [],
+                        senereOpphold: action.payload.iNorgeNeste12Mnd
+                            ? state.søknad.informasjonOmUtenlandsopphold.senereOpphold
+                            : [],
                         ...action.payload,
                     },
                 },

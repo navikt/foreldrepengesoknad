@@ -12,7 +12,7 @@ import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import SøknadRoutes from 'app/routes/routes';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { storeAppState } from 'app/utils/submitUtils';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import { useOnValidSubmitNew } from 'app/utils/hooks/useOnValidSubmit';
 import createConfig from '../stepsConfig';
 
 const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
@@ -48,9 +48,9 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
         return [actionCreator.setInformasjonOmUtenlandsoppholdSenere(senereUtenlandsopphold)];
     };
 
-    const { handleSubmit } = useOnValidSubmit(
+    const { handleSubmit } = useOnValidSubmitNew(
         onValidSubmitHandler,
-        SøknadRoutes.INNTEKTSINFORMASJON,
+        () => SøknadRoutes.INNTEKTSINFORMASJON,
         (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
 

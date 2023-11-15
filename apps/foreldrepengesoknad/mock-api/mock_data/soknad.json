@@ -45,10 +45,26 @@
             "erAleneOmOmsorg": false
         },
         "informasjonOmUtenlandsopphold": {
-            "tidligereOpphold": [],
-            "senereOpphold": [],
+            "tidligereOpphold": [
+                {
+                    "land": "AU",
+                    "tidsperiode": {
+                        "fom": "2023-11-08",
+                        "tom": "2023-11-15"
+                    }
+                }
+            ],
+            "senereOpphold": [
+                {
+                    "land": "AZ",
+                    "tidsperiode": {
+                        "fom": "2023-11-16",
+                        "tom": "2023-11-30"
+                    }
+                }
+            ],
             "iNorgeSiste12Mnd": true,
-            "iNorgeNeste12Mnd": false
+            "iNorgeNeste12Mnd": true
         },
         "erEndringssøknad": false,
         "uttaksplan": [
@@ -82,7 +98,7 @@
         "dekningsgrad": "100"
     },
     "version": 5,
-    "currentRoute": "/soknad/utenlandsopphold",
+    "currentRoute": "/soknad/inntektsinformasjon",
     "uttaksplanInfo": {
         "harAnnenForelderSøktFP": true,
         "annenStartdatoAdopsjon": "",
