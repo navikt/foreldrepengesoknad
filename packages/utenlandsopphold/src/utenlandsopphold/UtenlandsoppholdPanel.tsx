@@ -5,7 +5,7 @@ import { Form, ErrorSummaryHookForm, RadioGroup, StepButtonsHookForm } from '@na
 import { Step } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { isRequired } from '@navikt/fp-validation';
-import { StepConfig, SøkersituasjonEnum, Utenlandsopphold } from '@navikt/fp-types';
+import { Situasjon, StepConfig, Utenlandsopphold } from '@navikt/fp-types';
 import useUtenlandsoppholdIntl from '../intl/useUtenlandsoppholdIntl';
 import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
 
@@ -14,9 +14,10 @@ export interface Props {
     saveOnNext: (formValues: Utenlandsopphold) => void;
     saveOnPrevious: (formValues: Utenlandsopphold | undefined) => void;
     cancelApplication: () => void;
+    onContinueLater?: () => void;
     goToPreviousStep: () => void;
     stepConfig: StepConfig[];
-    søkersituasjon?: SøkersituasjonEnum;
+    søkersituasjon?: Situasjon;
     stønadstype: 'Engangsstønad' | 'Foreldrepenger' | 'Svangerskapspenger';
     supportsTempSaving?: boolean;
 }
@@ -26,6 +27,7 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     saveOnNext,
     saveOnPrevious,
     cancelApplication,
+    onContinueLater,
     goToPreviousStep,
     stepConfig,
     søkersituasjon,
@@ -40,15 +42,18 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
 
     return (
         <UtenlandsoppholdIntlProvider>
-            <Step onCancel={cancelApplication} steps={stepConfig} useNoTempSavingText={!supportsTempSaving}>
+            <Step
+                steps={stepConfig}
+                onCancel={cancelApplication}
+                onContinueLater={onContinueLater}
+                useNoTempSavingText={!supportsTempSaving}
+            >
                 <Form formMethods={formMethods} onSubmit={saveOnNext}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
                         <BodyLong>
-                            {søkersituasjon === SøkersituasjonEnum.FØDSEL && (
-                                <FormattedMessage id="UtenlandsoppholdSteg.InfoFodsel" />
-                            )}
-                            {søkersituasjon === SøkersituasjonEnum.ADOPSJON && (
+                            {søkersituasjon === 'fødsel' && <FormattedMessage id="UtenlandsoppholdSteg.InfoFodsel" />}
+                            {søkersituasjon === 'adopsjon' && (
                                 <FormattedMessage id="UtenlandsoppholdSteg.InfoAdopsjon" />
                             )}
                         </BodyLong>

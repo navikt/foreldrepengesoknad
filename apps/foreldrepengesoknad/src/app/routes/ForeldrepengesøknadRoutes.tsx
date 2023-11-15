@@ -7,7 +7,6 @@ import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasj
 import OmBarnet from 'app/steps/om-barnet/OmBarnet';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import Søkersituasjon from 'app/steps/søkersituasjon/Søkersituasjon';
-import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -15,6 +14,9 @@ import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-
 import SøknadSendt from '../pages/søknadSendt/SøknadSendt';
 import isAvailable from './isAvailable';
 import SøknadRoutes from './routes';
+import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
+import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 
 interface Props {
     fornavn: string;
@@ -49,7 +51,9 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, erEndringssøknad: boo
             <Route path={SøknadRoutes.ANNEN_FORELDER} element={<AnnenForelder />} />
             <Route path={SøknadRoutes.UTTAKSPLAN_INFO} element={<UttaksplanInfo />} />
             <Route path={SøknadRoutes.UTTAKSPLAN} element={<UttaksplanStep />} />
-            <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
+            <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
+            <Route path={SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD} element={<TidligereUtenlandsoppholdSteg />} />
+            <Route path={SøknadRoutes.SENERE_UTENLANDSOPPHOLD} element={<SenereUtenlandsoppholdSteg />} />
             <Route path={SøknadRoutes.INNTEKTSINFORMASJON} element={<Inntektsinformasjon />} />
             <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />
             <Route path={SøknadRoutes.SØKNAD_SENDT} element={<SøknadSendt />} />

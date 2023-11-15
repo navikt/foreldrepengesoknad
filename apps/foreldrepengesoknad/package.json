@@ -33,6 +33,7 @@
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
+        "@navikt/fp-utenlandsopphold": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@navikt/uttaksplan": "workspace:*",

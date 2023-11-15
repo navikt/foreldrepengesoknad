@@ -8,6 +8,8 @@ type AnnenForelderId = 'annenForelder';
 type UttaksplanInfo = 'uttaksplanInfo';
 type Uttaksplan = 'uttaksplan';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
+type UtenlandsoppholdSenereStepId = 'utenlandsoppholdSenere';
+type UtenlandsoppholdTidligereStepId = 'utenlandsoppholdTidligere';
 type Inntektsinformasjon = 'inntektsinformasjon';
 type PåkrevdDokumentasjonStepId = 'dokumentasjon';
 type OppsummeringStepId = 'oppsummering';
@@ -18,6 +20,8 @@ type StepIdWithBackHref =
     | UttaksplanInfo
     | Uttaksplan
     | UtenlandsoppholdStepId
+    | UtenlandsoppholdSenereStepId
+    | UtenlandsoppholdTidligereStepId
     | Inntektsinformasjon
     | PåkrevdDokumentasjonStepId
     | OppsummeringStepId;
@@ -76,13 +80,23 @@ const stepConfigFørstegangssøknad = (intl: IntlShape): StepConfig[] => [
         label: intlUtils(intl, 'steps.label.utenlandsopphold'),
     },
     {
-        id: 'inntektsinformasjon',
+        id: 'utenlandsoppholdTidligere',
         index: 6,
+        label: intlUtils(intl, 'steps.label.utenlandsopphold.tidligere'),
+    },
+    {
+        id: 'utenlandsoppholdSenere',
+        index: 7,
+        label: intlUtils(intl, 'steps.label.utenlandsopphold.senere'),
+    },
+    {
+        id: 'inntektsinformasjon',
+        index: 8,
         label: intlUtils(intl, 'steps.label.inntektsinformasjon'),
     },
     {
         id: 'oppsummering',
-        index: 7,
+        index: 9,
         label: intlUtils(intl, 'steps.label.oppsummering'),
     },
 ];
@@ -130,8 +144,14 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
         case 'utenlandsopphold':
             href = '/soknad/uttaksplan';
             break;
-        case 'inntektsinformasjon':
+        case 'utenlandsoppholdTidligere':
             href = '/soknad/utenlandsopphold';
+            break;
+        case 'utenlandsoppholdSenere':
+            href = '/soknad/utenlandsoppholdTidligere';
+            break;
+        case 'inntektsinformasjon':
+            href = '/soknad/utenlandsoppholdSenere';
             break;
         case 'dokumentasjon':
             href = '/soknad/dokumentasjon';

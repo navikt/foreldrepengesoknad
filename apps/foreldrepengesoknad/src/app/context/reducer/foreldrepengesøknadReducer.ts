@@ -65,6 +65,28 @@ const foreldrepengesøknadReducer = (
                     },
                 },
             };
+        case ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD_SENERE:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    informasjonOmUtenlandsopphold: {
+                        ...state.søknad.informasjonOmUtenlandsopphold,
+                        ...action.payload,
+                    },
+                },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD_TIDLIGERE:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    informasjonOmUtenlandsopphold: {
+                        ...state.søknad.informasjonOmUtenlandsopphold,
+                        ...action.payload,
+                    },
+                },
+            };
         case ForeldrepengesøknadContextActionKeys.AVBRYT_SØKNAD:
             return {
                 ...foreldrepengesøknadInitialState,

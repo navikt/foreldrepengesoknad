@@ -14,12 +14,12 @@ import { Path } from 'appData/paths';
 import { OmBarnet } from 'types/OmBarnet';
 import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
-import { Søkersituasjon, SøkersituasjonEnum } from '@navikt/fp-types';
+import { Søkersituasjon } from '@navikt/fp-types';
 
 type FormValues = FødtFormValues & AdopsjonFormValues;
 
 const utledNesteSteg = (formValues: FormValues, søkersituasjon: Søkersituasjon) => {
-    if (søkersituasjon.situasjon === SøkersituasjonEnum.ADOPSJON) {
+    if (søkersituasjon.situasjon === 'adopsjon') {
         return Path.ADOPSJONSBEKREFTELSE;
     }
     if (formValues.erBarnetFødt === false) {
@@ -87,8 +87,8 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    {søkersituasjon?.situasjon === SøkersituasjonEnum.ADOPSJON && <AdopsjonPanel kjønn={kjønn} />}
-                    {søkersituasjon?.situasjon === SøkersituasjonEnum.FØDSEL && <FødselPanel />}
+                    {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
+                    {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}
                     <StepButtonsHookForm<FormValues>
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         saveDataOnPreviousClick={mapOgLagreOmBarnet}
