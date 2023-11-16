@@ -37,10 +37,13 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
     const tom = watch(`utenlandsoppholdSiste12Mnd.${index}.tom`);
 
     const minDateFom = dayjs(DATE_1_YEAR_AGO).toDate();
-    const maxDateFom = tom && isSameOrBeforeToday(tom) ? dayjs(tom).toDate() : dayjs(DATE_TODAY).toDate();
+    const maxDateFom =
+        tom && isSameOrBeforeToday(tom) ? dayjs(tom).add(1, 'days').toDate() : dayjs(DATE_TODAY).toDate();
 
     const minDateTom =
-        fom && isDateAAfterDateB(DATE_1_YEAR_AGO, fom) ? dayjs(fom).toDate() : dayjs(DATE_1_YEAR_AGO).toDate();
+        fom && isDateAAfterDateB(fom, DATE_1_YEAR_AGO)
+            ? dayjs(fom).add(1, 'days').toDate()
+            : dayjs(DATE_1_YEAR_AGO).toDate();
     const maxDateTom = dayjs(DATE_TODAY).toDate();
 
     return (
