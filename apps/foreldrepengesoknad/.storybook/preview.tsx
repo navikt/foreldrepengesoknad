@@ -2,6 +2,7 @@ import { getIntlDecorator } from '@navikt/fp-utils-test';
 import { Preview } from '@storybook/react';
 import { allCommonMessages } from '@navikt/fp-common';
 
+import '@navikt/ds-css';
 import '../src/app/styles/app.less';
 
 import nnMessages from '../src/app/intl/nn_NO.json';

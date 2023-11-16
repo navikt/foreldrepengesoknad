@@ -35,10 +35,12 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const abortSignal = useAbortSignal();
 
     const [isChecked, setChecked] = useState(false);
+    const [isSubmitting, setSubmitting] = useState(false);
     const [isError, setIsError] = useState(false);
 
     const send = useCallback(
         (setButtonsDisabled: (isDisabled: boolean) => void) => {
+            setSubmitting(true);
             if (!isChecked) {
                 setIsError(true);
             } else {
@@ -86,6 +88,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
                     nextButtonText={i18n('OppsummeringSteg.Button.SendSøknad')}
                     nextButtonOnClick={send}
+                    isSubmitting={isSubmitting}
                 />
             </VStack>
         </Step>

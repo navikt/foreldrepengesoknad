@@ -16,7 +16,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent = () => {
     const navigator = useEsNavigator();
 
     const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
-    const sisteUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const lagreTidligereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
     const lagre = useCallback(
@@ -35,7 +35,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent = () => {
                 <FormattedMessage id="Søknad.Pageheading" />
             </Heading>
             <TidligereUtenlandsoppholdPanel
-                sisteUtenlandsopphold={sisteUtenlandsopphold}
+                tidligereUtenlandsopphold={tidligereUtenlandsopphold}
                 saveOnNext={lagre}
                 saveOnPrevious={lagreTidligereUtenlandsopphold}
                 cancelApplication={navigator.avbrytSøknad}

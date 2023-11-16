@@ -56,4 +56,39 @@ const useOnValidSubmit = <T>(
     return { handleSubmit, isSubmitting };
 };
 
+//TODO Midlertidig hook for å unngå omskrivning av original = mindre risiko
+export const useOnValidSubmitNew = <T>(
+    submitHandler: (values: T) => ForeldrepengesøknadContextAction[],
+    getNewRoute: (values: T) => SøknadRoutes,
+    postSubmit: (state: ForeldrepengesøknadContextState) => Promise<any>,
+) => {
+    const { dispatch, state } = useForeldrepengesøknadContext();
+    const navigate = useNavigate();
+
+    const handleSubmit = (values: T): Promise<any> => {
+        const newRoute = getNewRoute(values);
+
+        const actions = submitHandler(values);
+        const dispatchRouteChange =
+            newRoute === SøknadRoutes.SØKNAD_SENDT ? undefined : dispatch(actionCreator.updateCurrentRoute(newRoute));
+
+        return Promise.all([dispatchRouteChange, ...actions.map((a) => dispatch(a))]).then(() => {
+            return postSubmit(state)
+                .then(() => {
+                    navigate(newRoute);
+                })
+                .catch((error) => {
+                    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                        redirectToLogin();
+                    } else {
+                        sendErrorMessageToSentry(error);
+                        throw new Error(error);
+                    }
+                });
+        });
+    };
+
+    return { handleSubmit };
+};
+
 export default useOnValidSubmit;

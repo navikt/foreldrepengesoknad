@@ -8,14 +8,14 @@ import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
-import Utenlandsopphold from './Utenlandsopphold';
+import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 
 const søkerinfo = _søkerinfo as any;
 const context = _context as any;
 
 export default {
-    title: 'steps/Utenlandsopphold',
-    component: Utenlandsopphold,
+    title: 'steps/UtenlandsoppholdSteg',
+    component: UtenlandsoppholdSteg,
     decorators: [withRouter, withForeldrepengersøknadContext],
 };
 
@@ -31,7 +31,7 @@ const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
     return (
         <AxiosMock mock={restMock}>
             <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-                <Utenlandsopphold />
+                <UtenlandsoppholdSteg />
             </ForeldrepengerStateMock>
         </AxiosMock>
     );

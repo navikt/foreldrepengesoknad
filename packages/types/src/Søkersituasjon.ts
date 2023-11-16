@@ -1,8 +1,5 @@
-export enum SøkersituasjonEnum {
-    FØDSEL = 'fødsel',
-    ADOPSJON = 'adopsjon',
-}
+export type Situasjon = 'fødsel' | 'adopsjon' | 'omsorgsovertakelse';
 
 export type Søkersituasjon = {
-    situasjon?: SøkersituasjonEnum;
+    situasjon?: Situasjon;
 };

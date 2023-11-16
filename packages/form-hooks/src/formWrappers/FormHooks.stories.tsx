@@ -10,6 +10,7 @@ import Checkbox from './Checkbox';
 import TextField from './TextField';
 import TextArea from './TextArea';
 import CheckboxGroup from './CheckboxGroup';
+import Combobox from './Combobox';
 
 export default {
     title: 'FormHooks',
@@ -25,6 +26,7 @@ const Template: StoryFn = () => {
             textfieldpre: 'Har en tekst',
             textareapre: 'Har en tekst',
             checkpanelpre: ['test1', 'test2'],
+            comboboxPre: 'Tekst 1',
         },
     });
 
@@ -52,6 +54,16 @@ const Template: StoryFn = () => {
                     />
                     <TextArea name="textarea" label="Dette er et tekstarea" description="beskrivelse" />
                     <TextArea name="textareapre" label="Dette er et tekstarea som er preutfyllt" />
+                    <Combobox
+                        label="Dette er en combobox"
+                        name="combobox"
+                        options={['Valg 1', 'Valg 2', 'Tekst 1', 'Tekst 2']}
+                    />
+                    <Combobox
+                        label="Dette er en combobox der verdi er valgt"
+                        name="comboboxPre"
+                        options={['Valg 1', 'Valg 2', 'Tekst 1', 'Tekst 2']}
+                    />
                     <RadioGroup
                         name="radio"
                         description="Dette er en mer utfyllende tekst"
