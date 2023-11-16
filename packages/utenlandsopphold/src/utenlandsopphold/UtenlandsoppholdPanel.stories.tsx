@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import UtenlandsoppholdPanel from './UtenlandsoppholdPanel';
-import { SøkersituasjonEnum } from '@navikt/fp-types';
+import { Situasjon } from '@navikt/fp-types';
 
 export default {
     title: 'UtenlandsoppholdPanel',
@@ -9,7 +9,7 @@ export default {
 };
 
 const Template: StoryFn<{
-    søkersituasjon: SøkersituasjonEnum;
+    søkersituasjon: Situasjon;
     saveOnNext: () => void;
     saveOnPrevious: () => void;
     cancelApplication: () => void;
@@ -37,7 +37,7 @@ const Template: StoryFn<{
 
 export const ForFødsel = Template.bind({});
 ForFødsel.args = {
-    søkersituasjon: SøkersituasjonEnum.FØDSEL,
+    søkersituasjon: 'fødsel',
     saveOnNext: action('button-click'),
     saveOnPrevious: action('button-click'),
     cancelApplication: action('button-click'),
@@ -46,7 +46,7 @@ ForFødsel.args = {
 
 export const ForAdopsjon = Template.bind({});
 ForAdopsjon.args = {
-    søkersituasjon: SøkersituasjonEnum.ADOPSJON,
+    søkersituasjon: 'adopsjon',
     saveOnNext: action('button-click'),
     saveOnPrevious: action('button-click'),
     cancelApplication: action('button-click'),
