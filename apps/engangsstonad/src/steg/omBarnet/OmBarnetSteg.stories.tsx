@@ -6,7 +6,7 @@ import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
 import withRouter from 'storybook/decorators/withRouter';
 import { Path } from 'appData/paths';
 import OmBarnetSteg from './OmBarnetSteg';
-import { SøkersituasjonEnum } from '@navikt/fp-types';
+import { Situasjon } from '@navikt/fp-types';
 
 export default {
     title: 'OmBarnetSteg',
@@ -18,7 +18,7 @@ export default {
 };
 
 const Template: StoryFn<{
-    søkersituasjon: SøkersituasjonEnum;
+    søkersituasjon: Situasjon;
     kjønn: Kjønn;
     gåTilNesteSide: (action: Action) => void;
 }> = ({ søkersituasjon, kjønn, gåTilNesteSide }) => {
@@ -35,20 +35,20 @@ const Template: StoryFn<{
 
 export const VisSideForAdopsjonKvinne = Template.bind({});
 VisSideForAdopsjonKvinne.args = {
-    søkersituasjon: SøkersituasjonEnum.ADOPSJON,
+    søkersituasjon: 'adopsjon',
     kjønn: 'K',
     gåTilNesteSide: action('button-click'),
 };
 
 export const VisSideForAdopsjonMann = Template.bind({});
 VisSideForAdopsjonMann.args = {
-    søkersituasjon: SøkersituasjonEnum.ADOPSJON,
+    søkersituasjon: 'adopsjon',
     kjønn: 'M',
     gåTilNesteSide: action('button-click'),
 };
 
 export const VisSideForFodsel = Template.bind({});
 VisSideForFodsel.args = {
-    søkersituasjon: SøkersituasjonEnum.FØDSEL,
+    søkersituasjon: 'fødsel',
     gåTilNesteSide: action('button-click'),
 };

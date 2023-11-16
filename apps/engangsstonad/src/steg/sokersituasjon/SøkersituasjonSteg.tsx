@@ -10,7 +10,7 @@ import { isRequired } from '@navikt/fp-validation';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
-import { Søkersituasjon, SøkersituasjonEnum } from '@navikt/fp-types';
+import { Søkersituasjon } from '@navikt/fp-types';
 
 const SøkersituasjonSteg: React.FunctionComponent = () => {
     const { i18n } = useCustomIntl();
@@ -52,10 +52,10 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
                         label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
                         validate={[isRequired(i18n('SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon'))]}
                     >
-                        <Radio value={SøkersituasjonEnum.FØDSEL}>
+                        <Radio value="fødsel">
                             <FormattedMessage id="SøkersituasjonSteg.Fødsel" />
                         </Radio>
-                        <Radio value={SøkersituasjonEnum.ADOPSJON}>
+                        <Radio value="adopsjon">
                             <FormattedMessage id="SøkersituasjonSteg.Adopsjon" />
                         </Radio>
                     </RadioGroup>

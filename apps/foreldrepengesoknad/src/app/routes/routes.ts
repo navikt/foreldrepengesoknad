@@ -6,6 +6,8 @@ enum SøknadRoutes {
     UTTAKSPLAN_INFO = '/soknad/uttaksplan-info',
     UTTAKSPLAN = '/soknad/uttaksplan',
     UTENLANDSOPPHOLD = '/soknad/utenlandsopphold',
+    TIDLIGERE_UTENLANDSOPPHOLD = '/soknad/tidligere-utenlandsopphold',
+    SENERE_UTENLANDSOPPHOLD = '/soknad/senere-utenlandsopphold',
     INNTEKTSINFORMASJON = '/soknad/inntektsinformasjon',
     MANGLENDE_VEDLEGG = '/soknad/manglende-vedlegg',
     OPPSUMMERING = '/soknad/oppsummering',

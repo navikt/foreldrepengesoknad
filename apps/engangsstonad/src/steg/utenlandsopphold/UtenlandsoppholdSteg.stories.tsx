@@ -5,7 +5,6 @@ import withRouter from 'storybook/decorators/withRouter';
 import { Path } from 'appData/paths';
 import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
-import { SøkersituasjonEnum } from '@navikt/fp-types';
 
 export default {
     title: 'UtenlandsoppholdSteg',
@@ -22,7 +21,7 @@ const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåT
         <EsDataContext
             onDispatch={gåTilNesteSide}
             initialState={{
-                [EsDataType.SØKERSITUASJON]: { situasjon: SøkersituasjonEnum.FØDSEL },
+                [EsDataType.SØKERSITUASJON]: { situasjon: 'fødsel' },
             }}
         >
             <UtenlandsoppholdSteg />

@@ -1,6 +1,7 @@
 {
-    "UtenlandsoppholdSteg.InfoFodsel": "For å få rett til engangsstønad må du være medlem av folketrygden på tidspunktet for fødsel.",
-    "UtenlandsoppholdSteg.InfoAdopsjon": "For å få rett til engangsstønad må du være medlem av folketrygden på tidspunktet for omsorgsovertakelsen ved adopsjon.",
+    "UtenlandsoppholdSteg.InfoOppholdFp": "For å få rett til foreldrepenger må du være medlem av norsk folketrygd.",
+    "UtenlandsoppholdSteg.InfoFodselEs": "For å få rett til engangsstønad må du være medlem av folketrygden på tidspunktet for fødsel.",
+    "UtenlandsoppholdSteg.InfoAdopsjonEs": "For å få rett til engangsstønad må du være medlem av folketrygden på tidspunktet for omsorgsovertakelsen ved adopsjon.",
     "UtenlandsoppholdSteg.Siste12Måneder.Spørsmål": "Hvor har du bodd de siste 12 månedene?",
     "UtenlandsoppholdSteg.Siste12Måneder.IsRequired": "Du må oppgi hvor du har bodd de siste 12 månedene",
     "UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge": "Jeg har bodd i Norge",

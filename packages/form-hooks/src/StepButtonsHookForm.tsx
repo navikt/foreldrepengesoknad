@@ -17,7 +17,7 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
 }: Props<DATA_TYPE>) => {
     const {
         getValues,
-        formState: { dirtyFields },
+        formState: { dirtyFields, isSubmitting },
     } = useFormContext<DATA_TYPE>();
 
     const onBackButtonClick = useCallback(() => {
@@ -32,6 +32,7 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
             goToPreviousStep={onBackButtonClick}
             nextButtonText={nextButtonText}
             nextButtonOnClick={nextButtonOnClick}
+            isSubmitting={isSubmitting}
         />
     );
 };
