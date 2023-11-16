@@ -6,8 +6,6 @@ export enum InntektsinformasjonFormField {
     hattAndreInntekter = 'hattAndreInntekter',
     frilansOppstartsDato = 'frilansOppstartsDato',
     jobberFremdelesSomFrilanser = 'jobberFremdelesSomFrilanser',
-    oppdragForNæreVennerEllerFamilie = 'oppdragForNæreVennerEllerFamilie',
-    inntektSomFosterforelder = 'inntektSomFosterforelder',
 }
 
 export interface InntektsinformasjonFormData {
@@ -15,9 +13,7 @@ export interface InntektsinformasjonFormData {
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo;
     [InntektsinformasjonFormField.hattAndreInntekter]: YesOrNo;
     [InntektsinformasjonFormField.frilansOppstartsDato]: string;
-    [InntektsinformasjonFormField.inntektSomFosterforelder]: YesOrNo;
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo;
-    [InntektsinformasjonFormField.oppdragForNæreVennerEllerFamilie]: YesOrNo;
 }
 
 export const InntektsinformasjonFormComponents = getTypedFormComponents<

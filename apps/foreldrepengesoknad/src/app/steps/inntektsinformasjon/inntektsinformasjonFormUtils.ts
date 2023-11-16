@@ -16,22 +16,7 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
     [InntektsinformasjonFormField.hattInntektSomNæringsdrivende]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.hattAndreInntekter]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.frilansOppstartsDato]: '',
-    [InntektsinformasjonFormField.oppdragForNæreVennerEllerFamilie]: YesOrNo.UNANSWERED,
-    [InntektsinformasjonFormField.inntektSomFosterforelder]: YesOrNo.UNANSWERED,
     [InntektsinformasjonFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
-};
-
-const cleanUpRegnskapsførerNæring = (næring: Næring): Næring => {
-    if (næring.harRegnskapsfører) {
-        return {
-            ...næring,
-            regnskapsfører: {
-                ...næring.regnskapsfører!,
-                navn: replaceInvisibleCharsWithSpace(næring.regnskapsfører!.navn),
-            },
-        };
-    }
-    return næring;
 };
 
 export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
@@ -43,13 +28,13 @@ export const cleanupInvisibleCharsFromNæring = (næring: Næring): Næring => {
         };
 
         return {
-            ...cleanUpRegnskapsførerNæring(næring),
+            ...næring,
             navnPåNæringen: cleanedNavn,
             endringAvNæringsinntektInformasjon: cleanedEndringInformasjon,
         };
     }
     return {
-        ...cleanUpRegnskapsførerNæring(næring),
+        ...næring,
         navnPåNæringen: cleanedNavn,
     };
 };
@@ -76,7 +61,6 @@ export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
     søker: Søker,
     andreInntekter?: AnnenInntekt[],
-    frilansoppdrag?: FrilansOppdrag[],
     næringer?: Næring[],
 ): Søker => {
     let frilansInformasjon: Frilans | undefined = undefined;
@@ -85,11 +69,6 @@ export const mapInntektsinformasjonFormDataToState = (
         frilansInformasjon = {
             oppstart: ISOStringToDate(values.frilansOppstartsDato)!,
             jobberFremdelesSomFrilans: convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser)!,
-            harJobbetForNærVennEllerFamilieSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
-                values.oppdragForNæreVennerEllerFamilie,
-            )!,
-            driverFosterhjem: convertYesOrNoOrUndefinedToBoolean(values.inntektSomFosterforelder),
-            oppdragForNæreVennerEllerFamilieSiste10Mnd: cleanupInvisibleCharsFromFrilansinformasjon(frilansoppdrag!),
         };
     }
 
@@ -120,14 +99,8 @@ export const getInitialInntektsinformasjonFormValues = (søker: Søker): Inntekt
         ),
         hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilansSiste10Mnd),
         frilansOppstartsDato: søker.frilansInformasjon ? dateToISOString(søker.frilansInformasjon.oppstart) : '',
-        inntektSomFosterforelder: søker.frilansInformasjon
-            ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.driverFosterhjem)
-            : YesOrNo.UNANSWERED,
         jobberFremdelesSomFrilanser: søker.frilansInformasjon
             ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.jobberFremdelesSomFrilans)
-            : YesOrNo.UNANSWERED,
-        oppdragForNæreVennerEllerFamilie: søker.frilansInformasjon
-            ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd)
             : YesOrNo.UNANSWERED,
     };
 };

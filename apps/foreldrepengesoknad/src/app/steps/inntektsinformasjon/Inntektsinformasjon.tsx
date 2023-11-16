@@ -52,9 +52,6 @@ const Inntektsinformasjon = () => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const [frilansoppdrag, setFrilansoppdrag] = useState(
-        søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : [],
-    );
     const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : [],
     );
@@ -67,7 +64,6 @@ const Inntektsinformasjon = () => {
             values,
             søker,
             andreInntekterInformasjon,
-            frilansoppdrag,
             egenNæringInformasjon,
         );
 
@@ -119,8 +115,6 @@ const Inntektsinformasjon = () => {
 
                             <Block padBottom="l">
                                 <Frilans
-                                    frilansoppdrag={frilansoppdrag}
-                                    setFrilansoppdrag={setFrilansoppdrag}
                                     visibility={visibility}
                                     formValues={formValues as InntektsinformasjonFormData}
                                 />

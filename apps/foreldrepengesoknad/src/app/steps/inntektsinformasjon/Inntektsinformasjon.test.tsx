@@ -53,24 +53,14 @@ describe('<Inntektsinformasjon>', () => {
         await userEvent.click(screen.getAllByText('Ja')[1]);
 
         expect(
-            screen.getByText('Har du hatt oppdrag for nær venn eller familie de 10 siste månedene?'),
+            screen.getByText('Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?'),
         ).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(screen.getByText('Har du inntekt som fosterforelder?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Nei')[3]);
-
-        expect(
-            screen.getByText('Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?'),
-        ).toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Nei')[4]);
-
         expect(screen.getByText('Har du hatt andre inntektskilder de siste 10 månedene?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Nei')[5]);
+        await userEvent.click(screen.getAllByText('Nei')[3]);
 
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
