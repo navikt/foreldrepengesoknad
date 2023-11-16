@@ -1,0 +1,6 @@
+import{j as t}from"./fridagerUtils-7f6f8b4d.js";import{w as a}from"./withSvangerskapspengerContext-54552dd6.js";import{w as n}from"./withRouter-cc6edfc3.js";import{S as i}from"./SvangerskapspengerStateMock-b0083491.js";import{_ as c}from"./soknad-056e750f.js";import{O as s}from"./SvangerskapspengesøknadRoutes-4afc1dea.js";import"./_baseToString-eff6580f.js";import"./index-141b66e5.js";import"./_createSet-2af3afe7.js";import"./v4-a960c1f4.js";import"./links-1ca9c199.js";import"./index-5f63170e.js";import"./useSvangerskapspengerContext-b9f5fe4b.js";import"./Forside-e778b797.js";import"./message-e9f743ec.js";import"./_baseIteratee-0b22cba6.js";import"./_baseUniq-fb17d414.js";import"./amplitude-f82aaa69.js";import"./provider-2b404625.js";const C={title:"steps/Oppsummering",component:s,decorators:[n,a]},m=c,u=()=>t.jsx(i,{context:m,children:t.jsx(s,{})}),r=u.bind({});r.args={context:m};var o,e,p;r.parameters={...r.parameters,docs:{...(o=r.parameters)==null?void 0:o.docs,source:{originalSource:`() => {
+  return <SvangerskapspengerStateMock context={context}>
+            <Oppsummering />
+        </SvangerskapspengerStateMock>;
+}`,...(p=(e=r.parameters)==null?void 0:e.docs)==null?void 0:p.source}}};const T=["Default"];export{r as Default,T as __namedExportsOrder,C as default};
+//# sourceMappingURL=Oppsummering.stories-67fc2ace.js.map
