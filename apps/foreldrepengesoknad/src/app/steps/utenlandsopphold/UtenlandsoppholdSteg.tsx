@@ -24,15 +24,18 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     useSaveLoadedRoute(SøknadRoutes.UTENLANDSOPPHOLD);
 
     const { informasjonOmUtenlandsopphold, søkersituasjon } = useSøknad();
-    const utenlandsopphold = {
-        harBoddUtenforNorgeSiste12Mnd: informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
-        skalBoUtenforNorgeNeste12Mnd: informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-    };
+    const utenlandsopphold =
+        informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined
+            ? {
+                  harBoddUtenforNorgeSiste12Mnd: !informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
+                  skalBoUtenforNorgeNeste12Mnd: !informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
+              }
+            : undefined;
 
     const onValidSubmitHandler = (values: Utenlandsopphold) => {
         const utenlandsopphold = {
-            iNorgeSiste12Mnd: values.harBoddUtenforNorgeSiste12Mnd,
-            iNorgeNeste12Mnd: values.skalBoUtenforNorgeNeste12Mnd,
+            iNorgeSiste12Mnd: !values.harBoddUtenforNorgeSiste12Mnd,
+            iNorgeNeste12Mnd: !values.skalBoUtenforNorgeNeste12Mnd,
         };
         return [actionCreator.setInformasjonOmUtenlandsopphold(utenlandsopphold)];
     };
