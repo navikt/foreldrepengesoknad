@@ -57,8 +57,8 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
     const goToPreviousStep = () => {
         navigate(
             informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
-                ? SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD
-                : SøknadRoutes.UTENLANDSOPPHOLD,
+                ? SøknadRoutes.UTENLANDSOPPHOLD
+                : SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
         );
     };
     const saveOnPrevious = () => {
@@ -83,6 +83,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
                 onContinueLater={onFortsettSøknadSenere}
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}
+                supportsTempSaving
             />
         </ContentWrapper>
     );

@@ -80,6 +80,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                 stepConfig={stepConfig}
                 søkersituasjon={søkersituasjon.situasjon}
                 stønadstype="Foreldrepenger"
+                supportsTempSaving
             />
         </ContentWrapper>
     );

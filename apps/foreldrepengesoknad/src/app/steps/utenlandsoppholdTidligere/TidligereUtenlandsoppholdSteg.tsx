@@ -52,9 +52,9 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent = () => {
         onValidSubmitHandler,
         () => {
             if (informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
-                return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
+                return SøknadRoutes.INNTEKTSINFORMASJON;
             }
-            return SøknadRoutes.INNTEKTSINFORMASJON;
+            return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
         },
         (state: ForeldrepengesøknadContextState) => storeAppState(state),
     );
@@ -84,6 +84,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent = () => {
                 onContinueLater={onFortsettSøknadSenere}
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}
+                supportsTempSaving
             />
         </ContentWrapper>
     );

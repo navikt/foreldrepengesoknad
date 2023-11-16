@@ -37,9 +37,9 @@ import { Link } from 'react-router-dom';
 import InformasjonOmUtenlandsopphold from 'app/context/types/InformasjonOmUtenlandsopphold';
 
 const findPreviousUrl = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
-    if (informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
+    if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
         return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
-    } else if (informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
+    } else if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
         return SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
     }
     return SøknadRoutes.UTENLANDSOPPHOLD;

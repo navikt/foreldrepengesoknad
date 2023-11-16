@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
-import { createCountryOptions, formatDate } from '@navikt/fp-utils';
+import { createCountryOptions, formatDate, isDateAAfterDateB, isSameOrBeforeToday } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
 import { DATE_TODAY, DATE_1_YEAR_AGO } from '@navikt/fp-constants';
 import {
@@ -37,9 +37,10 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
     const tom = watch(`utenlandsoppholdSiste12Mnd.${index}.tom`);
 
     const minDateFom = dayjs(DATE_1_YEAR_AGO).toDate();
-    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(DATE_TODAY).toDate();
+    const maxDateFom = tom && isSameOrBeforeToday(tom) ? dayjs(tom).toDate() : dayjs(DATE_TODAY).toDate();
 
-    const minDateTom = fom ? dayjs(fom).toDate() : dayjs(DATE_1_YEAR_AGO).toDate();
+    const minDateTom =
+        fom && isDateAAfterDateB(DATE_1_YEAR_AGO, fom) ? dayjs(fom).toDate() : dayjs(DATE_1_YEAR_AGO).toDate();
     const maxDateTom = dayjs(DATE_TODAY).toDate();
 
     return (
