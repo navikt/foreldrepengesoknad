@@ -26,11 +26,7 @@ const AnnenInntektDetaljer: FunctionComponent<Props> = ({ annenInntekt }) => {
             </>
         );
     }
-    if (
-        type === AnnenInntektType.VENTELØNN ||
-        type === AnnenInntektType.SLUTTPAKKE ||
-        type === AnnenInntektType.MILITÆRTJENESTE
-    ) {
+    if (type === AnnenInntektType.SLUTTPAKKE || type === AnnenInntektType.MILITÆRTJENESTE) {
         const renderListOfAttachmentPreviewLinks = () => {
             return vedlegg
                 .filter((a: Attachment) => !isAttachmentWithError(a))
