@@ -114,11 +114,7 @@
     "egenNæring.yrkesaktivDato": "Når vart du yrkesaktiv?",
     "egenNæring.egenNæringHattVarigEndringDeSiste4Årene": "Har du hatt ei varig endring i verksemda eller arbeidssituasjonen din dei siste 4 åra?",
     "egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel": "Kva siktar ein til med varig endring?",
-<<<<<<< HEAD
     "egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info": "Med varig endring meiner me at noko er forandra i arbeidssituasjonen eller verksemda di. Dette kan vere ei omlegging av korleis du jobbar, ei utviding av drifta di, eller ei konkret endring i marknaden din. Ei inntektsendring åleine (økt eller redusert inntekt) er ikkje nok for å telja som ei varig endring.",
-=======
-    "egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info": "Med varig endring meiner me at noko er forandra i arbeidssituasjonen eller verksemda di. Dette kan vera ei omlegging av korleis du jobbar, ei utviding av drifta di, eller ei konkret endring i marknaden din. Ei inntektsendring åleine (økt eller redusert inntekt) er ikkje nok for å telja som ei varig endring.",
->>>>>>> lagt til readmore på egen næring
     "egenNæring.egenNæringVarigEndringDato": "Kva var datoen for endringa?",
     "egenNæring.egenNæringVarigEndringInntektEtterEndring": "Kva var næringsinntekta di etter endringa?",
     "egenNæring.egenNæringVarigEndringInntektEtterEndring.description": "Oppgi årsinntekta i heile kroner.",
