@@ -639,7 +639,6 @@
     "valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.påkrevd": "Du må oppgi navn på oppdragsgiver",
     "valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.lengde": "Navn på oppdragsgiver kan ikke inneholde mer enn 100 tegn",
     "valideringsfeil.inntektsinformasjon.frilansoppdrag.pågående.påkrevd": "Du må oppgi om oppdraget er pågående",
-    "valideringsfeil.inntektsinformasjon.regnskapsførerTelefonnummer.ugyldigFormat": "Telefonnummeret til regnskapsfører kan kun bestå av siffer",
     "valideringsfeil.inntektsinformasjon.varigEndringAvInntekt.ugyldigFormat": "Varig endring av inntekt kan kun bestå av siffer og må oppgis i hele kroner",
     "valideringsfeil.inntektsinformasjon.næringsinntekt.ugyldigFormat": "Næringsresultat kan kun bestå av siffer og må oppgis i hele kroner",
     "valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
