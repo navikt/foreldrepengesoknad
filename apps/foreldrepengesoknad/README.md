@@ -1,6 +1,6 @@
 # Selvbetjeningsløsning for søknad om foreldrepenger.
 
-Kildekoden til frontend-appen for foreldrepengesøknad.
+Kildekoden til frontend-appen for foreldrepengesøknad. 
 
 # Komme i gang
 
