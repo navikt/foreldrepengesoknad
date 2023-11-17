@@ -25,6 +25,7 @@ export interface ForeldrepengesøknadContextState {
     endringstidspunkt?: Date;
     barnFraNesteSak?: BarnFraNesteSak;
     annenPartsUttakErLagtTilIPlan?: boolean;
+    vedleggMetadata?: any;
 }
 
 export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState = {

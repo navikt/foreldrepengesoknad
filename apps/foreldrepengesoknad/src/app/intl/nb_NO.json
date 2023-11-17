@@ -998,6 +998,8 @@
     "uttaksplan.validering.info.harPerioderEtterFørsteStønadsdagNesteBarnDerToTette.mor": "Perioder innenfor 3 uker før fødsel til 6 uker etter fødsel for det nye barnet kan bli avslått på grunn av overlappende stønadsperiode for nytt barn.",
     "uttaksplan.validering.info.harPerioderEtterFørsteStønadsdagNesteBarnDerToTette.far": "Du ikke kan få foreldrepenger for gammelt og nytt barn i samme periode. Pass derfor på at perioden du legger til ikke overlapper med perioder i søknad for nytt barn.",
     "uttaksplan.validering.info.overstigerMinsterettVedToTette": "Du kan ta ut inntil {uker} uker foreldrepenger. Du har tatt ut {forMyeUttak} dager for mye.",
+    "uttaksplan.validering.info.manglendeVedlegg.tittel": "Manglende vedlegg",
+    "uttaksplan.validering.info.manglendeVedlegg": "Husk å sende oss dokumentasjonen som mangler innen 3 uker. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
     "uttaksplan.validering.feil.inneholderUtsettelserUtenÅrsak": "Du må legge inn hvorfor du skal utsette",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.tittel": "Planen inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser": "Husk at du må søke om foreldrepenger senest {sisteDag}.",

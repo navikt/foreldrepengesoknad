@@ -23,17 +23,24 @@
         },
         "søker": {
             "erAleneOmOmsorg": false,
-            "språkkode": "nb"
+            "språkkode": "nb",
+            "harHattAnnenInntektSiste10Mnd": false,
+            "harJobbetSomFrilansSiste10Mnd": false,
+            "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd": false,
+            "andreInntekterSiste10Mnd": [],
+            "selvstendigNæringsdrivendeInformasjon": []
         },
         "informasjonOmUtenlandsopphold": {
             "tidligereOpphold": [],
-            "senereOpphold": []
+            "senereOpphold": [],
+            "iNorgeSiste12Mnd": true,
+            "iNorgeNeste12Mnd": true
         },
         "erEndringssøknad": false,
         "dekningsgrad": "100",
         "uttaksplan": [
             {
-                "id": "10020991-08516-10537-3889-035610830520",
+                "id": "524613308-3359-5843-01874-82521265000433",
                 "type": "periodeUtenUttak",
                 "tidsperiode": {
                     "fom": "2023-12-14T00:00:00.000Z",
@@ -41,7 +48,7 @@
                 }
             },
             {
-                "id": "275003252-6005-0670-02043-00599099954999",
+                "id": "2971719097-8197-13402-2789-09786152676084",
                 "forelder": "farMedmor",
                 "konto": "FEDREKVOTE",
                 "tidsperiode": {
@@ -50,53 +57,16 @@
                 },
                 "type": "uttak",
                 "erArbeidstaker": false,
+                "erMorForSyk": true,
                 "gradert": false,
-                "orgnumre": [],
-                "ønskerSamtidigUttak": true,
-                "samtidigUttakProsent": "100",
-                "vedlegg": []
-            },
-            {
-                "id": "2983004128-9371-6228-23050-45672846601405",
-                "type": "periodeUtenUttak",
-                "tidsperiode": {
-                    "fom": "2024-01-22T00:00:00.000Z",
-                    "tom": "2024-03-08T00:00:00.000Z"
-                }
-            },
-            {
-                "id": "19921835-1963-7070-05469-2602855869958",
-                "type": "overføring",
-                "forelder": "farMedmor",
-                "konto": "MØDREKVOTE",
-                "tidsperiode": {
-                    "fom": "2024-03-11T00:00:00.000Z",
-                    "tom": "2024-03-29T00:00:00.000Z"
-                },
-                "årsak": "INSTITUSJONSOPPHOLD_ANNEN_FORELDER",
-                "vedlegg": [
-                    {
-                        "id": "V28463803089047932459410229126558920",
-                        "file": {
-                            "name": "",
-                            "size": ""
-                        },
-                        "filename": "",
-                        "filesize": "",
-                        "uploaded": false,
-                        "pending": false,
-                        "type": "dokumentasjonOverføringAvKvote",
-                        "skjemanummer": "I000023",
-                        "innsendingsType": "SEND_SENERE"
-                    }
-                ]
+                "orgnumre": []
             }
         ],
         "harGodkjentOppsummering": false,
         "vedlegg": [],
         "tilleggsopplysninger": {
             "begrunnelseForSenEndring": {
-                "tekst": "asdasdasd",
+                "tekst": "",
                 "ekstraInformasjon": "SYKDOM"
             }
         }
@@ -112,7 +82,7 @@
     "antallUkerIUttaksplan": 79,
     "perioderSomSkalSendesInn": [
         {
-            "id": "10020991-08516-10537-3889-035610830520",
+            "id": "524613308-3359-5843-01874-82521265000433",
             "type": "periodeUtenUttak",
             "tidsperiode": {
                 "fom": "2023-12-14T00:00:00.000Z",
@@ -120,7 +90,7 @@
             }
         },
         {
-            "id": "275003252-6005-0670-02043-00599099954999",
+            "id": "2971719097-8197-13402-2789-09786152676084",
             "forelder": "farMedmor",
             "konto": "FEDREKVOTE",
             "tidsperiode": {
@@ -129,46 +99,9 @@
             },
             "type": "uttak",
             "erArbeidstaker": false,
+            "erMorForSyk": true,
             "gradert": false,
-            "orgnumre": [],
-            "ønskerSamtidigUttak": true,
-            "samtidigUttakProsent": "100",
-            "vedlegg": []
-        },
-        {
-            "id": "2983004128-9371-6228-23050-45672846601405",
-            "type": "periodeUtenUttak",
-            "tidsperiode": {
-                "fom": "2024-01-22T00:00:00.000Z",
-                "tom": "2024-03-08T00:00:00.000Z"
-            }
-        },
-        {
-            "id": "19921835-1963-7070-05469-2602855869958",
-            "type": "overføring",
-            "forelder": "farMedmor",
-            "konto": "MØDREKVOTE",
-            "tidsperiode": {
-                "fom": "2024-03-11T00:00:00.000Z",
-                "tom": "2024-03-29T00:00:00.000Z"
-            },
-            "årsak": "INSTITUSJONSOPPHOLD_ANNEN_FORELDER",
-            "vedlegg": [
-                {
-                    "id": "V28463803089047932459410229126558920",
-                    "file": {
-                        "name": "",
-                        "size": ""
-                    },
-                    "filename": "",
-                    "filesize": "",
-                    "uploaded": false,
-                    "pending": false,
-                    "type": "dokumentasjonOverføringAvKvote",
-                    "skjemanummer": "I000023",
-                    "innsendingsType": "SEND_SENERE"
-                }
-            ]
+            "orgnumre": []
         }
     ],
     "harUttaksplanBlittSlettet": false,

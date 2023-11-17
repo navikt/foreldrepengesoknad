@@ -35,6 +35,7 @@ import { inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest } from './te
 import { farMedmorHarRettPåFlerbarnsdagerTest } from './tester/farMedmorHarRettPåFlerbarnsdagerTest';
 import { overstigerMinsterettVedToTette } from './tester/overstigerMinsterettVedToTette';
 import { harPerioderEtterFørsteStønadsdagNesteBarnDerToTette } from './tester/harPerioderEtterFørsteStønadsdagNesteBarnDerToTette';
+import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
 import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
 
 export enum UttaksplanRegelKey {
@@ -74,6 +75,7 @@ export enum UttaksplanRegelKey {
     'inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest' = 'inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest',
     'overstigerMinsterettVedToTette' = 'overstigerMinsterettVedToTette',
     'harPerioderEtterFørsteStønadsdagNesteBarnDerToTette' = 'harPerioderEtterFørsteStønadsdagNesteBarnDerToTette',
+    'perioderManglerVedlegg' = 'manglendeVedlegg',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -263,6 +265,12 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.harPerioderEtterFørsteStønadsdagNesteBarnDerToTette,
         alvorlighet: RegelAlvorlighet.INFO,
         test: harPerioderEtterFørsteStønadsdagNesteBarnDerToTette,
+    },
+    {
+        key: UttaksplanRegelKey.perioderManglerVedlegg,
+        alvorlighet: RegelAlvorlighet.ADVARSEL,
+        test: harPerioderManglendeVedleggTest,
+        slåsSammenVedOppsummering: true,
     },
 ];
 
