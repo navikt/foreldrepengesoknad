@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
-import { createCountryOptions, formatDate } from '@navikt/fp-utils';
+import { createCountryOptions, formatDate, isSameOrAfterToday } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { DATE_1_YEAR_FROM_NOW, DATE_TODAY } from '@navikt/fp-constants';
@@ -38,9 +38,9 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
     const tom = watch(`utenlandsoppholdNeste12Mnd.${index}.tom`);
 
     const minDateFom = dayjs(DATE_TODAY).toDate();
-    const maxDateFom = tom ? dayjs(tom).toDate() : dayjs(DATE_1_YEAR_FROM_NOW).toDate();
+    const maxDateFom = tom ? dayjs(tom).subtract(1, 'days').toDate() : dayjs(DATE_1_YEAR_FROM_NOW).toDate();
 
-    const minDateTom = dayjs(fom || DATE_TODAY).toDate();
+    const minDateTom = fom && isSameOrAfterToday(fom) ? dayjs(fom).add(1, 'days').toDate() : dayjs(DATE_TODAY).toDate();
     const maxDateTom = dayjs(DATE_1_YEAR_FROM_NOW).toDate();
 
     return (
@@ -65,8 +65,8 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
             <Datepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.fom`}
                 label={<FormattedMessage id="SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed" />}
-                minDate={dayjs(DATE_TODAY).toDate()}
-                maxDate={tom ? dayjs(tom).toDate() : dayjs(DATE_1_YEAR_FROM_NOW).toDate()}
+                minDate={minDateFom}
+                maxDate={maxDateFom}
                 validate={[
                     isRequired(i18n('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandFomDuSkalBoIPåkreved')),
                     isValidDate(i18n('SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato')),
@@ -113,6 +113,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                     ),
                 ]}
                 onChange={() => isSubmitted && trigger()}
+                defaultMonth={fom ? dayjs(fom).toDate() : undefined}
             />
             {index > 0 && (
                 <Button
