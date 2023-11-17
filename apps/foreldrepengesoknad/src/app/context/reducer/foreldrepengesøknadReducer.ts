@@ -233,6 +233,11 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 annenPartsUttakErLagtTilIPlan: action.payload,
             };
+        case ForeldrepengesøknadContextActionKeys.SET_MANGLER_DOKUMENTASJON:
+            return {
+                ...state,
+                manglerDokumentasjon: action.payload,
+            };
         default:
             return state;
     }

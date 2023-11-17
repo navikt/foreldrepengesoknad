@@ -31,67 +31,92 @@ interface StepConfig {
     index: number;
     label: string;
 }
-const stepConfigEndringssøknad = (intl: IntlShape): StepConfig[] => [
-    {
-        id: 'uttaksplan',
-        index: 0,
-        label: intlUtils(intl, 'steps.label.uttaksplan'),
-    },
-    {
-        id: 'oppsummering',
-        index: 1,
-        label: intlUtils(intl, 'steps.label.oppsummering'),
-    },
-];
 
-const stepConfigFørstegangssøknad = (intl: IntlShape): StepConfig[] => [
-    {
-        id: 'søkersituasjon',
-        index: 0,
-        label: intlUtils(intl, 'steps.label.søkersituasjon'),
-    },
-    {
-        id: 'omBarnet',
-        index: 1,
-        label: intlUtils(intl, 'steps.label.omBarnet'),
-    },
-    {
-        id: 'annenForelder',
-        index: 2,
-        label: intlUtils(intl, 'steps.label.annenForelder'),
-    },
-    {
-        id: 'uttaksplanInfo',
-        index: 3,
-        label: intlUtils(intl, 'steps.label.uttaksplanInfo'),
-    },
-    {
-        id: 'uttaksplan',
-        index: 4,
-        label: intlUtils(intl, 'steps.label.uttaksplan'),
-    },
-    {
-        id: 'utenlandsopphold',
-        index: 5,
-        label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-    },
-    {
-        id: 'inntektsinformasjon',
-        index: 6,
-        label: intlUtils(intl, 'steps.label.inntektsinformasjon'),
-    },
-    {
-        id: 'oppsummering',
-        index: 7,
-        label: intlUtils(intl, 'steps.label.oppsummering'),
-    },
-];
+const createStepConfig = (id: StepId, index: number, label: string): StepConfig => {
+    return {
+        id,
+        index,
+        label,
+    };
+};
 
-const stepConfig = (intl: IntlShape, erEndringssøknad: boolean): StepConfig[] => {
-    if (erEndringssøknad) {
-        return stepConfigEndringssøknad(intl);
+const getStepLabel = (intl: IntlShape, id: StepId): string => {
+    switch (id) {
+        case 'uttaksplan':
+            return intlUtils(intl, 'steps.label.uttaksplan');
+        case 'dokumentasjon':
+            return intlUtils(intl, 'steps.label.dokumentasjon');
+        case 'oppsummering':
+            return intlUtils(intl, 'steps.label.oppsummering');
+        case 'uttaksplanInfo':
+            return intlUtils(intl, 'steps.label.uttaksplanInfo');
+        case 'søkersituasjon':
+            return intlUtils(intl, 'steps.label.søkersituasjon');
+        case 'omBarnet':
+            return intlUtils(intl, 'steps.label.omBarnet');
+        case 'annenForelder':
+            return intlUtils(intl, 'steps.label.annenForelder');
+        case 'utenlandsopphold':
+            return intlUtils(intl, 'steps.label.utenlandsopphold');
+        case 'inntektsinformasjon':
+            return intlUtils(intl, 'steps.label.inntektsinformasjon');
+        default:
+            assertUnreachable(id, 'Forsøkt å lage en overskrift for et steg som ikke finnes');
     }
-    return stepConfigFørstegangssøknad(intl);
+
+    return id;
+};
+
+const stepConfigEndringssøknad = (intl: IntlShape, manglerDokumentasjon: boolean): StepConfig[] => {
+    const steps: StepId[] = ['uttaksplan', 'oppsummering'];
+    const stepsDokumentasjonPåkrevd: StepId[] = ['uttaksplan', 'dokumentasjon', 'oppsummering'];
+
+    return manglerDokumentasjon
+        ? stepsDokumentasjonPåkrevd.map((id, index) => {
+              return createStepConfig(id, index, getStepLabel(intl, id));
+          })
+        : steps.map((id, index) => {
+              return createStepConfig(id, index, getStepLabel(intl, id));
+          });
+};
+
+const stepConfigFørstegangssøknad = (intl: IntlShape, manglerDokumentasjon: boolean): StepConfig[] => {
+    const steps: StepId[] = [
+        'søkersituasjon',
+        'omBarnet',
+        'annenForelder',
+        'uttaksplanInfo',
+        'uttaksplan',
+        'utenlandsopphold',
+        'inntektsinformasjon',
+        'oppsummering',
+    ];
+    const stepsDokumentasjonPåkrevd: StepId[] = [
+        'søkersituasjon',
+        'omBarnet',
+        'annenForelder',
+        'uttaksplanInfo',
+        'uttaksplan',
+        'dokumentasjon',
+        'utenlandsopphold',
+        'inntektsinformasjon',
+        'oppsummering',
+    ];
+
+    return manglerDokumentasjon
+        ? stepsDokumentasjonPåkrevd.map((id, index) => {
+              return createStepConfig(id, index, getStepLabel(intl, id));
+          })
+        : steps.map((id, index) => {
+              return createStepConfig(id, index, getStepLabel(intl, id));
+          });
+};
+
+const stepConfig = (intl: IntlShape, erEndringssøknad: boolean, manglerDokumentasjon = false): StepConfig[] => {
+    if (erEndringssøknad) {
+        return stepConfigEndringssøknad(intl, manglerDokumentasjon);
+    }
+    return stepConfigFørstegangssøknad(intl, manglerDokumentasjon);
 };
 
 export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndringssøknad): string => {

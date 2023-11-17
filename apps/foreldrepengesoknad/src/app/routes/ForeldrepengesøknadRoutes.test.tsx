@@ -44,6 +44,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
         brukerSvarteJaPåAutoJustering: undefined,
         søknadGjelderEtNyttBarn: undefined!,
         barnFraNesteSak: undefined,
+        manglerDokumentasjon: false,
     };
 
     it('skal vise velkommen-side når denne ruten er valgt', async () => {

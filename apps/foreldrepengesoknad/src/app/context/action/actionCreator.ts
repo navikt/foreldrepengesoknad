@@ -54,6 +54,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_BRUKER_SVARTE_JA_PÅ_AUTO_JUSTERING = 'setBrukerSvarteJaPAutoJustering',
     SET_BARN_FRA_NESTE_SAK = 'setBarnFraNesteSak',
     SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN = 'setAnnenPartsUttakErLagtTilIPlan',
+    SET_MANGLER_DOKUMENTASJON = 'setManglerDokumentasjon',
 }
 
 interface SetVelkommen {
@@ -385,6 +386,17 @@ const setAnnenPartsUttakErLagtTilIPlan = (payload: boolean): SetAnnenPartsUttakE
     type: ForeldrepengesøknadContextActionKeys.SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN,
     payload,
 });
+
+interface SetManglerDokumentasjon {
+    type: ForeldrepengesøknadContextActionKeys.SET_MANGLER_DOKUMENTASJON;
+    payload: boolean;
+}
+
+const setManglerDokumentasjon = (payload: boolean): SetManglerDokumentasjon => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_MANGLER_DOKUMENTASJON,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -418,7 +430,8 @@ export type ForeldrepengesøknadContextAction =
     | SetØnskerJustertUttakVedFødsel
     | SetBrukerSvarteJaPåAutoJustering
     | SetBarnFraNesteSak
-    | SetAnnenPartsUttakErLagtTilIPlan;
+    | SetAnnenPartsUttakErLagtTilIPlan
+    | SetManglerDokumentasjon;
 
 export default {
     setVelkommen,
@@ -454,4 +467,5 @@ export default {
     setBrukerSvarteJaPåAutoJustering,
     setBarnFraNesteSak,
     setAnnenPartsUttakErLagtTilIPlan,
+    setManglerDokumentasjon,
 };

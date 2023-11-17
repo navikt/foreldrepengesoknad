@@ -65,7 +65,7 @@ import { Alert, Button, Loader } from '@navikt/ds-react';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Link } from 'react-router-dom';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
-import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttaksplan';
+import { getHarAktivitetskravIPeriodeUtenUttak, shouldPeriodeHaveAttachment, Uttaksplan } from '@navikt/uttaksplan';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import {
     getKanJustereAutomatiskVedFødsel,
@@ -92,7 +92,7 @@ const UttaksplanStep = () => {
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
-    const { barnFraNesteSak } = state;
+    const { barnFraNesteSak, manglerDokumentasjon } = state;
     const debouncedState = useDebounce(state, 3000);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
@@ -296,11 +296,16 @@ const UttaksplanStep = () => {
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
+        const periodeSomManglerVedlegg = søknad.uttaksplan.find((p) =>
+            shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
+        );
+        const søknadKreverVedlegg = periodeSomManglerVedlegg !== undefined;
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
         return [
             actionCreator.setTilleggsopplysninger(cleanedTilleggsopplysninger),
             actionCreator.setEndringstidspunkt(endringstidspunkt),
             actionCreator.setPerioderSomSkalSendesInn(perioderSomSkalSendesInn),
+            actionCreator.setManglerDokumentasjon(søknadKreverVedlegg),
         ];
     };
 
@@ -540,7 +545,7 @@ const UttaksplanStep = () => {
                         pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl, erEndringssøknad)}
+                        steps={stepConfig(intl, erEndringssøknad, manglerDokumentasjon)}
                     >
                         <Block padBottom="l">
                             <InfoOmSøknaden

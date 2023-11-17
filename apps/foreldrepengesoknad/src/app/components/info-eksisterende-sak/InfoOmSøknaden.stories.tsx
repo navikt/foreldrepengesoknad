@@ -53,6 +53,7 @@ const context = {
     søknadGjelderEtNyttBarn: undefined!,
     familieHendelseDatoNesteSak: undefined!,
     annenPartsUttakErLagtTilIPlan: undefined,
+    manglerDokumentasjon: false,
 } as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {
