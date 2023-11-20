@@ -30,7 +30,7 @@ import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig, { getPreviousStepHref, getUttaksplanNextStep } from '../stepsConfig';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -85,7 +85,6 @@ const UttaksplanStep = () => {
     const { dispatch, state } = useForeldrepengesøknadContext();
     const [endringstidspunkt, setEndringstidspunkt] = useState(state.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(state.perioderSomSkalSendesInn);
-    const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet, annenPartsUttakErLagtTilIPlan } = state;
     const { person, arbeidsforhold } = søkerinfo;
     const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
@@ -135,6 +134,11 @@ const UttaksplanStep = () => {
         erFarEllerMedmor,
         annenForelder,
     );
+    const periodeSomManglerVedlegg = søknad.uttaksplan.find((p) =>
+        shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
+    );
+    const søknadKreverVedlegg = periodeSomManglerVedlegg !== undefined;
+    const nextRoute = getUttaksplanNextStep(søknad.erEndringssøknad, søknadKreverVedlegg);
 
     const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended =
@@ -296,10 +300,7 @@ const UttaksplanStep = () => {
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
-        const periodeSomManglerVedlegg = søknad.uttaksplan.find((p) =>
-            shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
-        );
-        const søknadKreverVedlegg = periodeSomManglerVedlegg !== undefined;
+
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
         return [
             actionCreator.setTilleggsopplysninger(cleanedTilleggsopplysninger),

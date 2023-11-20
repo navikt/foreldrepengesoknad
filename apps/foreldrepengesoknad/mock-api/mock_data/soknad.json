@@ -9,7 +9,7 @@
         "barn": {
             "type": "ufødt",
             "antallBarn": 1,
-            "termindato": "2023-12-14T00:00:00.000Z"
+            "termindato": "2024-02-03T00:00:00.000Z"
         },
         "annenForelder": {
             "etternavn": "morsen",
@@ -23,87 +23,106 @@
         },
         "søker": {
             "erAleneOmOmsorg": false,
-            "språkkode": "nb",
-            "harHattAnnenInntektSiste10Mnd": false,
-            "harJobbetSomFrilansSiste10Mnd": false,
-            "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd": false,
-            "andreInntekterSiste10Mnd": [],
-            "selvstendigNæringsdrivendeInformasjon": []
+            "språkkode": "nb"
         },
         "informasjonOmUtenlandsopphold": {
             "tidligereOpphold": [],
-            "senereOpphold": [],
-            "iNorgeSiste12Mnd": true,
-            "iNorgeNeste12Mnd": true
+            "senereOpphold": []
         },
         "erEndringssøknad": false,
         "dekningsgrad": "100",
         "uttaksplan": [
             {
-                "id": "524613308-3359-5843-01874-82521265000433",
+                "id": "270316513-9347-01736-3518-34080088811776",
                 "type": "periodeUtenUttak",
                 "tidsperiode": {
-                    "fom": "2023-12-14T00:00:00.000Z",
-                    "tom": "2024-01-05T00:00:00.000Z"
+                    "fom": "2024-02-05T00:00:00.000Z",
+                    "tom": "2024-05-01T00:00:00.000Z"
                 }
             },
             {
-                "id": "2971719097-8197-13402-2789-09786152676084",
+                "id": "90595853-25566-06721-6600-0929929369681",
                 "forelder": "farMedmor",
                 "konto": "FEDREKVOTE",
                 "tidsperiode": {
-                    "fom": "2024-01-08T00:00:00.000Z",
-                    "tom": "2024-01-19T00:00:00.000Z"
+                    "fom": "2024-05-02T00:00:00.000Z",
+                    "tom": "2024-08-14T00:00:00.000Z"
                 },
                 "type": "uttak",
                 "erArbeidstaker": false,
-                "erMorForSyk": true,
                 "gradert": false,
-                "orgnumre": []
+                "orgnumre": [],
+                "ønskerSamtidigUttak": false
+            },
+            {
+                "id": "45459934-22539-27391-1021-172451217628000",
+                "forelder": "farMedmor",
+                "konto": "FELLESPERIODE",
+                "tidsperiode": {
+                    "fom": "2024-08-15T00:00:00.000Z",
+                    "tom": "2024-08-28T00:00:00.000Z"
+                },
+                "type": "uttak",
+                "morsAktivitetIPerioden": "ARBEID",
+                "erArbeidstaker": false,
+                "gradert": false,
+                "orgnumre": [],
+                "ønskerSamtidigUttak": false
             }
         ],
         "harGodkjentOppsummering": false,
         "vedlegg": [],
-        "tilleggsopplysninger": {
-            "begrunnelseForSenEndring": {
-                "tekst": "",
-                "ekstraInformasjon": "SYKDOM"
-            }
-        }
+        "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/utenlandsopphold",
+    "currentRoute": "/soknad/manglende-vedlegg",
     "uttaksplanInfo": {
         "antallDagerFellesperiode": "0",
-        "antallUkerFellesperiode": "0",
-        "farMedmorsFørsteDag": "2024-01-08",
+        "antallUkerFellesperiode": "2",
+        "farMedmorsFørsteDag": "2024-05-02",
         "morsSisteDag": ""
     },
     "antallUkerIUttaksplan": 79,
     "perioderSomSkalSendesInn": [
         {
-            "id": "524613308-3359-5843-01874-82521265000433",
+            "id": "270316513-9347-01736-3518-34080088811776",
             "type": "periodeUtenUttak",
             "tidsperiode": {
-                "fom": "2023-12-14T00:00:00.000Z",
-                "tom": "2024-01-05T00:00:00.000Z"
+                "fom": "2024-02-05T00:00:00.000Z",
+                "tom": "2024-05-01T00:00:00.000Z"
             }
         },
         {
-            "id": "2971719097-8197-13402-2789-09786152676084",
+            "id": "90595853-25566-06721-6600-0929929369681",
             "forelder": "farMedmor",
             "konto": "FEDREKVOTE",
             "tidsperiode": {
-                "fom": "2024-01-08T00:00:00.000Z",
-                "tom": "2024-01-19T00:00:00.000Z"
+                "fom": "2024-05-02T00:00:00.000Z",
+                "tom": "2024-08-14T00:00:00.000Z"
             },
             "type": "uttak",
             "erArbeidstaker": false,
-            "erMorForSyk": true,
             "gradert": false,
-            "orgnumre": []
+            "orgnumre": [],
+            "ønskerSamtidigUttak": false
+        },
+        {
+            "id": "45459934-22539-27391-1021-172451217628000",
+            "forelder": "farMedmor",
+            "konto": "FELLESPERIODE",
+            "tidsperiode": {
+                "fom": "2024-08-15T00:00:00.000Z",
+                "tom": "2024-08-28T00:00:00.000Z"
+            },
+            "type": "uttak",
+            "morsAktivitetIPerioden": "ARBEID",
+            "erArbeidstaker": false,
+            "gradert": false,
+            "orgnumre": [],
+            "ønskerSamtidigUttak": false
         }
     ],
     "harUttaksplanBlittSlettet": false,
-    "søknadGjelderEtNyttBarn": true
+    "søknadGjelderEtNyttBarn": true,
+    "manglerDokumentasjon": true
 }

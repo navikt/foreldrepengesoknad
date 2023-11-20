@@ -1,5 +1,6 @@
 import { intlUtils } from '@navikt/fp-common';
 import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil';
+import SøknadRoutes from 'app/routes/routes';
 import { IntlShape } from 'react-intl';
 
 type SøkersituasjonStepId = 'søkersituasjon';
@@ -159,7 +160,7 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
             href = '/soknad/utenlandsopphold';
             break;
         case 'dokumentasjon':
-            href = '/soknad/dokumentasjon';
+            href = '/soknad/uttaksplan';
             break;
         case 'oppsummering':
             href = '/soknad/inntektsinformasjon';
@@ -169,6 +170,14 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
     }
 
     return href;
+};
+
+export const getUttaksplanNextStep = (erEndringssøknad: boolean, perioderKreverDokumentasjon: boolean) => {
+    if (perioderKreverDokumentasjon) {
+        return SøknadRoutes.MANGLENDE_VEDLEGG;
+    }
+
+    return erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
 };
 
 export default stepConfig;
