@@ -1,5 +1,11 @@
-export type Situasjon = 'fødsel' | 'adopsjon' | 'omsorgsovertakelse';
+import { Søkerrolle } from './Søkerrolle';
+import { Situasjon } from './Situasjon';
 
 export type Søkersituasjon = {
     situasjon?: Situasjon;
+};
+
+export type SøkersituasjonFp = {
+    situasjon: Situasjon;
+    rolle: Søkerrolle;
 };

@@ -2,30 +2,28 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import Inntektsinformasjon from './Inntektsinformasjon';
+import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { BarnType } from '@navikt/fp-common';
 
 const søkerinfo = _søkerinfo as any;
-const context = _context as any;
 
 export default {
     title: 'steps/Inntektsinformasjon',
     component: Inntektsinformasjon,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
 interface Props {
-    context: ForeldrepengesøknadContextState;
     søkerinfo: SøkerinfoDTO;
 }
 
-const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
+const Template: StoryFn<Props> = ({ søkerinfo }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(
             200,
@@ -39,22 +37,50 @@ const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
 
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-                <Inntektsinformasjon />
-            </ForeldrepengerStateMock>
+            <FpDataContext
+                initialState={{
+                    [FpDataType.SØKERSITUASJON]: {
+                        situasjon: 'fødsel',
+                        rolle: 'mor',
+                    },
+                    [FpDataType.OM_BARNET]: {
+                        type: BarnType.FØDT,
+                        fødselsdatoer: [new Date()],
+                        antallBarn: 1,
+                    },
+                    [FpDataType.SØKER]: {
+                        erAleneOmOmsorg: false,
+                        språkkode: 'nb',
+                        // @ts-ignore FIX
+                        harJobbetSomFrilansSiste10Mnd: undefined,
+                        // @ts-ignore FIX
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
+                        // @ts-ignore FIX
+                        harHattAnnenInntektSiste10Mnd: undefined,
+                    },
+                    [FpDataType.UTENLANDSOPPHOLD]: {
+                        iNorgeNeste12Mnd: false,
+                        iNorgeSiste12Mnd: false,
+                    },
+                }}
+            >
+                <Inntektsinformasjon
+                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                    mellomlagreSøknad={() => undefined}
+                    avbrytSøknad={() => undefined}
+                />
+            </FpDataContext>
         </AxiosMock>
     );
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    context,
+export const HarIkkeArbeidsforhold = Template.bind({});
+HarIkkeArbeidsforhold.args = {
     søkerinfo,
 };
 
 export const HarArbeidsforhold = Template.bind({});
 HarArbeidsforhold.args = {
-    context,
     søkerinfo: {
         søker: {
             ...søkerinfo,

@@ -1,44 +1,34 @@
 import { StoryFn } from '@storybook/react';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
-import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
-
-const søkerinfo = _søkerinfo as any;
-const context = _context as any;
+import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
 
 export default {
     title: 'steps/TidligereUtenlandsoppholdSteg',
     component: TidligereUtenlandsoppholdSteg,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
-interface Props {
-    context: ForeldrepengesøknadContextState;
-    søkerinfo: SøkerinfoDTO;
-}
-
-const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
+const Template: StoryFn = () => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage').reply(200, undefined);
     };
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-                <TidligereUtenlandsoppholdSteg />
-            </ForeldrepengerStateMock>
+            <FpDataContext
+                initialState={{
+                    [FpDataType.UTENLANDSOPPHOLD]: {
+                        iNorgeNeste12Mnd: false,
+                        iNorgeSiste12Mnd: true,
+                    },
+                }}
+            >
+                <TidligereUtenlandsoppholdSteg mellomlagreSøknad={() => undefined} avbrytSøknad={() => undefined} />
+            </FpDataContext>
         </AxiosMock>
     );
 };
 
 export const Default = Template.bind({});
-Default.args = {
-    context,
-    søkerinfo,
-};

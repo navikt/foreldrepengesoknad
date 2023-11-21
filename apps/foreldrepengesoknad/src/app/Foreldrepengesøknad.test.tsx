@@ -1,14 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import Api from './api/api';
+import Api, { FpMellomlagretData } from './api/api';
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import { SøkerinfoDTO } from './types/SøkerinfoDTO';
 import { allCommonMessages } from '@navikt/fp-common';
-import ForeldrepengesøknadContextProvider from './context/ForeldrepengesøknadContext';
-import { ForeldrepengesøknadContextState } from './context/ForeldrepengesøknadContextConfig';
 import MockAdapter from 'axios-mock-adapter';
 import { AxiosInstance } from './api/apiInterceptor';
 import { IntlProvider } from '@navikt/fp-ui';
 import nbMessages from './intl/nb_NO.json';
+import { RequestStatus } from './types/RequestState';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
@@ -27,6 +26,7 @@ describe('<Foreldrepengesøknad>', () => {
         vi.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
             storageData: undefined,
             storageError: null,
+            storageStatus: RequestStatus.UNFETCHED,
         }));
         vi.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
             sakerData: undefined,
@@ -34,11 +34,9 @@ describe('<Foreldrepengesøknad>', () => {
         }));
 
         render(
-            <ForeldrepengesøknadContextProvider>
-                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                    <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
-                </IntlProvider>
-            </ForeldrepengesøknadContextProvider>,
+            <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
+            </IntlProvider>,
         );
 
         expect(screen.getByText('venter...')).toBeInTheDocument();
@@ -62,8 +60,9 @@ describe('<Foreldrepengesøknad>', () => {
         const storageData = {
             storageData: {
                 søknad: {},
-            } as ForeldrepengesøknadContextState,
+            } as FpMellomlagretData,
             storageError: null,
+            storageStatus: RequestStatus.FINISHED,
         };
         const sakerData = {
             sakerData: { engangsstønad: [], foreldrepenger: [], svangerskapspenger: [] },
@@ -77,11 +76,9 @@ describe('<Foreldrepengesøknad>', () => {
         apiMock.onPost('/storage').reply(200, {});
 
         render(
-            <ForeldrepengesøknadContextProvider>
-                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                    <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
-                </IntlProvider>
-            </ForeldrepengesøknadContextProvider>,
+            <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                <Foreldrepengesøknad locale="nb" onChangeLocale={() => ''} />
+            </IntlProvider>,
         );
 
         expect(screen.getByText('Søknad om foreldrepenger')).toBeInTheDocument();

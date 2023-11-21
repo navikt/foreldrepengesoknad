@@ -1,3 +1,8 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { BodyShort, Button } from '@navikt/ds-react';
+import { notEmpty } from '@navikt/fp-validation';
 import {
     Block,
     getAktiveArbeidsforhold,
@@ -6,15 +11,9 @@ import {
     ISOStringToDate,
     Step,
     StepButtonWrapper,
+    Søkerinfo,
 } from '@navikt/fp-common';
-import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
-import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import stepConfig from '../stepsConfig';
 import AndreInntekter from './components/andre-inntekter/AndreInntekter';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
@@ -27,16 +26,12 @@ import {
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
-import { storeAppState } from 'app/utils/submitUtils';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import { BodyShort, Button } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
-import InformasjonOmUtenlandsopphold from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 
-const findPreviousUrl = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
+const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
     if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
         return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
     } else if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
@@ -45,10 +40,26 @@ const findPreviousUrl = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsop
     return SøknadRoutes.UTENLANDSOPPHOLD;
 };
 
-const Inntektsinformasjon = () => {
+type Props = {
+    søkerInfo: Søkerinfo;
+    mellomlagreSøknad: () => void;
+    avbrytSøknad: () => void;
+};
+
+const Inntektsinformasjon: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknad, avbrytSøknad }) => {
     const intl = useIntl();
-    const { arbeidsforhold } = useSøkerinfo();
-    const { søker, barn, søkersituasjon, informasjonOmUtenlandsopphold } = useSøknad();
+    const navigate = useNavigate();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
+    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
+    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
+    const utenlandsopphold = notEmpty(useFpStateData(FpDataType.UTENLANDSOPPHOLD));
+
+    const lagreSøker = useFpStateSaveFn(FpDataType.SØKER);
+    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -59,7 +70,9 @@ const Inntektsinformasjon = () => {
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
     );
 
-    const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
+    const onSubmit = async (values: Partial<InntektsinformasjonFormData>) => {
+        setIsSubmitting(true);
+
         const updatedSøker = mapInntektsinformasjonFormDataToState(
             values,
             søker,
@@ -67,22 +80,19 @@ const Inntektsinformasjon = () => {
             egenNæringInformasjon,
         );
 
-        return [actionCreator.setSøker(updatedSøker)];
-    };
+        lagreSøker(updatedSøker);
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.OPPSUMMERING,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    useSaveLoadedRoute(SøknadRoutes.INNTEKTSINFORMASJON);
+        lagreAppRoute(SøknadRoutes.OPPSUMMERING);
+
+        await mellomlagreSøknad();
+
+        navigate(SøknadRoutes.OPPSUMMERING);
+    };
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
             initialValues={getInitialInntektsinformasjonFormValues(søker)}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = inntektsinforMasjonQuestionsConfig.getVisbility(
                     formValues as InntektsinformasjonFormData,
@@ -93,7 +103,7 @@ const Inntektsinformasjon = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="inntektsinformasjon"
                         pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
-                        onCancel={onAvbrytSøknad}
+                        onCancel={avbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl, false)}
                     >
@@ -106,7 +116,7 @@ const Inntektsinformasjon = () => {
 
                             <ArbeidsforholdInformasjon
                                 arbeidsforhold={getAktiveArbeidsforhold(
-                                    arbeidsforhold,
+                                    søkerInfo.arbeidsforhold,
                                     erAdopsjon,
                                     erFarEllerMedmor,
                                     ISOStringToDate(familiehendelsesdato),
@@ -144,11 +154,7 @@ const Inntektsinformasjon = () => {
 
                             <Block margin="xl">
                                 <StepButtonWrapper>
-                                    <Button
-                                        variant="secondary"
-                                        as={Link}
-                                        to={findPreviousUrl(informasjonOmUtenlandsopphold)}
-                                    >
+                                    <Button variant="secondary" as={Link} to={findPreviousUrl(utenlandsopphold)}>
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     {visibility.areAllQuestionsAnswered() && (

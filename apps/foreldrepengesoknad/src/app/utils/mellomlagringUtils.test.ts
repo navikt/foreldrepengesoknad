@@ -1,19 +1,19 @@
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import SøknadRoutes from 'app/routes/routes';
 import { shouldApplyStorage } from './mellomlagringUtils';
+import { FpMellomlagretData } from 'app/api/api';
 
 describe('Test av mellomlagring', () => {
     it('Burde ikke bruke mellomlagrede data hvis versjon ikke er lik current version', () => {
         const result = shouldApplyStorage({
             version: 3,
             søknad: {},
-        } as ForeldrepengesøknadContextState);
+        } as FpMellomlagretData);
 
         expect(result).toBe(false);
     });
 
     it('Burde bruke mellomlagrede data hvis versjon er lik current version', () => {
-        const result = shouldApplyStorage({ version: 5, søknad: {} } as ForeldrepengesøknadContextState);
+        const result = shouldApplyStorage({ version: 5, søknad: {} } as FpMellomlagretData);
 
         expect(result).toBe(true);
     });
@@ -25,7 +25,7 @@ describe('Test av mellomlagring', () => {
             søknad: {
                 erEndringssøknad: true,
             },
-        } as ForeldrepengesøknadContextState);
+        } as FpMellomlagretData);
 
         expect(result).toBe(false);
 
@@ -35,7 +35,7 @@ describe('Test av mellomlagring', () => {
             søknad: {
                 erEndringssøknad: true,
             },
-        } as ForeldrepengesøknadContextState);
+        } as FpMellomlagretData);
 
         expect(result).toBe(false);
 
@@ -45,7 +45,7 @@ describe('Test av mellomlagring', () => {
             søknad: {
                 erEndringssøknad: true,
             },
-        } as ForeldrepengesøknadContextState);
+        } as FpMellomlagretData);
 
         expect(result).toBe(false);
 
@@ -55,7 +55,7 @@ describe('Test av mellomlagring', () => {
             søknad: {
                 erEndringssøknad: true,
             },
-        } as ForeldrepengesøknadContextState);
+        } as FpMellomlagretData);
 
         expect(result).toBe(false);
 
@@ -65,7 +65,7 @@ describe('Test av mellomlagring', () => {
             søknad: {
                 erEndringssøknad: true,
             },
-        } as ForeldrepengesøknadContextState);
+        } as FpMellomlagretData);
 
         expect(result).toBe(false);
 
@@ -75,7 +75,7 @@ describe('Test av mellomlagring', () => {
             søknad: {
                 erEndringssøknad: true,
             },
-        } as ForeldrepengesøknadContextState);
+        } as FpMellomlagretData);
 
         expect(result).toBe(false);
     });

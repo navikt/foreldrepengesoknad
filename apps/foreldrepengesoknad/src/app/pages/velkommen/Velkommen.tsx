@@ -1,10 +1,10 @@
-import { bemUtils, Block, intlUtils, LanguageToggle, links, Sak } from '@navikt/fp-common';
-import { LocaleNo } from '@navikt/fp-types';
-import actionCreator, { ForeldrepengesøknadContextAction } from 'app/context/action/actionCreator';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { AxiosResponse } from 'axios';
 import { FormattedMessage, useIntl } from 'react-intl';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSøknad from 'app/utils/hooks/useSøknad';
+import { useNavigate } from 'react-router-dom';
+import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
+import { bemUtils, Block, intlUtils, LanguageToggle, links, Sak, Søkerinfo } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
 import {
     getInitialVelkommenValues,
     VelkommenFormComponents,
@@ -13,73 +13,81 @@ import {
     velkommenFormQuestions,
     VelkommenQuestionsPayload,
 } from './velkommenFormConfig';
+import { FpDataType, useAllStateSaveFn } from 'app/context/FpDataContext';
 import DinePlikter from 'app/components/dine-plikter/DinePlikter';
 import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
 import SøknadRoutes from 'app/routes/routes';
-import { storeAppState } from 'app/utils/submitUtils';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import {
     mapSøkerensEksisterendeSakFromDTO,
     opprettSøknadFraEksisterendeSak,
     opprettSøknadFraValgteBarn,
     opprettSøknadFraValgteBarnMedSak,
 } from 'app/utils/eksisterendeSakUtils';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { useSetSøknadsdata } from 'app/context/data';
 import { Søknad } from 'app/context/types/Søknad';
-
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 
 import './velkommen.less';
 
-interface Props {
+export interface Props {
     fornavn: string;
     onChangeLocale: (locale: LocaleNo) => void;
     locale: LocaleNo;
     saker: Sak[];
     fnr: string;
+    harGodkjentVilkår: boolean;
+    søkerInfo: Søkerinfo;
+    setDataOgMellomlagreSøknad: (
+        harGodkjentVilkår: boolean,
+        erEndringssøknad: boolean,
+        søknadGjelderNyttBarn: boolean,
+    ) => Promise<AxiosResponse<any, any>>;
 }
 
-const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLocale }) => {
-    const intl = useIntl();
-    const søknad = useSøknad();
-    const { dispatch, state } = useForeldrepengesøknadContext();
-    const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
+const Velkommen: React.FunctionComponent<Props> = ({
+    locale,
+    saker,
+    onChangeLocale,
+    harGodkjentVilkår,
+    søkerInfo,
+    setDataOgMellomlagreSøknad,
+}) => {
     const bem = bemUtils('velkommen');
-    const søkerinfo = useSøkerinfo();
-    const { registrerteBarn } = søkerinfo;
-    const selectableBarn = getSelectableBarnOptions(saker, registrerteBarn);
+    const intl = useIntl();
+    const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const lagreDataIState = useAllStateSaveFn();
+    const { oppdaterSøknadIState } = useSetSøknadsdata();
+
+    const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
+    const selectableBarn = getSelectableBarnOptions(saker, søkerInfo.registrerteBarn);
     const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
-    useEffect(() => {
-        if (state.søknad.søker.språkkode !== locale) {
-            dispatch(actionCreator.setSpråkkode(locale));
+    const onSubmit = async (values: Partial<VelkommenFormData>) => {
+        if (values.harForståttRettigheterOgPlikter !== true) {
+            return;
         }
-    }, [dispatch, locale, state.søknad.søker.språkkode]);
+        setIsSubmitting(true);
 
-    const onValidSubmitHandler = (values: Partial<VelkommenFormData>) => {
         const valgteBarn =
             values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
                 ? undefined
                 : selectableBarn.find((sb) => sb.id === values.valgteBarn);
         const vilSøkeOmEndring = valgteBarn !== undefined && !!valgteBarn.kanSøkeOmEndring;
+
+        let barnFraNesteSak = undefined;
+        if (valgteBarn !== undefined) {
+            barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
+            lagreDataIState(FpDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
+        }
+
         const valgtEksisterendeSak =
             vilSøkeOmEndring && valgteBarn.sak !== undefined
                 ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
                 : undefined;
 
-        const actionsToDispatch: ForeldrepengesøknadContextAction[] = [
-            actionCreator.setVelkommen(values.harForståttRettigheterOgPlikter!),
-            actionCreator.setErEndringssøknad(vilSøkeOmEndring),
-        ];
-        let barnFraNesteSak = undefined;
-        if (valgteBarn !== undefined) {
-            barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
-            actionsToDispatch.push(actionCreator.setBarnFraNesteSak(barnFraNesteSak));
-        }
         const førsteUttaksdagNesteBarnsSak =
             barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
@@ -89,52 +97,50 @@ const Velkommen: React.FunctionComponent<Props> = ({ locale, saker, onChangeLoca
         const nySøknadPåValgteRegistrerteBarn =
             !endringssøknad && !nySøknadPåAlleredeSøktBarn && valgteBarn !== undefined;
 
+        let nextRoute = SøknadRoutes.SØKERSITUASJON;
+        let søknadGjelderNyttBarn = false;
+
         if (endringssøknad) {
             const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
                 førsteUttaksdagNesteBarnsSak,
             );
 
+            nextRoute = SøknadRoutes.UTTAKSPLAN;
+
             const søknad = opprettSøknadFraEksisterendeSak(
-                state.søkerinfo,
+                søkerInfo,
                 eksisterendeSak!,
                 intl,
                 valgtEksisterendeSak.annenPart,
                 valgteBarn,
             ) as Søknad;
-
-            actionsToDispatch.push(actionCreator.updateCurrentRoute(SøknadRoutes.UTTAKSPLAN));
-            actionsToDispatch.push(actionCreator.setSøknad(søknad));
-            actionsToDispatch.push(actionCreator.setEksisterendeSak(eksisterendeSak));
-            actionsToDispatch.push(
-                actionCreator.setBrukerSvarteJaPåAutoJustering(eksisterendeSak?.grunnlag.ønskerJustertUttakVedFødsel),
-            );
-            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
+            oppdaterSøknadIState(søknad, eksisterendeSak);
         } else if (nySøknadPåAlleredeSøktBarn) {
-            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, søkerinfo) as Søknad;
-            actionsToDispatch.push(actionCreator.setSøknad(søknad));
-            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
+            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, søkerInfo) as Søknad;
+            oppdaterSøknadIState(søknad);
         } else if (nySøknadPåValgteRegistrerteBarn) {
             const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
-            actionsToDispatch.push(actionCreator.setSøknad(søknad));
-            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(false));
+            oppdaterSøknadIState(søknad);
         } else {
-            actionsToDispatch.push(actionCreator.setSøknadGjelderEtNyttBarn(true));
+            søknadGjelderNyttBarn = true;
         }
 
-        return actionsToDispatch;
-    };
+        lagreDataIState(FpDataType.APP_ROUTE, nextRoute);
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.SØKERSITUASJON,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
+        await setDataOgMellomlagreSøknad(
+            values.harForståttRettigheterOgPlikter!,
+            vilSøkeOmEndring,
+            søknadGjelderNyttBarn,
+        );
+
+        navigate(nextRoute);
+    };
 
     return (
         <VelkommenFormComponents.FormikWrapper
-            initialValues={getInitialVelkommenValues(søknad.harGodkjentVilkår)}
-            onSubmit={handleSubmit}
+            initialValues={getInitialVelkommenValues(harGodkjentVilkår)}
+            onSubmit={onSubmit}
             renderForm={({ values, setFieldValue }) => {
                 const visibility = velkommenFormQuestions.getVisbility({
                     ...values,

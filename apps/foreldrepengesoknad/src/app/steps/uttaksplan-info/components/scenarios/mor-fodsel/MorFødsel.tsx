@@ -1,5 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button, GuidePanel } from '@navikt/ds-react';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { notEmpty } from '@navikt/fp-validation';
+import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
     EksisterendeSak,
@@ -15,62 +20,61 @@ import {
     isFarEllerMedmor,
     uttaksConstants,
 } from '@navikt/fp-common';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import actionCreator from 'app/context/action/actionCreator';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { MorFødselFormComponents, MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getInitialMorFødselValues, mapMorFødselFormToState } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import SøknadRoutes from 'app/routes/routes';
 import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { MorFødselQuestionsPayload, morFødselQuestionsConfig } from './morFødselQuestionsConfig';
-import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { storeAppState } from 'app/utils/submitUtils';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { Button, GuidePanel } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakFar: EksisterendeSak | undefined;
+    erEndringssøknad: boolean;
+    person: Person;
+    mellomlagreSøknad: () => void;
 }
 
 const MorFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
     eksisterendeSakFar,
+    erEndringssøknad,
+    person,
+    mellomlagreSøknad,
 }) => {
     const intl = useIntl();
-    const { state } = useForeldrepengesøknadContext();
-    const {
-        annenForelder,
-        søkersituasjon,
-        barn,
-        søker: { erAleneOmOmsorg },
-        dekningsgrad,
-        erEndringssøknad,
-    } = useSøknad();
-    const {
-        person: { fornavn, mellomnavn, etternavn },
-    } = useSøkerinfo();
-    const lagretUttaksplanInfo = useUttaksplanInfo<MorFødselUttaksplanInfo>();
+    const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
+    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
+    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
+    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
+    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
+    // TODO (TOR) fjern as
+    const uttaksplanInfo = useFpStateData(FpDataType.UTTAKSPLAN_INFO) as MorFødselUttaksplanInfo;
+
+    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
+    const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
+    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
 
     const antallBarn = barn.antallBarn;
 
@@ -81,7 +85,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
         : undefined;
     const førsteUttaksdagNesteBarnsSak =
-        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erMorUfør = !!oppgittAnnenForelder?.erUfør;
     const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
@@ -89,7 +93,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
         : '';
 
-    const navnMor = formaterNavn(fornavn, etternavn, true, mellomnavn);
+    const navnMor = formaterNavn(person.fornavn, person.etternavn, true, person.mellomnavn);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
@@ -107,8 +111,11 @@ const MorFødsel: FunctionComponent<Props> = ({
     );
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
-    const onValidSubmitHandler = (values: Partial<MorFødselFormData>) => {
+    const onSubmit = async (values: Partial<MorFødselFormData>) => {
+        setIsSubmitting(true);
+
         const submissionValues = mapMorFødselFormToState(values);
+
         const uttaksplanforslag = lagUttaksplan({
             annenForelderErUfør: erMorUfør,
             erDeltUttak,
@@ -134,7 +141,6 @@ const MorFødsel: FunctionComponent<Props> = ({
             harAktivitetskravIPeriodeUtenUttak: false,
             førsteUttaksdagNesteBarnsSak,
         });
-        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80]);
         const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
             erDeltUttak,
             morHarRett: true,
@@ -159,28 +165,39 @@ const MorFødsel: FunctionComponent<Props> = ({
         } else {
             uttaksplanMedAnnenPart = uttaksplanforslag;
         }
-        return [
-            actionCreator.setAntallUkerIUttaksplan(antallUker),
-            actionCreator.setUttaksplanInfo(submissionValues),
-            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
-            actionCreator.lagUttaksplanforslag(uttaksplanMedAnnenPart),
-        ];
+
+        lagreUttaksplanInfo(submissionValues);
+
+        lagreUttaksplan(uttaksplanMedAnnenPart);
+
+        lagreUttaksplanMetadata({
+            ...uttaksplanMetadata,
+            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
+            antallUkerIUttaksplan: getAntallUker(
+                tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80],
+            ),
+        });
+
+        lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
+
+        await mellomlagreSøknad();
+
+        navigate(SøknadRoutes.UTTAKSPLAN);
     };
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
 
     return (
         <MorFødselFormComponents.FormikWrapper
-            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, lagretUttaksplanInfo, dekningsgrad)}
-            onSubmit={handleSubmit}
+            initialValues={getInitialMorFødselValues(
+                defaultPermisjonStartdato,
+                uttaksplanInfo,
+                uttaksplanMetadata?.dekningsgrad,
+            )}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFødselQuestionsConfig.getVisbility({
                     ...formValues,
                     harRettPåForeldrepengerINorge,
-                    erAleneOmOmsorg,
+                    erAleneOmOmsorg: søker.erAleneOmOmsorg,
                 } as MorFødselQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
@@ -226,11 +243,12 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 permisjonStartdato={formValues.permisjonStartdato!}
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
                                 termindato={termindato}
+                                barn={barn}
                             />
                         </Block>
                         <Block
                             visible={
-                                erAleneOmOmsorg === false &&
+                                søker.erAleneOmOmsorg === false &&
                                 harRettPåForeldrepengerINorge &&
                                 visibility.isAnswered(MorFødselFormField.dekningsgrad)
                             }

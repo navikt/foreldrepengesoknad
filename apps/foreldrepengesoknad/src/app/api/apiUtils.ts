@@ -42,6 +42,8 @@ import {
     sorterPerioder,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
+import { FpDataMap, FpDataType } from 'app/context/FpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
@@ -347,30 +349,55 @@ export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], end
     return uttaksplan;
 };
 
-export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): SøknadForInnsending => {
-    const { søker, barn, annenForelder, søkersituasjon, tilleggsopplysninger, uttaksplan, ...rest } = søknad;
+export const cleanSøknad = (
+    hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
+    familiehendelsesdato: Date,
+): SøknadForInnsending => {
+    const annenForelder = notEmpty(hentData(FpDataType.ANNEN_FORELDER));
+    const barn = notEmpty(hentData(FpDataType.OM_BARNET));
+    const søker = notEmpty(hentData(FpDataType.SØKER));
+    const søkersituasjon = notEmpty(hentData(FpDataType.SØKERSITUASJON));
+    const utenlandsopphold = notEmpty(hentData(FpDataType.UTENLANDSOPPHOLD));
+    const senereUtenlandsopphold = notEmpty(hentData(FpDataType.UTENLANDSOPPHOLD_SENERE));
+    const tidligereUtenlandsopphold = notEmpty(hentData(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE));
+    const uttaksplan = notEmpty(hentData(FpDataType.UTTAKSPLAN));
+    const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
+    const eksisterendeSak = hentData(FpDataType.EKSISTERENDE_SAK);
+
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
-    const søkerInnsending = cleanSøker(søker, søknad.søkersituasjon);
+    const søkerInnsending = cleanSøker(søker, søkersituasjon);
     const barnInnsending = cleanBarn(barn);
-    const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
-    const termindato = getTermindato(søknad.barn);
+    const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const termindato = getTermindato(barn);
     const uttaksplanInnsending = cleanUttaksplan(
         uttaksplan,
         familiehendelsesdato,
         søkerErFarEllerMedmor,
-        søknad.ønskerJustertUttakVedFødsel,
+        uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         termindato,
         annenForelder,
     );
-    const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(søknad.tilleggsopplysninger);
+    const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger));
     const cleanedSøknad: SøknadForInnsending = {
+        type: 'foreldrepenger',
+        harGodkjentVilkår: true,
+        saksnummer: eksisterendeSak?.saksnummer,
+        erEndringssøknad: false,
         søker: søkerInnsending,
         barn: barnInnsending,
-        situasjon: søknad.søkersituasjon.situasjon,
+        situasjon: søkersituasjon.situasjon,
         annenForelder: annenForelderInnsending,
         uttaksplan: uttaksplanInnsending,
         tilleggsopplysninger: tilleggsopplysningerInnsending,
-        ...rest,
+        informasjonOmUtenlandsopphold: {
+            ...utenlandsopphold,
+            ...senereUtenlandsopphold,
+            ...tidligereUtenlandsopphold,
+        },
+        dekningsgrad: uttaksplanMetadata.dekningsgrad!,
+        ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
+        //FIXME FIX
+        vedlegg: [],
     };
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
@@ -389,22 +416,16 @@ const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon): SøkerFo
 };
 
 export const getSøknadsdataForInnsending = (
-    originalSøknad: Søknad,
+    erEndringssøknad: boolean,
+    hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
     endringstidspunkt?: Date,
 ): SøknadForInnsending | EndringssøknadForInnsending => {
-    const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
-    if (søknad.erEndringssøknad) {
-        return cleanEndringssøknad(
-            søknad,
-            endringerIUttaksplan,
-            familiehendelsesdato,
-            søknad.ønskerJustertUttakVedFødsel,
-            endringstidspunkt,
-        );
+    if (erEndringssøknad) {
+        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, endringstidspunkt);
     } else {
-        return cleanSøknad(søknad, familiehendelsesdato);
+        return cleanSøknad(hentData, familiehendelsesdato);
     }
 };
 
@@ -432,35 +453,41 @@ export const cleanAttachments = (object: any): Attachment[] => {
 };
 
 export const cleanEndringssøknad = (
-    søknad: Søknad,
+    hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
-    ønskerJustertUttakVedFødsel: boolean | undefined,
     endringstidspunkt?: Date,
 ): EndringssøknadForInnsending => {
-    const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
-    const termindato = getTermindato(søknad.barn);
+    const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
+    const annenForelder = notEmpty(hentData(FpDataType.ANNEN_FORELDER));
+    const barn = notEmpty(hentData(FpDataType.OM_BARNET));
+    const søker = notEmpty(hentData(FpDataType.SØKER));
+    const søkersituasjon = notEmpty(hentData(FpDataType.SØKERSITUASJON));
+    const eksisterendeSak = notEmpty(hentData(FpDataType.EKSISTERENDE_SAK));
+    const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const termindato = getTermindato(barn);
     const cleanedSøknad: EndringssøknadForInnsending = {
+        type: 'foreldrepenger',
         erEndringssøknad: true,
-        saksnummer: søknad.saksnummer,
-        type: søknad.type,
+        saksnummer: eksisterendeSak.saksnummer,
         uttaksplan: cleanUttaksplan(
             endringerIUttaksplan,
             familiehendelsesdato,
             søkerErFarEllerMedmor,
-            ønskerJustertUttakVedFødsel,
+            uttaksplanMetadata.ønskerJustertUttakVedFødsel,
             termindato,
-            søknad.annenForelder,
+            annenForelder,
             endringstidspunkt,
         ),
+        // FIXME (TOR)
         vedlegg: cleanAttachments({ søknad }), //TODO: cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
-        søker: cleanSøker(søknad.søker, søknad.søkersituasjon),
-        annenForelder: cleanAnnenForelder(søknad.annenForelder, true),
-        barn: søknad.barn,
-        dekningsgrad: søknad.dekningsgrad,
-        situasjon: søknad.søkersituasjon.situasjon,
-        tilleggsopplysninger: cleanTilleggsopplysninger(søknad.tilleggsopplysninger),
-        ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
+        søker: cleanSøker(søker, søkersituasjon),
+        annenForelder: cleanAnnenForelder(annenForelder, true),
+        barn: barn,
+        dekningsgrad: uttaksplanMetadata.dekningsgrad!,
+        situasjon: søkersituasjon.situasjon,
+        tilleggsopplysninger: cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger)),
+        ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
     };
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);

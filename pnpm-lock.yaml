@@ -543,6 +543,9 @@ importers:
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../../packages/fp-common
+      '@navikt/fp-form-hooks':
+        specifier: workspace:*
+        version: link:../../packages/form-hooks
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -552,6 +555,12 @@ importers:
       '@navikt/fp-utenlandsopphold':
         specifier: workspace:*
         version: link:../../packages/utenlandsopphold
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@navikt/fp-validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
         version: 0.25.0(@navikt/ds-css@4.12.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.12.1)(@types/react@18.2.20)(formik@2.4.3)(react-intl@6.4.4)(react@18.2.0)
@@ -651,6 +660,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: 7.45.4
+        version: 7.45.4(react@18.2.0)
       react-intl:
         specifier: ^6.4.4
         version: 6.4.4(react@18.2.0)(typescript@5.1.6)

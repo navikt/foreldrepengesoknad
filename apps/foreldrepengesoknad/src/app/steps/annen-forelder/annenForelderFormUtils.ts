@@ -120,9 +120,9 @@ export const mapAnnenForelderFormToState = (values: Partial<AnnenForelderFormDat
 export const getAnnenForelderFormInitialValues = (
     annenForelder: AnnenForelder,
     barn: Barn,
-    søker: Søker,
     annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined,
     intl: IntlShape,
+    søker?: Søker,
 ): AnnenForelderFormData => {
     if (isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
@@ -140,7 +140,7 @@ export const getAnnenForelderFormInitialValues = (
             fornavn: annenForelder.fornavn === intlUtils(intl, 'annen.forelder') ? '' : annenForelder.fornavn,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,
             fnr: annenForelder.fnr,
-            aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søker.erAleneOmOmsorg),
+            aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søker?.erAleneOmOmsorg),
             datoForAleneomsorg: dateToISOString(barn.datoForAleneomsorg) || '',
             utenlandskFnr: annenForelder.utenlandskFnr || false,
         };

@@ -1,18 +1,18 @@
 import { StoryFn } from '@storybook/react';
+import { AxiosResponse } from 'axios';
 
 import { SøkerinfoDTO, SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import withRouter from 'storybook/decorators/withRouter';
 import Velkommen from './Velkommen';
 import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { FpDataContext } from 'app/context/FpDataContext';
 
 export default {
     title: 'pages/Velkommen',
     component: Velkommen,
-    decorators: [withForeldrepengersøknadContext, withRouter],
+    decorators: [withRouter],
 };
 
 interface Props {
@@ -34,12 +34,18 @@ const søkerInfo = {
 
 const Template: StoryFn<Props> = ({ harGodkjentVilkår, saker, søkerinfo }) => {
     return (
-        <ForeldrepengerStateMock
-            søknad={{ søknad: { harGodkjentVilkår, søker: { språkkode: 'nb' } } } as ForeldrepengesøknadContextState}
-            søkerinfo={søkerinfo}
-        >
-            <Velkommen fornavn="Espen" onChangeLocale={() => undefined} locale="nb" saker={saker} fnr={'123'} />
-        </ForeldrepengerStateMock>
+        <FpDataContext>
+            <Velkommen
+                fornavn="Espen"
+                onChangeLocale={() => undefined}
+                locale="nb"
+                saker={saker}
+                fnr={'123'}
+                harGodkjentVilkår={harGodkjentVilkår}
+                søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                setDataOgMellomlagreSøknad={() => Promise.resolve<AxiosResponse>({} as AxiosResponse)}
+            />
+        </FpDataContext>
     );
 };
 

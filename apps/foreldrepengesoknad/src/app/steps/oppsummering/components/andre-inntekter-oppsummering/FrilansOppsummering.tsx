@@ -1,24 +1,25 @@
 import { formatDate, intlUtils } from '@navikt/fp-common';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import { BodyShort } from '@navikt/ds-react';
+import Søker from 'app/context/types/Søker';
 
-const FrilansOppsummering: FunctionComponent = () => {
+interface Props {
+    søker: Søker;
+}
+
+const FrilansOppsummering: FunctionComponent<Props> = ({ søker }) => {
     const intl = useIntl();
-    const {
-        søker: { frilansInformasjon, harJobbetSomFrilansSiste10Mnd },
-    } = useSøknad();
 
-    if (!frilansInformasjon || !harJobbetSomFrilansSiste10Mnd) {
+    if (!søker.frilansInformasjon || !søker.harJobbetSomFrilansSiste10Mnd) {
         return (
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.tittel')}>
                 <BodyShort>{intlUtils(intl, 'oppsummering.frilans.ikkeFrilans')}</BodyShort>
             </OppsummeringsPunkt>
         );
     }
-    const { oppstart, jobberFremdelesSomFrilans } = frilansInformasjon;
+    const { oppstart, jobberFremdelesSomFrilans } = søker.frilansInformasjon;
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
 import søkerinfo from 'storybook/storyData/sokerinfo/sokerinfoMannMedArbeidsforhold.json';
@@ -18,7 +18,7 @@ export default {
     component: AppContainer,
 };
 
-const Template: Story = ({
+const Template: StoryFn = ({
     søkerinfoData,
     sakerData,
     annenPartVedtakData,
@@ -41,9 +41,8 @@ const Template: Story = ({
     return <AppContainer />;
 };
 
-// TODO Endre navn på story til noko funksjonelt fornuftig
-export const VisApp = Template.bind({});
-VisApp.args = {
+export const SøkerErMann = Template.bind({});
+SøkerErMann.args = {
     søkerinfoData: søkerinfo,
     sakerData: saker,
     annenPartVedtakData: annenPartVedtak,

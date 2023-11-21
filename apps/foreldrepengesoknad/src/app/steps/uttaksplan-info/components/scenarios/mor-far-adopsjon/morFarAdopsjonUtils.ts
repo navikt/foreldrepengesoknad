@@ -31,12 +31,12 @@ export const mapMorFarAdopsjonFormToState = (values: Partial<MorFarAdopsjonFormD
 
 export const getInitialMorFarAdopsjonValues = (
     lagretUttaksplanInfo: MorFarAdopsjonUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad,
+    dekningsgrad?: Dekningsgrad,
 ): MorFarAdopsjonFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [MorFarAdopsjonFormField.dekningsgrad]: dekningsgrad,
+            [MorFarAdopsjonFormField.dekningsgrad]: dekningsgrad!,
             [MorFarAdopsjonFormField.startdatoAdopsjonValg]: finnEnum(lagretUttaksplanInfo.startdatoAdopsjonValg),
             [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: lagretUttaksplanInfo.harAnnenForelderSøktFP
                 ? YesOrNo.YES

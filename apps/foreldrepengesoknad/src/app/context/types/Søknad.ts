@@ -21,7 +21,6 @@ export interface Søknad {
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];
-    harGodkjentOppsummering: boolean;
     vedlegg: Attachment[];
     tilleggsopplysninger: Tilleggsopplysninger;
     saksnummer?: string;

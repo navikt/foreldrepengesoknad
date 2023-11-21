@@ -1,5 +1,4 @@
 import { ISOStringToDate, formatDate, intlUtils } from '@navikt/fp-common';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
@@ -7,14 +6,16 @@ import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import AnnenInntektDetaljer from './AnnenInntektDetaljer';
 import InntekterTabell from './InntekterTabell';
 import { BodyShort } from '@navikt/ds-react';
+import Søker from 'app/context/types/Søker';
 
-const AndreInntekterOppsummering: FunctionComponent = () => {
+interface Props {
+    søker: Søker;
+}
+
+const AndreInntekterOppsummering: FunctionComponent<Props> = ({ søker }) => {
     const intl = useIntl();
-    const {
-        søker: { harHattAnnenInntektSiste10Mnd, andreInntekterSiste10Mnd },
-    } = useSøknad();
 
-    if (!harHattAnnenInntektSiste10Mnd || !andreInntekterSiste10Mnd) {
+    if (!søker.harHattAnnenInntektSiste10Mnd || !søker.andreInntekterSiste10Mnd) {
         return (
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.tittel')}>
                 <BodyShort>{intlUtils(intl, 'oppsummering.andreInntekter.ikkeHattAndreInntekter')}</BodyShort>
@@ -25,7 +26,7 @@ const AndreInntekterOppsummering: FunctionComponent = () => {
     return (
         <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.tittel')}>
             <InntekterTabell
-                list={andreInntekterSiste10Mnd.map((annenInntekt) => ({
+                list={søker.andreInntekterSiste10Mnd.map((annenInntekt) => ({
                     key: annenInntekt.type + annenInntekt.tidsperiode,
                     headerVenstre: intlUtils(intl, `inntektstype.${annenInntekt.type.toLowerCase()}`),
                     headerHøyre: intlUtils(intl, 'tidsintervall', {

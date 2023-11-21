@@ -1,4 +1,3 @@
-import { Søknad } from 'app/context/types/Søknad';
 import {
     AnnenForelderOppgittForInnsending,
     cleanSøknad,
@@ -16,6 +15,7 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
+import { FpDataType } from 'app/context/FpDataContext';
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
@@ -54,29 +54,48 @@ const getBarnMock = (datoForAleneomsorgInput: string | undefined) => {
     } as FødtBarn;
 };
 
-const getSøknadMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaksplanInput: Periode[]) => {
-    return {
-        type: 'foreldrepenger',
-        annenForelder: annenForelderInput,
-        barn: barnInput,
-        uttaksplan: uttaksplanInput,
-        søker: {
-            språkkode: 'nb',
-        },
-        søkersituasjon: {
-            rolle: 'mor',
-            situasjon: 'fødsel',
-        },
-        tilleggsopplysninger: {},
-    } as Søknad;
+// TODO (TOR) Dette er midlertidig logikk
+const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaksplanInput: Periode[]) => {
+    return (type: FpDataType): any => {
+        if (type === FpDataType.ANNEN_FORELDER) {
+            return annenForelderInput;
+        }
+        if (type === FpDataType.OM_BARNET) {
+            return barnInput;
+        }
+        if (type === FpDataType.UTTAKSPLAN) {
+            return uttaksplanInput;
+        }
+        if (type === FpDataType.SØKER) {
+            return {
+                språkkode: 'nb',
+                erAleneOmOmsorg: false,
+                harHattAnnenInntektSiste10Mnd: false,
+                harJobbetSomFrilansSiste10Mnd: false,
+                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+            };
+        }
+        if (type === FpDataType.SØKERSITUASJON) {
+            return {
+                rolle: 'mor',
+                situasjon: 'fødsel',
+            };
+        }
+        if (type === FpDataType.UTTAKSPLAN_METADATA) {
+            return {
+                tilleggsopplysninger: {},
+            };
+        }
+        return {};
+    };
 };
 
 describe('cleanUpSøknadsdataForInnsending', () => {
     const barnMock = getBarnMock('2021-01-01');
     const fødselsdato = barnMock.fødselsdatoer[0];
     const annenForelderMock = getAnnenForelderUførMock(true, false);
-    const søknadMedMorErUfør = getSøknadMock(annenForelderMock, barnMock, []);
-    const cleanedSøknad = cleanSøknad(søknadMedMorErUfør, fødselsdato);
+    const hentData = getStateMock(annenForelderMock, barnMock, []);
+    const cleanedSøknad = cleanSøknad(hentData, fødselsdato);
 
     it('skal bytte navn på annenForelder.erUfør til annenForelder.harMorUføretrygd', () => {
         expect(Object.prototype.hasOwnProperty.call(cleanedSøknad.annenForelder, 'harMorUføretrygd')).toBe(true);
@@ -90,15 +109,15 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     });
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
-        const søknadMedIkkeOppgitForelder = getSøknadMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
-        const cleanedSøknadUtenForelder = cleanSøknad(søknadMedIkkeOppgitForelder, fødselsdato);
+        const hentData = getStateMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
+        const cleanedSøknadUtenForelder = cleanSøknad(hentData, fødselsdato);
         expect(cleanedSøknadUtenForelder.annenForelder.kanIkkeOppgis).toBe(true);
     });
 
     it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
-        const søknadMedAnnenForelderUtenUførInfo = getSøknadMock(annenForelderUtenUførInfo, barnMock, []);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedAnnenForelderUtenUførInfo, fødselsdato);
+        const hentData = getStateMock(annenForelderUtenUførInfo, barnMock, []);
+        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato);
         expect(Object.prototype.hasOwnProperty.call(cleanedSøknadUtenUførInfo.annenForelder, 'erUfør')).toBe(false);
     });
 
@@ -115,8 +134,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             type: Periodetype.Hull,
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
         } as PeriodeHull;
-        const søknadMedUttaksPlan = getSøknadMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedUttaksPlan, fødselsdato);
+        const hentData = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
+        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(1);
         expect(Object.prototype.hasOwnProperty.call(cleanedSøknadUtenUførInfo.uttaksplan[0], 'erMorForSyk')).toBe(
             false,
@@ -132,8 +151,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
         } as Uttaksperiode;
 
-        const søknadMedUttaksPlan = getSøknadMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(søknadMedUttaksPlan, fødselsdato);
+        const hentData = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
+        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(0);
     });
 

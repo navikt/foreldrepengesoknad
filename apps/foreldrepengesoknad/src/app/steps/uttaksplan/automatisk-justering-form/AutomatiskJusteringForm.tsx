@@ -1,15 +1,15 @@
+import { FunctionComponent } from 'react';
+import dayjs from 'dayjs';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert } from '@navikt/ds-react';
 import { Block, Periode, StønadskontoType, intlUtils, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
+import { notEmpty } from '@navikt/fp-validation';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import actionCreator from 'app/context/action/actionCreator';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
+import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'app/steps/uttaksplan/UttaksplanFormUtils';
-import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 
 interface Props {
     termindato: Date;
@@ -25,15 +25,20 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const uttaksdagPåEllerEtterTermin = Uttaksdagen(termindato).denneEllerNeste();
-    const { dispatch, state } = useForeldrepengesøknadContext();
-    const svarteJaMenFlerePerioderInnen6Uker =
-        state.brukerSvarteJaPåAutoJustering && perioderMedUttakRundtFødsel.length > 1;
+
+    const uttaksplanMetadata = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN_METADATA));
+    const eksisterendeSak = useFpStateData(FpDataType.EKSISTERENDE_SAK);
+
+    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
+    const brukerSvarteJaPåAutoJustering = eksisterendeSak?.grunnlag.ønskerJustertUttakVedFødsel;
+
+    const svarteJaMenFlerePerioderInnen6Uker = brukerSvarteJaPåAutoJustering && perioderMedUttakRundtFødsel.length > 1;
     const svarteJaMenStarterIkkeLengerPåTermin =
-        state.brukerSvarteJaPåAutoJustering &&
+        brukerSvarteJaPåAutoJustering &&
         perioderMedUttakRundtFødsel.length === 1 &&
         !dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
     const svarteJaMenEndretPeriodenPåTermin =
-        state.brukerSvarteJaPåAutoJustering &&
+        brukerSvarteJaPåAutoJustering &&
         perioderMedUttakRundtFødsel.length === 1 &&
         dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         ((isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
@@ -41,12 +46,13 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
                 !perioderMedUttakRundtFødsel[0].ønskerSamtidigUttak)) ||
             isOverføringsperiode(perioderMedUttakRundtFødsel[0]));
     const svarteJaMenEndretPeriodenTilØnskerFlerbarnsdager =
-        state.brukerSvarteJaPåAutoJustering &&
+        brukerSvarteJaPåAutoJustering &&
         perioderMedUttakRundtFødsel.length === 1 &&
         dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
         perioderMedUttakRundtFødsel[0].konto === StønadskontoType.Fedrekvote &&
         perioderMedUttakRundtFødsel[0].ønskerFlerbarnsdager === true;
+
     let infoTekstId = '';
     if (svarteJaMenFlerePerioderInnen6Uker) {
         infoTekstId = 'uttaksplan.automatiskJustering.info.hvisFlerePerioder';
@@ -64,8 +70,10 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
 
     const handleOnChange = (value: string) => {
         const ønskerJustertUttakVedFødsel = mapUttaksplanFormValueToState(value as YesOrNo);
-        dispatch(actionCreator.setØnskerJustertUttakVedFødsel(ønskerJustertUttakVedFødsel));
-        dispatch(actionCreator.setBrukerSvarteJaPåAutoJustering(ønskerJustertUttakVedFødsel));
+        lagreUttaksplanMetadata({
+            ...uttaksplanMetadata,
+            ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
+        });
     };
 
     return (

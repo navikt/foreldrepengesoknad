@@ -4,11 +4,11 @@ import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
 import * as stories from './Inntektsinformasjon.stories';
 
-const { Default, HarArbeidsforhold } = composeStories(stories);
+const { HarIkkeArbeidsforhold, HarArbeidsforhold } = composeStories(stories);
 
 describe('<Inntektsinformasjon>', () => {
     it('skal ikke ha arbeidsforhold og velger nei på alle spørsmål', async () => {
-        render(<Default />);
+        render(<HarIkkeArbeidsforhold />);
 
         expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -32,7 +32,7 @@ describe('<Inntektsinformasjon>', () => {
     });
 
     it('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser', async () => {
-        render(<Default />);
+        render(<HarIkkeArbeidsforhold />);
 
         expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('<Inntektsinformasjon>', () => {
     });
 
     test.skip('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser for nær venn', async () => {
-        render(<Default />);
+        render(<HarIkkeArbeidsforhold />);
 
         expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -135,7 +135,7 @@ describe('<Inntektsinformasjon>', () => {
     });
 
     test.skip('skal ikke ha arbeidsforhold men velger at en har jobbet som selvstendig næringsdrivende', async () => {
-        render(<Default />);
+        render(<HarIkkeArbeidsforhold />);
 
         expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -227,7 +227,7 @@ describe('<Inntektsinformasjon>', () => {
     });
 
     test.skip('skal ikke ha arbeidsforhold men velger at en har hatt andre inntektskilder (Sluttvederlag) de siste 10 månedene', async () => {
-        render(<Default />);
+        render(<HarIkkeArbeidsforhold />);
 
         expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();

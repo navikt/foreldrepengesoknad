@@ -1,6 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Link, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { notEmpty } from '@navikt/fp-validation';
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Button, GuidePanel } from '@navikt/ds-react';
 import {
     Block,
     Forelder,
@@ -17,12 +21,10 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getInitialMorFarAdopsjonValues, mapMorFarAdopsjonFormToState } from './morFarAdopsjonUtils';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { dateIsSameOrAfter, findEldsteDato } from 'app/utils/dateUtils';
 import {
     MorFarAdopsjonFormComponents,
@@ -38,50 +40,54 @@ import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
 import SøknadRoutes from 'app/routes/routes';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import actionCreator from 'app/context/action/actionCreator';
-import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
-import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { storeAppState } from 'app/utils/submitUtils';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { Button, GuidePanel } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import Person from '@navikt/fp-common/src/common/types/Person';
+import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
+    erEndringssøknad: boolean;
+    person: Person;
+    mellomlagreSøknad: () => void;
 }
 
 const MorFarAdopsjon: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     tilgjengeligeStønadskontoer100DTO,
+    erEndringssøknad,
+    person,
+    mellomlagreSøknad,
 }) => {
     const intl = useIntl();
-    const { state } = useForeldrepengesøknadContext();
-    const {
-        søkersituasjon,
-        annenForelder,
-        barn,
-        søker: { erAleneOmOmsorg },
-        dekningsgrad,
-        erEndringssøknad,
-    } = useSøknad();
-    const {
-        person: { fornavn, mellomnavn, etternavn },
-    } = useSøkerinfo();
-    const lagretUttaksplanInfo = useUttaksplanInfo<MorFarAdopsjonUttaksplanInfo>();
+    const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
+    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
+    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
+    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
+    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
+    // TODO (TOR) fjern as
+    const uttaksplanInfo = useFpStateData(FpDataType.UTTAKSPLAN_INFO) as MorFarAdopsjonUttaksplanInfo;
+
+    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
+    const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
+    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
+
+    const { fornavn, mellomnavn, etternavn } = person;
 
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const søkerErAleneOmOmsorg = !!erAleneOmOmsorg;
+    const søkerErAleneOmOmsorg = !!søker.erAleneOmOmsorg;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined ||
           annenForelder.harRettPåForeldrepengerIEØS !== undefined
@@ -96,15 +102,18 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const førsteUttaksdagNesteBarnsSak =
-        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const shouldRender =
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
 
-    const onValidSubmitHandler = (values: Partial<MorFarAdopsjonFormData>) => {
+    const onSubmit = async (values: Partial<MorFarAdopsjonFormData>) => {
+        setIsSubmitting(true);
+
+        lagreUttaksplanInfo(mapMorFarAdopsjonFormToState(values));
+
         const submissionValues = mapMorFarAdopsjonFormToState(values);
         const barnAdopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
-        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80]);
 
         const startdato = finnStartdatoAdopsjon(
             values.startdatoAdopsjonValg!,
@@ -113,53 +122,54 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             dateToISOString(ankomstdato),
             values.søkersFørsteDag,
         );
-
-        return [
-            actionCreator.setAntallUkerIUttaksplan(antallUker),
-            actionCreator.setUttaksplanInfo(submissionValues),
-            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
-            actionCreator.lagUttaksplanforslag(
-                lagUttaksplan({
-                    annenForelderErUfør: erMorUfør,
-                    erDeltUttak,
-                    erEndringssøknad,
-                    erEnkelEndringssøknad: erEndringssøknad,
-                    familiehendelsesdato: familiehendelsesdatoDate!,
-                    førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
-                    ).leggTil(30),
-                    situasjon: søkersituasjon.situasjon,
-                    søkerErFarEllerMedmor: erFarEllerMedmor,
-                    søkerHarMidlertidigOmsorg: false,
-                    tilgjengeligeStønadskontoer:
-                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
-                    uttaksplanSkjema: {
-                        fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
-                        startdatoPermisjon: startdato,
-                        antallDagerFellesperiodeFarMedmor: parseInt(submissionValues.antallDagerFellesperiode),
-                        antallUkerFellesperiodeFarMedmor: parseInt(submissionValues.antallUkerFellesperiode),
-                        harAnnenForelderSøktFP: submissionValues.harAnnenForelderSøktFP,
-                        morSinSisteUttaksdag: submissionValues.annenForeldersSisteDag,
-                        farSinFørsteUttaksdag: submissionValues.søkersFørsteDag,
-                    },
-                    bareFarMedmorHarRett: bareFarMedmorHarRett,
-                    termindato: undefined,
-                    harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
-                        erDeltUttak,
-                        morHarRett: !bareFarMedmorHarRett,
-                        søkerErAleneOmOmsorg,
-                    }),
-                    førsteUttaksdagNesteBarnsSak,
-                }),
+        const uttaksplan = lagUttaksplan({
+            annenForelderErUfør: erMorUfør,
+            erDeltUttak,
+            erEndringssøknad,
+            erEnkelEndringssøknad: erEndringssøknad,
+            familiehendelsesdato: familiehendelsesdatoDate!,
+            førsteUttaksdagEtterSeksUker: Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(
+                30,
             ),
-        ];
-    };
+            situasjon: søkersituasjon.situasjon,
+            søkerErFarEllerMedmor: erFarEllerMedmor,
+            søkerHarMidlertidigOmsorg: false,
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            uttaksplanSkjema: {
+                fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
+                startdatoPermisjon: startdato,
+                antallDagerFellesperiodeFarMedmor: parseInt(submissionValues.antallDagerFellesperiode),
+                antallUkerFellesperiodeFarMedmor: parseInt(submissionValues.antallUkerFellesperiode),
+                harAnnenForelderSøktFP: submissionValues.harAnnenForelderSøktFP,
+                morSinSisteUttaksdag: submissionValues.annenForeldersSisteDag,
+                farSinFørsteUttaksdag: submissionValues.søkersFørsteDag,
+            },
+            bareFarMedmorHarRett: bareFarMedmorHarRett,
+            termindato: undefined,
+            harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
+                erDeltUttak,
+                morHarRett: !bareFarMedmorHarRett,
+                søkerErAleneOmOmsorg,
+            }),
+            førsteUttaksdagNesteBarnsSak,
+        });
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
+        lagreUttaksplan(uttaksplan);
+
+        lagreUttaksplanMetadata({
+            ...uttaksplanMetadata,
+            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
+            antallUkerIUttaksplan: getAntallUker(
+                tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80],
+            ),
+        });
+
+        lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
+
+        await mellomlagreSøknad();
+
+        navigate(SøknadRoutes.UTTAKSPLAN);
+    };
 
     if (!shouldRender || !isAdoptertBarn(barn)) {
         return null;
@@ -200,13 +210,13 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     return (
         <MorFarAdopsjonFormComponents.FormikWrapper
-            initialValues={getInitialMorFarAdopsjonValues(lagretUttaksplanInfo, dekningsgrad)}
-            onSubmit={handleSubmit}
+            initialValues={getInitialMorFarAdopsjonValues(uttaksplanInfo, uttaksplanMetadata?.dekningsgrad)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                     ...formValues,
                     harAnnenForelderRettPåForeldrepengerINorge,
-                    erAleneOmOmsorg,
+                    erAleneOmOmsorg: søker.erAleneOmOmsorg,
                 } as MorFarAdopsjonQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
@@ -260,7 +270,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             )}
                         </Block>
                         <Block visible={visibility.isIncluded(MorFarAdopsjonFormField.startdatoAdopsjonValg)}>
-                            <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} />
+                            <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} barn={barn} />
                         </Block>
                         <Block
                             padBottom="xl"
@@ -339,7 +349,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 />
                             </GuidePanel>
                         </Block>
-                        <Block visible={erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}>
+                        <Block visible={søker.erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}>
                             <Block
                                 padBottom="xl"
                                 visible={

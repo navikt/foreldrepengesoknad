@@ -1,16 +1,11 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import { RequestStatus } from 'app/types/RequestState';
 
 import _søkerinfo from 'storybook/storyData/uttaksplan/mor-fødsel/søkerinfo.json';
-import _context from 'storybook/storyData/uttaksplan/mor-fødsel/context.json';
 import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
 import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
 import stønadskontoPrematurUker100 from 'storybook/storyData/stonadskontoer/stønadskontoPrematurUker100.json';
@@ -22,20 +17,26 @@ import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/st
 
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
+import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import Søker from 'app/context/types/Søker';
+import dayjs from 'dayjs';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
 const søkerinfo = _søkerinfo as any;
-const context = _context as any;
 
 export default {
     title: 'steps/uttaksplan-info/MorFødsel',
     component: UttaksplanInfo,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
-const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
+const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder; barn: Barn; søker: Søker }> = (
+    args,
+) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
@@ -44,12 +45,24 @@ const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
 
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock
-                søknad={args.context as ForeldrepengesøknadContextState}
-                søkerinfo={args.søkerinfo as SøkerinfoDTO}
+            <FpDataContext
+                initialState={{
+                    [FpDataType.SØKERSITUASJON]: {
+                        situasjon: 'fødsel',
+                        rolle: 'mor',
+                    },
+                    [FpDataType.OM_BARNET]: args.barn,
+                    [FpDataType.SØKER]: args.søker,
+                    [FpDataType.ANNEN_FORELDER]: args.annenForelder,
+                }}
             >
-                <UttaksplanInfo />
-            </ForeldrepengerStateMock>
+                <UttaksplanInfo
+                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                    erEndringssøknad={false}
+                    mellomlagreSøknad={() => undefined}
+                    avbrytSøknad={() => undefined}
+                />
+            </FpDataContext>
         </AxiosMock>
     );
 };
@@ -58,25 +71,48 @@ export const UttaksplanMedAleneomsorg = Template.bind({});
 UttaksplanMedAleneomsorg.args = {
     stønadskonto100,
     stønadskonto80,
-    context,
     søkerinfo,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        antallBarn: 1,
+        datoForAleneomsorg: new Date(),
+        dokumentasjonAvAleneomsorg: [],
+    },
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    søker: {
+        språkkode: 'nb',
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
 };
 
 export const UttaksplanMedPrematurFødsel = Template.bind({});
 UttaksplanMedPrematurFødsel.args = {
     stønadskonto100: stønadskontoPrematurUker100,
     stønadskonto80: stønadskontoPrematurUker80,
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            barn: {
-                ...context.søknad.barn,
-                fødselsdatoer: ['2021-01-11'],
-                termindato: '2021-03-11',
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    barn: {
+        type: BarnType.FØDT,
+        antallBarn: 1,
+        datoForAleneomsorg: new Date(),
+        dokumentasjonAvAleneomsorg: [],
+        fødselsdatoer: [dayjs('2021-01-11').toDate()],
+        termindato: dayjs('2021-03-11').toDate(),
+    },
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    søker: {
+        språkkode: 'nb',
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
     søkerinfo,
 };
 
@@ -84,23 +120,27 @@ export const UttaksplanMedDeltUttak = Template.bind({});
 UttaksplanMedDeltUttak.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            søker: {
-                ...context.søknad.søker,
-                erAleneOmOmsorg: false,
-            },
-            annenForelder: {
-                fornavn: 'Espen',
-                etternavn: 'Utvikler',
-                fnr: '1212121313',
-                harRettPåForeldrepengerINorge: true,
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        antallBarn: 1,
+        datoForAleneomsorg: new Date(),
+        dokumentasjonAvAleneomsorg: [],
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        språkkode: 'nb',
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
     søkerinfo,
 };
 
@@ -108,26 +148,26 @@ export const UttaksplanMedFlerbarnsukerTvillinger = Template.bind({});
 UttaksplanMedFlerbarnsukerTvillinger.args = {
     stønadskonto100: stønadskontoFlerbarnsuker100,
     stønadskonto80: stønadskontoFlerbarnsuker80,
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            søker: {
-                ...context.søknad.søker,
-                erAleneOmOmsorg: false,
-            },
-            barn: {
-                ...context.søknad.barn,
-                antallBarn: 2,
-            },
-            annenForelder: {
-                fornavn: 'Espen',
-                etternavn: 'Utvikler',
-                fnr: '1212121313',
-                harRettPåForeldrepengerINorge: true,
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        antallBarn: 2,
+        datoForAleneomsorg: new Date(),
+        dokumentasjonAvAleneomsorg: [],
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        språkkode: 'nb',
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
     søkerinfo,
 };

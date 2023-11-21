@@ -1,3 +1,8 @@
+import { useEffect, useMemo } from 'react';
+import { useIntl } from 'react-intl';
+import { Loader } from '@navikt/ds-react';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { notEmpty } from '@navikt/fp-validation';
 import {
     Dekningsgrad,
     getFarMedmorErAleneOmOmsorg,
@@ -7,12 +12,9 @@ import {
     isFarEllerMedmor,
     isFødtBarn,
     Step,
+    Søkerinfo,
 } from '@navikt/fp-common';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import { useEffect, useMemo } from 'react';
-import { useIntl } from 'react-intl';
 import stepConfig from '../stepsConfig';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import Api from 'app/api/api';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 import getStønadskontoParams, {
@@ -20,32 +22,48 @@ import getStønadskontoParams, {
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import actionCreator from 'app/context/action/actionCreator';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { RequestStatus } from 'app/types/RequestState';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
-import SøknadRoutes from 'app/routes/routes';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import { Loader } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 
-const UttaksplanInfo = () => {
+type Props = {
+    søkerInfo: Søkerinfo;
+    erEndringssøknad: boolean;
+    mellomlagreSøknad: () => void;
+    avbrytSøknad: () => void;
+};
+
+const UttaksplanInfo: React.FunctionComponent<Props> = ({
+    søkerInfo,
+    erEndringssøknad,
+    mellomlagreSøknad,
+    avbrytSøknad,
+}) => {
     const intl = useIntl();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    const søknad = useSøknad();
-    const { dispatch, state } = useForeldrepengesøknadContext();
+    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
+    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
+    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
+    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
+    const eksisterendeSak = useFpStateData(FpDataType.EKSISTERENDE_SAK);
+    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
 
-    const { barn, annenForelder, søkersituasjon, søker } = søknad;
+    const lagreOmBarnet = useFpStateSaveFn(FpDataType.OM_BARNET);
+    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
+    const lagreUttaksplanMetaData = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
+    const lagreEksisterendeSak = useFpStateSaveFn(FpDataType.EKSISTERENDE_SAK);
+
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const { erAleneOmOmsorg } = søker;
-    const { barnFraNesteSak, eksisterendeSak } = state;
 
     const familieHendelseDatoNesteSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const førsteUttaksdagNesteBarnsSak =
-        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const annenPartFnr =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr === false ? annenForelder.fnr : undefined;
@@ -75,8 +93,6 @@ const UttaksplanInfo = () => {
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
     );
 
-    useSaveLoadedRoute(SøknadRoutes.UTTAKSPLAN_INFO);
-
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         eksisterendeSak?.grunnlag.termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato,
@@ -88,28 +104,41 @@ const UttaksplanInfo = () => {
         eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
     );
 
+    //TODO (TOR) Går det an å skriva useEffects under på ein annan måte?
+
     useEffect(() => {
-        if (erFarEllerMedmor && søknad.barn.antallBarn !== saksgrunnlagsAntallBarn) {
-            const søknadMedOppdatertAntallBarn = {
-                ...søknad,
-                barn: { ...søknad.barn, antallBarn: saksgrunnlagsAntallBarn },
-            };
-            dispatch(actionCreator.setSøknad(søknadMedOppdatertAntallBarn));
+        if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
+            lagreOmBarnet({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
         }
-    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, dispatch, søknad]);
+    }, [barn, erFarEllerMedmor, lagreOmBarnet, saksgrunnlagsAntallBarn]);
 
     //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
     useEffect(() => {
         if (eksisterendeVedtakAnnenPart !== undefined) {
-            dispatch(actionCreator.setUttaksplan(eksisterendeVedtakAnnenPart.uttaksplan));
-            dispatch(actionCreator.setEksisterendeSak(eksisterendeVedtakAnnenPart));
-            dispatch(actionCreator.setAnnenPartsUttakErLagtTilIPlan(true));
+            lagreUttaksplan(eksisterendeVedtakAnnenPart.uttaksplan);
+            lagreEksisterendeSak(eksisterendeVedtakAnnenPart);
+
+            lagreUttaksplanMetaData({
+                ...uttaksplanMetadata,
+                annenPartsUttakErLagtTilIPlan: true,
+            });
         }
-    }, [eksisterendeVedtakAnnenPart, dispatch]);
+    }, [
+        eksisterendeVedtakAnnenPart,
+        lagreUttaksplan,
+        lagreEksisterendeSak,
+        lagreUttaksplanMetaData,
+        uttaksplanMetadata,
+    ]);
 
     useEffect(() => {
-        dispatch(actionCreator.setUttaksplanSlettet(false));
-    }, [dispatch]);
+        if (uttaksplanMetadata?.harUttaksplanBlittSlettet !== false) {
+            lagreUttaksplanMetaData({
+                ...uttaksplanMetadata,
+                harUttaksplanBlittSlettet: false,
+            });
+        }
+    }, [lagreUttaksplanMetaData, uttaksplanMetadata]);
 
     const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
         Api.useGetUttakskontoer(
@@ -144,8 +173,6 @@ const UttaksplanInfo = () => {
             ? false
             : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED,
     );
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     useEffect(() => {
         if (tilgjengeligeStønadskontoerError) {
@@ -180,7 +207,7 @@ const UttaksplanInfo = () => {
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
             activeStepId="uttaksplanInfo"
             pageTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}
-            onCancel={onAvbrytSøknad}
+            onCancel={avbrytSøknad}
             onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig(intl, false)}
         >
@@ -188,6 +215,12 @@ const UttaksplanInfo = () => {
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
                 tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
                 eksisterendeSakAnnenPart={eksisterendeVedtakAnnenPart}
+                søkersituasjon={søkersituasjon}
+                søker={søker}
+                annenForelder={annenForelder}
+                erEndringssøknad={erEndringssøknad}
+                person={søkerInfo.person}
+                mellomlagreSøknad={mellomlagreSøknad}
             />
         </Step>
     );

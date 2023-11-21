@@ -4,60 +4,52 @@ import { Heading } from '@navikt/ds-react';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import actionCreator from 'app/context/action/actionCreator';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
+import { notEmpty } from '@navikt/fp-validation';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import SøknadRoutes from 'app/routes/routes';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { storeAppState } from 'app/utils/submitUtils';
-import { useOnValidSubmitNew } from 'app/utils/hooks/useOnValidSubmit';
 import createConfig, { getPreviousStepHref } from '../stepsConfig';
+import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 
-const UtenlandsoppholdSteg: React.FunctionComponent = () => {
+const utledNesteSide = (values: Utenlandsopphold) => {
+    if (values.harBoddUtenforNorgeSiste12Mnd) {
+        return SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
+    } else if (values.skalBoUtenforNorgeNeste12Mnd) {
+        return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
+    }
+    return SøknadRoutes.INNTEKTSINFORMASJON;
+};
+
+type Props = {
+    mellomlagreSøknad: () => void;
+    avbrytSøknad: () => void;
+};
+
+const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknad, avbrytSøknad }) => {
     const intl = useIntl();
     const navigate = useNavigate();
-    const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    useSaveLoadedRoute(SøknadRoutes.UTENLANDSOPPHOLD);
+    const utenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD);
+    const lagreUtenlandsopphold = useFpStateSaveFn(FpDataType.UTENLANDSOPPHOLD);
+    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
 
-    const { informasjonOmUtenlandsopphold } = useSøknad();
-    const utenlandsopphold =
-        informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined
-            ? {
-                  harBoddUtenforNorgeSiste12Mnd: !informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
-                  skalBoUtenforNorgeNeste12Mnd: !informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-              }
-            : undefined;
-
-    const onValidSubmitHandler = (values: Utenlandsopphold) => {
-        const utenlandsopphold = {
+    const save = async (values: Utenlandsopphold) => {
+        lagreUtenlandsopphold({
             iNorgeSiste12Mnd: !values.harBoddUtenforNorgeSiste12Mnd,
             iNorgeNeste12Mnd: !values.skalBoUtenforNorgeNeste12Mnd,
-        };
-        return [actionCreator.setInformasjonOmUtenlandsopphold(utenlandsopphold)];
-    };
+        });
 
-    const { handleSubmit } = useOnValidSubmitNew(
-        onValidSubmitHandler,
-        (values: Utenlandsopphold) => {
-            if (values.harBoddUtenforNorgeSiste12Mnd) {
-                return SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
-            } else if (values.skalBoUtenforNorgeNeste12Mnd) {
-                return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
-            }
-            return SøknadRoutes.INNTEKTSINFORMASJON;
-        },
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
+        const nesteSide = utledNesteSide(values);
+        lagreAppRoute(nesteSide);
+        await mellomlagreSøknad();
+        navigate(nesteSide);
+    };
 
     const goToPreviousStep = () => {
         navigate(getPreviousStepHref('utenlandsopphold'));
     };
     const saveOnPrevious = () => {
-        // TODO Lagre uvalidert data i framtida
+        // TODO (TOR) Lagre uvalidert data i framtida
     };
 
     const stepConfig = createConfig(intl, false).map((config) => ({
@@ -71,10 +63,17 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
             <UtenlandsoppholdPanel
-                utenlandsopphold={utenlandsopphold}
-                saveOnNext={handleSubmit}
+                utenlandsopphold={
+                    utenlandsopphold
+                        ? {
+                              harBoddUtenforNorgeSiste12Mnd: !utenlandsopphold.iNorgeSiste12Mnd,
+                              skalBoUtenforNorgeNeste12Mnd: !utenlandsopphold.iNorgeNeste12Mnd,
+                          }
+                        : undefined
+                }
+                saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
-                cancelApplication={onAvbrytSøknad}
+                cancelApplication={avbrytSøknad}
                 onContinueLater={onFortsettSøknadSenere}
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}

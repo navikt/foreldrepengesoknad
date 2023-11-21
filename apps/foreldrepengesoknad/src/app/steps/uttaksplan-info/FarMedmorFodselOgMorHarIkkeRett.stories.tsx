@@ -1,34 +1,32 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import FarMedmorFødselOgMorHarIkkeRett from 'app/steps/uttaksplan-info/components/scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfoFarSøker from 'storybook/storyData/uttaksplan/far-medmor-fødsel-mor-har-ikke-rett/søkerinfoFarSøker.json';
-import _contextFarSøker from 'storybook/storyData/uttaksplan/far-medmor-fødsel-mor-har-ikke-rett/contextFarSøker.json';
 import stønadskonto80MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto80MorHarIkkeRett.json';
 import stønadskonto100MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRett.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
+import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { AnnenForelder, BarnType } from '@navikt/fp-common';
+import dayjs from 'dayjs';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
-const contextFarSøker = _contextFarSøker as any;
 const søkerinfoFarSøker = _søkerinfoFarSøker as any;
 
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselOgMorHarIkkeRett',
     component: FarMedmorFødselOgMorHarIkkeRett,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
-const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
+const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder }> = (args) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
@@ -36,12 +34,35 @@ const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
     };
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock
-                søknad={args.context as ForeldrepengesøknadContextState}
-                søkerinfo={args.søkerinfo as SøkerinfoDTO}
+            <FpDataContext
+                initialState={{
+                    [FpDataType.SØKERSITUASJON]: {
+                        situasjon: 'fødsel',
+                        rolle: 'far',
+                    },
+                    [FpDataType.OM_BARNET]: {
+                        type: BarnType.FØDT,
+                        fødselsdatoer: [dayjs('2021-07-01').toDate()],
+                        antallBarn: 1,
+                        termindato: dayjs('2021-07-01').toDate(),
+                    },
+                    [FpDataType.SØKER]: {
+                        erAleneOmOmsorg: false,
+                        språkkode: 'nb',
+                        harJobbetSomFrilansSiste10Mnd: false,
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+                        harHattAnnenInntektSiste10Mnd: false,
+                    },
+                    [FpDataType.ANNEN_FORELDER]: args.annenForelder,
+                }}
             >
-                <UttaksplanInfo />
-            </ForeldrepengerStateMock>
+                <UttaksplanInfo
+                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                    erEndringssøknad={false}
+                    mellomlagreSøknad={() => undefined}
+                    avbrytSøknad={() => undefined}
+                />
+            </FpDataContext>
         </AxiosMock>
     );
 };
@@ -50,23 +71,32 @@ export const UttaksplanDerMorIkkeHarRettPåForeldrepenger = Template.bind({});
 UttaksplanDerMorIkkeHarRettPåForeldrepenger.args = {
     stønadskonto100: stønadskonto100MorHarIkkeRett,
     stønadskonto80: stønadskonto80MorHarIkkeRett,
-    context: contextFarSøker,
     søkerinfo: søkerinfoFarSøker,
+    annenForelder: {
+        etternavn: 'dfg',
+        fornavn: 'dsgdfg',
+        fnr: '123123123',
+        utenlandskFnr: false,
+        erUfør: false,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: false,
+    },
 };
 
 export const UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør = Template.bind({});
 UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør.args = {
     stønadskonto100: stønadskonto100MorHarIkkeRett,
     stønadskonto80: stønadskonto80MorHarIkkeRett,
-    context: {
-        ...contextFarSøker,
-        søknad: {
-            ...contextFarSøker.søknad,
-            annenForelder: {
-                ...contextFarSøker.søknad.annenForelder,
-                erUfør: true,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
     søkerinfo: søkerinfoFarSøker,
+    annenForelder: {
+        etternavn: 'dfg',
+        fornavn: 'dsgdfg',
+        fnr: '123123123',
+        utenlandskFnr: false,
+        erUfør: true,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: false,
+    },
 };

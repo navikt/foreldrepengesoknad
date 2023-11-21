@@ -1,19 +1,20 @@
 import { formatDate, intlUtils } from '@navikt/fp-common';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import InntekterTabell from './InntekterTabell';
 import Næringsdetaljer from './Næringsdetaljer';
 import { BodyShort } from '@navikt/ds-react';
+import Søker from 'app/context/types/Søker';
 
-const SelvstendigNæringsdrivendeOppsummering: FunctionComponent = () => {
+interface Props {
+    søker: Søker;
+}
+
+const SelvstendigNæringsdrivendeOppsummering: FunctionComponent<Props> = ({ søker }) => {
     const intl = useIntl();
-    const {
-        søker: { selvstendigNæringsdrivendeInformasjon, harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd },
-    } = useSøknad();
 
-    if (!selvstendigNæringsdrivendeInformasjon || !harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
+    if (!søker.selvstendigNæringsdrivendeInformasjon || !søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
         return (
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
                 <BodyShort>
@@ -26,7 +27,7 @@ const SelvstendigNæringsdrivendeOppsummering: FunctionComponent = () => {
     return (
         <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
             <InntekterTabell
-                list={selvstendigNæringsdrivendeInformasjon.map((næring) => ({
+                list={søker.selvstendigNæringsdrivendeInformasjon.map((næring) => ({
                     key: næring.navnPåNæringen + næring.tidsperiode,
                     headerVenstre: næring.navnPåNæringen,
                     headerHøyre: intlUtils(intl, 'tidsintervall', {

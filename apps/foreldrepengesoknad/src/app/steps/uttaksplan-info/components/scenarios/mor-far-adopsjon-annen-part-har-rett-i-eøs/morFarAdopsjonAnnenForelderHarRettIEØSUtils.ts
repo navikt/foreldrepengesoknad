@@ -22,12 +22,12 @@ export const mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState = (
 };
 export const getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues = (
     lagretUttaksplanInfo: MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad,
+    dekningsgrad?: Dekningsgrad,
 ): MorFarAdopsjonAnnenForelderHarRettIEØSFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad]: dekningsgrad,
+            [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad]: dekningsgrad!,
             [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg]: finnEnum(
                 lagretUttaksplanInfo.startdatoAdopsjonValg,
             ),

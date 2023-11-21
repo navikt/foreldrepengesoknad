@@ -1,4 +1,4 @@
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { FpMellomlagretData } from 'app/api/api';
 import SøknadRoutes from 'app/routes/routes';
 
 const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
@@ -12,7 +12,7 @@ const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     }
 };
 
-export const shouldApplyStorage = (storedState: ForeldrepengesøknadContextState): boolean => {
+export const shouldApplyStorage = (storedState: FpMellomlagretData): boolean => {
     if (storedState.søknad && storedState.søknad.erEndringssøknad) {
         if (!isEndringssøknadRoute(storedState.currentRoute)) {
             return false;
