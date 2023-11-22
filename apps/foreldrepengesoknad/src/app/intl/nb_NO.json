@@ -369,6 +369,7 @@
     "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektDato": "Oppgi dato for endringen",
     "inntektsinformasjon.egenNæringModal.inntektEtterEndring": "Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.",
     "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring": "Her kan du skrive kort hva som har endret seg i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din",
+    "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektAntallTegn": "Du må skrive minst 25 tegn",
     "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt.readmoreTittel": "Hva menes med varig endring?",
     "inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntekt.readmoreTekst": "Med varig endring mener vi at noe er forandret i arbeidssituasjonen eller virksomheten din. Dette kan være en omlegging av hvordan du jobber, en utvidelse av driften din, eller en konkret endring i markedet ditt. En inntektsendring alene (økt eller redusert inntekt) er ikke nok for å telle som en varig endring.",
     "inntektsinformasjon.andreInntekterModal.contentLabel": "Opplysninger om andre inntekter du har hatt",

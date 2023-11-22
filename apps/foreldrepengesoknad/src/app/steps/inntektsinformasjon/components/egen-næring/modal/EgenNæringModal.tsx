@@ -63,6 +63,10 @@ const EgenNæringModal: FunctionComponent<Props> = ({
         intl,
         'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring',
     );
+    const varigEndringAntallTegnLabel = intlUtils(
+        intl,
+        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektAntallTegn',
+    );
 
     return (
         <Modal
@@ -330,6 +334,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     label={varigEndringForklaringLabel}
                                     maxLength={1000}
                                     validate={validateEgenNæringForklaringTilEndring(intl, varigEndringForklaringLabel)}
+                                    description={varigEndringAntallTegnLabel}
                                 />
                             </Block>
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
