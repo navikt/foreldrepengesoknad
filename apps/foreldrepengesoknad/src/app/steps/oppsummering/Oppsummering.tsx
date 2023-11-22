@@ -43,7 +43,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
@@ -73,7 +72,6 @@ const Oppsummering = () => {
         søkersituasjon,
         dekningsgrad,
         uttaksplan,
-        tilleggsopplysninger,
         erEndringssøknad,
     } = useSøknad();
     const abortSignal = useAbortSignal();
@@ -87,9 +85,6 @@ const Oppsummering = () => {
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, søkerErFarEllerMedmor, intl);
     const antallUkerUttaksplan = state.antallUkerIUttaksplan;
-    const begrunnelseForSenEndring = tilleggsopplysninger.begrunnelseForSenEndring
-        ? beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring)
-        : undefined;
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(søkerErFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(søknad.barn));
     const termindato = getTermindato(søknad.barn);
@@ -254,8 +249,6 @@ const Oppsummering = () => {
                                             registrerteArbeidsforhold={arbeidsforhold}
                                             dekningsgrad={dekningsgrad}
                                             antallUkerUttaksplan={antallUkerUttaksplan}
-                                            begrunnelseForSenEndring={begrunnelseForSenEndring}
-                                            //begrunnelseForSenEndringVedlegg={søknad.vedleggForSenEndring}
                                             eksisterendeUttaksplan={
                                                 eksisterendeSak ? eksisterendeSak.uttaksplan : undefined
                                             }

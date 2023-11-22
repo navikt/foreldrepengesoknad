@@ -15,8 +15,6 @@ import {
     Sak,
     Søkerinfo,
     Søkersituasjon,
-    Tilleggsopplysning,
-    Tilleggsopplysninger,
 } from '@navikt/fp-common';
 
 describe('<foreldrepengesøknadReducer>', () => {
@@ -295,26 +293,6 @@ describe('<foreldrepengesøknadReducer>', () => {
         expect(resultState).toStrictEqual({
             ...foreldrepengesøknadInitialState,
             eksisterendeSak: payload,
-        });
-    });
-    it('skal sette tilleggsopplysninger i søknad i state', () => {
-        const payload = {
-            begrunnelseForSenEndring: {
-                tekst: 'test',
-            } as Tilleggsopplysning,
-        } as Tilleggsopplysninger;
-
-        const resultState = foreldrepengesøknadReducer(foreldrepengesøknadInitialState, {
-            type: ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER,
-            payload,
-        });
-
-        expect(resultState).toStrictEqual({
-            ...foreldrepengesøknadInitialState,
-            søknad: {
-                ...foreldrepengesøknadInitialState.søknad,
-                tilleggsopplysninger: payload,
-            },
         });
     });
     it('skal sette antallUker i state', () => {

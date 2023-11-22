@@ -18,7 +18,6 @@ import {
     StønadskontoType,
     Søkerrolle,
     Søkersituasjon,
-    Tilleggsopplysninger,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksdagen,
@@ -79,16 +78,12 @@ export interface SøkerForInnsending extends Omit<Søker, 'andreInntekterSiste10
 }
 
 export interface SøknadForInnsending
-    extends Omit<
-        Søknad,
-        'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon' | 'tilleggsopplysninger'
-    > {
+    extends Omit<Søknad, 'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon'> {
     barn: BarnForInnsending;
     annenForelder: AnnenForelderForInnsending;
     uttaksplan: PeriodeForInnsending[];
     søker: SøkerForInnsending;
     situasjon: Situasjon;
-    tilleggsopplysninger?: string;
 }
 
 export type EndringssøknadForInnsending = Pick<
@@ -103,7 +98,6 @@ export type EndringssøknadForInnsending = Pick<
     | 'barn'
     | 'dekningsgrad'
     | 'situasjon'
-    | 'tilleggsopplysninger'
     | 'ønskerJustertUttakVedFødsel'
 >;
 
@@ -348,7 +342,7 @@ export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], end
 };
 
 export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): SøknadForInnsending => {
-    const { søker, barn, annenForelder, søkersituasjon, tilleggsopplysninger, uttaksplan, ...rest } = søknad;
+    const { søker, barn, annenForelder, søkersituasjon, uttaksplan, ...rest } = søknad;
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
     const søkerInnsending = cleanSøker(søker, søknad.søkersituasjon);
     const barnInnsending = cleanBarn(barn);
@@ -362,14 +356,12 @@ export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): Søk
         termindato,
         annenForelder,
     );
-    const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(søknad.tilleggsopplysninger);
     const cleanedSøknad: SøknadForInnsending = {
         søker: søkerInnsending,
         barn: barnInnsending,
         situasjon: søknad.søkersituasjon.situasjon,
         annenForelder: annenForelderInnsending,
         uttaksplan: uttaksplanInnsending,
-        tilleggsopplysninger: tilleggsopplysningerInnsending,
         ...rest,
     };
 
@@ -459,21 +451,12 @@ export const cleanEndringssøknad = (
         barn: søknad.barn,
         dekningsgrad: søknad.dekningsgrad,
         situasjon: søknad.søkersituasjon.situasjon,
-        tilleggsopplysninger: cleanTilleggsopplysninger(søknad.tilleggsopplysninger),
         ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
     };
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
 
     return mapAttachmentsToSøknadForInnsending(cleanedSøknad);
-};
-
-const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
-    const tilleggsopplysningerTilSaksbehandler = tilleggsopplysninger.begrunnelseForSenEndring?.tekst;
-    if (tilleggsopplysningerTilSaksbehandler !== undefined && tilleggsopplysningerTilSaksbehandler.length > 0) {
-        return tilleggsopplysningerTilSaksbehandler;
-    }
-    return undefined;
 };
 
 export const sendErrorMessageToSentry = (error: AxiosError<any>) => {

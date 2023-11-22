@@ -21,7 +21,6 @@ import {
     isUttaksperiode,
     Periode,
     Periodene,
-    SenEndringÅrsak,
     Step,
     StepButtonWrapper,
 } from '@navikt/fp-common';
@@ -47,7 +46,6 @@ import { getPerioderSomSkalSendesInn, storeAppState } from 'app/utils/submitUtil
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
-import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
@@ -94,7 +92,7 @@ const UttaksplanStep = () => {
     const nextRoute = søknad.erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { uttaksplanInfo, eksisterendeSak, harUttaksplanBlittSlettet, annenPartsUttakErLagtTilIPlan } = state;
     const { person, arbeidsforhold } = søkerinfo;
-    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad, tilleggsopplysninger } = søknad;
+    const { annenForelder, søker, barn, søkersituasjon, dekningsgrad, erEndringssøknad } = søknad;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
@@ -302,26 +300,12 @@ const UttaksplanStep = () => {
 
     const onValidSubmitHandler = () => {
         setSubmitIsClicked(true);
-        const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(tilleggsopplysninger);
         return [
-            actionCreator.setTilleggsopplysninger(cleanedTilleggsopplysninger),
             actionCreator.setEndringstidspunkt(endringstidspunkt),
             actionCreator.setPerioderSomSkalSendesInn(perioderSomSkalSendesInn),
         ];
     };
 
-    const handleBegrunnelseChange = (årsak: SenEndringÅrsak, begrunnelse: string) => {
-        const ekstraInformasjon = årsak !== SenEndringÅrsak.Ingen ? årsak : undefined;
-        const opplysninger = {
-            ...tilleggsopplysninger,
-            begrunnelseForSenEndring: {
-                ...tilleggsopplysninger.begrunnelseForSenEndring,
-                tekst: begrunnelse,
-                ekstraInformasjon: ekstraInformasjon,
-            },
-        };
-        dispatch(actionCreator.setTilleggsopplysninger(opplysninger));
-    };
     useEffect(() => {
         const periodeAngittAvAnnenPart = opprinneligPlan?.find((p) => isUttaksperiode(p) && p.angittAvAnnenPart);
 
@@ -583,9 +567,7 @@ const UttaksplanStep = () => {
                             søkersituasjon={søkersituasjon}
                             dekningsgrad={dekningsgrad}
                             antallBarn={antallBarn}
-                            tilleggsopplysninger={tilleggsopplysninger}
                             setUttaksplanErGyldig={setUttaksplanErGyldig}
-                            handleBegrunnelseChange={handleBegrunnelseChange}
                             eksisterendeSak={eksisterendeSak}
                             perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                             morsSisteDag={morsSisteDag}

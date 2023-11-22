@@ -110,11 +110,6 @@ FarMedUførMor.args = {
                 kanIkkeOppgis: false,
                 erUfør: true,
             },
-            tilleggsopplysninger: {
-                begrunnelseForSenEndring: {
-                    tekst: 'Utsettelsesgrunn',
-                },
-            },
         },
     } as ForeldrepengesøknadContextState,
     søkerinfo,

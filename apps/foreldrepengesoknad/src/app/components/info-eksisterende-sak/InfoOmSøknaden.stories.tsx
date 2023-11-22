@@ -37,7 +37,6 @@ const context = {
         uttaksplan: [],
         harGodkjentOppsummering: false,
         vedlegg: [],
-        tilleggsopplysninger: undefined!,
         ønskerJustertUttakVedFødsel: undefined,
     },
     version: 5,

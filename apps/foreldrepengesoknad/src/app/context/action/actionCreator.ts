@@ -7,7 +7,6 @@ import {
     Sak,
     Søkerinfo,
     Søkersituasjon,
-    Tilleggsopplysninger,
 } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
@@ -49,7 +48,6 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_ANTALL_UKER_I_UTTAKSPLAN = 'setAntallUkerIUttaksplan',
     SET_ENDRINGSTIDSPUNKT = 'setEndringstidspunkt',
     SET_SPRÅKKODE = 'setSpråkkode',
-    SET_TILLEGGSOPPLYSNINGER = 'setTilleggsopplysninger',
     SLETT_UTTAKSPLAN = 'slettUttaksplan',
     SET_UTTAKSPLAN_SLETTET = 'setUttaksplanSlettet',
     SET_ØNSKER_JUSTERT_UTTAK_VED_FØDSEL = 'setØnskerJustertUttakVedFødsel',
@@ -205,16 +203,6 @@ interface SetUttaksplanInfo {
 
 const setUttaksplanInfo = (payload: UttaksplanInfo): SetUttaksplanInfo => ({
     type: ForeldrepengesøknadContextActionKeys.SET_UTTAKSPLAN_INFO,
-    payload,
-});
-
-interface SetTilleggsopplysninger {
-    type: ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER;
-    payload: Tilleggsopplysninger;
-}
-
-const setTilleggsopplysninger = (payload: Tilleggsopplysninger): SetTilleggsopplysninger => ({
-    type: ForeldrepengesøknadContextActionKeys.SET_TILLEGGSOPPLYSNINGER,
     payload,
 });
 
@@ -423,7 +411,6 @@ export type ForeldrepengesøknadContextAction =
     | SetInformasjonOmUtenlandsoppholdTidligere
     | SetSaker
     | SetUttaksplanInfo
-    | SetTilleggsopplysninger
     | SetDekningsgrad
     | ApplyStoredState
     | SetVedlegg
@@ -460,7 +447,6 @@ export default {
     setInformasjonOmUtenlandsoppholdTidligere,
     setSaker,
     setUttaksplanInfo,
-    setTilleggsopplysninger,
     setDekningsgrad,
     setVedlegg,
     lagUttaksplanforslag,

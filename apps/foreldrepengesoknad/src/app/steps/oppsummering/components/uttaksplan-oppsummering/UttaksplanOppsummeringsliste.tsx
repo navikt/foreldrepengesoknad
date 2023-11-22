@@ -17,14 +17,11 @@ import {
     Situasjon,
     StønadskontoType,
     TidsperiodeDate,
-    Tilleggsopplysning,
     Utsettelsesperiode,
     Uttaksperiode,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
-import { beskrivTilleggsopplysning, TilleggsopplysningMedBeskrivelse } from 'app/utils/tilleggsopplysningerUtils';
 import { useIntl } from 'react-intl';
-import Feltoppsummering from './feltoppsummering/Feltoppsummering';
 import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeringsliste/Oppsummeringsliste';
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
@@ -36,7 +33,6 @@ interface UttaksplanOppsummeringslisteProps {
     erFarEllerMedmor: boolean;
     registrerteArbeidsforhold: Arbeidsforhold[];
     annenForelder: AnnenForelder;
-    begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
     familiehendelsesdato: Date;
     termindato: Date | undefined;
@@ -51,7 +47,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     erFarEllerMedmor,
     registrerteArbeidsforhold,
     annenForelder,
-    begrunnelseForSenEndring,
     eksisterendeUttaksplan,
     familiehendelsesdato,
     termindato,
@@ -163,20 +158,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         };
     };
 
-    const createOppsummeringslisteelementPropsForBegrunnelseForSenEndring = (
-        begrunnelse: TilleggsopplysningMedBeskrivelse,
-    ): OppsummeringslisteelementProps => {
-        return {
-            venstrestiltTekst: begrunnelse.beskrivelse,
-            høyrestiltTekst: '',
-            content: (
-                <>
-                    <Feltoppsummering feltnavn={begrunnelse.ekstraInformasjon || ''} verdi={begrunnelse.tekst} />
-                </>
-            ),
-        };
-    };
-
     const createOppsummeringslisteelementProps = (periode: Periode) => {
         const periodeErNyEllerEndret = eksisterendeUttaksplan
             ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
@@ -199,12 +180,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         const periodeliste = perioder
             .map((periode) => createOppsummeringslisteelementProps(periode))
             .filter((v) => v !== null) as OppsummeringslisteelementProps[];
-        if (begrunnelseForSenEndring) {
-            const begrunnelse = beskrivTilleggsopplysning(begrunnelseForSenEndring);
-            const begrunnelseForSenEndringList =
-                createOppsummeringslisteelementPropsForBegrunnelseForSenEndring(begrunnelse);
-            return periodeliste.concat(begrunnelseForSenEndringList);
-        }
 
         return periodeliste;
     };

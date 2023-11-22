@@ -6,8 +6,6 @@ import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTes
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
-import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
-import { harTilleggsopplysningerGyldigeCharsTest } from './tester/harTilleggsopplysningerGyldigeCharsTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
@@ -50,8 +48,6 @@ export enum UttaksplanRegelKey {
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
     'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
-    'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
-    'begrunnelseVedForSenEndringHarUgyldigeChars' = 'begrunnelseVedForSenEndringHarUgyldigeChars',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     'perioderManglerVedlegg' = 'manglendeVedlegg',
@@ -137,19 +133,9 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         test: erUttaksplanGraderingStørreEnnSamtidigUttakTest,
     },
     {
-        key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
-        alvorlighet: RegelAlvorlighet.FEIL,
-        test: erTilleggsopplysningerGyldigTest,
-    },
-    {
         key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksplanForMangeFlerbarnsdagerTest,
-    },
-    {
-        key: UttaksplanRegelKey.begrunnelseVedForSenEndringHarUgyldigeChars,
-        alvorlighet: RegelAlvorlighet.FEIL,
-        test: harTilleggsopplysningerGyldigeCharsTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,

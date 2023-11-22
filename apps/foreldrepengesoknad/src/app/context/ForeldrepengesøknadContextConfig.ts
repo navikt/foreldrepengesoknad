@@ -59,9 +59,6 @@ export const foreldrepengesøknadInitialState: ForeldrepengesøknadContextState 
         uttaksplan: [],
         harGodkjentOppsummering: false,
         vedlegg: [],
-        tilleggsopplysninger: {
-            begrunnelseForSenEndring: undefined!,
-        },
         saksnummer: undefined,
         ønskerJustertUttakVedFødsel: undefined,
     },

@@ -7,7 +7,6 @@ import { NavnPåForeldre } from './NavnPåForeldre';
 import { Periode } from './Periode';
 import { Søkersituasjon } from './Søkersituasjon';
 import { TilgjengeligStønadskonto } from './TilgjengeligStønadskonto';
-import { Tilleggsopplysninger } from './Tilleggsopplysninger';
 
 export interface Søknadsinfo {
     søkersituasjon: Søkersituasjon;
@@ -29,7 +28,6 @@ export interface Søknadsinfo {
     stønadskontoer: TilgjengeligStønadskonto[];
     perioder: Periode[];
     harKomplettUttaksplan: boolean;
-    tilleggsopplysninger: Tilleggsopplysninger;
     eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
     barn: Barn;

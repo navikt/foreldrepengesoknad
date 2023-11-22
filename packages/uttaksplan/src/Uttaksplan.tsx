@@ -12,15 +12,12 @@ import {
     ForeldreparSituasjon,
     ISOStringToDate,
     Periode,
-    SenEndringÅrsak,
     Situasjon,
     Søkersituasjon,
     TilgjengeligStønadskonto,
-    Tilleggsopplysninger,
     Utsettelsesperiode,
     Uttaksperiode,
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
-    getSeneEndringerSomKreverBegrunnelse,
     getToTetteReglerGjelder,
     intlUtils,
     isAnnenForelderOppgitt,
@@ -35,7 +32,6 @@ import { validerUttaksplan } from './validering/validerUttaksplan';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { useIntl } from 'react-intl';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
-import OppgiTilleggsopplysninger from './components/oppgi-tilleggsopplysninger/OppgiTilleggsopplysninger';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
@@ -64,7 +60,6 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
-    tilleggsopplysninger: Tilleggsopplysninger;
     eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
     morsSisteDag: Date | undefined;
@@ -73,7 +68,6 @@ interface Props {
     termindato: Date | undefined;
     barn: Barn;
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
-    handleBegrunnelseChange: (årsak: SenEndringÅrsak, begrunnelse: string) => void;
     handleSlettUttaksplan: () => void;
     handleResetUttaksplan: () => void;
     visAutomatiskJusteringForm: boolean;
@@ -111,14 +105,12 @@ const Uttaksplan: FunctionComponent<Props> = ({
     søkersituasjon,
     dekningsgrad,
     antallBarn,
-    tilleggsopplysninger,
     eksisterendeSak,
     perioderSomSkalSendesInn,
     harKomplettUttaksplan,
     termindato,
     opprinneligPlan,
     setUttaksplanErGyldig,
-    handleBegrunnelseChange,
     handleSlettUttaksplan,
     handleResetUttaksplan,
     barn,
@@ -227,14 +219,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
         }
     };
 
-    const vedleggForSenEndring = []!; //TODO: handleBegrunnelseVedleggChange
-
-    const årsakTilSenEndring = getSeneEndringerSomKreverBegrunnelse(perioderSomSkalSendesInn);
-
-    const handleBegrunnelseTekstChange = (begrunnelse: string) => {
-        handleBegrunnelseChange(årsakTilSenEndring, begrunnelse);
-    };
-
     const uttaksplanValidering = validerUttaksplan({
         søkersituasjon: søkersituasjon,
         arbeidsforhold: arbeidsforhold,
@@ -255,7 +239,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
         stønadskontoer: stønadskontoer,
         perioder: uttaksplan,
         harKomplettUttaksplan,
-        tilleggsopplysninger: tilleggsopplysninger,
         eksisterendeSak: eksisterendeSak,
         perioderSomSkalSendesInn: perioderSomSkalSendesInn,
         barn: barn,
@@ -351,18 +334,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
                 />
             </Block>
-            {årsakTilSenEndring && årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
-                <OppgiTilleggsopplysninger
-                    begrunnelse={
-                        tilleggsopplysninger.begrunnelseForSenEndring
-                            ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
-                            : ''
-                    }
-                    vedlegg={vedleggForSenEndring}
-                    onBegrunnelseTekstChange={handleBegrunnelseTekstChange}
-                    //onVedleggChange={handleBegrunnelseVedleggChange}
-                />
-            )}
             <SlettUttaksplanModal
                 isOpen={slettUttaksplanModalOpen}
                 erEndringssøknad={erEndringssøknad}

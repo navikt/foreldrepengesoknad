@@ -790,8 +790,6 @@
     "uttaksplan.slettPeriode.opphold": "Slett opphald",
     "uttaksplan.slettPeriode.utsettelse": "Slett utsetjning",
     "uttaksplan.slettPeriode.info": "Slett periode",
-    "uttaksplan.tilleggsopplysninger.label": "Kva er grunnen til at du søker tilbake i tid eller gi ei forklaring av sykdomssituasjonen",
-    "uttaksplan.tilleggsopplysninger.apneLabel": "Les meir om kva vi ønsker at du skal gi ei forklaring om",
     "uttaksplan.tilleggsopplysninger.sykdomTilbakeITid.overskrift": "Søker du om utsetjing på grunn av sykdom tilbake i tid?",
     "uttaksplan.tilleggsopplysninger.sykdomTilbakeITid": "Søker du om å utsetje på grunn av sykdom tilbake i tid. Så kan du fortelle kva som er grunnen til at du ikkje har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
     "uttaksplan.tilleggsopplysninger.uttak.overskrift": "Søker du om en perioden med foreldrepengar mer enn 3 månadar tilbake i tid?",

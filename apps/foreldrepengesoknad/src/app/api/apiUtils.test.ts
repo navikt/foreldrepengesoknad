@@ -67,7 +67,6 @@ const getSøknadMock = (annenForelderInput: AnnenForelder, barnInput: Barn, utta
             rolle: 'mor',
             situasjon: 'fødsel',
         },
-        tilleggsopplysninger: {},
     } as Søknad;
 };
 
