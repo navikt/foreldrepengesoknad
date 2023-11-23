@@ -20,7 +20,7 @@ const utledNesteSide = (values: Utenlandsopphold) => {
 };
 
 type Props = {
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 };
 

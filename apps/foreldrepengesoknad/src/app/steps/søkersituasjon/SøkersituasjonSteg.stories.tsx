@@ -6,6 +6,13 @@ import SøkersituasjonSteg from './SøkersituasjonSteg';
 import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
+const promiseAction =
+    () =>
+    (...args: any[]) => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'steps/SøkersituasjonSteg',
     component: SøkersituasjonSteg,
@@ -15,12 +22,18 @@ export default {
 interface Props {
     kjønn: Kjønn;
     søkersituasjon?: SøkersituasjonFp;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad?: () => Promise<any>;
     avbrytSøknad: () => void;
     gåTilNesteSide: (action: Action) => void;
 }
 
-const Template: StoryFn<Props> = ({ kjønn, søkersituasjon, mellomlagreSøknad, avbrytSøknad, gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({
+    kjønn,
+    søkersituasjon,
+    mellomlagreSøknad = promiseAction(),
+    avbrytSøknad = action('button-click'),
+    gåTilNesteSide,
+}) => {
     return (
         <FpDataContext
             onDispatch={gåTilNesteSide}
@@ -28,6 +41,7 @@ const Template: StoryFn<Props> = ({ kjønn, søkersituasjon, mellomlagreSøknad,
                 [FpDataType.SØKERSITUASJON]: søkersituasjon,
             }}
         >
+            o
             <SøkersituasjonSteg kjønn={kjønn} mellomlagreSøknad={mellomlagreSøknad} avbrytSøknad={avbrytSøknad} />
         </FpDataContext>
     );
@@ -45,8 +59,6 @@ Far.args = {
 
 export const HarMellomlagretData = Template.bind({});
 HarMellomlagretData.args = {
-    mellomlagreSøknad: action('button-click'),
-    avbrytSøknad: action('button-click'),
     kjønn: 'K',
     søkersituasjon: {
         situasjon: 'adopsjon',

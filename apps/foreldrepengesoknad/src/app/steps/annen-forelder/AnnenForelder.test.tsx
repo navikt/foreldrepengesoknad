@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
 import * as stories from './AnnenForelder.stories';
+import SøknadRoutes from 'app/routes/routes';
+import { FpDataType } from 'app/context/FpDataContext';
 
 const {
     Default,
@@ -16,9 +18,14 @@ const {
     FarGiftUfødtBarn,
 } = composeStories(stories);
 
+//TODO (TOR) Testane her må i større grad testa output frå onSubmit-funksjonen. Kan testast gjennom 'gåTilNesteSide'
+
 describe('<AnnenForelder>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
-        render(<Default />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -29,7 +36,57 @@ describe('<AnnenForelder>', () => {
         await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
 
         expect(screen.getByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).toBeInTheDocument();
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(4);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                antallBarn: 1,
+                datoForAleneomsorg: undefined,
+                dokumentasjonAvAleneomsorg: undefined,
+                fnr: ['21091981146'],
+                fødselsdatoer: [dayjs('2021-03-15').startOf('day').toDate()],
+                type: 'født',
+            },
+            key: FpDataType.OM_BARNET,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: {
+                erAleneOmOmsorg: true,
+                harHattAnnenInntektSiste10Mnd: undefined,
+                harJobbetSomFrilansSiste10Mnd: undefined,
+                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
+                språkkode: 'nb',
+            },
+            key: FpDataType.SØKER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: {
+                bostedsland: undefined,
+                erInformertOmSøknaden: undefined,
+                erUfør: undefined,
+                etternavn: 'BÆREPOSE',
+                fnr: '12038517080',
+                fornavn: 'LEALAUS',
+                harOppholdtSegIEØS: undefined,
+                harRettPåForeldrepengerIEØS: false,
+                harRettPåForeldrepengerINorge: undefined,
+                kanIkkeOppgis: false,
+                utenlandskFnr: false,
+            },
+            key: FpDataType.ANNEN_FORELDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
+            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og ikke rett til foreldrepenger i Norge og ikke hatt opphold i EØS', async () => {

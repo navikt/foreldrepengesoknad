@@ -11,7 +11,7 @@ import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import { shouldApplyStorage } from './utils/mellomlagringUtils';
 import { RequestStatus } from './types/RequestState';
 import { FpDataContext } from './context/FpDataContext';
-import { konverterMellomlagretDataTilAppData } from './context/data';
+import { konverterMellomlagretDataTilAppData } from './context/konverterMellomlagretDataTilAppData';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import { Kvittering } from './types/Kvittering';
 import Environment from './Environment';
@@ -87,7 +87,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
                         onChangeLocale={onChangeLocale}
                         søkerInfo={søkerInfo}
                         saker={sakerData.foreldrepenger}
-                        lagretCurrentRoute={storageData ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
+                        currentRoute={storageData ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
                         lagretErEndringssøknad={storageData?.søknad?.erEndringssøknad}
                         lagretHarGodkjentVilkår={storageData?.søknad?.harGodkjentVilkår}
                         lagretSøknadGjelderNyttBarn={storageData?.søknadGjelderEtNyttBarn}

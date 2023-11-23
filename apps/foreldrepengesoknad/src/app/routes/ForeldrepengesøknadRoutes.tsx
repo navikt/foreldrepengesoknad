@@ -27,7 +27,7 @@ const renderSøknadRoutes = (
     erEndringssøknad: boolean,
     søkerErMyndig: boolean,
     søkerInfo: Søkerinfo,
-    mellomlagreSøknad: () => void,
+    mellomlagreSøknad: () => Promise<any>,
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>,
     avbrytSøknad: () => void,
     søknadGjelderNyttBarn?: boolean,
@@ -168,7 +168,7 @@ const renderSøknadRoutes = (
 interface Props {
     locale: LocaleNo;
     onChangeLocale: (locale: LocaleNo) => void;
-    lagretCurrentRoute: SøknadRoutes;
+    currentRoute: SøknadRoutes;
     søkerInfo: Søkerinfo;
     saker: Sak[];
     lagretErEndringssøknad?: boolean;
@@ -180,7 +180,7 @@ interface Props {
 const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     locale,
     onChangeLocale,
-    lagretCurrentRoute,
+    currentRoute,
     søkerInfo,
     saker,
     lagretErEndringssøknad,
@@ -230,10 +230,10 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     const erMyndig = søkerInfo.person.erMyndig;
 
     useEffect(() => {
-        if (lagretCurrentRoute && erMyndig && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
+        if (currentRoute && erMyndig && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
             setIsFirstTimeLoadingApp(false);
-            if (isAvailable(lagretCurrentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
-                navigate(lagretCurrentRoute);
+            if (isAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
+                navigate(currentRoute);
             } else {
                 if (location.pathname === SøknadRoutes.OPPSUMMERING) {
                     navigate(SøknadRoutes.UTTAKSPLAN);
@@ -241,7 +241,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
             }
         }
     }, [
-        lagretCurrentRoute,
+        currentRoute,
         erMyndig,
         lagretHarGodkjentVilkår,
         navigate,

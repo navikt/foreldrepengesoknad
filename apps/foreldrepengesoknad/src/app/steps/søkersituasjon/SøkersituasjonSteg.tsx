@@ -14,7 +14,7 @@ import stepConfig from '../stepsConfig';
 
 type Props = {
     kjønn: Kjønn;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 };
 

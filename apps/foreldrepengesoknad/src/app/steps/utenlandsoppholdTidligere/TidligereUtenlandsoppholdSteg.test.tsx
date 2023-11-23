@@ -1,0 +1,108 @@
+import { fireEvent, render, screen } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import dayjs from 'dayjs';
+import userEvent from '@testing-library/user-event';
+import * as stories from './TidligereUtenlandsoppholdSteg.stories';
+import SøknadRoutes from 'app/routes/routes';
+import { FpDataType } from 'app/context/FpDataContext';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+
+const { Default } = composeStories(stories);
+
+describe('<TidligereUtenlandsoppholdSteg>', () => {
+    it('skal fylle ut tidligere utenlandsopphold og gå videre til inntektsinformasjon når en ikke har fremtidige utenlandsopphold', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+
+        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
+
+        const fraOgMed = screen.getByLabelText('Fra og med');
+        await userEvent.type(fraOgMed, dayjs().subtract(30, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(fraOgMed);
+
+        const tilOgMed = screen.getByLabelText('Til og med');
+        await userEvent.type(tilOgMed, dayjs().subtract(25, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(tilOgMed);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                tidligereOpphold: [
+                    {
+                        land: 'CA',
+                        tidsperiode: {
+                            fom: '2023-10-24',
+                            tom: '2023-10-29',
+                        },
+                    },
+                ],
+            },
+            key: FpDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.INNTEKTSINFORMASJON,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal fylle ut tidligere utenlandsopphold og gå videre til senere utenlandsopphold når en har indikert at en har dette', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(
+            <Default
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknad={mellomlagreSøknad}
+                utenlandsopphold={{ iNorgeSiste12Mnd: false, iNorgeNeste12Mnd: false }}
+            />,
+        );
+
+        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
+
+        const fraOgMed = screen.getByLabelText('Fra og med');
+        await userEvent.type(fraOgMed, dayjs().subtract(30, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(fraOgMed);
+
+        const tilOgMed = screen.getByLabelText('Til og med');
+        await userEvent.type(tilOgMed, dayjs().subtract(25, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(tilOgMed);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                tidligereOpphold: [
+                    {
+                        land: 'CA',
+                        tidsperiode: {
+                            fom: '2023-10-24',
+                            tom: '2023-10-29',
+                        },
+                    },
+                ],
+            },
+            key: FpDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+});

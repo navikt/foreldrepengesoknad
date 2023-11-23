@@ -25,7 +25,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                         <ForeldrepengesøknadRoutes
                             locale="nb"
                             onChangeLocale={() => ({})}
-                            lagretCurrentRoute={SøknadRoutes.VELKOMMEN}
+                            currentRoute={SøknadRoutes.VELKOMMEN}
                             søkerInfo={{
                                 arbeidsforhold: [],
                                 person: {
@@ -68,7 +68,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                         <ForeldrepengesøknadRoutes
                             locale="nb"
                             onChangeLocale={() => ({})}
-                            lagretCurrentRoute={SøknadRoutes.OM_BARNET}
+                            currentRoute={SøknadRoutes.OM_BARNET}
                             søkerInfo={{
                                 person: {
                                     erMyndig: true,

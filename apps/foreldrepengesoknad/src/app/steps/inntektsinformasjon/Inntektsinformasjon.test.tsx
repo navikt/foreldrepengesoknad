@@ -3,12 +3,19 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
 import * as stories from './Inntektsinformasjon.stories';
+import { FpDataType } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 const { HarIkkeArbeidsforhold, HarArbeidsforhold } = composeStories(stories);
 
+//TODO (TOR) Testane her må i større grad testa output frå onSubmit-funksjonen. Kan testast gjennom 'gåTilNesteSide'
+
 describe('<Inntektsinformasjon>', () => {
     it('skal ikke ha arbeidsforhold og velger nei på alle spørsmål', async () => {
-        render(<HarIkkeArbeidsforhold />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<HarIkkeArbeidsforhold gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
 
         expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -28,7 +35,30 @@ describe('<Inntektsinformasjon>', () => {
 
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                andreInntekterSiste10Mnd: [],
+                erAleneOmOmsorg: false,
+                frilansInformasjon: undefined,
+                harHattAnnenInntektSiste10Mnd: false,
+                harJobbetSomFrilansSiste10Mnd: false,
+                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+                selvstendigNæringsdrivendeInformasjon: [],
+                språkkode: 'nb',
+            },
+            key: FpDataType.SØKER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.OPPSUMMERING,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser', async () => {

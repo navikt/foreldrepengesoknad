@@ -24,7 +24,7 @@ import {
     opprettSøknadFraValgteBarn,
     opprettSøknadFraValgteBarnMedSak,
 } from 'app/utils/eksisterendeSakUtils';
-import { useSetSøknadsdata } from 'app/context/data';
+import { useSetSøknadsdata } from 'app/context/useSetSøknadsdata';
 import { Søknad } from 'app/context/types/Søknad';
 import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';

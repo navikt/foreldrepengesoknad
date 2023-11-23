@@ -1,16 +1,23 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
+import { action } from '@storybook/addon-actions';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import AnnenForelder from './AnnenForelder';
-import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import dayjs from 'dayjs';
+
+const promiseAction =
+    () =>
+    (...args: any[]) => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 const søkerinfo = _søkerinfo as any;
 
@@ -25,6 +32,8 @@ interface Props {
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelderType;
     barn?: Barn;
+    mellomlagreSøknad?: () => Promise<any>;
+    gåTilNesteSide: (action: Action) => void;
 }
 
 const Template: StoryFn<Props> = ({
@@ -43,6 +52,8 @@ const Template: StoryFn<Props> = ({
     annenForelder = {
         kanIkkeOppgis: true,
     },
+    gåTilNesteSide,
+    mellomlagreSøknad = promiseAction(),
 }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(
@@ -57,6 +68,7 @@ const Template: StoryFn<Props> = ({
     return (
         <AxiosMock mock={restMock}>
             <FpDataContext
+                onDispatch={gåTilNesteSide}
                 initialState={{
                     [FpDataType.SØKERSITUASJON]: søkersituasjon,
                     [FpDataType.OM_BARNET]: barn,
@@ -76,8 +88,8 @@ const Template: StoryFn<Props> = ({
             >
                 <AnnenForelder
                     søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
-                    mellomlagreSøknad={() => undefined}
-                    avbrytSøknad={() => undefined}
+                    mellomlagreSøknad={mellomlagreSøknad}
+                    avbrytSøknad={action('button-click')}
                 />
             </FpDataContext>
         </AxiosMock>

@@ -3,6 +3,8 @@ import { composeStories } from '@storybook/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 import * as stories from './OmBarnet.stories';
+import SøknadRoutes from 'app/routes/routes';
+import { FpDataType } from 'app/context/FpDataContext';
 
 vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
@@ -21,9 +23,14 @@ const {
 
 const farEllerMedMorSøker = [FarFødsel, MedmorFødsel];
 
+//TODO (TOR) Testane her må i større grad testa output frå onSubmit-funksjonen. Kan testast gjennom 'gåTilNesteSide'
+
 describe('<OmBarnet>', () => {
     it('skal ha født ett barn', async () => {
-        render(<Default />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
 
@@ -45,7 +52,25 @@ describe('<OmBarnet>', () => {
         await userEvent.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        //TODO Fiks sjekken mot datoar når ein endrar fra date => string
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: expect.objectContaining({
+                antallBarn: 1,
+                type: 'født',
+            }),
+            key: FpDataType.OM_BARNET,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.ANNEN_FORELDER,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal ikke ha født barn ennå', async () => {
