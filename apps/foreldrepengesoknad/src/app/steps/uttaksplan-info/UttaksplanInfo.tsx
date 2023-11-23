@@ -31,7 +31,7 @@ import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpData
 type Props = {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 };
 

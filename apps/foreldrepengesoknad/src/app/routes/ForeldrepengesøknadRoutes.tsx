@@ -62,6 +62,7 @@ const renderSøknadRoutes = (
                             søkerInfo={søkerInfo}
                             sendSøknad={sendSøknad}
                             avbrytSøknad={avbrytSøknad}
+                            mellomlagreSøknad={mellomlagreSøknad}
                         />
                     }
                 />
@@ -158,6 +159,7 @@ const renderSøknadRoutes = (
                         søkerInfo={søkerInfo}
                         sendSøknad={sendSøknad}
                         avbrytSøknad={avbrytSøknad}
+                        mellomlagreSøknad={mellomlagreSøknad}
                     />
                 }
             />

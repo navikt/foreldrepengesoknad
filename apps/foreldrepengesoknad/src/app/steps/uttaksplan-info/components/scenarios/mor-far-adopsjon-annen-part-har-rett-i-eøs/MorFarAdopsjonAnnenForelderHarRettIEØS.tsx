@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -48,13 +48,14 @@ import {
 import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import BackButton from 'app/steps/BackButton';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
 }
 
 const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
@@ -261,9 +262,10 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         </Block>
                         <Block>
                             <StepButtonWrapper>
-                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
-                                    <FormattedMessage id="backlink.label" />
-                                </Button>
+                                <BackButton
+                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    route={getPreviousStepHref('uttaksplanInfo')}
+                                />
                                 {visibility.areAllQuestionsAnswered() && (
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

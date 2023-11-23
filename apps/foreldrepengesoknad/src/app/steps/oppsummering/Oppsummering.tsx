@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FunctionComponent, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@navikt/ds-react';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import { notEmpty } from '@navikt/fp-validation';
@@ -40,15 +40,23 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { FpDataType, useFpStateData } from 'app/context/FpDataContext';
 
 import './oppsummering.less';
+import BackButton from '../BackButton';
 
 export interface Props {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 }
 
-const Oppsummering: FunctionComponent<Props> = ({ søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad }) => {
+const Oppsummering: FunctionComponent<Props> = ({
+    søkerInfo,
+    erEndringssøknad,
+    sendSøknad,
+    avbrytSøknad,
+    mellomlagreSøknad,
+}) => {
     const bem = bemUtils('oppsummering');
     const intl = useIntl();
     const navigate = useNavigate();
@@ -191,17 +199,14 @@ const Oppsummering: FunctionComponent<Props> = ({ søkerInfo, erEndringssøknad,
                             </Block>
                             <Block margin="l" padBottom="l">
                                 <StepButtonWrapper lastStep={true}>
-                                    <Button
-                                        variant="secondary"
-                                        as={Link}
-                                        to={
+                                    <BackButton
+                                        mellomlagreSøknad={mellomlagreSøknad}
+                                        route={
                                             erEndringssøknad
                                                 ? getPreviousStepHrefEndringssøknad('oppsummering')
                                                 : getPreviousStepHref('oppsummering')
                                         }
-                                    >
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    />
                                     <Button
                                         icon={<PaperplaneIcon />}
                                         iconPosition="right"

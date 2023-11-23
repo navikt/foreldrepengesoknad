@@ -45,8 +45,11 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøkn
         navigate(nesteSide);
     };
 
-    const goToPreviousStep = () => {
-        navigate(getPreviousStepHref('utenlandsopphold'));
+    const goToPreviousStep = async () => {
+        const appRoute = getPreviousStepHref('utenlandsopphold');
+        lagreAppRoute(appRoute);
+        await mellomlagreSøknad();
+        navigate(appRoute);
     };
     const saveOnPrevious = () => {
         // TODO (TOR) Lagre uvalidert data i framtida

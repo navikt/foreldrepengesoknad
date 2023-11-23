@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Link, useNavigate } from 'react-router-dom';
+import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@navikt/ds-react';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
@@ -42,13 +42,14 @@ import {
 } from './farMedmorAleneomsorgFødselUtils';
 import { validateStartdatoUttakFarMedmorAleneomsorgFødsel } from './validation/farMedmorAleneomsorgFødselValidation';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
+import BackButton from 'app/steps/BackButton';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
 }
 
 const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
@@ -236,9 +237,10 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         </Block>
                         <Block>
                             <StepButtonWrapper>
-                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
-                                    <FormattedMessage id="backlink.label" />
-                                </Button>
+                                <BackButton
+                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    route={getPreviousStepHref('uttaksplanInfo')}
+                                />
                                 {visibility.areAllQuestionsAnswered() && (
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

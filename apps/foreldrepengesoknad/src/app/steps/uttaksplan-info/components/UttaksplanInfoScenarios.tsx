@@ -29,7 +29,7 @@ interface Props {
     annenForelder: AnnenForelder;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
 }
 
 const UttaksplanInfoScenarios: FunctionComponent<Props> = ({

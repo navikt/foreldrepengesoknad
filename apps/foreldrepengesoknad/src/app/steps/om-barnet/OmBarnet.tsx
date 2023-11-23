@@ -15,7 +15,7 @@ import {
 } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
 import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
@@ -30,15 +30,16 @@ import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { Button } from '@navikt/ds-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
+import BackButton from '../BackButton';
 
 type Props = {
     søkerInfo: Søkerinfo;
     søknadGjelderNyttBarn: boolean;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 };
 
@@ -174,9 +175,10 @@ const OmBarnet: React.FunctionComponent<Props> = ({
                             />
                             <Block margin="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('omBarnet')}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknad={mellomlagreSøknad}
+                                        route={getPreviousStepHref('omBarnet')}
+                                    />
                                     {visGåVidereKnapp && (
                                         <Button
                                             type="submit"

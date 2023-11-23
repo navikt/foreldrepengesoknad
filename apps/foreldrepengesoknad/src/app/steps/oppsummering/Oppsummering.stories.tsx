@@ -151,6 +151,7 @@ const Template: StoryFn<Props> = ({
                     sendSøknad={() => Promise.resolve()}
                     søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
                     avbrytSøknad={() => undefined}
+                    mellomlagreSøknad={() => Promise.resolve()}
                 />
             </FpDataContext>
         </AxiosMock>

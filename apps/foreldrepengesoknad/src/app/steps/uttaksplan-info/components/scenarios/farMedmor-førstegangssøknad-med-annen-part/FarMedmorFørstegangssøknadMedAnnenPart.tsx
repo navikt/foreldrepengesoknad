@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Link, useNavigate } from 'react-router-dom';
+import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -40,13 +40,14 @@ import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaks
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import Person from '@navikt/fp-common/src/common/types/Person';
+import BackButton from 'app/steps/BackButton';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     person: Person;
 }
 
@@ -226,9 +227,10 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                         </Block>
                         <Block>
                             <StepButtonWrapper>
-                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
-                                    <FormattedMessage id="backlink.label" />
-                                </Button>
+                                <BackButton
+                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    route={getPreviousStepHref('uttaksplanInfo')}
+                                />
                                 {visibility.areAllQuestionsAnswered() && (
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

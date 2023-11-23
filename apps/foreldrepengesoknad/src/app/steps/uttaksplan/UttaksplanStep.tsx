@@ -74,7 +74,7 @@ import { notEmpty } from '@navikt/fp-validation';
 type Props = {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 };
 
@@ -194,6 +194,14 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             ),
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
     );
+
+    const goToPreviousStep = async () => {
+        setGåTilbakeIsOpen(false);
+
+        lagreAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+        await mellomlagreSøknad();
+        navigate(SøknadRoutes.UTTAKSPLAN_INFO);
+    };
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         eksisterendeSak?.grunnlag.termindato,
@@ -668,7 +676,11 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                 />
                             </Block>
                         )}
-                        <VilDuGåTilbakeModal isOpen={gåTilbakeIsOpen} setIsOpen={setGåTilbakeIsOpen} />
+                        <VilDuGåTilbakeModal
+                            isOpen={gåTilbakeIsOpen}
+                            setIsOpen={setGåTilbakeIsOpen}
+                            goToPreviousStep={goToPreviousStep}
+                        />
                         {!uttaksplanErGyldig && isSubmitting && (
                             <Block textAlignCenter={true} padBottom="l">
                                 <Alert variant="error">

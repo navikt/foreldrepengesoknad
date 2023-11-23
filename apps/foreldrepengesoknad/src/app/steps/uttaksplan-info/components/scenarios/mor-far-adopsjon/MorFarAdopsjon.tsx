@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { notEmpty } from '@navikt/fp-validation';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -50,13 +50,14 @@ import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import BackButton from 'app/steps/BackButton';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
 }
 
 const MorFarAdopsjon: FunctionComponent<Props> = ({
@@ -385,9 +386,10 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         </Block>
                         <Block>
                             <StepButtonWrapper>
-                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
-                                    <FormattedMessage id="backlink.label" />
-                                </Button>
+                                <BackButton
+                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    route={getPreviousStepHref('uttaksplanInfo')}
+                                />
                                 {visibility.areAllQuestionsAnswered() && (
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

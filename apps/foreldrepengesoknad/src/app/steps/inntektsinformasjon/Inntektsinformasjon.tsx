@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
 import {
@@ -30,6 +30,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import BackButton from '../BackButton';
 
 const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
     if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
@@ -42,7 +43,7 @@ const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
 
 type Props = {
     søkerInfo: Søkerinfo;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 };
 
@@ -154,9 +155,10 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({ søkerInfo, mello
 
                             <Block margin="xl">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={findPreviousUrl(utenlandsopphold)}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknad={mellomlagreSøknad}
+                                        route={findPreviousUrl(utenlandsopphold)}
+                                    />
                                     {visibility.areAllQuestionsAnswered() && (
                                         <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                             {intlUtils(intl, 'søknad.gåVidere')}

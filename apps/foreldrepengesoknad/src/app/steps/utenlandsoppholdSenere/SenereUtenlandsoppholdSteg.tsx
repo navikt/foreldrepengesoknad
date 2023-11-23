@@ -11,7 +11,7 @@ import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpData
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 };
 
@@ -53,10 +53,14 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
         navigate(SøknadRoutes.INNTEKTSINFORMASJON);
     };
 
-    const goToPreviousStep = () => {
-        navigate(
-            utenlandsopphold.iNorgeSiste12Mnd ? SøknadRoutes.UTENLANDSOPPHOLD : SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
-        );
+    const goToPreviousStep = async () => {
+        const appRoute = utenlandsopphold.iNorgeSiste12Mnd
+            ? SøknadRoutes.UTENLANDSOPPHOLD
+            : SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
+
+        lagreAppRoute(appRoute);
+        await mellomlagreSøknad();
+        navigate(appRoute);
     };
     const saveOnPrevious = () => {
         // TODO (TOR) Lagre uvalidert data i framtida

@@ -1,8 +1,6 @@
 import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
 import { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
 import './vilDuGåTilbakeModal.less';
@@ -10,12 +8,12 @@ import './vilDuGåTilbakeModal.less';
 interface Props {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
+    goToPreviousStep: () => void;
 }
 
-const VilDuGåTilbakeModal: FunctionComponent<Props> = ({ isOpen, setIsOpen }) => {
+const VilDuGåTilbakeModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, goToPreviousStep }) => {
     const intl = useIntl();
     const bem = bemUtils('vilDuGåTilbakeModal');
-    const navigate = useNavigate();
 
     return (
         <Modal
@@ -37,12 +35,7 @@ const VilDuGåTilbakeModal: FunctionComponent<Props> = ({ isOpen, setIsOpen }) =
                 <BodyShort>{intlUtils(intl, 'uttaksplan.vilDuGåTilbakeModal.spørsmål')}</BodyShort>
             </Block>
             <div className={bem.element('knapperad')}>
-                <Button
-                    onClick={() => {
-                        setIsOpen(false);
-                        navigate(SøknadRoutes.UTTAKSPLAN_INFO);
-                    }}
-                >
+                <Button onClick={goToPreviousStep}>
                     <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.okLabel" />
                 </Button>
                 <Button variant="secondary" onClick={() => setIsOpen(false)}>

@@ -45,10 +45,11 @@ import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenFor
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
+import BackButton from '../BackButton';
 
 type Props = {
     søkerInfo: Søkerinfo;
-    mellomlagreSøknad: () => void;
+    mellomlagreSøknad: () => Promise<any>;
     avbrytSøknad: () => void;
 };
 
@@ -413,9 +414,10 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                             </Block>
                             <Block margin="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('annenForelder')}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknad={mellomlagreSøknad}
+                                        route={getPreviousStepHref('annenForelder')}
+                                    />
                                     {kanGåVidereMedSøknaden && (
                                         <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                             {intlUtils(intl, 'søknad.gåVidere')}
