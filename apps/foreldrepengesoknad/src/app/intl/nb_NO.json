@@ -643,6 +643,8 @@
     "valideringsfeil.inntektsinformasjon.frilansoppdrag.pågående.påkrevd": "Du må oppgi om oppdraget er pågående",
     "valideringsfeil.inntektsinformasjon.varigEndringAvInntekt.ugyldigFormat": "Varig endring av inntekt kan kun bestå av siffer og må oppgis i hele kroner",
     "valideringsfeil.inntektsinformasjon.næringsinntekt.ugyldigFormat": "Næringsresultat kan kun bestå av siffer og må oppgis i hele kroner",
+    "valideringsfeil.inntektsinformasjon.orgnr.inneholderMellomrom": "Organisasjonsnummeret kan ikke inneholde mellomrom.",
+    "valideringsfeil.inntektsinformasjon.orgnr.påkrevd": "Du må oppgi organisasjonsnummer.",
     "valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
     "valideringsfeil.inntektsinformasjon.forklaringTilEndring.forKort": "Du må skrive minst 25 tegn",
     "valideringsfeil.inntektsinformasjon.forklaringTilEndring.forLang": "Forklaring av endring kan maksimalt inneholde 1000 tegn",

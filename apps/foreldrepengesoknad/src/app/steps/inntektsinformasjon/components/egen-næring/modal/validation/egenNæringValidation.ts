@@ -1,5 +1,6 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import {
+    containsWhiteSpace,
     erGyldigNorskOrgnummer,
     hasValue,
     intlUtils,
@@ -58,7 +59,14 @@ export const validateEgenNæringTom =
 export const validateEgenNæringOrgnr =
     (intl: IntlShape) =>
     (orgnr: string): SkjemaelementFeil => {
-        if (!erGyldigNorskOrgnummer(orgnr)) {
+        const trimmedOrgNr = orgnr.trim();
+        if (!hasValue(trimmedOrgNr)) {
+            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.orgnr.påkrevd');
+        }
+        if (containsWhiteSpace(trimmedOrgNr)) {
+            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.orgnr.inneholderMellomrom');
+        }
+        if (!erGyldigNorskOrgnummer(trimmedOrgNr)) {
             return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat');
         }
 

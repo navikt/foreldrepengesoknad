@@ -128,7 +128,7 @@ export const mapEgenNæringModalFormValuesToState = (values: Partial<EgenNæring
         næringstyper: [values.type!],
         navnPåNæringen: values.navnPåNæringen!,
         registrertINorge: convertYesOrNoOrUndefinedToBoolean(values.registrertINorge)!,
-        organisasjonsnummer: hasValue(values.orgnr) ? values.orgnr : undefined,
+        organisasjonsnummer: hasValue(values.orgnr) ? values.orgnr?.trim() : undefined,
         registrertILand: hasValue(values.land) ? values.land : undefined,
         tidsperiode: {
             fom: ISOStringToDate(values.fom)!,
