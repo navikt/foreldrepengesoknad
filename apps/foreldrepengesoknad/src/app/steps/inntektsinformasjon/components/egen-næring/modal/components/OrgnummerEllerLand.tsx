@@ -21,7 +21,7 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
                     validate={validateEgenNæringOrgnr(intl)}
                 />
             </Block>
-            <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.land)}>
+            <Block padBottom="xl" visible={visibility.isVisible(EgenNæringModalFormField.land)}>
                 <EgenNæringModalFormComponents.CountrySelect
                     name={EgenNæringModalFormField.land}
                     label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.registrertILand')}
