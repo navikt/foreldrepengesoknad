@@ -91,6 +91,7 @@ export interface SøknadForInnsending
     søker: SøkerForInnsending;
     situasjon: Situasjon;
     tilleggsopplysninger?: string;
+    vedlegg: Attachment[];
 }
 
 export type EndringssøknadForInnsending = Pick<
@@ -99,7 +100,6 @@ export type EndringssøknadForInnsending = Pick<
     | 'saksnummer'
     | 'erEndringssøknad'
     | 'uttaksplan'
-    | 'vedlegg'
     | 'søker'
     | 'annenForelder'
     | 'barn'
@@ -107,6 +107,7 @@ export type EndringssøknadForInnsending = Pick<
     | 'situasjon'
     | 'tilleggsopplysninger'
     | 'ønskerJustertUttakVedFødsel'
+    | 'vedlegg'
 >;
 
 export const FOR_MANGE_VEDLEGG_ERROR =
@@ -396,8 +397,7 @@ export const cleanSøknad = (
         },
         dekningsgrad: uttaksplanMetadata.dekningsgrad!,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-        //FIXME FIX
-        vedlegg: [],
+        vedlegg: [], //Vedlegga blir lagt til i funksjonen under
     };
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
@@ -479,8 +479,6 @@ export const cleanEndringssøknad = (
             annenForelder,
             endringstidspunkt,
         ),
-        // FIXME (TOR)
-        vedlegg: cleanAttachments({ søknad }), //TODO: cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
         søker: cleanSøker(søker, søkersituasjon),
         annenForelder: cleanAnnenForelder(annenForelder, true),
         barn: barn,
@@ -488,6 +486,7 @@ export const cleanEndringssøknad = (
         situasjon: søkersituasjon.situasjon,
         tilleggsopplysninger: cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger)),
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
+        vedlegg: [], //Vedlegga blir lagt til i funksjonen under
     };
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);

@@ -43,7 +43,6 @@ const mellomlagre = (
             erEndringssøknad,
             dekningsgrad: uttaksplanMetadata?.dekningsgrad,
             uttaksplan,
-            // FIXME (TOR) Fix vedlegg
             vedlegg: [],
             tilleggsopplysninger: uttaksplanMetadata?.tilleggsopplysninger,
             ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
