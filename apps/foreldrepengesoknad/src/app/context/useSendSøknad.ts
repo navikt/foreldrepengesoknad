@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { AxiosError } from 'axios';
 import { notEmpty } from '@navikt/fp-validation';
 import {
@@ -30,71 +29,68 @@ const useSendSøknad = (
 ) => {
     const hentData = useFpStateAllDataFn();
 
-    const sendSøknad = useCallback(
-        async (abortSignal: AbortSignal) => {
-            const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
-            const barn = notEmpty(hentData(FpDataType.OM_BARNET));
+    const sendSøknad = async (abortSignal: AbortSignal) => {
+        const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
+        const barn = notEmpty(hentData(FpDataType.OM_BARNET));
 
-            const cleanedSøknad = getSøknadsdataForInnsending(
-                erEndringssøknad,
-                hentData,
-                uttaksplanMetadata.perioderSomSkalSendesInn!,
-                ISOStringToDate(getFamiliehendelsedato(barn))!,
-                uttaksplanMetadata.endringstidspunkt,
-            );
+        const cleanedSøknad = getSøknadsdataForInnsending(
+            erEndringssøknad,
+            hentData,
+            uttaksplanMetadata.perioderSomSkalSendesInn!,
+            ISOStringToDate(getFamiliehendelsedato(barn))!,
+            uttaksplanMetadata.endringstidspunkt,
+        );
 
-            //TODO (TOR) Denne bør vel håndterast på eit tidligare tidspunkt?
-            if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
-                throw new Error('Søknaden din inneholder ingen nye perioder.');
-            }
+        //TODO (TOR) Denne bør vel håndterast på eit tidligare tidspunkt?
+        if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
+            throw new Error('Søknaden din inneholder ingen nye perioder.');
+        }
 
-            try {
-                const response = await Api.sendSøknad(cleanedSøknad, fødselsnr, abortSignal);
-                setKvittering(response.data);
-            } catch (error: unknown) {
-                //TODO (TOR) Håndter dette utanfor denne hook'en (På same måte i alle appane)
+        try {
+            const response = await Api.sendSøknad(cleanedSøknad, fødselsnr, abortSignal);
+            setKvittering(response.data);
+        } catch (error: unknown) {
+            //TODO (TOR) Håndter dette utanfor denne hook'en (På same måte i alle appane)
 
-                if (isAxiosError(error)) {
-                    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                        redirectToLogin();
-                    }
-
-                    sendErrorMessageToSentry(error);
-
-                    if (
-                        error.response &&
-                        error.response.status === 400 &&
-                        error.response.data &&
-                        error.response.data.messages &&
-                        error.response.data.messages.includes(
-                            'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg',
-                        )
-                    ) {
-                        throw new Error(FOR_MANGE_VEDLEGG_ERROR);
-                    }
-
-                    const submitErrorCallId = getErrorCallId(error);
-                    const callIdForBruker =
-                        submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
-                    throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+            if (isAxiosError(error)) {
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    redirectToLogin();
                 }
-                throw new Error(String(error));
-            }
 
-            try {
-                await Api.deleteMellomlagretSøknad(fødselsnr, abortSignal);
+                sendErrorMessageToSentry(error);
 
-                const vedleggUtenLastOppSenere = cleanedSøknad.vedlegg.filter((v) => v.uuid);
-
-                if (vedleggUtenLastOppSenere.length > 0) {
-                    await Api.deleteMellomlagredeVedlegg(fødselsnr, vedleggUtenLastOppSenere, abortSignal);
+                if (
+                    error.response &&
+                    error.response.status === 400 &&
+                    error.response.data &&
+                    error.response.data.messages &&
+                    error.response.data.messages.includes(
+                        'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg',
+                    )
+                ) {
+                    throw new Error(FOR_MANGE_VEDLEGG_ERROR);
                 }
-            } catch (error) {
-                // Vi bryr oss ikke om feil her. Logges bare i backend
+
+                const submitErrorCallId = getErrorCallId(error);
+                const callIdForBruker =
+                    submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
+                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
-        },
-        [hentData, setKvittering, erEndringssøknad, fødselsnr],
-    );
+            throw new Error(String(error));
+        }
+
+        try {
+            await Api.deleteMellomlagretSøknad(fødselsnr, abortSignal);
+
+            const vedleggUtenLastOppSenere = cleanedSøknad.vedlegg.filter((v) => v.uuid);
+
+            if (vedleggUtenLastOppSenere.length > 0) {
+                await Api.deleteMellomlagredeVedlegg(fødselsnr, vedleggUtenLastOppSenere, abortSignal);
+            }
+        } catch (error) {
+            // Vi bryr oss ikke om feil her. Logges bare i backend
+        }
+    };
 
     return sendSøknad;
 };

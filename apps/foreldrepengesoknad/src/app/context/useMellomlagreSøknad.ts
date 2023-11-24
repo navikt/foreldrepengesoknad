@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import Api from 'app/api/api';
 import { FpDataMap, FpDataType, useFpStateAllDataFn } from './FpDataContext';
 
@@ -34,11 +33,13 @@ const mellomlagre = (
             barn,
             annenForelder,
             søker,
-            informasjonOmUtenlandsopphold: {
-                ...utenlandsopphold,
-                ...senereUtenlandsopphold,
-                ...tidligereUtenlandsopphold,
-            },
+            informasjonOmUtenlandsopphold: utenlandsopphold
+                ? {
+                      ...utenlandsopphold,
+                      senereOpphold: senereUtenlandsopphold?.senereOpphold || [],
+                      tidligereOpphold: tidligereUtenlandsopphold?.tidligereOpphold || [],
+                  }
+                : undefined,
             erEndringssøknad,
             dekningsgrad: uttaksplanMetadata?.dekningsgrad,
             uttaksplan,
@@ -68,22 +69,21 @@ const useMellomlagreSøknad = (
 ) => {
     const getDataFromState = useFpStateAllDataFn();
 
-    const mellomlagreSøknad = useCallback(() => {
-        return mellomlagre(getDataFromState, fødselsnr, erEndringssøknad, harGodkjentVilkår, søknadGjelderEtNyttBarn);
-    }, [erEndringssøknad, harGodkjentVilkår, søknadGjelderEtNyttBarn, fødselsnr, getDataFromState]);
+    const mellomlagreSøknad = () =>
+        mellomlagre(getDataFromState, fødselsnr, erEndringssøknad, harGodkjentVilkår, søknadGjelderEtNyttBarn);
 
-    const mellomlagreSøknadMedData = useCallback(
-        (erEndringssøknadLokal: boolean, harGodkjentVilkårLokal: boolean, søknadGjelderEtNyttBarnLokal: boolean) => {
-            return mellomlagre(
-                getDataFromState,
-                fødselsnr,
-                erEndringssøknadLokal,
-                harGodkjentVilkårLokal,
-                søknadGjelderEtNyttBarnLokal,
-            );
-        },
-        [fødselsnr, getDataFromState],
-    );
+    const mellomlagreSøknadMedData = (
+        erEndringssøknadLokal: boolean,
+        harGodkjentVilkårLokal: boolean,
+        søknadGjelderEtNyttBarnLokal: boolean,
+    ) =>
+        mellomlagre(
+            getDataFromState,
+            fødselsnr,
+            erEndringssøknadLokal,
+            harGodkjentVilkårLokal,
+            søknadGjelderEtNyttBarnLokal,
+        );
 
     return {
         mellomlagreSøknad,

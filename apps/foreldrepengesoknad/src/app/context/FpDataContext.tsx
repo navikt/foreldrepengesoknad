@@ -1,4 +1,4 @@
-import { createContext, useReducer, FunctionComponent, ReactNode, useContext, useCallback } from 'react';
+import { createContext, useReducer, FunctionComponent, ReactNode, useContext } from 'react';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { Opphold, SenereOpphold, TidligereOpphold } from './types/InformasjonOmUtenlandsopphold';
@@ -69,15 +69,12 @@ export const FpDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = useCallback(
-        (a: Action) => {
-            if (onDispatch) {
-                onDispatch(a);
-            }
-            dispatch(a);
-        },
-        [onDispatch],
-    );
+    const dispatchWrapper = (a: Action) => {
+        if (onDispatch) {
+            onDispatch(a);
+        }
+        dispatch(a);
+    };
 
     return (
         <FpStateContext.Provider value={state}>
@@ -89,37 +86,31 @@ export const FpDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
 /** Hook returns save function for one specific data type */
 export const useFpStateSaveFn = <TYPE extends FpDataType>(key: TYPE): ((data: FpDataMap[TYPE]) => void) => {
     const dispatch = useContext(FpDispatchContext);
-    return useCallback(
-        (data: FpDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch, key],
-    );
+    return (data: FpDataMap[TYPE]) => {
+        if (dispatch) {
+            dispatch({ type: 'update', key, data });
+        }
+    };
 };
 
 /** Hook returns save function usable with all data types  */
 export const useAllStateSaveFn = () => {
     const dispatch = useContext(FpDispatchContext);
-    return useCallback(
-        <TYPE extends FpDataType>(key: TYPE, data: FpDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch],
-    );
+    return <TYPE extends FpDataType>(key: TYPE, data: FpDataMap[TYPE]) => {
+        if (dispatch) {
+            dispatch({ type: 'update', key, data });
+        }
+    };
 };
 
 /** Hook returns state reset function  */
 export const useFpStateResetFn = () => {
     const dispatch = useContext(FpDispatchContext);
-    return useCallback(() => {
+    return () => {
         if (dispatch) {
             dispatch({ type: 'reset' });
         }
-    }, [dispatch]);
+    };
 };
 
 /** Hook returns data for one specific data type  */
@@ -132,12 +123,9 @@ export const useFpStateData = <TYPE extends FpDataType>(key: TYPE): FpDataMap[TY
 export const useFpStateAllDataFn = () => {
     const state = useContext(FpStateContext);
 
-    return useCallback(
-        <TYPE extends FpDataType>(key: TYPE) => {
-            return state[key];
-        },
-        [state],
-    );
+    return <TYPE extends FpDataType>(key: TYPE) => {
+        return state[key];
+    };
 };
 
 // TODO (TOR) Fjern denne
