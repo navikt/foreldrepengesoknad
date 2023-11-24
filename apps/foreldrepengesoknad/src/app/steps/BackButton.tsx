@@ -22,7 +22,7 @@ const BackButton: React.FunctionComponent<Props> = ({ route, mellomlagreSøknad 
     };
 
     return (
-        <Button variant="secondary" onClick={gåTilForrige}>
+        <Button type="button" variant="secondary" onClick={gåTilForrige}>
             <FormattedMessage id="backlink.label" />
         </Button>
     );

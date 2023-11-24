@@ -34,6 +34,7 @@ interface Props {
     barn?: Barn;
     mellomlagreSøknad?: () => Promise<any>;
     gåTilNesteSide: (action: Action) => void;
+    avbrytSøknad: () => void;
 }
 
 const Template: StoryFn<Props> = ({
@@ -54,6 +55,7 @@ const Template: StoryFn<Props> = ({
     },
     gåTilNesteSide,
     mellomlagreSøknad = promiseAction(),
+    avbrytSøknad = action('button-click'),
 }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(
@@ -89,7 +91,7 @@ const Template: StoryFn<Props> = ({
                 <AnnenForelder
                     søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
                     mellomlagreSøknad={mellomlagreSøknad}
-                    avbrytSøknad={action('button-click')}
+                    avbrytSøknad={avbrytSøknad}
                 />
             </FpDataContext>
         </AxiosMock>

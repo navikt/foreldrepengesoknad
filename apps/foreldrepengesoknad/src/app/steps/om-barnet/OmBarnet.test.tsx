@@ -73,6 +73,25 @@ describe('<OmBarnet>', () => {
         });
     });
 
+    it('skal lagre route når en går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.SØKERSITUASJON,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
     it('skal ikke ha født barn ennå', async () => {
         render(<Default />);
 

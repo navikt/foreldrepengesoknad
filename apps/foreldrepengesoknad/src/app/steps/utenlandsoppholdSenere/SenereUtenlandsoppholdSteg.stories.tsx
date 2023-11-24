@@ -5,6 +5,7 @@ import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
 const promiseAction =
     () =>
@@ -12,6 +13,11 @@ const promiseAction =
         action('button-click')(...args);
         return Promise.resolve();
     };
+
+const defaultUtenlandsopphold = {
+    iNorgeNeste12Mnd: false,
+    iNorgeSiste12Mnd: true,
+};
 
 export default {
     title: 'steps/SenereUtenlandsoppholdSteg',
@@ -22,9 +28,14 @@ export default {
 interface Props {
     mellomlagreSøknad?: () => Promise<any>;
     gåTilNesteSide: (action: Action) => void;
+    utenlandsforhold: Opphold;
 }
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknad = promiseAction(), gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({
+    mellomlagreSøknad = promiseAction(),
+    gåTilNesteSide,
+    utenlandsforhold = defaultUtenlandsopphold,
+}) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage').reply(200, undefined);
     };
@@ -33,10 +44,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknad = promiseAction(), gåTil
             <FpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [FpDataType.UTENLANDSOPPHOLD]: {
-                        iNorgeNeste12Mnd: true,
-                        iNorgeSiste12Mnd: false,
-                    },
+                    [FpDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
                 }}
             >
                 <SenereUtenlandsoppholdSteg

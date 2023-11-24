@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 import SøknadRoutes from 'app/routes/routes';
 import { FpDataType } from 'app/context/FpDataContext';
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const { Default } = composeStories(stories);
 
@@ -39,8 +39,8 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                     {
                         land: 'CA',
                         tidsperiode: {
-                            fom: '2023-10-24',
-                            tom: '2023-10-29',
+                            fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                            tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                         },
                     },
                 ],
@@ -90,8 +90,8 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                     {
                         land: 'CA',
                         tidsperiode: {
-                            fom: '2023-10-24',
-                            tom: '2023-10-29',
+                            fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                            tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                         },
                     },
                 ],
@@ -101,6 +101,25 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal lagre route når en går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+
+        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
             key: FpDataType.APP_ROUTE,
             type: 'update',
         });

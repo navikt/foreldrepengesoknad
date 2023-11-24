@@ -10,6 +10,7 @@ import Inntektsinformasjon from './Inntektsinformasjon';
 import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { BarnType } from '@navikt/fp-common';
+import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
 const promiseAction =
     () =>
@@ -19,6 +20,11 @@ const promiseAction =
     };
 
 const søkerinfo = _søkerinfo as any;
+
+const defaultUtenlandsopphold = {
+    iNorgeNeste12Mnd: false,
+    iNorgeSiste12Mnd: false,
+};
 
 export default {
     title: 'steps/Inntektsinformasjon',
@@ -30,9 +36,15 @@ interface Props {
     søkerinfo: SøkerinfoDTO;
     mellomlagreSøknad?: () => Promise<any>;
     gåTilNesteSide: (action: Action) => void;
+    utenlandsopphold: Opphold;
 }
 
-const Template: StoryFn<Props> = ({ søkerinfo, gåTilNesteSide, mellomlagreSøknad = promiseAction() }) => {
+const Template: StoryFn<Props> = ({
+    søkerinfo,
+    gåTilNesteSide,
+    mellomlagreSøknad = promiseAction(),
+    utenlandsopphold = defaultUtenlandsopphold,
+}) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(
             200,
@@ -68,10 +80,7 @@ const Template: StoryFn<Props> = ({ søkerinfo, gåTilNesteSide, mellomlagreSøk
                         // @ts-ignore FIX
                         harHattAnnenInntektSiste10Mnd: undefined,
                     },
-                    [FpDataType.UTENLANDSOPPHOLD]: {
-                        iNorgeNeste12Mnd: false,
-                        iNorgeSiste12Mnd: false,
-                    },
+                    [FpDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                 }}
             >
                 <Inntektsinformasjon

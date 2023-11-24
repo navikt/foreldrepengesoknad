@@ -61,6 +61,84 @@ describe('<Inntektsinformasjon>', () => {
         });
     });
 
+    it('skal gå til senere utenlandsopphold når en går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<HarIkkeArbeidsforhold gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+
+        expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal gå til tidligere utenlandsopphold når en ikke har senere utenlandsopphold og går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(
+            <HarIkkeArbeidsforhold
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknad={mellomlagreSøknad}
+                utenlandsopphold={{
+                    iNorgeNeste12Mnd: true,
+                    iNorgeSiste12Mnd: false,
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal gå til utenlandsopphold-oversikt når en ikke har tidligere eller senere utenlandsopphold og går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(
+            <HarIkkeArbeidsforhold
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknad={mellomlagreSøknad}
+                utenlandsopphold={{
+                    iNorgeNeste12Mnd: true,
+                    iNorgeSiste12Mnd: true,
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
     it('skal ikke ha arbeidsforhold men velger at en har jobbet som frilanser', async () => {
         render(<HarIkkeArbeidsforhold />);
 

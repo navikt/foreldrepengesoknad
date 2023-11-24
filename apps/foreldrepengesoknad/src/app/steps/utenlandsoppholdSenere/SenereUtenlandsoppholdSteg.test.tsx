@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
 import SøknadRoutes from 'app/routes/routes';
 import { FpDataType } from 'app/context/FpDataContext';
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const { Default } = composeStories(stories);
 
@@ -39,8 +39,8 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                     {
                         land: 'CA',
                         tidsperiode: {
-                            fom: '2023-11-24',
-                            tom: '2023-12-13',
+                            fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
+                            tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                         },
                     },
                 ],
@@ -50,6 +50,53 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.INNTEKTSINFORMASJON,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal gå til utenlandsforhold-oversikt når en ikke har tidligere opphold i utlandet og går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+
+        expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal gå til tidligere utenlandsforhold når en har tidligere opphold i utlandet og går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(
+            <Default
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknad={mellomlagreSøknad}
+                utenlandsforhold={{
+                    iNorgeNeste12Mnd: false,
+                    iNorgeSiste12Mnd: false,
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
             key: FpDataType.APP_ROUTE,
             type: 'update',
         });

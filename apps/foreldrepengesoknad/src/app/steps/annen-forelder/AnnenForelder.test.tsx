@@ -89,6 +89,25 @@ describe('<AnnenForelder>', () => {
         });
     });
 
+    it('skal lagre route når en går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknad = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+
+        expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.OM_BARNET,
+            key: FpDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
     it('skal fylle ut at en ikke har aleneomsorg for barnet og ikke rett til foreldrepenger i Norge og ikke hatt opphold i EØS', async () => {
         render(<Default />);
 

@@ -1,4 +1,5 @@
 import { StoryFn } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import MockAdapter from 'axios-mock-adapter/types';
 import {
     AnnenForelder,
@@ -18,7 +19,7 @@ import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import Oppsummering from './Oppsummering';
-import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
 import Søker from 'app/context/types/Søker';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
@@ -28,6 +29,13 @@ export default {
     component: Oppsummering,
     decorators: [withRouter],
 };
+
+const promiseAction =
+    () =>
+    (...args: any[]) => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 const søkerinfo = _søkerinfo as SøkerinfoDTO;
 
@@ -109,6 +117,11 @@ interface Props {
     utenlandsoppholdSenere?: SenereOpphold;
     utenlandsoppholdTidligere?: TidligereOpphold;
     barn?: Barn;
+    erEndringssøknad?: boolean;
+    mellomlagreSøknad?: () => Promise<any>;
+    gåTilNesteSide: (action: Action) => void;
+    avbrytSøknad: () => void;
+    sendSøknad: () => Promise<any>;
 }
 
 const Template: StoryFn<Props> = ({
@@ -121,6 +134,11 @@ const Template: StoryFn<Props> = ({
     utenlandsopphold = defaultUtenlandsopphold,
     utenlandsoppholdSenere,
     utenlandsoppholdTidligere,
+    erEndringssøknad = false,
+    mellomlagreSøknad = promiseAction(),
+    gåTilNesteSide,
+    avbrytSøknad = action('button-click'),
+    sendSøknad = () => Promise.resolve(),
 }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage').reply(200, undefined);
@@ -128,6 +146,7 @@ const Template: StoryFn<Props> = ({
     return (
         <AxiosMock mock={restMock}>
             <FpDataContext
+                onDispatch={gåTilNesteSide}
                 initialState={{
                     [FpDataType.SØKER]: søker,
                     [FpDataType.ANNEN_FORELDER]: annenForelder,
@@ -147,11 +166,11 @@ const Template: StoryFn<Props> = ({
                 }}
             >
                 <Oppsummering
-                    erEndringssøknad={false}
-                    sendSøknad={() => Promise.resolve()}
+                    erEndringssøknad={erEndringssøknad}
+                    sendSøknad={sendSøknad}
                     søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
-                    avbrytSøknad={() => undefined}
-                    mellomlagreSøknad={() => Promise.resolve()}
+                    avbrytSøknad={avbrytSøknad}
+                    mellomlagreSøknad={mellomlagreSøknad}
                 />
             </FpDataContext>
         </AxiosMock>
@@ -490,6 +509,26 @@ MedAndreInntekterMilitærtjeneste.args = {
         ],
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+    },
+    søkerinfo,
+};
+
+export const ErEndringssøknad = Template.bind({});
+ErEndringssøknad.args = {
+    erEndringssøknad: true,
+    søker: {
+        språkkode: 'nb',
+        erAleneOmOmsorg: false,
+        harHattAnnenInntektSiste10Mnd: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
     },
     søkerinfo,
 };
