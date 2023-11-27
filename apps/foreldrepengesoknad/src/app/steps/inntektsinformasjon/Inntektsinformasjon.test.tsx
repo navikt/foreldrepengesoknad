@@ -13,9 +13,14 @@ const { HarIkkeArbeidsforhold, HarArbeidsforhold } = composeStories(stories);
 describe('<Inntektsinformasjon>', () => {
     it('skal ikke ha arbeidsforhold og velger nei på alle spørsmål', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<HarIkkeArbeidsforhold gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(
+            <HarIkkeArbeidsforhold
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -37,7 +42,7 @@ describe('<Inntektsinformasjon>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -63,15 +68,20 @@ describe('<Inntektsinformasjon>', () => {
 
     it('skal gå til senere utenlandsopphold når en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<HarIkkeArbeidsforhold gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(
+            <HarIkkeArbeidsforhold
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -83,12 +93,12 @@ describe('<Inntektsinformasjon>', () => {
 
     it('skal gå til tidligere utenlandsopphold når en ikke har senere utenlandsopphold og går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
         render(
             <HarIkkeArbeidsforhold
                 gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknad={mellomlagreSøknad}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 utenlandsopphold={{
                     iNorgeNeste12Mnd: true,
                     iNorgeSiste12Mnd: false,
@@ -100,7 +110,7 @@ describe('<Inntektsinformasjon>', () => {
 
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -112,12 +122,12 @@ describe('<Inntektsinformasjon>', () => {
 
     it('skal gå til utenlandsopphold-oversikt når en ikke har tidligere eller senere utenlandsopphold og går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
         render(
             <HarIkkeArbeidsforhold
                 gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknad={mellomlagreSøknad}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 utenlandsopphold={{
                     iNorgeNeste12Mnd: true,
                     iNorgeSiste12Mnd: true,
@@ -129,7 +139,7 @@ describe('<Inntektsinformasjon>', () => {
 
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

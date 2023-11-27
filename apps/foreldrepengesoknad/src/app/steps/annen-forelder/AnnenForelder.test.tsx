@@ -23,9 +23,9 @@ const {
 describe('<AnnenForelder>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('<AnnenForelder>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(4);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -91,14 +91,14 @@ describe('<AnnenForelder>', () => {
 
     it('skal lagre route når en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

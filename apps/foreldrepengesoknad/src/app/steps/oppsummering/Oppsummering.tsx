@@ -46,7 +46,7 @@ export interface Props {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 }
 
@@ -55,7 +55,7 @@ const Oppsummering: FunctionComponent<Props> = ({
     erEndringssøknad,
     sendSøknad,
     avbrytSøknad,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
 }) => {
     const bem = bemUtils('oppsummering');
     const intl = useIntl();
@@ -200,7 +200,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                             <Block margin="l" padBottom="l">
                                 <StepButtonWrapper lastStep={true}>
                                     <BackButton
-                                        mellomlagreSøknad={mellomlagreSøknad}
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                         route={
                                             erEndringssøknad
                                                 ? getPreviousStepHrefEndringssøknad('oppsummering')

@@ -12,13 +12,6 @@ import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-c
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import dayjs from 'dayjs';
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
-
 const søkerinfo = _søkerinfo as any;
 
 export default {
@@ -32,7 +25,7 @@ interface Props {
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelderType;
     barn?: Barn;
-    mellomlagreSøknad?: () => Promise<any>;
+    mellomlagreSøknadOgNaviger?: () => void;
     gåTilNesteSide: (action: Action) => void;
     avbrytSøknad: () => void;
 }
@@ -54,7 +47,7 @@ const Template: StoryFn<Props> = ({
         kanIkkeOppgis: true,
     },
     gåTilNesteSide,
-    mellomlagreSøknad = promiseAction(),
+    mellomlagreSøknadOgNaviger = action('button-click'),
     avbrytSøknad = action('button-click'),
 }) => {
     const restMock = (apiMock: MockAdapter) => {
@@ -90,7 +83,7 @@ const Template: StoryFn<Props> = ({
             >
                 <AnnenForelder
                     søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     avbrytSøknad={avbrytSøknad}
                 />
             </FpDataContext>

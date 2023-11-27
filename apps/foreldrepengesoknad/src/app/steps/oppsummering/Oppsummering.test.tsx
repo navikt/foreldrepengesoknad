@@ -221,14 +221,14 @@ describe('<Oppsummering>', () => {
 
     it('skal går til inntektsinformasjon når førstegangssøknad og en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -240,14 +240,19 @@ describe('<Oppsummering>', () => {
 
     it('skal går til uttaksplan når endringssøknad og en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<ErEndringssøknad gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(
+            <ErEndringssøknad
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

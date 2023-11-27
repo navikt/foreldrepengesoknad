@@ -10,9 +10,9 @@ const { Mor, Far } = composeStories(stories);
 describe('<SøkersituasjonSteg>', () => {
     it('skal ha født og søke som mor', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fødsel'));
@@ -22,7 +22,7 @@ describe('<SøkersituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -42,9 +42,9 @@ describe('<SøkersituasjonSteg>', () => {
 
     it('skal ha født og søke som medmor', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fødsel'));
@@ -54,7 +54,7 @@ describe('<SøkersituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -69,9 +69,9 @@ describe('<SøkersituasjonSteg>', () => {
 
     it('skal adoptere og søke som mor', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Adopsjon'));
@@ -81,7 +81,7 @@ describe('<SøkersituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -96,9 +96,9 @@ describe('<SøkersituasjonSteg>', () => {
 
     it('skal adoptere som far', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Far gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Far gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Adopsjon'));
@@ -107,7 +107,7 @@ describe('<SøkersituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

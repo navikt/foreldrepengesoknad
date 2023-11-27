@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { AxiosResponse } from 'axios';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 import { bemUtils, Block, intlUtils, LanguageToggle, links, Sak, Søkerinfo } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
@@ -39,11 +37,10 @@ export interface Props {
     fnr: string;
     harGodkjentVilkår: boolean;
     søkerInfo: Søkerinfo;
-    setDataOgMellomlagreSøknad: (
-        harGodkjentVilkår: boolean,
-        erEndringssøknad: boolean,
-        søknadGjelderNyttBarn: boolean,
-    ) => Promise<AxiosResponse<any, any>>;
+    setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
+    setErEndringssøknad: (erEndringssøknad: boolean) => void;
+    setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn: boolean) => void;
+    mellomlagreSøknadOgNaviger: () => void;
 }
 
 const Velkommen: React.FunctionComponent<Props> = ({
@@ -52,11 +49,13 @@ const Velkommen: React.FunctionComponent<Props> = ({
     onChangeLocale,
     harGodkjentVilkår,
     søkerInfo,
-    setDataOgMellomlagreSøknad,
+    setHarGodkjentVilkår,
+    setErEndringssøknad,
+    setSøknadGjelderNyttBarn,
+    mellomlagreSøknadOgNaviger,
 }) => {
     const bem = bemUtils('velkommen');
     const intl = useIntl();
-    const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const lagreDataIState = useAllStateSaveFn();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
@@ -65,7 +64,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
     const selectableBarn = getSelectableBarnOptions(saker, søkerInfo.registrerteBarn);
     const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
-    const onSubmit = async (values: Partial<VelkommenFormData>) => {
+    const onSubmit = (values: Partial<VelkommenFormData>) => {
         if (values.harForståttRettigheterOgPlikter !== true) {
             return;
         }
@@ -126,15 +125,13 @@ const Velkommen: React.FunctionComponent<Props> = ({
             søknadGjelderNyttBarn = true;
         }
 
+        setHarGodkjentVilkår(values.harForståttRettigheterOgPlikter!);
+        setErEndringssøknad(vilSøkeOmEndring);
+        setSøknadGjelderNyttBarn(søknadGjelderNyttBarn);
+
         lagreDataIState(FpDataType.APP_ROUTE, nextRoute);
 
-        await setDataOgMellomlagreSøknad(
-            values.harForståttRettigheterOgPlikter!,
-            vilSøkeOmEndring,
-            søknadGjelderNyttBarn,
-        );
-
-        navigate(nextRoute);
+        mellomlagreSøknadOgNaviger();
     };
 
     return (

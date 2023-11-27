@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@navikt/ds-react';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
@@ -49,7 +48,7 @@ interface Props {
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
 }
 
 const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
@@ -57,10 +56,9 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
 }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
@@ -92,7 +90,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
-    const onSubmit = async (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
+    const onSubmit = (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
         setIsSubmitting(true);
 
         const uttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo = mapFarMedmorAleneomsorgFødselFormToState(
@@ -139,9 +137,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
 
         lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
 
-        await mellomlagreSøknad();
-
-        navigate(SøknadRoutes.UTTAKSPLAN);
+        mellomlagreSøknadOgNaviger();
     };
 
     const shouldRender = erFødsel && erFarEllerMedmor && (!!søker.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
@@ -238,7 +234,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         <Block>
                             <StepButtonWrapper>
                                 <BackButton
-                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                     route={getPreviousStepHref('uttaksplanInfo')}
                                 />
                                 {visibility.areAllQuestionsAnswered() && (

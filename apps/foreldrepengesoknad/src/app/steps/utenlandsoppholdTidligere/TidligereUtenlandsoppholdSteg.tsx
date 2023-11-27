@@ -1,5 +1,4 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { Heading } from '@navikt/ds-react';
 import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { UtenlandsoppholdTidligere } from '@navikt/fp-types';
@@ -11,13 +10,15 @@ import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpData
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 };
 
-const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknad, avbrytSøknad }) => {
+const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const utenlandsopphold = notEmpty(useFpStateData(FpDataType.UTENLANDSOPPHOLD));
@@ -36,7 +37,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ melloml
               }
             : undefined;
 
-    const save = async (values: UtenlandsoppholdTidligere) => {
+    const save = (values: UtenlandsoppholdTidligere) => {
         lagreTidligereUtenlandsopphold({
             tidligereOpphold: values.utenlandsoppholdSiste12Mnd.map((un) => ({
                 land: un.landkode,
@@ -51,15 +52,13 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ melloml
             ? SøknadRoutes.INNTEKTSINFORMASJON
             : SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
         lagreAppRoute(nesteSide);
-        await mellomlagreSøknad();
-        navigate(nesteSide);
+        mellomlagreSøknadOgNaviger();
     };
 
-    const goToPreviousStep = async () => {
+    const goToPreviousStep = () => {
         const appRoute = getPreviousStepHref('utenlandsoppholdTidligere');
         lagreAppRoute(appRoute);
-        await mellomlagreSøknad();
-        navigate(appRoute);
+        mellomlagreSøknadOgNaviger();
     };
     const saveOnPrevious = () => {
         // TODO (TOR) Lagre uvalidert data i framtida

@@ -7,13 +7,6 @@ import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
-
 export default {
     title: 'steps/TidligereUtenlandsoppholdSteg',
     component: TidligereUtenlandsoppholdSteg,
@@ -21,13 +14,13 @@ export default {
 };
 
 interface Props {
-    mellomlagreSøknad?: () => Promise<any>;
+    mellomlagreSøknadOgNaviger?: () => Promise<any>;
     gåTilNesteSide: (action: Action) => void;
     utenlandsopphold?: Opphold;
 }
 
 const Template: StoryFn<Props> = ({
-    mellomlagreSøknad = promiseAction(),
+    mellomlagreSøknadOgNaviger = action('button-click'),
     gåTilNesteSide,
     utenlandsopphold = {
         iNorgeNeste12Mnd: true,
@@ -45,7 +38,10 @@ const Template: StoryFn<Props> = ({
                     [FpDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                 }}
             >
-                <TidligereUtenlandsoppholdSteg mellomlagreSøknad={mellomlagreSøknad} avbrytSøknad={() => undefined} />
+                <TidligereUtenlandsoppholdSteg
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={() => undefined}
+                />
             </FpDataContext>
         </AxiosMock>
     );

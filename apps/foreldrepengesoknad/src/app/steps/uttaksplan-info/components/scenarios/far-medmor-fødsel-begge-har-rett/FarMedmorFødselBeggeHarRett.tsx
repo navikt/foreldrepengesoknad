@@ -1,5 +1,4 @@
 import { FunctionComponent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
@@ -54,7 +53,7 @@ interface Props {
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
 }
 
 const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> = ({
@@ -62,10 +61,9 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     tilgjengeligeStønadskontoer80DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
 }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
@@ -103,7 +101,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
-    const onSubmit = async (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
+    const onSubmit = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
         setIsSubmitting(true);
 
         const uttaksplan = lagUttaksplan({
@@ -145,9 +143,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
 
         lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
 
-        await mellomlagreSøknad();
-
-        navigate(SøknadRoutes.UTTAKSPLAN);
+        mellomlagreSøknadOgNaviger();
     };
 
     return (
@@ -267,7 +263,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         <Block>
                             <StepButtonWrapper>
                                 <BackButton
-                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                     route={getPreviousStepHref('uttaksplanInfo')}
                                 />
                                 {visibility.areAllQuestionsAnswered() && (

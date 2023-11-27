@@ -59,7 +59,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder;
                 <UttaksplanInfo
                     søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
                     erEndringssøknad={false}
-                    mellomlagreSøknad={() => Promise.resolve()}
+                    mellomlagreSøknadOgNaviger={() => undefined}
                     avbrytSøknad={() => undefined}
                 />
             </FpDataContext>

@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -53,7 +52,7 @@ interface Props {
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
 }
 
 const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
@@ -61,10 +60,9 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
 }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
@@ -142,9 +140,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
         lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
 
-        await mellomlagreSøknad();
-
-        navigate(SøknadRoutes.UTTAKSPLAN);
+        mellomlagreSøknadOgNaviger();
     };
 
     if (!shouldRender) {
@@ -275,7 +271,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         <Block>
                             <StepButtonWrapper>
                                 <BackButton
-                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                     route={getPreviousStepHref('uttaksplanInfo')}
                                 />
                                 {visibility.areAllQuestionsAnswered() && (

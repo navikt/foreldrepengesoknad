@@ -56,7 +56,7 @@ import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoe
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { Alert, Button, Loader } from '@navikt/ds-react';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttaksplan';
 import AttachmentApi from '../../api/attachmentApi';
@@ -74,18 +74,17 @@ import { notEmpty } from '@navikt/fp-validation';
 type Props = {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 };
 
 const UttaksplanStep: React.FunctionComponent<Props> = ({
     søkerInfo,
     erEndringssøknad,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -172,8 +171,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const debouncedState = useDebounce(useFpState(), 3000);
     useEffect(() => {
-        mellomlagreSøknad();
-    }, [debouncedState, mellomlagreSøknad]);
+        mellomlagreSøknadOgNaviger();
+    }, [debouncedState, mellomlagreSøknadOgNaviger]);
 
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
         Api.useGetAnnenPartsVedtak(
@@ -195,12 +194,11 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
     );
 
-    const goToPreviousStep = async () => {
+    const goToPreviousStep = () => {
         setGåTilbakeIsOpen(false);
 
         lagreAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
-        await mellomlagreSøknad();
-        navigate(SøknadRoutes.UTTAKSPLAN_INFO);
+        mellomlagreSøknadOgNaviger();
     };
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
@@ -396,9 +394,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
         lagreAppRoute(nextRoute);
 
-        await mellomlagreSøknad();
-
-        navigate(nextRoute);
+        mellomlagreSøknadOgNaviger();
     };
 
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(

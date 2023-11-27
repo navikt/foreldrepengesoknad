@@ -12,9 +12,9 @@ const { Default } = composeStories(stories);
 describe('<TidligereUtenlandsoppholdSteg>', () => {
     it('skal fylle ut tidligere utenlandsopphold og gå videre til inntektsinformasjon når en ikke har fremtidige utenlandsopphold', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
 
@@ -30,7 +30,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -57,12 +57,12 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
     it('skal fylle ut tidligere utenlandsopphold og gå videre til senere utenlandsopphold når en har indikert at en har dette', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
         render(
             <Default
                 gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknad={mellomlagreSøknad}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 utenlandsopphold={{ iNorgeSiste12Mnd: false, iNorgeNeste12Mnd: false }}
             />,
         );
@@ -81,7 +81,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -108,14 +108,14 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
     it('skal lagre route når en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

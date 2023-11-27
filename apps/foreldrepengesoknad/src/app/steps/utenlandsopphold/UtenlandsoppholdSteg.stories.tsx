@@ -6,13 +6,6 @@ import AxiosMock from 'storybook/utils/AxiosMock';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
-
 export default {
     title: 'steps/UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
@@ -20,11 +13,11 @@ export default {
 };
 
 interface Props {
-    mellomlagreSøknad?: () => Promise<any>;
+    mellomlagreSøknadOgNaviger?: () => void;
     gåTilNesteSide: (action: Action) => void;
 }
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknad = promiseAction(), gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = action('button-click'), gåTilNesteSide }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage').reply(200, undefined);
     };
@@ -39,7 +32,10 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknad = promiseAction(), gåTil
                     },
                 }}
             >
-                <UtenlandsoppholdSteg mellomlagreSøknad={mellomlagreSøknad} avbrytSøknad={action('button-click')} />
+                <UtenlandsoppholdSteg
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={action('button-click')}
+                />
             </FpDataContext>
         </AxiosMock>
     );

@@ -27,7 +27,7 @@ const renderSøknadRoutes = (
     erEndringssøknad: boolean,
     søkerErMyndig: boolean,
     søkerInfo: Søkerinfo,
-    mellomlagreSøknad: () => Promise<any>,
+    mellomlagreSøknadOgNaviger: () => void,
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>,
     avbrytSøknad: () => void,
     søknadGjelderNyttBarn?: boolean,
@@ -49,7 +49,7 @@ const renderSøknadRoutes = (
                         <UttaksplanStep
                             søkerInfo={søkerInfo}
                             erEndringssøknad={erEndringssøknad}
-                            mellomlagreSøknad={mellomlagreSøknad}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
                         />
                     }
@@ -62,7 +62,7 @@ const renderSøknadRoutes = (
                             søkerInfo={søkerInfo}
                             sendSøknad={sendSøknad}
                             avbrytSøknad={avbrytSøknad}
-                            mellomlagreSøknad={mellomlagreSøknad}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         />
                     }
                 />
@@ -77,7 +77,7 @@ const renderSøknadRoutes = (
                 element={
                     <SøkersituasjonSteg
                         kjønn={søkerInfo.person.kjønn}
-                        mellomlagreSøknad={mellomlagreSøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
                 }
@@ -88,7 +88,7 @@ const renderSøknadRoutes = (
                     <OmBarnet
                         søkerInfo={søkerInfo}
                         søknadGjelderNyttBarn={søknadGjelderNyttBarn}
-                        mellomlagreSøknad={mellomlagreSøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
                 }
@@ -98,7 +98,7 @@ const renderSøknadRoutes = (
                 element={
                     <AnnenForelder
                         søkerInfo={søkerInfo}
-                        mellomlagreSøknad={mellomlagreSøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
                 }
@@ -109,7 +109,7 @@ const renderSøknadRoutes = (
                     <UttaksplanInfo
                         søkerInfo={søkerInfo}
                         erEndringssøknad={erEndringssøknad}
-                        mellomlagreSøknad={mellomlagreSøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
                 }
@@ -120,25 +120,36 @@ const renderSøknadRoutes = (
                     <UttaksplanStep
                         søkerInfo={søkerInfo}
                         erEndringssøknad={erEndringssøknad}
-                        mellomlagreSøknad={mellomlagreSøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
                 }
             />
             <Route
                 path={SøknadRoutes.UTENLANDSOPPHOLD}
-                element={<UtenlandsoppholdSteg mellomlagreSøknad={mellomlagreSøknad} avbrytSøknad={avbrytSøknad} />}
+                element={
+                    <UtenlandsoppholdSteg
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
             />
             <Route
                 path={SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD}
                 element={
-                    <TidligereUtenlandsoppholdSteg mellomlagreSøknad={mellomlagreSøknad} avbrytSøknad={avbrytSøknad} />
+                    <TidligereUtenlandsoppholdSteg
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
                 }
             />
             <Route
                 path={SøknadRoutes.SENERE_UTENLANDSOPPHOLD}
                 element={
-                    <SenereUtenlandsoppholdSteg mellomlagreSøknad={mellomlagreSøknad} avbrytSøknad={avbrytSøknad} />
+                    <SenereUtenlandsoppholdSteg
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
                 }
             />
             <Route
@@ -146,7 +157,7 @@ const renderSøknadRoutes = (
                 element={
                     <Inntektsinformasjon
                         søkerInfo={søkerInfo}
-                        mellomlagreSøknad={mellomlagreSøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
                 }
@@ -159,7 +170,7 @@ const renderSøknadRoutes = (
                         søkerInfo={søkerInfo}
                         sendSøknad={sendSøknad}
                         avbrytSøknad={avbrytSøknad}
-                        mellomlagreSøknad={mellomlagreSøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     />
                 }
             />
@@ -200,22 +211,12 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
 
     const sendSøknad = useSendSøknad(søkerInfo.person.fnr, erEndringssøknad, setKvittering);
 
-    const { mellomlagreSøknad, mellomlagreSøknadMedData } = useMellomlagreSøknad(
+    const { mellomlagreSøknadOgNaviger } = useMellomlagreSøknad(
         søkerInfo.person.fnr,
         erEndringssøknad,
         harGodkjentVilkår,
         søknadGjelderNyttBarn,
     );
-    const setDataOgMellomlagreSøknad = (
-        harGodkjentVilkårLokal: boolean,
-        erEndringssøknadLokal: boolean,
-        søknadGjelderNyttBarnLokal: boolean,
-    ) => {
-        setHarGodkjentVilkår(harGodkjentVilkårLokal);
-        setErEndringssøknad(erEndringssøknadLokal);
-        setSøknadGjelderNyttBarn(søknadGjelderNyttBarnLokal);
-        return mellomlagreSøknadMedData(harGodkjentVilkårLokal, erEndringssøknadLokal, søknadGjelderNyttBarnLokal);
-    };
 
     const avbrytSøknad = useAvbrytSøknad(
         søkerInfo.person.fnr,
@@ -265,7 +266,10 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                         fnr={søkerInfo.person.fnr}
                         harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
-                        setDataOgMellomlagreSøknad={setDataOgMellomlagreSøknad}
+                        setHarGodkjentVilkår={setHarGodkjentVilkår}
+                        setErEndringssøknad={setErEndringssøknad}
+                        setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     />
                 }
             />
@@ -276,7 +280,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                 erEndringssøknad,
                 erMyndig,
                 søkerInfo,
-                mellomlagreSøknad,
+                mellomlagreSøknadOgNaviger,
                 sendSøknad,
                 avbrytSøknad,
                 søknadGjelderNyttBarn,

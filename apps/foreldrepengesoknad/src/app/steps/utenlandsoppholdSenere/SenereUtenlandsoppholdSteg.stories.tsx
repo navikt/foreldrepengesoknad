@@ -7,13 +7,6 @@ import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
-
 const defaultUtenlandsopphold = {
     iNorgeNeste12Mnd: false,
     iNorgeSiste12Mnd: true,
@@ -26,13 +19,13 @@ export default {
 };
 
 interface Props {
-    mellomlagreSøknad?: () => Promise<any>;
+    mellomlagreSøknadOgNaviger?: () => Promise<any>;
     gåTilNesteSide: (action: Action) => void;
     utenlandsforhold: Opphold;
 }
 
 const Template: StoryFn<Props> = ({
-    mellomlagreSøknad = promiseAction(),
+    mellomlagreSøknadOgNaviger = action('button-click'),
     gåTilNesteSide,
     utenlandsforhold = defaultUtenlandsopphold,
 }) => {
@@ -48,7 +41,7 @@ const Template: StoryFn<Props> = ({
                 }}
             >
                 <SenereUtenlandsoppholdSteg
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     avbrytSøknad={action('button-click')}
                 />
             </FpDataContext>

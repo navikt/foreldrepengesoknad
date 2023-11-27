@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -48,7 +47,7 @@ interface Props {
     eksisterendeSakFar: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
 }
 
 const MorFødsel: FunctionComponent<Props> = ({
@@ -57,10 +56,9 @@ const MorFødsel: FunctionComponent<Props> = ({
     eksisterendeSakFar,
     erEndringssøknad,
     person,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
 }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
@@ -112,7 +110,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     );
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
-    const onSubmit = async (values: Partial<MorFødselFormData>) => {
+    const onSubmit = (values: Partial<MorFødselFormData>) => {
         setIsSubmitting(true);
 
         const submissionValues = mapMorFødselFormToState(values);
@@ -181,9 +179,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
         lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
 
-        await mellomlagreSøknad();
-
-        navigate(SøknadRoutes.UTTAKSPLAN);
+        mellomlagreSøknadOgNaviger();
     };
 
     return (
@@ -290,7 +286,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                         <Block>
                             <StepButtonWrapper>
                                 <BackButton
-                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                     route={getPreviousStepHref('uttaksplanInfo')}
                                 />
                                 {visibility.areAllQuestionsAnswered() && (

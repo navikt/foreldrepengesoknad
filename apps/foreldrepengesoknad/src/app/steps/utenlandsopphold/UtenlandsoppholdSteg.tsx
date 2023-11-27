@@ -1,5 +1,4 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { Heading } from '@navikt/ds-react';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { Utenlandsopphold } from '@navikt/fp-types';
@@ -20,20 +19,19 @@ const utledNesteSide = (values: Utenlandsopphold) => {
 };
 
 type Props = {
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 };
 
-const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknad, avbrytSøknad }) => {
+const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const utenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD);
     const lagreUtenlandsopphold = useFpStateSaveFn(FpDataType.UTENLANDSOPPHOLD);
     const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
 
-    const save = async (values: Utenlandsopphold) => {
+    const save = (values: Utenlandsopphold) => {
         lagreUtenlandsopphold({
             iNorgeSiste12Mnd: !values.harBoddUtenforNorgeSiste12Mnd,
             iNorgeNeste12Mnd: !values.skalBoUtenforNorgeNeste12Mnd,
@@ -41,15 +39,13 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøkn
 
         const nesteSide = utledNesteSide(values);
         lagreAppRoute(nesteSide);
-        await mellomlagreSøknad();
-        navigate(nesteSide);
+        mellomlagreSøknadOgNaviger();
     };
 
-    const goToPreviousStep = async () => {
+    const goToPreviousStep = () => {
         const appRoute = getPreviousStepHref('utenlandsopphold');
         lagreAppRoute(appRoute);
-        await mellomlagreSøknad();
-        navigate(appRoute);
+        mellomlagreSøknadOgNaviger();
     };
     const saveOnPrevious = () => {
         // TODO (TOR) Lagre uvalidert data i framtida

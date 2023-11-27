@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
@@ -43,13 +42,16 @@ const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
 
 type Props = {
     søkerInfo: Søkerinfo;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 };
 
-const Inntektsinformasjon: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknad, avbrytSøknad }) => {
+const Inntektsinformasjon: React.FunctionComponent<Props> = ({
+    søkerInfo,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -71,7 +73,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({ søkerInfo, mello
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
     );
 
-    const onSubmit = async (values: Partial<InntektsinformasjonFormData>) => {
+    const onSubmit = (values: Partial<InntektsinformasjonFormData>) => {
         setIsSubmitting(true);
 
         const updatedSøker = mapInntektsinformasjonFormDataToState(
@@ -85,9 +87,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({ søkerInfo, mello
 
         lagreAppRoute(SøknadRoutes.OPPSUMMERING);
 
-        await mellomlagreSøknad();
-
-        navigate(SøknadRoutes.OPPSUMMERING);
+        mellomlagreSøknadOgNaviger();
     };
 
     return (
@@ -156,7 +156,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({ søkerInfo, mello
                             <Block margin="xl">
                                 <StepButtonWrapper>
                                     <BackButton
-                                        mellomlagreSøknad={mellomlagreSøknad}
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                         route={findPreviousUrl(utenlandsopphold)}
                                     />
                                     {visibility.areAllQuestionsAnswered() && (

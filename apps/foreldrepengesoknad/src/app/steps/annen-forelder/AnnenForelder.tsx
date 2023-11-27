@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Alert, BodyLong, BodyShort, Button, ReadMore } from '@navikt/ds-react';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -49,13 +49,12 @@ import BackButton from '../BackButton';
 
 type Props = {
     søkerInfo: Søkerinfo;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 };
 
-const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknad, avbrytSøknad }) => {
+const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -98,7 +97,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
         tekstOmFarskapsportalId = 'annenForelder.tekstOmFarskapsportal.mor.del1';
     }
 
-    const onSubmit = async (values: Partial<AnnenForelderFormData>) => {
+    const onSubmit = (values: Partial<AnnenForelderFormData>) => {
         setIsSubmitting(true);
 
         // @ts-ignore TODO (TOR) Søker er dårleg typa. Her skal den kunne innehalda kun erAleneOmsorg, og så blir den utvida seinare
@@ -123,9 +122,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
 
         lagreAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 
-        await mellomlagreSøknad();
-
-        navigate(SøknadRoutes.UTTAKSPLAN_INFO);
+        mellomlagreSøknadOgNaviger();
     };
 
     return (
@@ -415,7 +412,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                             <Block margin="l">
                                 <StepButtonWrapper>
                                     <BackButton
-                                        mellomlagreSøknad={mellomlagreSøknad}
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                         route={getPreviousStepHref('annenForelder')}
                                     />
                                     {kanGåVidereMedSøknaden && (

@@ -1,5 +1,4 @@
 import { FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import SøknadRoutes from 'app/routes/routes';
 import { Button } from '@navikt/ds-react';
 import { FpDataType, useFpStateSaveFn } from 'app/context/FpDataContext';
@@ -8,17 +7,15 @@ import { FpDataType, useFpStateSaveFn } from 'app/context/FpDataContext';
 
 type Props = {
     route: SøknadRoutes;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
 };
 
-const BackButton: React.FunctionComponent<Props> = ({ route, mellomlagreSøknad }) => {
-    const navigate = useNavigate();
+const BackButton: React.FunctionComponent<Props> = ({ route, mellomlagreSøknadOgNaviger }) => {
     const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
 
     const gåTilForrige = async () => {
         lagreAppRoute(route);
-        await mellomlagreSøknad();
-        navigate(route);
+        mellomlagreSøknadOgNaviger();
     };
 
     return (

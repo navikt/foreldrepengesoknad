@@ -29,7 +29,7 @@ interface Props {
     annenForelder: AnnenForelder;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
 }
 
 const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
@@ -41,7 +41,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     annenForelder,
     erEndringssøknad,
     person,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
 }) => {
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
@@ -74,7 +74,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />
             );
         case 'farMedmorFødselBeggeHarRett':
@@ -85,7 +85,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />
             );
         case 'farMedmorFødselMorHarIkkeRett':
@@ -95,7 +95,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />
             );
         case 'farMedmorFørstegangssøknadMedAnnenPart':
@@ -105,7 +105,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     person={person}
                 />
             );
@@ -116,7 +116,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />
             );
         case 'morFødsel':
@@ -127,7 +127,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     eksisterendeSakFar={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />
             );
         case 'morFarFødselAnnenForelderHarRettIEØS':
@@ -137,7 +137,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />
             );
         case 'morFarAdopsjonAnnenForelderHarRettIEØS':
@@ -147,7 +147,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />
             );
     }

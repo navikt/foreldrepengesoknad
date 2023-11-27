@@ -30,13 +30,6 @@ export default {
     decorators: [withRouter],
 };
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
-
 const søkerinfo = _søkerinfo as SøkerinfoDTO;
 
 const defaultBarn = {
@@ -118,7 +111,7 @@ interface Props {
     utenlandsoppholdTidligere?: TidligereOpphold;
     barn?: Barn;
     erEndringssøknad?: boolean;
-    mellomlagreSøknad?: () => Promise<any>;
+    mellomlagreSøknadOgNaviger?: () => void;
     gåTilNesteSide: (action: Action) => void;
     avbrytSøknad: () => void;
     sendSøknad: () => Promise<any>;
@@ -135,7 +128,7 @@ const Template: StoryFn<Props> = ({
     utenlandsoppholdSenere,
     utenlandsoppholdTidligere,
     erEndringssøknad = false,
-    mellomlagreSøknad = promiseAction(),
+    mellomlagreSøknadOgNaviger = action('button-click'),
     gåTilNesteSide,
     avbrytSøknad = action('button-click'),
     sendSøknad = () => Promise.resolve(),
@@ -170,7 +163,7 @@ const Template: StoryFn<Props> = ({
                     sendSøknad={sendSøknad}
                     søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
                     avbrytSøknad={avbrytSøknad}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />
             </FpDataContext>
         </AxiosMock>

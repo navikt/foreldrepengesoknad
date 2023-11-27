@@ -54,12 +54,12 @@ describe('<Velkommen>', () => {
     //Har saker, og alle barna lever.
     it('skal vise velkommen-side med sak på fødsel som kan endres og så velge denne', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
         render(
             <HarOpprettetFPSakFødselMedBarnetIPDL
                 gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknad={mellomlagreSøknad}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,
         );
 
@@ -78,7 +78,7 @@ describe('<Velkommen>', () => {
         await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
         await userEvent.click(screen.getByText('Endre søknad'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(12);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(12, {

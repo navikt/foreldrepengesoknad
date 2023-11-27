@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { notEmpty } from '@navikt/fp-validation';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -57,7 +56,7 @@ interface Props {
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
 }
 
 const MorFarAdopsjon: FunctionComponent<Props> = ({
@@ -65,10 +64,9 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
 }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
@@ -108,7 +106,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const shouldRender =
         erAdopsjon && (annenForelderOppgittIkkeAleneOmOmsorg || annenForelder.kanIkkeOppgis || søkerErAleneOmOmsorg);
 
-    const onSubmit = async (values: Partial<MorFarAdopsjonFormData>) => {
+    const onSubmit = (values: Partial<MorFarAdopsjonFormData>) => {
         setIsSubmitting(true);
 
         lagreUttaksplanInfo(mapMorFarAdopsjonFormToState(values));
@@ -167,9 +165,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
         lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
 
-        await mellomlagreSøknad();
-
-        navigate(SøknadRoutes.UTTAKSPLAN);
+        mellomlagreSøknadOgNaviger();
     };
 
     if (!shouldRender || !isAdoptertBarn(barn)) {
@@ -387,7 +383,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                         <Block>
                             <StepButtonWrapper>
                                 <BackButton
-                                    mellomlagreSøknad={mellomlagreSøknad}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                     route={getPreviousStepHref('uttaksplanInfo')}
                                 />
                                 {visibility.areAllQuestionsAnswered() && (

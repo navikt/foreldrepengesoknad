@@ -31,14 +31,14 @@ import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpData
 type Props = {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 };
 
 const UttaksplanInfo: React.FunctionComponent<Props> = ({
     søkerInfo,
     erEndringssøknad,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }) => {
     const intl = useIntl();
@@ -220,7 +220,7 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
                 annenForelder={annenForelder}
                 erEndringssøknad={erEndringssøknad}
                 person={søkerInfo.person}
-                mellomlagreSøknad={mellomlagreSøknad}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />
         </Step>
     );

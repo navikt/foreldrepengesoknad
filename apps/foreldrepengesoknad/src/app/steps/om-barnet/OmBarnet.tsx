@@ -30,7 +30,6 @@ import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { Button } from '@navikt/ds-react';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
@@ -39,18 +38,17 @@ import BackButton from '../BackButton';
 type Props = {
     søkerInfo: Søkerinfo;
     søknadGjelderNyttBarn: boolean;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 };
 
 const OmBarnet: React.FunctionComponent<Props> = ({
     søkerInfo,
     søknadGjelderNyttBarn,
-    mellomlagreSøknad,
+    mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -88,7 +86,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
     const barnSøktOmFørMenIkkeRegistrert =
         !søknadGjelderNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
 
-    const onSubmit = async (values: Partial<OmBarnetFormData>) => {
+    const onSubmit = (values: Partial<OmBarnetFormData>) => {
         setIsSubmitting(true);
 
         const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
@@ -103,9 +101,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         lagreOmBarnet(oppdatertBarn);
         lagreAppRoute(SøknadRoutes.ANNEN_FORELDER);
 
-        await mellomlagreSøknad();
-
-        navigate(SøknadRoutes.ANNEN_FORELDER);
+        mellomlagreSøknadOgNaviger();
     };
 
     return (
@@ -176,7 +172,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
                             <Block margin="l">
                                 <StepButtonWrapper>
                                     <BackButton
-                                        mellomlagreSøknad={mellomlagreSøknad}
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                         route={getPreviousStepHref('omBarnet')}
                                     />
                                     {visGåVidereKnapp && (

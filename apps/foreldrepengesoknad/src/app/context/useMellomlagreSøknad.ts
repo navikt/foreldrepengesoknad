@@ -1,5 +1,8 @@
 import Api from 'app/api/api';
 import { FpDataMap, FpDataType, useFpStateAllDataFn } from './FpDataContext';
+import { useEffect, useState } from 'react';
+import { notEmpty } from '@navikt/fp-validation';
+import { useNavigate } from 'react-router-dom';
 
 const mellomlagre = (
     getDataFromState: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
@@ -8,7 +11,7 @@ const mellomlagre = (
     harGodkjentVilkår: boolean,
     søknadGjelderEtNyttBarn?: boolean,
 ) => {
-    const currentRoute = getDataFromState(FpDataType.APP_ROUTE)!;
+    const currentRoute = notEmpty(getDataFromState(FpDataType.APP_ROUTE));
 
     const søkersituasjon = getDataFromState(FpDataType.SØKERSITUASJON);
     const barn = getDataFromState(FpDataType.OM_BARNET);
@@ -66,27 +69,40 @@ const useMellomlagreSøknad = (
     harGodkjentVilkår: boolean,
     søknadGjelderEtNyttBarn?: boolean,
 ) => {
+    const navigate = useNavigate();
     const getDataFromState = useFpStateAllDataFn();
 
-    const mellomlagreSøknad = () =>
-        mellomlagre(getDataFromState, fødselsnr, erEndringssøknad, harGodkjentVilkår, søknadGjelderEtNyttBarn);
+    const [skalMellomlagre, setSkalMellomlagre] = useState(false);
+    const [error, setError] = useState();
 
-    const mellomlagreSøknadMedData = (
-        erEndringssøknadLokal: boolean,
-        harGodkjentVilkårLokal: boolean,
-        søknadGjelderEtNyttBarnLokal: boolean,
-    ) =>
-        mellomlagre(
-            getDataFromState,
-            fødselsnr,
-            erEndringssøknadLokal,
-            harGodkjentVilkårLokal,
-            søknadGjelderEtNyttBarnLokal,
-        );
+    useEffect(() => {
+        if (skalMellomlagre) {
+            const lagre = async () => {
+                await mellomlagre(
+                    getDataFromState,
+                    fødselsnr,
+                    erEndringssøknad,
+                    harGodkjentVilkår,
+                    søknadGjelderEtNyttBarn,
+                );
+                const currentRoute = notEmpty(getDataFromState(FpDataType.APP_ROUTE));
+                navigate(currentRoute);
+                setSkalMellomlagre(false);
+            };
+
+            lagre().catch((error) => setError(error));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [skalMellomlagre]);
+
+    const mellomlagreSøknadOgNaviger = () => {
+        //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
+        setSkalMellomlagre(true);
+    };
 
     return {
-        mellomlagreSøknad,
-        mellomlagreSøknadMedData,
+        mellomlagreSøknadOgNaviger,
+        error,
     };
 };
 

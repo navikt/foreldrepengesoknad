@@ -12,9 +12,9 @@ const { Default } = composeStories(stories);
 describe('<SenereUtenlandsoppholdSteg>', () => {
     it('skal fylle ut fremtidig utenlandsopphold og gå videre til inntektsinformasjon', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
 
@@ -30,7 +30,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -57,14 +57,14 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
     it('skal gå til utenlandsforhold-oversikt når en ikke har tidligere opphold i utlandet og går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknad={mellomlagreSøknad} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -76,12 +76,12 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
     it('skal gå til tidligere utenlandsforhold når en har tidligere opphold i utlandet og går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknad = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
 
         render(
             <Default
                 gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknad={mellomlagreSøknad}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 utenlandsforhold={{
                     iNorgeNeste12Mnd: false,
                     iNorgeSiste12Mnd: false,
@@ -92,7 +92,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknad).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

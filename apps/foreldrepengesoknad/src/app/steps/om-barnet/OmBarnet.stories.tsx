@@ -12,13 +12,6 @@ import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
-
 const søkerinfo = _søkerinfo as any;
 const søkerinfoMedDødTrilling = _søkerinfoMedDødTrilling as any;
 
@@ -33,7 +26,7 @@ interface Props {
     søkersituasjon?: SøkersituasjonFp;
     barn?: Barn;
     søknadGjelderEtNyttBarn?: boolean;
-    mellomlagreSøknad?: () => Promise<any>;
+    mellomlagreSøknadOgNaviger?: () => void;
     gåTilNesteSide: (action: Action) => void;
 }
 
@@ -46,7 +39,7 @@ const Template: StoryFn<Props> = ({
     barn,
     søknadGjelderEtNyttBarn = false,
     gåTilNesteSide,
-    mellomlagreSøknad = promiseAction(),
+    mellomlagreSøknadOgNaviger = action('button-click'),
 }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(
@@ -70,7 +63,7 @@ const Template: StoryFn<Props> = ({
                 <OmBarnet
                     søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
                     søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
-                    mellomlagreSøknad={mellomlagreSøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     avbrytSøknad={action('button-click')}
                 />
             </FpDataContext>

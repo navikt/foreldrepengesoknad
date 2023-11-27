@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
@@ -14,13 +13,12 @@ import stepConfig from '../stepsConfig';
 
 type Props = {
     kjønn: Kjønn;
-    mellomlagreSøknad: () => Promise<any>;
+    mellomlagreSøknadOgNaviger: () => void;
     avbrytSøknad: () => void;
 };
 
-const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreSøknad, avbrytSøknad }) => {
+const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,7 +35,7 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlag
     });
 
     const onSubmit = useCallback(
-        async (values: SøkersituasjonFp) => {
+        (values: SøkersituasjonFp) => {
             setIsSubmitting(true);
 
             lagreSøkersituasjon({
@@ -46,11 +44,9 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlag
             });
             lagreAppRoute(SøknadRoutes.OM_BARNET);
 
-            await mellomlagreSøknad();
-
-            navigate(SøknadRoutes.OM_BARNET);
+            mellomlagreSøknadOgNaviger();
         },
-        [lagreAppRoute, lagreSøkersituasjon, mellomlagreSøknad, navigate],
+        [lagreAppRoute, lagreSøkersituasjon, mellomlagreSøknadOgNaviger],
     );
 
     return (
