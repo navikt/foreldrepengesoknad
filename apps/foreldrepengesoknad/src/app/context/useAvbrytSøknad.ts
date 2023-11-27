@@ -7,10 +7,7 @@ export const useAvbrytSøknad = (
     fødselsnr: string,
     setErEndringssøknad: (erEndringssøknad: boolean) => void,
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
-    setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn: boolean) => void,
-    lagretErEndringssøknad?: boolean,
-    lagretHarGodkjentVilkår?: boolean,
-    lagretSøknadGjelderNyttBarn?: boolean,
+    setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn?: boolean) => void,
 ) => {
     const navigate = useNavigate();
     const reset = useFpStateResetFn();
@@ -23,9 +20,9 @@ export const useAvbrytSøknad = (
         });
 
         reset();
-        setErEndringssøknad(lagretErEndringssøknad || false);
-        setHarGodkjentVilkår(lagretHarGodkjentVilkår || false);
-        setSøknadGjelderNyttBarn(lagretSøknadGjelderNyttBarn || false);
+        setErEndringssøknad(false);
+        setHarGodkjentVilkår(false);
+        setSøknadGjelderNyttBarn(undefined);
 
         Api.deleteStoredAppState(fødselsnr);
 

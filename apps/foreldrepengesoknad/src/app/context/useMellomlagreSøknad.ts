@@ -73,7 +73,7 @@ const useMellomlagreSøknad = (
     const getDataFromState = useFpStateAllDataFn();
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
-    const [error, setError] = useState();
+    const [mellomlagreError, setMellomlagreError] = useState();
 
     useEffect(() => {
         if (skalMellomlagre) {
@@ -85,12 +85,14 @@ const useMellomlagreSøknad = (
                     harGodkjentVilkår,
                     søknadGjelderEtNyttBarn,
                 );
+
                 const currentRoute = notEmpty(getDataFromState(FpDataType.APP_ROUTE));
                 navigate(currentRoute);
+
                 setSkalMellomlagre(false);
             };
 
-            lagre().catch((error) => setError(error));
+            lagre().catch((error) => setMellomlagreError(error));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [skalMellomlagre]);
@@ -102,7 +104,7 @@ const useMellomlagreSøknad = (
 
     return {
         mellomlagreSøknadOgNaviger,
-        error,
+        mellomlagreError,
     };
 };
 

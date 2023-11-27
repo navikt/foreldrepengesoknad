@@ -211,7 +211,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
 
     const sendSøknad = useSendSøknad(søkerInfo.person.fnr, erEndringssøknad, setKvittering);
 
-    const { mellomlagreSøknadOgNaviger } = useMellomlagreSøknad(
+    const { mellomlagreSøknadOgNaviger, mellomlagreError } = useMellomlagreSøknad(
         søkerInfo.person.fnr,
         erEndringssøknad,
         harGodkjentVilkår,
@@ -223,9 +223,6 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
         setErEndringssøknad,
         setHarGodkjentVilkår,
         setSøknadGjelderNyttBarn,
-        lagretErEndringssøknad,
-        lagretHarGodkjentVilkår,
-        lagretSøknadGjelderNyttBarn,
     );
 
     const uttaksplan = useFpStateData(FpDataType.UTTAKSPLAN);
