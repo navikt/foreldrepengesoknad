@@ -4,6 +4,7 @@ import { Søknad } from './types/Søknad';
 
 export const useSetSøknadsdata = () => {
     const lagreData = useAllStateSaveFn();
+
     const oppdaterSøknadIState = (søknad: Søknad, eksisterendeSak?: EksisterendeSak) => {
         lagreData(FpDataType.SØKERSITUASJON, søknad.søkersituasjon);
         lagreData(FpDataType.OM_BARNET, søknad.barn);

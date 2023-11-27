@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Api from 'app/api/api';
 import { useFpStateResetFn } from 'app/context/FpDataContext';
+import { useCallback } from 'react';
 
 export const useAvbrytSøknad = (
     fødselsnr: string,
@@ -12,7 +13,7 @@ export const useAvbrytSøknad = (
     const navigate = useNavigate();
     const reset = useFpStateResetFn();
 
-    const avbrytSøknadHandler = () => {
+    const avbrytSøknadHandler = useCallback(() => {
         logAmplitudeEvent('applikasjon-hendelse', {
             app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
@@ -20,6 +21,7 @@ export const useAvbrytSøknad = (
         });
 
         reset();
+
         setErEndringssøknad(false);
         setHarGodkjentVilkår(false);
         setSøknadGjelderNyttBarn(undefined);
@@ -27,7 +29,7 @@ export const useAvbrytSøknad = (
         Api.deleteStoredAppState(fødselsnr);
 
         navigate('/');
-    };
+    }, [fødselsnr, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
 
     return avbrytSøknadHandler;
 };

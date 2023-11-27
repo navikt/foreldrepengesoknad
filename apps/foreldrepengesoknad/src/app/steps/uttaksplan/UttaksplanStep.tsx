@@ -170,8 +170,12 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             : true;
 
     const debouncedState = useDebounce(useFpState(), 3000);
+    const initialRender = useRef(true);
     useEffect(() => {
-        mellomlagreSøknadOgNaviger();
+        if (initialRender.current === false) {
+            mellomlagreSøknadOgNaviger();
+        }
+        initialRender.current = false;
     }, [debouncedState, mellomlagreSøknadOgNaviger]);
 
     const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =

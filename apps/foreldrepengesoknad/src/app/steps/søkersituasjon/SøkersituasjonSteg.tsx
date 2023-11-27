@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
@@ -34,20 +34,17 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlag
             : undefined,
     });
 
-    const onSubmit = useCallback(
-        (values: SøkersituasjonFp) => {
-            setIsSubmitting(true);
+    const onSubmit = (values: SøkersituasjonFp) => {
+        setIsSubmitting(true);
 
-            lagreSøkersituasjon({
-                situasjon: values.situasjon,
-                rolle: values.rolle || 'far',
-            });
-            lagreAppRoute(SøknadRoutes.OM_BARNET);
+        lagreSøkersituasjon({
+            situasjon: values.situasjon,
+            rolle: values.rolle || 'far',
+        });
+        lagreAppRoute(SøknadRoutes.OM_BARNET);
 
-            mellomlagreSøknadOgNaviger();
-        },
-        [lagreAppRoute, lagreSøkersituasjon, mellomlagreSøknadOgNaviger],
-    );
+        mellomlagreSøknadOgNaviger();
+    };
 
     return (
         <Step

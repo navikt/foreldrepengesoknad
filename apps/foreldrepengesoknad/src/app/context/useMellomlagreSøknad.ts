@@ -1,8 +1,10 @@
 import Api from 'app/api/api';
 import { FpDataMap, FpDataType, useFpStateAllDataFn } from './FpDataContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { notEmpty } from '@navikt/fp-validation';
 import { useNavigate } from 'react-router-dom';
+import { redirectToLogin } from 'app/utils/redirectToLogin';
+import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 
 const mellomlagre = (
     getDataFromState: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
@@ -73,11 +75,12 @@ const useMellomlagreSøknad = (
     const getDataFromState = useFpStateAllDataFn();
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
-    const [mellomlagreError, setMellomlagreError] = useState();
 
     useEffect(() => {
         if (skalMellomlagre) {
             const lagre = async () => {
+                setSkalMellomlagre(false);
+
                 await mellomlagre(
                     getDataFromState,
                     fødselsnr,
@@ -88,23 +91,27 @@ const useMellomlagreSøknad = (
 
                 const currentRoute = notEmpty(getDataFromState(FpDataType.APP_ROUTE));
                 navigate(currentRoute);
-
-                setSkalMellomlagre(false);
             };
 
-            lagre().catch((error) => setMellomlagreError(error));
+            lagre().catch((error) => {
+                // TODO (TOR) Bør heller returnere error og håndtere feil frå API-kall på same måte
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    redirectToLogin();
+                } else {
+                    sendErrorMessageToSentry(error);
+                }
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [skalMellomlagre]);
 
-    const mellomlagreSøknadOgNaviger = () => {
+    const mellomlagreSøknadOgNaviger = useCallback(() => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
-    };
+    }, []);
 
     return {
         mellomlagreSøknadOgNaviger,
-        mellomlagreError,
     };
 };
 

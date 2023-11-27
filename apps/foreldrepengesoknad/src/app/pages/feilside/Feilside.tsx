@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
 import { LocaleNo } from '@navikt/fp-types';
 import { bemUtils, Block, LanguageToggle, Sidebanner, Søkerinfo, useDocumentTitle } from '@navikt/fp-common';
@@ -41,7 +40,7 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
     const bem = bemUtils('feilside');
     const reset = useFpStateResetFn();
 
-    const avbrytSøknadHandler = useCallback(async () => {
+    const avbrytSøknadHandler = async () => {
         if (!søkerInfo) {
             return;
         }
@@ -55,11 +54,11 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
         reset();
         await Api.deleteStoredAppState(søkerInfo.person.fnr);
         window.location.href = 'https://nav.no';
-    }, [søkerInfo, reset]);
+    };
 
-    const gåTilbakeTilSøknadenHandler = useCallback(() => {
+    const gåTilbakeTilSøknadenHandler = () => {
         window.location.reload();
-    }, []);
+    };
 
     useDocumentTitle(dokumenttittel);
 
