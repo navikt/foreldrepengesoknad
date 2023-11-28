@@ -40,6 +40,7 @@ import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import BackButton from 'app/steps/BackButton';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -48,6 +49,7 @@ interface Props {
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => void;
     person: Person;
+    oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
 const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
@@ -57,6 +59,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     erEndringssøknad,
     mellomlagreSøknadOgNaviger,
     person,
+    oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,7 +75,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     ) as FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo;
 
     const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
-    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
     const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
     const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
 
@@ -160,7 +162,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
 
         lagreUttaksplan(uttaksplanMedAnnenPart);
 
-        lagreUttaksplanMetadata({
+        oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
             dekningsgrad: grunnlag.dekningsgrad,
             antallUkerIUttaksplan: antallUker,

@@ -46,6 +46,7 @@ import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import BackButton from 'app/steps/BackButton';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -53,6 +54,7 @@ interface Props {
     erEndringssøknad: boolean;
     person: Person;
     mellomlagreSøknadOgNaviger: () => void;
+    oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
 const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
@@ -61,6 +63,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     erEndringssøknad,
     person,
     mellomlagreSøknadOgNaviger,
+    oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,9 +79,8 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     ) as MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo;
 
     const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
-    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
     const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
-    const lagreInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
+    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
 
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
@@ -128,9 +130,9 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             førsteUttaksdagNesteBarnsSak,
         });
 
-        lagreInfo(uttaksplan);
+        lagreUttaksplan(uttaksplan);
 
-        lagreUttaksplanMetadata({
+        oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
             dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
             antallUkerIUttaksplan: getAntallUker(

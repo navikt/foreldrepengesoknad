@@ -50,6 +50,7 @@ import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpData
 import Person from '@navikt/fp-common/src/common/types/Person';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import BackButton from 'app/steps/BackButton';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -57,6 +58,7 @@ interface Props {
     erEndringssøknad: boolean;
     person: Person;
     mellomlagreSøknadOgNaviger: () => void;
+    oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
 const MorFarAdopsjon: FunctionComponent<Props> = ({
@@ -65,6 +67,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     erEndringssøknad,
     person,
     mellomlagreSøknadOgNaviger,
+    oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,7 +82,6 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const uttaksplanInfo = useFpStateData(FpDataType.UTTAKSPLAN_INFO) as MorFarAdopsjonUttaksplanInfo;
 
     const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
-    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
     const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
     const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
 
@@ -155,7 +157,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
         lagreUttaksplan(uttaksplan);
 
-        lagreUttaksplanMetadata({
+        oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
             dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
             antallUkerIUttaksplan: getAntallUker(

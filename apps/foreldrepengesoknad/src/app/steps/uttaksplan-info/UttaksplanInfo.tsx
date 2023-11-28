@@ -27,6 +27,7 @@ import { RequestStatus } from 'app/types/RequestState';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -53,7 +54,6 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
     const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
 
     const lagreOmBarnet = useFpStateSaveFn(FpDataType.OM_BARNET);
-    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
     const lagreUttaksplanMetaData = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
     const lagreEksisterendeSak = useFpStateSaveFn(FpDataType.EKSISTERENDE_SAK);
 
@@ -104,41 +104,34 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
         eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
     );
 
-    //TODO (TOR) Går det an å skriva useEffects under på ein annan måte?
-
-    useEffect(() => {
+    const oppdaterBarnOgLagreUttaksplandata = (metadata: UttaksplanMetaData) => {
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
             lagreOmBarnet({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
         }
-    }, [barn, erFarEllerMedmor, lagreOmBarnet, saksgrunnlagsAntallBarn]);
 
-    //Uttaksplaninfo vises ikke hvis endringssøknad, så det er nok å sette annen parts sak og uttaksplan her
-    useEffect(() => {
+        // TODO (TOR) Kvifor blir dette gjort her? Bedre å isolera denne funksjonaliteten til UttaksplanStep
         if (eksisterendeVedtakAnnenPart !== undefined) {
-            lagreUttaksplan(eksisterendeVedtakAnnenPart.uttaksplan);
             lagreEksisterendeSak(eksisterendeVedtakAnnenPart);
 
-            lagreUttaksplanMetaData({
-                ...uttaksplanMetadata,
+            metadata = {
+                ...metadata,
                 annenPartsUttakErLagtTilIPlan: true,
-            });
+            };
         }
-    }, [
-        eksisterendeVedtakAnnenPart,
-        lagreUttaksplan,
-        lagreEksisterendeSak,
-        lagreUttaksplanMetaData,
-        uttaksplanMetadata,
-    ]);
 
-    useEffect(() => {
+        // TODO (TOR) Kvifor blir dette gjort her? Bedre å isolera denne funksjonaliteten til UttaksplanStep
         if (uttaksplanMetadata?.harUttaksplanBlittSlettet !== false) {
-            lagreUttaksplanMetaData({
-                ...uttaksplanMetadata,
+            metadata = {
+                ...metadata,
                 harUttaksplanBlittSlettet: false,
-            });
+            };
         }
-    }, [lagreUttaksplanMetaData, uttaksplanMetadata]);
+
+        lagreUttaksplanMetaData({
+            ...uttaksplanMetadata,
+            ...metadata,
+        });
+    };
 
     const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
         Api.useGetUttakskontoer(
@@ -221,6 +214,7 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
                 erEndringssøknad={erEndringssøknad}
                 person={søkerInfo.person}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
             />
         </Step>
     );

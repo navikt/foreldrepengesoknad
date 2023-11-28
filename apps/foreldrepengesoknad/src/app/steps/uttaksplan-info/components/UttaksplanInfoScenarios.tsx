@@ -19,6 +19,7 @@ import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneoms
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import FarMedmorFørstegangssøknadMedAnnenPart from './scenarios/farMedmor-førstegangssøknad-med-annen-part/FarMedmorFørstegangssøknadMedAnnenPart';
 import { getUttaksplanScenario } from './scenarios/scenarios';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -30,6 +31,7 @@ interface Props {
     erEndringssøknad: boolean;
     person: Person;
     mellomlagreSøknadOgNaviger: () => void;
+    oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
 const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
@@ -42,6 +44,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     erEndringssøknad,
     person,
     mellomlagreSøknadOgNaviger,
+    oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
@@ -75,6 +78,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'farMedmorFødselBeggeHarRett':
@@ -86,6 +90,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'farMedmorFødselMorHarIkkeRett':
@@ -96,6 +101,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'farMedmorFørstegangssøknadMedAnnenPart':
@@ -107,6 +113,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     person={person}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'morFarAdopsjon':
@@ -117,6 +124,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'morFødsel':
@@ -128,6 +136,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'morFarFødselAnnenForelderHarRettIEØS':
@@ -138,6 +147,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'morFarAdopsjonAnnenForelderHarRettIEØS':
@@ -148,6 +158,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
     }

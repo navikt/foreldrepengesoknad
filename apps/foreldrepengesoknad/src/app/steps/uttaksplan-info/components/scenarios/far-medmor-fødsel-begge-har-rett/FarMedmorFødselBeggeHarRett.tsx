@@ -46,6 +46,7 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import BackButton from 'app/steps/BackButton';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -54,6 +55,7 @@ interface Props {
     erEndringssøknad: boolean;
     person: Person;
     mellomlagreSøknadOgNaviger: () => void;
+    oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
 const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> = ({
@@ -62,6 +64,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     erEndringssøknad,
     person,
     mellomlagreSøknadOgNaviger,
+    oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,7 +78,6 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const uttaksplanInfo = useFpStateData(FpDataType.UTTAKSPLAN_INFO) as FarMedmorFødselBeggeHarRettUttaksplanInfo;
 
     const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
-    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
     const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
     const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
 
@@ -133,7 +135,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
 
         lagreUttaksplan(uttaksplan);
 
-        lagreUttaksplanMetadata({
+        oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
             dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
             antallUkerIUttaksplan: getAntallUker(
