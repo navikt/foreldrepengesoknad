@@ -7,7 +7,7 @@ enum SøknadRoutes {
     UTTAKSPLAN = '/soknad/uttaksplan',
     UTENLANDSOPPHOLD = '/soknad/utenlandsopphold',
     INNTEKTSINFORMASJON = '/soknad/inntektsinformasjon',
-    MANGLENDE_VEDLEGG = '/soknad/manglende-vedlegg',
+    DOKUMENTASJON = '/soknad/dokumentasjon',
     OPPSUMMERING = '/soknad/oppsummering',
     SØKNAD_SENDT = '/soknad/soknad-sendt',
     IKKE_MYNDIG = 'ikke-myndig',

@@ -9,6 +9,7 @@ import {
     Søkersituasjon,
     Tilleggsopplysninger,
 } from '@navikt/fp-common';
+import { Attachment as AttachmentFP } from '@navikt/fp-types';
 import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
 import { LocaleNo } from '@navikt/fp-types';
@@ -55,6 +56,7 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_BARN_FRA_NESTE_SAK = 'setBarnFraNesteSak',
     SET_ANNEN_PARTS_UTTAK_ER_LAGT_TIL_I_PLAN = 'setAnnenPartsUttakErLagtTilIPlan',
     SET_MANGLER_DOKUMENTASJON = 'setManglerDokumentasjon',
+    LAGRE_DOKUMENTASJON = 'lagreDokumentasjon',
 }
 
 interface SetVelkommen {
@@ -397,6 +399,16 @@ const setManglerDokumentasjon = (payload: boolean): SetManglerDokumentasjon => (
     payload,
 });
 
+interface LagreDokumentasjon {
+    type: ForeldrepengesøknadContextActionKeys.LAGRE_DOKUMENTASJON;
+    payload: AttachmentFP[];
+}
+
+const lagreDokumentasjon = (payload: AttachmentFP[]): LagreDokumentasjon => ({
+    type: ForeldrepengesøknadContextActionKeys.LAGRE_DOKUMENTASJON,
+    payload,
+});
+
 export type ForeldrepengesøknadContextAction =
     | SetVelkommen
     | SetErEndringssøknad
@@ -431,7 +443,8 @@ export type ForeldrepengesøknadContextAction =
     | SetBrukerSvarteJaPåAutoJustering
     | SetBarnFraNesteSak
     | SetAnnenPartsUttakErLagtTilIPlan
-    | SetManglerDokumentasjon;
+    | SetManglerDokumentasjon
+    | LagreDokumentasjon;
 
 export default {
     setVelkommen,
@@ -468,4 +481,5 @@ export default {
     setBarnFraNesteSak,
     setAnnenPartsUttakErLagtTilIPlan,
     setManglerDokumentasjon,
+    lagreDokumentasjon,
 };

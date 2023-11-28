@@ -66,6 +66,7 @@
         "react-collapse": "^5.1.1",
         "react-day-picker": "^8.8.0",
         "react-dom": "^18.2.0",
+        "react-hook-form": "7.45.4",
         "react-intl": "^6.4.4",
         "react-modal": "^3.16.1",
         "react-router-dom": "^6.15.0",
@@ -76,6 +77,8 @@
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-constants": "workspace:*",
+        "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-essentials": "^7.3.1",
         "@storybook/cli": "^7.3.1",

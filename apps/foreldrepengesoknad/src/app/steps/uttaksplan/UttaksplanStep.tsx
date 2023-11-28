@@ -65,7 +65,7 @@ import { Alert, Button, Loader } from '@navikt/ds-react';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Link } from 'react-router-dom';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
-import { getHarAktivitetskravIPeriodeUtenUttak, shouldPeriodeHaveAttachment, Uttaksplan } from '@navikt/uttaksplan';
+import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan, uttaksplanKreverVedlegg } from '@navikt/uttaksplan';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import {
     getKanJustereAutomatiskVedFødsel,
@@ -134,11 +134,8 @@ const UttaksplanStep = () => {
         erFarEllerMedmor,
         annenForelder,
     );
-    const periodeSomManglerVedlegg = søknad.uttaksplan.find((p) =>
-        shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
-    );
-    const søknadKreverVedlegg = periodeSomManglerVedlegg !== undefined;
-    const nextRoute = getUttaksplanNextStep(søknad.erEndringssøknad, søknadKreverVedlegg);
+    const planKreverVedlegg = uttaksplanKreverVedlegg(søknad.uttaksplan, erFarEllerMedmor, annenForelder);
+    const nextRoute = getUttaksplanNextStep(søknad.erEndringssøknad, planKreverVedlegg);
 
     const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended =
@@ -306,7 +303,7 @@ const UttaksplanStep = () => {
             actionCreator.setTilleggsopplysninger(cleanedTilleggsopplysninger),
             actionCreator.setEndringstidspunkt(endringstidspunkt),
             actionCreator.setPerioderSomSkalSendesInn(perioderSomSkalSendesInn),
-            actionCreator.setManglerDokumentasjon(søknadKreverVedlegg),
+            actionCreator.setManglerDokumentasjon(planKreverVedlegg),
         ];
     };
 

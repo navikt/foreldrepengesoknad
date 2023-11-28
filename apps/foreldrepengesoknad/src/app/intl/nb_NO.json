@@ -419,6 +419,7 @@
     "manglendeVedlegg.title.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon av hva {navn} skal gjøre i perioden",
     "manglendeVedlegg.info.morsaktivitetdokumentasjon": "Du må legge ved dokumentasjon på aktivitetskravet til {navn} når du skal være hjemme i fellesperioden eller ha foreldrepenger.",
     "manglendeVedlegg.apneLabel.morsaktivitetdokumentasjon": "Les mer om dokumentasjon av aktivitetskravet",
+    "manglendeVedlegg.storrelse": "Filen kan ikke være større enn 9MB og kan være i formatene pdf, png og jpg.",
     "oppsummering.barn.søknadenGjelder": "Søknaden gjelder",
     "oppsummering.barn.termindato": "Termindato",
     "oppsummering.barn.fødseldato": "Fødselsdato",

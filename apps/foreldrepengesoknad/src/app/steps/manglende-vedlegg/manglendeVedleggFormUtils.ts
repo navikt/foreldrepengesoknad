@@ -1,5 +1,5 @@
-import { ManglendeVedleggFormData, ManglendeVedleggFormField } from './manglendeVedleggFormConfig';
+import { ManglendeVedleggFormData } from './manglendeVedleggFormConfig';
 
 export const getInitValues = (): Readonly<ManglendeVedleggFormData> => ({
-    [ManglendeVedleggFormField.vedlegg]: [],
+    vedlegg: [],
 });

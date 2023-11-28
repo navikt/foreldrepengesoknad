@@ -137,7 +137,7 @@ export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndring
     return href;
 };
 
-export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
+export const getPreviousStepHref = (id: StepIdWithBackHref, manglerDokumentasjon = false): string => {
     let href;
 
     switch (id) {
@@ -154,7 +154,11 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
             href = '/soknad/uttaksplan-info';
             break;
         case 'utenlandsopphold':
-            href = '/soknad/uttaksplan';
+            if (manglerDokumentasjon) {
+                href = '/soknad/dokumentasjon';
+            } else {
+                href = '/soknad/uttaksplan';
+            }
             break;
         case 'inntektsinformasjon':
             href = '/soknad/utenlandsopphold';
@@ -174,7 +178,7 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
 
 export const getUttaksplanNextStep = (erEndringssøknad: boolean, perioderKreverDokumentasjon: boolean) => {
     if (perioderKreverDokumentasjon) {
-        return SøknadRoutes.MANGLENDE_VEDLEGG;
+        return SøknadRoutes.DOKUMENTASJON;
     }
 
     return erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;

@@ -33,10 +33,12 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { BodyLong, BodyShort, Button, ExpansionCard, Heading, Link } from '@navikt/ds-react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 
 const Utenlandsopphold: React.FunctionComponent = () => {
     const intl = useIntl();
     const { informasjonOmUtenlandsopphold } = useSøknad();
+    const { state } = useForeldrepengesøknadContext();
 
     const onValidSubmitHandler = (values: Partial<UtenlandsoppholdFormData>) => {
         const utenlandsopphold = mapUtenlandsoppholdFormDataToState(values);
@@ -66,7 +68,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'søknad.utenlandsopphold')}
                         onCancel={onAvbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl, false)}
+                        steps={stepConfig(intl, state.søknad.erEndringssøknad)}
                     >
                         <UtenlandsoppholdFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block
@@ -213,7 +215,7 @@ const Utenlandsopphold: React.FunctionComponent = () => {
                                     <Button
                                         variant="secondary"
                                         as={RouterLink}
-                                        to={getPreviousStepHref('utenlandsopphold')}
+                                        to={getPreviousStepHref('utenlandsopphold', state.manglerDokumentasjon)}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

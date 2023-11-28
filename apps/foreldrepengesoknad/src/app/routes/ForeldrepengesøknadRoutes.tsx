@@ -50,7 +50,7 @@ const renderSøknadRoutes = (harGodkjentVilkår: boolean, erEndringssøknad: boo
             <Route path={SøknadRoutes.ANNEN_FORELDER} element={<AnnenForelder />} />
             <Route path={SøknadRoutes.UTTAKSPLAN_INFO} element={<UttaksplanInfo />} />
             <Route path={SøknadRoutes.UTTAKSPLAN} element={<UttaksplanStep />} />
-            <Route path={SøknadRoutes.MANGLENDE_VEDLEGG} element={<ManglendeVedlegg />} />
+            <Route path={SøknadRoutes.DOKUMENTASJON} element={<ManglendeVedlegg />} />
             <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
             <Route path={SøknadRoutes.INNTEKTSINFORMASJON} element={<Inntektsinformasjon />} />
             <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />

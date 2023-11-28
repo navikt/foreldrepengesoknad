@@ -75,7 +75,7 @@
         "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/manglende-vedlegg",
+    "currentRoute": "/soknad/dokumentasjon",
     "uttaksplanInfo": {
         "antallDagerFellesperiode": "0",
         "antallUkerFellesperiode": "2",

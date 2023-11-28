@@ -1,4 +1,5 @@
-import { Periode, isUttaksperiode } from '@navikt/fp-common';
+import { AnnenForelder, Periode, isUttaksperiode } from '@navikt/fp-common';
+import { shouldPeriodeHaveAttachment } from './manglendeVedleggUtils';
 
 interface HarAktivitetskravIPeriodeUtenUttakParams {
     erDeltUttak: boolean;
@@ -16,4 +17,29 @@ export const getHarAktivitetskravIPeriodeUtenUttak = ({
 
 export const uttaksplanInneholderPerioderUtenKonto = (uttaksplan: Periode[]): boolean => {
     return uttaksplan.find((periode) => isUttaksperiode(periode) && periode.konto === undefined) !== undefined;
+};
+
+export const uttaksplanKreverVedlegg = (
+    uttaksplan: Periode[],
+    erFarEllerMedmor: boolean,
+    annenForelder: AnnenForelder,
+) => {
+    const periodeSomManglerVedlegg = uttaksplan.find((p) =>
+        shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
+    );
+    const uttaksplanKreverVedlegg = periodeSomManglerVedlegg !== undefined;
+
+    return uttaksplanKreverVedlegg;
+};
+
+export const perioderSomKreverVedlegg = (
+    uttaksplan: Periode[],
+    erFarEllerMedmor: boolean,
+    annenForelder: AnnenForelder,
+) => {
+    const perioderSomManglerVedlegg = uttaksplan.filter((p) =>
+        shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
+    );
+
+    return perioderSomManglerVedlegg;
 };
