@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { AxiosInstance } from 'axios';
 import { Kvittering, LocaleAll } from '@navikt/fp-types';
-import { sendApplication, ApiAccessError, ApiGeneralError, isApiError } from '@navikt/fp-api';
+import { storeData, ApiAccessError, ApiGeneralError, isApiError } from '@navikt/fp-api';
 import { notEmpty } from '@navikt/fp-validation';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
@@ -42,6 +42,10 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     throw Error('Det er feil i data om barnet');
 };
 
+// TODO (TOR) Fiks lokalisering
+const FEIL_VED_INNSENDING =
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+
 const useEsSendSøknad = (
     esApi: AxiosInstance,
     locale: LocaleAll,
@@ -70,7 +74,14 @@ const useEsSendSøknad = (
             };
 
             try {
-                const kvittering = await sendApplication(esApi, abortSignal, '/soknad/engangssoknad', søknad);
+                // TODO (TOR) Fjern any
+                const kvittering = await storeData<any, Kvittering>(
+                    esApi,
+                    '/soknad/engangssoknad',
+                    søknad,
+                    FEIL_VED_INNSENDING,
+                    abortSignal,
+                );
                 setKvittering(kvittering);
             } catch (error: unknown) {
                 if (isApiError(error)) {

@@ -11,11 +11,15 @@ import useStepConfig from 'appData/useStepConfig';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import { Søkersituasjon } from '@navikt/fp-types';
 
-const SøkersituasjonSteg: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreOgNaviger: () => void;
+};
+
+const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
     const lagreSøkersituasjon = useEsStateSaveFn(EsDataType.SØKERSITUASJON);

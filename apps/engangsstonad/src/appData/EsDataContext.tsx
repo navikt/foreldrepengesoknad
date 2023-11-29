@@ -124,3 +124,8 @@ export const useEsStateAllDataFn = () => {
         [state],
     );
 };
+
+/** Hook returns state  */
+export const useEsCompleteState = (): EsDataMap => {
+    return useContext(EsStateContext);
+};

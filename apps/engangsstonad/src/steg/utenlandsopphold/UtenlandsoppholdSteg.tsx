@@ -16,9 +16,13 @@ const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.SENERE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
 };
 
-const UtenlandsoppholdSteg: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreOgNaviger: () => void;
+};
+
+const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
 

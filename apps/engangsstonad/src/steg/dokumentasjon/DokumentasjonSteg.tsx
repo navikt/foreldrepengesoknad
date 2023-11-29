@@ -14,11 +14,15 @@ import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
 import AdopsjonDokPanel from './AdopsjonDokPanel';
 import TerminDokPanel from './TerminDokPanel';
 
-const DokumentasjonSteg: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreOgNaviger: () => void;
+};
+
+const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
     const lagreDokumentasjon = useEsStateSaveFn(EsDataType.DOKUMENTASJON);

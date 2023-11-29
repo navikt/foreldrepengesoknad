@@ -1,20 +1,18 @@
-import { Kvittering } from '@navikt/fp-types';
 import { AxiosInstance } from 'axios';
 import { ApiAccessError, ApiGeneralError, isAxiosError } from './error';
 
 // TODO Tekstane burde ikkje ligga i denne pakka + lokalisering
 const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
-const sendApplication = async <SØKNAD>(
+const storeData = async <REQUEST_DATA, RESPONSE_DATA>(
     instance: AxiosInstance,
-    abortSignal: AbortSignal,
     url: string,
-    søknad: SØKNAD,
+    data: REQUEST_DATA,
+    errorMessage: string,
+    abortSignal?: AbortSignal,
 ) => {
     try {
-        const response = await instance.post<Kvittering>(url, søknad, {
+        const response = await instance.post<RESPONSE_DATA>(url, data, {
             withCredentials: true,
             timeout: 60 * 1000,
             headers: {
@@ -35,7 +33,7 @@ const sendApplication = async <SØKNAD>(
                     : UKJENT_UUID;
             const callIdForBruker =
                 submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
-            throw new ApiGeneralError(FEIL_VED_INNSENDING + callIdForBruker);
+            throw new ApiGeneralError(errorMessage + callIdForBruker);
         }
         if (error instanceof Error) {
             throw new ApiGeneralError(error.message);
@@ -44,4 +42,4 @@ const sendApplication = async <SØKNAD>(
     }
 };
 
-export default sendApplication;
+export default storeData;

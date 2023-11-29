@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { useEsStateResetFn } from './EsDataContext';
+import { EsDataType, useEsStateResetFn, useEsStateSaveFn } from './EsDataContext';
 import { Path } from './paths';
 import useStepConfig from './useStepConfig';
 
-const useEsNavigator = () => {
-    const navigate = useNavigate();
+const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
     const stepConfig = useStepConfig();
     const resetEsData = useEsStateResetFn();
+    const lagrePath = useEsStateSaveFn(EsDataType.CURRENT_PATH);
 
     const activeStepId = stepConfig.find((sc) => sc.isSelected);
 
@@ -20,42 +19,37 @@ const useEsNavigator = () => {
         });
     }, [activeStepId]);
 
-    const goToPreviousDefaultStep = useCallback(() => {
+    const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id || Path.VELKOMMEN;
-        navigate(previousPath);
-    }, [navigate, stepConfig]);
+        lagrePath(previousPath);
+        mellomlagreOgNaviger();
+    };
 
-    const goToNextStep = useCallback(
-        (path: Path) => {
-            lagrePath(path);
+    const goToNextStep = (path: Path) => {
+        lagrePath(path);
+        mellomlagreOgNaviger();
+    };
 
-            mellomlagre();
-            navigate(path);
-        },
-        [navigate],
-    );
-
-    const goToNextDefaultStep = useCallback(() => {
+    const goToNextDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
-        navigate(nextPath);
-    }, [navigate, stepConfig]);
 
-    const avbrytSøknad = useCallback(() => {
+        lagrePath(nextPath);
+        mellomlagreOgNaviger();
+    };
+
+    const avbrytSøknad = () => {
         resetEsData();
-        navigate(Path.VELKOMMEN);
-    }, [navigate, resetEsData]);
+        mellomlagreOgNaviger();
+    };
 
-    return useMemo(
-        () => ({
-            goToPreviousDefaultStep,
-            goToNextStep,
-            goToNextDefaultStep,
-            avbrytSøknad,
-        }),
-        [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep, avbrytSøknad],
-    );
+    return {
+        goToPreviousDefaultStep,
+        goToNextStep,
+        goToNextDefaultStep,
+        avbrytSøknad,
+    };
 };
 
 export default useEsNavigator;

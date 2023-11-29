@@ -10,9 +10,13 @@ import { Path } from 'appData/paths';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import useStepConfig from 'appData/useStepConfig';
 
-const TidligereUtenlandsoppholdSteg: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreOgNaviger: () => void;
+};
+
+const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
     const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);

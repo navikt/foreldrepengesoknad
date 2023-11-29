@@ -43,13 +43,14 @@ const mapOmBarnetFraStateTilForm = (omBarnet: OmBarnet) => ({
 
 export interface Props {
     kjønn: Kjønn;
+    mellomlagreOgNaviger: () => void;
 }
 
-const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
+const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const omBarnet = useEsStateData(EsDataType.OM_BARNET);
     const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);

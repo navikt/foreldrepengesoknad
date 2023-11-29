@@ -20,6 +20,7 @@ import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import useEsSendSøknad from 'appData/useEsSendSøknad';
+import useEsMellomlagring from 'appData/useEsMellomlagring';
 
 export const esApi = createApi(Environment.REST_API_URL);
 
@@ -43,16 +44,19 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         data: mellomlagretData,
         loading: loadingMellomlagretData,
         error: errorMellomlagretData,
-    } = useRequest<EsDataMap>(esApi, '/storage');
+    } = useRequest<EsDataMap>(esApi, '/storage/engangstønad');
 
     const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
+    const { mellomlagreOgNaviger, errorMellomlagre } = useEsMellomlagring(esApi);
 
-    const [erVelkommen, setVelkommen] = useState(mellomlagretData !== undefined);
+    const [erVelkommen, setVelkommen] = useState(false);
 
     useEffect(() => {
         if (mellomlagretData && mellomlagretData[EsDataType.CURRENT_PATH]) {
+            setVelkommen(true);
             navigate(mellomlagretData[EsDataType.CURRENT_PATH]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mellomlagretData]);
 
     if (kvittering) {
@@ -67,8 +71,8 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         return <div>Redirected to Innsyn</div>;
     }
 
-    if (errorHentPerson || errorSendSøknad || errorMellomlagretData) {
-        const error = notEmpty(errorHentPerson || errorSendSøknad || errorMellomlagretData);
+    if (errorHentPerson || errorSendSøknad || errorMellomlagretData || errorMellomlagre) {
+        const error = notEmpty(errorHentPerson || errorSendSøknad || errorMellomlagretData || errorMellomlagre);
         if (error instanceof ApiAccessError) {
             redirectToLogin(Environment.LOGIN_URL);
             return <Spinner />;
@@ -98,18 +102,40 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
                             onChangeLocale={onChangeLocale}
                             startSøknad={setVelkommen}
                             erVelkommen={erVelkommen}
+                            mellomlagreOgNaviger={mellomlagreOgNaviger}
                         />
                     }
                 />
                 {erVelkommen && (
                     <>
-                        <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
-                        <Route path={Path.OM_BARNET} element={<OmBarnetSteg kjønn={person.kjønn} />} />
-                        <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
-                        <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
-                        <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
-                        <Route path={Path.TIDLIGERE_UTENLANDSOPPHOLD} element={<TidligereUtenlandsoppholdSteg />} />
-                        <Route path={Path.SENERE_UTENLANDSOPPHOLD} element={<SenereUtenlandsoppholdSteg />} />
+                        <Route
+                            path={Path.SØKERSITUASJON}
+                            element={<SøkersituasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        />
+                        <Route
+                            path={Path.OM_BARNET}
+                            element={<OmBarnetSteg kjønn={person.kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        />
+                        <Route
+                            path={Path.TERMINBEKREFTELSE}
+                            element={<DokumentasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        />
+                        <Route
+                            path={Path.ADOPSJONSBEKREFTELSE}
+                            element={<DokumentasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        />
+                        <Route
+                            path={Path.UTENLANDSOPPHOLD}
+                            element={<UtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        />
+                        <Route
+                            path={Path.TIDLIGERE_UTENLANDSOPPHOLD}
+                            element={<TidligereUtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        />
+                        <Route
+                            path={Path.SENERE_UTENLANDSOPPHOLD}
+                            element={<SenereUtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        />
                         <Route
                             path={Path.OPPSUMMERING}
                             element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
