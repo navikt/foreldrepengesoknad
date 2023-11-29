@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { VStack } from '@navikt/ds-react';
 import { useForm } from 'react-hook-form';
 import { Step } from '@navikt/fp-common';
@@ -32,29 +31,23 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
         defaultValues: dokumentasjon,
     });
 
-    const lagre = useCallback(
-        (formValues: Dokumentasjon) => {
-            if (formValues.vedlegg.length === 0) {
-                formMethods.setError('vedlegg', {
-                    message: erBarnetAdoptert
-                        ? i18n('DokumentasjonSteg.MinstEttDokumentAdopsjon')
-                        : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
-                });
-            } else {
-                lagreDokumentasjon(formValues);
-                navigator.goToNextDefaultStep();
-            }
-        },
-        [erBarnetAdoptert, formMethods, i18n, lagreDokumentasjon, navigator],
-    );
+    const lagre = (formValues: Dokumentasjon) => {
+        if (formValues.vedlegg.length === 0) {
+            formMethods.setError('vedlegg', {
+                message: erBarnetAdoptert
+                    ? i18n('DokumentasjonSteg.MinstEttDokumentAdopsjon')
+                    : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
+            });
+        } else {
+            lagreDokumentasjon(formValues);
+            navigator.goToNextDefaultStep();
+        }
+    };
 
-    const updateAttachments = useCallback(
-        (attachments: Attachment[]) => {
-            formMethods.setValue('vedlegg', attachments);
-            formMethods.clearErrors('vedlegg');
-        },
-        [formMethods],
-    );
+    const updateAttachments = (attachments: Attachment[]) => {
+        formMethods.setValue('vedlegg', attachments);
+        formMethods.clearErrors('vedlegg');
+    };
 
     return (
         <Step
