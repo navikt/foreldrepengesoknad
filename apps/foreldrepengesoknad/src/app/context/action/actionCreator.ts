@@ -1,6 +1,5 @@
 import {
     AnnenForelder,
-    Attachment,
     Dekningsgrad,
     EksisterendeSak,
     Periode,
@@ -9,10 +8,9 @@ import {
     Søkersituasjon,
     Tilleggsopplysninger,
 } from '@navikt/fp-common';
-import { Attachment as AttachmentFP } from '@navikt/fp-types';
+import { Attachment, Attachment as AttachmentFP, LocaleNo } from '@navikt/fp-types';
 import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
-import { LocaleNo } from '@navikt/fp-types';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import Barn, { BarnFraNesteSak } from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';

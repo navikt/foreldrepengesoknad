@@ -1,6 +1,5 @@
 import {
     AnnenForelder,
-    AttachmentType,
     MissingAttachment,
     MorsAktivitet,
     Overføringsperiode,
@@ -8,7 +7,6 @@ import {
     Periode,
     PeriodeUtenUttakUtsettelse,
     Periodetype,
-    Skjemanummer,
     StønadskontoType,
     Søknadsinfo,
     Utsettelsesperiode,
@@ -21,6 +19,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { Skjemanummer, AttachmentType } from '@navikt/fp-constants';
 import { aktivitetskravMorSkalBesvares } from './uttaksskjema/aktivitetskravMorSkalBesvares';
 
 const createMissingAttachment = (

@@ -1,5 +1,4 @@
 import {
-    AttachmentType,
     Barn,
     Block,
     convertYesOrNoOrUndefinedToBoolean,
@@ -13,7 +12,6 @@ import {
     isUfødtBarn,
     links,
     SivilstandType,
-    Skjemanummer,
     Step,
     StepButtonWrapper,
 } from '@navikt/fp-common';
@@ -50,6 +48,7 @@ import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { Alert, BodyLong, BodyShort, Button, ReadMore } from '@navikt/ds-react';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Link } from 'react-router-dom';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 const AnnenForelder = () => {
     const intl = useIntl();

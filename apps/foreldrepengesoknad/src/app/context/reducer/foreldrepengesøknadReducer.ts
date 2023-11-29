@@ -1,6 +1,7 @@
-import { Attachment, AttachmentType } from '@navikt/fp-common';
+import { AttachmentType } from '@navikt/fp-constants';
 import { ForeldrepengesøknadContextAction, ForeldrepengesøknadContextActionKeys } from '../action/actionCreator';
 import { ForeldrepengesøknadContextState, foreldrepengesøknadInitialState } from '../ForeldrepengesøknadContextConfig';
+import { Attachment } from '@navikt/fp-types';
 
 const finnVedleggAvType = (type: AttachmentType, alleVedlegg: Attachment[]): Attachment[] | undefined => {
     const vedleggAvType = alleVedlegg.filter((v) => v.type === type);

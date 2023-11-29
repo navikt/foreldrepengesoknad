@@ -2,20 +2,19 @@ import { useState } from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
 import {
-    Attachment,
-    AttachmentType,
     Block,
     deleteAttachment,
     intlUtils,
     isAttachmentWithError,
     mapFilTilVedlegg,
     PictureScanningGuide,
-    Skjemanummer,
 } from '@navikt/fp-common';
 import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
 import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
+import { Attachment } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;

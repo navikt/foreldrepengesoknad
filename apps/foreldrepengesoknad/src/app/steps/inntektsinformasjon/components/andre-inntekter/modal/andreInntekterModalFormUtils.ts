@@ -3,12 +3,11 @@ import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import {
-    AttachmentType,
-    Skjemanummer,
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 const initialAndreInntekterFormValues: AndreInntekterFormData = {
     [AndreInntekterFormField.type]: undefined,

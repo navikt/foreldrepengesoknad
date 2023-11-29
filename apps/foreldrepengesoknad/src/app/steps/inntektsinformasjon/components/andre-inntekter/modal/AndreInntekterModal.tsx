@@ -1,4 +1,4 @@
-import { AttachmentType, bemUtils, Block, intlUtils } from '@navikt/fp-common';
+import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -21,6 +21,7 @@ import { validateRequiredTextInputField } from 'app/utils/validationUtil';
 import { Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
 
 import './andreInntekterModal.less';
+import { AttachmentType } from '@navikt/fp-constants';
 
 interface Props {
     isOpen: boolean;

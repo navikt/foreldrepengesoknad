@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AttachmentComponent from './Attachment';
-import { Attachment } from '../../types';
 import { guid } from '../../utils/guid';
+import { Attachment } from '@navikt/fp-types';
 
 import './attachment.less';
 

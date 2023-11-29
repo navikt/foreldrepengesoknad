@@ -28,6 +28,8 @@
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-constants": "workspace:*",
+        "@navikt/fp-types": "workspace:*",
         "@testing-library/jest-dom": "^6.0.0",
         "@testing-library/react": "^14.0.0",
         "@types/lodash": "^4.14.197",

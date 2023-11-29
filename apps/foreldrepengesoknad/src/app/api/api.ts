@@ -8,10 +8,11 @@ import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
-import { Attachment, Dekningsgrad, formaterDato, hasValue } from '@navikt/fp-common';
+import { Dekningsgrad, formaterDato, hasValue } from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/SakerOppslag';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { RequestStatus } from 'app/types/RequestState';
+import { Attachment } from '@navikt/fp-types';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;

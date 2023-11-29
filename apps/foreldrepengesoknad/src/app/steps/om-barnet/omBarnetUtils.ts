@@ -1,14 +1,12 @@
 import {
     AdoptertBarn,
     Arbeidsforhold,
-    AttachmentType,
     Barn,
     BarnType,
     FødtBarn,
     ISOStringToDate,
     IkkeUtfyltTypeBarn,
     Situasjon,
-    Skjemanummer,
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
     hasValue,
@@ -21,6 +19,7 @@ import {
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,
@@ -84,7 +83,7 @@ export const mapOmDetValgteBarnetFormDataToState = (
     const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
         values.omsorgsovertakelse!,
         AttachmentType.OMSORGSOVERTAKELSE,
-        Skjemanummer.OMSORGSOVERTAKELSESDATO,
+        Skjemanummer.OMSORGSOVERTAKELSE,
     );
 
     if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {
@@ -161,7 +160,7 @@ export const mapOmBarnetFormDataToState = (
     const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
         values.omsorgsovertakelse!,
         AttachmentType.OMSORGSOVERTAKELSE,
-        Skjemanummer.OMSORGSOVERTAKELSESDATO,
+        Skjemanummer.OMSORGSOVERTAKELSE,
     );
 
     if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {

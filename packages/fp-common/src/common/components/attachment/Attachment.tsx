@@ -5,11 +5,11 @@ import { useIntl } from 'react-intl';
 
 import { Link, Loader } from '@navikt/ds-react';
 import SlettKnapp from '../slett-knapp/SlettKnapp';
-import { Attachment as AttachmentType } from '../../types';
 import bemUtils from '../../utils/bemUtils';
 import VedleggIkon from '../../assets/vedlegg-ikon/VedleggIkon';
 import { bytesString } from '../../utils/globalUtil';
 import intlUtils from '../../utils/intlUtils';
+import { Attachment as AttachmentType } from '@navikt/fp-types';
 
 import './attachment.less';
 

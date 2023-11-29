@@ -1,4 +1,4 @@
-import { Attachment } from '@navikt/fp-common';
+import { Attachment } from '@navikt/fp-types';
 import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum OmBarnetFormField {

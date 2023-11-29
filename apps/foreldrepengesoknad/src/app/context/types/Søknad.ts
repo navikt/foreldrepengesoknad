@@ -1,14 +1,8 @@
 import Barn from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
 import Søker from './Søker';
-import {
-    AnnenForelder,
-    Attachment,
-    Dekningsgrad,
-    Periode,
-    Søkersituasjon,
-    Tilleggsopplysninger,
-} from '@navikt/fp-common';
+import { AnnenForelder, Dekningsgrad, Periode, Søkersituasjon, Tilleggsopplysninger } from '@navikt/fp-common';
+import { Attachment } from '@navikt/fp-types';
 
 export interface Søknad {
     type: 'foreldrepenger';

@@ -10,7 +10,8 @@ import AxiosMock from 'storybook/utils/AxiosMock';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import _context from 'storybook/storyData/soknad/soknadNedEttUfodtBarn.json';
 import ManglendeVedlegg from './ManglendeVedlegg';
-import { AttachmentType, Skjemanummer, lagSendSenereDokument } from '@navikt/fp-common';
+import { lagSendSenereDokument } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 const søkerinfo = _søkerinfo as any;
 const context = _context as any;

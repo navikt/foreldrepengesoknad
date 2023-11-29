@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { hasValue } from './validationUtils';
-import { isAnnenForelderOppgitt, AnnenForelder, MorsAktivitet, Skjemanummer } from '../types';
+import { isAnnenForelderOppgitt, AnnenForelder, MorsAktivitet } from '../types';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {

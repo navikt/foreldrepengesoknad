@@ -1,8 +1,9 @@
-import { Attachment, intlUtils, isAttachmentWithError } from '@navikt/fp-common';
+import { intlUtils, isAttachmentWithError } from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import KompleksFeltoppsummering from '../kompleks-feltoppsummering/KompleksFeltoppsummering';
 import { Link, Tag } from '@navikt/ds-react';
+import { Attachment } from '@navikt/fp-types';
 
 import './oppsummeringAvDokumentasjon.less';
 

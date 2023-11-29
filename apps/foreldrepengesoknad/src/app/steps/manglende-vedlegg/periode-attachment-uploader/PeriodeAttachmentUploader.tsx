@@ -1,8 +1,8 @@
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
-import { AttachmentType, MorsAktivitet, Periode, isUttaksperiode } from '@navikt/fp-common';
-import { Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import { MorsAktivitet, Periode, isUttaksperiode } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment, Attachment as AttachmentFPTypes } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import Environment from 'app/Environment';
 import { FunctionComponent } from 'react';
@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (attachments: Attachment[]) => void;
+    updateAttachments: (attachments: AttachmentFPTypes[]) => void;
     periode: Periode;
 }
 
@@ -45,7 +45,7 @@ const PeriodeAttachmentUploader: FunctionComponent<Props> = ({ attachments, upda
             <FileUploader
                 attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                 skjemanummer={Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET}
-                existingAttachments={attachments}
+                existingAttachments={attachments as AttachmentFPTypes[]}
                 updateAttachments={updateAttachments}
                 saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
             />

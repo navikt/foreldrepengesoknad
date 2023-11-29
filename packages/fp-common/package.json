@@ -43,6 +43,8 @@
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/ds-codemod": "3.4.2",
+        "@navikt/fp-types": "workspace:*",
+        "@navikt/fp-constants": "workspace:*",
         "@originjs/vite-plugin-commonjs": "^1.0.3",
         "@storybook/addon-essentials": "^7.3.1",
         "@storybook/addon-interactions": "^7.3.1",

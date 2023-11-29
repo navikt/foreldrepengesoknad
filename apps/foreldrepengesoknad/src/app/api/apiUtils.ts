@@ -8,7 +8,6 @@ import {
     AnnenForelder,
     AnnenForelderIkkeOppgitt,
     Arbeidsform,
-    Attachment,
     Barn,
     Forelder,
     MorsAktivitet,
@@ -41,6 +40,7 @@ import {
     sorterPerioder,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
+import { Attachment } from '@navikt/fp-types';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
