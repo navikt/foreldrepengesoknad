@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AxiosInstance } from 'axios';
 import { Kvittering } from '@navikt/fp-types';
 import { storeData, ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
-import { EsDataMap, EsDataType, useEsCompleteState, useEsStateAllDataFn } from './EsDataContext';
+import { EsDataMap, EsDataType, useEsCompleteState } from './EsDataContext';
 import { useNavigate } from 'react-router-dom';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -13,7 +13,6 @@ const FEIL_VED_INNSENDING =
 const useEsMellomlagring = (esApi: AxiosInstance) => {
     const navigate = useNavigate();
     const state = useEsCompleteState();
-    const hentData = useEsStateAllDataFn();
 
     const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
@@ -28,7 +27,7 @@ const useEsMellomlagring = (esApi: AxiosInstance) => {
 
                 await storeData<EsDataMap, Kvittering>(esApi, '/soknad/engangssoknad', state, FEIL_VED_INNSENDING);
 
-                const currentRoute = notEmpty(hentData(EsDataType.CURRENT_PATH));
+                const currentRoute = notEmpty(state[EsDataType.CURRENT_PATH]);
                 navigate(currentRoute);
             };
 
