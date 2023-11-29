@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
@@ -29,21 +28,18 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const lagreTidligereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const lagreSenereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SENERE);
 
-    const lagre = useCallback(
-        (formValues: Utenlandsopphold) => {
-            lagreUtenlandsopphold(formValues);
+    const lagre = (formValues: Utenlandsopphold) => {
+        lagreUtenlandsopphold(formValues);
 
-            if (!formValues.harBoddUtenforNorgeSiste12Mnd) {
-                lagreTidligereUtenlandsopphold(undefined);
-            }
-            if (!formValues.skalBoUtenforNorgeNeste12Mnd) {
-                lagreSenereUtenlandsopphold(undefined);
-            }
+        if (!formValues.harBoddUtenforNorgeSiste12Mnd) {
+            lagreTidligereUtenlandsopphold(undefined);
+        }
+        if (!formValues.skalBoUtenforNorgeNeste12Mnd) {
+            lagreSenereUtenlandsopphold(undefined);
+        }
 
-            navigator.goToNextStep(utledNesteSide(formValues));
-        },
-        [lagreSenereUtenlandsopphold, lagreTidligereUtenlandsopphold, lagreUtenlandsopphold, navigator],
-    );
+        navigator.goToNextStep(utledNesteSide(formValues));
+    };
 
     return (
         <ContentWrapper>

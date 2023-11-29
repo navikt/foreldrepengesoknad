@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
@@ -19,15 +18,12 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent = () => {
     const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const lagreTidligereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
-    const lagre = useCallback(
-        (formValues: UtenlandsoppholdTidligere) => {
-            lagreTidligereUtenlandsopphold(formValues);
-            navigator.goToNextStep(
-                utenlandsopphold.skalBoUtenforNorgeNeste12Mnd ? Path.SENERE_UTENLANDSOPPHOLD : Path.OPPSUMMERING,
-            );
-        },
-        [lagreTidligereUtenlandsopphold, navigator, utenlandsopphold.skalBoUtenforNorgeNeste12Mnd],
-    );
+    const lagre = (formValues: UtenlandsoppholdTidligere) => {
+        lagreTidligereUtenlandsopphold(formValues);
+        navigator.goToNextStep(
+            utenlandsopphold.skalBoUtenforNorgeNeste12Mnd ? Path.SENERE_UTENLANDSOPPHOLD : Path.OPPSUMMERING,
+        );
+    };
 
     return (
         <ContentWrapper>

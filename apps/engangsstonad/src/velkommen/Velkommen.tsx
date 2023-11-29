@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
     BodyShort,
@@ -34,18 +34,15 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
 
     const [isError, setIsError] = useState(false);
     const [isChecked, setChecked] = useState(erVelkommen);
-    const toggleCheck = useCallback(() => setChecked((state) => !state), []);
 
-    const bekreft = useCallback(() => {
+    const bekreft = () => {
         if (!isChecked) {
             setIsError(true);
         } else {
             startSøknad(true);
             navigator.goToNextDefaultStep();
         }
-    }, [isChecked, startSøknad, navigator]);
-
-    const toggleLocale = useCallback((l: LocaleAll) => onChangeLocale(l), [onChangeLocale]);
+    };
 
     return (
         <ContentWrapper>
@@ -53,7 +50,7 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                 <LanguageToggle
                     locale={locale}
                     availableLocales={['en', 'nb', 'nn']}
-                    toggle={toggleLocale}
+                    toggle={(l: LocaleAll) => onChangeLocale(l)}
                     isCleanVersion
                 />
                 <Heading size="large">
@@ -128,7 +125,7 @@ const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøk
                 </ExpansionCard>
                 <ConfirmationPanel
                     label={i18n('Velkommen.Samtykke')}
-                    onChange={toggleCheck}
+                    onChange={() => setChecked((state) => !state)}
                     checked={isChecked}
                     error={isError && !isChecked && i18n('Velkommen.Validering.BekreftLestOgForståttRettigheter')}
                 >

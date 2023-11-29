@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Accordion, Heading } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-common';
 
@@ -11,11 +11,13 @@ interface Props {
 
 const Oppsummeringspunkt = ({ tittel, children }: Props) => {
     const [isOpen, toggleOpen] = useState(false);
-    const toggle = useCallback(() => toggleOpen((open) => !open), []);
 
     return (
         <Accordion.Item>
-            <Accordion.Header className={isOpen ? bemUtils('accordian_header').block : undefined} onClick={toggle}>
+            <Accordion.Header
+                className={isOpen ? bemUtils('accordian_header').block : undefined}
+                onClick={() => toggleOpen((open) => !open)}
+            >
                 <Heading level="2" size="small">
                     {tittel}
                 </Heading>

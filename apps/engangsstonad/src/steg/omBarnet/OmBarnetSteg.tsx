@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Kjønn, Step } from '@navikt/fp-common';
 import { VStack } from '@navikt/ds-react';
@@ -57,21 +56,15 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
     const lagreDokumentasjon = useEsStateSaveFn(EsDataType.DOKUMENTASJON);
     const søkersituasjon = notEmpty(useEsStateData(EsDataType.SØKERSITUASJON));
 
-    const mapOgLagreOmBarnet = useCallback(
-        (formValues: FormValues) => lagreOmBarnet(mapOmBarnetFraFormTilState(formValues)),
-        [lagreOmBarnet],
-    );
+    const mapOgLagreOmBarnet = (formValues: FormValues) => lagreOmBarnet(mapOmBarnetFraFormTilState(formValues));
 
-    const onSubmit = useCallback(
-        (formValues: FormValues) => {
-            mapOgLagreOmBarnet(formValues);
-            if (formValues.erBarnetFødt === true) {
-                lagreDokumentasjon(undefined);
-            }
-            navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
-        },
-        [lagreDokumentasjon, mapOgLagreOmBarnet, navigator, søkersituasjon],
-    );
+    const onSubmit = (formValues: FormValues) => {
+        mapOgLagreOmBarnet(formValues);
+        if (formValues.erBarnetFødt === true) {
+            lagreDokumentasjon(undefined);
+        }
+        navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
+    };
 
     const formMethods = useForm<FormValues>({
         defaultValues: omBarnet ? mapOmBarnetFraStateTilForm(omBarnet) : {},
