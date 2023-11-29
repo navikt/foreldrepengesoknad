@@ -2,8 +2,10 @@ import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdSenere, Utenlandsopp
 import { createContext, useReducer, FunctionComponent, ReactNode, useContext, useCallback } from 'react';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
+import { Path } from './paths';
 
 export enum EsDataType {
+    CURRENT_PATH = 'CURRENT_PATH',
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
     DOKUMENTASJON = 'DOKUMENTASJON',
@@ -13,6 +15,7 @@ export enum EsDataType {
 }
 
 export type EsDataMap = {
+    [EsDataType.CURRENT_PATH]?: Path;
     [EsDataType.SØKERSITUASJON]?: Søkersituasjon;
     [EsDataType.OM_BARNET]?: OmBarnet;
     [EsDataType.DOKUMENTASJON]?: Dokumentasjon;

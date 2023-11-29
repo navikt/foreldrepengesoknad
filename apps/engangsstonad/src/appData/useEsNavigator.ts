@@ -28,6 +28,9 @@ const useEsNavigator = () => {
 
     const goToNextStep = useCallback(
         (path: Path) => {
+            lagrePath(path);
+
+            mellomlagre();
             navigate(path);
         },
         [navigate],

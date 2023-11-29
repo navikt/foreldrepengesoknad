@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader } from '@navikt/ds-react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Kvittering, LocaleAll } from '@navikt/fp-types';
 import { ApiAccessError, createApi, useRequest } from '@navikt/fp-api';
 import { erMyndig, redirect, redirectToLogin } from '@navikt/fp-utils';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { EsDataContext, EsDataMap, EsDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import Environment from 'appData/Environment';
 import Person from './types/Person';
@@ -34,12 +35,25 @@ interface Props {
 }
 
 const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
-    const [erVelkommen, setVelkommen] = useState(false);
+    const navigate = useNavigate();
     const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { data: person, loading, error: errorHentPerson } = useRequest<Person>(esApi, '/personinfo');
+    const { data: person, loading: loadingPerson, error: errorHentPerson } = useRequest<Person>(esApi, '/personinfo');
+    const {
+        data: mellomlagretData,
+        loading: loadingMellomlagretData,
+        error: errorMellomlagretData,
+    } = useRequest<EsDataMap>(esApi, '/storage');
 
     const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
+
+    const [erVelkommen, setVelkommen] = useState(mellomlagretData !== undefined);
+
+    useEffect(() => {
+        if (mellomlagretData && mellomlagretData[EsDataType.CURRENT_PATH]) {
+            navigate(mellomlagretData[EsDataType.CURRENT_PATH]);
+        }
+    }, [mellomlagretData]);
 
     if (kvittering) {
         if (Environment.INNSYN) {
@@ -53,8 +67,8 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         return <div>Redirected to Innsyn</div>;
     }
 
-    if (errorHentPerson || errorSendSøknad) {
-        const error = notEmpty(errorHentPerson || errorSendSøknad);
+    if (errorHentPerson || errorSendSøknad || errorMellomlagretData) {
+        const error = notEmpty(errorHentPerson || errorSendSøknad || errorMellomlagretData);
         if (error instanceof ApiAccessError) {
             redirectToLogin(Environment.LOGIN_URL);
             return <Spinner />;
@@ -64,7 +78,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         );
     }
 
-    if (loading || !person) {
+    if (loadingPerson || !person || loadingMellomlagretData) {
         return <Spinner />;
     }
 
@@ -73,35 +87,37 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     }
 
     return (
-        <Routes>
-            {!erVelkommen && <Route path="*" element={<Navigate to={Path.VELKOMMEN} />} />}
-            <Route
-                path={Path.VELKOMMEN}
-                element={
-                    <Velkommen
-                        locale={locale}
-                        onChangeLocale={onChangeLocale}
-                        startSøknad={setVelkommen}
-                        erVelkommen={erVelkommen}
-                    />
-                }
-            />
-            {erVelkommen && (
-                <>
-                    <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
-                    <Route path={Path.OM_BARNET} element={<OmBarnetSteg kjønn={person.kjønn} />} />
-                    <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
-                    <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
-                    <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
-                    <Route path={Path.TIDLIGERE_UTENLANDSOPPHOLD} element={<TidligereUtenlandsoppholdSteg />} />
-                    <Route path={Path.SENERE_UTENLANDSOPPHOLD} element={<SenereUtenlandsoppholdSteg />} />
-                    <Route
-                        path={Path.OPPSUMMERING}
-                        element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
-                    />
-                </>
-            )}
-        </Routes>
+        <EsDataContext initialState={mellomlagretData}>
+            <Routes>
+                {!erVelkommen && <Route path="*" element={<Navigate to={Path.VELKOMMEN} />} />}
+                <Route
+                    path={Path.VELKOMMEN}
+                    element={
+                        <Velkommen
+                            locale={locale}
+                            onChangeLocale={onChangeLocale}
+                            startSøknad={setVelkommen}
+                            erVelkommen={erVelkommen}
+                        />
+                    }
+                />
+                {erVelkommen && (
+                    <>
+                        <Route path={Path.SØKERSITUASJON} element={<SøkersituasjonSteg />} />
+                        <Route path={Path.OM_BARNET} element={<OmBarnetSteg kjønn={person.kjønn} />} />
+                        <Route path={Path.TERMINBEKREFTELSE} element={<DokumentasjonSteg />} />
+                        <Route path={Path.ADOPSJONSBEKREFTELSE} element={<DokumentasjonSteg />} />
+                        <Route path={Path.UTENLANDSOPPHOLD} element={<UtenlandsoppholdSteg />} />
+                        <Route path={Path.TIDLIGERE_UTENLANDSOPPHOLD} element={<TidligereUtenlandsoppholdSteg />} />
+                        <Route path={Path.SENERE_UTENLANDSOPPHOLD} element={<SenereUtenlandsoppholdSteg />} />
+                        <Route
+                            path={Path.OPPSUMMERING}
+                            element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
+                        />
+                    </>
+                )}
+            </Routes>
+        </EsDataContext>
     );
 };
 

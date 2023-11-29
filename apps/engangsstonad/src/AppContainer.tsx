@@ -10,7 +10,6 @@ import Engangsstønad from './Engangsstønad';
 import nnMessages from './intl/messages/nn_NO.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import enMessages from './intl/messages/en_US.json';
-import { EsDataContext } from 'appData/EsDataContext';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
@@ -35,11 +34,9 @@ const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Engangsstønad" retryCallback={retryCallback}>
-                <EsDataContext>
-                    <BrowserRouter>
-                        <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
-                    </BrowserRouter>
-                </EsDataContext>
+                <BrowserRouter>
+                    <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                </BrowserRouter>
             </ErrorBoundary>
         </IntlProvider>
     );
