@@ -3,136 +3,42 @@
         "type": "foreldrepenger",
         "harGodkjentVilkår": true,
         "søkersituasjon": {
-            "situasjon": "adopsjon",
+            "situasjon": "fødsel",
             "rolle": "far"
         },
         "barn": {
-            "type": "adoptertStebarn",
-            "adopsjonsdato": "2023-11-02T00:00:00.000Z",
+            "type": "ufødt",
             "antallBarn": 1,
-            "fødselsdatoer": [
-                "2023-02-01T00:00:00.000Z"
-            ],
-            "omsorgsovertakelse": [
-                {
-                    "id": "V2156136748272542883981613493189306",
-                    "file": {
-                        "name": "",
-                        "size": ""
-                    },
-                    "filename": "",
-                    "filesize": "",
-                    "uploaded": false,
-                    "pending": false,
-                    "type": "omsorgsovertakelse",
-                    "skjemanummer": "I000042",
-                    "innsendingsType": "SEND_SENERE"
-                }
-            ]
+            "termindato": "2023-12-01T00:00:00.000Z"
         },
         "annenForelder": {
-            "etternavn": "sdfgsfg",
-            "fornavn": "sdgfsdg",
-            "fnr": "05489305072",
-            "utenlandskFnr": false,
+            "etternavn": "asdasd",
+            "fornavn": "asdasd",
+            "fnr": "123123",
+            "bostedsland": "AU",
+            "utenlandskFnr": true,
             "kanIkkeOppgis": false,
             "harRettPåForeldrepengerINorge": true,
             "harRettPåForeldrepengerIEØS": false,
             "erInformertOmSøknaden": true
         },
         "søker": {
-            "språkkode": "nb",
-            "erAleneOmOmsorg": false
+            "erAleneOmOmsorg": false,
+            "språkkode": "nb"
         },
         "informasjonOmUtenlandsopphold": {
-            "tidligereOpphold": [
-                {
-                    "land": "AU",
-                    "tidsperiode": {
-                        "fom": "2023-11-08",
-                        "tom": "2023-11-15"
-                    }
-                }
-            ],
-            "senereOpphold": [
-                {
-                    "land": "AZ",
-                    "tidsperiode": {
-                        "fom": "2023-11-16",
-                        "tom": "2023-11-30"
-                    }
-                }
-            ],
-            "iNorgeSiste12Mnd": true,
-            "iNorgeNeste12Mnd": true
+            "tidligereOpphold": [],
+            "senereOpphold": []
         },
         "erEndringssøknad": false,
-        "uttaksplan": [
-            {
-                "id": "0839120679-8616-6759-9967-06941381111096",
-                "type": "periodeUtenUttak",
-                "tidsperiode": {
-                    "fom": "2023-11-02T00:00:00.000Z",
-                    "tom": "2023-11-14T00:00:00.000Z"
-                }
-            },
-            {
-                "id": "2497815212-10077-3229-10454-12391169718621",
-                "forelder": "farMedmor",
-                "konto": "FEDREKVOTE",
-                "tidsperiode": {
-                    "fom": "2023-11-15T00:00:00.000Z",
-                    "tom": "2024-02-27T00:00:00.000Z"
-                },
-                "type": "uttak",
-                "erArbeidstaker": false,
-                "gradert": false,
-                "orgnumre": [],
-                "ønskerSamtidigUttak": false,
-                "vedlegg": []
-            }
-        ],
+        "uttaksplan": [],
         "harGodkjentOppsummering": false,
         "vedlegg": [],
-        "tilleggsopplysninger": {},
-        "dekningsgrad": "100"
+        "tilleggsopplysninger": {}
     },
     "version": 5,
-    "currentRoute": "/soknad/inntektsinformasjon",
-    "uttaksplanInfo": {
-        "harAnnenForelderSøktFP": true,
-        "annenStartdatoAdopsjon": "",
-        "annenForeldersSisteDag": "2023-11-15",
-        "søkersFørsteDag": "2023-11-15",
-        "antallUkerFellesperiode": "0",
-        "antallDagerFellesperiode": "0"
-    },
-    "antallUkerIUttaksplan": 79,
-    "perioderSomSkalSendesInn": [
-        {
-            "id": "0839120679-8616-6759-9967-06941381111096",
-            "type": "periodeUtenUttak",
-            "tidsperiode": {
-                "fom": "2023-11-02T00:00:00.000Z",
-                "tom": "2023-11-14T00:00:00.000Z"
-            }
-        },
-        {
-            "id": "2497815212-10077-3229-10454-12391169718621",
-            "forelder": "farMedmor",
-            "konto": "FEDREKVOTE",
-            "tidsperiode": {
-                "fom": "2023-11-15T00:00:00.000Z",
-                "tom": "2024-02-27T00:00:00.000Z"
-            },
-            "type": "uttak",
-            "erArbeidstaker": false,
-            "gradert": false,
-            "orgnumre": [],
-            "ønskerSamtidigUttak": false,
-            "vedlegg": []
-        }
-    ],
+    "currentRoute": "/soknad/annen-forelder",
+    "perioderSomSkalSendesInn": [],
     "harUttaksplanBlittSlettet": false,
-    "søknadGjelderEtNyttBarn": false
+    "søknadGjelderEtNyttBarn": true
 }

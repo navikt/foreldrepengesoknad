@@ -625,6 +625,7 @@
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikkje oppgi ditt eige fødselsnummer",
     "valideringsfeil.fødselsnummer.underSeksten": "Feil i fødselsnummer. Den andre forelderen må vera over seksten år gammal",
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive eit gyldig fødselsnummer",
+    "valideringsfeil.fødselsnummer.fødselsnummerForLangt": "Fødselsnummeret kan ikke inneholde mer enn 50 tegn",
     "valideringsfeil.inntektsinformasjon.frilansoppstartsDato.påkrevd": "Du må oppgi oppstartsdato for når du starta som frilans",
     "valideringsfeil.inntektsinformasjon.frilansoppstartsDato.ugyldigDatoFormat": "Oppstartsdato for når du starta som frilans må vere ein gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.inntektsinformasjon.frilansoppstartsDato.kanIkkeVæreFremITid": "Oppstartsdato for når du starta som frilans kan ikkje vere frem i tid",
