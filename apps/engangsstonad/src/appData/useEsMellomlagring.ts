@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AxiosInstance } from 'axios';
 import { Kvittering } from '@navikt/fp-types';
-import { storeData, ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
+import { postData, ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
 import { EsDataMap, EsDataType, useEsCompleteState } from './EsDataContext';
 import { useNavigate } from 'react-router-dom';
 import { notEmpty } from '@navikt/fp-validation';
@@ -23,9 +23,7 @@ const useEsMellomlagring = (esApi: AxiosInstance) => {
             const lagre = async () => {
                 setSkalMellomlagre(false);
 
-                // FIXME Logikk for å slette ved avbryt
-
-                await storeData<EsDataMap, Kvittering>(esApi, '/storage/engangstønad', state, FEIL_VED_INNSENDING);
+                await postData<EsDataMap, Kvittering>(esApi, '/storage/engangstønad', state, FEIL_VED_INNSENDING);
 
                 const currentRoute = notEmpty(state[EsDataType.CURRENT_PATH]);
                 navigate(currentRoute);

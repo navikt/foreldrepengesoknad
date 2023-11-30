@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { AxiosInstance } from 'axios';
 import { Kvittering, LocaleAll } from '@navikt/fp-types';
-import { storeData, ApiAccessError, ApiGeneralError, isApiError } from '@navikt/fp-api';
+import { postData, ApiAccessError, ApiGeneralError, isApiError, deleteData } from '@navikt/fp-api';
 import { notEmpty } from '@navikt/fp-validation';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
@@ -74,8 +74,7 @@ const useEsSendSøknad = (
             };
 
             try {
-                // TODO (TOR) Fjern any
-                const kvittering = await storeData<any, Kvittering>(
+                const kvittering = await postData<typeof søknad, Kvittering>(
                     esApi,
                     '/soknad/engangssoknad',
                     søknad,
@@ -91,14 +90,11 @@ const useEsSendSøknad = (
                 }
             }
 
-            //FIXME Rensk opp i mellomlagring
             try {
-                await Api.deleteMellomlagretSøknad(fnr, abortSignal);
-
-                const vedleggUtenLastOppSenere = cleanedSøknad.vedlegg.filter((v) => v.uuid);
-
-                if (vedleggUtenLastOppSenere.length > 0) {
-                    await Api.deleteMellomlagredeVedlegg(fnr, vedleggUtenLastOppSenere, abortSignal);
+                await deleteData(esApi, '/storage/engangstønad', FEIL_VED_INNSENDING, abortSignal);
+                if (dokumentasjon?.vedlegg && dokumentasjon.vedlegg.length > 0) {
+                    // FIXME send inn data
+                    await deleteData(esApi, '/storage/vedlegg', FEIL_VED_INNSENDING, abortSignal);
                 }
             } catch (error) {
                 // Vi bryr oss ikke om feil her. Logges bare i backend

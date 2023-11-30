@@ -1,10 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { ApiAccessError, ApiGeneralError, isAxiosError } from './error';
 
-// TODO Tekstane burde ikkje ligga i denne pakka + lokalisering
 const UKJENT_UUID = 'ukjent uuid';
 
-const storeData = async <REQUEST_DATA, RESPONSE_DATA>(
+const postData = async <REQUEST_DATA, RESPONSE_DATA>(
     instance: AxiosInstance,
     url: string,
     data: REQUEST_DATA,
@@ -42,4 +41,4 @@ const storeData = async <REQUEST_DATA, RESPONSE_DATA>(
     }
 };
 
-export default storeData;
+export default postData;
