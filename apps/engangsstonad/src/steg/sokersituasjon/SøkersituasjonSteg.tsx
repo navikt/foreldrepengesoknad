@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { Radio, VStack } from '@navikt/ds-react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -26,16 +25,13 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
         defaultValues: søkersituasjon,
     });
 
-    const lagre = useCallback(
-        (formValues: Søkersituasjon) => {
-            lagreSøkersituasjon(formValues);
-            if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
-                lagreOmBarnet(undefined);
-            }
-            navigator.goToNextDefaultStep();
-        },
-        [lagreOmBarnet, lagreSøkersituasjon, navigator, søkersituasjon],
-    );
+    const lagre = (formValues: Søkersituasjon) => {
+        lagreSøkersituasjon(formValues);
+        if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
+            lagreOmBarnet(undefined);
+        }
+        navigator.goToNextDefaultStep();
+    };
 
     return (
         <Step

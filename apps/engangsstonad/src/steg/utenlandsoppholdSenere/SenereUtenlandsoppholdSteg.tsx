@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 import { ContentWrapper } from '@navikt/fp-ui';
@@ -16,13 +15,10 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
     const senereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SENERE);
     const lagreSenereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SENERE);
 
-    const lagre = useCallback(
-        (formValues: UtenlandsoppholdSenere) => {
-            lagreSenereUtenlandsopphold(formValues);
-            navigator.goToNextDefaultStep();
-        },
-        [lagreSenereUtenlandsopphold, navigator],
-    );
+    const lagre = (formValues: UtenlandsoppholdSenere) => {
+        lagreSenereUtenlandsopphold(formValues);
+        navigator.goToNextDefaultStep();
+    };
 
     return (
         <ContentWrapper>

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Step } from '@navikt/fp-common';
 import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
 import { useAbortSignal } from '@navikt/fp-api';
@@ -38,18 +38,15 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const [isSubmitting, setSubmitting] = useState(false);
     const [isError, setIsError] = useState(false);
 
-    const send = useCallback(
-        (setButtonsDisabled: (isDisabled: boolean) => void) => {
-            setSubmitting(true);
-            if (!isChecked) {
-                setIsError(true);
-            } else {
-                setButtonsDisabled(true);
-                sendSøknad(abortSignal);
-            }
-        },
-        [isChecked, abortSignal, sendSøknad],
-    );
+    const send = (setButtonsDisabled: (isDisabled: boolean) => void) => {
+        setSubmitting(true);
+        if (!isChecked) {
+            setIsError(true);
+        } else {
+            setButtonsDisabled(true);
+            sendSøknad(abortSignal);
+        }
+    };
 
     return (
         <Step
