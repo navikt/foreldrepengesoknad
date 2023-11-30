@@ -5,15 +5,14 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { attachmentApi } from '@navikt/fp-api';
 
 import { Path } from 'appData/paths';
-import withRouter from 'storybook/decorators/withRouter';
 import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import DokumentasjonSteg from './DokumentasjonSteg';
+import { MemoryRouter } from 'react-router-dom';
 
 export default {
     title: 'DokumentasjonSteg',
     component: DokumentasjonSteg,
-    decorators: [withRouter],
 };
 
 const Template: StoryFn<{
@@ -22,11 +21,13 @@ const Template: StoryFn<{
     mellomlagreOgNaviger?: () => void;
     omBarnet: OmBarnet;
     skalFeileOpplasting?: boolean;
+    path: Path;
 }> = ({
     gåTilNesteSide = action('button-click'),
     mellomlagreOgNaviger = action('button-click'),
     omBarnet,
     skalFeileOpplasting = false,
+    path,
 }) => {
     initAmplitude();
 
@@ -37,20 +38,22 @@ const Template: StoryFn<{
     }
 
     return (
-        <EsDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [EsDataType.OM_BARNET]: omBarnet,
-            }}
-        >
-            <DokumentasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
-        </EsDataContext>
+        <MemoryRouter initialEntries={[path]}>
+            <EsDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [EsDataType.OM_BARNET]: omBarnet,
+                }}
+            >
+                <DokumentasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
+            </EsDataContext>
+        </MemoryRouter>
     );
 };
 
 export const Terminbekreftelse = Template.bind({});
 Terminbekreftelse.args = {
-    routerDecoratorInitUrl: Path.TERMINBEKREFTELSE,
+    path: Path.TERMINBEKREFTELSE,
     omBarnet: {
         erBarnetFødt: false,
         antallBarn: 1,
@@ -60,7 +63,7 @@ Terminbekreftelse.args = {
 
 export const Adopsjonsbekreftelse = Template.bind({});
 Adopsjonsbekreftelse.args = {
-    routerDecoratorInitUrl: Path.ADOPSJONSBEKREFTELSE,
+    path: Path.ADOPSJONSBEKREFTELSE,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         adopsjonsdato: '2020-01-01',
@@ -72,7 +75,7 @@ Adopsjonsbekreftelse.args = {
 export const FeilerOpplastinger = Template.bind({});
 FeilerOpplastinger.args = {
     skalFeileOpplasting: true,
-    routerDecoratorInitUrl: Path.ADOPSJONSBEKREFTELSE,
+    path: Path.ADOPSJONSBEKREFTELSE,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         adopsjonsdato: '2020-01-01',

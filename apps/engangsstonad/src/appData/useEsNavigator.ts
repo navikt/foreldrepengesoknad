@@ -39,7 +39,7 @@ const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
     };
 
     const avbrytSøknad = () => {
-        lagrePath(Path.VELKOMMEN);
+        lagrePath(undefined);
         mellomlagreOgNaviger();
     };
 

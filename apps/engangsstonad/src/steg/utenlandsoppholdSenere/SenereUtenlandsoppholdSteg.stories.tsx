@@ -1,10 +1,10 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouter from 'storybook/decorators/withRouter';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Path } from 'appData/paths';
 import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
+import { MemoryRouter } from 'react-router-dom';
 
 const utenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,
@@ -14,10 +14,6 @@ const utenlandsopphold = {
 export default {
     title: 'SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
-    decorators: [withRouter],
-    parameters: {
-        routerDecoratorInitUrl: Path.SENERE_UTENLANDSOPPHOLD,
-    },
 };
 
 const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => void }> = ({
@@ -26,14 +22,16 @@ const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagre
 }) => {
     initAmplitude();
     return (
-        <EsDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-            }}
-        >
-            <SenereUtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
-        </EsDataContext>
+        <MemoryRouter initialEntries={[Path.SENERE_UTENLANDSOPPHOLD]}>
+            <EsDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                }}
+            >
+                <SenereUtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
+            </EsDataContext>
+        </MemoryRouter>
     );
 };
 
