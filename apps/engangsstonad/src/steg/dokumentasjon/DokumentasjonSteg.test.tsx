@@ -5,14 +5,19 @@ import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './DokumentasjonSteg.stories';
+import { Path } from 'appData/paths';
+import { EsDataType } from 'appData/EsDataContext';
 
 const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);
 
 describe('<DokumentasjonSteg>', () => {
     it('skal laste opp terminbekreftelse', async () => {
         const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        const utils = render(<Terminbekreftelse gåTilNesteSide={gåTilNesteSide} />);
+        const utils = render(
+            <Terminbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+        );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         expect(screen.getByText('Bekreft termin')).toBeInTheDocument();
@@ -54,17 +59,24 @@ describe('<DokumentasjonSteg>', () => {
                     }),
                 ],
             },
-            key: 'DOKUMENTASJON',
+            key: EsDataType.DOKUMENTASJON,
             type: 'update',
         });
 
-        expect(screen.getByText('Neste side: /soknad/utenlandsopphold')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: Path.UTENLANDSOPPHOLD,
+            key: EsDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal laste opp adopsjonsbekreftelse', async () => {
         const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        render(<Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} />);
+        render(<Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         expect(screen.getByText('Bekreft adopsjon')).toBeInTheDocument();
@@ -83,6 +95,7 @@ describe('<DokumentasjonSteg>', () => {
         });
 
         await userEvent.click(screen.getByText('Neste steg'));
+
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 vedlegg: [
@@ -102,6 +115,12 @@ describe('<DokumentasjonSteg>', () => {
             type: 'update',
         });
 
-        expect(screen.getByText('Neste side: /soknad/utenlandsopphold')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: Path.UTENLANDSOPPHOLD,
+            key: EsDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 });

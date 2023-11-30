@@ -15,7 +15,10 @@ export default {
     },
 };
 
-const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåTilNesteSide }) => {
+const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => void }> = ({
+    gåTilNesteSide,
+    mellomlagreOgNaviger = action('button-click'),
+}) => {
     initAmplitude();
     return (
         <EsDataContext
@@ -24,7 +27,7 @@ const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåT
                 [EsDataType.SØKERSITUASJON]: { situasjon: 'fødsel' },
             }}
         >
-            <UtenlandsoppholdSteg />
+            <UtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
         </EsDataContext>
     );
 };

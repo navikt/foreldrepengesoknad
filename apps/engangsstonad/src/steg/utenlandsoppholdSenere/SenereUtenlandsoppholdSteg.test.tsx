@@ -5,14 +5,17 @@ import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
+import { Path } from 'appData/paths';
+import { EsDataType } from 'appData/EsDataContext';
 
 const { Default } = composeStories(stories);
 
 describe('<SenereUtenlandsoppholdSteg>', () => {
     it('skal fylle ut to perioder og så gå videre', async () => {
         const nesteStegFn = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        const utils = render(<Default gåTilNesteSide={nesteStegFn} />);
+        const utils = render(<Default gåTilNesteSide={nesteStegFn} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
         expect(screen.getByText('Skal bo i utlandet')).toBeInTheDocument();
@@ -42,7 +45,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(nesteStegFn).toHaveBeenCalledTimes(1);
+        expect(nesteStegFn).toHaveBeenCalledTimes(2);
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
                 utenlandsoppholdNeste12Mnd: [
@@ -58,10 +61,16 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                     },
                 ],
             },
-            key: 'UTENLANDSOPPHOLD_SENERE',
+            key: EsDataType.UTENLANDSOPPHOLD_SENERE,
             type: 'update',
         });
 
-        expect(await screen.findByText('Neste side: /soknad/oppsummering')).toBeInTheDocument();
+        expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
+            data: Path.OPPSUMMERING,
+            key: EsDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 });

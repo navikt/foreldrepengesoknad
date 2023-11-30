@@ -19,13 +19,14 @@ const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string)
 export interface Props {
     person: Person;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    mellomlagreOgNaviger: () => void;
 }
 
-const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
+const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad, mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
@@ -49,12 +50,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     };
 
     return (
-        <Step
-            bannerTitle={i18n('Søknad.Pageheading')}
-            onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
-            useNoTempSavingText
-        >
+        <Step bannerTitle={i18n('Søknad.Pageheading')} onCancel={navigator.avbrytSøknad} steps={stepConfig}>
             <VStack gap="10">
                 <Accordion indent={false}>
                     <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.OmDeg')}>

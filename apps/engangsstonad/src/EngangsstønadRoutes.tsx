@@ -52,7 +52,7 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
-    const { mellomlagreOgNaviger, errorMellomlagre } = useEsMellomlagring(esApi);
+    const { mellomlagreOgNaviger, errorMellomlagre } = useEsMellomlagring(esApi, setVelkommen);
 
     useEffect(() => {
         if (mellomlagretData && mellomlagretData[EsDataType.CURRENT_PATH]) {
@@ -125,7 +125,13 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
                     />
                     <Route
                         path={Path.OPPSUMMERING}
-                        element={<OppsummeringSteg person={person} sendSøknad={sendSøknad} />}
+                        element={
+                            <OppsummeringSteg
+                                person={person}
+                                sendSøknad={sendSøknad}
+                                mellomlagreOgNaviger={mellomlagreOgNaviger}
+                            />
+                        }
                     />
                 </>
             )}

@@ -4,9 +4,10 @@ import { erMyndig } from '@navikt/fp-utils';
 import { Umyndig } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { EsDataContext, EsDataMap } from 'appData/EsDataContext';
+import { EsDataContext } from 'appData/EsDataContext';
 import Person from './types/Person';
-import EngangsstønadRoutes, { ApiErrorHandler, Spinner, esApi } from 'EngangsstønadRoutes';
+import EngangsstønadRoutes, { ApiErrorHandler, Spinner, esApi } from './EngangsstønadRoutes';
+import { EsDataMapAndVersion, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 
 interface Props {
     locale: LocaleAll;
@@ -20,7 +21,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         data: mellomlagretData,
         loading: loadingMellomlagretData,
         error: errorMellomlagretData,
-    } = useRequest<EsDataMap>(esApi, '/storage/engangstønad');
+    } = useRequest<EsDataMapAndVersion>(esApi, '/storage/engangstønad');
 
     if (errorHentPerson || errorMellomlagretData) {
         return <ApiErrorHandler error={notEmpty(errorHentPerson || errorMellomlagretData)} />;
@@ -34,13 +35,15 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         return <Umyndig appnavn="Engangsstønad" />;
     }
 
+    const mellomlagretState = mellomlagretData?.version === VERSJON_MELLOMLAGRING ? mellomlagretData : undefined;
+
     return (
-        <EsDataContext initialState={mellomlagretData}>
+        <EsDataContext initialState={mellomlagretState}>
             <EngangsstønadRoutes
                 locale={locale}
                 onChangeLocale={onChangeLocale}
                 person={person}
-                mellomlagretData={mellomlagretData}
+                mellomlagretData={mellomlagretState}
             />
         </EsDataContext>
     );

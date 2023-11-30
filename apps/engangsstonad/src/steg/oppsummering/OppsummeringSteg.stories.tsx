@@ -63,6 +63,7 @@ const Template: StoryFn<{
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
     dokumentasjon?: Dokumentasjon;
+    mellomlagreOgNaviger?: () => void;
 }> = ({
     sendSøknad,
     omBarnet = barnet,
@@ -70,6 +71,7 @@ const Template: StoryFn<{
     senereUtenlandsopphold,
     tidligereUtenlandsopphold,
     dokumentasjon = vedleggDefault,
+    mellomlagreOgNaviger = action('button-click'),
 }) => {
     initAmplitude();
     return (
@@ -82,7 +84,7 @@ const Template: StoryFn<{
                 [EsDataType.DOKUMENTASJON]: dokumentasjon,
             }}
         >
-            <OppsummeringSteg person={person} sendSøknad={sendSøknad} />
+            <OppsummeringSteg person={person} sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
         </EsDataContext>
     );
 };

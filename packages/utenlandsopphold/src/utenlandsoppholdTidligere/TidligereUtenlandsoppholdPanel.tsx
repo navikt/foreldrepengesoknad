@@ -39,7 +39,7 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     onContinueLater,
     goToPreviousStep,
     stepConfig,
-    supportsTempSaving = false,
+    supportsTempSaving = true,
 }) => {
     const defaultValues = useMemo(() => tidligereUtenlandsopphold || DEFAULT_FORM_VALUES, [tidligereUtenlandsopphold]);
     const formMethods = useForm<UtenlandsoppholdTidligere>({

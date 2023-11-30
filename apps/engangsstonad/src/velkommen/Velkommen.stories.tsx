@@ -5,6 +5,7 @@ import withRouter from 'storybook/decorators/withRouter';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Path } from 'appData/paths';
 import Velkommen from './Velkommen';
+import { Action, EsDataContext } from 'appData/EsDataContext';
 
 export default {
     title: 'Velkommen',
@@ -15,10 +16,22 @@ export default {
     },
 };
 
-const Template: StoryFn<{ startSøknad: (start: boolean) => void }> = ({ startSøknad }) => {
+const Template: StoryFn<{
+    startSøknad: (start: boolean) => void;
+    mellomlagreOgNaviger?: () => void;
+    gåTilNesteSide: (action: Action) => void;
+}> = ({ startSøknad, mellomlagreOgNaviger = action('button-click'), gåTilNesteSide }) => {
     initAmplitude();
     return (
-        <Velkommen startSøknad={startSøknad} onChangeLocale={action('button-click')} locale="nb" erVelkommen={false} />
+        <EsDataContext onDispatch={gåTilNesteSide}>
+            <Velkommen
+                startSøknad={startSøknad}
+                onChangeLocale={action('button-click')}
+                locale="nb"
+                erVelkommen={false}
+                mellomlagreOgNaviger={mellomlagreOgNaviger}
+            />
+        </EsDataContext>
     );
 };
 

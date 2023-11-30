@@ -5,9 +5,10 @@ import { attachmentApi } from '@navikt/fp-api';
 
 import Person, { Kjønn } from 'types/Person';
 import AppContainer from './AppContainer';
-import { esApi } from './Engangsstønad';
-import { EsDataMap, EsDataType } from 'appData/EsDataContext';
+import { esApi } from './EngangsstønadRoutes';
+import { EsDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+import { EsDataMapAndVersion } from 'appData/useEsMellomlagring';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -21,14 +22,44 @@ export default {
     component: AppContainer,
 };
 
-const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMap }> = ({ person, mellomlagretData }) => {
+const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndVersion; doLogging?: boolean }> = ({
+    person,
+    mellomlagretData,
+    doLogging = true,
+}) => {
     initAmplitude();
 
     const apiMock = new MockAdapter(esApi);
-    apiMock.onGet('/personinfo').reply(200, person);
-    apiMock.onGet('/storage/engangstønad').reply(200, mellomlagretData);
-    apiMock.onPost('/soknad/engangssoknad').reply(200, kvittering);
-    apiMock.onPost('/soknad/engangssoknad').reply(200);
+    apiMock.onGet('/personinfo').reply(() => {
+        if (doLogging) {
+            console.log('network request: get /personinfo');
+        }
+        return [200, person];
+    });
+    apiMock.onGet('/storage/engangstønad').reply(() => {
+        if (doLogging) {
+            console.log('network request: get /storage/engangstønad');
+        }
+        return [200, mellomlagretData];
+    });
+    apiMock.onPost('/soknad/engangssoknad').reply(() => {
+        if (doLogging) {
+            console.log('network request: post /soknad/engangssoknad');
+        }
+        return [200, kvittering];
+    });
+    apiMock.onPost('/storage/engangstønad').reply(() => {
+        if (doLogging) {
+            console.log('network request: post /storage/engangstønad');
+        }
+        return [200];
+    });
+    apiMock.onDelete('/storage/engangstønad').reply(() => {
+        if (doLogging) {
+            console.log('network request: delete /storage/engangstønad');
+        }
+        return [200];
+    });
 
     const attachmentApiMock = new MockAdapter(attachmentApi);
     attachmentApiMock.onPost('/storage/vedlegg').reply(200); //story
@@ -56,6 +87,7 @@ SøkerErKvinne.args = {
 export const SøkerErKvinneMedMellomlagretData = Template.bind({});
 SøkerErKvinneMedMellomlagretData.args = {
     mellomlagretData: {
+        version: 1,
         [EsDataType.SØKERSITUASJON]: {
             situasjon: 'fødsel',
         },

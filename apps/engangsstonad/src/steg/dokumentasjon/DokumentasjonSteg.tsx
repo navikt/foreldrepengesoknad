@@ -54,12 +54,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
     };
 
     return (
-        <Step
-            bannerTitle={i18n('Søknad.Pageheading')}
-            onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
-            useNoTempSavingText
-        >
+        <Step bannerTitle={i18n('Søknad.Pageheading')} onCancel={navigator.avbrytSøknad} steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />

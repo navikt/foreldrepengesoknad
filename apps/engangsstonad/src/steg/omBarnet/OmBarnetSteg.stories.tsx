@@ -21,14 +21,15 @@ const Template: StoryFn<{
     søkersituasjon: Situasjon;
     kjønn: Kjønn;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ søkersituasjon, kjønn, gåTilNesteSide }) => {
+    mellomlagreOgNaviger?: () => void;
+}> = ({ søkersituasjon, kjønn, gåTilNesteSide, mellomlagreOgNaviger = action('button-click') }) => {
     initAmplitude();
     return (
         <EsDataContext
             initialState={{ [EsDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
             onDispatch={gåTilNesteSide}
         >
-            <OmBarnetSteg kjønn={kjønn} />
+            <OmBarnetSteg kjønn={kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />
         </EsDataContext>
     );
 };

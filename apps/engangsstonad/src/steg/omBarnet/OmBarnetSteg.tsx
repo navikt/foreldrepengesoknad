@@ -72,12 +72,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNav
     });
 
     return (
-        <Step
-            bannerTitle={i18n('Søknad.Pageheading')}
-            onCancel={navigator.avbrytSøknad}
-            steps={stepConfig}
-            useNoTempSavingText
-        >
+        <Step bannerTitle={i18n('Søknad.Pageheading')} onCancel={navigator.avbrytSøknad} steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />

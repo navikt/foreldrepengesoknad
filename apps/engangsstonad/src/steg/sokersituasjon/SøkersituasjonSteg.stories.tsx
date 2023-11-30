@@ -15,11 +15,14 @@ export default {
     },
 };
 
-const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void }> = ({ gåTilNesteSide }) => {
+const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => void }> = ({
+    gåTilNesteSide,
+    mellomlagreOgNaviger = action('button-click'),
+}) => {
     initAmplitude();
     return (
         <EsDataContext onDispatch={gåTilNesteSide}>
-            <SøkersituasjonSteg />
+            <SøkersituasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
         </EsDataContext>
     );
 };

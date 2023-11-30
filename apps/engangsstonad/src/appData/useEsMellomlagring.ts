@@ -1,16 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AxiosInstance } from 'axios';
 import { Kvittering } from '@navikt/fp-types';
-import { postData, ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
+import { postData, ApiAccessError, ApiGeneralError, deleteData } from '@navikt/fp-api';
 import { EsDataMap, EsDataType, useEsCompleteState } from './EsDataContext';
 import { useNavigate } from 'react-router-dom';
-import { notEmpty } from '@navikt/fp-validation';
+import { Path } from './paths';
+
+export const VERSJON_MELLOMLAGRING = 1;
+
+export type EsDataMapAndVersion = { version: number } & EsDataMap;
 
 // TODO (TOR) Fiks lokalisering
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
-const useEsMellomlagring = (esApi: AxiosInstance) => {
+const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();
     const state = useEsCompleteState();
 
@@ -20,16 +24,31 @@ const useEsMellomlagring = (esApi: AxiosInstance) => {
 
     useEffect(() => {
         if (skalMellomlagre) {
-            const lagre = async () => {
+            const lagreEllerSlett = async () => {
                 setSkalMellomlagre(false);
 
-                await postData<EsDataMap, Kvittering>(esApi, '/storage/engangstønad', state, FEIL_VED_INNSENDING);
+                const currentPath = state[EsDataType.CURRENT_PATH];
+                if (currentPath) {
+                    await postData<EsDataMapAndVersion, Kvittering>(
+                        esApi,
+                        '/storage/engangstønad',
+                        {
+                            version: VERSJON_MELLOMLAGRING,
+                            ...state,
+                        },
+                        FEIL_VED_INNSENDING,
+                    );
 
-                const currentRoute = notEmpty(state[EsDataType.CURRENT_PATH]);
-                navigate(currentRoute);
+                    navigate(currentPath);
+                } else {
+                    navigate(Path.VELKOMMEN);
+                    // Sletter ved avbryt (context er resatt)
+                    await deleteData(esApi, '/storage/engangstønad', FEIL_VED_INNSENDING);
+                    setVelkommen(false);
+                }
             };
 
-            lagre().catch((error) => {
+            lagreEllerSlett().catch((error) => {
                 setError(error);
             });
         }

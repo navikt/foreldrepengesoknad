@@ -5,14 +5,19 @@ import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OmBarnetSteg.stories';
+import { Path } from 'appData/paths';
+import { EsDataType } from 'appData/EsDataContext';
 
 const { VisSideForAdopsjonKvinne, VisSideForAdopsjonMann, VisSideForFodsel } = composeStories(stories);
 
 describe('<OmBarnetSteg>', () => {
     it('skal vise side for adopsjon for kvinne', async () => {
         const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        const utils = render(<VisSideForAdopsjonKvinne gåTilNesteSide={gåTilNesteSide} />);
+        const utils = render(
+            <VisSideForAdopsjonKvinne gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+        );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
@@ -50,17 +55,26 @@ describe('<OmBarnetSteg>', () => {
                     },
                 ],
             },
-            key: 'OM_BARNET',
+            key: EsDataType.OM_BARNET,
             type: 'update',
         });
 
-        expect(screen.getByText('Neste side: /soknad/adopsjonsbekreftelse')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: Path.ADOPSJONSBEKREFTELSE,
+            key: EsDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal vise side for adopsjon for mann', async () => {
         const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        const utils = render(<VisSideForAdopsjonMann gåTilNesteSide={gåTilNesteSide} />);
+        const utils = render(
+            <VisSideForAdopsjonMann gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+        );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
@@ -99,17 +113,26 @@ describe('<OmBarnetSteg>', () => {
                 ],
                 søkerAdopsjonAlene: true,
             },
-            key: 'OM_BARNET',
+            key: EsDataType.OM_BARNET,
             type: 'update',
         });
 
-        expect(screen.getByText('Neste side: /soknad/adopsjonsbekreftelse')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: Path.ADOPSJONSBEKREFTELSE,
+            key: EsDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal adoptere tre barn', async () => {
         const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        const utils = render(<VisSideForAdopsjonKvinne gåTilNesteSide={gåTilNesteSide} />);
+        const utils = render(
+            <VisSideForAdopsjonKvinne gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+        );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ja'));
@@ -158,17 +181,26 @@ describe('<OmBarnetSteg>', () => {
                     },
                 ],
             },
-            key: 'OM_BARNET',
+            key: EsDataType.OM_BARNET,
             type: 'update',
         });
 
-        expect(screen.getByText('Neste side: /soknad/adopsjonsbekreftelse')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: Path.ADOPSJONSBEKREFTELSE,
+            key: EsDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal søke for født barn', async () => {
         const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        const utils = render(<VisSideForFodsel gåTilNesteSide={gåTilNesteSide} />);
+        const utils = render(
+            <VisSideForFodsel gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+        );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -188,7 +220,7 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 erBarnetFødt: true,
@@ -196,22 +228,31 @@ describe('<OmBarnetSteg>', () => {
                 fødselsdato: dayjs().format(ISO_DATE_FORMAT),
                 termindato: undefined,
             },
-            key: 'OM_BARNET',
+            key: EsDataType.OM_BARNET,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: 'DOKUMENTASJON',
+            key: EsDataType.DOKUMENTASJON,
             type: 'update',
         });
 
-        expect(screen.getByText('Neste side: /soknad/utenlandsopphold')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: Path.UTENLANDSOPPHOLD,
+            key: EsDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal søke for ufødt barn', async () => {
         const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        const utils = render(<VisSideForFodsel gåTilNesteSide={gåTilNesteSide} />);
+        const utils = render(
+            <VisSideForFodsel gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+        );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Nei'));
@@ -232,17 +273,23 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallBarn: 3,
                 erBarnetFødt: false,
                 termindato: dayjs().format(ISO_DATE_FORMAT),
             },
-            key: 'OM_BARNET',
+            key: EsDataType.OM_BARNET,
             type: 'update',
         });
 
-        expect(screen.getByText('Neste side: /soknad/terminbekreftelse')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: Path.TERMINBEKREFTELSE,
+            key: EsDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 });

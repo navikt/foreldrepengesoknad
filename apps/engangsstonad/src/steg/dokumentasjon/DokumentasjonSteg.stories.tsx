@@ -18,10 +18,16 @@ export default {
 
 const Template: StoryFn<{
     routerDecoratorInitUrl: string;
-    gåTilNesteSide: (action: Action) => void;
+    gåTilNesteSide?: (action: Action) => void;
+    mellomlagreOgNaviger?: () => void;
     omBarnet: OmBarnet;
     skalFeileOpplasting?: boolean;
-}> = ({ gåTilNesteSide, omBarnet, skalFeileOpplasting = false }) => {
+}> = ({
+    gåTilNesteSide = action('button-click'),
+    mellomlagreOgNaviger = action('button-click'),
+    omBarnet,
+    skalFeileOpplasting = false,
+}) => {
     initAmplitude();
 
     const apiMock = new MockAdapter(attachmentApi);
@@ -37,14 +43,13 @@ const Template: StoryFn<{
                 [EsDataType.OM_BARNET]: omBarnet,
             }}
         >
-            <DokumentasjonSteg />
+            <DokumentasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
         </EsDataContext>
     );
 };
 
 export const Terminbekreftelse = Template.bind({});
 Terminbekreftelse.args = {
-    gåTilNesteSide: action('button-click'),
     routerDecoratorInitUrl: Path.TERMINBEKREFTELSE,
     omBarnet: {
         erBarnetFødt: false,
@@ -55,7 +60,6 @@ Terminbekreftelse.args = {
 
 export const Adopsjonsbekreftelse = Template.bind({});
 Adopsjonsbekreftelse.args = {
-    gåTilNesteSide: action('button-click'),
     routerDecoratorInitUrl: Path.ADOPSJONSBEKREFTELSE,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
@@ -67,7 +71,6 @@ Adopsjonsbekreftelse.args = {
 
 export const FeilerOpplastinger = Template.bind({});
 FeilerOpplastinger.args = {
-    gåTilNesteSide: action('button-click'),
     skalFeileOpplasting: true,
     routerDecoratorInitUrl: Path.ADOPSJONSBEKREFTELSE,
     omBarnet: {
