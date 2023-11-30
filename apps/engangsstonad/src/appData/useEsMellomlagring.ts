@@ -2,9 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AxiosInstance } from 'axios';
 import { Kvittering } from '@navikt/fp-types';
 import { postData, ApiAccessError, ApiGeneralError, deleteData } from '@navikt/fp-api';
-import { EsDataMap, EsDataType, useEsCompleteState } from './EsDataContext';
+import { EsDataMap, EsDataType, useEsCompleteState, useEsStateResetFn } from './EsDataContext';
 import { useNavigate } from 'react-router-dom';
 import { Path } from './paths';
+import { notEmpty } from '@navikt/fp-validation';
 
 export const VERSJON_MELLOMLAGRING = 1;
 
@@ -17,6 +18,7 @@ const FEIL_VED_INNSENDING =
 const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();
     const state = useEsCompleteState();
+    const resetState = useEsStateResetFn();
 
     const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
@@ -27,8 +29,8 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
             const lagreEllerSlett = async () => {
                 setSkalMellomlagre(false);
 
-                const currentPath = state[EsDataType.CURRENT_PATH];
-                if (currentPath) {
+                const currentPath = notEmpty(state[EsDataType.CURRENT_PATH]);
+                if (currentPath !== Path.VELKOMMEN) {
                     await postData<EsDataMapAndVersion, Kvittering>(
                         esApi,
                         '/storage/engangstønad',
@@ -41,14 +43,26 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
 
                     navigate(currentPath);
                 } else {
-                    navigate(Path.VELKOMMEN);
-                    // Sletter ved avbryt (context er resatt)
+                    // Ved avbryt så set ein Path.VELKOMMEN og må rydda opp i data
+
                     await deleteData(esApi, '/storage/engangstønad', FEIL_VED_INNSENDING);
+                    const dokumentasjon = state[EsDataType.DOKUMENTASJON];
+                    if (dokumentasjon) {
+                        const vedleggUuids = dokumentasjon.vedlegg
+                            .map((v) => v.uuid)
+                            .filter((uuid): uuid is string => !!uuid);
+                        if (vedleggUuids.length > 0) {
+                            await deleteData<string[]>(esApi, '/storage/vedlegg', FEIL_VED_INNSENDING, vedleggUuids);
+                        }
+                    }
+
                     setVelkommen(false);
+                    resetState();
+                    navigate(Path.VELKOMMEN);
                 }
             };
 
-            lagreEllerSlett().catch((error) => {
+            lagreEllerSlett().catch((error: ApiAccessError | ApiGeneralError) => {
                 setError(error);
             });
         }

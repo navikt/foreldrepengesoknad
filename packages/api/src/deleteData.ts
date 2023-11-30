@@ -3,12 +3,19 @@ import { ApiAccessError, ApiGeneralError, isAxiosError } from './error';
 
 const UKJENT_UUID = 'ukjent uuid';
 
-const deleteData = async (instance: AxiosInstance, url: string, errorMessage: string, abortSignal?: AbortSignal) => {
+const deleteData = async <DATA>(
+    instance: AxiosInstance,
+    url: string,
+    errorMessage: string,
+    data?: DATA,
+    abortSignal?: AbortSignal,
+) => {
     try {
         const response = await instance.delete(url, {
             withCredentials: true,
             timeout: 60 * 1000,
             signal: abortSignal,
+            data,
         });
         return response.data;
     } catch (error: unknown) {

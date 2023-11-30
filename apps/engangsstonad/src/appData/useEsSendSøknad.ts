@@ -92,9 +92,13 @@ const useEsSendSøknad = (
 
             try {
                 await deleteData(esApi, '/storage/engangstønad', FEIL_VED_INNSENDING, abortSignal);
-                if (dokumentasjon?.vedlegg && dokumentasjon.vedlegg.length > 0) {
-                    // FIXME send inn data
-                    await deleteData(esApi, '/storage/vedlegg', FEIL_VED_INNSENDING, abortSignal);
+                if (dokumentasjon?.vedlegg) {
+                    const vedleggUuids = dokumentasjon.vedlegg
+                        .map((v) => v.uuid)
+                        .filter((uuid): uuid is string => !!uuid);
+                    if (vedleggUuids.length > 0) {
+                        await deleteData<string[]>(esApi, '/storage/vedlegg', FEIL_VED_INNSENDING, vedleggUuids);
+                    }
                 }
             } catch (error) {
                 // Vi bryr oss ikke om feil her. Logges bare i backend

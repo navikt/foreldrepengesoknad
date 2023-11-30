@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { EsDataType, useEsStateResetFn, useEsStateSaveFn } from './EsDataContext';
+import { EsDataType, useEsStateSaveFn } from './EsDataContext';
 import { Path } from './paths';
 import useStepConfig from './useStepConfig';
 
 const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
     const stepConfig = useStepConfig();
-    const resetEsData = useEsStateResetFn();
     const lagrePath = useEsStateSaveFn(EsDataType.CURRENT_PATH);
 
     const activeStepId = stepConfig.find((sc) => sc.isSelected);
@@ -40,7 +39,7 @@ const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
     };
 
     const avbrytSøknad = () => {
-        resetEsData();
+        lagrePath(Path.VELKOMMEN);
         mellomlagreOgNaviger();
     };
 
