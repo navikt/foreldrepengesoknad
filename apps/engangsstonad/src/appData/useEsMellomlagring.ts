@@ -23,9 +23,9 @@ const useEsMellomlagring = (esApi: AxiosInstance) => {
             const lagre = async () => {
                 setSkalMellomlagre(false);
 
-                // Logikk for å slette ved avbryt
+                // FIXME Logikk for å slette ved avbryt
 
-                await storeData<EsDataMap, Kvittering>(esApi, '/soknad/engangssoknad', state, FEIL_VED_INNSENDING);
+                await storeData<EsDataMap, Kvittering>(esApi, '/storage/engangstønad', state, FEIL_VED_INNSENDING);
 
                 const currentRoute = notEmpty(state[EsDataType.CURRENT_PATH]);
                 navigate(currentRoute);

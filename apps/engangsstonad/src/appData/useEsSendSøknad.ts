@@ -90,6 +90,19 @@ const useEsSendSøknad = (
                     throw new Error('This should never happen');
                 }
             }
+
+            //FIXME Rensk opp i mellomlagring
+            try {
+                await Api.deleteMellomlagretSøknad(fnr, abortSignal);
+
+                const vedleggUtenLastOppSenere = cleanedSøknad.vedlegg.filter((v) => v.uuid);
+
+                if (vedleggUtenLastOppSenere.length > 0) {
+                    await Api.deleteMellomlagredeVedlegg(fnr, vedleggUtenLastOppSenere, abortSignal);
+                }
+            } catch (error) {
+                // Vi bryr oss ikke om feil her. Logges bare i backend
+            }
         },
         [hentData, locale, setKvittering, esApi],
     );
