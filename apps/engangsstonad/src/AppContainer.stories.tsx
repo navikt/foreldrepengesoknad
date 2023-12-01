@@ -36,9 +36,9 @@ const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndVersion
         }
         return [200, person];
     });
-    apiMock.onGet('/storage/engangstønad').reply(() => {
+    apiMock.onGet('/storage/engangsstonad').reply(() => {
         if (doLogging) {
-            console.log('network request: get /storage/engangstønad');
+            console.log('network request: get /storage/engangstonad');
         }
         return [200, mellomlagretData];
     });
@@ -48,15 +48,15 @@ const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndVersion
         }
         return [200, kvittering];
     });
-    apiMock.onPost('/storage/engangstønad').reply(() => {
+    apiMock.onPost('/storage/engangsstonad').reply(() => {
         if (doLogging) {
-            console.log('network request: post /storage/engangstønad');
+            console.log('network request: post /storage/engangstonad');
         }
         return [200];
     });
-    apiMock.onDelete('/storage/engangstønad').reply(() => {
+    apiMock.onDelete('/storage/engangsstonad').reply(() => {
         if (doLogging) {
-            console.log('network request: delete /storage/engangstønad');
+            console.log('network request: delete /storage/engangstonad');
         }
         return [200];
     });
