@@ -168,6 +168,6 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Avslutt'));
 
-        expect(screen.getByText('Avslutt og slett søknad')).toBeInTheDocument();
+        expect(screen.getByText('Slett søknaden')).toBeInTheDocument();
     });
 });
