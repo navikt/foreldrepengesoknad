@@ -21,7 +21,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         data: mellomlagretData,
         loading: loadingMellomlagretData,
         error: errorMellomlagretData,
-    } = useRequest<EsDataMapAndVersion>(esApi, '/storage/engangstønad');
+    } = useRequest<EsDataMapAndVersion>(esApi, '/storage/engangsstonad');
 
     if (errorHentPerson || errorMellomlagretData) {
         return <ApiErrorHandler error={notEmpty(errorHentPerson || errorMellomlagretData)} />;

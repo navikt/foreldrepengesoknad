@@ -31,7 +31,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
                 if (currentPath) {
                     await postData<EsDataMapAndVersion, Kvittering>(
                         esApi,
-                        '/storage/engangstønad',
+                        '/storage/engangsstonad',
                         {
                             version: VERSJON_MELLOMLAGRING,
                             ...state,
@@ -43,7 +43,8 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data
 
-                    await deleteData(esApi, '/storage/engangstønad', FEIL_VED_INNSENDING);
+                    await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING);
+
                     const dokumentasjon = state[EsDataType.DOKUMENTASJON];
                     if (dokumentasjon) {
                         const vedleggUuids = dokumentasjon.vedlegg

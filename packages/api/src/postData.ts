@@ -8,16 +8,19 @@ const postData = async <REQUEST_DATA, RESPONSE_DATA>(
     url: string,
     data: REQUEST_DATA,
     errorMessage: string,
+    hasContentTypeApplicationJson = false,
     abortSignal?: AbortSignal,
 ) => {
     try {
         const response = await instance.post<RESPONSE_DATA>(url, data, {
             withCredentials: true,
             timeout: 60 * 1000,
-            headers: {
-                'content-type': 'application/json;',
-            },
             signal: abortSignal,
+            headers: hasContentTypeApplicationJson
+                ? {
+                      'content-type': 'application/json;',
+                  }
+                : {},
         });
         return response.data;
     } catch (error: unknown) {

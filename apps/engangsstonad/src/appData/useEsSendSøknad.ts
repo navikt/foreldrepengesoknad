@@ -79,6 +79,7 @@ const useEsSendSøknad = (
                     '/soknad/engangssoknad',
                     søknad,
                     FEIL_VED_INNSENDING,
+                    true,
                     abortSignal,
                 );
                 setKvittering(kvittering);
@@ -91,7 +92,7 @@ const useEsSendSøknad = (
             }
 
             try {
-                await deleteData(esApi, '/storage/engangstønad', FEIL_VED_INNSENDING, abortSignal);
+                await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
                 if (dokumentasjon?.vedlegg) {
                     const vedleggUuids = dokumentasjon.vedlegg
                         .map((v) => v.uuid)
