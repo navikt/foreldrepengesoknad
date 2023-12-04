@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './UtenlandsoppholdPanel.stories';
 
-const { ForFødsel, ForAdopsjon } = composeStories(stories);
+const { ForFødsel } = composeStories(stories);
 
 describe('<UtenlandsoppholdPanel>', () => {
     it('skal vise feilmeldinger når en prøver å gå videre uten å oppgi obligatoriske felter', async () => {
@@ -11,12 +11,6 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 1')).toBeInTheDocument();
-
-        expect(
-            screen.getByText(
-                'For å få rett til engangsstønad må du være medlem av folketrygden på tidspunktet for fødsel.',
-            ),
-        ).toBeInTheDocument();
 
         expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
         expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
@@ -28,18 +22,6 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         expect(screen.getAllByText('Du må oppgi hvor du har bodd de siste 12 månedene')).toHaveLength(2);
         expect(screen.getAllByText('Du må oppgi hvor du skal bo de neste 12 månedene')).toHaveLength(2);
-    });
-
-    it('skal vise tekst for søkersituasjon Adopsjon', async () => {
-        render(<ForAdopsjon />);
-
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
-
-        expect(
-            screen.getByText(
-                'For å få rett til engangsstønad må du være medlem av folketrygden på tidspunktet for omsorgsovertakelsen ved adopsjon.',
-            ),
-        ).toBeInTheDocument();
     });
 
     it('skal oppgi at en har bodd i Norge og skal bo i Norge', async () => {

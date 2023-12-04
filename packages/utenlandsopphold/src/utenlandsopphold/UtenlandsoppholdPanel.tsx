@@ -5,7 +5,7 @@ import { Form, ErrorSummaryHookForm, RadioGroup, StepButtonsHookForm } from '@na
 import { Step } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { isRequired } from '@navikt/fp-validation';
-import { Situasjon, StepConfig, Utenlandsopphold } from '@navikt/fp-types';
+import { StepConfig, Utenlandsopphold } from '@navikt/fp-types';
 import useUtenlandsoppholdIntl from '../intl/useUtenlandsoppholdIntl';
 import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
 
@@ -17,7 +17,6 @@ export interface Props {
     onContinueLater?: () => void;
     goToPreviousStep: () => void;
     stepConfig: StepConfig[];
-    søkersituasjon?: Situasjon;
     stønadstype: 'Engangsstønad' | 'Foreldrepenger' | 'Svangerskapspenger';
     supportsTempSaving?: boolean;
 }
@@ -30,7 +29,6 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     onContinueLater,
     goToPreviousStep,
     stepConfig,
-    søkersituasjon,
     stønadstype,
     supportsTempSaving = false,
 }) => {
@@ -51,17 +49,6 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                 <Form formMethods={formMethods} onSubmit={saveOnNext}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
-                        <BodyLong>
-                            {stønadstype === 'Foreldrepenger' && (
-                                <FormattedMessage id="UtenlandsoppholdSteg.InfoOppholdFp" />
-                            )}
-                            {stønadstype === 'Engangsstønad' && søkersituasjon === 'fødsel' && (
-                                <FormattedMessage id="UtenlandsoppholdSteg.InfoFodselEs" />
-                            )}
-                            {stønadstype === 'Engangsstønad' && søkersituasjon === 'adopsjon' && (
-                                <FormattedMessage id="UtenlandsoppholdSteg.InfoAdopsjonEs" />
-                            )}
-                        </BodyLong>
                         <RadioGroup
                             name="harBoddUtenforNorgeSiste12Mnd"
                             label={<FormattedMessage id="UtenlandsoppholdSteg.Siste12Måneder.Spørsmål" />}

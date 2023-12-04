@@ -14,7 +14,7 @@ const Template: StoryFn<{
     saveOnPrevious: () => void;
     cancelApplication: () => void;
     goToPreviousStep: () => void;
-}> = ({ søkersituasjon, saveOnNext, saveOnPrevious, cancelApplication, goToPreviousStep }) => {
+}> = ({ saveOnNext, saveOnPrevious, cancelApplication, goToPreviousStep }) => {
     return (
         <UtenlandsoppholdPanel
             saveOnNext={saveOnNext}
@@ -29,7 +29,6 @@ const Template: StoryFn<{
                     isSelected: true,
                 },
             ]}
-            søkersituasjon={søkersituasjon}
             stønadstype="Engangsstønad"
         />
     );
@@ -37,7 +36,6 @@ const Template: StoryFn<{
 
 export const ForFødsel = Template.bind({});
 ForFødsel.args = {
-    søkersituasjon: 'fødsel',
     saveOnNext: action('button-click'),
     saveOnPrevious: action('button-click'),
     cancelApplication: action('button-click'),
@@ -46,7 +44,6 @@ ForFødsel.args = {
 
 export const ForAdopsjon = Template.bind({});
 ForAdopsjon.args = {
-    søkersituasjon: 'adopsjon',
     saveOnNext: action('button-click'),
     saveOnPrevious: action('button-click'),
     cancelApplication: action('button-click'),
