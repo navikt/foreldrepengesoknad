@@ -39,6 +39,7 @@ jobs:
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
+      branch: ${{ inputs.branch }}
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: dev-gcp
       image_suffix: '/${{ inputs.app }}'
