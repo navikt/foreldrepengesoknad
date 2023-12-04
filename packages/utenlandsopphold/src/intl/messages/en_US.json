@@ -1,7 +1,4 @@
 {
-    "UtenlandsoppholdSteg.InfoOppholdFp": "To be entitled to parental allowance, you must be a member of Norwegian National Insurance Scheme.",
-    "UtenlandsoppholdSteg.InfoFodselEs": "To be entitled to a lump-sum grant, you must be a member of the National Insurance Scheme at the time of birth",
-    "UtenlandsoppholdSteg.InfoAdopsjonEs": "To be entitled to a lump-sum grant, you must be a member of the National Insurance Scheme at the time of taking over care by adoption.",
     "UtenlandsoppholdSteg.Siste12Måneder.Spørsmål": "Where have you lived in the last 12 months?",
     "UtenlandsoppholdSteg.Siste12Måneder.IsRequired": "You must state where you have lived in the last 12 months",
     "UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge": "Only lived in Norway",

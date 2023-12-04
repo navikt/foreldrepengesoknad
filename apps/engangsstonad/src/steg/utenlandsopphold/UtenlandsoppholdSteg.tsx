@@ -3,7 +3,6 @@ import { Utenlandsopphold } from '@navikt/fp-types';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { Heading } from '@navikt/ds-react';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 
 import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';
@@ -22,7 +21,6 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
     const navigator = useEsNavigator();
 
     const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
-    const søkersituasjon = notEmpty(useEsStateData(EsDataType.SØKERSITUASJON));
 
     const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
     const lagreTidligereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
@@ -53,7 +51,6 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                 cancelApplication={navigator.avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
-                søkersituasjon={søkersituasjon?.situasjon}
                 stønadstype="Engangsstønad"
             />
         </ContentWrapper>

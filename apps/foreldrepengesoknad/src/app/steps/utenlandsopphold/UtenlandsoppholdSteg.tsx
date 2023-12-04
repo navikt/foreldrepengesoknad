@@ -23,7 +23,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
 
     useSaveLoadedRoute(SøknadRoutes.UTENLANDSOPPHOLD);
 
-    const { informasjonOmUtenlandsopphold, søkersituasjon } = useSøknad();
+    const { informasjonOmUtenlandsopphold } = useSøknad();
     const utenlandsopphold =
         informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined
             ? {
@@ -78,7 +78,6 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
                 onContinueLater={onFortsettSøknadSenere}
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}
-                søkersituasjon={søkersituasjon.situasjon}
                 stønadstype="Foreldrepenger"
                 supportsTempSaving
             />

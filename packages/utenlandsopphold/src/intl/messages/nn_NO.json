@@ -1,7 +1,4 @@
 {
-    "UtenlandsoppholdSteg.InfoOppholdFp": "For å få rett til foreldrepengar må du vera medlem av norsk folketrygd.",
-    "UtenlandsoppholdSteg.InfoFodselEs": "For å få rett til eingongsstønad må du vera medlem av folketrygden på tidspunktet for fødsel.",
-    "UtenlandsoppholdSteg.InfoAdopsjonEs": "For å få rett til eingongsstønad må du vera medlem av folketrygden på tidspunktet for omsorgsovertakelse ved adopsjon.",
     "UtenlandsoppholdSteg.Siste12Måneder.Spørsmål": "Kvar har du budd dei siste 12 månadene?",
     "UtenlandsoppholdSteg.Siste12Måneder.IsRequired": "Du må oppgje kor du har budd dei siste 12 månadene",
     "UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge": "Eg har budd i Noreg",
