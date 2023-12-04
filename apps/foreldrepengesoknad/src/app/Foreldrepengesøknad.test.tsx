@@ -73,7 +73,7 @@ describe('<Foreldrepengesøknad>', () => {
         vi.spyOn(Api, 'useGetSaker').mockImplementation(() => sakerData);
 
         const apiMock = new MockAdapter(AxiosInstance);
-        apiMock.onPost('/storage').reply(200, {});
+        apiMock.onPost('/storage/foreldrepenger').reply(200, {});
 
         render(
             <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>

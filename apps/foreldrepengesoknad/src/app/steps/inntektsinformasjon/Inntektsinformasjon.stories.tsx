@@ -46,7 +46,7 @@ const Template: StoryFn<Props> = ({
                 location: '',
             },
         );
-        apiMock.onPost('/storage').reply(200, undefined);
+        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
 
     return (

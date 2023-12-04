@@ -1,11 +1,11 @@
 {
     "version": 5,
-    "currentRoute": "/soknad/oppsummering",
+    "currentRoute": "/soknad/om-barnet",
     "søknadGjelderEtNyttBarn": true,
     "søknad": {
         "harGodkjentVilkår": true,
         "søkersituasjon": {
-            "situasjon": "fødsel",
+            "situasjon": "adopsjon",
             "rolle": "far"
         },
         "barn": {
@@ -28,8 +28,8 @@
             "selvstendigNæringsdrivendeInformasjon": []
         },
         "informasjonOmUtenlandsopphold": {
-            "iNorgeSiste12Mnd": true,
             "iNorgeNeste12Mnd": true,
+            "iNorgeSiste12Mnd": true,
             "senereOpphold": [],
             "tidligereOpphold": []
         },

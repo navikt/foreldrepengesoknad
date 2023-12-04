@@ -117,7 +117,7 @@ export interface FpMellomlagretData {
 }
 
 const useStoredAppState = () => {
-    const { data, error, requestStatus } = useGetRequest<FpMellomlagretData>('/storage', {
+    const { data, error, requestStatus } = useGetRequest<FpMellomlagretData>('/storage/foreldrepenger', {
         config: { transformResponse: storageParser, withCredentials: true },
     });
 
@@ -129,7 +129,7 @@ const useStoredAppState = () => {
 };
 
 const storeAppState = (dataSomSkalMellomlagres: FpMellomlagretData, fnr: string) => {
-    return getAxiosInstance(fnr).post('/storage', dataSomSkalMellomlagres, { withCredentials: true });
+    return getAxiosInstance(fnr).post('/storage/foreldrepenger', dataSomSkalMellomlagres, { withCredentials: true });
 };
 
 const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> => {
@@ -210,7 +210,7 @@ const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsendin
 };
 
 const deleteMellomlagretSøknad = (fnr: string, signal?: AbortSignal) => {
-    return getAxiosInstance(fnr).delete('/storage', { withCredentials: true, signal });
+    return getAxiosInstance(fnr).delete('/storage/foreldrepenger', { withCredentials: true, signal });
 };
 
 const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: AbortSignal) => {

@@ -19,7 +19,7 @@ interface Props {
 
 const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = action('button-click'), gåTilNesteSide }) => {
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage').reply(200, undefined);
+        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
     return (
         <AxiosMock mock={restMock}>

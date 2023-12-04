@@ -30,7 +30,7 @@ const Template: StoryFn<Props> = ({
     utenlandsforhold = defaultUtenlandsopphold,
 }) => {
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage').reply(200, undefined);
+        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
     return (
         <AxiosMock mock={restMock}>
