@@ -132,10 +132,6 @@ const storeAppState = (dataSomSkalMellomlagres: FpMellomlagretData, fnr: string)
     return getAxiosInstance(fnr).post('/storage', dataSomSkalMellomlagres, { withCredentials: true });
 };
 
-const deleteStoredAppState = (fnr: string) => {
-    return getAxiosInstance(fnr).delete('/storage', { withCredentials: true });
-};
-
 const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> => {
     return getAxiosInstance(fnr).get('/storage/kvittering/foreldrepenger', {
         withCredentials: true,
@@ -213,7 +209,7 @@ const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsendin
     });
 };
 
-const deleteMellomlagretSøknad = (fnr: string, signal: AbortSignal) => {
+const deleteMellomlagretSøknad = (fnr: string, signal?: AbortSignal) => {
     return getAxiosInstance(fnr).delete('/storage', { withCredentials: true, signal });
 };
 
@@ -231,7 +227,6 @@ const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: 
 const Api = {
     useGetUttakskontoer,
     storeAppState,
-    deleteStoredAppState,
     getStorageKvittering,
     useGetAnnenPartsVedtak,
     useStoredAppState,

@@ -359,8 +359,8 @@ export const cleanSøknad = (
     const søker = notEmpty(hentData(FpDataType.SØKER));
     const søkersituasjon = notEmpty(hentData(FpDataType.SØKERSITUASJON));
     const utenlandsopphold = notEmpty(hentData(FpDataType.UTENLANDSOPPHOLD));
-    const senereUtenlandsopphold = notEmpty(hentData(FpDataType.UTENLANDSOPPHOLD_SENERE));
-    const tidligereUtenlandsopphold = notEmpty(hentData(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE));
+    const senereUtenlandsopphold = hentData(FpDataType.UTENLANDSOPPHOLD_SENERE);
+    const tidligereUtenlandsopphold = hentData(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const uttaksplan = notEmpty(hentData(FpDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
     const eksisterendeSak = hentData(FpDataType.EKSISTERENDE_SAK);
@@ -392,8 +392,8 @@ export const cleanSøknad = (
         tilleggsopplysninger: tilleggsopplysningerInnsending,
         informasjonOmUtenlandsopphold: {
             ...utenlandsopphold,
-            ...senereUtenlandsopphold,
-            ...tidligereUtenlandsopphold,
+            ...(senereUtenlandsopphold || { senereOpphold: [] }),
+            ...(tidligereUtenlandsopphold || { tidligereOpphold: [] }),
         },
         dekningsgrad: uttaksplanMetadata.dekningsgrad!,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,

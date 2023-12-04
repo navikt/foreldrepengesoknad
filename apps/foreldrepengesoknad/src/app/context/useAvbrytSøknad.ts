@@ -26,7 +26,8 @@ export const useAvbrytSøknad = (
         setHarGodkjentVilkår(false);
         setSøknadGjelderNyttBarn(undefined);
 
-        Api.deleteStoredAppState(fødselsnr);
+        Api.deleteMellomlagretSøknad(fødselsnr);
+        //TODO (TOR) Slett vedlegg. Men vent til Andreas har fått inn vedleggsendringa si
 
         navigate('/');
     }, [fødselsnr, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
