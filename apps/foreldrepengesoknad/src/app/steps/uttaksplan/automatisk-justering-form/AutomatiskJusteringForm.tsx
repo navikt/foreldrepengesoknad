@@ -27,10 +27,9 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
     const uttaksdagPåEllerEtterTermin = Uttaksdagen(termindato).denneEllerNeste();
 
     const uttaksplanMetadata = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN_METADATA));
-    const eksisterendeSak = useFpStateData(FpDataType.EKSISTERENDE_SAK);
 
     const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
-    const brukerSvarteJaPåAutoJustering = eksisterendeSak?.grunnlag.ønskerJustertUttakVedFødsel;
+    const brukerSvarteJaPåAutoJustering = uttaksplanMetadata.ønskerJustertUttakVedFødsel;
 
     const svarteJaMenFlerePerioderInnen6Uker = brukerSvarteJaPåAutoJustering && perioderMedUttakRundtFødsel.length > 1;
     const svarteJaMenStarterIkkeLengerPåTermin =
