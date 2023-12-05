@@ -80,7 +80,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
     const søker = notEmpty(useFpStateData(FpDataType.SØKER));
     const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const uttaksplanMetadata = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN_METADATA));
+    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
     const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
 
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
@@ -166,7 +166,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                             values={{
                                 uker: <strong>{getVarighetString(uker * 5, intl)}</strong>,
                                 dekningsgrad: (
-                                    <strong>{uttaksplanMetadata.dekningsgrad ?? dekningsgradGrunnlag}</strong>
+                                    <strong>{uttaksplanMetadata?.dekningsgrad ?? dekningsgradGrunnlag}</strong>
                                 ),
                                 navn: hvem,
                             }}
