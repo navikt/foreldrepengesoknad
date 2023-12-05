@@ -71,6 +71,8 @@ import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 import { FpDataType, useFpState, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 
+const EMPTY_PERIOD_ARRAY: Periode[] = [];
+
 type Props = {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
@@ -97,7 +99,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const søker = notEmpty(useFpStateData(FpDataType.SØKER));
     const uttaksplanMetadata = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN_METADATA));
     const uttaksplanInfo = useFpStateData(FpDataType.UTTAKSPLAN_INFO);
-    const uttaksplan = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN));
+    const uttaksplan = useFpStateData(FpDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
     const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useFpStateData(FpDataType.EKSISTERENDE_SAK);
 
