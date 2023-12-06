@@ -15,11 +15,9 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            styles: path.resolve(__dirname, './src/styles'),
-            intl: path.resolve(__dirname, './src/intl/'),
-            types: path.resolve(__dirname, './src/types/'),
-            appData: path.resolve(__dirname, './src/appData/'),
-            storybookHelpers: path.resolve(__dirname, './src/storybookHelpers/'),
+            steps: path.resolve(__dirname, './src/steps'),
+            components: path.resolve(__dirname, './src/components'),
+            appData: path.resolve(__dirname, './src/appData'),
         },
     },
 });
