@@ -83,12 +83,6 @@ const useSendSøknad = (
 
         try {
             await Api.deleteMellomlagretSøknad(fødselsnr, abortSignal);
-
-            const vedleggUtenLastOppSenere = cleanedSøknad.vedlegg.filter((v) => v.uuid);
-
-            if (vedleggUtenLastOppSenere.length > 0) {
-                await Api.deleteMellomlagredeVedlegg(fødselsnr, vedleggUtenLastOppSenere, abortSignal);
-            }
         } catch (error) {
             // Vi bryr oss ikke om feil her. Logges bare i backend
         }
