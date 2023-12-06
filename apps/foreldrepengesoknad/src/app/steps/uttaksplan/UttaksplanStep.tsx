@@ -443,8 +443,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const ref = useRef<FormikValues>(null);
     const clickHandler = async (values: any) => {
-        setIsSubmitting(true);
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
+            setIsSubmitting(true);
             if (ref.current) {
                 ref.current.handleSubmit();
             }
