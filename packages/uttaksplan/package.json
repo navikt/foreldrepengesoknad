@@ -37,7 +37,7 @@
         "mockdate": "^3.0.5",
         "path": "^0.12.7",
         "tsconfig": "workspace:*",
-        "vite": "^4.4.9",
+        "vite": "^5.0.5",
         "vite-plugin-checker": "^0.6.1",
         "vitest": "^0.34.2"
     }
