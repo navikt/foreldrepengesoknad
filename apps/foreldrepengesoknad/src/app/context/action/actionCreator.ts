@@ -8,7 +8,7 @@ import {
     Søkersituasjon,
     Tilleggsopplysninger,
 } from '@navikt/fp-common';
-import { Attachment, Attachment as AttachmentFP, LocaleNo } from '@navikt/fp-types';
+import { Attachment, LocaleNo } from '@navikt/fp-types';
 import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
@@ -399,10 +399,10 @@ const setManglerDokumentasjon = (payload: boolean): SetManglerDokumentasjon => (
 
 interface LagreDokumentasjon {
     type: ForeldrepengesøknadContextActionKeys.LAGRE_DOKUMENTASJON;
-    payload: AttachmentFP[];
+    payload: Attachment[];
 }
 
-const lagreDokumentasjon = (payload: AttachmentFP[]): LagreDokumentasjon => ({
+const lagreDokumentasjon = (payload: Attachment[]): LagreDokumentasjon => ({
     type: ForeldrepengesøknadContextActionKeys.LAGRE_DOKUMENTASJON,
     payload,
 });

@@ -52,7 +52,7 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
     try {
         const response = await saveAttachment(attachment);
         attachment.pending = false;
-        attachment.url = response.headers.location;
+        attachment.url = response.headers.location; // TODELETE
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } catch (error) {
@@ -91,7 +91,8 @@ const FileUploader: React.FunctionComponent<Props> = ({
 
     useEffect(() => {
         updateAttachments(attachments.filter((a) => !a.error && a.pending === false));
-    }, [attachments, updateAttachments]);
+        // eslint-disable-next-line
+    }, [attachments]);
 
     const saveFiles = useCallback(
         (files: File[]) => {

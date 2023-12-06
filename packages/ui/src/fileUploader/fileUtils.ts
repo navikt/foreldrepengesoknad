@@ -33,7 +33,7 @@ const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 
 export const mapFileToAttachment = (file: File, type: AttachmentType, skjemanummer: Skjemanummer): Attachment => {
     return {
-        id: generateAttachmentId(),
+        id: generateAttachmentId(), // TODELETE
         file,
         filename: file.name,
         filesize: file.size,

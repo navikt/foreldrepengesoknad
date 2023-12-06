@@ -1,4 +1,4 @@
-import { Block, Step, intlUtils } from '@navikt/fp-common';
+import { ISOStringToDate, Step, getErSøkerFarEllerMedmor, getNavnPåForeldre, intlUtils } from '@navikt/fp-common';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import SøknadRoutes from 'app/routes/routes';
@@ -10,43 +10,74 @@ import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepen
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { perioderSomKreverVedlegg } from '@navikt/uttaksplan';
-import PeriodeAttachmentUploader from './periode-attachment-uploader/PeriodeAttachmentUploader';
-import { getInitValues } from './manglendeVedleggFormUtils';
 import { ManglendeVedleggFormData } from './manglendeVedleggFormConfig';
 import { useNavigate } from 'react-router-dom';
 import { Attachment } from '@navikt/fp-types';
 import actionCreator from 'app/context/action/actionCreator';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import { storeAppState } from 'app/utils/submitUtils';
+import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import FellesperiodeDok from './dokumentasjon/FellesperiodeDok';
+import { useState } from 'react';
+import {
+    GyldigeSkjemanummer,
+    isArbeidUtdanningEllerSykdomVedlegg,
+    isFellesperiodeAttachment,
+    isIntroduksjonsprogramVedlegg,
+    isKvalifiseringsprogramVedlegg,
+} from './util';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 const ManglendeVedlegg: React.FunctionComponent = () => {
     const intl = useIntl();
     const søknad = useSøknad();
     const { state } = useForeldrepengesøknadContext();
-    const { uttaksplan, annenForelder } = søknad;
+    const { uttaksplan, annenForelder, barn, søkersituasjon } = søknad;
+    const [fellesperiodeVedlegg, setFellesperiodeVedlegg] = useState<Attachment[]>(
+        søknad.vedlegg.filter(isFellesperiodeAttachment),
+    );
     const navigate = useNavigate();
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, true, annenForelder);
+    const erFarEllerMedmor = getErSøkerFarEllerMedmor(søknad.søkersituasjon.rolle);
+    const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
+
+    const navnPåForeldre = getNavnPåForeldre(state.søkerinfo.person, annenForelder, erFarEllerMedmor, intl);
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const termindato = getTermindato(barn);
 
     useSaveLoadedRoute(SøknadRoutes.DOKUMENTASJON);
 
     const onSubmit = (formValues: ManglendeVedleggFormData) => {
-        if (formValues.vedlegg.length === 0) {
-            formMethods.setError('vedlegg', {
-                message: 'Det er ingen vedlegg',
-            });
-        } else {
-            actionCreator.lagreDokumentasjon(formValues.vedlegg);
-            navigate(SøknadRoutes.UTENLANDSOPPHOLD);
-        }
+        const alleVedlegg = [
+            ...formValues[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM],
+            ...formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM],
+            ...formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET],
+        ];
+
+        return [actionCreator.lagreDokumentasjon(alleVedlegg)];
     };
 
+    const { handleSubmit } = useOnValidSubmit(
+        onSubmit,
+        SøknadRoutes.UTENLANDSOPPHOLD,
+        (state: ForeldrepengesøknadContextState) => storeAppState(state),
+    );
+
     const formMethods = useForm<ManglendeVedleggFormData>({
-        defaultValues: getInitValues(),
+        defaultValues: {
+            [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]: søknad.vedlegg.filter(isArbeidUtdanningEllerSykdomVedlegg),
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:
+                søknad.vedlegg.filter(isKvalifiseringsprogramVedlegg),
+            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
+                søknad.vedlegg.filter(isIntroduksjonsprogramVedlegg),
+        },
     });
 
-    const updateAttachments = (attachments: Attachment[]) => {
-        formMethods.setValue('vedlegg', attachments);
-        formMethods.clearErrors('vedlegg');
+    const updateAttachments = (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => {
+        formMethods.setValue(skjemanummer, attachments);
+        formMethods.clearErrors(skjemanummer);
     };
 
     return (
@@ -58,19 +89,17 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
             onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig(intl, søknad.erEndringssøknad, state.manglerDokumentasjon)}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
-                <Block padBottom="xl">
-                    {perioderSomManglerVedlegg.map((p) => {
-                        return (
-                            <PeriodeAttachmentUploader
-                                attachments={[]}
-                                updateAttachments={updateAttachments}
-                                key={p.id}
-                                periode={p}
-                            />
-                        );
-                    })}
-                </Block>
+            <Form formMethods={formMethods} onSubmit={handleSubmit}>
+                <FellesperiodeDok
+                    attachments={fellesperiodeVedlegg}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                    setFellesperiodeVedlegg={setFellesperiodeVedlegg}
+                />
                 <StepButtonsHookForm<ManglendeVedleggFormData>
                     goToPreviousStep={() => navigate(SøknadRoutes.UTTAKSPLAN)}
                 />

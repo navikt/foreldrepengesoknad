@@ -9,7 +9,7 @@
         "barn": {
             "type": "ufødt",
             "antallBarn": 1,
-            "termindato": "2024-02-03T00:00:00.000Z"
+            "termindato": "2024-01-05T00:00:00.000Z"
         },
         "annenForelder": {
             "etternavn": "morsen",
@@ -33,20 +33,20 @@
         "dekningsgrad": "100",
         "uttaksplan": [
             {
-                "id": "270316513-9347-01736-3518-34080088811776",
+                "id": "1964200667-28665-26872-6352-14702210207400",
                 "type": "periodeUtenUttak",
                 "tidsperiode": {
-                    "fom": "2024-02-05T00:00:00.000Z",
-                    "tom": "2024-05-01T00:00:00.000Z"
+                    "fom": "2024-01-05T00:00:00.000Z",
+                    "tom": "2024-04-30T00:00:00.000Z"
                 }
             },
             {
-                "id": "90595853-25566-06721-6600-0929929369681",
+                "id": "126814274-23615-2825-3558-067870821708485",
                 "forelder": "farMedmor",
                 "konto": "FEDREKVOTE",
                 "tidsperiode": {
-                    "fom": "2024-05-02T00:00:00.000Z",
-                    "tom": "2024-08-14T00:00:00.000Z"
+                    "fom": "2024-05-01T00:00:00.000Z",
+                    "tom": "2024-08-13T00:00:00.000Z"
                 },
                 "type": "uttak",
                 "erArbeidstaker": false,
@@ -55,12 +55,12 @@
                 "ønskerSamtidigUttak": false
             },
             {
-                "id": "45459934-22539-27391-1021-172451217628000",
+                "id": "254696590-1072-5138-7536-09462096985662",
                 "forelder": "farMedmor",
                 "konto": "FELLESPERIODE",
                 "tidsperiode": {
-                    "fom": "2024-08-15T00:00:00.000Z",
-                    "tom": "2024-08-28T00:00:00.000Z"
+                    "fom": "2024-08-14T00:00:00.000Z",
+                    "tom": "2024-08-27T00:00:00.000Z"
                 },
                 "type": "uttak",
                 "morsAktivitetIPerioden": "ARBEID",
@@ -68,10 +68,68 @@
                 "gradert": false,
                 "orgnumre": [],
                 "ønskerSamtidigUttak": false
+            },
+            {
+                "id": "390103112-0422-0762-7217-99781608517835",
+                "forelder": "farMedmor",
+                "konto": "FELLESPERIODE",
+                "tidsperiode": {
+                    "fom": "2024-08-28T00:00:00.000Z",
+                    "tom": "2024-09-10T00:00:00.000Z"
+                },
+                "type": "uttak",
+                "morsAktivitetIPerioden": "KVALPROG",
+                "erArbeidstaker": false,
+                "gradert": false,
+                "orgnumre": [],
+                "ønskerSamtidigUttak": false
             }
         ],
         "harGodkjentOppsummering": false,
-        "vedlegg": [],
+        "vedlegg": [
+            {
+                "id": "V1099420560186219712707315034019146975",
+                "file": {},
+                "filename": "Image from iOS.jpg",
+                "filesize": 70000,
+                "uploaded": true,
+                "pending": false,
+                "type": "morsaktivitetdokumentasjon",
+                "skjemanummer": "I000038",
+                "url": "http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V1099420560186219712707315034019146975",
+                "uuid": "Created",
+                "dokumenterer": {
+                    "type": "UTTAK",
+                    "perioder": [
+                        {
+                            "fom": "2024-08-14",
+                            "tom": "2024-08-27"
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "V781806974776828265622877719315444",
+                "file": {},
+                "filename": "screencapture-localhost-8080-2022-10-14-10_14_49.png",
+                "filesize": 157646,
+                "uploaded": true,
+                "pending": false,
+                "type": "morsaktivitetdokumentasjon",
+                "skjemanummer": "I000051",
+                "url": "http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V781806974776828265622877719315444",
+                "uuid": "Created",
+                "dokumenterer": {
+                    "type": "UTTAK",
+                    "perioder": [
+                        {
+                            "fom": "2024-08-28",
+                            "tom": "2024-09-10"
+                        }
+                    ]
+                }
+            }
+        ],
         "tilleggsopplysninger": {}
     },
     "version": 5,
@@ -79,26 +137,26 @@
     "uttaksplanInfo": {
         "antallDagerFellesperiode": "0",
         "antallUkerFellesperiode": "2",
-        "farMedmorsFørsteDag": "2024-05-02",
+        "farMedmorsFørsteDag": "2024-05-01",
         "morsSisteDag": ""
     },
     "antallUkerIUttaksplan": 79,
     "perioderSomSkalSendesInn": [
         {
-            "id": "270316513-9347-01736-3518-34080088811776",
+            "id": "1964200667-28665-26872-6352-14702210207400",
             "type": "periodeUtenUttak",
             "tidsperiode": {
-                "fom": "2024-02-05T00:00:00.000Z",
-                "tom": "2024-05-01T00:00:00.000Z"
+                "fom": "2024-01-05T00:00:00.000Z",
+                "tom": "2024-04-30T00:00:00.000Z"
             }
         },
         {
-            "id": "90595853-25566-06721-6600-0929929369681",
+            "id": "126814274-23615-2825-3558-067870821708485",
             "forelder": "farMedmor",
             "konto": "FEDREKVOTE",
             "tidsperiode": {
-                "fom": "2024-05-02T00:00:00.000Z",
-                "tom": "2024-08-14T00:00:00.000Z"
+                "fom": "2024-05-01T00:00:00.000Z",
+                "tom": "2024-08-13T00:00:00.000Z"
             },
             "type": "uttak",
             "erArbeidstaker": false,
@@ -107,15 +165,30 @@
             "ønskerSamtidigUttak": false
         },
         {
-            "id": "45459934-22539-27391-1021-172451217628000",
+            "id": "254696590-1072-5138-7536-09462096985662",
             "forelder": "farMedmor",
             "konto": "FELLESPERIODE",
             "tidsperiode": {
-                "fom": "2024-08-15T00:00:00.000Z",
-                "tom": "2024-08-28T00:00:00.000Z"
+                "fom": "2024-08-14T00:00:00.000Z",
+                "tom": "2024-08-27T00:00:00.000Z"
             },
             "type": "uttak",
             "morsAktivitetIPerioden": "ARBEID",
+            "erArbeidstaker": false,
+            "gradert": false,
+            "orgnumre": [],
+            "ønskerSamtidigUttak": false
+        },
+        {
+            "id": "390103112-0422-0762-7217-99781608517835",
+            "forelder": "farMedmor",
+            "konto": "FELLESPERIODE",
+            "tidsperiode": {
+                "fom": "2024-08-28T00:00:00.000Z",
+                "tom": "2024-09-10T00:00:00.000Z"
+            },
+            "type": "uttak",
+            "morsAktivitetIPerioden": "KVALPROG",
             "erArbeidstaker": false,
             "gradert": false,
             "orgnumre": [],

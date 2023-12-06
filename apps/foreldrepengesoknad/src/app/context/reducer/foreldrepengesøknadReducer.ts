@@ -239,6 +239,14 @@ const foreldrepengesøknadReducer = (
                 ...state,
                 manglerDokumentasjon: action.payload,
             };
+        case ForeldrepengesøknadContextActionKeys.LAGRE_DOKUMENTASJON:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    vedlegg: action.payload,
+                },
+            };
         default:
             return state;
     }
