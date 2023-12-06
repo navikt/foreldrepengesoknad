@@ -46,9 +46,11 @@ const useSendSøknad = (
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }
 
+        let kvittering;
+
         try {
             const response = await Api.sendSøknad(cleanedSøknad, fødselsnr, abortSignal);
-            setKvittering(response.data);
+            kvittering = response.data;
         } catch (error: unknown) {
             //TODO (TOR) Håndter dette utanfor denne hook'en (På same måte i alle appane)
 
@@ -90,6 +92,8 @@ const useSendSøknad = (
         } catch (error) {
             // Vi bryr oss ikke om feil her. Logges bare i backend
         }
+
+        setKvittering(kvittering);
     };
 
     return sendSøknad;
