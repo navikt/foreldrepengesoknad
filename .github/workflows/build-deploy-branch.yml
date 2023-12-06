@@ -28,7 +28,6 @@ jobs:
       push-image: true
       branch: ${{ inputs.branch }}
       bake-target: ${{ inputs.app }}
-      bake-platform: amd64
     secrets: inherit
 
   deploy-dev:
