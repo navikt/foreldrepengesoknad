@@ -1,4 +1,4 @@
-import { Attachment } from '../types';
+import { Attachment } from '@navikt/fp-types';
 import { bytesString, deleteAttachment } from './globalUtil';
 
 describe('globalUtil', () => {
