@@ -70,7 +70,7 @@ const Oppsummering: FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
     const uttaksplan = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN_METADATA));
-    const utenlandsopphold = notEmpty(useFpStateData(FpDataType.UTENLANDSOPPHOLD));
+    const utenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD);
     const senereUtenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const eksisterendeSak = useFpStateData(FpDataType.EKSISTERENDE_SAK);
@@ -150,7 +150,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                                     {!erEndringssøknad && (
                                         <OppsummeringsPanel title="Utenlandsopphold">
                                             <UtenlandsoppholdOppsummering
-                                                utenlandsopphold={utenlandsopphold}
+                                                utenlandsopphold={notEmpty(utenlandsopphold)}
                                                 tidligereUtenlandsopphold={tidligereUtenlandsopphold?.tidligereOpphold}
                                                 senereUtenlandsopphold={senereUtenlandsopphold?.senereOpphold}
                                                 barn={barn}
