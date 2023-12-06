@@ -139,7 +139,12 @@ const Oppsummering = () => {
 
                 try {
                     await Api.deleteMellomlagretSøknad(fnr, abortSignal);
-                    await Api.deleteMellomlagredeVedlegg(fnr, cleanedSøknad.vedlegg, abortSignal);
+
+                    const vedleggUtenLastOppSenere = cleanedSøknad.vedlegg.filter((v) => v.uuid);
+
+                    if (vedleggUtenLastOppSenere.length > 0) {
+                        await Api.deleteMellomlagredeVedlegg(fnr, vedleggUtenLastOppSenere, abortSignal);
+                    }
                 } catch (error) {
                     // Vi bryr oss ikke om feil her. Logges bare i backend
                 }

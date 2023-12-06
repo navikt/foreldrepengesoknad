@@ -8,9 +8,15 @@ interface Props {
     goToPreviousStep: () => void;
     nextButtonText?: string;
     nextButtonOnClick?: (setButtonsDisabled: (isDisabled: boolean) => void) => void;
+    isSubmitting: boolean;
 }
 
-const StepButtons: FunctionComponent<Props> = ({ goToPreviousStep, nextButtonText, nextButtonOnClick }) => {
+const StepButtons: FunctionComponent<Props> = ({
+    goToPreviousStep,
+    nextButtonText,
+    nextButtonOnClick,
+    isSubmitting,
+}) => {
     const [disabled, setDisabled] = useState(false);
 
     const onClickNextButton = useCallback(() => {
@@ -25,7 +31,12 @@ const StepButtons: FunctionComponent<Props> = ({ goToPreviousStep, nextButtonTex
                 <Button type="button" variant="secondary" onClick={goToPreviousStep}>
                     <FormattedMessage id="StepButtons.Forrige" />
                 </Button>
-                <Button type="submit" onClick={onClickNextButton} disabled={disabled}>
+                <Button
+                    type={nextButtonOnClick ? 'button' : 'submit'}
+                    onClick={onClickNextButton}
+                    disabled={disabled}
+                    loading={isSubmitting}
+                >
                     {nextButtonText !== undefined && nextButtonText}
                     {!nextButtonText && <FormattedMessage id={'StepButtons.Neste'} />}
                 </Button>

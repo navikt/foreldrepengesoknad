@@ -28,7 +28,7 @@ import {
     getUferdigPeriodeInput,
     mapPerioderFormDataToState,
 } from './perioderStepUtils';
-import { validateStillingsprosentPerioder } from '../tilrettelegging/tilretteleggingValidation';
+import { validateStillingsprosentPåPerioder } from '../tilrettelegging/tilretteleggingValidation';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
 import './perioderStep.css';
@@ -40,8 +40,9 @@ import {
     getDefaultMonth,
 } from 'app/utils/dateUtils';
 import { getRadioOptionsTomType } from '../tilrettelegging/tilretteleggingStepUtils';
+import { getOpprinneligStillingsprosent } from 'app/utils/tilretteleggingUtils';
 
-export interface Props {
+interface Props {
     id: string;
     navn: string;
 }
@@ -57,7 +58,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
     const onAvbrytSøknad = useAvbrytSøknad();
 
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
-    const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
+    const aktiveStillinger = currentTilrettelegging!.arbeidsforhold.stillinger;
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
 
@@ -89,6 +90,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
             initialValues={getPerioderInitialValues(currentTilrettelegging!)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
+                const opprinneligStillingsprosent = getOpprinneligStillingsprosent(
+                    formValues.varierendePerioder,
+                    aktiveStillinger,
+                );
                 const periodeDerSøkerErTilbakeIOpprinneligStilling = getPeriodeDerSøkerErTilbakeIFullStilling(
                     formValues.varierendePerioder,
                     opprinneligStillingsprosent,
@@ -98,6 +103,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                     formValues,
                     sisteDagForSvangerskapspenger,
                 );
+
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -233,12 +239,12 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                                 intl,
                                                                 'tilrettelegging.tilrettelagtArbeidType.description',
                                                             )}
-                                                            validate={validateStillingsprosentPerioder(
+                                                            validate={validateStillingsprosentPåPerioder(
                                                                 intl,
-                                                                opprinneligStillingsprosent,
                                                                 måSendeNySøknad,
                                                                 periodeDerSøkerErTilbakeIOpprinneligStilling,
                                                                 formValues.varierendePerioder,
+                                                                opprinneligStillingsprosent,
                                                             )}
                                                             onClick={(e: any) => e.preventDefault()}
                                                         />

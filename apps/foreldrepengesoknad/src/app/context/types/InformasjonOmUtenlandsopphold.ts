@@ -5,11 +5,19 @@ export interface Utenlandsopphold {
     tidsperiode: Tidsperiode;
 }
 
-interface InformasjonOmUtenlandsopphold {
+export type Opphold = {
     iNorgeNeste12Mnd: boolean;
     iNorgeSiste12Mnd: boolean;
-    senereOpphold: Utenlandsopphold[];
+};
+
+export type TidligereOpphold = {
     tidligereOpphold: Utenlandsopphold[];
-}
+};
+
+export type SenereOpphold = {
+    senereOpphold: Utenlandsopphold[];
+};
+
+type InformasjonOmUtenlandsopphold = Opphold & TidligereOpphold & SenereOpphold;
 
 export default InformasjonOmUtenlandsopphold;

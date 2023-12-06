@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { VStack } from '@navikt/ds-react';
 import { useForm } from 'react-hook-form';
 import { Step } from '@navikt/fp-common';
@@ -8,7 +7,7 @@ import { ScanDocumentInfo, useCustomIntl } from '@navikt/fp-ui';
 import { Form, StepButtonsHookForm, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 
 import useEsNavigator from 'appData/useEsNavigator';
-import useStepData from 'appData/useStepData';
+import useStepConfig from 'appData/useStepConfig';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
@@ -18,7 +17,7 @@ import TerminDokPanel from './TerminDokPanel';
 const DokumentasjonSteg: React.FunctionComponent = () => {
     const { i18n } = useCustomIntl();
 
-    const stepData = useStepData();
+    const stepConfig = useStepConfig();
     const navigator = useEsNavigator();
 
     const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
@@ -32,37 +31,29 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
         defaultValues: dokumentasjon,
     });
 
-    const lagre = useCallback(
-        (formValues: Dokumentasjon) => {
-            if (formValues.vedlegg.length === 0) {
-                formMethods.setError('vedlegg', {
-                    message: erBarnetAdoptert
-                        ? i18n('DokumentasjonSteg.MinstEttDokumentAdopsjon')
-                        : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
-                });
-            } else {
-                lagreDokumentasjon(formValues);
-                navigator.goToNextDefaultStep();
-            }
-        },
-        [erBarnetAdoptert, formMethods, i18n, lagreDokumentasjon, navigator],
-    );
+    const lagre = (formValues: Dokumentasjon) => {
+        if (formValues.vedlegg.length === 0) {
+            formMethods.setError('vedlegg', {
+                message: erBarnetAdoptert
+                    ? i18n('DokumentasjonSteg.MinstEttDokumentAdopsjon')
+                    : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
+            });
+        } else {
+            lagreDokumentasjon(formValues);
+            navigator.goToNextDefaultStep();
+        }
+    };
 
-    const updateAttachments = useCallback(
-        (attachments: Attachment[]) => {
-            formMethods.setValue('vedlegg', attachments);
-            formMethods.clearErrors('vedlegg');
-        },
-        [formMethods],
-    );
+    const updateAttachments = (attachments: Attachment[]) => {
+        formMethods.setValue('vedlegg', attachments);
+        formMethods.clearErrors('vedlegg');
+    };
 
     return (
         <Step
             bannerTitle={i18n('Søknad.Pageheading')}
-            pageTitle={stepData.stepConfig.find((c) => c.id === stepData.activeStepId)?.label || '-'}
             onCancel={navigator.avbrytSøknad}
-            steps={stepData.stepConfig}
-            activeStepId={stepData.activeStepId}
+            steps={stepConfig}
             useNoTempSavingText
         >
             <Form formMethods={formMethods} onSubmit={lagre}>

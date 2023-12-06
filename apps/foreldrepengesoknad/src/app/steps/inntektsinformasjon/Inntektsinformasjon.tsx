@@ -15,7 +15,7 @@ import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import stepConfig from '../stepsConfig';
 import AndreInntekter from './components/andre-inntekter/AndreInntekter';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import EgenNæring from './components/egen-næring/EgenNæring';
@@ -34,17 +34,24 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
+import InformasjonOmUtenlandsopphold from 'app/context/types/InformasjonOmUtenlandsopphold';
+
+const findPreviousUrl = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
+    if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
+        return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
+    } else if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
+        return SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
+    }
+    return SøknadRoutes.UTENLANDSOPPHOLD;
+};
 
 const Inntektsinformasjon = () => {
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
-    const { søker, barn, søkersituasjon } = useSøknad();
+    const { søker, barn, søkersituasjon, informasjonOmUtenlandsopphold } = useSøknad();
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const [frilansoppdrag, setFrilansoppdrag] = useState(
-        søker.frilansInformasjon ? søker.frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd : [],
-    );
     const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
         søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : [],
     );
@@ -57,7 +64,6 @@ const Inntektsinformasjon = () => {
             values,
             søker,
             andreInntekterInformasjon,
-            frilansoppdrag,
             egenNæringInformasjon,
         );
 
@@ -109,8 +115,6 @@ const Inntektsinformasjon = () => {
 
                             <Block padBottom="l">
                                 <Frilans
-                                    frilansoppdrag={frilansoppdrag}
-                                    setFrilansoppdrag={setFrilansoppdrag}
                                     visibility={visibility}
                                     formValues={formValues as InntektsinformasjonFormData}
                                 />
@@ -143,7 +147,7 @@ const Inntektsinformasjon = () => {
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getPreviousStepHref('inntektsinformasjon')}
+                                        to={findPreviousUrl(informasjonOmUtenlandsopphold)}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

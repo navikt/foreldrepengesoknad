@@ -116,7 +116,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     );
     const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
     const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
-    const opprinneligStillingsprosent = currentTilrettelegging!.arbeidsforhold.opprinneligstillingsprosent;
+    const stillinger = currentTilrettelegging!.arbeidsforhold.stillinger;
     const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
     const startDatoArbeid = currentTilrettelegging!.arbeidsforhold.startdato;
     const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(termindatoDate!)), dayjs(startDatoArbeid))!.toDate();
@@ -297,7 +297,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         }
                                         validate={validateStillingsprosentEnDelvisPeriode(
                                             intl,
-                                            opprinneligStillingsprosent,
+                                            formValues.enPeriodeMedTilretteleggingFom,
+                                            stillinger,
                                         )}
                                     />
                                 </Block>

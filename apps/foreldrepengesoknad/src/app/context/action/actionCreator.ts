@@ -13,7 +13,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
 import { ForeldrepengesøknadContextState } from '../ForeldrepengesøknadContextConfig';
 import Barn, { BarnFraNesteSak } from '@navikt/fp-common/src/common/types/Barn';
-import InformasjonOmUtenlandsopphold from '../types/InformasjonOmUtenlandsopphold';
+import { Opphold, SenereOpphold, TidligereOpphold } from '../types/InformasjonOmUtenlandsopphold';
 import Søker from '../types/Søker';
 import { Søknad } from '../types/Søknad';
 import UttaksplanInfo from '../types/UttaksplanInfo';
@@ -31,6 +31,8 @@ export enum ForeldrepengesøknadContextActionKeys {
     SET_SØKER = 'setSøker',
     SET_SØKNAD_GJELDER_ET_NYTT_BARN = 'setSøknadGjelderEtNyttBarn',
     SET_INFORMASJON_OM_UTENLANDSOPPHOLD = 'setInformasjonOmUtenlandsopphold',
+    SET_INFORMASJON_OM_UTENLANDSOPPHOLD_SENERE = 'setInformasjonOmUtenlandsoppholdSenere',
+    SET_INFORMASJON_OM_UTENLANDSOPPHOLD_TIDLIGERE = 'setInformasjonOmUtenlandsoppholdTidligere',
     SET_INFORMASJON_OM_ANDRE_INNTEKTER = 'setInformasjonOmAndreInntekter',
     SET_SAKER = 'setSaker',
     SET_UTTAKSPLAN_INFO = 'setUttaksplanInfo',
@@ -157,13 +159,33 @@ const setSøker = (payload: Søker): SetSøker => ({
 
 interface SetInformasjonOmUtenlandsopphold {
     type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD;
-    payload: InformasjonOmUtenlandsopphold;
+    payload: Opphold;
 }
 
-const setInformasjonOmUtenlandsopphold = (
-    payload: InformasjonOmUtenlandsopphold,
-): SetInformasjonOmUtenlandsopphold => ({
+const setInformasjonOmUtenlandsopphold = (payload: Opphold): SetInformasjonOmUtenlandsopphold => ({
     type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD,
+    payload,
+});
+
+interface SetInformasjonOmUtenlandsoppholdSenere {
+    type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD_SENERE;
+    payload: SenereOpphold;
+}
+
+const setInformasjonOmUtenlandsoppholdSenere = (payload: SenereOpphold): SetInformasjonOmUtenlandsoppholdSenere => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD_SENERE,
+    payload,
+});
+
+interface SetInformasjonOmUtenlandsoppholdTidligere {
+    type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD_TIDLIGERE;
+    payload: TidligereOpphold;
+}
+
+const setInformasjonOmUtenlandsoppholdTidligere = (
+    payload: TidligereOpphold,
+): SetInformasjonOmUtenlandsoppholdTidligere => ({
+    type: ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD_TIDLIGERE,
     payload,
 });
 
@@ -419,6 +441,8 @@ export type ForeldrepengesøknadContextAction =
     | SetSøker
     | SetSøknadGjelderEtNyttBarn
     | SetInformasjonOmUtenlandsopphold
+    | SetInformasjonOmUtenlandsoppholdSenere
+    | SetInformasjonOmUtenlandsoppholdTidligere
     | SetSaker
     | SetUttaksplanInfo
     | SetTilleggsopplysninger
@@ -456,6 +480,8 @@ export default {
     setSøkerinfo,
     setSøker,
     setInformasjonOmUtenlandsopphold,
+    setInformasjonOmUtenlandsoppholdSenere,
+    setInformasjonOmUtenlandsoppholdTidligere,
     setSaker,
     setUttaksplanInfo,
     setTilleggsopplysninger,

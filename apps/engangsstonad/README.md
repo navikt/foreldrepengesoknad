@@ -6,7 +6,6 @@ Kildekoden til frontend-appen for ny selvbetjeningsløsning for
 # Komme i gang
 
 For å kjøre opp appen lokalt:
-
 1.  `pnpm install`.
 2.  `pnpm run dev-api`.
 3.  `pnpm run dev`.

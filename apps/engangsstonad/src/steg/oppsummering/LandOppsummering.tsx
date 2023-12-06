@@ -4,7 +4,7 @@ import * as countries from 'i18n-iso-countries';
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { useCustomIntl, I18nFn } from '@navikt/fp-ui';
 import { formatDate, isBeforeToday, isToday } from '@navikt/fp-utils';
-import { UtenlandsoppholdPeriode } from 'types/Utenlandsopphold';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 const formaterDato = (dato: string, i18n: I18nFn) => {
     if (isToday(dato)) {

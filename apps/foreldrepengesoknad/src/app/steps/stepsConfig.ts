@@ -9,6 +9,8 @@ type AnnenForelderId = 'annenForelder';
 type UttaksplanInfo = 'uttaksplanInfo';
 type Uttaksplan = 'uttaksplan';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
+type UtenlandsoppholdSenereStepId = 'utenlandsoppholdSenere';
+type UtenlandsoppholdTidligereStepId = 'utenlandsoppholdTidligere';
 type Inntektsinformasjon = 'inntektsinformasjon';
 type PåkrevdDokumentasjonStepId = 'dokumentasjon';
 type OppsummeringStepId = 'oppsummering';
@@ -19,6 +21,8 @@ type StepIdWithBackHref =
     | UttaksplanInfo
     | Uttaksplan
     | UtenlandsoppholdStepId
+    | UtenlandsoppholdSenereStepId
+    | UtenlandsoppholdTidligereStepId
     | Inntektsinformasjon
     | PåkrevdDokumentasjonStepId
     | OppsummeringStepId;
@@ -59,6 +63,10 @@ const getStepLabel = (intl: IntlShape, id: StepId): string => {
             return intlUtils(intl, 'steps.label.annenForelder');
         case 'utenlandsopphold':
             return intlUtils(intl, 'steps.label.utenlandsopphold');
+        case 'utenlandsoppholdSenere':
+            return intlUtils(intl, 'steps.label.utenlandsopphold.senere');
+        case 'utenlandsoppholdTidligere':
+            return intlUtils(intl, 'steps.label.utenlandsopphold.tidligere');
         case 'inntektsinformasjon':
             return intlUtils(intl, 'steps.label.inntektsinformasjon');
         default:
@@ -89,6 +97,8 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, manglerDokumentasjon: bo
         'uttaksplanInfo',
         'uttaksplan',
         'utenlandsopphold',
+        'utenlandsoppholdTidligere',
+        'utenlandsoppholdSenere',
         'inntektsinformasjon',
         'oppsummering',
     ];
@@ -100,6 +110,8 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, manglerDokumentasjon: bo
         'uttaksplan',
         'dokumentasjon',
         'utenlandsopphold',
+        'utenlandsoppholdTidligere',
+        'utenlandsoppholdSenere',
         'inntektsinformasjon',
         'oppsummering',
     ];
@@ -160,8 +172,14 @@ export const getPreviousStepHref = (id: StepIdWithBackHref, manglerDokumentasjon
                 href = '/soknad/uttaksplan';
             }
             break;
-        case 'inntektsinformasjon':
+        case 'utenlandsoppholdTidligere':
             href = '/soknad/utenlandsopphold';
+            break;
+        case 'utenlandsoppholdSenere':
+            href = '/soknad/utenlandsoppholdTidligere';
+            break;
+        case 'inntektsinformasjon':
+            href = '/soknad/utenlandsoppholdSenere';
             break;
         case 'dokumentasjon':
             href = '/soknad/uttaksplan';

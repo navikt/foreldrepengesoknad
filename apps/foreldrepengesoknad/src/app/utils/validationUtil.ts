@@ -10,6 +10,11 @@ export const validateFødselsnummer =
             if (fnr === undefined || fnr.trim() === '') {
                 return intlUtils(intl, 'valideringsfeil.fødselsnummer.required');
             }
+
+            if (fnr.length > 50) {
+                return intlUtils(intl, 'valideringsfeil.fødselsnummer.fødselsnummerForLangt');
+            }
+
             return validateTextInputField(fnr, label, intl);
         }
 

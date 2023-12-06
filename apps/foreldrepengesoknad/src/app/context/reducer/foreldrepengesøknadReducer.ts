@@ -61,6 +61,36 @@ const foreldrepengesøknadReducer = (
                 søknad: {
                     ...state.søknad,
                     informasjonOmUtenlandsopphold: {
+                        tidligereOpphold:
+                            !action.payload.iNorgeSiste12Mnd &&
+                            state.søknad.informasjonOmUtenlandsopphold.tidligereOpphold
+                                ? state.søknad.informasjonOmUtenlandsopphold.tidligereOpphold
+                                : [],
+                        senereOpphold:
+                            !action.payload.iNorgeNeste12Mnd && state.søknad.informasjonOmUtenlandsopphold.senereOpphold
+                                ? state.søknad.informasjonOmUtenlandsopphold.senereOpphold
+                                : [],
+                        ...action.payload,
+                    },
+                },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD_SENERE:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    informasjonOmUtenlandsopphold: {
+                        ...state.søknad.informasjonOmUtenlandsopphold,
+                        ...action.payload,
+                    },
+                },
+            };
+        case ForeldrepengesøknadContextActionKeys.SET_INFORMASJON_OM_UTENLANDSOPPHOLD_TIDLIGERE:
+            return {
+                ...state,
+                søknad: {
+                    ...state.søknad,
+                    informasjonOmUtenlandsopphold: {
                         ...state.søknad.informasjonOmUtenlandsopphold,
                         ...action.payload,
                     },

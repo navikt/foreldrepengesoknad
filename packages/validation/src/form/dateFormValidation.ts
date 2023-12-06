@@ -70,10 +70,12 @@ export const isPeriodNotOverlappingOthers =
         otherPeriods: Array<{ fom: Date | string; tom: Date | string }>,
     ) =>
     (date: string): FormValidationResult => {
-        const dateRanges = otherPeriods.map((u) => ({
-            from: dayjs(u.fom).toDate(),
-            to: u.tom ? dayjs(u.tom).toDate() : TIDENES_ENDE,
-        }));
+        const dateRanges = otherPeriods
+            .filter((u) => u.fom)
+            .map((u) => ({
+                from: dayjs(u.fom).toDate(),
+                to: u.tom ? dayjs(u.tom).toDate() : TIDENES_ENDE,
+            }));
 
         const toDate = otherDateInfo.isStartDate ? date : otherDateInfo.date;
 

@@ -114,6 +114,7 @@ describe('<foreldrepengesøknadReducer>', () => {
     it('skal legge informasjon om utenlandsopphold state', () => {
         const payload = {
             iNorgeSiste12Mnd: false,
+            iNorgeNeste12Mnd: true,
         } as InformasjonOmUtenlandsopphold;
 
         const customState = {
@@ -138,6 +139,8 @@ describe('<foreldrepengesøknadReducer>', () => {
                 informasjonOmUtenlandsopphold: {
                     ...customState.søknad.informasjonOmUtenlandsopphold,
                     ...payload,
+                    tidligereOpphold: [],
+                    senereOpphold: [],
                 } as InformasjonOmUtenlandsopphold,
             },
         });

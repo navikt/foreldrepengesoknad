@@ -4,13 +4,13 @@ import { action } from '@storybook/addon-actions';
 import { AttachmentType, Skjemanummer, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
 import withRouter from 'storybook/decorators/withRouter';
 import { EsDataContext, EsDataType } from 'appData/EsDataContext';
 import { Kjønn } from 'types/Person';
 import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
 import OppsummeringSteg from './OppsummeringSteg';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 const promiseAction =
     () =>
@@ -57,13 +57,7 @@ export default {
 };
 
 const Template: StoryFn<{
-    sendSøknad: (
-        abortSignal: AbortSignal,
-        omBarnet: OmBarnet,
-        dokumentasjon?: Dokumentasjon,
-        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
-        senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    ) => Promise<void>;
+    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;

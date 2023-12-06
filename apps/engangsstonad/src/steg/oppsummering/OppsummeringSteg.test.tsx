@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
-import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OppsummeringSteg.stories';
 
@@ -50,18 +50,7 @@ describe('<OppsummeringSteg>', () => {
         const abortController = new AbortController();
 
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(
-            1,
-            abortController.signal,
-            {
-                antallBarn: 1,
-                erBarnetFødt: true,
-                fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-            },
-            { vedlegg: [] },
-            undefined,
-            undefined,
-        );
+        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 
     it('skal vise opplysninger om adopsjon og så sende søknad', async () => {
@@ -91,32 +80,7 @@ describe('<OppsummeringSteg>', () => {
         const abortController = new AbortController();
 
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(
-            1,
-            abortController.signal,
-            {
-                adopsjonAvEktefellesBarn: true,
-                adopsjonsdato: '2023-01-01',
-                antallBarn: 1,
-                fødselsdatoer: [{ dato: '2023-01-01' }],
-            },
-            {
-                vedlegg: [
-                    {
-                        file: {},
-                        filename: 'filnavn.pdf',
-                        filesize: 2323,
-                        id: '1',
-                        pending: false,
-                        skjemanummer: 'I000042',
-                        type: 'omsorgsovertakelse',
-                        uploaded: true,
-                    },
-                ],
-            },
-            undefined,
-            undefined,
-        );
+        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 
     it('skal vise opplysninger om når barnet ikke er født og så sende søknad', async () => {
@@ -147,32 +111,7 @@ describe('<OppsummeringSteg>', () => {
         const abortController = new AbortController();
 
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(
-            1,
-            abortController.signal,
-            {
-                antallBarn: 1,
-                erBarnetFødt: false,
-                termindato: '2023-01-02',
-            },
-            {
-                terminbekreftelsedato: '2023-01-01',
-                vedlegg: [
-                    {
-                        file: {},
-                        filename: 'filnavn.pdf',
-                        filesize: 2323,
-                        id: '1',
-                        pending: false,
-                        skjemanummer: 'I000062',
-                        type: 'terminbekreftelse',
-                        uploaded: true,
-                    },
-                ],
-            },
-            undefined,
-            undefined,
-        );
+        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 
     it('skal vise opplysninger om historiske og fremtidige utenlandsforhold så sende søknad', async () => {
@@ -214,40 +153,6 @@ describe('<OppsummeringSteg>', () => {
         const abortController = new AbortController();
 
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(
-            1,
-            abortController.signal,
-            {
-                antallBarn: 1,
-                erBarnetFødt: true,
-                fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-            },
-            {
-                vedlegg: [],
-            },
-            {
-                utenlandsoppholdSiste12Mnd: [
-                    {
-                        fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
-                        landkode: 'IS',
-                        tom: dayjs().format(ISO_DATE_FORMAT),
-                    },
-                ],
-            },
-            {
-                utenlandsoppholdNeste12Mnd: [
-                    {
-                        fom: dayjs().format(ISO_DATE_FORMAT),
-                        landkode: 'SE',
-                        tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
-                    },
-                    {
-                        fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
-                        landkode: 'DK',
-                        tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
-                    },
-                ],
-            },
-        );
+        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 });

@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { Radio, VStack } from '@navikt/ds-react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -7,15 +6,15 @@ import { useCustomIntl } from '@navikt/fp-ui';
 import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import { Søkersituasjon, SøkersituasjonEnum } from 'types/Søkersituasjon';
 import useEsNavigator from 'appData/useEsNavigator';
-import useStepData from 'appData/useStepData';
+import useStepConfig from 'appData/useStepConfig';
 import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { Søkersituasjon } from '@navikt/fp-types';
 
 const SøkersituasjonSteg: React.FunctionComponent = () => {
     const { i18n } = useCustomIntl();
 
-    const stepData = useStepData();
+    const stepConfig = useStepConfig();
     const navigator = useEsNavigator();
 
     const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
@@ -26,24 +25,19 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
         defaultValues: søkersituasjon,
     });
 
-    const lagre = useCallback(
-        (formValues: Søkersituasjon) => {
-            lagreSøkersituasjon(formValues);
-            if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
-                lagreOmBarnet(undefined);
-            }
-            navigator.goToNextDefaultStep();
-        },
-        [lagreOmBarnet, lagreSøkersituasjon, navigator, søkersituasjon],
-    );
+    const lagre = (formValues: Søkersituasjon) => {
+        lagreSøkersituasjon(formValues);
+        if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
+            lagreOmBarnet(undefined);
+        }
+        navigator.goToNextDefaultStep();
+    };
 
     return (
         <Step
             bannerTitle={i18n('Søknad.Pageheading')}
-            pageTitle={i18n('SøkersituasjonSteg.Søkersituasjon')}
             onCancel={navigator.avbrytSøknad}
-            steps={stepData.stepConfig}
-            activeStepId={stepData.activeStepId}
+            steps={stepConfig}
             useNoTempSavingText
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
@@ -54,10 +48,10 @@ const SøkersituasjonSteg: React.FunctionComponent = () => {
                         label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
                         validate={[isRequired(i18n('SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon'))]}
                     >
-                        <Radio value={SøkersituasjonEnum.FØDSEL}>
+                        <Radio value="fødsel">
                             <FormattedMessage id="SøkersituasjonSteg.Fødsel" />
                         </Radio>
-                        <Radio value={SøkersituasjonEnum.ADOPSJON}>
+                        <Radio value="adopsjon">
                             <FormattedMessage id="SøkersituasjonSteg.Adopsjon" />
                         </Radio>
                     </RadioGroup>

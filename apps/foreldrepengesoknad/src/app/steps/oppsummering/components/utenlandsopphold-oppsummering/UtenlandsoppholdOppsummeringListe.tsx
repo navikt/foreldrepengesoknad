@@ -6,6 +6,11 @@ import { useIntl } from 'react-intl';
 
 import './utenlandsoppholdOppsummeringListe.less';
 import { BodyShort } from '@navikt/ds-react';
+import dayjs from 'dayjs';
+
+const sortOpphold = (d1: Utenlandsopphold, d2: Utenlandsopphold) => {
+    return dayjs(d1.tidsperiode.fom).isBefore(d2.tidsperiode.fom, 'day') ? -1 : 1;
+};
 
 interface Props {
     utenlandsopphold: Utenlandsopphold[];
@@ -18,7 +23,7 @@ const UtenlandsoppholdOppsummeringListe: FunctionComponent<Props> = ({ utenlands
 
     return (
         <ul className={bem.block}>
-            {utenlandsopphold.map((opphold) => {
+            {[...utenlandsopphold].sort(sortOpphold).map((opphold) => {
                 return (
                     <li
                         className={bem.element('listElement')}

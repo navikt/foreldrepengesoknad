@@ -56,12 +56,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
         if (values.type === AnnenInntektType.MILITÆRTJENESTE) {
             return 'inntektsinformasjon.andreInntekterModal.veileder.militær';
         }
-
-        if (values.type === AnnenInntektType.SLUTTPAKKE) {
-            return 'inntektsinformasjon.andreInntekterModal.veileder.sluttpakke';
-        }
-
-        return 'inntektsinformasjon.andreInntekterModal.veileder.ventelønn';
+        return 'inntektsinformasjon.andreInntekterModal.veileder.sluttpakke';
     };
 
     const navnPåArbeidsgiverLabel = intlUtils(intl, 'annenInntekt.spørsmål.arbeidsgiver');
@@ -99,7 +94,6 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     name={AndreInntekterFormField.type}
                                     radios={[
                                         { label: 'Jobb i utlandet', value: AnnenInntektType.JOBB_I_UTLANDET },
-                                        { label: 'Vartpenger og ventelønn', value: AnnenInntektType.VENTELØNN },
                                         { label: 'Sluttvederlag', value: AnnenInntektType.SLUTTPAKKE },
                                         { label: 'Førstegangstjeneste', value: AnnenInntektType.MILITÆRTJENESTE },
                                     ]}

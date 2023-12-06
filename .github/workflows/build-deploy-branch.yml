@@ -1,0 +1,46 @@
+name: Bygg og deploy manuelt
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name'
+        type: string
+        required: true
+      app:
+        required: true
+        type: choice
+        description: 'Applikasjon som skal deployes fra branch'
+        options:
+          - engangsstonad
+          - foreldrepengeoversikt
+          - foreldrepengesoknad
+          - svangerskapspengesoknad
+
+jobs:
+  build-app:
+    name: Build
+    permissions:
+      packages: write
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@main
+    with:
+      runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
+      push-image: true
+      branch: ${{ inputs.branch }}
+      bake-target: ${{ inputs.app }}
+    secrets: inherit
+
+  deploy-dev:
+    name: Deploy dev
+    permissions:
+      id-token: write
+    needs: build-app
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
+    with:
+      gar: true
+      branch: ${{ inputs.branch }}
+      image: ${{ needs.build-app.outputs.build-version }}
+      cluster: dev-gcp
+      image_suffix: '/${{ inputs.app }}'
+      deploy_context: '/${{ inputs.app }}'
+    secrets: inherit

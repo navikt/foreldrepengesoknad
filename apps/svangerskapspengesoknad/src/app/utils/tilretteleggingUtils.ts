@@ -1,6 +1,8 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { getFloatFromString } from '@navikt/fp-common';
 import Tilrettelegging, {
+    PeriodeMedVariasjon,
+    Stilling,
     TilOgMedDatoType,
     TilretteleggingPeriode,
     Tilretteleggingstype,
@@ -9,6 +11,7 @@ import Tilrettelegging, {
 import dayjs from 'dayjs';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
+import { getTotalStillingsprosentPåSkjæringstidspunktet } from './arbeidsforholdUtils';
 
 export const getValgtTilrettelegging = (
     allTilretteleggingOptions: Tilrettelegging[],
@@ -61,6 +64,7 @@ const getPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
 const mappedTilretteleggingMedEnPeriode = (
     tilrettelegging: Tilrettelegging,
     sisteDagForSvangerskapspenger: Date,
+    opprinneligstillingsprosent: number,
 ): TilretteleggingPeriode[] => {
     const perioder = [] as TilretteleggingPeriode[];
     const stillingsprosent =
@@ -83,7 +87,7 @@ const mappedTilretteleggingMedEnPeriode = (
             getPeriodeMedHelTilretteleggingFremTilSisteSvpDag(
                 mappedPeriode,
                 sisteDagForSvangerskapspenger,
-                tilrettelegging.arbeidsforhold.opprinneligstillingsprosent,
+                opprinneligstillingsprosent,
             ),
         );
     }
@@ -93,8 +97,8 @@ const mappedTilretteleggingMedEnPeriode = (
 const mappedTilretteleggingMedVarierendePerioder = (
     tilrettelegging: Tilrettelegging,
     sisteDagForSvangerskapspenger: Date,
+    opprinneligStillingsprosent: number,
 ): TilretteleggingPeriode[] => {
-    const opprinneligStillingsprosent = tilrettelegging.arbeidsforhold.opprinneligstillingsprosent;
     const allePerioder = tilrettelegging.varierendePerioder!.map((periode) => {
         const stillingsprosent = getFloatFromString(periode.stillingsprosent);
         let type =
@@ -120,14 +124,17 @@ const mappedTilretteleggingMedVarierendePerioder = (
             getPeriodeMedHelTilretteleggingFremTilSisteSvpDag(
                 sistePeriode,
                 sisteDagForSvangerskapspenger,
-                tilrettelegging.arbeidsforhold.opprinneligstillingsprosent,
+                opprinneligStillingsprosent,
             ),
         );
     }
     return allePerioder;
 };
 
-export const sorterTilretteleggingsperioder = (p1: TilretteleggingPeriode, p2: TilretteleggingPeriode) => {
+export const sorterTilretteleggingsperioder = (
+    p1: TilretteleggingPeriode | PeriodeMedVariasjon,
+    p2: TilretteleggingPeriode | PeriodeMedVariasjon,
+) => {
     if (dayjs(p1.fom).isBefore(p2.fom, 'day')) {
         return -1;
     }
@@ -148,10 +155,22 @@ export const mapTilretteleggingTilPerioder = (
         (t) => t.varierendePerioder && t.varierendePerioder.length > 0,
     );
     const mappedTilretteleggingerMedEnPeriode = tilretteleggingMedEnPeriode.map((t) => {
-        return mappedTilretteleggingMedEnPeriode(t, sisteDagForSvangerskapspenger);
+        const opprinneligStillingsprosent = getTotalStillingsprosentPåSkjæringstidspunktet(
+            t.arbeidsforhold.stillinger,
+            t.enPeriodeMedTilretteleggingFom,
+        );
+        return mappedTilretteleggingMedEnPeriode(t, sisteDagForSvangerskapspenger, opprinneligStillingsprosent);
     });
     const mappedTilretteleggingAvFlerePerioder = tilretteleggingMedVarierendePerioder.map((t) => {
-        return mappedTilretteleggingMedVarierendePerioder(t, sisteDagForSvangerskapspenger);
+        const opprinneligStillingsprosent = getOpprinneligStillingsprosent(
+            t.varierendePerioder,
+            t.arbeidsforhold.stillinger,
+        );
+        return mappedTilretteleggingMedVarierendePerioder(
+            t,
+            sisteDagForSvangerskapspenger,
+            opprinneligStillingsprosent,
+        );
     });
     const allePerioder = [
         ...mappedTilretteleggingerMedEnPeriode.flat(1),
@@ -179,4 +198,13 @@ export const getNesteDagEtterSistePeriode = (
 
     const maxTomDato = alleTomDatoer.length > 0 ? dayjs.max(alleTomDatoer) : undefined;
     return maxTomDato ? dateToISOString(maxTomDato.add(1, 'd').toDate()) : '';
+};
+
+export const getOpprinneligStillingsprosent = (
+    allePerioder: PeriodeMedVariasjon[] | undefined,
+    stillinger: Stilling[],
+) => {
+    const sorterePerioder = allePerioder ? [...allePerioder].sort(sorterTilretteleggingsperioder) : undefined;
+    const førstePeriodeFom = sorterePerioder && sorterePerioder.length > 0 ? sorterePerioder[0].fom : undefined;
+    return førstePeriodeFom ? getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, førstePeriodeFom) : 100;
 };

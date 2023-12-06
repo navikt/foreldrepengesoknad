@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Step } from '@navikt/fp-common';
 import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
 import { useAbortSignal } from '@navikt/fp-api';
@@ -6,11 +6,8 @@ import { notEmpty } from '@navikt/fp-validation';
 import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Person from 'types/Person';
 import useEsNavigator from 'appData/useEsNavigator';
-import useStepData from 'appData/useStepData';
+import useStepConfig from 'appData/useStepConfig';
 import { EsDataType, useEsStateData } from 'appData/EsDataContext';
-import { OmBarnet } from 'types/OmBarnet';
-import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'types/Utenlandsopphold';
-import Dokumentasjon from 'types/Dokumentasjon';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
@@ -21,19 +18,13 @@ const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string)
 
 export interface Props {
     person: Person;
-    sendSøknad: (
-        abortSignal: AbortSignal,
-        omBarnet: OmBarnet,
-        dokumentasjon?: Dokumentasjon,
-        tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
-        senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    ) => Promise<void>;
+    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
 }
 
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
     const { i18n } = useCustomIntl();
 
-    const stepData = useStepData();
+    const stepConfig = useStepConfig();
     const navigator = useEsNavigator();
 
     const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
@@ -44,35 +35,24 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
     const abortSignal = useAbortSignal();
 
     const [isChecked, setChecked] = useState(false);
+    const [isSubmitting, setSubmitting] = useState(false);
     const [isError, setIsError] = useState(false);
 
-    const send = useCallback(
-        (setButtonsDisabled: (isDisabled: boolean) => void) => {
-            if (!isChecked) {
-                setIsError(true);
-            } else {
-                setButtonsDisabled(true);
-                sendSøknad(abortSignal, omBarnet, dokumentasjon, tidligereUtenlandsopphold, senereUtenlandsopphold);
-            }
-        },
-        [
-            isChecked,
-            abortSignal,
-            dokumentasjon,
-            omBarnet,
-            sendSøknad,
-            senereUtenlandsopphold,
-            tidligereUtenlandsopphold,
-        ],
-    );
+    const send = (setButtonsDisabled: (isDisabled: boolean) => void) => {
+        setSubmitting(true);
+        if (!isChecked) {
+            setIsError(true);
+        } else {
+            setButtonsDisabled(true);
+            sendSøknad(abortSignal);
+        }
+    };
 
     return (
         <Step
             bannerTitle={i18n('Søknad.Pageheading')}
-            pageTitle={i18n('OppsummeringSteg.Oppsummering')}
             onCancel={navigator.avbrytSøknad}
-            steps={stepData.stepConfig}
-            activeStepId={stepData.activeStepId}
+            steps={stepConfig}
             useNoTempSavingText
         >
             <VStack gap="10">
@@ -83,7 +63,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                             <BodyShort>{person.fnr}</BodyShort>
                         </VStack>
                     </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={i18n('OmBarnetSteg.OmBarnet')}>
+                    <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.OmBarnet')}>
                         <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                     </Oppsummeringspunkt>
                     <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.Utenlandsopphold')}>
@@ -105,6 +85,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
                     nextButtonText={i18n('OppsummeringSteg.Button.SendSøknad')}
                     nextButtonOnClick={send}
+                    isSubmitting={isSubmitting}
                 />
             </VStack>
         </Step>

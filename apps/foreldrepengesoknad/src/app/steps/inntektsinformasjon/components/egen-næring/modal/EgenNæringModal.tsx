@@ -14,7 +14,6 @@ import {
 import { Næring, Næringstype } from 'app/context/types/Næring';
 import egenNæringModalQuestionsConfig from './egenNæringModalQuestionsConfig';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
-import Regnskapsfører from './components/Regnskapsfører';
 import {
     validateEgenNæringFom,
     validateEgenNæringTom,
@@ -333,7 +332,6 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     validate={validateEgenNæringForklaringTilEndring(intl, varigEndringForklaringLabel)}
                                 />
                             </Block>
-                            <Regnskapsfører visibility={visibility} />
                             <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
                                 <Button>{intlUtils(intl, 'søknad.gåVidere')}</Button>
                             </Block>
