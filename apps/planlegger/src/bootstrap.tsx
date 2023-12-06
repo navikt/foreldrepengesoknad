@@ -6,6 +6,7 @@ import AppContainer from './AppContainer';
 import { initAmplitude } from '@navikt/fp-metrics';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
+import './styles/global.less';
 
 import '@navikt/ds-css';
 
