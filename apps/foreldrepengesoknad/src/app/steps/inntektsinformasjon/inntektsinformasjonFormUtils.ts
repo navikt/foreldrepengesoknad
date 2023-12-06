@@ -74,7 +74,6 @@ export const mapInntektsinformasjonFormDataToState = (
 
     return {
         erAleneOmOmsorg: søker.erAleneOmOmsorg,
-        språkkode: søker.språkkode,
         harHattAnnenInntektSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattAndreInntekter)!,
         harJobbetSomFrilansSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans)!,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(

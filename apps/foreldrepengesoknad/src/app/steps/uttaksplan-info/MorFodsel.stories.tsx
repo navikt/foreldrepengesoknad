@@ -83,7 +83,6 @@ UttaksplanMedAleneomsorg.args = {
         kanIkkeOppgis: true,
     },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -107,7 +106,6 @@ UttaksplanMedPrematurFødsel.args = {
         kanIkkeOppgis: true,
     },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -135,7 +133,6 @@ UttaksplanMedDeltUttak.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -163,7 +160,6 @@ UttaksplanMedFlerbarnsukerTvillinger.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

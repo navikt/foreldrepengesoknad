@@ -62,6 +62,13 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         [søkerinfoData],
     );
 
+    useEffect(() => {
+        if (storageData?.søknad?.søker?.språkkode && storageData.søknad.søker.språkkode !== locale) {
+            onChangeLocale(storageData.søknad?.søker?.språkkode);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [storageData]);
+
     if (kvittering) {
         if (Environment.INNSYN) {
             redirect(

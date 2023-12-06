@@ -14,6 +14,7 @@ import { ISOStringToDate } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import { Kvittering } from 'app/types/Kvittering';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
+import { LocaleNo } from '@navikt/fp-types';
 
 export const isAxiosError = (candidate: unknown): candidate is AxiosError<any> => {
     if (candidate && typeof candidate === 'object' && 'isAxiosError' in candidate) {
@@ -26,6 +27,7 @@ const useSendSøknad = (
     fødselsnr: string,
     erEndringssøknad: boolean,
     setKvittering: (kvittering: Kvittering) => void,
+    locale: LocaleNo,
 ) => {
     const hentData = useFpStateAllDataFn();
 
@@ -38,6 +40,7 @@ const useSendSøknad = (
             hentData,
             uttaksplanMetadata.perioderSomSkalSendesInn!,
             ISOStringToDate(getFamiliehendelsedato(barn))!,
+            locale,
             uttaksplanMetadata.endringstidspunkt,
         );
 

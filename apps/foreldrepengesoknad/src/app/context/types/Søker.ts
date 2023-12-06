@@ -11,7 +11,7 @@ interface Søker {
     frilansInformasjon?: Frilans;
     harHattAnnenInntektSiste10Mnd: boolean;
     andreInntekterSiste10Mnd?: AnnenInntekt[];
-    språkkode: LocaleNo;
+    språkkode?: LocaleNo;
 }
 
 export default Søker;

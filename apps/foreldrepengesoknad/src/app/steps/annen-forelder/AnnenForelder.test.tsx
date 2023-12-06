@@ -60,7 +60,6 @@ describe('<AnnenForelder>', () => {
                 harHattAnnenInntektSiste10Mnd: undefined,
                 harJobbetSomFrilansSiste10Mnd: undefined,
                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
-                språkkode: 'nb',
             },
             key: FpDataType.SØKER,
             type: 'update',

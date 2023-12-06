@@ -69,7 +69,6 @@ const Template: StoryFn<Props> = ({
                     [FpDataType.OM_BARNET]: barn,
                     [FpDataType.ANNEN_FORELDER]: annenForelder,
                     [FpDataType.SØKER]: {
-                        språkkode: 'nb',
                         // @ts-ignore TODO (TOR) Fiks Søker-typen
                         harHattAnnenInntektSiste10Mnd: undefined,
                         // @ts-ignore TODO (TOR) Fiks Søker-typen

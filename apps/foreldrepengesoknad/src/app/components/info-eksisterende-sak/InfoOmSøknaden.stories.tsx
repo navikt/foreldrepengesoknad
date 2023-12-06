@@ -113,7 +113,6 @@ export const AnnenForelder = Template.bind({});
 AnnenForelder.args = {
     søker: {
         erAleneOmOmsorg: false,
-        språkkode: 'nb',
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -136,7 +135,6 @@ export const InfoOmMorsSak = Template.bind({});
 InfoOmMorsSak.args = {
     søker: {
         erAleneOmOmsorg: false,
-        språkkode: 'nb',
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

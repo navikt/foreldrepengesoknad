@@ -5,8 +5,11 @@ import { notEmpty } from '@navikt/fp-validation';
 import { useNavigate } from 'react-router-dom';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import { LocaleNo } from '@navikt/fp-types';
+import Søker from './types/Søker';
 
 const mellomlagre = (
+    locale: LocaleNo,
     getDataFromState: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
     fødselsnr: string,
     erEndringssøknad: boolean,
@@ -37,7 +40,10 @@ const mellomlagre = (
             søkersituasjon,
             barn,
             annenForelder,
-            søker,
+            søker: {
+                ...søker,
+                språkkode: locale,
+            } as Søker,
             informasjonOmUtenlandsopphold: utenlandsopphold
                 ? {
                       ...utenlandsopphold,
@@ -66,6 +72,7 @@ const mellomlagre = (
 };
 
 const useMellomlagreSøknad = (
+    locale: LocaleNo,
     fødselsnr: string,
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
@@ -82,6 +89,7 @@ const useMellomlagreSøknad = (
                 setSkalMellomlagre(false);
 
                 await mellomlagre(
+                    locale,
                     getDataFromState,
                     fødselsnr,
                     erEndringssøknad,

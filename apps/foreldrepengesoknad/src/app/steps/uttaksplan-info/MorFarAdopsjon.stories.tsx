@@ -81,7 +81,6 @@ UttaksplanMedAleneomsorg.args = {
     },
     søker: {
         erAleneOmOmsorg: true,
-        språkkode: 'nb',
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -102,7 +101,6 @@ UttaksplanMedDeltUttakDerMorSøker.args = {
     },
     søker: {
         erAleneOmOmsorg: false,
-        språkkode: 'nb',
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -124,7 +122,6 @@ UttaksplanMedDeltUttakDerFarSøker.args = {
     },
     søker: {
         erAleneOmOmsorg: false,
-        språkkode: 'nb',
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,

@@ -48,7 +48,6 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder 
                     },
                     [FpDataType.SØKER]: {
                         erAleneOmOmsorg: false,
-                        språkkode: 'nb',
                         harJobbetSomFrilansSiste10Mnd: false,
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                         harHattAnnenInntektSiste10Mnd: false,

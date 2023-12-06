@@ -91,7 +91,6 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -126,7 +125,6 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -161,7 +159,6 @@ UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -197,7 +194,6 @@ UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

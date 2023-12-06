@@ -68,7 +68,6 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
         }
         if (type === FpDataType.SØKER) {
             return {
-                språkkode: 'nb',
                 erAleneOmOmsorg: false,
                 harHattAnnenInntektSiste10Mnd: false,
                 harJobbetSomFrilansSiste10Mnd: false,
@@ -163,10 +162,6 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         expect(Object.prototype.hasOwnProperty.call(barn, 'fnr')).toBe(false);
         expect(barn.fødselsdatoer).toEqual(barnMock.fødselsdatoer);
         expect(barn.termindato).toEqual(barnMock.termindato);
-    });
-
-    it('skal konvertere språkkode til upper case', () => {
-        expect(cleanedSøknad.søker.språkkode).toEqual('NB');
     });
 
     it('skal konvertere rolle til upper case', () => {

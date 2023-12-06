@@ -209,9 +209,10 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const sendSøknad = useSendSøknad(søkerInfo.person.fnr, erEndringssøknad, setKvittering);
+    const sendSøknad = useSendSøknad(søkerInfo.person.fnr, erEndringssøknad, setKvittering, locale);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
+        locale,
         søkerInfo.person.fnr,
         erEndringssøknad,
         harGodkjentVilkår,

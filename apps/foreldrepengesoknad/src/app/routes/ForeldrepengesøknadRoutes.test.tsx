@@ -58,7 +58,6 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                             },
                             [FpDataType.SØKER]: {
                                 erAleneOmOmsorg: false,
-                                språkkode: 'nb',
                                 harHattAnnenInntektSiste10Mnd: false,
                                 harJobbetSomFrilansSiste10Mnd: false,
                                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

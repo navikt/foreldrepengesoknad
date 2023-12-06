@@ -65,7 +65,6 @@ const Template: StoryFn<Props> = ({
                     },
                     [FpDataType.SØKER]: {
                         erAleneOmOmsorg: false,
-                        språkkode: 'nb',
                         // @ts-ignore FIX
                         harJobbetSomFrilansSiste10Mnd: undefined,
                         // @ts-ignore FIX

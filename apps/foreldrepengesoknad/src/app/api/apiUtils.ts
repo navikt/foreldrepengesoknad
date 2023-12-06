@@ -44,6 +44,7 @@ import {
 } from '@navikt/fp-common';
 import { FpDataMap, FpDataType } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
+import { LocaleNo } from '@navikt/fp-types';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
@@ -65,7 +66,7 @@ export type UttaksPeriodeForInnsending = Omit<UttaksperiodeBase, 'erMorForSyk'> 
 
 export type PeriodeForInnsending = Exclude<Periode, 'Uttaksperiode'> | UttaksPeriodeForInnsending;
 
-export type LocaleForInnsending = 'NB' | 'NN';
+export type LocaleForInnsending = 'NB' | 'NN' | 'nb' | 'nn';
 
 export type SøkerrolleInnsending = 'MOR' | 'FAR' | 'MEDMOR';
 
@@ -353,6 +354,7 @@ export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], end
 export const cleanSøknad = (
     hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
     familiehendelsesdato: Date,
+    locale: LocaleNo,
 ): SøknadForInnsending => {
     const annenForelder = notEmpty(hentData(FpDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(FpDataType.OM_BARNET));
@@ -366,7 +368,7 @@ export const cleanSøknad = (
     const eksisterendeSak = hentData(FpDataType.EKSISTERENDE_SAK);
 
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
-    const søkerInnsending = cleanSøker(søker, søkersituasjon);
+    const søkerInnsending = cleanSøker(søker, søkersituasjon, locale);
     const barnInnsending = cleanBarn(barn);
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const termindato = getTermindato(barn);
@@ -405,13 +407,12 @@ export const cleanSøknad = (
     return mapAttachmentsToSøknadForInnsending(cleanedSøknad) as SøknadForInnsending; //TODO vedleggForSenEndring
 };
 
-const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon): SøkerForInnsending => {
-    const cleanedSpråkkode = søker.språkkode === 'nb' ? 'NB' : 'NN';
+const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
     const rolle = konverterRolle(søkersituasjon.rolle);
     return {
         ...søker,
         rolle: rolle,
-        språkkode: cleanedSpråkkode,
+        språkkode: locale,
     };
 };
 
@@ -420,12 +421,13 @@ export const getSøknadsdataForInnsending = (
     hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
+    locale: LocaleNo,
     endringstidspunkt?: Date,
 ): SøknadForInnsending | EndringssøknadForInnsending => {
     if (erEndringssøknad) {
-        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, endringstidspunkt);
+        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, locale, endringstidspunkt);
     } else {
-        return cleanSøknad(hentData, familiehendelsesdato);
+        return cleanSøknad(hentData, familiehendelsesdato, locale);
     }
 };
 
@@ -456,6 +458,7 @@ export const cleanEndringssøknad = (
     hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
+    locale: LocaleNo,
     endringstidspunkt?: Date,
 ): EndringssøknadForInnsending => {
     const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
@@ -479,7 +482,7 @@ export const cleanEndringssøknad = (
             annenForelder,
             endringstidspunkt,
         ),
-        søker: cleanSøker(søker, søkersituasjon),
+        søker: cleanSøker(søker, søkersituasjon, locale),
         annenForelder: cleanAnnenForelder(annenForelder, true),
         barn: barn,
         dekningsgrad: uttaksplanMetadata.dekningsgrad!,

@@ -54,7 +54,6 @@ describe('<Inntektsinformasjon>', () => {
                 harJobbetSomFrilansSiste10Mnd: false,
                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                 selvstendigNæringsdrivendeInformasjon: [],
-                språkkode: 'nb',
             },
             key: FpDataType.SØKER,
             type: 'update',

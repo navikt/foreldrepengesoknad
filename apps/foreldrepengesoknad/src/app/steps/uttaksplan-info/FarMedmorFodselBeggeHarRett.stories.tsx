@@ -42,7 +42,6 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn }> = (args) => {
                     [FpDataType.OM_BARNET]: args.barn,
                     [FpDataType.SØKER]: {
                         erAleneOmOmsorg: false,
-                        språkkode: 'nb',
                         harJobbetSomFrilansSiste10Mnd: false,
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                         harHattAnnenInntektSiste10Mnd: false,

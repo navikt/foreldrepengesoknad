@@ -54,9 +54,7 @@ const defaultUtenlandsopphold = {
     iNorgeSiste12Mnd: true,
 };
 
-const defaultSøker = {
-    språkkode: 'nb',
-} as Søker;
+const defaultSøker = {} as Søker;
 
 const defaultUttaksplan = [
     {
@@ -178,7 +176,6 @@ Default.args = {
 export const MedAnnenForelder = Template.bind({});
 MedAnnenForelder.args = {
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -197,7 +194,6 @@ MedAnnenForelder.args = {
 export const MedAleneOmsorg = Template.bind({});
 MedAleneOmsorg.args = {
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: true,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -220,7 +216,6 @@ export const FarMedUførMor = Template.bind({});
 FarMedUførMor.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -247,7 +242,6 @@ export const FarMedMorSomHarRettIEØS = Template.bind({});
 FarMedMorSomHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -269,7 +263,6 @@ export const FarMedMorSomHaroppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind(
 FarMedMorSomHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -291,7 +284,6 @@ export const FarMedMorSomHarRettINorge = Template.bind({});
 FarMedMorSomHarRettINorge.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -358,7 +350,6 @@ MedUtenlandsopphold.args = {
 export const MedArbeidsforholdOgAndreInntekter = Template.bind({});
 MedArbeidsforholdOgAndreInntekter.args = {
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: true,
         frilansInformasjon: {
@@ -395,7 +386,6 @@ MedArbeidsforholdOgAndreInntekter.args = {
 export const MedSelvstendigNæringsdrivende = Template.bind({});
 MedSelvstendigNæringsdrivende.args = {
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
         selvstendigNæringsdrivendeInformasjon: [
@@ -428,7 +418,6 @@ MedSelvstendigNæringsdrivende.args = {
 export const MedSelvstendigNæringsdrivendeUtenDiverse = Template.bind({});
 MedSelvstendigNæringsdrivendeUtenDiverse.args = {
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
         selvstendigNæringsdrivendeInformasjon: [
@@ -455,7 +444,6 @@ MedSelvstendigNæringsdrivendeUtenDiverse.args = {
 export const MedAndreInntekterJobbIUtlandet = Template.bind({});
 MedAndreInntekterJobbIUtlandet.args = {
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: true,
         andreInntekterSiste10Mnd: [
@@ -480,7 +468,6 @@ MedAndreInntekterJobbIUtlandet.args = {
 export const MedAndreInntekterMilitærtjeneste = Template.bind({});
 MedAndreInntekterMilitærtjeneste.args = {
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: true,
         andreInntekterSiste10Mnd: [
@@ -510,7 +497,6 @@ export const ErEndringssøknad = Template.bind({});
 ErEndringssøknad.args = {
     erEndringssøknad: true,
     søker: {
-        språkkode: 'nb',
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,

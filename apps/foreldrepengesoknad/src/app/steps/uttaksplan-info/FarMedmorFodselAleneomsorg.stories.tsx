@@ -48,7 +48,6 @@ const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
                     },
                     [FpDataType.SØKER]: {
                         erAleneOmOmsorg: true,
-                        språkkode: 'nb',
                         harJobbetSomFrilansSiste10Mnd: false,
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                         harHattAnnenInntektSiste10Mnd: false,
