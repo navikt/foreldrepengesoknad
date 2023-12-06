@@ -110,9 +110,7 @@ const useMellomlagreSøknad = (
         setSkalMellomlagre(true);
     }, []);
 
-    return {
-        mellomlagreSøknadOgNaviger,
-    };
+    return mellomlagreSøknadOgNaviger;
 };
 
 export default useMellomlagreSøknad;

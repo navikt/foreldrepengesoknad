@@ -211,7 +211,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
 
     const sendSøknad = useSendSøknad(søkerInfo.person.fnr, erEndringssøknad, setKvittering);
 
-    const { mellomlagreSøknadOgNaviger } = useMellomlagreSøknad(
+    const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         søkerInfo.person.fnr,
         erEndringssøknad,
         harGodkjentVilkår,
