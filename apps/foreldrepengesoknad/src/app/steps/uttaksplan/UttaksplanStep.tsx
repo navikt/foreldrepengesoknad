@@ -88,7 +88,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitIsClicked, setSubmitIsClicked] = useState(false);
 
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
     const [uttaksplanErGyldig, setUttaksplanErGyldig] = useState(true);
@@ -386,6 +388,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const onSubmit = async () => {
         setIsSubmitting(true);
+        setSubmitIsClicked(true);
 
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(
             uttaksplanMetadata.tilleggsopplysninger,
@@ -443,6 +446,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const ref = useRef<FormikValues>(null);
     const clickHandler = async (values: any) => {
+        setSubmitIsClicked(true);
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
             setIsSubmitting(true);
             if (ref.current) {
@@ -502,6 +506,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
+        setSubmitIsClicked(false);
         setIsSubmitting(false);
 
         lagreUttaksplan(nyPlan);
@@ -683,14 +688,14 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             setIsOpen={setGåTilbakeIsOpen}
                             goToPreviousStep={goToPreviousStep}
                         />
-                        {!uttaksplanErGyldig && isSubmitting && (
+                        {!uttaksplanErGyldig && submitIsClicked && (
                             <Block textAlignCenter={true} padBottom="l">
                                 <Alert variant="error">
                                     <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
                                 </Alert>
                             </Block>
                         )}
-                        {erTomEndringssøknad && isSubmitting && (
+                        {erTomEndringssøknad && submitIsClicked && (
                             <Block textAlignCenter={true} padBottom="l">
                                 <Alert variant="error">
                                     <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
