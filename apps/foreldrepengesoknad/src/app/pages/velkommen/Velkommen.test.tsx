@@ -3,6 +3,8 @@ import { composeStories } from '@storybook/react';
 import * as stories from './Velkommen.stories';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
+import SøknadRoutes from 'app/routes/routes';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
@@ -35,6 +37,8 @@ const {
     HarSakMedTrillingerEnErDød,
 } = composeStories(stories);
 
+//TODO (TOR) Testane her må i større grad testa output frå onSubmit-funksjonen. Kan testast gjennom 'gåTilNesteSide'
+
 describe('<Velkommen>', () => {
     it('skal vise velkommen-side uten sak informasjon', async () => {
         render(<Default />);
@@ -48,8 +52,16 @@ describe('<Velkommen>', () => {
     });
 
     //Har saker, og alle barna lever.
-    it('skal vise velkommen-side med sak på fødsel som kan endres', async () => {
-        render(<HarOpprettetFPSakFødselMedBarnetIPDL />);
+    it('skal vise velkommen-side med sak på fødsel som kan endres og så velge denne', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(
+            <HarOpprettetFPSakFødselMedBarnetIPDL
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(
             await screen.findByText('Velg barnet eller barna du ønsker å sende inn søknad for.', { exact: false }),
@@ -63,11 +75,17 @@ describe('<Velkommen>', () => {
         expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Evig Lykkelig'));
+        await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
+        await userEvent.click(screen.getByText('Endre søknad'));
 
-        expect(screen.getByText('Endre søknad')).toBeInTheDocument();
-        expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        await userEvent.click(screen.getByText('Evig Lykkelig'));
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(12);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(12, {
+            data: SøknadRoutes.UTTAKSPLAN,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal måtte bekrefte at de har lest og forstått', async () => {

@@ -1,33 +1,33 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { Heading } from '@navikt/ds-react';
 import { SenereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { UtenlandsoppholdSenere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import actionCreator from 'app/context/action/actionCreator';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import SøknadRoutes from 'app/routes/routes';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { storeAppState } from 'app/utils/submitUtils';
-import { useOnValidSubmitNew } from 'app/utils/hooks/useOnValidSubmit';
 import createConfig from '../stepsConfig';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
 
-const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreSøknadOgNaviger: () => void;
+    avbrytSøknad: () => void;
+};
+
+const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
-    const navigate = useNavigate();
-    const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    useSaveLoadedRoute(SøknadRoutes.SENERE_UTENLANDSOPPHOLD);
+    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
+    const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
-    const { informasjonOmUtenlandsopphold } = useSøknad();
+    const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
     const lagredeSenereUtenlandsopphold =
-        informasjonOmUtenlandsopphold.senereOpphold.length > 0
+        senereUtenlandsopphold && senereUtenlandsopphold.senereOpphold.length > 0
             ? {
-                  utenlandsoppholdNeste12Mnd: informasjonOmUtenlandsopphold.senereOpphold.map((so) => ({
+                  utenlandsoppholdNeste12Mnd: senereUtenlandsopphold.senereOpphold.map((so) => ({
                       fom: so.tidsperiode.fom,
                       tom: so.tidsperiode.tom,
                       landkode: so.land,
@@ -35,8 +35,8 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
               }
             : undefined;
 
-    const onValidSubmitHandler = (values: UtenlandsoppholdSenere) => {
-        const senereUtenlandsopphold = {
+    const save = (values: UtenlandsoppholdSenere) => {
+        oppdaterSenereUtenlandsopphold({
             senereOpphold: values.utenlandsoppholdNeste12Mnd.map((un) => ({
                 land: un.landkode,
                 tidsperiode: {
@@ -44,25 +44,22 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
                     tom: un.tom,
                 },
             })),
-        };
-        return [actionCreator.setInformasjonOmUtenlandsoppholdSenere(senereUtenlandsopphold)];
-    };
+        });
 
-    const { handleSubmit } = useOnValidSubmitNew(
-        onValidSubmitHandler,
-        () => SøknadRoutes.INNTEKTSINFORMASJON,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
+        oppdaterAppRoute(SøknadRoutes.INNTEKTSINFORMASJON);
+        mellomlagreSøknadOgNaviger();
+    };
 
     const goToPreviousStep = () => {
-        navigate(
-            informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
-                ? SøknadRoutes.UTENLANDSOPPHOLD
-                : SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
-        );
+        const appRoute = utenlandsopphold.iNorgeSiste12Mnd
+            ? SøknadRoutes.UTENLANDSOPPHOLD
+            : SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
+
+        oppdaterAppRoute(appRoute);
+        mellomlagreSøknadOgNaviger();
     };
     const saveOnPrevious = () => {
-        // TODO Lagre uvalidert data i framtida
+        // TODO (TOR) Lagre uvalidert data i framtida
     };
 
     const stepConfig = createConfig(intl, false).map((config) => ({
@@ -77,9 +74,9 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
             </Heading>
             <SenereUtenlandsoppholdPanel
                 senereUtenlandsopphold={lagredeSenereUtenlandsopphold}
-                saveOnNext={handleSubmit}
+                saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
-                cancelApplication={onAvbrytSøknad}
+                cancelApplication={avbrytSøknad}
                 onContinueLater={onFortsettSøknadSenere}
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}

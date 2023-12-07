@@ -1,4 +1,7 @@
 import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
+import classNames from 'classnames';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
+import { notEmpty } from '@navikt/fp-validation';
 import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
 import {
@@ -29,25 +32,14 @@ import {
     TilgjengeligStønadskonto,
     Uttaksdagen,
 } from '@navikt/fp-common';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-
 import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import useSøknad from 'app/utils/hooks/useSøknad';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { BodyShort, ReadMore } from '@navikt/ds-react';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 
 import './infoOmSøknaden.less';
-import classNames from 'classnames';
-
-interface Props {
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    eksisterendeSak: EksisterendeSak | undefined;
-    erIUttaksplanenSteg: boolean;
-    minsterettUkerToTette?: number;
-}
+import Person from '@navikt/fp-common/src/common/types/Person';
 
 const getHvem = (
     intl: IntlShape,
@@ -66,23 +58,34 @@ const getHvem = (
     return intlUtils(intl, 'eksisterendeSak.tekst.benevning.aleneomsorg');
 };
 
+export interface Props {
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    eksisterendeSak: EksisterendeSak | undefined;
+    erIUttaksplanenSteg: boolean;
+    minsterettUkerToTette?: number;
+    person: Person;
+}
+
 const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer,
     eksisterendeSak,
     erIUttaksplanenSteg,
     minsterettUkerToTette,
+    person,
 }) => {
     const bem = bemUtils('infoOmSøknaden');
     const intl = useIntl();
-    const søkerinfo = useSøkerinfo();
-    const søknad = useSøknad();
-    const { state } = useForeldrepengesøknadContext();
-    const { barnFraNesteSak } = state;
-    const { annenForelder, søker, barn, søkersituasjon } = søknad;
-    const { person } = søkerinfo;
+
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
-    const erFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const annenForelderNavn = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
         ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
@@ -91,7 +94,6 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const erAleneOmOmsorg = søker.erAleneOmOmsorg;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
-    const { dekningsgrad } = søknad;
     const { rolle } = søkersituasjon;
     const dekningsgradGrunnlag = eksisterendeSak ? eksisterendeSak.grunnlag.dekningsgrad : undefined;
     const situasjon = getForeldreparSituasjon(
@@ -163,7 +165,9 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                             id="eksisterendeSak.tekst.html"
                             values={{
                                 uker: <strong>{getVarighetString(uker * 5, intl)}</strong>,
-                                dekningsgrad: <strong>{dekningsgrad ?? dekningsgradGrunnlag}</strong>,
+                                dekningsgrad: (
+                                    <strong>{uttaksplanMetadata?.dekningsgrad ?? dekningsgradGrunnlag}</strong>
+                                ),
                                 navn: hvem,
                             }}
                         />
@@ -198,7 +202,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                     navnPåForeldre={navnPåForeldre}
                                     familiehendelsesdato={familiehendelsesdato!}
                                     termindato={termindato}
-                                    situasjon={søknad.søkersituasjon.situasjon}
+                                    situasjon={søkersituasjon.situasjon}
                                 />
                             </ReadMore>
                         </Block>
@@ -218,7 +222,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                         navnPåForeldre={navnPåForeldre}
                                         familiehendelsesdato={familiehendelsesdato!}
                                         termindato={termindato}
-                                        situasjon={søknad.søkersituasjon.situasjon}
+                                        situasjon={søkersituasjon.situasjon}
                                     />
                                 </ReadMore>
                             </>

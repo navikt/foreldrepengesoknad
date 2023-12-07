@@ -2,29 +2,27 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-aleneomsorg/søkerinfo.json';
-import _context from 'storybook/storyData/uttaksplan/far-medmor-fødsel-aleneomsorg/context.json';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
 import UttaksplanInfo from './UttaksplanInfo';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { BarnType } from '@navikt/fp-common';
+import dayjs from 'dayjs';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
 const søkerinfo = _søkerinfo as any;
-const context = _context as any;
 
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselAleneomsorg',
     component: UttaksplanInfo,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
 const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
@@ -35,12 +33,43 @@ const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
     };
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock
-                søknad={args.context as ForeldrepengesøknadContextState}
-                søkerinfo={args.søkerinfo as SøkerinfoDTO}
+            <FpDataContext
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: {
+                        situasjon: 'fødsel',
+                        rolle: 'far',
+                    },
+                    [ContextDataType.OM_BARNET]: {
+                        type: BarnType.FØDT,
+                        fødselsdatoer: [dayjs('2022-03-01').toDate()],
+                        antallBarn: 1,
+                        datoForAleneomsorg: dayjs('2022-03-24').toDate(),
+                        dokumentasjonAvAleneomsorg: [],
+                    },
+                    [ContextDataType.SØKER]: {
+                        erAleneOmOmsorg: true,
+                        harJobbetSomFrilansSiste10Mnd: false,
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+                        harHattAnnenInntektSiste10Mnd: false,
+                    },
+                    [ContextDataType.ANNEN_FORELDER]: {
+                        etternavn: 'dfg',
+                        fornavn: 'dfg',
+                        fnr: '02068629902',
+                        utenlandskFnr: false,
+                        kanIkkeOppgis: false,
+                        harRettPåForeldrepengerINorge: true,
+                        erInformertOmSøknaden: true,
+                    },
+                }}
             >
-                <UttaksplanInfo />
-            </ForeldrepengerStateMock>
+                <UttaksplanInfo
+                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                    erEndringssøknad={false}
+                    mellomlagreSøknadOgNaviger={() => undefined}
+                    avbrytSøknad={() => undefined}
+                />
+            </FpDataContext>
         </AxiosMock>
     );
 };
@@ -49,6 +78,5 @@ export const UttaksplanInfoFarMedmorFødselAleneomsorg = Template.bind({});
 UttaksplanInfoFarMedmorFødselAleneomsorg.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
-    context,
     søkerinfo,
 };

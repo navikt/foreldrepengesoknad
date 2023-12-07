@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import {
+    Barn,
     Block,
     ISOStringToDate,
     formaterDatoUtenDag,
@@ -11,7 +12,6 @@ import {
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
 import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { validateErAnnenStartdatoAdopsjonGyldig } from './validation/morFarAdopsjonValidering';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
@@ -55,11 +55,11 @@ const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): Date
 
 interface Props {
     valgtStartdatoAdopsjon?: AdopsjonStartdatoValg;
+    barn: Barn;
 }
 
-const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon }) => {
+const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon, barn }) => {
     const intl = useIntl();
-    const { barn } = useSøknad();
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
     const radios = [];

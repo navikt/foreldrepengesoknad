@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Api from './api/api';
 import AppContainer from './AppContainer';
+import { RequestStatus } from './types/RequestState';
 
 describe('<AppContainer>', () => {
     afterEach(() => {
@@ -19,6 +20,7 @@ describe('<AppContainer>', () => {
         vi.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
             storageData: undefined,
             storageError: null,
+            storageStatus: RequestStatus.UNFETCHED,
         }));
 
         render(

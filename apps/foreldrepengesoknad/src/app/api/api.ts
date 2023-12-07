@@ -1,4 +1,3 @@
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { Kvittering } from 'app/types/Kvittering';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
@@ -8,10 +7,21 @@ import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
-import { Attachment, Dekningsgrad, formaterDato, hasValue } from '@navikt/fp-common';
+import {
+    Attachment,
+    BarnFraNesteSak,
+    Dekningsgrad,
+    EksisterendeSak,
+    Periode,
+    formaterDato,
+    hasValue,
+} from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/SakerOppslag';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { RequestStatus } from 'app/types/RequestState';
+import SøknadRoutes from 'app/routes/routes';
+import { Søknad } from 'app/context/types/Søknad';
+import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -91,60 +101,35 @@ const useGetAnnenPartsVedtak = (
     };
 };
 
+export interface FpMellomlagretData {
+    version: number;
+    currentRoute: SøknadRoutes;
+    søknad?: Partial<Søknad>;
+    antallUkerIUttaksplan?: number;
+    perioderSomSkalSendesInn?: Periode[];
+    harUttaksplanBlittSlettet?: boolean;
+    søknadGjelderEtNyttBarn?: boolean;
+    uttaksplanInfo?: UttaksplanInfo;
+    eksisterendeSak?: EksisterendeSak;
+    endringstidspunkt?: Date;
+    barnFraNesteSak?: BarnFraNesteSak;
+    annenPartsUttakErLagtTilIPlan?: boolean;
+}
+
 const useStoredAppState = () => {
-    const { data, error } = useGetRequest<ForeldrepengesøknadContextState>('/storage', {
+    const { data, error, requestStatus } = useGetRequest<FpMellomlagretData>('/storage/foreldrepenger', {
         config: { transformResponse: storageParser, withCredentials: true },
     });
 
     return {
         storageData: data,
         storageError: error,
+        storageStatus: requestStatus,
     };
 };
 
-const storeAppState = (state: ForeldrepengesøknadContextState, fnr: string) => {
-    const {
-        søknad,
-        version,
-        currentRoute,
-        uttaksplanInfo,
-        antallUkerIUttaksplan,
-        eksisterendeSak,
-        endringstidspunkt,
-        harAnnenPartEksisterendeSak,
-        harEksisterendeSak,
-        perioderSomSkalSendesInn,
-        harUttaksplanBlittSlettet,
-        søknadGjelderEtNyttBarn,
-        barnFraNesteSak,
-        brukerSvarteJaPåAutoJustering,
-        annenPartsUttakErLagtTilIPlan,
-    } = state;
-    return getAxiosInstance(fnr).post(
-        '/storage',
-        {
-            søknad,
-            version,
-            currentRoute,
-            uttaksplanInfo,
-            antallUkerIUttaksplan,
-            eksisterendeSak,
-            endringstidspunkt,
-            harAnnenPartEksisterendeSak,
-            harEksisterendeSak,
-            perioderSomSkalSendesInn,
-            harUttaksplanBlittSlettet,
-            søknadGjelderEtNyttBarn,
-            barnFraNesteSak,
-            brukerSvarteJaPåAutoJustering,
-            annenPartsUttakErLagtTilIPlan,
-        },
-        { withCredentials: true },
-    );
-};
-
-const deleteStoredAppState = (fnr: string) => {
-    return getAxiosInstance(fnr).delete('/storage', { withCredentials: true });
+const storeAppState = (dataSomSkalMellomlagres: FpMellomlagretData, fnr: string) => {
+    return getAxiosInstance(fnr).post('/storage/foreldrepenger', dataSomSkalMellomlagres, { withCredentials: true });
 };
 
 const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> => {
@@ -224,8 +209,8 @@ const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsendin
     });
 };
 
-const deleteMellomlagretSøknad = (fnr: string, signal: AbortSignal) => {
-    return getAxiosInstance(fnr).delete('/storage', { withCredentials: true, signal });
+const deleteMellomlagretSøknad = (fnr: string, signal?: AbortSignal) => {
+    return getAxiosInstance(fnr).delete('/storage/foreldrepenger', { withCredentials: true, signal });
 };
 
 const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: AbortSignal) => {
@@ -242,7 +227,6 @@ const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: 
 const Api = {
     useGetUttakskontoer,
     storeAppState,
-    deleteStoredAppState,
     getStorageKvittering,
     useGetAnnenPartsVedtak,
     useStoredAppState,

@@ -1,5 +1,6 @@
 import { intlUtils } from '@navikt/fp-common';
 import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil';
+import SøknadRoutes from 'app/routes/routes';
 import { IntlShape } from 'react-intl';
 
 type SøkersituasjonStepId = 'søkersituasjon';
@@ -11,7 +12,6 @@ type UtenlandsoppholdStepId = 'utenlandsopphold';
 type UtenlandsoppholdSenereStepId = 'utenlandsoppholdSenere';
 type UtenlandsoppholdTidligereStepId = 'utenlandsoppholdTidligere';
 type Inntektsinformasjon = 'inntektsinformasjon';
-type PåkrevdDokumentasjonStepId = 'dokumentasjon';
 type OppsummeringStepId = 'oppsummering';
 
 type StepIdWithBackHref =
@@ -23,10 +23,9 @@ type StepIdWithBackHref =
     | UtenlandsoppholdSenereStepId
     | UtenlandsoppholdTidligereStepId
     | Inntektsinformasjon
-    | PåkrevdDokumentasjonStepId
     | OppsummeringStepId;
 
-type StepIdWithBackHrefEndringssøknad = PåkrevdDokumentasjonStepId | OppsummeringStepId;
+type StepIdWithBackHrefEndringssøknad = OppsummeringStepId;
 
 export type StepId = SøkersituasjonStepId | StepIdWithBackHref;
 
@@ -108,15 +107,12 @@ const stepConfig = (intl: IntlShape, erEndringssøknad: boolean): StepConfig[] =
     return stepConfigFørstegangssøknad(intl);
 };
 
-export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndringssøknad): string => {
+export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndringssøknad): SøknadRoutes => {
     let href;
 
     switch (id) {
-        case 'dokumentasjon':
-            href = '/soknad/dokumentasjon';
-            break;
         case 'oppsummering':
-            href = '/soknad/uttaksplan';
+            href = SøknadRoutes.UTTAKSPLAN;
             break;
         default:
             return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i endringssøknaden: ${id}`);
@@ -125,39 +121,36 @@ export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndring
     return href;
 };
 
-export const getPreviousStepHref = (id: StepIdWithBackHref): string => {
+export const getPreviousStepHref = (id: StepIdWithBackHref): SøknadRoutes => {
     let href;
 
     switch (id) {
         case 'omBarnet':
-            href = '/soknad/sokersituasjon';
+            href = SøknadRoutes.SØKERSITUASJON;
             break;
         case 'annenForelder':
-            href = '/soknad/om-barnet';
+            href = SøknadRoutes.OM_BARNET;
             break;
         case 'uttaksplanInfo':
-            href = '/soknad/annen-forelder';
+            href = SøknadRoutes.ANNEN_FORELDER;
             break;
         case 'uttaksplan':
-            href = '/soknad/uttaksplan-info';
+            href = SøknadRoutes.UTTAKSPLAN_INFO;
             break;
         case 'utenlandsopphold':
-            href = '/soknad/uttaksplan';
+            href = SøknadRoutes.UTTAKSPLAN;
             break;
         case 'utenlandsoppholdTidligere':
-            href = '/soknad/utenlandsopphold';
+            href = SøknadRoutes.UTENLANDSOPPHOLD;
             break;
         case 'utenlandsoppholdSenere':
-            href = '/soknad/utenlandsoppholdTidligere';
+            href = SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
             break;
         case 'inntektsinformasjon':
-            href = '/soknad/utenlandsoppholdSenere';
-            break;
-        case 'dokumentasjon':
-            href = '/soknad/dokumentasjon';
+            href = SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
             break;
         case 'oppsummering':
-            href = '/soknad/inntektsinformasjon';
+            href = SøknadRoutes.INNTEKTSINFORMASJON;
             break;
         default:
             return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);

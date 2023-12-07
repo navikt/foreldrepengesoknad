@@ -1,3 +1,9 @@
+import { FunctionComponent, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { Button } from '@navikt/ds-react';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { notEmpty } from '@navikt/fp-validation';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import {
     Block,
     EksisterendeSak,
@@ -13,22 +19,14 @@ import {
     isInfoPeriode,
 } from '@navikt/fp-common';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
-import actionCreator from 'app/context/action/actionCreator';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { storeAppState } from 'app/utils/submitUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import {
     FarMedmorFørstegangssøknadMedAnnenPartFormComponents,
@@ -38,30 +36,49 @@ import {
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { Button } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import Person from '@navikt/fp-common/src/common/types/Person';
+import BackButton from 'app/steps/BackButton';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
+    erEndringssøknad: boolean;
+    mellomlagreSøknadOgNaviger: () => void;
+    person: Person;
+    oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
 const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
     eksisterendeSakAnnenPart,
+    erEndringssøknad,
+    mellomlagreSøknadOgNaviger,
+    person,
+    oppdaterBarnOgLagreUttaksplandata,
 }) => {
-    const søknad = useSøknad();
-    const { state } = useForeldrepengesøknadContext();
     const intl = useIntl();
-    const { barn, søkersituasjon, annenForelder, erEndringssøknad } = søknad;
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
+    // TODO (TOR) fjern as
+    const uttaksplanInfo = useContextGetData(
+        ContextDataType.UTTAKSPLAN_INFO,
+    ) as FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo;
+
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const lagretUttaksplanInfo = useUttaksplanInfo<FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo>();
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const familiehendelsedatoDate = ISOStringToDate(familiehendelsedato);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -73,7 +90,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         annenForelder,
     );
     const førsteUttaksdagNesteBarnsSak =
-        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const erDeltUttak = true;
     const termindato = getTermindato(barn);
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
@@ -88,12 +105,16 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                   eksisterendeSakAnnenPart.uttaksplan[eksisterendeSakAnnenPart.uttaksplan.length - 1].tidsperiode.tom,
               )
             : undefined;
-    const onValidSubmitHandler = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
+
+    const onSubmit = (values: Partial<FarMedmorFørstegangssøknadMedAnnenPartFormData>) => {
+        setIsSubmitting(true);
+
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
             permisjonStartdato: values.permisjonStartdato!,
         };
+        oppdaterUttaksplanInfo(uttaksplanInfo);
+
         const stønadskontoer = tilgjengeligeStønadskontoer[getDekningsgradFromString(grunnlag.dekningsgrad)];
-        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[grunnlag.dekningsgrad]);
         const farMedmorSinePerioder = lagUttaksplan({
             annenForelderErUfør: erMorUfør,
             erDeltUttak,
@@ -137,19 +158,20 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
             uttaksplanMedAnnenPart = farMedmorSinePerioder;
         }
 
-        return [
-            actionCreator.setAntallUkerIUttaksplan(antallUker),
-            actionCreator.setUttaksplanInfo(uttaksplanInfo),
-            actionCreator.setDekningsgrad(grunnlag.dekningsgrad),
-            actionCreator.lagUttaksplanforslag(uttaksplanMedAnnenPart),
-        ];
-    };
+        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[grunnlag.dekningsgrad]);
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
+        oppdaterUttaksplan(uttaksplanMedAnnenPart);
+
+        oppdaterBarnOgLagreUttaksplandata({
+            ...uttaksplanMetadata,
+            dekningsgrad: grunnlag.dekningsgrad,
+            antallUkerIUttaksplan: antallUker,
+        });
+
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
+
+        mellomlagreSøknadOgNaviger();
+    };
 
     if (!eksisterendeSakAnnenPart || !erFarEllerMedmor) {
         return null;
@@ -167,8 +189,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
 
     return (
         <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper
-            initialValues={getFarMedmorFørstegangssøknadMedAnnenPartInitialValues(lagretUttaksplanInfo)}
-            onSubmit={handleSubmit}
+            initialValues={getFarMedmorFørstegangssøknadMedAnnenPartInitialValues(uttaksplanInfo)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig.getVisbility(
                     formValues as FarMedmorFørstegangssøknadMedAnnenPartFormData,
@@ -185,6 +207,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                                 eksisterendeSak={eksisterendeSakAnnenPart}
                                 erIUttaksplanenSteg={false}
                                 tilgjengeligeStønadskontoer={valgtMengdeStønadskonto}
+                                person={person}
                             />
                         </Block>
                         <Block padBottom="xl">
@@ -202,9 +225,10 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                         </Block>
                         <Block>
                             <StepButtonWrapper>
-                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
-                                    <FormattedMessage id="backlink.label" />
-                                </Button>
+                                <BackButton
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                    route={getPreviousStepHref('uttaksplanInfo')}
+                                />
                                 {visibility.areAllQuestionsAnswered() && (
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

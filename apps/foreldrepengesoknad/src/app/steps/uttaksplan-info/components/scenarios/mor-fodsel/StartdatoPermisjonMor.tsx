@@ -13,9 +13,9 @@ import {
     Tidsperioden,
     uttaksConstants,
     uttaksplanDatoavgrensninger,
+    Barn,
 } from '@navikt/fp-common';
 import { MorFødselFormComponents, MorFødselFormField } from './morFødselFormConfig';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { validateErStartdatoFørTermindato } from './validation/morFodselValidering';
 import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
@@ -37,15 +37,16 @@ interface Props {
     permisjonStartdato: string;
     skalIkkeHaUttakFørTermin: boolean;
     termindato: Date | undefined;
+    barn: Barn;
 }
 
 const StartdatoPermisjonMor: FunctionComponent<Props> = ({
     permisjonStartdato,
     skalIkkeHaUttakFørTermin,
     termindato,
+    barn,
 }) => {
     const intl = useIntl();
-    const { barn } = useSøknad();
     const bem = bemUtils('datoInput');
 
     const erBarnFødt = isFødtBarn(barn);

@@ -1,29 +1,26 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import { RequestStatus } from 'app/types/RequestState';
 
 import _søkerinfoMorSøker from 'storybook/storyData/sokerinfo/søkerinfoMorSøker.json';
 import _søkerinfoFarSøker from 'storybook/storyData/sokerinfo/søkerinfoFarSøker.json';
-import _contextMorSøkerAdopsjon from 'storybook/storyData/soknad/soknadMorSøkerAdopsjon.json';
-import _contextFarSøkerAdopsjon from 'storybook/storyData/soknad/soknadFarSøkerAdopsjon.json';
 import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
 import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
 
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import Søker from 'app/context/types/Søker';
+import dayjs from 'dayjs';
+import { SøkersituasjonFp } from '@navikt/fp-types';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
-
-const contextMorSøkerAdopsjon = _contextMorSøkerAdopsjon as any;
-const contextFarSøkerAdopsjon = _contextFarSøkerAdopsjon as any;
 
 const søkerinfoMorSøker = _søkerinfoMorSøker as any;
 const søkerinfoFarSøker = _søkerinfoFarSøker as any;
@@ -31,10 +28,17 @@ const søkerinfoFarSøker = _søkerinfoFarSøker as any;
 export default {
     title: 'steps/uttaksplan-info/MorFarAnnenForelderHarRettIEØS',
     component: UttaksplanInfo,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
-const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
+const Template: StoryFn<
+    UttaksplanInfoTestData & {
+        søkersituasjon: SøkersituasjonFp;
+        annenForelder: AnnenForelder;
+        barn: Barn;
+        søker: Søker;
+    }
+> = (args) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
@@ -42,12 +46,21 @@ const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
     };
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock
-                søknad={args.context as ForeldrepengesøknadContextState}
-                søkerinfo={args.søkerinfo as SøkerinfoDTO}
+            <FpDataContext
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
+                    [ContextDataType.OM_BARNET]: args.barn,
+                    [ContextDataType.SØKER]: args.søker,
+                    [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
+                }}
             >
-                <UttaksplanInfo />
-            </ForeldrepengerStateMock>
+                <UttaksplanInfo
+                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                    erEndringssøknad={false}
+                    mellomlagreSøknadOgNaviger={() => undefined}
+                    avbrytSøknad={() => undefined}
+                />
+            </FpDataContext>
         </AxiosMock>
     );
 };
@@ -56,21 +69,33 @@ export const UttaksplanAdopsjonMorSøkerFarHarRettIEOS = Template.bind({});
 UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
     stønadskonto100,
     stønadskonto80,
-    context: {
-        ...contextMorSøkerAdopsjon,
-        søknad: {
-            ...contextMorSøkerAdopsjon.søknad,
-
-            annenForelder: {
-                fornavn: 'Far',
-                etternavn: 'EØS',
-                fnr: '1111UUUUU',
-                harRettPåForeldrepengerINorge: false,
-                harRettPåForeldrepengerIEØS: true,
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    søkersituasjon: {
+        situasjon: 'adopsjon',
+        rolle: 'mor',
+    },
+    barn: {
+        antallBarn: 1,
+        type: BarnType.ADOPTERT_ANNET_BARN,
+        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adoptertIUtlandet: false,
+        dokumentasjonAvAleneomsorg: [],
+        fødselsdatoer: [],
+        omsorgsovertakelse: [],
+    },
+    annenForelder: {
+        fornavn: 'Far',
+        etternavn: 'EØS',
+        fnr: '1111UUUUU',
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: true,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
     søkerinfo: søkerinfoMorSøker,
 };
 
@@ -78,21 +103,33 @@ export const UttaksplanAdopsjonFarSøkerMorHarRettIEOS = Template.bind({});
 UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
     stønadskonto100,
     stønadskonto80,
-    context: {
-        ...contextFarSøkerAdopsjon,
-        søknad: {
-            ...contextFarSøkerAdopsjon.søknad,
-
-            annenForelder: {
-                fornavn: 'Mor',
-                etternavn: 'EØS',
-                fnr: '2222UUUUU',
-                harRettPåForeldrepengerINorge: false,
-                harRettPåForeldrepengerIEØS: true,
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    søkersituasjon: {
+        situasjon: 'adopsjon',
+        rolle: 'far',
+    },
+    barn: {
+        antallBarn: 1,
+        type: BarnType.ADOPTERT_ANNET_BARN,
+        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adoptertIUtlandet: false,
+        dokumentasjonAvAleneomsorg: [],
+        fødselsdatoer: [],
+        omsorgsovertakelse: [],
+    },
+    annenForelder: {
+        fornavn: 'Mor',
+        etternavn: 'EØS',
+        fnr: '2222UUUUU',
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: true,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
     søkerinfo: søkerinfoFarSøker,
 };
 
@@ -100,31 +137,33 @@ export const UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger = Template.bind(
 UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
     stønadskonto100,
     stønadskonto80,
-    context: {
-        ...contextFarSøkerAdopsjon,
-        søknad: {
-            ...contextFarSøkerAdopsjon.søknad,
-            søkersituasjon: {
-                situasjon: 'fødsel',
-                rolle: 'far',
-            },
-            barn: {
-                ...contextFarSøkerAdopsjon.søknad.barn,
-                fødselsdatoer: ['2022-06-14', '2022-06-14'],
-                antallBarn: 2,
-                adopsjonsdato: undefined,
-                adoptertIUtlandet: undefined,
-            },
-            annenForelder: {
-                fornavn: 'Mor',
-                etternavn: 'EØS',
-                fnr: '2222UUUUU',
-                harRettPåForeldrepengerINorge: false,
-                harRettPåForeldrepengerIEØS: true,
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    barn: {
+        type: BarnType.ADOPTERT_ANNET_BARN,
+        dokumentasjonAvAleneomsorg: [],
+        fødselsdatoer: [dayjs('2022-06-14').toDate(), dayjs('2022-06-14').toDate()],
+        antallBarn: 2,
+        // @ts-ignore FIX
+        adopsjonsdato: undefined,
+        adoptertIUtlandet: undefined,
+    },
+    annenForelder: {
+        fornavn: 'Mor',
+        etternavn: 'EØS',
+        fnr: '2222UUUUU',
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: true,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
     søkerinfo: søkerinfoFarSøker,
 };
 
@@ -132,32 +171,33 @@ export const UttaksplanFødselMorSøkerFarHarRettIEOSPrematur = Template.bind({}
 UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
     stønadskonto100,
     stønadskonto80,
-    context: {
-        ...contextMorSøkerAdopsjon,
-        søknad: {
-            ...contextMorSøkerAdopsjon.søknad,
-            søkersituasjon: {
-                situasjon: 'fødsel',
-                rolle: 'mor',
-            },
-            barn: {
-                ...contextMorSøkerAdopsjon.søknad.barn,
-                fødselsdatoer: ['2022-06-14'],
-                termindato: ['2022-08-14'],
-                antallBarn: 1,
-                adopsjonsdato: undefined,
-                adoptertIUtlandet: undefined,
-                type: 'født',
-            },
-            annenForelder: {
-                fornavn: 'Mor',
-                etternavn: 'EØS',
-                fnr: '2222UUUUU',
-                harRettPåForeldrepengerINorge: false,
-                harRettPåForeldrepengerIEØS: true,
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    barn: {
+        dokumentasjonAvAleneomsorg: [],
+        fødselsdatoer: [dayjs('2022-06-14').toDate()],
+        termindato: dayjs('2022-08-14').toDate(),
+        antallBarn: 1,
+        // @ts-ignore FIX
+        adopsjonsdato: undefined,
+        adoptertIUtlandet: undefined,
+        type: BarnType.FØDT,
+    },
+    annenForelder: {
+        fornavn: 'Mor',
+        etternavn: 'EØS',
+        fnr: '2222UUUUU',
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: true,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
     søkerinfo: søkerinfoFarSøker,
 };

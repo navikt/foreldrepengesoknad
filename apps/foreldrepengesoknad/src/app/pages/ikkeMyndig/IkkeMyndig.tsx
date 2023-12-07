@@ -1,23 +1,23 @@
-import { intlUtils, links } from '@navikt/fp-common';
+import { Søkerinfo, intlUtils, links } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import Feilside from '../feilside/Feilside';
 
 interface Props {
-    fornavn: string;
+    søkerInfo: Søkerinfo;
 }
 
-const IkkeMyndig: FunctionComponent<Props> = ({ fornavn }) => {
+const IkkeMyndig: FunctionComponent<Props> = ({ søkerInfo }) => {
     const intl = useIntl();
-
     return (
         <Feilside
             dokumenttittel="NAV Foreldrepengesøknad"
             ingress={intlUtils(intl, 'velkommen.ingress')}
             tittel={intlUtils(intl, 'velkommen.tittel')}
+            søkerInfo={søkerInfo}
             illustrasjon={{
                 tittel: intlUtils(intl, 'velkommen.ikkeMyndig.tittel', {
-                    navn: fornavn.toLowerCase(),
+                    navn: søkerInfo.person.fornavn.toLowerCase(),
                 }),
                 tekst: intlUtils(intl, 'velkommen.ikkeMyndig.ingress'),
                 lenke: {

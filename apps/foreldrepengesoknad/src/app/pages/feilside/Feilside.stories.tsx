@@ -1,15 +1,12 @@
 import Feilside, { FeilsideProps } from './Feilside';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { StoryFn } from '@storybook/react';
 import { links } from '@navikt/fp-common';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 
 const defaultExport = {
     title: 'pages/Feilside',
     component: Feilside,
-    decorators: [withForeldrepengersøknadContext],
 };
 
 export default defaultExport;
@@ -26,16 +23,7 @@ const søkerInfo = {
 } as SøkerinfoDTO;
 
 const Template: StoryFn<FeilsideProps> = (args: FeilsideProps) => {
-    return (
-        <ForeldrepengerStateMock
-            søknad={
-                { søknad: { harGodkjentVilkår: true, søker: { språkkode: 'nb' } } } as ForeldrepengesøknadContextState
-            }
-            søkerinfo={søkerInfo}
-        >
-            <Feilside {...args}></Feilside>
-        </ForeldrepengerStateMock>
-    );
+    return <Feilside {...args} søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerInfo)}></Feilside>;
 };
 export const Default = Template.bind({}) as any;
 Default.args = {

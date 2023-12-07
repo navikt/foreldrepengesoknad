@@ -8,7 +8,7 @@ const { UttaksplanMedAleneomsorg, UttaksplanMedDeltUttakDerFarSøker, Uttaksplan
     composeStories(stories);
 
 describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
-    // FIXME Noko tull med locale og datoar
+    // TODO Noko tull med locale og datoar
     it.skip('skal fylle ut dekningsgrad med 80 prosent og velge omsorgovertakelsedato før en kan gå videre når en har aleneomsorg', async () => {
         render(<UttaksplanMedAleneomsorg />);
 
@@ -18,7 +18,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(screen.getByText('3 + 56 uker')).toBeInTheDocument();
-        //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
+        //TODO (TOR) Denne teksten er feil. Gjeld fødsel
         expect(
             screen.getByText(
                 'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
@@ -32,7 +32,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(screen.queryByText('Velg dato')).not.toBeInTheDocument();
     });
 
-    // FIXME Noko tull med locale og datoar
+    // TODO Noko tull med locale og datoar
     it.skip('skal fylle ut dekningsgrad med 100 prosent og velge omsorgovertakelsedato før en kan gå videre når en har aleneomsorg', async () => {
         render(<UttaksplanMedAleneomsorg />);
 
@@ -42,7 +42,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
 
         expect(screen.getByText('3 + 46 uker')).toBeInTheDocument();
-        //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
+        //TODO (TOR) Denne teksten er feil. Gjeld fødsel
         expect(
             screen.getByText(
                 'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
@@ -65,7 +65,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(screen.getByText('3 + 56 uker')).toBeInTheDocument();
-        //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
+        //TODO (TOR) Denne teksten er feil. Gjeld fødsel
         expect(
             screen.getByText(
                 'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
@@ -95,7 +95,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(screen.getByText('3 + 56 uker')).toBeInTheDocument();
-        //FIXME (TOR) Denne teksten er feil. Gjeld fødsel
+        //TODO (TOR) Denne teksten er feil. Gjeld fødsel
         expect(
             screen.getByText(
                 'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',

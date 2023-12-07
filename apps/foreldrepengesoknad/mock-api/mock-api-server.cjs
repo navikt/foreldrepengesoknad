@@ -30,7 +30,7 @@ router.get(['/rest/sokerinfo'], (_req, res) => {
 
 router.post('/rest/engangsstonad', (_req, res) => res.sendStatus(200));
 
-router.get('/rest/storage', (_req, res) => {
+router.get('/rest/storage/foreldrepenger', (_req, res) => {
     res.send(MockStorage.getSoknad());
 });
 
@@ -54,22 +54,14 @@ router.get('/rest/konto', (_req, res) => {
     res.send(MockStorage.getStønadskontoer());
 });
 
-router.post('/rest/storage', (req, res) => {
+router.post('/rest/storage/foreldrepenger', (req, res) => {
     MockStorage.updateSoknad(req.body);
     return res.sendStatus(200);
 });
 
-router.delete('/rest/storage', (_req, res) => {
+router.delete('/rest/storage/foreldrepenger', (_req, res) => {
     MockStorage.deleteSoknad();
     return res.sendStatus(200);
-});
-
-router.get('/rest/storage/kvittering/foreldrepenger', (_req, res) => {
-    res.send(MockStorage.getStorageKvittering());
-});
-
-router.post('/rest/storage/kvittering/foreldrepenger', (_req, res) => {
-    res.send(MockStorage.getStorageKvittering());
 });
 
 router.post('/rest/soknad', (_req, res) => {
@@ -80,7 +72,7 @@ router.post('/rest/soknad/endre', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 
-router.delete('/rest/storage', (_req, res) => {
+router.delete('/rest/storage/foreldrepenger', (_req, res) => {
     res.sendStatus(204);
 });
 

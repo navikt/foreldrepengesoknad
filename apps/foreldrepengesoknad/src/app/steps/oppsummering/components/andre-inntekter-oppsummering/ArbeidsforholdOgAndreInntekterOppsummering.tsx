@@ -1,20 +1,37 @@
-import { ISOStringToDate, getAktiveArbeidsforhold, intlUtils, isFarEllerMedmor } from '@navikt/fp-common';
+import {
+    Arbeidsforhold,
+    Barn,
+    ISOStringToDate,
+    getAktiveArbeidsforhold,
+    intlUtils,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
 import HarArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarArbeidsforhold';
 import HarIkkeArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import AndreInntekterOppsummering from './AndreInntekterOppsummering';
 import FrilansOppsummering from './FrilansOppsummering';
 import SelvstendigNæringsdrivendeOppsummering from './SelvstendigNæringsdrivendeOppsummering';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+import Søker from 'app/context/types/Søker';
 
-const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent = () => {
+interface Props {
+    arbeidsforhold: Arbeidsforhold[];
+    barn: Barn;
+    søkersituasjon: SøkersituasjonFp;
+    søker: Søker;
+}
+
+const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent<Props> = ({
+    arbeidsforhold,
+    barn,
+    søkersituasjon,
+    søker,
+}) => {
     const intl = useIntl();
-    const { arbeidsforhold } = useSøkerinfo();
-    const { barn, søkersituasjon } = useSøknad();
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -32,9 +49,9 @@ const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent = () => {
                 <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
                 <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={aktiveArbeidsForhold} />
             </OppsummeringsPunkt>
-            <FrilansOppsummering />
-            <SelvstendigNæringsdrivendeOppsummering />
-            <AndreInntekterOppsummering />
+            <FrilansOppsummering søker={søker} />
+            <SelvstendigNæringsdrivendeOppsummering søker={søker} />
+            <AndreInntekterOppsummering søker={søker} />
         </>
     );
 };

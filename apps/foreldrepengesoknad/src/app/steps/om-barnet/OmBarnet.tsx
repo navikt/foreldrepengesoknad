@@ -11,15 +11,11 @@ import {
     RegistrertBarn,
     Step,
     StepButtonWrapper,
+    Søkerinfo,
 } from '@navikt/fp-common';
-import actionCreator from 'app/context/action/actionCreator';
 import SøknadRoutes from 'app/routes/routes';
 
-import { FormattedMessage, useIntl } from 'react-intl';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
+import { useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
 import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
@@ -29,37 +25,54 @@ import Termin from './components/Termin';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig, { OmBarnetQuestionPayload } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
-import { storeAppState } from 'app/utils/submitUtils';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { Button } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
+import BackButton from '../BackButton';
 
-const OmBarnet: React.FunctionComponent = () => {
+type Props = {
+    søkerInfo: Søkerinfo;
+    søknadGjelderNyttBarn: boolean;
+    mellomlagreSøknadOgNaviger: () => void;
+    avbrytSøknad: () => void;
+};
+
+const OmBarnet: React.FunctionComponent<Props> = ({
+    søkerInfo,
+    søknadGjelderNyttBarn,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
     const intl = useIntl();
-    const { søkersituasjon, barn } = useSøknad();
-    const { arbeidsforhold, registrerteBarn } = useSøkerinfo();
-    const { state } = useForeldrepengesøknadContext();
-    const { søknadGjelderEtNyttBarn } = state;
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
+
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const { arbeidsforhold, registrerteBarn } = søkerInfo;
+
     const [erForTidligTilÅSøkePåTermin, setErForTidligTilÅSøkePåTermin] = useState(false);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
-        if (!isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0) {
-            return barn.fnr.includes(regBarn.fnr);
+        if (omBarnet && !isUfødtBarn(omBarnet) && omBarnet.fnr !== undefined && omBarnet.fnr.length > 0) {
+            return omBarnet.fnr.includes(regBarn.fnr);
         }
         return false;
     };
 
-    const familiehendelsesdato = barn ? ISOStringToDate(getFamiliehendelsedato(barn)) : undefined;
+    const familiehendelsesdato = omBarnet ? ISOStringToDate(getFamiliehendelsedato(omBarnet)) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
-        barn && isFødtBarn(barn)
+        omBarnet && isFødtBarn(omBarnet)
             ? registrerteBarn.filter(
                   (barn: RegistrertBarn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
@@ -67,14 +80,16 @@ const OmBarnet: React.FunctionComponent = () => {
             : [];
 
     const valgteRegistrerteBarn =
-        !søknadGjelderEtNyttBarn && !isUfødtBarn(barn)
+        !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
             ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;
     const barnSøktOmFørMenIkkeRegistrert =
-        !søknadGjelderEtNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
+        !søknadGjelderNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
 
-    const onValidSubmitHandler = (values: Partial<OmBarnetFormData>) => {
-        const valgtBarn = !søknadGjelderEtNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? barn : undefined;
+    const onSubmit = (values: Partial<OmBarnetFormData>) => {
+        setIsSubmitting(true);
+
+        const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
         const oppdatertBarn = mapOmBarnetFormDataToState(
             values,
             arbeidsforhold,
@@ -82,22 +97,17 @@ const OmBarnet: React.FunctionComponent = () => {
             søkersituasjon.situasjon,
             barnSøktOmFørMenIkkeRegistrert,
         );
-        return [actionCreator.setOmBarnet(oppdatertBarn)];
-    };
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.ANNEN_FORELDER,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    useSaveLoadedRoute(SøknadRoutes.OM_BARNET);
+        oppdaterOmBarnet(oppdatertBarn);
+        oppdaterAppRoute(SøknadRoutes.ANNEN_FORELDER);
+
+        mellomlagreSøknadOgNaviger();
+    };
 
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(barn, arbeidsforhold)}
-            onSubmit={handleSubmit}
+            initialValues={getOmBarnetInitialValues(arbeidsforhold, omBarnet)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({
                     ...formValues,
@@ -105,7 +115,7 @@ const OmBarnet: React.FunctionComponent = () => {
                     situasjon: søkersituasjon.situasjon,
                     rolle: søkersituasjon.rolle,
                     valgteRegistrerteBarn,
-                    søknadGjelderEtNyttBarn: barnSøktOmFørMenIkkeRegistrert || søknadGjelderEtNyttBarn,
+                    søknadGjelderEtNyttBarn: barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn,
                 } as OmBarnetQuestionPayload);
 
                 const farMedmorSøkerPåTerminFørWLB =
@@ -120,7 +130,7 @@ const OmBarnet: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="omBarnet"
                         pageTitle={intlUtils(intl, 'søknad.omBarnet')}
-                        onCancel={onAvbrytSøknad}
+                        onCancel={avbrytSøknad}
                         onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl, false)}
                     >
@@ -137,33 +147,34 @@ const OmBarnet: React.FunctionComponent = () => {
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
-                                søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                                søknadGjelderEtNyttBarn={søknadGjelderNyttBarn}
                             />
                             <AdopsjonEktefellesBarn
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
-                                søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                                søknadGjelderEtNyttBarn={søknadGjelderNyttBarn}
                             />
                             <Termin
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
-                                søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderEtNyttBarn}
+                                søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
                                 setErForTidligTilÅSøkePåTermin={setErForTidligTilÅSøkePåTermin}
                             />
                             <Fødsel
                                 søkersituasjon={søkersituasjon}
                                 formValues={formValues as OmBarnetFormData}
                                 visibility={visibility}
-                                søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                                søknadGjelderEtNyttBarn={søknadGjelderNyttBarn}
                                 barnSøktOmFørMenIkkeRegistrert={barnSøktOmFørMenIkkeRegistrert}
                             />
                             <Block margin="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('omBarnet')}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousStepHref('omBarnet')}
+                                    />
                                     {visGåVidereKnapp && (
                                         <Button
                                             type="submit"

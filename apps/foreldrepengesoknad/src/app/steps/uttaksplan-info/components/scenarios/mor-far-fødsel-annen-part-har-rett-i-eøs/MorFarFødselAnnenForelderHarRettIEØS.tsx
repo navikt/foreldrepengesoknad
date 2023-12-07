@@ -1,5 +1,9 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Button, GuidePanel } from '@navikt/ds-react';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { notEmpty } from '@navikt/fp-validation';
+import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
     ISOStringToDate,
@@ -14,22 +18,15 @@ import {
     isFarEllerMedmor,
     uttaksConstants,
 } from '@navikt/fp-common';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import SøknadRoutes from 'app/routes/routes';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import actionCreator from 'app/context/action/actionCreator';
-import useUttaksplanInfo from 'app/utils/hooks/useUttaksplanInfo';
 import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { storeAppState } from 'app/utils/submitUtils';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import {
     morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
@@ -46,87 +43,107 @@ import {
 } from './morFarFødselAnnenForelderHarRettIEØSUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
-import { useForeldrepengesøknadContext } from 'app/context/hooks/useForeldrepengesøknadContext';
-import { Button, GuidePanel } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import BackButton from 'app/steps/BackButton';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
+    erEndringssøknad: boolean;
+    person: Person;
+    mellomlagreSøknadOgNaviger: () => void;
+    oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
 const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     tilgjengeligeStønadskontoer100DTO,
+    erEndringssøknad,
+    person,
+    mellomlagreSøknadOgNaviger,
+    oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const intl = useIntl();
-    const { state } = useForeldrepengesøknadContext();
-    const { søkersituasjon, annenForelder, barn, dekningsgrad, erEndringssøknad } = useSøknad();
-    const {
-        person: { fornavn, mellomnavn, etternavn },
-    } = useSøkerinfo();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
+    // TODO (TOR) fjern as
+    const uttaksplanInfo = useContextGetData(
+        ContextDataType.UTTAKSPLAN_INFO,
+    ) as MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo;
+
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
-    const lagretUttaksplanInfo = useUttaksplanInfo<MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo>();
     const erDeltUttak = true;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const førsteUttaksdagNesteBarnsSak =
-        state.barnFraNesteSak !== undefined ? state.barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const shouldRender = erFødsel;
 
-    const onValidSubmitHandler = (values: Partial<MorFarFødselAnnenForelderHarRettIEØSFormData>) => {
+    const onSubmit = async (values: Partial<MorFarFødselAnnenForelderHarRettIEØSFormData>) => {
+        setIsSubmitting(true);
+
         const submissionValues = mapMorFarFødselAnnenForelderHarRettIEØSFormToState(values);
-        const antallUker = getAntallUker(tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80]);
         const startdato = hasValue(values.permisjonStartdato) ? values.permisjonStartdato : undefined;
 
-        return [
-            actionCreator.setAntallUkerIUttaksplan(antallUker),
-            actionCreator.setUttaksplanInfo(submissionValues),
-            actionCreator.setDekningsgrad(getDekningsgradFromString(values.dekningsgrad)),
-            actionCreator.lagUttaksplanforslag(
-                lagUttaksplan({
-                    annenForelderErUfør: false,
-                    erDeltUttak,
-                    erEndringssøknad,
-                    erEnkelEndringssøknad: erEndringssøknad,
-                    familiehendelsesdato: familiehendelsesdatoDate!,
-                    førsteUttaksdagEtterSeksUker: Uttaksdagen(
-                        Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste(),
-                    ).leggTil(30),
-                    situasjon: søkersituasjon.situasjon,
-                    søkerErFarEllerMedmor: erFarEllerMedmor,
-                    søkerHarMidlertidigOmsorg: false,
-                    tilgjengeligeStønadskontoer:
-                        tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
-                    uttaksplanSkjema: {
-                        startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin ? undefined : startdato,
-                        farSinFørsteUttaksdag: erFarEllerMedmor ? startdato : undefined,
-                    },
-                    bareFarMedmorHarRett: false,
-                    termindato: undefined,
-                    harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
-                        erDeltUttak,
-                        morHarRett: true,
-                        søkerErAleneOmOmsorg: false,
-                    }),
-                    annenForelderHarRettPåForeldrepengerIEØS: true,
-                    førsteUttaksdagNesteBarnsSak,
-                }),
-            ),
-        ];
-    };
+        oppdaterUttaksplanInfo(submissionValues);
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.UTTAKSPLAN,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
+        const uttaksplan = lagUttaksplan({
+            annenForelderErUfør: false,
+            erDeltUttak,
+            erEndringssøknad,
+            erEnkelEndringssøknad: erEndringssøknad,
+            familiehendelsesdato: familiehendelsesdatoDate!,
+            førsteUttaksdagEtterSeksUker: Uttaksdagen(Uttaksdagen(familiehendelsesdatoDate!).denneEllerNeste()).leggTil(
+                30,
+            ),
+            situasjon: søkersituasjon.situasjon,
+            søkerErFarEllerMedmor: erFarEllerMedmor,
+            søkerHarMidlertidigOmsorg: false,
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            uttaksplanSkjema: {
+                startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin ? undefined : startdato,
+                farSinFørsteUttaksdag: erFarEllerMedmor ? startdato : undefined,
+            },
+            bareFarMedmorHarRett: false,
+            termindato: undefined,
+            harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
+                erDeltUttak,
+                morHarRett: true,
+                søkerErAleneOmOmsorg: false,
+            }),
+            annenForelderHarRettPåForeldrepengerIEØS: true,
+            førsteUttaksdagNesteBarnsSak,
+        });
+
+        oppdaterUttaksplan(uttaksplan);
+
+        oppdaterBarnOgLagreUttaksplandata({
+            ...uttaksplanMetadata,
+            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
+            antallUkerIUttaksplan: getAntallUker(
+                tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80],
+            ),
+        });
+
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
+
+        mellomlagreSøknadOgNaviger();
+    };
 
     if (!shouldRender) {
         return null;
@@ -141,7 +158,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
     const erDeltUttakINorge = false;
 
-    const navnSøker = formaterNavn(fornavn, etternavn, true, mellomnavn);
+    const navnSøker = formaterNavn(person.fornavn, person.etternavn, true, person.mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
     const antallBarn = barn.antallBarn;
@@ -159,14 +176,15 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const defaultPermisjonStartdato = erFarEllerMedmor
         ? førsteUttaksdag
         : Uttaksdagen(førsteUttaksdag).trekkFra(uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5);
+
     return (
         <MorFarFødselAnnenForelderHarRettIEØSFormComponents.FormikWrapper
             initialValues={getInitialMorFarFødselAnnenForelderHarRettIEØSValues(
                 defaultPermisjonStartdato,
-                lagretUttaksplanInfo,
-                dekningsgrad,
+                uttaksplanInfo,
+                uttaksplanMetadata?.dekningsgrad,
             )}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarFødselAnnenForelderHarRettIEØSQuestionsConfig.getVisbility({
                     ...formValues,
@@ -210,6 +228,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 permisjonStartdato={formValues.permisjonStartdato!}
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
                                 termindato={termindato}
+                                barn={barn}
                             />
                         </Block>
                         <Block
@@ -253,9 +272,10 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         </Block>
                         <Block>
                             <StepButtonWrapper>
-                                <Button variant="secondary" as={Link} to={getPreviousStepHref('uttaksplanInfo')}>
-                                    <FormattedMessage id="backlink.label" />
-                                </Button>
+                                <BackButton
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                    route={getPreviousStepHref('uttaksplanInfo')}
+                                />
                                 {visibility.areAllQuestionsAnswered() && (
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

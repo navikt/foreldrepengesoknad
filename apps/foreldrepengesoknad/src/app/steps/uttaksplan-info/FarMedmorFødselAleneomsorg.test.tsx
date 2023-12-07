@@ -8,7 +8,7 @@ const { UttaksplanInfoFarMedmorFødselAleneomsorg } = composeStories(stories);
 const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 describe('<UttaksplanInfo_FarMedmorFødselAleneomsorg>', () => {
-    // FIXME Noko tull med locale og datoar
+    // TODO Noko tull med locale og datoar
     it.skip('skal ved aleneomrsorg der far/medmor søker vise riktig dato på omsorgsovertakelse', async () => {
         render(<UttaksplanInfoFarMedmorFødselAleneomsorg />);
 

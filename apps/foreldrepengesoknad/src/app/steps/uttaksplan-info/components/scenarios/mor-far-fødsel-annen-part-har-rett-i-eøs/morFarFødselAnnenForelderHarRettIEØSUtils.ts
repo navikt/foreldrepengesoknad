@@ -23,12 +23,12 @@ export const mapMorFarFødselAnnenForelderHarRettIEØSFormToState = (
 export const getInitialMorFarFødselAnnenForelderHarRettIEØSValues = (
     defaultPermisjonStartdato: Date,
     lagretUttaksplanInfo: MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad,
+    dekningsgrad?: Dekningsgrad,
 ): MorFarFødselAnnenForelderHarRettIEØSFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad]: dekningsgrad,
+            [MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad]: dekningsgrad!,
         };
     }
     return {
