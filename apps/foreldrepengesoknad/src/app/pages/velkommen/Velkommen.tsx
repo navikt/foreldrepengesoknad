@@ -11,7 +11,7 @@ import {
     velkommenFormQuestions,
     VelkommenQuestionsPayload,
 } from './velkommenFormConfig';
-import { FpDataType, useAllStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextSaveAnyData } from 'app/context/FpDataContext';
 import DinePlikter from 'app/components/dine-plikter/DinePlikter';
 import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
 import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
@@ -57,7 +57,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
     const bem = bemUtils('velkommen');
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const lagreDataIState = useAllStateSaveFn();
+    const oppdaterDataIState = useContextSaveAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
@@ -79,7 +79,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
         let barnFraNesteSak = undefined;
         if (valgteBarn !== undefined) {
             barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
-            lagreDataIState(FpDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
+            oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
         }
 
         const valgtEksisterendeSak =
@@ -129,7 +129,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
         setErEndringssøknad(vilSøkeOmEndring);
         setSøknadGjelderNyttBarn(søknadGjelderNyttBarn);
 
-        lagreDataIState(FpDataType.APP_ROUTE, nextRoute);
+        oppdaterDataIState(ContextDataType.APP_ROUTE, nextRoute);
 
         mellomlagreSøknadOgNaviger();
     };

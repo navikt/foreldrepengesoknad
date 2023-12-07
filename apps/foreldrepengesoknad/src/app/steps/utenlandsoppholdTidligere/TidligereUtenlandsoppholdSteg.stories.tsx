@@ -4,7 +4,7 @@ import withRouter from 'storybook/decorators/withRouter';
 import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
-import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
 export default {
@@ -35,7 +35,7 @@ const Template: StoryFn<Props> = ({
             <FpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [FpDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                 }}
             >
                 <TidligereUtenlandsoppholdSteg

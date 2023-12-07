@@ -10,7 +10,7 @@ import stønadskonto80MorHarIkkeRett from 'storybook/storyData/stonadskontoer/st
 import stønadskonto100MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRett.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder, BarnType } from '@navikt/fp-common';
 import dayjs from 'dayjs';
@@ -36,23 +36,23 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder 
         <AxiosMock mock={restMock}>
             <FpDataContext
                 initialState={{
-                    [FpDataType.SØKERSITUASJON]: {
+                    [ContextDataType.SØKERSITUASJON]: {
                         situasjon: 'fødsel',
                         rolle: 'far',
                     },
-                    [FpDataType.OM_BARNET]: {
+                    [ContextDataType.OM_BARNET]: {
                         type: BarnType.FØDT,
                         fødselsdatoer: [dayjs('2021-07-01').toDate()],
                         antallBarn: 1,
                         termindato: dayjs('2021-07-01').toDate(),
                     },
-                    [FpDataType.SØKER]: {
+                    [ContextDataType.SØKER]: {
                         erAleneOmOmsorg: false,
                         harJobbetSomFrilansSiste10Mnd: false,
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                         harHattAnnenInntektSiste10Mnd: false,
                     },
-                    [FpDataType.ANNEN_FORELDER]: args.annenForelder,
+                    [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                 }}
             >
                 <UttaksplanInfo

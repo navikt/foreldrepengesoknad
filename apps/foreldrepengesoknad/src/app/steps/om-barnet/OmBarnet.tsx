@@ -31,7 +31,7 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { Button } from '@navikt/ds-react';
 import { useState } from 'react';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import BackButton from '../BackButton';
 
@@ -52,11 +52,11 @@ const OmBarnet: React.FunctionComponent<Props> = ({
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const omBarnet = useFpStateData(FpDataType.OM_BARNET);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
 
-    const lagreOmBarnet = useFpStateSaveFn(FpDataType.OM_BARNET);
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const { arbeidsforhold, registrerteBarn } = søkerInfo;
 
@@ -98,8 +98,8 @@ const OmBarnet: React.FunctionComponent<Props> = ({
             barnSøktOmFørMenIkkeRegistrert,
         );
 
-        lagreOmBarnet(oppdatertBarn);
-        lagreAppRoute(SøknadRoutes.ANNEN_FORELDER);
+        oppdaterOmBarnet(oppdatertBarn);
+        oppdaterAppRoute(SøknadRoutes.ANNEN_FORELDER);
 
         mellomlagreSøknadOgNaviger();
     };

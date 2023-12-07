@@ -42,7 +42,7 @@ import {
     sorterPerioder,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
-import { FpDataMap, FpDataType } from 'app/context/FpDataContext';
+import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import { LocaleNo } from '@navikt/fp-types';
 export interface AnnenForelderOppgittForInnsending
@@ -352,20 +352,20 @@ export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], end
 };
 
 export const cleanSøknad = (
-    hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     familiehendelsesdato: Date,
     locale: LocaleNo,
 ): SøknadForInnsending => {
-    const annenForelder = notEmpty(hentData(FpDataType.ANNEN_FORELDER));
-    const barn = notEmpty(hentData(FpDataType.OM_BARNET));
-    const søker = notEmpty(hentData(FpDataType.SØKER));
-    const søkersituasjon = notEmpty(hentData(FpDataType.SØKERSITUASJON));
-    const utenlandsopphold = notEmpty(hentData(FpDataType.UTENLANDSOPPHOLD));
-    const senereUtenlandsopphold = hentData(FpDataType.UTENLANDSOPPHOLD_SENERE);
-    const tidligereUtenlandsopphold = hentData(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const uttaksplan = notEmpty(hentData(FpDataType.UTTAKSPLAN));
-    const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
-    const eksisterendeSak = hentData(FpDataType.EKSISTERENDE_SAK);
+    const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
+    const søker = notEmpty(hentData(ContextDataType.SØKER));
+    const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
+    const utenlandsopphold = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD));
+    const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
+    const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
+    const eksisterendeSak = hentData(ContextDataType.EKSISTERENDE_SAK);
 
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
     const søkerInnsending = cleanSøker(søker, søkersituasjon, locale);
@@ -418,7 +418,7 @@ const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon, locale: L
 
 export const getSøknadsdataForInnsending = (
     erEndringssøknad: boolean,
-    hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
     locale: LocaleNo,
@@ -455,18 +455,18 @@ export const cleanAttachments = (object: any): Attachment[] => {
 };
 
 export const cleanEndringssøknad = (
-    hentData: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
     locale: LocaleNo,
     endringstidspunkt?: Date,
 ): EndringssøknadForInnsending => {
-    const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
-    const annenForelder = notEmpty(hentData(FpDataType.ANNEN_FORELDER));
-    const barn = notEmpty(hentData(FpDataType.OM_BARNET));
-    const søker = notEmpty(hentData(FpDataType.SØKER));
-    const søkersituasjon = notEmpty(hentData(FpDataType.SØKERSITUASJON));
-    const eksisterendeSak = notEmpty(hentData(FpDataType.EKSISTERENDE_SAK));
+    const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
+    const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
+    const søker = notEmpty(hentData(ContextDataType.SØKER));
+    const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
+    const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const termindato = getTermindato(barn);
     const cleanedSøknad: EndringssøknadForInnsending = {

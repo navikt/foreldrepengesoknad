@@ -9,7 +9,7 @@ import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønad
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { Barn, BarnType } from '@navikt/fp-common';
 import dayjs from 'dayjs';
@@ -35,18 +35,18 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn }> = (args) => {
         <AxiosMock mock={restMock}>
             <FpDataContext
                 initialState={{
-                    [FpDataType.SØKERSITUASJON]: {
+                    [ContextDataType.SØKERSITUASJON]: {
                         situasjon: 'fødsel',
                         rolle: 'far',
                     },
-                    [FpDataType.OM_BARNET]: args.barn,
-                    [FpDataType.SØKER]: {
+                    [ContextDataType.OM_BARNET]: args.barn,
+                    [ContextDataType.SØKER]: {
                         erAleneOmOmsorg: false,
                         harJobbetSomFrilansSiste10Mnd: false,
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                         harHattAnnenInntektSiste10Mnd: false,
                     },
-                    [FpDataType.ANNEN_FORELDER]: {
+                    [ContextDataType.ANNEN_FORELDER]: {
                         etternavn: 'dfg',
                         fornavn: 'dfg',
                         fnr: '02068629902',

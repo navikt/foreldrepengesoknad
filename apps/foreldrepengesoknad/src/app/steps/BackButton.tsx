@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import SøknadRoutes from 'app/routes/routes';
 import { Button } from '@navikt/ds-react';
-import { FpDataType, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextSaveData } from 'app/context/FpDataContext';
 
 // TODO (TOR) Midlertidig komponent. Erstatt med StepButtonsHookForm når ein skriv om til react-hook-form
 
@@ -11,10 +11,10 @@ type Props = {
 };
 
 const BackButton: React.FunctionComponent<Props> = ({ route, mellomlagreSøknadOgNaviger }) => {
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const gåTilForrige = async () => {
-        lagreAppRoute(route);
+        oppdaterAppRoute(route);
         mellomlagreSøknadOgNaviger();
     };
 

@@ -1,5 +1,5 @@
 import Api from 'app/api/api';
-import { FpDataMap, FpDataType, useFpStateAllDataFn } from './FpDataContext';
+import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 import { useCallback, useEffect, useState } from 'react';
 import { notEmpty } from '@navikt/fp-validation';
 import { useNavigate } from 'react-router-dom';
@@ -10,27 +10,28 @@ import Søker from './types/Søker';
 
 const mellomlagre = (
     locale: LocaleNo,
-    getDataFromState: <TYPE extends FpDataType>(key: TYPE) => FpDataMap[TYPE],
+    getDataFromState: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     fødselsnr: string,
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
     søknadGjelderEtNyttBarn?: boolean,
 ) => {
-    const currentRoute = notEmpty(getDataFromState(FpDataType.APP_ROUTE));
+    const currentRoute = notEmpty(getDataFromState(ContextDataType.APP_ROUTE));
 
-    const søkersituasjon = getDataFromState(FpDataType.SØKERSITUASJON);
-    const barn = getDataFromState(FpDataType.OM_BARNET);
-    const annenForelder = getDataFromState(FpDataType.ANNEN_FORELDER);
-    const søker = getDataFromState(FpDataType.SØKER);
-    const utenlandsopphold = getDataFromState(FpDataType.UTENLANDSOPPHOLD);
-    const senereUtenlandsopphold = getDataFromState(FpDataType.UTENLANDSOPPHOLD_SENERE);
-    const tidligereUtenlandsopphold = getDataFromState(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const uttaksplanMetadata = getDataFromState(FpDataType.UTTAKSPLAN_METADATA);
-    const barnFraNesteSak = getDataFromState(FpDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = getDataFromState(FpDataType.EKSISTERENDE_SAK);
-    const uttaksplan = getDataFromState(FpDataType.UTTAKSPLAN);
-    const uttaksplanInfo = getDataFromState(FpDataType.UTTAKSPLAN_INFO);
+    const søkersituasjon = getDataFromState(ContextDataType.SØKERSITUASJON);
+    const barn = getDataFromState(ContextDataType.OM_BARNET);
+    const annenForelder = getDataFromState(ContextDataType.ANNEN_FORELDER);
+    const søker = getDataFromState(ContextDataType.SØKER);
+    const utenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD);
+    const senereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const tidligereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const uttaksplanMetadata = getDataFromState(ContextDataType.UTTAKSPLAN_METADATA);
+    const barnFraNesteSak = getDataFromState(ContextDataType.BARN_FRA_NESTE_SAK);
+    const eksisterendeSak = getDataFromState(ContextDataType.EKSISTERENDE_SAK);
+    const uttaksplan = getDataFromState(ContextDataType.UTTAKSPLAN);
+    const uttaksplanInfo = getDataFromState(ContextDataType.UTTAKSPLAN_INFO);
 
+    // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
         version: 5,
         currentRoute,
@@ -79,7 +80,7 @@ const useMellomlagreSøknad = (
     søknadGjelderEtNyttBarn?: boolean,
 ) => {
     const navigate = useNavigate();
-    const getDataFromState = useFpStateAllDataFn();
+    const getDataFromState = useContextGetAnyData();
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
@@ -97,7 +98,7 @@ const useMellomlagreSøknad = (
                     søknadGjelderEtNyttBarn,
                 );
 
-                const currentRoute = notEmpty(getDataFromState(FpDataType.APP_ROUTE));
+                const currentRoute = notEmpty(getDataFromState(ContextDataType.APP_ROUTE));
                 navigate(currentRoute);
             };
 

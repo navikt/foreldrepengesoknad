@@ -28,7 +28,7 @@ import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsCo
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import BackButton from '../BackButton';
 
 const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
@@ -55,13 +55,13 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
-    const utenlandsopphold = notEmpty(useFpStateData(FpDataType.UTENLANDSOPPHOLD));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
 
-    const lagreSøker = useFpStateSaveFn(FpDataType.SØKER);
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
@@ -83,9 +83,9 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
             egenNæringInformasjon,
         );
 
-        lagreSøker(updatedSøker);
+        oppdaterSøker(updatedSøker);
 
-        lagreAppRoute(SøknadRoutes.OPPSUMMERING);
+        oppdaterAppRoute(SøknadRoutes.OPPSUMMERING);
 
         mellomlagreSøknadOgNaviger();
     };

@@ -13,7 +13,7 @@ import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import withRouter from 'storybook/decorators/withRouter';
 import Søker from 'app/context/types/Søker';
 import InfoOmSøknaden from './InfoOmSøknaden';
-import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 
@@ -68,17 +68,17 @@ const Template: StoryFn<Props> = ({
     return (
         <FpDataContext
             initialState={{
-                [FpDataType.OM_BARNET]: {
+                [ContextDataType.OM_BARNET]: {
                     type: BarnType.FØDT,
                     fødselsdatoer: [new Date('2021-03-15')],
                     antallBarn: 1,
                     datoForAleneomsorg: undefined,
                     dokumentasjonAvAleneomsorg: [],
                 },
-                [FpDataType.ANNEN_FORELDER]: annenForelder,
-                [FpDataType.SØKER]: søker,
-                [FpDataType.SØKERSITUASJON]: søkersituasjon,
-                [FpDataType.UTTAKSPLAN_METADATA]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+                [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                [ContextDataType.SØKER]: søker,
+                [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                [ContextDataType.UTTAKSPLAN_METADATA]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
             }}
         >
             <InfoOmSøknaden

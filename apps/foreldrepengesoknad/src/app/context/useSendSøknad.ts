@@ -8,7 +8,7 @@ import {
     getSøknadsdataForInnsending,
     sendErrorMessageToSentry,
 } from 'app/api/apiUtils';
-import { FpDataType, useFpStateAllDataFn } from './FpDataContext';
+import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from '@navikt/fp-common';
 import Api from 'app/api/api';
@@ -29,11 +29,11 @@ const useSendSøknad = (
     setKvittering: (kvittering: Kvittering) => void,
     locale: LocaleNo,
 ) => {
-    const hentData = useFpStateAllDataFn();
+    const hentData = useContextGetAnyData();
 
     const sendSøknad = async (abortSignal: AbortSignal) => {
-        const uttaksplanMetadata = notEmpty(hentData(FpDataType.UTTAKSPLAN_METADATA));
-        const barn = notEmpty(hentData(FpDataType.OM_BARNET));
+        const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
+        const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
         const cleanedSøknad = getSøknadsdataForInnsending(
             erEndringssøknad,

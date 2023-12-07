@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import withRouter from 'storybook/decorators/withRouter';
 import SøkersituasjonSteg from './SøkersituasjonSteg';
-import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
 export default {
@@ -31,7 +31,7 @@ const Template: StoryFn<Props> = ({
         <FpDataContext
             onDispatch={gåTilNesteSide}
             initialState={{
-                [FpDataType.SØKERSITUASJON]: søkersituasjon,
+                [ContextDataType.SØKERSITUASJON]: søkersituasjon,
             }}
         >
             o

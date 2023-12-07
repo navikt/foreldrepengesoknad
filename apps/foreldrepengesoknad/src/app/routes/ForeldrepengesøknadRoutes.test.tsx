@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { allCommonMessages } from '@navikt/fp-common';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import { IntlProvider } from '@navikt/fp-ui';
-import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from './routes';
 import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
 import nbMessages from '../intl/nb_NO.json';
@@ -52,11 +52,11 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                 <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <FpDataContext
                         initialState={{
-                            [FpDataType.SØKERSITUASJON]: {
+                            [ContextDataType.SØKERSITUASJON]: {
                                 situasjon: 'fødsel',
                                 rolle: 'mor',
                             },
-                            [FpDataType.SØKER]: {
+                            [ContextDataType.SØKER]: {
                                 erAleneOmOmsorg: false,
                                 harHattAnnenInntektSiste10Mnd: false,
                                 harJobbetSomFrilansSiste10Mnd: false,

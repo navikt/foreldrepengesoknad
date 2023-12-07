@@ -26,7 +26,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { RequestStatus } from 'app/types/RequestState';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 type Props = {
@@ -45,17 +45,17 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
-    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = useFpStateData(FpDataType.EKSISTERENDE_SAK);
-    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
 
-    const lagreOmBarnet = useFpStateSaveFn(FpDataType.OM_BARNET);
-    const lagreUttaksplanMetaData = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
-    const lagreEksisterendeSak = useFpStateSaveFn(FpDataType.EKSISTERENDE_SAK);
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterUttaksplanMetaData = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
+    const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const { erAleneOmOmsorg } = søker;
@@ -106,12 +106,12 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
 
     const oppdaterBarnOgLagreUttaksplandata = (metadata: UttaksplanMetaData) => {
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
-            lagreOmBarnet({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
+            oppdaterOmBarnet({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
         }
 
         // TODO (TOR) Kvifor blir dette gjort her? Bedre å isolera denne funksjonaliteten til UttaksplanStep
         if (eksisterendeVedtakAnnenPart !== undefined) {
-            lagreEksisterendeSak(eksisterendeVedtakAnnenPart);
+            oppdaterEksisterendeSak(eksisterendeVedtakAnnenPart);
 
             metadata = {
                 ...metadata,
@@ -127,7 +127,7 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
             };
         }
 
-        lagreUttaksplanMetaData({
+        oppdaterUttaksplanMetaData({
             ...uttaksplanMetadata,
             ...metadata,
         });

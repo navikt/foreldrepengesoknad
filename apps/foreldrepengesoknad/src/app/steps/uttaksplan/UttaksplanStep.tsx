@@ -68,7 +68,7 @@ import {
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
-import { FpDataType, useFpState, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
@@ -95,22 +95,22 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
     const [uttaksplanErGyldig, setUttaksplanErGyldig] = useState(true);
 
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
-    const uttaksplanMetadata = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN_METADATA));
-    const uttaksplanInfo = useFpStateData(FpDataType.UTTAKSPLAN_INFO);
-    const uttaksplan = useFpStateData(FpDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
-    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = useFpStateData(FpDataType.EKSISTERENDE_SAK);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
 
-    const lagreBarn = useFpStateSaveFn(FpDataType.OM_BARNET);
-    const lagreBarnFraNesteSak = useFpStateSaveFn(FpDataType.BARN_FRA_NESTE_SAK);
-    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
-    const lagreEksisterendeSak = useFpStateSaveFn(FpDataType.EKSISTERENDE_SAK);
-    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterBarnFraNesteSak = useContextSaveData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+    const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
+    const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(
@@ -173,7 +173,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             ? false
             : true;
 
-    const debouncedState = useDebounce(useFpState(), 3000);
+    const debouncedState = useDebounce(useContextComplete(), 3000);
     const initialRender = useRef(true);
     useEffect(() => {
         if (initialRender.current === false) {
@@ -205,7 +205,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const goToPreviousStep = () => {
         setGåTilbakeIsOpen(false);
 
-        lagreAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
         mellomlagreSøknadOgNaviger();
     };
 
@@ -220,9 +220,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     );
     useEffect(() => {
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
-            lagreBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
+            oppdaterBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
         }
-    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, lagreBarn]);
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn]);
 
     const nesteBarnsSakAnnenPartRequestIsSuspended =
         annenForelderFnrNesteSak !== undefined &&
@@ -256,9 +256,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                 ...barnFraNesteSak,
                 startdatoFørsteStønadsperiode: førsteUttaksdagAnnenPart,
             };
-            lagreBarnFraNesteSak(oppdatertBarnNesteSak);
+            oppdaterBarnFraNesteSak(oppdatertBarnNesteSak);
         }
-    }, [førsteUttaksdagNesteBarnsSak, førsteUttaksdagAnnenPart, barnFraNesteSak, lagreBarnFraNesteSak]);
+    }, [førsteUttaksdagNesteBarnsSak, førsteUttaksdagAnnenPart, barnFraNesteSak, oppdaterBarnFraNesteSak]);
 
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
         erDeltUttak,
@@ -314,10 +314,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                 ...eksisterendeSak,
                 uttaksplan: uttaksplanMedAnnenPart,
             };
-            lagreUttaksplan(uttaksplanMedAnnenPart);
-            lagreEksisterendeSak(eksisterendeSakMedAnnenPartsPlan);
+            oppdaterUttaksplan(uttaksplanMedAnnenPart);
+            oppdaterEksisterendeSak(eksisterendeSakMedAnnenPartsPlan);
 
-            lagreUttaksplanMetadata({
+            oppdaterUttaksplanMetadata({
                 ...uttaksplanMetadata,
                 annenPartsUttakErLagtTilIPlan: true,
             });
@@ -333,9 +333,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         førsteUttaksdagNesteBarnsSak,
         eksisterendeSak,
         uttaksplanMetadata,
-        lagreUttaksplan,
-        lagreEksisterendeSak,
-        lagreUttaksplanMetadata,
+        oppdaterUttaksplan,
+        oppdaterEksisterendeSak,
+        oppdaterUttaksplanMetadata,
     ]);
 
     const handleBegrunnelseChange = (årsak: SenEndringÅrsak, begrunnelse: string) => {
@@ -349,7 +349,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             },
         };
 
-        lagreUttaksplanMetadata({
+        oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
             tilleggsopplysninger: opplysninger,
         });
@@ -370,7 +370,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             );
             setPerioderSomSkalSendesInn(perioderForÅSendeInn);
 
-            lagreUttaksplanMetadata({
+            oppdaterUttaksplanMetadata({
                 ...uttaksplanMetadata,
                 perioderSomSkalSendesInn: perioderForÅSendeInn,
                 endringstidspunkt,
@@ -382,7 +382,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         erFarEllerMedmor,
         uttaksplan,
         erEndringssøknad,
-        lagreUttaksplanMetadata,
+        oppdaterUttaksplanMetadata,
         uttaksplanMetadata,
     ]);
 
@@ -394,14 +394,14 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             uttaksplanMetadata.tilleggsopplysninger,
         );
 
-        lagreUttaksplanMetadata({
+        oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
             endringstidspunkt,
             perioderSomSkalSendesInn,
             tilleggsopplysninger: cleanedTilleggsopplysninger,
         });
 
-        lagreAppRoute(nextRoute);
+        oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();
     };
@@ -431,7 +431,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig = () => {
         if ((visAutomatiskJusteringForm || erEndringssøknad) && !kanJustereAutomatiskVedFødsel) {
-            lagreUttaksplanMetadata({
+            oppdaterUttaksplanMetadata({
                 ...uttaksplanMetadata,
                 ønskerJustertUttakVedFødsel: undefined,
             });
@@ -509,7 +509,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         setSubmitIsClicked(false);
         setIsSubmitting(false);
 
-        lagreUttaksplan(nyPlan);
+        oppdaterUttaksplan(nyPlan);
 
         const tidspunktForEndring = getEndringstidspunkt(opprinneligPlan, nyPlan, erEndringssøknad);
 
@@ -524,7 +524,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         );
         setPerioderSomSkalSendesInn(perioderForÅSendeInn);
 
-        lagreUttaksplanMetadata({
+        oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
             perioderSomSkalSendesInn: perioderForÅSendeInn,
         });
@@ -577,8 +577,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const handleSlettUttaksplan = () => {
         const slettetPlanUtenomFpFørFødsel = uttaksplan.filter((periode) => isUttakAvForeldrepengerFørFødsel(periode));
-        lagreUttaksplan(slettetPlanUtenomFpFørFødsel);
-        lagreUttaksplanMetadata({
+        oppdaterUttaksplan(slettetPlanUtenomFpFørFødsel);
+        oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
             harUttaksplanBlittSlettet: true,
         });
@@ -586,9 +586,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const handleResetUttaksplan = () => {
         if (eksisterendeSak) {
-            lagreUttaksplan(eksisterendeSak.uttaksplan);
+            oppdaterUttaksplan(eksisterendeSak.uttaksplan);
 
-            lagreUttaksplanMetadata({
+            oppdaterUttaksplanMetadata({
                 ...uttaksplanMetadata,
                 perioderSomSkalSendesInn: [],
             });

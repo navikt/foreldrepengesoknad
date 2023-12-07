@@ -3,11 +3,10 @@ import { Heading } from '@navikt/ds-react';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import SøknadRoutes from 'app/routes/routes';
 import createConfig, { getPreviousStepHref } from '../stepsConfig';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 
 const utledNesteSide = (values: Utenlandsopphold) => {
     if (values.harBoddUtenforNorgeSiste12Mnd) {
@@ -27,24 +26,24 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøkn
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    const utenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD);
-    const lagreUtenlandsopphold = useFpStateSaveFn(FpDataType.UTENLANDSOPPHOLD);
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
+    const oppdaterUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const save = (values: Utenlandsopphold) => {
-        lagreUtenlandsopphold({
+        oppdaterUtenlandsopphold({
             iNorgeSiste12Mnd: !values.harBoddUtenforNorgeSiste12Mnd,
             iNorgeNeste12Mnd: !values.skalBoUtenforNorgeNeste12Mnd,
         });
 
         const nesteSide = utledNesteSide(values);
-        lagreAppRoute(nesteSide);
+        oppdaterAppRoute(nesteSide);
         mellomlagreSøknadOgNaviger();
     };
 
     const goToPreviousStep = () => {
         const appRoute = getPreviousStepHref('utenlandsopphold');
-        lagreAppRoute(appRoute);
+        oppdaterAppRoute(appRoute);
         mellomlagreSøknadOgNaviger();
     };
     const saveOnPrevious = () => {

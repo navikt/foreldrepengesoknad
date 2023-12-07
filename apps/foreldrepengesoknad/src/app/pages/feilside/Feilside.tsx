@@ -3,7 +3,7 @@ import { LocaleNo } from '@navikt/fp-types';
 import { bemUtils, Block, LanguageToggle, Sidebanner, Søkerinfo, useDocumentTitle } from '@navikt/fp-common';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Api from 'app/api/api';
-import { useFpStateResetFn } from 'app/context/FpDataContext';
+import { useContextReset } from 'app/context/FpDataContext';
 
 import './feilside.less';
 
@@ -38,7 +38,7 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
     søkerInfo,
 }) => {
     const bem = bemUtils('feilside');
-    const reset = useFpStateResetFn();
+    const reset = useContextReset();
 
     const avbrytSøknadHandler = async () => {
         if (!søkerInfo) {

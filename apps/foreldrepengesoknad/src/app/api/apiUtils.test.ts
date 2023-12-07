@@ -15,7 +15,7 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { FpDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
@@ -56,17 +56,17 @@ const getBarnMock = (datoForAleneomsorgInput: string | undefined) => {
 
 // TODO (TOR) Dette er midlertidig logikk
 const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaksplanInput: Periode[]) => {
-    return (type: FpDataType): any => {
-        if (type === FpDataType.ANNEN_FORELDER) {
+    return (type: ContextDataType): any => {
+        if (type === ContextDataType.ANNEN_FORELDER) {
             return annenForelderInput;
         }
-        if (type === FpDataType.OM_BARNET) {
+        if (type === ContextDataType.OM_BARNET) {
             return barnInput;
         }
-        if (type === FpDataType.UTTAKSPLAN) {
+        if (type === ContextDataType.UTTAKSPLAN) {
             return uttaksplanInput;
         }
-        if (type === FpDataType.SØKER) {
+        if (type === ContextDataType.SØKER) {
             return {
                 erAleneOmOmsorg: false,
                 harHattAnnenInntektSiste10Mnd: false,
@@ -74,13 +74,13 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
             };
         }
-        if (type === FpDataType.SØKERSITUASJON) {
+        if (type === ContextDataType.SØKERSITUASJON) {
             return {
                 rolle: 'mor',
                 situasjon: 'fødsel',
             };
         }
-        if (type === FpDataType.UTTAKSPLAN_METADATA) {
+        if (type === ContextDataType.UTTAKSPLAN_METADATA) {
             return {
                 tilleggsopplysninger: {},
             };

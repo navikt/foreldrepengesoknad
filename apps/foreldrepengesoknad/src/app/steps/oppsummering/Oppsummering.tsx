@@ -37,7 +37,7 @@ import UttaksplanOppsummering from './components/uttaksplan-oppsummering/Uttaksp
 import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { FpDataType, useFpStateData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 
 import './oppsummering.less';
 import BackButton from '../BackButton';
@@ -64,16 +64,16 @@ const Oppsummering: FunctionComponent<Props> = ({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const abortSignal = useAbortSignal();
 
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const uttaksplan = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN));
-    const uttaksplanMetadata = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN_METADATA));
-    const utenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD);
-    const senereUtenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD_SENERE);
-    const tidligereUtenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const eksisterendeSak = useFpStateData(FpDataType.EKSISTERENDE_SAK);
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
+    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
+    const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
 
     const tilleggsopplysninger = uttaksplanMetadata.tilleggsopplysninger;
 

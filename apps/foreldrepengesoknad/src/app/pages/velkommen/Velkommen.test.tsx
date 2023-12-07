@@ -4,7 +4,7 @@ import * as stories from './Velkommen.stories';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
 import SøknadRoutes from 'app/routes/routes';
-import { FpDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
@@ -83,7 +83,7 @@ describe('<Velkommen>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(12);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(12, {
             data: SøknadRoutes.UTTAKSPLAN,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });

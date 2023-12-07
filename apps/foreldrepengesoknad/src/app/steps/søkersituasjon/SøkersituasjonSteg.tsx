@@ -8,7 +8,7 @@ import { Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
 import { RadioGroup, Form, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 import SøknadRoutes from 'app/routes/routes';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import stepConfig from '../stepsConfig';
 
 type Props = {
@@ -22,9 +22,9 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlag
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søkersituasjon = useFpStateData(FpDataType.SØKERSITUASJON);
-    const lagreSøkersituasjon = useFpStateSaveFn(FpDataType.SØKERSITUASJON);
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
+    const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon
@@ -37,11 +37,11 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlag
     const onSubmit = (values: SøkersituasjonFp) => {
         setIsSubmitting(true);
 
-        lagreSøkersituasjon({
+        oppdaterSøkersituasjon({
             situasjon: values.situasjon,
             rolle: values.rolle || 'far',
         });
-        lagreAppRoute(SøknadRoutes.OM_BARNET);
+        oppdaterAppRoute(SøknadRoutes.OM_BARNET);
 
         mellomlagreSøknadOgNaviger();
     };

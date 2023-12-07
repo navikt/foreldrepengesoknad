@@ -46,7 +46,7 @@ import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
@@ -81,17 +81,19 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
-    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
-    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
-    const uttaksplanInfo = useFpStateData(FpDataType.UTTAKSPLAN_INFO) as FarMedmorFødselOgMorHarIkkeRettFormData;
+    const uttaksplanInfo = useContextGetData(
+        ContextDataType.UTTAKSPLAN_INFO,
+    ) as FarMedmorFødselOgMorHarIkkeRettFormData;
 
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
-    const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
-    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const { fornavn, mellomnavn, etternavn } = person;
 
@@ -140,16 +142,16 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
             førsteUttaksdagNesteBarnsSak,
         });
 
-        lagreUttaksplanInfo(mapFarMedmorFødselOgMorHarIkkeRettFormToState(values));
+        oppdaterUttaksplanInfo(mapFarMedmorFødselOgMorHarIkkeRettFormToState(values));
 
-        lagreUttaksplan(uttaksplan);
+        oppdaterUttaksplan(uttaksplan);
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
             dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
         });
 
-        lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
 
         mellomlagreSøknadOgNaviger();
     };

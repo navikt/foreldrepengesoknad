@@ -6,7 +6,7 @@ import { ContentWrapper } from '@navikt/fp-ui';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import SøknadRoutes from 'app/routes/routes';
 import createConfig, { getPreviousStepHref } from '../stepsConfig';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
@@ -21,10 +21,10 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    const utenlandsopphold = notEmpty(useFpStateData(FpDataType.UTENLANDSOPPHOLD));
-    const tidligereUtenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const lagreTidligereUtenlandsopphold = useFpStateSaveFn(FpDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
+    const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const oppdaterTidligereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const lagredeTidligereUtenlandsopphold =
         tidligereUtenlandsopphold && tidligereUtenlandsopphold.tidligereOpphold.length > 0
@@ -38,7 +38,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
             : undefined;
 
     const save = (values: UtenlandsoppholdTidligere) => {
-        lagreTidligereUtenlandsopphold({
+        oppdaterTidligereUtenlandsopphold({
             tidligereOpphold: values.utenlandsoppholdSiste12Mnd.map((un) => ({
                 land: un.landkode,
                 tidsperiode: {
@@ -51,13 +51,13 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
         const nesteSide = utenlandsopphold.iNorgeNeste12Mnd
             ? SøknadRoutes.INNTEKTSINFORMASJON
             : SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
-        lagreAppRoute(nesteSide);
+        oppdaterAppRoute(nesteSide);
         mellomlagreSøknadOgNaviger();
     };
 
     const goToPreviousStep = () => {
         const appRoute = getPreviousStepHref('utenlandsoppholdTidligere');
-        lagreAppRoute(appRoute);
+        oppdaterAppRoute(appRoute);
         mellomlagreSøknadOgNaviger();
     };
     const saveOnPrevious = () => {

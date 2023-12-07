@@ -7,7 +7,7 @@ import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 import { notEmpty } from '@navikt/fp-validation';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'app/steps/uttaksplan/UttaksplanFormUtils';
 
@@ -26,9 +26,9 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
     const intl = useIntl();
     const uttaksdagPåEllerEtterTermin = Uttaksdagen(termindato).denneEllerNeste();
 
-    const uttaksplanMetadata = notEmpty(useFpStateData(FpDataType.UTTAKSPLAN_METADATA));
+    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
 
-    const lagreUttaksplanMetadata = useFpStateSaveFn(FpDataType.UTTAKSPLAN_METADATA);
+    const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
     const brukerSvarteJaPåAutoJustering = uttaksplanMetadata.ønskerJustertUttakVedFødsel;
 
     const svarteJaMenFlerePerioderInnen6Uker = brukerSvarteJaPåAutoJustering && perioderMedUttakRundtFødsel.length > 1;
@@ -69,7 +69,7 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
 
     const handleOnChange = (value: string) => {
         const ønskerJustertUttakVedFødsel = mapUttaksplanFormValueToState(value as YesOrNo);
-        lagreUttaksplanMetadata({
+        oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
             ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
         });

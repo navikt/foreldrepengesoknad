@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Api from 'app/api/api';
-import { useFpStateResetFn } from 'app/context/FpDataContext';
+import { useContextReset } from 'app/context/FpDataContext';
 import { useCallback } from 'react';
 
 export const useAvbrytSøknad = (
@@ -11,7 +11,7 @@ export const useAvbrytSøknad = (
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn?: boolean) => void,
 ) => {
     const navigate = useNavigate();
-    const reset = useFpStateResetFn();
+    const reset = useContextReset();
 
     const avbrytSøknadHandler = useCallback(() => {
         logAmplitudeEvent('applikasjon-hendelse', {

@@ -30,7 +30,7 @@ import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import {
@@ -58,17 +58,17 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { rolle } = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const annenForelder = useFpStateData(FpDataType.ANNEN_FORELDER) || {
+    const { rolle } = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER) || {
         kanIkkeOppgis: false,
     };
-    const søker = useFpStateData(FpDataType.SØKER);
+    const søker = useContextGetData(ContextDataType.SØKER);
 
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
-    const lagreOmBarnet = useFpStateSaveFn(FpDataType.OM_BARNET);
-    const lagreAnnenForeldre = useFpStateSaveFn(FpDataType.ANNEN_FORELDER);
-    const lagreSøker = useFpStateSaveFn(FpDataType.SØKER);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
 
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søkerInfo.registrerteBarn);
@@ -116,11 +116,11 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                     : undefined,
         };
 
-        lagreOmBarnet(newBarn);
-        lagreSøker(newSøker);
-        lagreAnnenForeldre(mapAnnenForelderFormToState(values));
+        oppdaterOmBarnet(newBarn);
+        oppdaterSøker(newSøker);
+        oppdaterAnnenForeldre(mapAnnenForelderFormToState(values));
 
-        lagreAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 
         mellomlagreSøknadOgNaviger();
     };

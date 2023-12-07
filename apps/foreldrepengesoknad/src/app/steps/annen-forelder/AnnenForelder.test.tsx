@@ -4,7 +4,7 @@ import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
 import * as stories from './AnnenForelder.stories';
 import SøknadRoutes from 'app/routes/routes';
-import { FpDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 const {
     Default,
@@ -51,7 +51,7 @@ describe('<AnnenForelder>', () => {
                 fødselsdatoer: [dayjs('2021-03-15').startOf('day').toDate()],
                 type: 'født',
             },
-            key: FpDataType.OM_BARNET,
+            key: ContextDataType.OM_BARNET,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
@@ -61,7 +61,7 @@ describe('<AnnenForelder>', () => {
                 harJobbetSomFrilansSiste10Mnd: undefined,
                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
             },
-            key: FpDataType.SØKER,
+            key: ContextDataType.SØKER,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
@@ -78,12 +78,12 @@ describe('<AnnenForelder>', () => {
                 kanIkkeOppgis: false,
                 utenlandskFnr: false,
             },
-            key: FpDataType.ANNEN_FORELDER,
+            key: ContextDataType.ANNEN_FORELDER,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
             data: SøknadRoutes.UTTAKSPLAN_INFO,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -102,7 +102,7 @@ describe('<AnnenForelder>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: SøknadRoutes.OM_BARNET,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });

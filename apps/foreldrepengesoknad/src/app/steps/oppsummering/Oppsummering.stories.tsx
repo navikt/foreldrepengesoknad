@@ -19,7 +19,7 @@ import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import Oppsummering from './Oppsummering';
-import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import Søker from 'app/context/types/Søker';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
@@ -139,21 +139,21 @@ const Template: StoryFn<Props> = ({
             <FpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [FpDataType.SØKER]: søker,
-                    [FpDataType.ANNEN_FORELDER]: annenForelder,
-                    [FpDataType.SØKERSITUASJON]: søkersituasjon,
-                    [FpDataType.UTTAKSPLAN_METADATA]: {
+                    [ContextDataType.SØKER]: søker,
+                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    [ContextDataType.UTTAKSPLAN_METADATA]: {
                         tilleggsopplysninger,
                         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
                         ønskerJustertUttakVedFødsel: false,
                         harUttaksplanBlittSlettet: false,
                         antallUkerIUttaksplan: 1,
                     },
-                    [FpDataType.OM_BARNET]: barn,
-                    [FpDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    [FpDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
-                    [FpDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                    [FpDataType.UTTAKSPLAN]: defaultUttaksplan,
+                    [ContextDataType.OM_BARNET]: barn,
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
+                    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
+                    [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
                 }}
             >
                 <Oppsummering

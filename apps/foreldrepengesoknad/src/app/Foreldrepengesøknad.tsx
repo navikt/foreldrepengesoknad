@@ -49,6 +49,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         }
     }, [søkerinfoError, sakerError]);
 
+    // TODO (TOR) Dropp mapping her og dytt mellomlagra data inn i context rått
     const initialState = useMemo(
         () =>
             storageData && shouldApplyStorage(storageData)

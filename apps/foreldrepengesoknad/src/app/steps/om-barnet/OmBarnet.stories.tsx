@@ -8,7 +8,7 @@ import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedTreBar
 import _søkerinfoMedDødTrilling from 'storybook/storyData/sokerinfo/søkerinfoMedDødTrilling.json';
 import OmBarnet from './OmBarnet';
 import { Barn, BarnType } from '@navikt/fp-common';
-import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 
@@ -56,8 +56,8 @@ const Template: StoryFn<Props> = ({
             <FpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [FpDataType.SØKERSITUASJON]: søkersituasjon,
-                    [FpDataType.OM_BARNET]: barn,
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    [ContextDataType.OM_BARNET]: barn,
                 }}
             >
                 <OmBarnet

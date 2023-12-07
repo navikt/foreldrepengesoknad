@@ -64,14 +64,6 @@ router.delete('/rest/storage/foreldrepenger', (_req, res) => {
     return res.sendStatus(200);
 });
 
-router.get('/rest/storage/kvittering/foreldrepenger', (_req, res) => {
-    res.send(MockStorage.getStorageKvittering());
-});
-
-router.post('/rest/storage/kvittering/foreldrepenger', (_req, res) => {
-    res.send(MockStorage.getStorageKvittering());
-});
-
 router.post('/rest/soknad', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });

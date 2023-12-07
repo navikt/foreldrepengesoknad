@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import userEvent from '@testing-library/user-event';
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 import SøknadRoutes from 'app/routes/routes';
-import { FpDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/context/FpDataContext';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const { Default } = composeStories(stories);
@@ -45,12 +45,12 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                     },
                 ],
             },
-            key: FpDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.INNTEKTSINFORMASJON,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -96,12 +96,12 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                     },
                 ],
             },
-            key: FpDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -120,7 +120,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: SøknadRoutes.UTENLANDSOPPHOLD,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });

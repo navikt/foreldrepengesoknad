@@ -3,7 +3,7 @@ import { composeStories } from '@storybook/react';
 import userEvent from '@testing-library/user-event';
 import * as stories from './SøkersituasjonSteg.stories';
 import SøknadRoutes from 'app/routes/routes';
-import { FpDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 const { Mor, Far } = composeStories(stories);
 
@@ -30,12 +30,12 @@ describe('<SøkersituasjonSteg>', () => {
                 situasjon: 'fødsel',
                 rolle: 'mor',
             },
-            key: FpDataType.SØKERSITUASJON,
+            key: ContextDataType.SØKERSITUASJON,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.OM_BARNET,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -62,7 +62,7 @@ describe('<SøkersituasjonSteg>', () => {
                 situasjon: 'fødsel',
                 rolle: 'medmor',
             },
-            key: FpDataType.SØKERSITUASJON,
+            key: ContextDataType.SØKERSITUASJON,
             type: 'update',
         });
     });
@@ -89,7 +89,7 @@ describe('<SøkersituasjonSteg>', () => {
                 situasjon: 'adopsjon',
                 rolle: 'mor',
             },
-            key: FpDataType.SØKERSITUASJON,
+            key: ContextDataType.SØKERSITUASJON,
             type: 'update',
         });
     });
@@ -115,7 +115,7 @@ describe('<SøkersituasjonSteg>', () => {
                 situasjon: 'adopsjon',
                 rolle: 'far',
             },
-            key: FpDataType.SØKERSITUASJON,
+            key: ContextDataType.SØKERSITUASJON,
             type: 'update',
         });
     });

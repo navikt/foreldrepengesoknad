@@ -18,7 +18,7 @@ import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereU
 import { Sak, Søkerinfo } from '@navikt/fp-common';
 import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
 import useSendSøknad from 'app/context/useSendSøknad';
-import { FpDataType, useFpStateData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { Kvittering } from 'app/types/Kvittering';
 import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
 
@@ -226,7 +226,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
         setSøknadGjelderNyttBarn,
     );
 
-    const uttaksplan = useFpStateData(FpDataType.UTTAKSPLAN);
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
     const erMyndig = søkerInfo.person.erMyndig;
 

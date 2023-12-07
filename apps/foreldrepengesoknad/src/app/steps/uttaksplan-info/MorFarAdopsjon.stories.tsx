@@ -14,7 +14,7 @@ import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønad
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import Søker from 'app/context/types/Søker';
 
@@ -42,11 +42,11 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder;
         <AxiosMock mock={restMock}>
             <FpDataContext
                 initialState={{
-                    [FpDataType.SØKERSITUASJON]: {
+                    [ContextDataType.SØKERSITUASJON]: {
                         situasjon: 'adopsjon',
                         rolle: args.erMor ? 'mor' : 'far',
                     },
-                    [FpDataType.OM_BARNET]: {
+                    [ContextDataType.OM_BARNET]: {
                         type: BarnType.ADOPTERT_ANNET_BARN,
                         antallBarn: 1,
                         adopsjonsdato: dayjs('2021-03-15').toDate(),
@@ -55,8 +55,8 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder;
                         fødselsdatoer: [],
                         omsorgsovertakelse: [],
                     },
-                    [FpDataType.SØKER]: args.søker,
-                    [FpDataType.ANNEN_FORELDER]: args.annenForelder,
+                    [ContextDataType.SØKER]: args.søker,
+                    [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                 }}
             >
                 <UttaksplanInfo

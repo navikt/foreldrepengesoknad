@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 import * as stories from './OmBarnet.stories';
 import SøknadRoutes from 'app/routes/routes';
-import { FpDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
@@ -63,12 +63,12 @@ describe('<OmBarnet>', () => {
                 antallBarn: 1,
                 type: 'født',
             }),
-            key: FpDataType.OM_BARNET,
+            key: ContextDataType.OM_BARNET,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.ANNEN_FORELDER,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -87,7 +87,7 @@ describe('<OmBarnet>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: SøknadRoutes.SØKERSITUASJON,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });

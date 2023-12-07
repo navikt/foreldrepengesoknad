@@ -3,7 +3,7 @@ import { composeStories } from '@storybook/react';
 import userEvent from '@testing-library/user-event';
 import * as stories from './UtenlandsoppholdSteg.stories';
 import SøknadRoutes from 'app/routes/routes';
-import { FpDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 const { Default } = composeStories(stories);
 
@@ -30,12 +30,12 @@ describe('<UtenlandsoppholdSteg>', () => {
                 iNorgeNeste12Mnd: true,
                 iNorgeSiste12Mnd: true,
             },
-            key: FpDataType.UTENLANDSOPPHOLD,
+            key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.INNTEKTSINFORMASJON,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -62,12 +62,12 @@ describe('<UtenlandsoppholdSteg>', () => {
                 iNorgeNeste12Mnd: true,
                 iNorgeSiste12Mnd: false,
             },
-            key: FpDataType.UTENLANDSOPPHOLD,
+            key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -94,12 +94,12 @@ describe('<UtenlandsoppholdSteg>', () => {
                 iNorgeNeste12Mnd: false,
                 iNorgeSiste12Mnd: true,
             },
-            key: FpDataType.UTENLANDSOPPHOLD,
+            key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -126,12 +126,12 @@ describe('<UtenlandsoppholdSteg>', () => {
                 iNorgeNeste12Mnd: false,
                 iNorgeSiste12Mnd: false,
             },
-            key: FpDataType.UTENLANDSOPPHOLD,
+            key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -152,7 +152,7 @@ describe('<UtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: SøknadRoutes.UTTAKSPLAN,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });

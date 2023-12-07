@@ -6,7 +6,7 @@ import { ContentWrapper } from '@navikt/fp-ui';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import SøknadRoutes from 'app/routes/routes';
 import createConfig from '../stepsConfig';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
@@ -18,11 +18,11 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    const utenlandsopphold = notEmpty(useFpStateData(FpDataType.UTENLANDSOPPHOLD));
-    const senereUtenlandsopphold = useFpStateData(FpDataType.UTENLANDSOPPHOLD_SENERE);
+    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
+    const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
-    const lagreSenereUtenlandsopphold = useFpStateSaveFn(FpDataType.UTENLANDSOPPHOLD_SENERE);
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
+    const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const lagredeSenereUtenlandsopphold =
         senereUtenlandsopphold && senereUtenlandsopphold.senereOpphold.length > 0
@@ -36,7 +36,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
             : undefined;
 
     const save = (values: UtenlandsoppholdSenere) => {
-        lagreSenereUtenlandsopphold({
+        oppdaterSenereUtenlandsopphold({
             senereOpphold: values.utenlandsoppholdNeste12Mnd.map((un) => ({
                 land: un.landkode,
                 tidsperiode: {
@@ -46,7 +46,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
             })),
         });
 
-        lagreAppRoute(SøknadRoutes.INNTEKTSINFORMASJON);
+        oppdaterAppRoute(SøknadRoutes.INNTEKTSINFORMASJON);
         mellomlagreSøknadOgNaviger();
     };
 
@@ -55,7 +55,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
             ? SøknadRoutes.UTENLANDSOPPHOLD
             : SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
 
-        lagreAppRoute(appRoute);
+        oppdaterAppRoute(appRoute);
         mellomlagreSøknadOgNaviger();
     };
     const saveOnPrevious = () => {

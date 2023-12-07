@@ -6,7 +6,7 @@ import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import AnnenForelder from './AnnenForelder';
-import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SøkersituasjonFp } from '@navikt/fp-types';
@@ -65,10 +65,10 @@ const Template: StoryFn<Props> = ({
             <FpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [FpDataType.SØKERSITUASJON]: søkersituasjon,
-                    [FpDataType.OM_BARNET]: barn,
-                    [FpDataType.ANNEN_FORELDER]: annenForelder,
-                    [FpDataType.SØKER]: {
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    [ContextDataType.OM_BARNET]: barn,
+                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                    [ContextDataType.SØKER]: {
                         // @ts-ignore TODO (TOR) Fiks Søker-typen
                         harHattAnnenInntektSiste10Mnd: undefined,
                         // @ts-ignore TODO (TOR) Fiks Søker-typen

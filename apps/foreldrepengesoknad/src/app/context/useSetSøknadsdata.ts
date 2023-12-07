@@ -1,17 +1,17 @@
 import { EksisterendeSak } from '@navikt/fp-common';
-import { FpDataType, useAllStateSaveFn } from './FpDataContext';
+import { ContextDataType, useContextSaveAnyData } from './FpDataContext';
 import { Søknad } from './types/Søknad';
 
 export const useSetSøknadsdata = () => {
-    const lagreData = useAllStateSaveFn();
+    const oppdaterData = useContextSaveAnyData();
 
     const oppdaterSøknadIState = (søknad: Søknad, eksisterendeSak?: EksisterendeSak) => {
-        lagreData(FpDataType.SØKERSITUASJON, søknad.søkersituasjon);
-        lagreData(FpDataType.OM_BARNET, søknad.barn);
-        lagreData(FpDataType.ANNEN_FORELDER, søknad.annenForelder);
-        lagreData(FpDataType.SØKER, søknad.søker);
-        lagreData(
-            FpDataType.UTENLANDSOPPHOLD,
+        oppdaterData(ContextDataType.SØKERSITUASJON, søknad.søkersituasjon);
+        oppdaterData(ContextDataType.OM_BARNET, søknad.barn);
+        oppdaterData(ContextDataType.ANNEN_FORELDER, søknad.annenForelder);
+        oppdaterData(ContextDataType.SØKER, søknad.søker);
+        oppdaterData(
+            ContextDataType.UTENLANDSOPPHOLD,
             søknad.informasjonOmUtenlandsopphold
                 ? {
                       iNorgeNeste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
@@ -19,31 +19,31 @@ export const useSetSøknadsdata = () => {
                   }
                 : undefined,
         );
-        lagreData(
-            FpDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+        oppdaterData(
+            ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             søknad.informasjonOmUtenlandsopphold
                 ? {
                       tidligereOpphold: søknad.informasjonOmUtenlandsopphold.tidligereOpphold,
                   }
                 : undefined,
         );
-        lagreData(
-            FpDataType.UTENLANDSOPPHOLD_SENERE,
+        oppdaterData(
+            ContextDataType.UTENLANDSOPPHOLD_SENERE,
             søknad.informasjonOmUtenlandsopphold
                 ? {
                       senereOpphold: søknad.informasjonOmUtenlandsopphold.senereOpphold,
                   }
                 : undefined,
         );
-        lagreData(FpDataType.UTTAKSPLAN, søknad.uttaksplan);
-        lagreData(FpDataType.UTTAKSPLAN_METADATA, {
+        oppdaterData(ContextDataType.UTTAKSPLAN, søknad.uttaksplan);
+        oppdaterData(ContextDataType.UTTAKSPLAN_METADATA, {
             dekningsgrad: søknad.dekningsgrad,
             tilleggsopplysninger: søknad.tilleggsopplysninger,
             ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
         });
 
         if (eksisterendeSak) {
-            lagreData(FpDataType.EKSISTERENDE_SAK, eksisterendeSak);
+            oppdaterData(ContextDataType.EKSISTERENDE_SAK, eksisterendeSak);
         }
     };
 

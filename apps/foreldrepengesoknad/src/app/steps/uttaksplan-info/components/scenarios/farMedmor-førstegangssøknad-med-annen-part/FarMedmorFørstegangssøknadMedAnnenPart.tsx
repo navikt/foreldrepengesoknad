@@ -37,7 +37,7 @@ import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMe
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
@@ -64,19 +64,19 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
-    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
-    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
-    const uttaksplanInfo = useFpStateData(
-        FpDataType.UTTAKSPLAN_INFO,
+    const uttaksplanInfo = useContextGetData(
+        ContextDataType.UTTAKSPLAN_INFO,
     ) as FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo;
 
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
-    const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
-    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsedato = getFamiliehendelsedato(barn);
@@ -112,7 +112,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         const uttaksplanInfo: FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo = {
             permisjonStartdato: values.permisjonStartdato!,
         };
-        lagreUttaksplanInfo(uttaksplanInfo);
+        oppdaterUttaksplanInfo(uttaksplanInfo);
 
         const stønadskontoer = tilgjengeligeStønadskontoer[getDekningsgradFromString(grunnlag.dekningsgrad)];
         const farMedmorSinePerioder = lagUttaksplan({
@@ -160,7 +160,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
 
         const antallUker = getAntallUker(tilgjengeligeStønadskontoer[grunnlag.dekningsgrad]);
 
-        lagreUttaksplan(uttaksplanMedAnnenPart);
+        oppdaterUttaksplan(uttaksplanMedAnnenPart);
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
@@ -168,7 +168,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
             antallUkerIUttaksplan: antallUker,
         });
 
-        lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
 
         mellomlagreSøknadOgNaviger();
     };

@@ -46,7 +46,7 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import { FpDataType, useFpStateData, useFpStateSaveFn } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import BackButton from 'app/steps/BackButton';
@@ -72,18 +72,18 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
-    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
-    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
-    const uttaksplanInfo = useFpStateData(FpDataType.UTTAKSPLAN_INFO) as MorFarAdopsjonUttaksplanInfo;
+    const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO) as MorFarAdopsjonUttaksplanInfo;
 
-    const lagreAppRoute = useFpStateSaveFn(FpDataType.APP_ROUTE);
-    const lagreUttaksplanInfo = useFpStateSaveFn(FpDataType.UTTAKSPLAN_INFO);
-    const lagreUttaksplan = useFpStateSaveFn(FpDataType.UTTAKSPLAN);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const { fornavn, mellomnavn, etternavn } = person;
 
@@ -111,7 +111,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const onSubmit = (values: Partial<MorFarAdopsjonFormData>) => {
         setIsSubmitting(true);
 
-        lagreUttaksplanInfo(mapMorFarAdopsjonFormToState(values));
+        oppdaterUttaksplanInfo(mapMorFarAdopsjonFormToState(values));
 
         const submissionValues = mapMorFarAdopsjonFormToState(values);
         const barnAdopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
@@ -155,7 +155,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             førsteUttaksdagNesteBarnsSak,
         });
 
-        lagreUttaksplan(uttaksplan);
+        oppdaterUttaksplan(uttaksplan);
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
@@ -165,7 +165,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             ),
         });
 
-        lagreAppRoute(SøknadRoutes.UTTAKSPLAN);
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
 
         mellomlagreSøknadOgNaviger();
     };

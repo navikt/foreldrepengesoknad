@@ -36,7 +36,7 @@ import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innh
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { FpDataType, useFpStateData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 
 import './infoOmSøknaden.less';
 import Person from '@navikt/fp-common/src/common/types/Person';
@@ -76,12 +76,12 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const bem = bemUtils('infoOmSøknaden');
     const intl = useIntl();
 
-    const barn = notEmpty(useFpStateData(FpDataType.OM_BARNET));
-    const annenForelder = notEmpty(useFpStateData(FpDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useFpStateData(FpDataType.SØKER));
-    const søkersituasjon = notEmpty(useFpStateData(FpDataType.SØKERSITUASJON));
-    const uttaksplanMetadata = useFpStateData(FpDataType.UTTAKSPLAN_METADATA);
-    const barnFraNesteSak = useFpStateData(FpDataType.BARN_FRA_NESTE_SAK);
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
+    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
 
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
 import * as stories from './Inntektsinformasjon.stories';
-import { FpDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 
 const { HarIkkeArbeidsforhold, HarArbeidsforhold } = composeStories(stories);
@@ -55,12 +55,12 @@ describe('<Inntektsinformasjon>', () => {
                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                 selvstendigNæringsdrivendeInformasjon: [],
             },
-            key: FpDataType.SØKER,
+            key: ContextDataType.SØKER,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.OPPSUMMERING,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -85,7 +85,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -114,7 +114,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
@@ -143,7 +143,7 @@ describe('<Inntektsinformasjon>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: SøknadRoutes.UTENLANDSOPPHOLD,
-            key: FpDataType.APP_ROUTE,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });

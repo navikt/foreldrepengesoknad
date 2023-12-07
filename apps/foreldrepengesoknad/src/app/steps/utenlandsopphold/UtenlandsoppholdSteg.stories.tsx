@@ -4,7 +4,7 @@ import withRouter from 'storybook/decorators/withRouter';
 import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
-import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 
 export default {
     title: 'steps/UtenlandsoppholdSteg',
@@ -26,7 +26,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = action('button
             <FpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [FpDataType.SØKERSITUASJON]: {
+                    [ContextDataType.SØKERSITUASJON]: {
                         situasjon: 'fødsel',
                         rolle: 'mor',
                     },

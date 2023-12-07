@@ -7,7 +7,7 @@ import Søker from './types/Søker';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import UttaksplanInfo from './types/UttaksplanInfo';
 
-export enum FpDataType {
+export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
     EKSISTERENDE_SAK = 'EKSISTERENDE_SAK',
     BARN_FRA_NESTE_SAK = 'BARN_FRA_NESTE_SAK',
@@ -23,34 +23,34 @@ export enum FpDataType {
     UTTAKSPLAN_METADATA = 'UTTAKSPLAN_METADATA',
 }
 
-export type FpDataMap = {
-    [FpDataType.APP_ROUTE]?: SøknadRoutes;
-    [FpDataType.EKSISTERENDE_SAK]?: EksisterendeSak;
-    [FpDataType.BARN_FRA_NESTE_SAK]?: BarnFraNesteSak;
-    [FpDataType.SØKERSITUASJON]?: SøkersituasjonFp;
-    [FpDataType.OM_BARNET]?: Barn;
-    [FpDataType.ANNEN_FORELDER]?: AnnenForelder;
-    [FpDataType.SØKER]?: Søker;
-    [FpDataType.UTENLANDSOPPHOLD]?: Opphold;
-    [FpDataType.UTENLANDSOPPHOLD_SENERE]?: SenereOpphold;
-    [FpDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;
-    [FpDataType.UTTAKSPLAN_INFO]?: UttaksplanInfo;
-    [FpDataType.UTTAKSPLAN]?: Periode[];
-    [FpDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
+export type ContextDataMap = {
+    [ContextDataType.APP_ROUTE]?: SøknadRoutes;
+    [ContextDataType.EKSISTERENDE_SAK]?: EksisterendeSak;
+    [ContextDataType.BARN_FRA_NESTE_SAK]?: BarnFraNesteSak;
+    [ContextDataType.SØKERSITUASJON]?: SøkersituasjonFp;
+    [ContextDataType.OM_BARNET]?: Barn;
+    [ContextDataType.ANNEN_FORELDER]?: AnnenForelder;
+    [ContextDataType.SØKER]?: Søker;
+    [ContextDataType.UTENLANDSOPPHOLD]?: Opphold;
+    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: SenereOpphold;
+    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;
+    [ContextDataType.UTTAKSPLAN_INFO]?: UttaksplanInfo;
+    [ContextDataType.UTTAKSPLAN]?: Periode[];
+    [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
 };
 
-const defaultInitialState = {} as FpDataMap;
+const defaultInitialState = {} as ContextDataMap;
 
-export type Action = { type: 'update'; key: FpDataType; data: any } | { type: 'reset' };
+export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
-type State = FpDataMap;
+type State = ContextDataMap;
 
 const FpStateContext = createContext<State>(defaultInitialState);
 const FpDispatchContext = createContext<Dispatch | undefined>(undefined);
 
 interface OwnProps {
     children: ReactNode;
-    initialState?: FpDataMap;
+    initialState?: ContextDataMap;
     onDispatch?: (action: Action) => void;
 }
 
@@ -83,10 +83,25 @@ export const FpDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
     );
 };
 
+/** Hook returns data for one specific data type  */
+export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
+    const state = useContext(FpStateContext);
+    return state[key];
+};
+
+/** Hook returns function capable of getting all types of data from context state  */
+export const useContextGetAnyData = () => {
+    const state = useContext(FpStateContext);
+
+    return <TYPE extends ContextDataType>(key: TYPE) => {
+        return state[key];
+    };
+};
+
 /** Hook returns save function for one specific data type */
-export const useFpStateSaveFn = <TYPE extends FpDataType>(key: TYPE): ((data: FpDataMap[TYPE]) => void) => {
+export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = useContext(FpDispatchContext);
-    return (data: FpDataMap[TYPE]) => {
+    return (data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
         }
@@ -94,9 +109,9 @@ export const useFpStateSaveFn = <TYPE extends FpDataType>(key: TYPE): ((data: Fp
 };
 
 /** Hook returns save function usable with all data types  */
-export const useAllStateSaveFn = () => {
+export const useContextSaveAnyData = () => {
     const dispatch = useContext(FpDispatchContext);
-    return <TYPE extends FpDataType>(key: TYPE, data: FpDataMap[TYPE]) => {
+    return <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
         }
@@ -104,7 +119,7 @@ export const useAllStateSaveFn = () => {
 };
 
 /** Hook returns state reset function  */
-export const useFpStateResetFn = () => {
+export const useContextReset = () => {
     const dispatch = useContext(FpDispatchContext);
     return () => {
         if (dispatch) {
@@ -113,25 +128,10 @@ export const useFpStateResetFn = () => {
     };
 };
 
-/** Hook returns data for one specific data type  */
-export const useFpStateData = <TYPE extends FpDataType>(key: TYPE): FpDataMap[TYPE] => {
-    const state = useContext(FpStateContext);
-    return state[key];
-};
-
-/** Hook returns function capable of getting all types of data from context state  */
-export const useFpStateAllDataFn = () => {
-    const state = useContext(FpStateContext);
-
-    return <TYPE extends FpDataType>(key: TYPE) => {
-        return state[key];
-    };
-};
-
 // TODO (TOR) Fjern denne
 /**
  * @deprecated Bruk heller useFpStateData eller useFpStateAllDataFn
  */
-export const useFpState = () => {
+export const useContextComplete = () => {
     return useContext(FpStateContext);
 };

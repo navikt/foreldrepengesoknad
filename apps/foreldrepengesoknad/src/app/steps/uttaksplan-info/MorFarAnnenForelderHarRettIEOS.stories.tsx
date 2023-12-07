@@ -12,7 +12,7 @@ import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.
 
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import Søker from 'app/context/types/Søker';
@@ -48,10 +48,10 @@ const Template: StoryFn<
         <AxiosMock mock={restMock}>
             <FpDataContext
                 initialState={{
-                    [FpDataType.SØKERSITUASJON]: args.søkersituasjon,
-                    [FpDataType.OM_BARNET]: args.barn,
-                    [FpDataType.SØKER]: args.søker,
-                    [FpDataType.ANNEN_FORELDER]: args.annenForelder,
+                    [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
+                    [ContextDataType.OM_BARNET]: args.barn,
+                    [ContextDataType.SØKER]: args.søker,
+                    [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                 }}
             >
                 <UttaksplanInfo

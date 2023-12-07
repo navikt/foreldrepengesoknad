@@ -7,7 +7,7 @@ import AxiosMock from 'storybook/utils/AxiosMock';
 import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import Inntektsinformasjon from './Inntektsinformasjon';
-import { Action, FpDataContext, FpDataType } from 'app/context/FpDataContext';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { BarnType } from '@navikt/fp-common';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
@@ -54,16 +54,16 @@ const Template: StoryFn<Props> = ({
             <FpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [FpDataType.SØKERSITUASJON]: {
+                    [ContextDataType.SØKERSITUASJON]: {
                         situasjon: 'fødsel',
                         rolle: 'mor',
                     },
-                    [FpDataType.OM_BARNET]: {
+                    [ContextDataType.OM_BARNET]: {
                         type: BarnType.FØDT,
                         fødselsdatoer: [new Date()],
                         antallBarn: 1,
                     },
-                    [FpDataType.SØKER]: {
+                    [ContextDataType.SØKER]: {
                         erAleneOmOmsorg: false,
                         // @ts-ignore FIX
                         harJobbetSomFrilansSiste10Mnd: undefined,
@@ -72,7 +72,7 @@ const Template: StoryFn<Props> = ({
                         // @ts-ignore FIX
                         harHattAnnenInntektSiste10Mnd: undefined,
                     },
-                    [FpDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                 }}
             >
                 <Inntektsinformasjon
