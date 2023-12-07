@@ -13,7 +13,7 @@ export const useAvbrytSøknad = (
     const navigate = useNavigate();
     const reset = useContextReset();
 
-    const avbrytSøknadHandler = useCallback(() => {
+    const avbrytSøknadHandler = useCallback(async () => {
         logAmplitudeEvent('applikasjon-hendelse', {
             app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
@@ -26,8 +26,11 @@ export const useAvbrytSøknad = (
         setHarGodkjentVilkår(false);
         setSøknadGjelderNyttBarn(undefined);
 
-        Api.deleteMellomlagretSøknad(fødselsnr);
-        //TODO (TOR) Slett vedlegg. Men vent til Andreas har fått inn vedleggsendringa si
+        try {
+            await Api.deleteMellomlagretSøknad(fødselsnr);
+        } catch (error) {
+            // Vi bryr oss ikke om feil her. Logges bare i backend
+        }
 
         navigate('/');
     }, [fødselsnr, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
