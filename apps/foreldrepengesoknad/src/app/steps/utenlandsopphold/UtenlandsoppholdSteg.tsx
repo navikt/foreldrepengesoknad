@@ -27,6 +27,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøkn
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
+    const manglerDokumentasjon = useContextGetData(ContextDataType.MANGLER_DOKUMENTASJON);
     const oppdaterUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
@@ -42,7 +43,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøkn
     };
 
     const goToPreviousStep = () => {
-        const appRoute = getPreviousStepHref('utenlandsopphold');
+        const appRoute = getPreviousStepHref('utenlandsopphold', manglerDokumentasjon);
         oppdaterAppRoute(appRoute);
         mellomlagreSøknadOgNaviger();
     };
