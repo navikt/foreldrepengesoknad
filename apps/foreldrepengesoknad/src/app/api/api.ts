@@ -7,21 +7,14 @@ import { storageParser } from './storageParser';
 import Environment from 'app/Environment';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
-import {
-    Attachment,
-    BarnFraNesteSak,
-    Dekningsgrad,
-    EksisterendeSak,
-    Periode,
-    formaterDato,
-    hasValue,
-} from '@navikt/fp-common';
+import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode, formaterDato, hasValue } from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/SakerOppslag';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { RequestStatus } from 'app/types/RequestState';
 import SøknadRoutes from 'app/routes/routes';
 import { Søknad } from 'app/context/types/Søknad';
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
+import { Attachment } from '@navikt/fp-types';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;

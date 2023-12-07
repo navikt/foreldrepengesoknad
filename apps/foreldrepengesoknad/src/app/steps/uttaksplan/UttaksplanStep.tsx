@@ -111,6 +111,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterManglerDokumentasjon = useContextSaveData(ContextDataType.MANGLER_DOKUMENTASJON);
 
     const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(
@@ -391,6 +392,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
         setIsSubmitting(true);
         setSubmitIsClicked(true);
+        oppdaterManglerDokumentasjon(planKreverVedlegg);
 
         const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(
             uttaksplanMetadata.tilleggsopplysninger,

@@ -40,10 +40,9 @@ import {
     sorterPerioder,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
-import { LocaleNo } from '@navikt/fp-types';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
