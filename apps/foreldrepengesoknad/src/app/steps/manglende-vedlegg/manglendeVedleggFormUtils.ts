@@ -3,6 +3,7 @@ import { ManglendeVedleggFormData } from './manglendeVedleggFormConfig';
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
     isArbeidUtdanningEllerSykdomVedlegg,
+    isFedrekvoteMorForSykVedlegg,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
     isOverføringsVedlegg,
@@ -13,4 +14,5 @@ export const getInitValues = (vedlegg: Attachment[]): Readonly<ManglendeVedleggF
     [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: vedlegg.filter(isKvalifiseringsprogramVedlegg),
     [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: vedlegg.filter(isIntroduksjonsprogramVedlegg),
     [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: vedlegg.filter(isOverføringsVedlegg),
+    [Skjemanummer.DOK_INNLEGGELSE]: vedlegg.filter(isFedrekvoteMorForSykVedlegg),
 });

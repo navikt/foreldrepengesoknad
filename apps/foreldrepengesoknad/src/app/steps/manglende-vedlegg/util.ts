@@ -6,7 +6,8 @@ export type GyldigeSkjemanummer =
     | Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM
     | Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
     | Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
-    | Skjemanummer.DOK_OVERFØRING_FOR_SYK;
+    | Skjemanummer.DOK_OVERFØRING_FOR_SYK
+    | Skjemanummer.DOK_INNLEGGELSE;
 
 export const grupperteFellesperioderMorsAktivitetArbeidUtdanningEllerSykdom = (perioder: Periode[]) => {
     return perioder.filter(morsAktivitetErArbeidUtdanningEllerSykdom);
@@ -38,6 +39,10 @@ export const isArbeidUtdanningEllerSykdomVedlegg = (attachment: Attachment) => {
 
 export const isOverføringsVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_OVERFØRING_FOR_SYK;
+};
+
+export const isFedrekvoteMorForSykVedlegg = () => (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE;
 };
 
 const morsAktivitetErArbeidUtdanningEllerSykdom = (periode: Periode) => {

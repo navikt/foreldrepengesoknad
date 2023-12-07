@@ -14,6 +14,7 @@ import FellesperiodeDok from './dokumentasjon/FellesperiodeDok';
 import {
     GyldigeSkjemanummer,
     isArbeidUtdanningEllerSykdomVedlegg,
+    isFedrekvoteMorForSykVedlegg,
     isFellesperiodeAttachment,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
@@ -24,6 +25,7 @@ import OverføringsDok from './dokumentasjon/OverføringDok';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
+import FedrekvoteMorForSykDok from './dokumentasjon/FedrekvoteMorForSykDok';
 
 type Props = {
     person: Person;
@@ -53,6 +55,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
     const fellesperiodeVedlegg = vedlegg.filter(isFellesperiodeAttachment);
     const overføringsVedlegg = vedlegg.filter(isOverføringsVedlegg);
+    const fedrekvoteMorForSykVedlegg = vedlegg.filter(isFedrekvoteMorForSykVedlegg);
 
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -64,6 +67,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             ...formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM],
             ...formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET],
             ...formValues[Skjemanummer.DOK_OVERFØRING_FOR_SYK],
+            ...formValues[Skjemanummer.DOK_INNLEGGELSE],
         ];
 
         saveVedlegg(alleVedlegg);
@@ -78,6 +82,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: vedlegg.filter(isKvalifiseringsprogramVedlegg),
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: vedlegg.filter(isIntroduksjonsprogramVedlegg),
             [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: vedlegg.filter(isOverføringsVedlegg),
+            [Skjemanummer.DOK_INNLEGGELSE]: vedlegg.filter(isFedrekvoteMorForSykVedlegg),
         },
     });
 
@@ -107,6 +112,15 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <OverføringsDok
                     attachments={overføringsVedlegg}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <FedrekvoteMorForSykDok
+                    attachments={fedrekvoteMorForSykVedlegg}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}

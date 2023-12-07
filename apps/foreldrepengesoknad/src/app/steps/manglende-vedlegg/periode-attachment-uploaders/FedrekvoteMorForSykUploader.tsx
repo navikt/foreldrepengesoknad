@@ -24,7 +24,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const OverføringsUploader: FunctionComponent<Props> = ({
+const FedrekvoteMorForSykUploader: FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -62,8 +62,8 @@ const OverføringsUploader: FunctionComponent<Props> = ({
                 <FormattedMessage id="manglendeVedlegg.storrelse" />
             </BodyLong>
             <FileUploader
-                attachmentType={AttachmentType.OVERFØRING_KVOTE}
-                skjemanummer={Skjemanummer.DOK_OVERFØRING_FOR_SYK}
+                attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                skjemanummer={Skjemanummer.DOK_INNLEGGELSE}
                 existingAttachments={attachments}
                 updateAttachments={(attachments) => {
                     const attachmentsMedMetadata = attachments.map((a) =>
@@ -84,4 +84,4 @@ const OverføringsUploader: FunctionComponent<Props> = ({
     );
 };
 
-export default OverføringsUploader;
+export default FedrekvoteMorForSykUploader;
