@@ -142,9 +142,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(
-            await screen.findByText('For å få rett til foreldrepenger må du være medlem av norsk folketrygd.'),
-        ).toBeInTheDocument();
+        expect(await screen.findByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
