@@ -1,8 +1,7 @@
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
-import { useCallback } from 'react';
 
 const useFortsettSøknadSenere = () => {
-    const useFortsettSøknadSenere = useCallback(() => {
+    const useFortsettSøknadSenere = () => {
         logAmplitudeEvent('applikasjon-hendelse', {
             app: 'foreldrepengesoknad',
             team: 'foreldrepenger',
@@ -10,7 +9,7 @@ const useFortsettSøknadSenere = () => {
         });
 
         (window as any).location = 'https://nav.no';
-    }, []);
+    };
 
     return useFortsettSøknadSenere;
 };

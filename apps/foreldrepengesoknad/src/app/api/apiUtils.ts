@@ -41,6 +41,9 @@ import {
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
+import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
+import { LocaleNo } from '@navikt/fp-types';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
@@ -62,7 +65,7 @@ export type UttaksPeriodeForInnsending = Omit<UttaksperiodeBase, 'erMorForSyk'> 
 
 export type PeriodeForInnsending = Exclude<Periode, 'Uttaksperiode'> | UttaksPeriodeForInnsending;
 
-export type LocaleForInnsending = 'NB' | 'NN';
+export type LocaleForInnsending = 'NB' | 'NN' | 'nb' | 'nn';
 
 export type SøkerrolleInnsending = 'MOR' | 'FAR' | 'MEDMOR';
 
@@ -88,6 +91,7 @@ export interface SøknadForInnsending
     søker: SøkerForInnsending;
     situasjon: Situasjon;
     tilleggsopplysninger?: string;
+    vedlegg: Attachment[];
 }
 
 export type EndringssøknadForInnsending = Pick<
@@ -96,7 +100,6 @@ export type EndringssøknadForInnsending = Pick<
     | 'saksnummer'
     | 'erEndringssøknad'
     | 'uttaksplan'
-    | 'vedlegg'
     | 'søker'
     | 'annenForelder'
     | 'barn'
@@ -104,6 +107,7 @@ export type EndringssøknadForInnsending = Pick<
     | 'situasjon'
     | 'tilleggsopplysninger'
     | 'ønskerJustertUttakVedFødsel'
+    | 'vedlegg'
 >;
 
 export const FOR_MANGE_VEDLEGG_ERROR =
@@ -346,62 +350,81 @@ export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], end
     return uttaksplan;
 };
 
-export const cleanSøknad = (søknad: Søknad, familiehendelsesdato: Date): SøknadForInnsending => {
-    const { søker, barn, annenForelder, søkersituasjon, tilleggsopplysninger, uttaksplan, ...rest } = søknad;
+export const cleanSøknad = (
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    familiehendelsesdato: Date,
+    locale: LocaleNo,
+): SøknadForInnsending => {
+    const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
+    const søker = notEmpty(hentData(ContextDataType.SØKER));
+    const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
+    const utenlandsopphold = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD));
+    const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
+    const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
+    const eksisterendeSak = hentData(ContextDataType.EKSISTERENDE_SAK);
+
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
-    const søkerInnsending = cleanSøker(søker, søknad.søkersituasjon);
+    const søkerInnsending = cleanSøker(søker, søkersituasjon, locale);
     const barnInnsending = cleanBarn(barn);
-    const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
-    const termindato = getTermindato(søknad.barn);
+    const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const termindato = getTermindato(barn);
     const uttaksplanInnsending = cleanUttaksplan(
         uttaksplan,
         familiehendelsesdato,
         søkerErFarEllerMedmor,
-        søknad.ønskerJustertUttakVedFødsel,
+        uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         termindato,
         annenForelder,
     );
-    const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(søknad.tilleggsopplysninger);
+    const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger));
     const cleanedSøknad: SøknadForInnsending = {
+        type: 'foreldrepenger',
+        harGodkjentVilkår: true,
+        saksnummer: eksisterendeSak?.saksnummer,
+        erEndringssøknad: false,
         søker: søkerInnsending,
         barn: barnInnsending,
-        situasjon: søknad.søkersituasjon.situasjon,
+        situasjon: søkersituasjon.situasjon,
         annenForelder: annenForelderInnsending,
         uttaksplan: uttaksplanInnsending,
         tilleggsopplysninger: tilleggsopplysningerInnsending,
-        ...rest,
+        informasjonOmUtenlandsopphold: {
+            ...utenlandsopphold,
+            ...(senereUtenlandsopphold || { senereOpphold: [] }),
+            ...(tidligereUtenlandsopphold || { tidligereOpphold: [] }),
+        },
+        dekningsgrad: uttaksplanMetadata.dekningsgrad!,
+        ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
+        vedlegg: [], //Vedlegga blir lagt til i funksjonen under
     };
 
     return mapAttachmentsToSøknadForInnsending(cleanedSøknad) as SøknadForInnsending; //TODO vedleggForSenEndring
 };
 
-const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon): SøkerForInnsending => {
-    const cleanedSpråkkode = søker.språkkode === 'nb' ? 'NB' : 'NN';
+const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
     const rolle = konverterRolle(søkersituasjon.rolle);
     return {
         ...søker,
         rolle: rolle,
-        språkkode: cleanedSpråkkode,
+        språkkode: locale,
     };
 };
 
 export const getSøknadsdataForInnsending = (
-    originalSøknad: Søknad,
+    erEndringssøknad: boolean,
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
+    locale: LocaleNo,
     endringstidspunkt?: Date,
 ): SøknadForInnsending | EndringssøknadForInnsending => {
-    const søknad: Søknad = JSON.parse(JSON.stringify(originalSøknad));
-    if (søknad.erEndringssøknad) {
-        return cleanEndringssøknad(
-            søknad,
-            endringerIUttaksplan,
-            familiehendelsesdato,
-            søknad.ønskerJustertUttakVedFødsel,
-            endringstidspunkt,
-        );
+    if (erEndringssøknad) {
+        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, locale, endringstidspunkt);
     } else {
-        return cleanSøknad(søknad, familiehendelsesdato);
+        return cleanSøknad(hentData, familiehendelsesdato, locale);
     }
 };
 
@@ -429,35 +452,41 @@ export const cleanAttachments = (object: any): Attachment[] => {
 };
 
 export const cleanEndringssøknad = (
-    søknad: Søknad,
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: Date,
-    ønskerJustertUttakVedFødsel: boolean | undefined,
+    locale: LocaleNo,
     endringstidspunkt?: Date,
 ): EndringssøknadForInnsending => {
-    const søkerErFarEllerMedmor = isFarEllerMedmor(søknad.søkersituasjon.rolle);
-    const termindato = getTermindato(søknad.barn);
+    const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
+    const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
+    const søker = notEmpty(hentData(ContextDataType.SØKER));
+    const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
+    const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
+    const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const termindato = getTermindato(barn);
     const cleanedSøknad: EndringssøknadForInnsending = {
+        type: 'foreldrepenger',
         erEndringssøknad: true,
-        saksnummer: søknad.saksnummer,
-        type: søknad.type,
+        saksnummer: eksisterendeSak.saksnummer,
         uttaksplan: cleanUttaksplan(
             endringerIUttaksplan,
             familiehendelsesdato,
             søkerErFarEllerMedmor,
-            ønskerJustertUttakVedFødsel,
+            uttaksplanMetadata.ønskerJustertUttakVedFødsel,
             termindato,
-            søknad.annenForelder,
+            annenForelder,
             endringstidspunkt,
         ),
-        vedlegg: cleanAttachments({ søknad }), //TODO: cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring: søknad.vedleggForSenEndring });
-        søker: cleanSøker(søknad.søker, søknad.søkersituasjon),
-        annenForelder: cleanAnnenForelder(søknad.annenForelder, true),
-        barn: søknad.barn,
-        dekningsgrad: søknad.dekningsgrad,
-        situasjon: søknad.søkersituasjon.situasjon,
-        tilleggsopplysninger: cleanTilleggsopplysninger(søknad.tilleggsopplysninger),
-        ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
+        søker: cleanSøker(søker, søkersituasjon, locale),
+        annenForelder: cleanAnnenForelder(annenForelder, true),
+        barn: barn,
+        dekningsgrad: uttaksplanMetadata.dekningsgrad!,
+        situasjon: søkersituasjon.situasjon,
+        tilleggsopplysninger: cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger)),
+        ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
+        vedlegg: [], //Vedlegga blir lagt til i funksjonen under
     };
 
     return mapAttachmentsToSøknadForInnsending(cleanedSøknad);

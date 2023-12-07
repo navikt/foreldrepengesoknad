@@ -4,7 +4,9 @@ export type { LocaleNo, LocaleAll } from './src/Locale';
 export type { Attachment } from './src/Attachment';
 export { InnsendingsType } from './src/Attachment';
 export type { AttachmentMetadata } from './src/AttachmentMetadata';
-export type { Søkersituasjon, Situasjon } from './src/Søkersituasjon';
+export type { Søkersituasjon, SøkersituasjonFp } from './src/Søkersituasjon';
+export type { Situasjon } from './src/Situasjon';
+export type { Søkerrolle } from './src/Søkerrolle';
 export type { StepConfig } from './src/StepConfig';
 export type {
     Utenlandsopphold,

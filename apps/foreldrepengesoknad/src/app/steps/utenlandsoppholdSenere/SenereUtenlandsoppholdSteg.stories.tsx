@@ -1,44 +1,52 @@
 import { StoryFn } from '@storybook/react';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
+import { action } from '@storybook/addon-actions';
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
-import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
-const søkerinfo = _søkerinfo as any;
-const context = _context as any;
+const defaultUtenlandsopphold = {
+    iNorgeNeste12Mnd: false,
+    iNorgeSiste12Mnd: true,
+};
 
 export default {
     title: 'steps/SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
 interface Props {
-    context: ForeldrepengesøknadContextState;
-    søkerinfo: SøkerinfoDTO;
+    mellomlagreSøknadOgNaviger?: () => Promise<any>;
+    gåTilNesteSide: (action: Action) => void;
+    utenlandsforhold: Opphold;
 }
 
-const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
+const Template: StoryFn<Props> = ({
+    mellomlagreSøknadOgNaviger = action('button-click'),
+    gåTilNesteSide,
+    utenlandsforhold = defaultUtenlandsopphold,
+}) => {
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage').reply(200, undefined);
+        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-                <SenereUtenlandsoppholdSteg />
-            </ForeldrepengerStateMock>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
+                }}
+            >
+                <SenereUtenlandsoppholdSteg
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={action('button-click')}
+                />
+            </FpDataContext>
         </AxiosMock>
     );
 };
 
 export const Default = Template.bind({});
-Default.args = {
-    context,
-    søkerinfo,
-};

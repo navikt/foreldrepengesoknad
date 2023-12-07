@@ -543,6 +543,12 @@ importers:
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../../packages/fp-common
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@navikt/fp-form-hooks':
+        specifier: workspace:*
+        version: link:../../packages/form-hooks
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -552,6 +558,12 @@ importers:
       '@navikt/fp-utenlandsopphold':
         specifier: workspace:*
         version: link:../../packages/utenlandsopphold
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@navikt/fp-validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
         version: 0.25.0(@navikt/ds-css@4.12.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@4.12.1)(@types/react@18.2.20)(formik@2.4.3)(react-intl@6.4.4)(react@18.2.0)
@@ -679,12 +691,6 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
-      '@navikt/fp-constants':
-        specifier: workspace:*
-        version: link:../../packages/constants
-      '@navikt/fp-form-hooks':
-        specifier: workspace:*
-        version: link:../../packages/form-hooks
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test

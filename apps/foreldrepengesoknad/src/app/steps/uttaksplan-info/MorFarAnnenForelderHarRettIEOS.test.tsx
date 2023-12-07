@@ -17,7 +17,7 @@ const farEllerMedMorSøkerAdopsjon = [
 ];
 
 describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
-    // FIXME Noko tull med locale og datoar
+    // TODO Noko tull med locale og datoar
     it.skip.each(farEllerMedMorSøkerAdopsjon)(
         'Skal fungere for adopsjon der far/mor søker og mor/far har rett i EØS',
         async (FarEllerMedMorSøker) => {

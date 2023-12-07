@@ -1,5 +1,5 @@
 import { Barn, doesTidsperiodeContainDate, intlUtils, isAdoptertAnnetBarn, isAdoptertStebarn } from '@navikt/fp-common';
-import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { Opphold, Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -8,7 +8,9 @@ import UtenlandsoppholdListe from './UtenlandsoppholdOppsummeringListe';
 import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
-    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
+    utenlandsopphold: Opphold;
+    tidligereUtenlandsopphold?: Utenlandsopphold[];
+    senereUtenlandsopphold?: Utenlandsopphold[];
     barn: Barn;
 }
 
@@ -38,38 +40,38 @@ const erAdoptertBarn = (barn: Barn): boolean => {
     return isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn);
 };
 
-const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({ informasjonOmUtenlandsopphold, barn }) => {
+const EMPTY_ARRAY = [] as Utenlandsopphold[];
+
+const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({
+    utenlandsopphold,
+    tidligereUtenlandsopphold = EMPTY_ARRAY,
+    senereUtenlandsopphold = EMPTY_ARRAY,
+    barn,
+}) => {
     const intl = useIntl();
-    const { senereOpphold, tidligereOpphold } = informasjonOmUtenlandsopphold;
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const erINorgePåFamiliehendelsedato = getErINorgePåFamiliehendelsedato(
         familiehendelsedato,
-        tidligereOpphold,
-        senereOpphold,
+        tidligereUtenlandsopphold,
+        senereUtenlandsopphold,
     );
 
     return (
         <>
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge')}>
-                {informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ? (
+                {utenlandsopphold.iNorgeSiste12Mnd ? (
                     <BodyShort>{intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.norge')}</BodyShort>
                 ) : null}
 
-                <UtenlandsoppholdListe
-                    utenlandsopphold={informasjonOmUtenlandsopphold.tidligereOpphold}
-                    tidligereOpphold={true}
-                />
+                <UtenlandsoppholdListe utenlandsopphold={tidligereUtenlandsopphold} tidligereOpphold={true} />
             </OppsummeringsPunkt>
 
             <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge')}>
-                {informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ? (
+                {utenlandsopphold.iNorgeNeste12Mnd ? (
                     <BodyShort>{intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.norge')}</BodyShort>
                 ) : null}
 
-                <UtenlandsoppholdListe
-                    utenlandsopphold={informasjonOmUtenlandsopphold.senereOpphold}
-                    tidligereOpphold={false}
-                />
+                <UtenlandsoppholdListe utenlandsopphold={senereUtenlandsopphold} tidligereOpphold={false} />
             </OppsummeringsPunkt>
 
             <OppsummeringsPunkt

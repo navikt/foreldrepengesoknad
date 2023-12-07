@@ -184,7 +184,7 @@ export const mapOmBarnetFormDataToState = (
     };
 };
 
-export const getOmBarnetInitialValues = (barn: Barn, arbeidsforhold: Arbeidsforhold[]): OmBarnetFormData => {
+export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?: Barn): OmBarnetFormData => {
     const initialOmBarnetValues = getInitValues();
 
     if (!barn) {

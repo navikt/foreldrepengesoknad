@@ -20,13 +20,13 @@ export const mapFarMedmorFødselOgMorHarIkkeRettFormToState = (
 };
 
 export const getInitialFarMedmorFødselOgMorHarIkkeRettValues = (
-    dekningsgrad: Dekningsgrad,
     lagretUttaksplanInfo: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo | undefined,
+    dekningsgrad?: Dekningsgrad,
 ): FarMedmorFødselOgMorHarIkkeRettFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: dekningsgrad,
+            [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: dekningsgrad!,
         };
     }
 

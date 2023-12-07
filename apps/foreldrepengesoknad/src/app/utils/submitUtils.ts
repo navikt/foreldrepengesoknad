@@ -1,8 +1,3 @@
-import Api from 'app/api/api';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-
-import { AxiosResponse } from 'axios';
-
 import dayjs from 'dayjs';
 import {
     Forelder,
@@ -17,10 +12,6 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-
-export const storeAppState = (state: ForeldrepengesøknadContextState): Promise<AxiosResponse<any>> => {
-    return Api.storeAppState(state, state.søkerinfo.person.fnr);
-};
 
 export const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
     return (

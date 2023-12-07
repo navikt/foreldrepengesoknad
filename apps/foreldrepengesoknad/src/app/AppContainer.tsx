@@ -4,7 +4,6 @@ import { Modal } from '@navikt/ds-react';
 import { IntlProvider } from '@navikt/fp-ui';
 import { LocaleNo } from '@navikt/fp-types';
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
-import ForeldrepengesøknadContextProvider from './context/ForeldrepengesøknadContext';
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import ByttBrowserModal from 'app/pages/byttBrowserModal/ByttBrowserModal';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
@@ -31,20 +30,18 @@ const AppContainer = () => {
     });
 
     return (
-        <ForeldrepengesøknadContextProvider>
-            <ErrorBoundary>
-                <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                    <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
-                    <Foreldrepengesøknad
-                        locale={locale}
-                        onChangeLocale={(activeLocale: LocaleNo) => {
-                            setLocaleInSessionStorage(activeLocale);
-                            setLocale(activeLocale);
-                        }}
-                    />
-                </IntlProvider>
-            </ErrorBoundary>
-        </ForeldrepengesøknadContextProvider>
+        <ErrorBoundary>
+            <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
+                <Foreldrepengesøknad
+                    locale={locale}
+                    onChangeLocale={(activeLocale: LocaleNo) => {
+                        setLocaleInSessionStorage(activeLocale);
+                        setLocale(activeLocale);
+                    }}
+                />
+            </IntlProvider>
+        </ErrorBoundary>
     );
 };
 

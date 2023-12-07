@@ -1,31 +1,55 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
+import { action } from '@storybook/addon-actions';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
-import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
 import AnnenForelder from './AnnenForelder';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+import dayjs from 'dayjs';
 
 const søkerinfo = _søkerinfo as any;
-const context = _context as any;
 
 export default {
     title: 'steps/AnnenForelder',
     component: AnnenForelder,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
 interface Props {
-    context: ForeldrepengesøknadContextState;
     søkerinfo: SøkerinfoDTO;
+    søkersituasjon?: SøkersituasjonFp;
+    annenForelder?: AnnenForelderType;
+    barn?: Barn;
+    mellomlagreSøknadOgNaviger?: () => void;
+    gåTilNesteSide: (action: Action) => void;
+    avbrytSøknad: () => void;
 }
 
-const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
+const Template: StoryFn<Props> = ({
+    søkerinfo,
+    søkersituasjon = {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    barn = {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        antallBarn: 1,
+        datoForAleneomsorg: undefined,
+        dokumentasjonAvAleneomsorg: [],
+    },
+    annenForelder = {
+        kanIkkeOppgis: true,
+    },
+    gåTilNesteSide,
+    mellomlagreSøknadOgNaviger = action('button-click'),
+    avbrytSøknad = action('button-click'),
+}) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(
             200,
@@ -34,43 +58,56 @@ const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
                 location: '',
             },
         );
-        apiMock.onPost('/storage').reply(200, undefined);
+        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-                <AnnenForelder />
-            </ForeldrepengerStateMock>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    [ContextDataType.OM_BARNET]: barn,
+                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                    [ContextDataType.SØKER]: {
+                        // @ts-ignore TODO (TOR) Fiks Søker-typen
+                        harHattAnnenInntektSiste10Mnd: undefined,
+                        // @ts-ignore TODO (TOR) Fiks Søker-typen
+                        harJobbetSomFrilansSiste10Mnd: undefined,
+                        // @ts-ignore TODO (TOR) Fiks Søker-typen
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
+                        // @ts-ignore TODO (TOR) Fiks Søker-typen
+                        erAleneOmOmsorg: undefined,
+                    },
+                }}
+            >
+                <AnnenForelder
+                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={avbrytSøknad}
+                />
+            </FpDataContext>
         </AxiosMock>
     );
 };
 
 export const Default = Template.bind({});
 Default.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            barn: {
-                ...context.søknad.barn,
-                fnr: '21091981146',
-            },
-        },
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        antallBarn: 1,
+        datoForAleneomsorg: dayjs('2021-03-15').toDate(),
+        dokumentasjonAvAleneomsorg: [],
+        fnr: ['21091981146'],
     },
     søkerinfo,
 };
 
 export const SkalOppgiPersonalia = Template.bind({});
 SkalOppgiPersonalia.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            annenForelder: {
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    annenForelder: {
+        kanIkkeOppgis: false,
+    },
     søkerinfo: {
         søker: {
             ...søkerinfo,
@@ -81,16 +118,10 @@ SkalOppgiPersonalia.args = {
 
 export const SkalOppgiPersonaliaNavnMangler = Template.bind({});
 SkalOppgiPersonaliaNavnMangler.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            annenForelder: {
-                fornavn: 'annen forelder',
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    annenForelder: {
+        fornavn: 'annen forelder',
+        kanIkkeOppgis: false,
+    },
     søkerinfo: {
         søker: {
             ...søkerinfo,
@@ -101,17 +132,11 @@ SkalOppgiPersonaliaNavnMangler.args = {
 
 export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike = Template.bind({});
 SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            annenForelder: {
-                fornavn: 'Tom',
-                fnr: '123456789',
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    annenForelder: {
+        fornavn: 'Tom',
+        fnr: '123456789',
+        kanIkkeOppgis: false,
+    },
     søkerinfo: {
         søker: {
             ...søkerinfo,
@@ -122,19 +147,17 @@ SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike.args = {
 
 export const ForFar = Template.bind({});
 ForFar.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            barn: {
-                ...context.søknad.barn,
-                fnr: '21091981146',
-            },
-            søkersituasjon: {
-                situasjon: 'fødsel',
-                rolle: 'far',
-            },
-        },
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        antallBarn: 1,
+        datoForAleneomsorg: dayjs('2021-03-15').toDate(),
+        dokumentasjonAvAleneomsorg: [],
+        fnr: ['21091981146'],
+    },
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
     },
     søkerinfo: {
         søker: {
@@ -163,24 +186,18 @@ ForFar.args = {
 
 export const MorUfødtBarn = Template.bind({});
 MorUfødtBarn.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            barn: {
-                type: 'ufødt',
-                antallBarn: '1',
-                termindato: '2023-05-05',
-            },
-            søkersituasjon: {
-                situasjon: 'fødsel',
-                rolle: 'mor',
-            },
-            annenForelder: {
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    barn: {
+        type: BarnType.UFØDT,
+        antallBarn: 1,
+        termindato: dayjs('2023-05-05').toDate(),
+    },
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    annenForelder: {
+        kanIkkeOppgis: false,
+    },
     søkerinfo: {
         ...søkerinfo,
         søker: {
@@ -192,24 +209,18 @@ MorUfødtBarn.args = {
 
 export const MedmorUfødtBarn = Template.bind({});
 MedmorUfødtBarn.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            barn: {
-                type: 'ufødt',
-                antallBarn: '1',
-                termindato: '2023-05-05',
-            },
-            søkersituasjon: {
-                situasjon: 'fødsel',
-                rolle: 'medmor',
-            },
-            annenForelder: {
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    barn: {
+        type: BarnType.UFØDT,
+        antallBarn: 1,
+        termindato: dayjs('2023-05-05').toDate(),
+    },
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'medmor',
+    },
+    annenForelder: {
+        kanIkkeOppgis: false,
+    },
     søkerinfo: {
         ...søkerinfo,
         søker: {
@@ -222,24 +233,18 @@ MedmorUfødtBarn.args = {
 
 export const FarUfødtBarn = Template.bind({});
 FarUfødtBarn.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            barn: {
-                type: 'ufødt',
-                antallBarn: '1',
-                termindato: '2023-05-05',
-            },
-            søkersituasjon: {
-                situasjon: 'fødsel',
-                rolle: 'far',
-            },
-            annenForelder: {
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    barn: {
+        type: BarnType.UFØDT,
+        antallBarn: 1,
+        termindato: dayjs('2023-05-05').toDate(),
+    },
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    annenForelder: {
+        kanIkkeOppgis: false,
+    },
     søkerinfo: {
         ...søkerinfo,
         søker: {
@@ -254,24 +259,18 @@ FarUfødtBarn.args = {
 
 export const FarGiftUfødtBarn = Template.bind({});
 FarGiftUfødtBarn.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            barn: {
-                type: 'ufødt',
-                antallBarn: '1',
-                termindato: '2023-05-05',
-            },
-            søkersituasjon: {
-                situasjon: 'fødsel',
-                rolle: 'far',
-            },
-            annenForelder: {
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    barn: {
+        type: BarnType.UFØDT,
+        antallBarn: 1,
+        termindato: dayjs('2023-05-05').toDate(),
+    },
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    annenForelder: {
+        kanIkkeOppgis: false,
+    },
     søkerinfo: {
         ...søkerinfo,
         søker: {

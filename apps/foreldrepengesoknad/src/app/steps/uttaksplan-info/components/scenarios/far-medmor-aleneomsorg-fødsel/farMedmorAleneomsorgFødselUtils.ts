@@ -26,9 +26,9 @@ export const mapFarMedmorAleneomsorgFødselFormToState = (
 export const getInitialFarMedmorAleneomsorgFødselValues = (
     lagretUttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo | undefined,
     datoForAleneomsorg: string,
-    dekningsgrad: Dekningsgrad,
+    dekningsgrad?: Dekningsgrad,
 ): FarMedmorAleneomsorgFødselFormData => {
-    if (lagretUttaksplanInfo) {
+    if (lagretUttaksplanInfo && dekningsgrad) {
         const startetPåOmsorgsovertakelse = dayjs(lagretUttaksplanInfo.startdatoUttak).isSame(
             dayjs(datoForAleneomsorg),
             'day',

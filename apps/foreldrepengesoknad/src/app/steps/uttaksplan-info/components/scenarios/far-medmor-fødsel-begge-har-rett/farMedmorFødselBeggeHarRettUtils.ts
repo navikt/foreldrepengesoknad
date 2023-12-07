@@ -32,7 +32,7 @@ export const mapFarMedmorFødselBeggeHarRettToState = (
 
 export const getInitialFarMedmorFødselBeggeHarRettValues = (
     state: FarMedmorFødselBeggeHarRettUttaksplanInfo | undefined,
-    dekningsgrad: Dekningsgrad,
+    dekningsgrad?: Dekningsgrad,
 ): FarMedmorFødselBeggeHarRettFormData => {
     if (!state) {
         return initialFarMedmorFødselBeggeHarRettValues;
@@ -44,6 +44,6 @@ export const getInitialFarMedmorFødselBeggeHarRettValues = (
         antallUkerFellesperiode: state.antallUkerFellesperiode,
         morsSisteDag: state.morsSisteDag,
         farMedmorsFørsteDag: state.farMedmorsFørsteDag,
-        dekningsgrad,
+        dekningsgrad: dekningsgrad!,
     };
 };

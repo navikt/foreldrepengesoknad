@@ -1,31 +1,43 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
+import { action } from '@storybook/addon-actions';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import Inntektsinformasjon from './Inntektsinformasjon';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { BarnType } from '@navikt/fp-common';
+import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
 const søkerinfo = _søkerinfo as any;
-const context = _context as any;
+
+const defaultUtenlandsopphold = {
+    iNorgeNeste12Mnd: false,
+    iNorgeSiste12Mnd: false,
+};
 
 export default {
     title: 'steps/Inntektsinformasjon',
     component: Inntektsinformasjon,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
 interface Props {
-    context: ForeldrepengesøknadContextState;
     søkerinfo: SøkerinfoDTO;
+    mellomlagreSøknadOgNaviger?: () => void;
+    gåTilNesteSide: (action: Action) => void;
+    utenlandsopphold: Opphold;
 }
 
-const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
+const Template: StoryFn<Props> = ({
+    søkerinfo,
+    gåTilNesteSide,
+    mellomlagreSøknadOgNaviger = action('button-click'),
+    utenlandsopphold = defaultUtenlandsopphold,
+}) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(
             200,
@@ -34,27 +46,52 @@ const Template: StoryFn<Props> = ({ context, søkerinfo }) => {
                 location: '',
             },
         );
-        apiMock.onPost('/storage').reply(200, undefined);
+        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
 
     return (
         <AxiosMock mock={restMock}>
-            <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
-                <Inntektsinformasjon />
-            </ForeldrepengerStateMock>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: {
+                        situasjon: 'fødsel',
+                        rolle: 'mor',
+                    },
+                    [ContextDataType.OM_BARNET]: {
+                        type: BarnType.FØDT,
+                        fødselsdatoer: [new Date()],
+                        antallBarn: 1,
+                    },
+                    [ContextDataType.SØKER]: {
+                        erAleneOmOmsorg: false,
+                        // @ts-ignore FIX
+                        harJobbetSomFrilansSiste10Mnd: undefined,
+                        // @ts-ignore FIX
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
+                        // @ts-ignore FIX
+                        harHattAnnenInntektSiste10Mnd: undefined,
+                    },
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                }}
+            >
+                <Inntektsinformasjon
+                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={action('button-click')}
+                />
+            </FpDataContext>
         </AxiosMock>
     );
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    context,
+export const HarIkkeArbeidsforhold = Template.bind({});
+HarIkkeArbeidsforhold.args = {
     søkerinfo,
 };
 
 export const HarArbeidsforhold = Template.bind({});
 HarArbeidsforhold.args = {
-    context,
     søkerinfo: {
         søker: {
             ...søkerinfo,

@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './Oppsummering.stories';
+import SøknadRoutes from 'app/routes/routes';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 const {
     Default,
@@ -13,11 +15,14 @@ const {
     MedUtenlandsopphold,
     MedArbeidsforholdOgAndreInntekter,
     MedAleneOmsorg,
+    ErEndringssøknad,
 } = composeStories(stories);
 
 describe('<Oppsummering>', () => {
-    it('skal bekrefte vilkårene før innsending', async () => {
-        render(<Default />);
+    it('skal bekrefte vilkårene og sende inn søknad', async () => {
+        const sendSøknad = vi.fn();
+
+        render(<Default sendSøknad={sendSøknad} />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
         expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
@@ -33,6 +38,10 @@ describe('<Oppsummering>', () => {
         );
 
         expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Send inn søknad'));
+
+        expect(sendSøknad).toHaveBeenCalledTimes(1);
     });
 
     it('skal vise informasjon om barnet men har ikke info om andre foreldre eller arbeidsforhold', async () => {
@@ -208,5 +217,48 @@ describe('<Oppsummering>', () => {
             screen.queryByText('Har Anne arbeidet eller mottatt pengestøtte i et EØS-land?', { exact: false }),
         ).not.toBeInTheDocument();
         expect(screen.queryByText('Mottar Frida uføretrygd')).not.toBeInTheDocument();
+    });
+
+    it('skal går til inntektsinformasjon når førstegangssøknad og en går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.INNTEKTSINFORMASJON,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal går til uttaksplan når endringssøknad og en går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(
+            <ErEndringssøknad
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.UTTAKSPLAN,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 });

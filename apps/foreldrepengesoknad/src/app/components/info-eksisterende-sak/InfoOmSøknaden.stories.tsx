@@ -1,60 +1,22 @@
 import { StoryFn } from '@storybook/react';
-
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import withRouter from 'storybook/decorators/withRouter';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
-import Søker from 'app/context/types/Søker';
-import InformasjonOmUtenlandsopphold from 'app/context/types/InformasjonOmUtenlandsopphold';
 import dayjs from 'dayjs';
+import {
+    AnnenForelder as AnnenForelderType,
+    BarnType,
+    Dekningsgrad,
+    EksisterendeSak,
+    Periode,
+    Periodetype,
+    StønadskontoType,
+} from '@navikt/fp-common';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import withRouter from 'storybook/decorators/withRouter';
+import Søker from 'app/context/types/Søker';
 import InfoOmSøknaden from './InfoOmSøknaden';
-import { EksisterendeSak, Periode, Periodetype, StønadskontoType, Søkerinfo } from '@navikt/fp-common';
+import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 
-const context = {
-    søknad: {
-        saksnummer: undefined,
-        type: 'foreldrepenger',
-        harGodkjentVilkår: true,
-        søkersituasjon: {
-            situasjon: 'fødsel',
-            rolle: 'mor',
-        },
-        barn: {
-            type: 'født',
-            fødselsdatoer: [new Date('2021-03-15')],
-            antallBarn: 1,
-            datoForAleneomsorg: undefined,
-            dokumentasjonAvAleneomsorg: [],
-        },
-        annenForelder: {
-            kanIkkeOppgis: true,
-        },
-        søker: {} as Søker,
-        informasjonOmUtenlandsopphold: {} as InformasjonOmUtenlandsopphold,
-        erEndringssøknad: false,
-        dekningsgrad: '100',
-        uttaksplan: [],
-        harGodkjentOppsummering: false,
-        vedlegg: [],
-        tilleggsopplysninger: undefined!,
-        ønskerJustertUttakVedFødsel: undefined,
-    },
-    version: 5,
-    currentRoute: '/soknad/uttaksplan-info',
-    søkerinfo: {} as Søkerinfo,
-    saker: [],
-    kvittering: undefined!,
-    antallUkerIUttaksplan: undefined!,
-    endringstidspunkt: undefined!,
-    perioderSomSkalSendesInn: [],
-    harUttaksplanBlittSlettet: false,
-    brukerSvarteJaPåAutoJustering: undefined,
-    søknadGjelderEtNyttBarn: undefined!,
-    familieHendelseDatoNesteSak: undefined!,
-    annenPartsUttakErLagtTilIPlan: undefined,
-    manglerDokumentasjon: false,
-} as ForeldrepengesøknadContextState;
 const søkerinfo = {
     søker: {
         fnr: '19047815714',
@@ -83,19 +45,42 @@ const søkerinfo = {
 export default {
     title: 'components/InfoOmSøknaden',
     component: InfoOmSøknaden,
-    decorators: [withRouter, withForeldrepengersøknadContext],
+    decorators: [withRouter],
 };
 
 interface Props {
-    context: ForeldrepengesøknadContextState;
     søkerinfo: SøkerinfoDTO;
     erIUttaksplanenSteg: boolean;
     ekisterendeSak?: EksisterendeSak;
+    annenForelder: AnnenForelderType;
+    søker: Søker;
+    søkersituasjon: SøkersituasjonFp;
 }
 
-const Template: StoryFn<Props> = ({ context, søkerinfo, erIUttaksplanenSteg = true, ekisterendeSak }) => {
+const Template: StoryFn<Props> = ({
+    annenForelder,
+    søker,
+    søkersituasjon,
+    søkerinfo,
+    erIUttaksplanenSteg = true,
+    ekisterendeSak,
+}) => {
     return (
-        <ForeldrepengerStateMock søknad={context} søkerinfo={søkerinfo}>
+        <FpDataContext
+            initialState={{
+                [ContextDataType.OM_BARNET]: {
+                    type: BarnType.FØDT,
+                    fødselsdatoer: [new Date('2021-03-15')],
+                    antallBarn: 1,
+                    datoForAleneomsorg: undefined,
+                    dokumentasjonAvAleneomsorg: [],
+                },
+                [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                [ContextDataType.SØKER]: søker,
+                [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                [ContextDataType.UTTAKSPLAN_METADATA]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+            }}
+        >
             <InfoOmSøknaden
                 tilgjengeligeStønadskontoer={[
                     {
@@ -105,65 +90,72 @@ const Template: StoryFn<Props> = ({ context, søkerinfo, erIUttaksplanenSteg = t
                 ]}
                 eksisterendeSak={ekisterendeSak}
                 erIUttaksplanenSteg={erIUttaksplanenSteg}
+                person={mapSøkerinfoDTOToSøkerinfo(søkerinfo).person}
             />
-        </ForeldrepengerStateMock>
+        </FpDataContext>
     );
 };
 
 export const Default = Template.bind({});
 Default.args = {
-    context,
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    søker: {} as Søker,
     søkerinfo,
 };
 
 export const AnnenForelder = Template.bind({});
 AnnenForelder.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            søker: {
-                ...context.søknad.søker,
-                erAleneOmOmsorg: false,
-            },
-            annenForelder: {
-                fornavn: 'Espen',
-                etternavn: 'Utvikler',
-                fnr: '1212121313',
-                harRettPåForeldrepengerINorge: true,
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    søker: {
+        erAleneOmOmsorg: false,
+        harHattAnnenInntektSiste10Mnd: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+    },
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+    },
     søkerinfo,
 };
 
 export const InfoOmMorsSak = Template.bind({});
 InfoOmMorsSak.args = {
-    context: {
-        ...context,
-        søknad: {
-            ...context.søknad,
-            søker: {
-                ...context.søknad.søker,
-                erAleneOmOmsorg: false,
-            },
-            søkersituasjon: {
-                situasjon: 'fødsel',
-                rolle: 'far',
-            },
-            annenForelder: {
-                fornavn: 'Olga',
-                etternavn: 'Utvikler',
-                fnr: '1212121313',
-                harRettPåForeldrepengerINorge: true,
-                kanIkkeOppgis: false,
-            },
-        },
-    } as ForeldrepengesøknadContextState,
+    søker: {
+        erAleneOmOmsorg: false,
+        harHattAnnenInntektSiste10Mnd: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+    },
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    annenForelder: {
+        fornavn: 'Olga',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+    },
     søkerinfo,
     ekisterendeSak: {
         erAnnenPartsSak: true,
+        grunnlag: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
         uttaksplan: [
             {
                 type: Periodetype.Uttak,

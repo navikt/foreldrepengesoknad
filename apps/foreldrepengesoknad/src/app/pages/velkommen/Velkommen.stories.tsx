@@ -1,24 +1,25 @@
-import { StoryFn } from '@storybook/react';
-
-import { SøkerinfoDTO, SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import ForeldrepengerStateMock from 'storybook/utils/ForeldrepengerStateMock';
-import withForeldrepengersøknadContext from 'storybook/decorators/withForeldrepengersøknadContext';
 import withRouter from 'storybook/decorators/withRouter';
-import Velkommen from './Velkommen';
-import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
+import { StoryFn } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
+import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
+import { SøkerinfoDTO, SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { Action, FpDataContext } from 'app/context/FpDataContext';
+import Velkommen from './Velkommen';
 
 export default {
     title: 'pages/Velkommen',
     component: Velkommen,
-    decorators: [withForeldrepengersøknadContext, withRouter],
+    decorators: [withRouter],
 };
 
 interface Props {
     harGodkjentVilkår: boolean;
     saker: Sak[];
     søkerinfo: SøkerinfoDTO;
+    mellomlagreSøknadOgNaviger: () => void;
+    gåTilNesteSide?: (action: Action) => void;
 }
 
 const søkerInfo = {
@@ -32,14 +33,29 @@ const søkerInfo = {
     },
 } as SøkerinfoDTO;
 
-const Template: StoryFn<Props> = ({ harGodkjentVilkår, saker, søkerinfo }) => {
+const Template: StoryFn<Props> = ({
+    harGodkjentVilkår,
+    saker,
+    søkerinfo,
+    mellomlagreSøknadOgNaviger = action('button-click'),
+    gåTilNesteSide,
+}) => {
     return (
-        <ForeldrepengerStateMock
-            søknad={{ søknad: { harGodkjentVilkår, søker: { språkkode: 'nb' } } } as ForeldrepengesøknadContextState}
-            søkerinfo={søkerinfo}
-        >
-            <Velkommen fornavn="Espen" onChangeLocale={() => undefined} locale="nb" saker={saker} fnr={'123'} />
-        </ForeldrepengerStateMock>
+        <FpDataContext onDispatch={gåTilNesteSide}>
+            <Velkommen
+                fornavn="Espen"
+                onChangeLocale={() => undefined}
+                locale="nb"
+                saker={saker}
+                fnr={'123'}
+                harGodkjentVilkår={harGodkjentVilkår}
+                søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                setErEndringssøknad={action('button-click')}
+                setHarGodkjentVilkår={action('button-click')}
+                setSøknadGjelderNyttBarn={action('button-click')}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />
+        </FpDataContext>
     );
 };
 

@@ -8,11 +8,11 @@ type OmBarnetStepId = 'omBarnet';
 type AnnenForelderId = 'annenForelder';
 type UttaksplanInfo = 'uttaksplanInfo';
 type Uttaksplan = 'uttaksplan';
+type Dokumentasjon = 'dokumentasjon';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type UtenlandsoppholdSenereStepId = 'utenlandsoppholdSenere';
 type UtenlandsoppholdTidligereStepId = 'utenlandsoppholdTidligere';
 type Inntektsinformasjon = 'inntektsinformasjon';
-type PåkrevdDokumentasjonStepId = 'dokumentasjon';
 type OppsummeringStepId = 'oppsummering';
 
 type StepIdWithBackHref =
@@ -20,14 +20,14 @@ type StepIdWithBackHref =
     | AnnenForelderId
     | UttaksplanInfo
     | Uttaksplan
+    | Dokumentasjon
     | UtenlandsoppholdStepId
     | UtenlandsoppholdSenereStepId
     | UtenlandsoppholdTidligereStepId
     | Inntektsinformasjon
-    | PåkrevdDokumentasjonStepId
     | OppsummeringStepId;
 
-type StepIdWithBackHrefEndringssøknad = PåkrevdDokumentasjonStepId | OppsummeringStepId;
+type StepIdWithBackHrefEndringssøknad = OppsummeringStepId;
 
 export type StepId = SøkersituasjonStepId | StepIdWithBackHref;
 
@@ -132,15 +132,12 @@ const stepConfig = (intl: IntlShape, erEndringssøknad: boolean, manglerDokument
     return stepConfigFørstegangssøknad(intl, manglerDokumentasjon);
 };
 
-export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndringssøknad): string => {
+export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndringssøknad): SøknadRoutes => {
     let href;
 
     switch (id) {
-        case 'dokumentasjon':
-            href = '/soknad/dokumentasjon';
-            break;
         case 'oppsummering':
-            href = '/soknad/uttaksplan';
+            href = SøknadRoutes.UTTAKSPLAN;
             break;
         default:
             return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i endringssøknaden: ${id}`);
@@ -149,43 +146,43 @@ export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndring
     return href;
 };
 
-export const getPreviousStepHref = (id: StepIdWithBackHref, manglerDokumentasjon = false): string => {
+export const getPreviousStepHref = (id: StepIdWithBackHref, manglerDokumentasjon = false): SøknadRoutes => {
     let href;
 
     switch (id) {
         case 'omBarnet':
-            href = '/soknad/sokersituasjon';
+            href = SøknadRoutes.SØKERSITUASJON;
             break;
         case 'annenForelder':
-            href = '/soknad/om-barnet';
+            href = SøknadRoutes.OM_BARNET;
             break;
         case 'uttaksplanInfo':
-            href = '/soknad/annen-forelder';
+            href = SøknadRoutes.ANNEN_FORELDER;
             break;
         case 'uttaksplan':
-            href = '/soknad/uttaksplan-info';
+            href = SøknadRoutes.UTTAKSPLAN_INFO;
+            break;
+        case 'dokumentasjon':
+            href = SøknadRoutes.UTTAKSPLAN;
             break;
         case 'utenlandsopphold':
             if (manglerDokumentasjon) {
-                href = '/soknad/dokumentasjon';
+                href = SøknadRoutes.DOKUMENTASJON;
             } else {
-                href = '/soknad/uttaksplan';
+                href = SøknadRoutes.UTTAKSPLAN;
             }
             break;
         case 'utenlandsoppholdTidligere':
-            href = '/soknad/utenlandsopphold';
+            href = SøknadRoutes.UTENLANDSOPPHOLD;
             break;
         case 'utenlandsoppholdSenere':
-            href = '/soknad/utenlandsoppholdTidligere';
+            href = SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
             break;
         case 'inntektsinformasjon':
-            href = '/soknad/utenlandsoppholdSenere';
-            break;
-        case 'dokumentasjon':
-            href = '/soknad/uttaksplan';
+            href = SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
             break;
         case 'oppsummering':
-            href = '/soknad/inntektsinformasjon';
+            href = SøknadRoutes.INNTEKTSINFORMASJON;
             break;
         default:
             return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);

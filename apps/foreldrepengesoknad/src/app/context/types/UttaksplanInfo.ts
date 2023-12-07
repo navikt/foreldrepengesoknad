@@ -1,15 +1,22 @@
 import AdopsjonStartdatoValg from 'app/steps/uttaksplan-info/components/scenarios/mor-far-adopsjon/adopsjonStartdatoValg';
 
-/* eslint-disable @typescript-eslint/no-empty-interface */
-interface UttaksplanInfo {}
+type UttaksplanInfo =
+    | MorFødselUttaksplanInfo
+    | MorFarAdopsjonUttaksplanInfo
+    | FarMedmorAleneomsorgFødselUttaksplanInfo
+    | FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo
+    | FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo
+    | FarMedmorFødselBeggeHarRettUttaksplanInfo
+    | MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo
+    | MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo;
 
-export interface MorFødselUttaksplanInfo extends UttaksplanInfo {
+export interface MorFødselUttaksplanInfo {
     permisjonStartdato: string;
     skalIkkeHaUttakFørTermin: boolean;
     fellesperiodeukerMor: number | undefined;
 }
 
-export interface MorFarAdopsjonUttaksplanInfo extends UttaksplanInfo {
+export interface MorFarAdopsjonUttaksplanInfo {
     harAnnenForelderSøktFP: boolean;
     startdatoAdopsjonValg: AdopsjonStartdatoValg;
     annenStartdatoAdopsjon: string;
@@ -20,33 +27,33 @@ export interface MorFarAdopsjonUttaksplanInfo extends UttaksplanInfo {
     fellesperiodeukerMor: number | undefined;
 }
 
-export interface FarMedmorAleneomsorgFødselUttaksplanInfo extends UttaksplanInfo {
+export interface FarMedmorAleneomsorgFødselUttaksplanInfo {
     startdatoUttak: string;
     fellesperiodeukerMor: number | undefined;
 }
 
-export interface FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo extends UttaksplanInfo {
+export interface FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo {
     permisjonStartdato: string;
 }
 
-export interface FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo extends UttaksplanInfo {
+export interface FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo {
     permisjonStartdato: string;
 }
 
-export interface FarMedmorFødselBeggeHarRettUttaksplanInfo extends UttaksplanInfo {
+export interface FarMedmorFødselBeggeHarRettUttaksplanInfo {
     morsSisteDag: string;
     farMedmorsFørsteDag: string;
     antallUkerFellesperiode: string;
     antallDagerFellesperiode: string;
 }
 
-export interface MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {
+export interface MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo {
     startdatoAdopsjonValg: AdopsjonStartdatoValg;
     dekningsgrad: string;
     annenStartdatoAdopsjon: string | undefined;
 }
 
-export interface MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo extends UttaksplanInfo {
+export interface MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo {
     permisjonStartdato: string;
     skalIkkeHaUttakFørTermin: boolean | undefined;
     dekningsgrad: string;

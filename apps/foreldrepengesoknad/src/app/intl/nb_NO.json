@@ -71,6 +71,8 @@
     "søknad.søknadSendt": "Søknad mottatt - Søknad om foreldrepenger - NAV",
     "søknad.manglendeVedlegg": "Påkrevd dokumentasjon",
     "søkersituasjon.text.situasjon": "Velg det som gjelder for deg",
+    "søkersituasjon.validering.oppgiFodselEllerAdopsjon": "Du må oppgi hva som gjelder for deg",
+    "søkersituasjon.validering.oppgiHvaDuSokerSom": "Du må oppgi hva du søker som",
     "søkersituasjon.text.rolle": "Hva søker du som?",
     "søkersituasjon.radioButton.adopsjon": "Adopsjon",
     "søkersituasjon.radioButton.fødsel": "Fødsel",

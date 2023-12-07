@@ -1,18 +1,30 @@
 const path = require('path');
 const fs = require('fs');
 
+const MELLOMLAGRET_DATA_FILNAVN = 'mellomlagretdata.json';
+
+const getFilePath = function (filnavn) {
+    const directories = ['./mock-api/', 'mock_data', filnavn];
+    return directories.join(path.sep);
+};
+
+const getFilePathMellomlagretData = function () {
+    const directories = ['./mock-api/', MELLOMLAGRET_DATA_FILNAVN];
+    return directories.join(path.sep);
+};
+
 const updateSoknad = function (soknadsdata) {
-    const fileName = getFilePath('soknad.json');
+    const fileName = getFilePathMellomlagretData();
     fs.writeFileSync(fileName, JSON.stringify(soknadsdata, null, 4));
 };
 
 const deleteSoknad = function () {
-    const fileName = getFilePath('soknad.json');
+    const fileName = getFilePathMellomlagretData();
     fs.openSync(fileName, 'w');
 };
 
 const getSoknad = function () {
-    const fileName = getFilePath('soknad.json');
+    const fileName = getFilePathMellomlagretData();
     if (!fs.existsSync(fileName)) {
         return {};
     } else {
@@ -22,11 +34,6 @@ const getSoknad = function () {
             return {};
         }
     }
-};
-
-const getFilePath = function (filnavn) {
-    const directories = ['./mock-api/', 'mock_data', filnavn];
-    return directories.join(path.sep);
 };
 
 const getSokerInfo = function () {

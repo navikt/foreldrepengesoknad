@@ -1,3 +1,10 @@
+import { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { Alert, BodyLong, BodyShort, Button, ReadMore } from '@navikt/ds-react';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { notEmpty } from '@navikt/fp-validation';
 import {
     Barn,
     Block,
@@ -14,18 +21,14 @@ import {
     SivilstandType,
     Step,
     StepButtonWrapper,
+    Søkerinfo,
 } from '@navikt/fp-common';
-import dayjs from 'dayjs';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import actionCreator from 'app/context/action/actionCreator';
 import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
-import { useCallback } from 'react';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import { FormattedMessage, useIntl } from 'react-intl';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import {
@@ -40,27 +43,34 @@ import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenFor
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { storeAppState } from 'app/utils/submitUtils';
-import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import useSaveLoadedRoute from 'app/utils/hooks/useSaveLoadedRoute';
-import { Alert, BodyLong, BodyShort, Button, ReadMore } from '@navikt/ds-react';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { Link } from 'react-router-dom';
+import BackButton from '../BackButton';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
-const AnnenForelder = () => {
+type Props = {
+    søkerInfo: Søkerinfo;
+    mellomlagreSøknadOgNaviger: () => void;
+    avbrytSøknad: () => void;
+};
+
+const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
-    const {
-        annenForelder,
-        barn,
-        søker,
-        søkersituasjon: { rolle },
-    } = useSøknad();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const { rolle } = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER) || {
+        kanIkkeOppgis: false,
+    };
+    const søker = useContextGetData(ContextDataType.SØKER);
+
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
-    const søkerinfo = useSøkerinfo();
-    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søkerinfo.registrerteBarn);
+    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søkerInfo.registrerteBarn);
     const registrertBarnMedAnnenForelder =
         registrerteBarn === undefined || registrerteBarn.length === 0
             ? undefined
@@ -76,7 +86,7 @@ const AnnenForelder = () => {
     const søkerErFar = rolle === 'far';
     const søkerErMor = rolle === 'mor';
     const søkerErIkkeGift =
-        søkerinfo.person.sivilstand === undefined || søkerinfo.person.sivilstand.type !== SivilstandType.GIFT;
+        søkerInfo.person.sivilstand === undefined || søkerInfo.person.sivilstand.type !== SivilstandType.GIFT;
     const barnetErIkkeFødt = isUfødtBarn(barn);
     let tekstOmFarskapsportalId = '';
     if (søkerErFar && barnetErIkkeFødt) {
@@ -86,53 +96,44 @@ const AnnenForelder = () => {
         tekstOmFarskapsportalId = 'annenForelder.tekstOmFarskapsportal.mor.del1';
     }
 
-    const onValidSubmitHandler = useCallback(
-        (values: Partial<AnnenForelderFormData>) => {
-            const newSøker: Søker = {
-                ...søker,
-                erAleneOmOmsorg: values.kanIkkeOppgis
-                    ? true
-                    : !!convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
-            };
-            const newBarn: Barn = {
-                ...barn,
-                datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
-                    ? ISOStringToDate(values.datoForAleneomsorg)
+    const onSubmit = (values: Partial<AnnenForelderFormData>) => {
+        setIsSubmitting(true);
+
+        // @ts-ignore TODO (TOR) Søker er dårleg typa. Her skal den kunne innehalda kun erAleneOmsorg, og så blir den utvida seinare
+        const newSøker: Søker = {
+            ...(søker || {}),
+            erAleneOmOmsorg: values.kanIkkeOppgis ? true : !!convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
+        };
+        const newBarn: Barn = {
+            ...barn,
+            datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
+                ? ISOStringToDate(values.datoForAleneomsorg)
+                : undefined,
+            dokumentasjonAvAleneomsorg:
+                values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
+                    ? values.dokumentasjonAvAleneomsorg
                     : undefined,
-                dokumentasjonAvAleneomsorg:
-                    values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
-                        ? values.dokumentasjonAvAleneomsorg
-                        : undefined,
-            };
+        };
 
-            return [
-                actionCreator.setAnnenForelder(mapAnnenForelderFormToState(values)),
-                actionCreator.setSøker(newSøker),
-                actionCreator.setOmBarnet(newBarn),
-            ];
-        },
-        [søker, barn],
-    );
+        oppdaterOmBarnet(newBarn);
+        oppdaterSøker(newSøker);
+        oppdaterAnnenForeldre(mapAnnenForelderFormToState(values));
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(
-        onValidSubmitHandler,
-        SøknadRoutes.UTTAKSPLAN_INFO,
-        (state: ForeldrepengesøknadContextState) => storeAppState(state),
-    );
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const onForstettSøknadSenere = useFortsettSøknadSenere();
-    useSaveLoadedRoute(SøknadRoutes.ANNEN_FORELDER);
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+
+        mellomlagreSøknadOgNaviger();
+    };
 
     return (
         <AnnenForelderFormComponents.FormikWrapper
             initialValues={getAnnenForelderFormInitialValues(
                 annenForelder,
                 barn,
-                søker,
                 annenForelderFraRegistrertBarn,
                 intl,
+                søker,
             )}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = annenForelderQuestionsConfig.getVisbility({
                     ...formValues,
@@ -166,8 +167,8 @@ const AnnenForelder = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="annenForelder"
                         pageTitle={intlUtils(intl, 'søknad.annenForelder')}
-                        onCancel={onAvbrytSøknad}
-                        onContinueLater={onForstettSøknadSenere}
+                        onCancel={avbrytSøknad}
+                        onContinueLater={onFortsettSøknadSenere}
                         steps={stepConfig(intl, false)}
                     >
                         <AnnenForelderFormComponents.Form
@@ -185,7 +186,7 @@ const AnnenForelder = () => {
                                         kanIkkeOppgis={formValues.kanIkkeOppgis}
                                         visibility={visibility}
                                         gjelderAdopsjon={false}
-                                        søkersFødselsnummer={søkerinfo.person.fnr}
+                                        søkersFødselsnummer={søkerInfo.person.fnr}
                                     />
                                 </Block>
                             )}
@@ -409,9 +410,10 @@ const AnnenForelder = () => {
                             </Block>
                             <Block margin="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousStepHref('annenForelder')}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousStepHref('annenForelder')}
+                                    />
                                     {kanGåVidereMedSøknaden && (
                                         <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                             {intlUtils(intl, 'søknad.gåVidere')}

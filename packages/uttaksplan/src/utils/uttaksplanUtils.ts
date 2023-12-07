@@ -19,17 +19,14 @@ export const uttaksplanInneholderPerioderUtenKonto = (uttaksplan: Periode[]): bo
     return uttaksplan.find((periode) => isUttaksperiode(periode) && periode.konto === undefined) !== undefined;
 };
 
-export const uttaksplanKreverVedlegg = (
+export const kreverUttaksplanVedlegg = (
     uttaksplan: Periode[],
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
 ) => {
-    const periodeSomManglerVedlegg = uttaksplan.find((p) =>
-        shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
-    );
-    const uttaksplanKreverVedlegg = periodeSomManglerVedlegg !== undefined;
+    const periodeSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
 
-    return uttaksplanKreverVedlegg;
+    return periodeSomManglerVedlegg.length > 0;
 };
 
 export const perioderSomKreverVedlegg = (

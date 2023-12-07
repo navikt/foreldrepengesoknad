@@ -1,5 +1,15 @@
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { FunctionComponent } from 'react';
+import {
+    AnnenForelder,
+    EksisterendeSak,
+    harAnnenForelderRettIEØS,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+import Person from '@navikt/fp-common/src/common/types/Person';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import Søker from 'app/context/types/Søker';
 import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
 import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
@@ -9,20 +19,33 @@ import FarMedmorAleneomsorgFødselAdopsjon from './scenarios/far-medmor-aleneoms
 import FarMedmorFødselOgMorHarIkkeRett from './scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import FarMedmorFørstegangssøknadMedAnnenPart from './scenarios/farMedmor-førstegangssøknad-med-annen-part/FarMedmorFørstegangssøknadMedAnnenPart';
 import { getUttaksplanScenario } from './scenarios/scenarios';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import { EksisterendeSak, harAnnenForelderRettIEØS, isAnnenForelderOppgitt, isFarEllerMedmor } from '@navikt/fp-common';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
+    søkersituasjon: SøkersituasjonFp;
+    søker: Søker;
+    annenForelder: AnnenForelder;
+    erEndringssøknad: boolean;
+    person: Person;
+    mellomlagreSøknadOgNaviger: () => void;
+    oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
 const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
     eksisterendeSakAnnenPart,
+    søkersituasjon,
+    søker,
+    annenForelder,
+    erEndringssøknad,
+    person,
+    mellomlagreSøknadOgNaviger,
+    oppdaterBarnOgLagreUttaksplandata,
 }) => {
-    const { søkersituasjon, søker, annenForelder } = useSøknad();
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -52,6 +75,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 <FarMedmorAleneomsorgFødselAdopsjon
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                    erEndringssøknad={erEndringssøknad}
+                    person={person}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'farMedmorFødselBeggeHarRett':
@@ -60,6 +87,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
+                    erEndringssøknad={erEndringssøknad}
+                    person={person}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'farMedmorFødselMorHarIkkeRett':
@@ -67,6 +98,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 <FarMedmorFødselOgMorHarIkkeRett
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                    erEndringssøknad={erEndringssøknad}
+                    person={person}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'farMedmorFørstegangssøknadMedAnnenPart':
@@ -75,6 +110,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
+                    erEndringssøknad={erEndringssøknad}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    person={person}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'morFarAdopsjon':
@@ -82,6 +121,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 <MorFarAdopsjon
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                    erEndringssøknad={erEndringssøknad}
+                    person={person}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'morFødsel':
@@ -90,6 +133,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     eksisterendeSakFar={eksisterendeSakAnnenPart}
+                    erEndringssøknad={erEndringssøknad}
+                    person={person}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'morFarFødselAnnenForelderHarRettIEØS':
@@ -97,6 +144,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 <MorFarFødselAnnenForelderHarRettIEØS
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                    erEndringssøknad={erEndringssøknad}
+                    person={person}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
         case 'morFarAdopsjonAnnenForelderHarRettIEØS':
@@ -104,6 +155,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 <MorFarAdopsjonAnnenForelderHarRettIEØS
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
+                    erEndringssøknad={erEndringssøknad}
+                    person={person}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
     }
