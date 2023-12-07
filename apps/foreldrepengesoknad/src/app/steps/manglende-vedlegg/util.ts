@@ -41,7 +41,11 @@ export const isOverføringsVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_OVERFØRING_FOR_SYK;
 };
 
-export const isFedrekvoteMorForSykVedlegg = () => (attachment: Attachment) => {
+export const isFedrekvoteMorForSykVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE;
+};
+
+export const isUtsettelseVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE;
 };
 

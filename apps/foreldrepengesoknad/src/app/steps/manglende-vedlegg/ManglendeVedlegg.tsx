@@ -26,6 +26,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import FedrekvoteMorForSykDok from './dokumentasjon/FedrekvoteMorForSykDok';
+import UtsettelseDok from './dokumentasjon/UtsettelseDok';
 
 type Props = {
     person: Person;
@@ -120,6 +121,15 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     updateAttachments={updateAttachments}
                 />
                 <FedrekvoteMorForSykDok
+                    attachments={fedrekvoteMorForSykVedlegg}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <UtsettelseDok
                     attachments={fedrekvoteMorForSykVedlegg}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
