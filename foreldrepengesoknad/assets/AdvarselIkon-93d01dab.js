@@ -1,2 +1,0 @@
-import{j as e}from"./jsx-runtime-69eee039.js";const l=()=>e.jsx("svg",{xmlns:"http://www.w3.org/2000/svg",role:"img","aria-hidden":"true",width:"24",height:"24",viewBox:"0 0 80 80",children:e.jsxs("g",{fill:"none",fillRule:"evenodd",children:[e.jsx("circle",{cx:"40",cy:"40",r:"40",fill:"#FFBD66"}),e.jsx("path",{fill:"#3E3832",d:"M36 20a4 4 0 1 1 8 0v25.002a4 4 0 1 1-8 0V20zm4 44a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"})]})});export{l as A};
-//# sourceMappingURL=AdvarselIkon-93d01dab.js.map
