@@ -5,7 +5,8 @@ import { Attachment, AttachmentMetadata, InnsendingsType } from '@navikt/fp-type
 export type GyldigeSkjemanummer =
     | Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM
     | Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
-    | Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET;
+    | Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+    | Skjemanummer.DOK_OVERFØRING_FOR_SYK;
 
 export const grupperteFellesperioderMorsAktivitetArbeidUtdanningEllerSykdom = (perioder: Periode[]) => {
     return perioder.filter(morsAktivitetErArbeidUtdanningEllerSykdom);
@@ -33,6 +34,10 @@ export const isIntroduksjonsprogramVedlegg = (attachment: Attachment) => {
 
 export const isArbeidUtdanningEllerSykdomVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
+};
+
+export const isOverføringsVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_OVERFØRING_FOR_SYK;
 };
 
 const morsAktivitetErArbeidUtdanningEllerSykdom = (periode: Periode) => {

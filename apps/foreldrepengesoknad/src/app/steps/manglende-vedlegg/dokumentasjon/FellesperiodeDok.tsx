@@ -23,7 +23,6 @@ interface Props {
     familiehendelsesdato: Date;
     termindato: Date | undefined;
     situasjon: Situasjon;
-    setFellesperiodeVedlegg: (attachments: Attachment[]) => void;
 }
 
 const FellesperiodeDok: React.FunctionComponent<Props> = ({

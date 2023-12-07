@@ -33,7 +33,7 @@
         "dekningsgrad": "100",
         "uttaksplan": [
             {
-                "id": "1964200667-28665-26872-6352-14702210207400",
+                "id": "97561613-3193-18723-20875-912890603366",
                 "type": "periodeUtenUttak",
                 "tidsperiode": {
                     "fom": "2024-01-05T00:00:00.000Z",
@@ -71,18 +71,14 @@
             },
             {
                 "id": "390103112-0422-0762-7217-99781608517835",
+                "type": "overføring",
                 "forelder": "farMedmor",
-                "konto": "FELLESPERIODE",
+                "konto": "MØDREKVOTE",
                 "tidsperiode": {
                     "fom": "2024-08-28T00:00:00.000Z",
                     "tom": "2024-09-10T00:00:00.000Z"
                 },
-                "type": "uttak",
-                "morsAktivitetIPerioden": "KVALPROG",
-                "erArbeidstaker": false,
-                "gradert": false,
-                "orgnumre": [],
-                "ønskerSamtidigUttak": false
+                "årsak": "INSTITUSJONSOPPHOLD_ANNEN_FORELDER"
             }
         ],
         "harGodkjentOppsummering": false,
@@ -143,7 +139,7 @@
     "antallUkerIUttaksplan": 79,
     "perioderSomSkalSendesInn": [
         {
-            "id": "1964200667-28665-26872-6352-14702210207400",
+            "id": "97561613-3193-18723-20875-912890603366",
             "type": "periodeUtenUttak",
             "tidsperiode": {
                 "fom": "2024-01-05T00:00:00.000Z",
@@ -181,18 +177,14 @@
         },
         {
             "id": "390103112-0422-0762-7217-99781608517835",
+            "type": "overføring",
             "forelder": "farMedmor",
-            "konto": "FELLESPERIODE",
+            "konto": "MØDREKVOTE",
             "tidsperiode": {
                 "fom": "2024-08-28T00:00:00.000Z",
                 "tom": "2024-09-10T00:00:00.000Z"
             },
-            "type": "uttak",
-            "morsAktivitetIPerioden": "KVALPROG",
-            "erArbeidstaker": false,
-            "gradert": false,
-            "orgnumre": [],
-            "ønskerSamtidigUttak": false
+            "årsak": "INSTITUSJONSOPPHOLD_ANNEN_FORELDER"
         }
     ],
     "harUttaksplanBlittSlettet": false,

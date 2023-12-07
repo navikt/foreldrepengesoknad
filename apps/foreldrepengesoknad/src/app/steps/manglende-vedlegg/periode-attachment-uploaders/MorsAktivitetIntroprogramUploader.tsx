@@ -9,7 +9,7 @@ import Environment from 'app/Environment';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import './fellesperiode-attachment-uploader.css';
+import './periode-attachment-uploader.css';
 import { addMetadata } from '../util';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -33,7 +33,7 @@ const MorsAktivitetIntroprogramUploader: FunctionComponent<Props> = ({
     termindato,
     situasjon,
 }) => {
-    const bem = bemUtils('fellesperiode-attachment-uploader');
+    const bem = bemUtils('periode-attachment-uploader');
 
     return (
         <VStack gap="4">

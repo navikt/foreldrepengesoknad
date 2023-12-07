@@ -19,29 +19,29 @@ import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { storeAppState } from 'app/utils/submitUtils';
 import { ForeldrepengesøknadContextState } from 'app/context/ForeldrepengesøknadContextConfig';
 import FellesperiodeDok from './dokumentasjon/FellesperiodeDok';
-import { useState } from 'react';
 import {
     GyldigeSkjemanummer,
     isArbeidUtdanningEllerSykdomVedlegg,
     isFellesperiodeAttachment,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
+    isOverføringsVedlegg,
 } from './util';
 import { Skjemanummer } from '@navikt/fp-constants';
+import OverføringsDok from './dokumentasjon/OverføringDok';
 
 const ManglendeVedlegg: React.FunctionComponent = () => {
     const intl = useIntl();
     const søknad = useSøknad();
     const { state } = useForeldrepengesøknadContext();
     const { uttaksplan, annenForelder, barn, søkersituasjon } = søknad;
-    const [fellesperiodeVedlegg, setFellesperiodeVedlegg] = useState<Attachment[]>(
-        søknad.vedlegg.filter(isFellesperiodeAttachment),
-    );
     const navigate = useNavigate();
     const onAvbrytSøknad = useAvbrytSøknad();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søknad.søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
+    const fellesperiodeVedlegg = søknad.vedlegg.filter(isFellesperiodeAttachment);
+    const overføringsVedlegg = søknad.vedlegg.filter(isOverføringsVedlegg);
 
     const navnPåForeldre = getNavnPåForeldre(state.søkerinfo.person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -54,6 +54,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
             ...formValues[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM],
             ...formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM],
             ...formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET],
+            ...formValues[Skjemanummer.DOK_OVERFØRING_FOR_SYK],
         ];
 
         return [actionCreator.lagreDokumentasjon(alleVedlegg)];
@@ -72,6 +73,7 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                 søknad.vedlegg.filter(isKvalifiseringsprogramVedlegg),
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
                 søknad.vedlegg.filter(isIntroduksjonsprogramVedlegg),
+            [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: søknad.vedlegg.filter(isOverføringsVedlegg),
         },
     });
 
@@ -98,7 +100,15 @@ const ManglendeVedlegg: React.FunctionComponent = () => {
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
-                    setFellesperiodeVedlegg={setFellesperiodeVedlegg}
+                />
+                <OverføringsDok
+                    attachments={overføringsVedlegg}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
                 />
                 <StepButtonsHookForm<ManglendeVedleggFormData>
                     goToPreviousStep={() => navigate(SøknadRoutes.UTTAKSPLAN)}

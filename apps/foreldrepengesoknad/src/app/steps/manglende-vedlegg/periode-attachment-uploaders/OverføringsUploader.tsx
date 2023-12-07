@@ -24,7 +24,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const MorsAktivitetSykdomUtdanningEllerArbeidUploader: FunctionComponent<Props> = ({
+const OverføringsUploader: FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -38,8 +38,8 @@ const MorsAktivitetSykdomUtdanningEllerArbeidUploader: FunctionComponent<Props> 
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon av mors aktivitet</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at mor er i aktivitet i de følgende periodene</BodyLong>
+                <Label>Dokumentasjon av overføring av kvote</Label>
+                <BodyLong>Du må laste opp dokumentasjon på at du har lov til å overføre</BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>
@@ -62,8 +62,8 @@ const MorsAktivitetSykdomUtdanningEllerArbeidUploader: FunctionComponent<Props> 
                 <FormattedMessage id="manglendeVedlegg.storrelse" />
             </BodyLong>
             <FileUploader
-                attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-                skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                attachmentType={AttachmentType.OVERFØRING_KVOTE}
+                skjemanummer={Skjemanummer.DOK_OVERFØRING_FOR_SYK}
                 existingAttachments={attachments}
                 updateAttachments={(attachments) => {
                     const attachmentsMedMetadata = attachments.map((a) =>
@@ -84,4 +84,4 @@ const MorsAktivitetSykdomUtdanningEllerArbeidUploader: FunctionComponent<Props> 
     );
 };
 
-export default MorsAktivitetSykdomUtdanningEllerArbeidUploader;
+export default OverføringsUploader;
