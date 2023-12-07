@@ -26,6 +26,10 @@ const OverføringsDok: React.FunctionComponent<Props> = ({
 }) => {
     const overføringsperioderSomManglerVedlegg = perioder.filter(isOverføringsperiode);
 
+    if (overføringsperioderSomManglerVedlegg.length === 0) {
+        return null;
+    }
+
     return (
         <Block padBottom="xl">
             <OverføringsUploader

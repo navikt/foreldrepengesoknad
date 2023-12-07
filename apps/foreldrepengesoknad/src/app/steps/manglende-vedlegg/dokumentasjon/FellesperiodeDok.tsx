@@ -35,6 +35,11 @@ const FellesperiodeDok: React.FunctionComponent<Props> = ({
     termindato,
 }) => {
     const fellesperioderSomManglerVedlegg = perioder.filter(isUttakAvFellesperiode);
+
+    if (fellesperioderSomManglerVedlegg.length === 0) {
+        return null;
+    }
+
     const grupperteFellesperioderArbeidUtdanningSykdom = grupperteFellesperioderMorsAktivitetArbeidUtdanningEllerSykdom(
         fellesperioderSomManglerVedlegg,
     );
