@@ -6,7 +6,7 @@ import useStepConfig from './useStepConfig';
 
 const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
     const stepConfig = useStepConfig();
-    const lagrePath = useContextSaveData(ContextDataType.CURRENT_PATH);
+    const oppdaterPath = useContextSaveData(ContextDataType.CURRENT_PATH);
 
     const activeStepId = stepConfig.find((sc) => sc.isSelected);
 
@@ -21,12 +21,12 @@ const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id || Path.VELKOMMEN;
-        lagrePath(previousPath);
+        oppdaterPath(previousPath);
         mellomlagreOgNaviger();
     };
 
     const goToNextStep = (path: Path) => {
-        lagrePath(path);
+        oppdaterPath(path);
         mellomlagreOgNaviger();
     };
 
@@ -34,12 +34,12 @@ const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
         const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
 
-        lagrePath(nextPath);
+        oppdaterPath(nextPath);
         mellomlagreOgNaviger();
     };
 
     const avbrytSøknad = () => {
-        lagrePath(undefined);
+        oppdaterPath(undefined);
         mellomlagreOgNaviger();
     };
 
