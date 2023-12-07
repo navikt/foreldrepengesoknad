@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './Velkommen.stories';
 import { Path } from 'appData/paths';
-import { EsDataType } from 'appData/EsDataContext';
+import { ContextDataType } from 'appData/EsDataContext';
 
 const { Default } = composeStories(stories);
 
@@ -35,7 +35,7 @@ describe('<Velkommen>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: Path.SØKERSITUASJON,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 

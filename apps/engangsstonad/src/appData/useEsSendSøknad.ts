@@ -5,7 +5,7 @@ import { postData, ApiAccessError, ApiGeneralError, isApiError, deleteData } fro
 import { notEmpty } from '@navikt/fp-validation';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
-import { EsDataType, useEsStateAllDataFn } from './EsDataContext';
+import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
 // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
 const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
@@ -51,16 +51,16 @@ const useEsSendSøknad = (
     locale: LocaleAll,
     setKvittering: (kvittering: Kvittering | (() => never)) => void,
 ) => {
-    const hentData = useEsStateAllDataFn();
+    const hentData = useContextGetAnyData();
 
     const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
     const sendSøknad = useCallback(
         async (abortSignal: AbortSignal) => {
-            const omBarnet = notEmpty(hentData(EsDataType.OM_BARNET));
-            const dokumentasjon = hentData(EsDataType.DOKUMENTASJON);
-            const tidligereUtenlandsopphold = hentData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-            const senereUtenlandsopphold = hentData(EsDataType.UTENLANDSOPPHOLD_SENERE);
+            const omBarnet = notEmpty(hentData(ContextDataType.OM_BARNET));
+            const dokumentasjon = hentData(ContextDataType.DOKUMENTASJON);
+            const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+            const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
             const søknad = {
                 type: 'engangsstønad',

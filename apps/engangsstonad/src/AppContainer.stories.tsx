@@ -6,7 +6,7 @@ import { attachmentApi } from '@navikt/fp-api';
 import Person, { Kjønn } from 'types/Person';
 import AppContainer from './AppContainer';
 import { esApi } from './EngangsstønadRoutes';
-import { EsDataType } from 'appData/EsDataContext';
+import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { EsDataMapAndVersion } from 'appData/useEsMellomlagring';
 
@@ -88,10 +88,10 @@ export const SøkerErKvinneMedMellomlagretData = Template.bind({});
 SøkerErKvinneMedMellomlagretData.args = {
     mellomlagretData: {
         version: 1,
-        [EsDataType.SØKERSITUASJON]: {
+        [ContextDataType.SØKERSITUASJON]: {
             situasjon: 'fødsel',
         },
-        [EsDataType.CURRENT_PATH]: Path.SØKERSITUASJON,
+        [ContextDataType.CURRENT_PATH]: Path.SØKERSITUASJON,
     },
     person: {
         fnr: '11111111111',

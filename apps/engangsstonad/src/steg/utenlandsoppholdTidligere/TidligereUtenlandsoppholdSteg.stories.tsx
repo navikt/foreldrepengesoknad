@@ -2,7 +2,7 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Path } from 'appData/paths';
-import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
+import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagre
             <EsDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                 }}
             >
                 <TidligereUtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />

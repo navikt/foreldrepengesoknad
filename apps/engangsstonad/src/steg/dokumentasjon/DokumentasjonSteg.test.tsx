@@ -6,7 +6,7 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './DokumentasjonSteg.stories';
 import { Path } from 'appData/paths';
-import { EsDataType } from 'appData/EsDataContext';
+import { ContextDataType } from 'appData/EsDataContext';
 
 const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);
 
@@ -59,13 +59,13 @@ describe('<DokumentasjonSteg>', () => {
                     }),
                 ],
             },
-            key: EsDataType.DOKUMENTASJON,
+            key: ContextDataType.DOKUMENTASJON,
             type: 'update',
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: Path.UTENLANDSOPPHOLD,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 
@@ -117,7 +117,7 @@ describe('<DokumentasjonSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: Path.UTENLANDSOPPHOLD,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 

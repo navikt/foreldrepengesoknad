@@ -5,7 +5,7 @@ import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 import { Path } from 'appData/paths';
-import { EsDataType } from 'appData/EsDataContext';
+import { ContextDataType } from 'appData/EsDataContext';
 
 const { Default } = composeStories(stories);
 
@@ -60,13 +60,13 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                     },
                 ],
             },
-            key: EsDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
 
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: Path.OPPSUMMERING,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 

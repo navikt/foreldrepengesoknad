@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { AttachmentType, Skjemanummer, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
-import { EsDataContext, EsDataType } from 'appData/EsDataContext';
+import { EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import { Kjønn } from 'types/Person';
 import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
@@ -74,11 +74,11 @@ const Template: StoryFn<{
         <MemoryRouter initialEntries={[Path.OPPSUMMERING]}>
             <EsDataContext
                 initialState={{
-                    [EsDataType.OM_BARNET]: omBarnet,
-                    [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
-                    [EsDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
-                    [EsDataType.DOKUMENTASJON]: dokumentasjon,
+                    [ContextDataType.OM_BARNET]: omBarnet,
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    [ContextDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
+                    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
+                    [ContextDataType.DOKUMENTASJON]: dokumentasjon,
                 }}
             >
                 <OppsummeringSteg person={person} sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />

@@ -2,7 +2,7 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
+import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import OmBarnetSteg from './OmBarnetSteg';
 import { Situasjon } from '@navikt/fp-types';
@@ -23,7 +23,7 @@ const Template: StoryFn<{
     return (
         <MemoryRouter initialEntries={[Path.OM_BARNET]}>
             <EsDataContext
-                initialState={{ [EsDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
+                initialState={{ [ContextDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
                 onDispatch={gåTilNesteSide}
             >
                 <OmBarnetSteg kjønn={kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />

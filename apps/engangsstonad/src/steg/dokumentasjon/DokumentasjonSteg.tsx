@@ -8,7 +8,7 @@ import { Form, StepButtonsHookForm, ErrorSummaryHookForm } from '@navikt/fp-form
 
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
 import AdopsjonDokPanel from './AdopsjonDokPanel';
@@ -24,9 +24,9 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
-    const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
-    const lagreDokumentasjon = useEsStateSaveFn(EsDataType.DOKUMENTASJON);
-    const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
+    const dokumentasjon = useContextGetData(ContextDataType.DOKUMENTASJON);
+    const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
+    const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const erBarnetAdoptert = erAdopsjon(omBarnet);
     const harTermindato = erBarnetIkkeFødt(omBarnet);
@@ -43,7 +43,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
                     : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
             });
         } else {
-            lagreDokumentasjon(formValues);
+            oppdaterDokumentasjon(formValues);
             navigator.goToNextDefaultStep();
         }
     };
@@ -71,7 +71,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
                     <ScanDocumentInfo />
                     <StepButtonsHookForm<Dokumentasjon>
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        saveDataOnPreviousClick={lagreDokumentasjon}
+                        saveDataOnPreviousClick={oppdaterDokumentasjon}
                     />
                 </VStack>
             </Form>

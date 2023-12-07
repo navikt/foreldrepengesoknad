@@ -6,7 +6,7 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OmBarnetSteg.stories';
 import { Path } from 'appData/paths';
-import { EsDataType } from 'appData/EsDataContext';
+import { ContextDataType } from 'appData/EsDataContext';
 
 const { VisSideForAdopsjonKvinne, VisSideForAdopsjonMann, VisSideForFodsel } = composeStories(stories);
 
@@ -55,13 +55,13 @@ describe('<OmBarnetSteg>', () => {
                     },
                 ],
             },
-            key: EsDataType.OM_BARNET,
+            key: ContextDataType.OM_BARNET,
             type: 'update',
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: Path.ADOPSJONSBEKREFTELSE,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 
@@ -113,13 +113,13 @@ describe('<OmBarnetSteg>', () => {
                 ],
                 søkerAdopsjonAlene: true,
             },
-            key: EsDataType.OM_BARNET,
+            key: ContextDataType.OM_BARNET,
             type: 'update',
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: Path.ADOPSJONSBEKREFTELSE,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 
@@ -181,13 +181,13 @@ describe('<OmBarnetSteg>', () => {
                     },
                 ],
             },
-            key: EsDataType.OM_BARNET,
+            key: ContextDataType.OM_BARNET,
             type: 'update',
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: Path.ADOPSJONSBEKREFTELSE,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 
@@ -228,18 +228,18 @@ describe('<OmBarnetSteg>', () => {
                 fødselsdato: dayjs().format(ISO_DATE_FORMAT),
                 termindato: undefined,
             },
-            key: EsDataType.OM_BARNET,
+            key: ContextDataType.OM_BARNET,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: EsDataType.DOKUMENTASJON,
+            key: ContextDataType.DOKUMENTASJON,
             type: 'update',
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: Path.UTENLANDSOPPHOLD,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 
@@ -280,13 +280,13 @@ describe('<OmBarnetSteg>', () => {
                 erBarnetFødt: false,
                 termindato: dayjs().format(ISO_DATE_FORMAT),
             },
-            key: EsDataType.OM_BARNET,
+            key: ContextDataType.OM_BARNET,
             type: 'update',
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: Path.TERMINBEKREFTELSE,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 

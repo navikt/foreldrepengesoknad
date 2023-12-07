@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosInstance } from 'axios';
 import { Kvittering } from '@navikt/fp-types';
 import { postData, ApiAccessError, ApiGeneralError, deleteData } from '@navikt/fp-api';
-import { EsDataMap, EsDataType, useEsCompleteState, useEsStateResetFn } from './EsDataContext';
+import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
 export const VERSJON_MELLOMLAGRING = 1;
 
-export type EsDataMapAndVersion = { version: number } & EsDataMap;
+export type EsDataMapAndVersion = { version: number } & ContextDataMap;
 
 // TODO (TOR) Fiks lokalisering
 const FEIL_VED_INNSENDING =
@@ -15,8 +15,8 @@ const FEIL_VED_INNSENDING =
 
 const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();
-    const state = useEsCompleteState();
-    const resetState = useEsStateResetFn();
+    const state = useContextComplete();
+    const resetState = useContextReset();
 
     const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
@@ -27,7 +27,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
             const lagreEllerSlett = async () => {
                 setSkalMellomlagre(false);
 
-                const currentPath = state[EsDataType.CURRENT_PATH];
+                const currentPath = state[ContextDataType.CURRENT_PATH];
                 if (currentPath) {
                     await postData<EsDataMapAndVersion, Kvittering>(
                         esApi,
@@ -45,7 +45,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
 
                     await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING);
 
-                    const dokumentasjon = state[EsDataType.DOKUMENTASJON];
+                    const dokumentasjon = state[ContextDataType.DOKUMENTASJON];
                     if (dokumentasjon) {
                         const vedleggUuids = dokumentasjon.vedlegg
                             .map((v) => v.uuid)

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './UtenlandsoppholdSteg.stories';
-import { EsDataType } from 'appData/EsDataContext';
+import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 
 const { Default } = composeStories(stories);
@@ -29,23 +29,23 @@ describe('<UtenlandsoppholdSteg>', () => {
                 harBoddUtenforNorgeSiste12Mnd: false,
                 skalBoUtenforNorgeNeste12Mnd: false,
             },
-            key: EsDataType.UTENLANDSOPPHOLD,
+            key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: EsDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(3, {
             data: undefined,
-            key: EsDataType.UTENLANDSOPPHOLD_SENERE,
+            key: ContextDataType.UTENLANDSOPPHOLD_SENERE,
             type: 'update',
         });
 
         expect(nesteStegFn).toHaveBeenNthCalledWith(4, {
             data: Path.OPPSUMMERING,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 
@@ -71,17 +71,17 @@ describe('<UtenlandsoppholdSteg>', () => {
                 harBoddUtenforNorgeSiste12Mnd: true,
                 skalBoUtenforNorgeNeste12Mnd: false,
             },
-            key: EsDataType.UTENLANDSOPPHOLD,
+            key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: EsDataType.UTENLANDSOPPHOLD_SENERE,
+            key: ContextDataType.UTENLANDSOPPHOLD_SENERE,
             type: 'update',
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(3, {
             data: Path.TIDLIGERE_UTENLANDSOPPHOLD,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 
@@ -107,18 +107,18 @@ describe('<UtenlandsoppholdSteg>', () => {
                 harBoddUtenforNorgeSiste12Mnd: false,
                 skalBoUtenforNorgeNeste12Mnd: true,
             },
-            key: EsDataType.UTENLANDSOPPHOLD,
+            key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
         });
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: undefined,
-            key: EsDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
 
         expect(nesteStegFn).toHaveBeenNthCalledWith(3, {
             data: Path.SENERE_UTENLANDSOPPHOLD,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 
@@ -144,13 +144,13 @@ describe('<UtenlandsoppholdSteg>', () => {
                 harBoddUtenforNorgeSiste12Mnd: true,
                 skalBoUtenforNorgeNeste12Mnd: true,
             },
-            key: EsDataType.UTENLANDSOPPHOLD,
+            key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
         });
 
         expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
             data: Path.TIDLIGERE_UTENLANDSOPPHOLD,
-            key: EsDataType.CURRENT_PATH,
+            key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });
 

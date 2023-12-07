@@ -8,7 +8,7 @@ import { isRequired } from '@navikt/fp-validation';
 
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { Søkersituasjon } from '@navikt/fp-types';
 
 type Props = {
@@ -21,18 +21,18 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
-    const søkersituasjon = useEsStateData(EsDataType.SØKERSITUASJON);
-    const lagreSøkersituasjon = useEsStateSaveFn(EsDataType.SØKERSITUASJON);
-    const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);
+    const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
+    const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
     const formMethods = useForm<Søkersituasjon>({
         defaultValues: søkersituasjon,
     });
 
     const lagre = (formValues: Søkersituasjon) => {
-        lagreSøkersituasjon(formValues);
+        oppdaterSøkersituasjon(formValues);
         if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
-            lagreOmBarnet(undefined);
+            oppdaterOmBarnet(undefined);
         }
         navigator.goToNextDefaultStep();
     };
@@ -56,7 +56,7 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
                     </RadioGroup>
                     <StepButtonsHookForm
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        saveDataOnPreviousClick={lagreSøkersituasjon}
+                        saveDataOnPreviousClick={oppdaterSøkersituasjon}
                     />
                 </VStack>
             </Form>

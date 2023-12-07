@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { EsDataType, useEsStateSaveFn } from './EsDataContext';
+import { ContextDataType, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';
 import useStepConfig from './useStepConfig';
 
 const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
     const stepConfig = useStepConfig();
-    const lagrePath = useEsStateSaveFn(EsDataType.CURRENT_PATH);
+    const lagrePath = useContextSaveData(ContextDataType.CURRENT_PATH);
 
     const activeStepId = stepConfig.find((sc) => sc.isSelected);
 

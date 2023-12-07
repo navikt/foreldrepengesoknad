@@ -5,7 +5,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { attachmentApi } from '@navikt/fp-api';
 
 import { Path } from 'appData/paths';
-import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
+import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import DokumentasjonSteg from './DokumentasjonSteg';
 import { MemoryRouter } from 'react-router-dom';
@@ -42,7 +42,7 @@ const Template: StoryFn<{
             <EsDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [EsDataType.OM_BARNET]: omBarnet,
+                    [ContextDataType.OM_BARNET]: omBarnet,
                 }}
             >
                 <DokumentasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />

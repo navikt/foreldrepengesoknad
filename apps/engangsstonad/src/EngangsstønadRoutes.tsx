@@ -7,7 +7,7 @@ import { redirect, redirectToLogin } from '@navikt/fp-utils';
 import { ErrorPage } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { EsDataMap, EsDataType } from 'appData/EsDataContext';
+import { ContextDataMap, ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import Environment from 'appData/Environment';
 import Person from './types/Person';
@@ -42,7 +42,7 @@ interface Props {
     locale: LocaleAll;
     onChangeLocale: (locale: LocaleAll) => void;
     person: Person;
-    mellomlagretData?: EsDataMap;
+    mellomlagretData?: ContextDataMap;
 }
 
 const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChangeLocale, person, mellomlagretData }) => {
@@ -55,9 +55,9 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
     const { mellomlagreOgNaviger, errorMellomlagre } = useEsMellomlagring(esApi, setVelkommen);
 
     useEffect(() => {
-        if (mellomlagretData && mellomlagretData[EsDataType.CURRENT_PATH]) {
+        if (mellomlagretData && mellomlagretData[ContextDataType.CURRENT_PATH]) {
             setVelkommen(true);
-            navigate(mellomlagretData[EsDataType.CURRENT_PATH]);
+            navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mellomlagretData]);
