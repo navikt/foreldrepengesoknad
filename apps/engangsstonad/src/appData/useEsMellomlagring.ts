@@ -42,18 +42,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
                     navigate(currentPath);
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data
-
                     await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING);
-
-                    const dokumentasjon = state[ContextDataType.DOKUMENTASJON];
-                    if (dokumentasjon) {
-                        const vedleggUuids = dokumentasjon.vedlegg
-                            .map((v) => v.uuid)
-                            .filter((uuid): uuid is string => !!uuid);
-                        if (vedleggUuids.length > 0) {
-                            await deleteData<string[]>(esApi, '/storage/vedlegg', FEIL_VED_INNSENDING, vedleggUuids);
-                        }
-                    }
 
                     setVelkommen(false);
                     resetState();

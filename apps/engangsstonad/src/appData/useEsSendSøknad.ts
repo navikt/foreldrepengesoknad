@@ -73,8 +73,9 @@ const useEsSendSøknad = (
                 vedlegg: dokumentasjon?.vedlegg || [],
             };
 
+            let kvittering;
             try {
-                const kvittering = await postData<typeof søknad, Kvittering>(
+                kvittering = await postData<typeof søknad, Kvittering>(
                     esApi,
                     '/soknad/engangssoknad',
                     søknad,
@@ -82,7 +83,6 @@ const useEsSendSøknad = (
                     true,
                     abortSignal,
                 );
-                setKvittering(kvittering);
             } catch (error: unknown) {
                 if (isApiError(error)) {
                     setError(error);
@@ -91,18 +91,14 @@ const useEsSendSøknad = (
                 }
             }
 
-            try {
-                await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
-                if (dokumentasjon?.vedlegg) {
-                    const vedleggUuids = dokumentasjon.vedlegg
-                        .map((v) => v.uuid)
-                        .filter((uuid): uuid is string => !!uuid);
-                    if (vedleggUuids.length > 0) {
-                        await deleteData<string[]>(esApi, '/storage/vedlegg', FEIL_VED_INNSENDING, vedleggUuids);
-                    }
+            if (kvittering) {
+                try {
+                    await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
+                } catch (error) {
+                    // Vi bryr oss ikke om feil her. Logges bare i backend
                 }
-            } catch (error) {
-                // Vi bryr oss ikke om feil her. Logges bare i backend
+
+                setKvittering(kvittering);
             }
         },
         [hentData, locale, setKvittering, esApi],
