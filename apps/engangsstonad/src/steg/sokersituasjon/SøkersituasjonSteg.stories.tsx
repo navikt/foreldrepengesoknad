@@ -6,14 +6,21 @@ import { Action, EsDataContext } from 'appData/EsDataContext';
 import SøkersituasjonSteg from './SøkersituasjonSteg';
 import { Path } from 'appData/paths';
 
+const promiseAction =
+    () =>
+    (...args: any[]) => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'SøkersituasjonSteg',
     component: SøkersituasjonSteg,
 };
 
-const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => void }> = ({
+const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => Promise<void> }> = ({
     gåTilNesteSide,
-    mellomlagreOgNaviger = action('button-click'),
+    mellomlagreOgNaviger = promiseAction(),
 }) => {
     initAmplitude();
     return (

@@ -6,6 +6,13 @@ import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 import { MemoryRouter } from 'react-router-dom';
 
+const promiseAction =
+    () =>
+    (...args: any[]) => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 const utenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: true,
     skalBoUtenforNorgeNeste12Mnd: false,
@@ -16,9 +23,9 @@ export default {
     component: TidligereUtenlandsoppholdSteg,
 };
 
-const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => void }> = ({
+const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => Promise<void> }> = ({
     gåTilNesteSide,
-    mellomlagreOgNaviger = action('button-click'),
+    mellomlagreOgNaviger = promiseAction(),
 }) => {
     initAmplitude();
     return (

@@ -59,7 +59,7 @@ const Template: StoryFn<{
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
     dokumentasjon?: Dokumentasjon;
-    mellomlagreOgNaviger?: () => void;
+    mellomlagreOgNaviger?: () => Promise<void>;
 }> = ({
     sendSøknad,
     omBarnet = barnet,
@@ -67,7 +67,7 @@ const Template: StoryFn<{
     senereUtenlandsopphold,
     tidligereUtenlandsopphold,
     dokumentasjon = vedleggDefault,
-    mellomlagreOgNaviger = action('button-click'),
+    mellomlagreOgNaviger = promiseAction(),
 }) => {
     initAmplitude();
     return (

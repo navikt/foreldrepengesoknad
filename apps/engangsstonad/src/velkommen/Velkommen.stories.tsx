@@ -7,6 +7,13 @@ import { Path } from 'appData/paths';
 import Velkommen from './Velkommen';
 import { Action, EsDataContext } from 'appData/EsDataContext';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'Velkommen',
     component: Velkommen,
@@ -14,9 +21,9 @@ export default {
 
 const Template: StoryFn<{
     startSøknad: (start: boolean) => void;
-    mellomlagreOgNaviger?: () => void;
+    mellomlagreOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ startSøknad, mellomlagreOgNaviger = action('button-click'), gåTilNesteSide }) => {
+}> = ({ startSøknad, mellomlagreOgNaviger = promiseAction(), gåTilNesteSide }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[Path.VELKOMMEN]}>

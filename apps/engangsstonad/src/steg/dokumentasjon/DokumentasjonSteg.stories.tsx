@@ -10,6 +10,13 @@ import { OmBarnet } from 'types/OmBarnet';
 import DokumentasjonSteg from './DokumentasjonSteg';
 import { MemoryRouter } from 'react-router-dom';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'DokumentasjonSteg',
     component: DokumentasjonSteg,
@@ -18,13 +25,13 @@ export default {
 const Template: StoryFn<{
     routerDecoratorInitUrl: string;
     gåTilNesteSide?: (action: Action) => void;
-    mellomlagreOgNaviger?: () => void;
+    mellomlagreOgNaviger?: () => Promise<void>;
     omBarnet: OmBarnet;
     skalFeileOpplasting?: boolean;
     path: Path;
 }> = ({
     gåTilNesteSide = action('button-click'),
-    mellomlagreOgNaviger = action('button-click'),
+    mellomlagreOgNaviger = promiseAction(),
     omBarnet,
     skalFeileOpplasting = false,
     path,

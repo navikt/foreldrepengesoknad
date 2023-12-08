@@ -6,14 +6,21 @@ import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 import { MemoryRouter } from 'react-router-dom';
 
+const promiseAction =
+    () =>
+    (...args: any[]) => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
 };
 
-const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => void }> = ({
+const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => Promise<void> }> = ({
     gåTilNesteSide,
-    mellomlagreOgNaviger = action('button-click'),
+    mellomlagreOgNaviger = promiseAction(),
 }) => {
     initAmplitude();
     return (

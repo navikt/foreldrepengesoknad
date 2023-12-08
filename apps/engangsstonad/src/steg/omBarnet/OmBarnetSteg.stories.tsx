@@ -8,6 +8,13 @@ import OmBarnetSteg from './OmBarnetSteg';
 import { Situasjon } from '@navikt/fp-types';
 import { MemoryRouter } from 'react-router-dom';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'OmBarnetSteg',
     component: OmBarnetSteg,
@@ -17,8 +24,8 @@ const Template: StoryFn<{
     søkersituasjon: Situasjon;
     kjønn: Kjønn;
     gåTilNesteSide: (action: Action) => void;
-    mellomlagreOgNaviger?: () => void;
-}> = ({ søkersituasjon, kjønn, gåTilNesteSide, mellomlagreOgNaviger = action('button-click') }) => {
+    mellomlagreOgNaviger?: () => Promise<void>;
+}> = ({ søkersituasjon, kjønn, gåTilNesteSide, mellomlagreOgNaviger = promiseAction() }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[Path.OM_BARNET]}>
