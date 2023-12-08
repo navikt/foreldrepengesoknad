@@ -19,4 +19,5 @@ export interface Søknad {
     saksnummer?: string;
     ønskerJustertUttakVedFødsel: boolean | undefined;
     vedlegg: Attachment[];
+    manglerDokumentasjon: boolean;
 }

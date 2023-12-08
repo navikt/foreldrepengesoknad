@@ -41,5 +41,7 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
             annenPartsUttakErLagtTilIPlan: mellomlagretState.annenPartsUttakErLagtTilIPlan,
             endringstidspunkt: mellomlagretState.endringstidspunkt,
         },
+        [ContextDataType.MANGLER_DOKUMENTASJON]: søknad?.manglerDokumentasjon,
+        [ContextDataType.VEDLEGG]: søknad?.vedlegg,
     };
 };

@@ -82,7 +82,13 @@ export interface SøkerForInnsending extends Omit<Søker, 'andreInntekterSiste10
 export interface SøknadForInnsending
     extends Omit<
         Søknad,
-        'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon' | 'tilleggsopplysninger'
+        | 'barn'
+        | 'annenForelder'
+        | 'uttaksplan'
+        | 'søker'
+        | 'søkersituasjon'
+        | 'tilleggsopplysninger'
+        | 'manglerDokumentasjon'
     > {
     barn: BarnForInnsending;
     annenForelder: AnnenForelderForInnsending;
