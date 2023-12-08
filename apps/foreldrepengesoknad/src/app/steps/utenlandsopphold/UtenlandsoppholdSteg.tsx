@@ -18,7 +18,7 @@ const utledNesteSide = (values: Utenlandsopphold) => {
 };
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
@@ -39,7 +39,8 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøkn
 
         const nesteSide = utledNesteSide(values);
         oppdaterAppRoute(nesteSide);
-        mellomlagreSøknadOgNaviger();
+
+        return mellomlagreSøknadOgNaviger();
     };
 
     const goToPreviousStep = () => {

@@ -6,6 +6,13 @@ import AxiosMock from 'storybook/utils/AxiosMock';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'steps/UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
@@ -13,11 +20,11 @@ export default {
 };
 
 interface Props {
-    mellomlagreSøknadOgNaviger?: () => void;
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
 }
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = action('button-click'), gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };

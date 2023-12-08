@@ -48,7 +48,7 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 type Props = {
     søkerInfo: Søkerinfo;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 

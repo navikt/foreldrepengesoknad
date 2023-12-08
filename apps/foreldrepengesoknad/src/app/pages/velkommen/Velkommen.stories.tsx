@@ -8,6 +8,13 @@ import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { Action, FpDataContext } from 'app/context/FpDataContext';
 import Velkommen from './Velkommen';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'pages/Velkommen',
     component: Velkommen,
@@ -18,7 +25,7 @@ interface Props {
     harGodkjentVilkår: boolean;
     saker: Sak[];
     søkerinfo: SøkerinfoDTO;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     gåTilNesteSide?: (action: Action) => void;
 }
 
@@ -37,7 +44,7 @@ const Template: StoryFn<Props> = ({
     harGodkjentVilkår,
     saker,
     søkerinfo,
-    mellomlagreSøknadOgNaviger = action('button-click'),
+    mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide,
 }) => {
     return (

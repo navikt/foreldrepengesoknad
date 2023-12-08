@@ -40,7 +40,7 @@ export interface Props {
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     setErEndringssøknad: (erEndringssøknad: boolean) => void;
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn: boolean) => void;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
 }
 
 const Velkommen: React.FunctionComponent<Props> = ({

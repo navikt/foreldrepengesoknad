@@ -46,7 +46,7 @@ export interface Props {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 }
 

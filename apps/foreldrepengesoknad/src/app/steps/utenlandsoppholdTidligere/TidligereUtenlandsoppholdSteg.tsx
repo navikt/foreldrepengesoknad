@@ -10,7 +10,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
@@ -52,7 +52,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
             ? SøknadRoutes.INNTEKTSINFORMASJON
             : SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
         oppdaterAppRoute(nesteSide);
-        mellomlagreSøknadOgNaviger();
+        return mellomlagreSøknadOgNaviger();
     };
 
     const goToPreviousStep = () => {
