@@ -42,7 +42,7 @@ const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
 
 type Props = {
     søkerInfo: Søkerinfo;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 

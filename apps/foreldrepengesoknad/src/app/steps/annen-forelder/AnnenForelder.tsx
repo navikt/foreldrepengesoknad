@@ -49,7 +49,7 @@ import BackButton from '../BackButton';
 
 type Props = {
     søkerInfo: Søkerinfo;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 

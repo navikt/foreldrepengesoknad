@@ -7,6 +7,13 @@ import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'steps/TidligereUtenlandsoppholdSteg',
     component: TidligereUtenlandsoppholdSteg,
@@ -14,13 +21,13 @@ export default {
 };
 
 interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<any>;
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
     utenlandsopphold?: Opphold;
 }
 
 const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = action('button-click'),
+    mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide,
     utenlandsopphold = {
         iNorgeNeste12Mnd: true,

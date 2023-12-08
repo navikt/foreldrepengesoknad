@@ -1,6 +1,6 @@
 import Api from 'app/api/api';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { notEmpty } from '@navikt/fp-validation';
 import { useNavigate } from 'react-router-dom';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
@@ -84,6 +84,8 @@ const useMellomlagreSøknad = (
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
+    const promiseRef = useRef<() => void>();
+
     useEffect(() => {
         if (skalMellomlagre) {
             const currentRoute = notEmpty(getDataFromState(ContextDataType.APP_ROUTE));
@@ -101,6 +103,10 @@ const useMellomlagreSøknad = (
                 );
 
                 navigate(currentRoute);
+
+                if (promiseRef.current) {
+                    promiseRef.current();
+                }
             };
 
             lagre().catch((error) => {
@@ -112,6 +118,10 @@ const useMellomlagreSøknad = (
 
                     navigate(currentRoute);
                 }
+
+                if (promiseRef.current) {
+                    promiseRef.current();
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,6 +130,12 @@ const useMellomlagreSøknad = (
     const mellomlagreSøknadOgNaviger = useCallback(() => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
+
+        const promise = new Promise<void>((resolve) => {
+            promiseRef.current = resolve;
+        });
+
+        return promise;
     }, []);
 
     return mellomlagreSøknadOgNaviger;

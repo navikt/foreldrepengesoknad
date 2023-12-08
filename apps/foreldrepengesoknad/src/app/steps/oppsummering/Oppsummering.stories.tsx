@@ -24,6 +24,13 @@ import Søker from 'app/context/types/Søker';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'steps/Oppsummering',
     component: Oppsummering,
@@ -109,7 +116,7 @@ interface Props {
     utenlandsoppholdTidligere?: TidligereOpphold;
     barn?: Barn;
     erEndringssøknad?: boolean;
-    mellomlagreSøknadOgNaviger?: () => void;
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
     avbrytSøknad: () => void;
     sendSøknad: () => Promise<any>;
@@ -126,7 +133,7 @@ const Template: StoryFn<Props> = ({
     utenlandsoppholdSenere,
     utenlandsoppholdTidligere,
     erEndringssøknad = false,
-    mellomlagreSøknadOgNaviger = action('button-click'),
+    mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide,
     avbrytSøknad = action('button-click'),
     sendSøknad = () => Promise.resolve(),

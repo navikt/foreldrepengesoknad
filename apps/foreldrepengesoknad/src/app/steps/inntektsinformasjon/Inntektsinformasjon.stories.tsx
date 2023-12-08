@@ -12,6 +12,13 @@ import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { BarnType } from '@navikt/fp-common';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 const søkerinfo = _søkerinfo as any;
 
 const defaultUtenlandsopphold = {
@@ -27,7 +34,7 @@ export default {
 
 interface Props {
     søkerinfo: SøkerinfoDTO;
-    mellomlagreSøknadOgNaviger?: () => void;
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
     utenlandsopphold: Opphold;
 }
@@ -35,7 +42,7 @@ interface Props {
 const Template: StoryFn<Props> = ({
     søkerinfo,
     gåTilNesteSide,
-    mellomlagreSøknadOgNaviger = action('button-click'),
+    mellomlagreSøknadOgNaviger = promiseAction(),
     utenlandsopphold = defaultUtenlandsopphold,
 }) => {
     const restMock = (apiMock: MockAdapter) => {
