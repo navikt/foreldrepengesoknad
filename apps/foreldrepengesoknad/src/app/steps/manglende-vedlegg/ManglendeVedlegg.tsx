@@ -31,7 +31,7 @@ import UtsettelseDok from './dokumentasjon/UtsettelseDok';
 type Props = {
     person: Person;
     erEndringssøknad: boolean;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
@@ -74,7 +74,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
         saveVedlegg(alleVedlegg);
         saveNextRoute(SøknadRoutes.UTENLANDSOPPHOLD);
 
-        mellomlagreSøknadOgNaviger();
+        return mellomlagreSøknadOgNaviger();
     };
 
     const formMethods = useForm<ManglendeVedleggFormData>({
