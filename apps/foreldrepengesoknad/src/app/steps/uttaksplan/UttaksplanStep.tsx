@@ -76,7 +76,7 @@ const EMPTY_PERIOD_ARRAY: Periode[] = [];
 type Props = {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 

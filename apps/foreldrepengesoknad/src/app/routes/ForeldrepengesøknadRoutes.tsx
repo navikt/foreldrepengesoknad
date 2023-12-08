@@ -27,7 +27,7 @@ const renderSøknadRoutes = (
     erEndringssøknad: boolean,
     søkerErMyndig: boolean,
     søkerInfo: Søkerinfo,
-    mellomlagreSøknadOgNaviger: () => void,
+    mellomlagreSøknadOgNaviger: () => Promise<void>,
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>,
     avbrytSøknad: () => void,
     søknadGjelderNyttBarn?: boolean,

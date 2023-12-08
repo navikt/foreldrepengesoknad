@@ -6,6 +6,13 @@ import SøkersituasjonSteg from './SøkersituasjonSteg';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 export default {
     title: 'steps/SøkersituasjonSteg',
     component: SøkersituasjonSteg,
@@ -15,7 +22,7 @@ export default {
 interface Props {
     kjønn: Kjønn;
     søkersituasjon?: SøkersituasjonFp;
-    mellomlagreSøknadOgNaviger?: () => void;
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
     avbrytSøknad: () => void;
     gåTilNesteSide: (action: Action) => void;
 }
@@ -23,7 +30,7 @@ interface Props {
 const Template: StoryFn<Props> = ({
     kjønn,
     søkersituasjon,
-    mellomlagreSøknadOgNaviger = action('button-click'),
+    mellomlagreSøknadOgNaviger = promiseAction(),
     avbrytSøknad = action('button-click'),
     gåTilNesteSide,
 }) => {

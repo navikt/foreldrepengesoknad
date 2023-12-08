@@ -12,6 +12,13 @@ import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContex
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 const søkerinfo = _søkerinfo as any;
 const søkerinfoMedDødTrilling = _søkerinfoMedDødTrilling as any;
 
@@ -26,7 +33,7 @@ interface Props {
     søkersituasjon?: SøkersituasjonFp;
     barn?: Barn;
     søknadGjelderEtNyttBarn?: boolean;
-    mellomlagreSøknadOgNaviger?: () => void;
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
 }
 
@@ -39,7 +46,7 @@ const Template: StoryFn<Props> = ({
     barn,
     søknadGjelderEtNyttBarn = false,
     gåTilNesteSide,
-    mellomlagreSøknadOgNaviger = action('button-click'),
+    mellomlagreSøknadOgNaviger = promiseAction(),
 }) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/vedlegg').reply(

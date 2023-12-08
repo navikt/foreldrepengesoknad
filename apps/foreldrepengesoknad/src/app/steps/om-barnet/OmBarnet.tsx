@@ -38,7 +38,7 @@ import BackButton from '../BackButton';
 type Props = {
     søkerInfo: Søkerinfo;
     søknadGjelderNyttBarn: boolean;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
