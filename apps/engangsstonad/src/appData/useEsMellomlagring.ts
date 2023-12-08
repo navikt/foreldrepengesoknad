@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosInstance } from 'axios';
 import { Kvittering } from '@navikt/fp-types';
@@ -21,6 +21,8 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
     const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
+
+    const promiseRef = useRef<() => void>();
 
     useEffect(() => {
         if (skalMellomlagre) {
@@ -48,10 +50,18 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
                     resetState();
                     navigate('/');
                 }
+
+                if (promiseRef.current) {
+                    promiseRef.current();
+                }
             };
 
             lagreEllerSlett().catch((error: ApiAccessError | ApiGeneralError) => {
                 setError(error);
+
+                if (promiseRef.current) {
+                    promiseRef.current();
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,6 +70,12 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
     const mellomlagreOgNaviger = useCallback(() => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
+
+        const promise = new Promise<void>((resolve) => {
+            promiseRef.current = resolve;
+        });
+
+        return promise;
     }, []);
 
     return useMemo(

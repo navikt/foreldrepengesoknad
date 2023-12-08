@@ -23,7 +23,7 @@ export interface Props {
     locale: LocaleAll;
     startSøknad: (start: boolean) => void;
     erVelkommen: boolean;
-    mellomlagreOgNaviger: () => void;
+    mellomlagreOgNaviger: () => Promise<void>;
 }
 
 const Velkommen: FunctionComponent<Props> = ({

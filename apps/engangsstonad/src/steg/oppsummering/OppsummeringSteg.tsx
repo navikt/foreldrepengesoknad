@@ -19,7 +19,7 @@ const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string)
 export interface Props {
     person: Person;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
-    mellomlagreOgNaviger: () => void;
+    mellomlagreOgNaviger: () => Promise<void>;
 }
 
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad, mellomlagreOgNaviger }) => {

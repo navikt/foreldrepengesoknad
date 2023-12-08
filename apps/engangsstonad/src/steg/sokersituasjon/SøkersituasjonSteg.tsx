@@ -12,7 +12,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { Søkersituasjon } from '@navikt/fp-types';
 
 type Props = {
-    mellomlagreOgNaviger: () => void;
+    mellomlagreOgNaviger: () => Promise<void>;
 };
 
 const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
@@ -34,7 +34,7 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
         if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
             oppdaterOmBarnet(undefined);
         }
-        navigator.goToNextDefaultStep();
+        return navigator.goToNextDefaultStep();
     };
 
     return (

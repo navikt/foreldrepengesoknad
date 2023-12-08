@@ -4,7 +4,7 @@ import { ContextDataType, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';
 import useStepConfig from './useStepConfig';
 
-const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
+const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     const stepConfig = useStepConfig();
     const oppdaterPath = useContextSaveData(ContextDataType.CURRENT_PATH);
 
@@ -22,12 +22,12 @@ const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id || Path.VELKOMMEN;
         oppdaterPath(previousPath);
-        mellomlagreOgNaviger();
+        return mellomlagreOgNaviger();
     };
 
     const goToNextStep = (path: Path) => {
         oppdaterPath(path);
-        mellomlagreOgNaviger();
+        return mellomlagreOgNaviger();
     };
 
     const goToNextDefaultStep = () => {
@@ -35,12 +35,12 @@ const useEsNavigator = (mellomlagreOgNaviger: () => void) => {
         const nextPath = stepConfig[index]?.id;
 
         oppdaterPath(nextPath);
-        mellomlagreOgNaviger();
+        return mellomlagreOgNaviger();
     };
 
     const avbrytSøknad = () => {
         oppdaterPath(undefined);
-        mellomlagreOgNaviger();
+        return mellomlagreOgNaviger();
     };
 
     return {

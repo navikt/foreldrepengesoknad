@@ -43,7 +43,7 @@ const mapOmBarnetFraStateTilForm = (omBarnet: OmBarnet) => ({
 
 export interface Props {
     kjønn: Kjønn;
-    mellomlagreOgNaviger: () => void;
+    mellomlagreOgNaviger: () => Promise<void>;
 }
 
 const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNaviger }) => {
@@ -64,7 +64,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNav
         if (formValues.erBarnetFødt === true) {
             oppdaterDokumentasjon(undefined);
         }
-        navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
+        return navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
     };
 
     const formMethods = useForm<FormValues>({

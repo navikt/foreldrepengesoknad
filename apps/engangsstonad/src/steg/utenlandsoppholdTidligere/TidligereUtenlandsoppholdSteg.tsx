@@ -11,7 +11,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import useStepConfig from 'appData/useStepConfig';
 
 type Props = {
-    mellomlagreOgNaviger: () => void;
+    mellomlagreOgNaviger: () => Promise<void>;
 };
 
 const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
@@ -24,7 +24,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ melloml
 
     const lagre = (formValues: UtenlandsoppholdTidligere) => {
         oppdaterTidligereUtenlandsopphold(formValues);
-        navigator.goToNextStep(
+        return navigator.goToNextStep(
             utenlandsopphold.skalBoUtenforNorgeNeste12Mnd ? Path.SENERE_UTENLANDSOPPHOLD : Path.OPPSUMMERING,
         );
     };

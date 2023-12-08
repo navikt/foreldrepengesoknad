@@ -17,7 +17,7 @@ const utledNesteSide = (formValues: Utenlandsopphold): Path => {
 };
 
 type Props = {
-    mellomlagreOgNaviger: () => void;
+    mellomlagreOgNaviger: () => Promise<void>;
 };
 
 const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
@@ -40,7 +40,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNav
             oppdaterSenereUtenlandsopphold(undefined);
         }
 
-        navigator.goToNextStep(utledNesteSide(formValues));
+        return navigator.goToNextStep(utledNesteSide(formValues));
     };
 
     return (

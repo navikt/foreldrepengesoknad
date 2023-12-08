@@ -9,7 +9,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import useStepConfig from 'appData/useStepConfig';
 
 type Props = {
-    mellomlagreOgNaviger: () => void;
+    mellomlagreOgNaviger: () => Promise<void>;
 };
 
 const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
@@ -21,7 +21,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
 
     const lagre = (formValues: UtenlandsoppholdSenere) => {
         oppdaterSenereUtenlandsopphold(formValues);
-        navigator.goToNextDefaultStep();
+        return navigator.goToNextDefaultStep();
     };
 
     return (

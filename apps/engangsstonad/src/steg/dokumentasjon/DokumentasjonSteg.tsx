@@ -15,7 +15,7 @@ import AdopsjonDokPanel from './AdopsjonDokPanel';
 import TerminDokPanel from './TerminDokPanel';
 
 type Props = {
-    mellomlagreOgNaviger: () => void;
+    mellomlagreOgNaviger: () => Promise<void>;
 };
 
 const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
@@ -42,9 +42,10 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
                     ? i18n('DokumentasjonSteg.MinstEttDokumentAdopsjon')
                     : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
             });
+            return Promise.resolve();
         } else {
             oppdaterDokumentasjon(formValues);
-            navigator.goToNextDefaultStep();
+            return navigator.goToNextDefaultStep();
         }
     };
 
