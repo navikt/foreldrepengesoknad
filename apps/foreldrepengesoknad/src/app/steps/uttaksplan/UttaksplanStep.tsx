@@ -34,7 +34,6 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import Api from 'app/api/api';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
-    getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
@@ -70,6 +69,8 @@ import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJuste
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
+import { FpApiDataType } from 'app/api/context/FpApiDataContext';
+import { useApiGetData } from 'app/api/context/useFpApiData';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
@@ -209,10 +210,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         mellomlagreSøknadOgNaviger();
     };
 
-    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
-        eksisterendeSak?.grunnlag.termindato,
-        eksisterendeVedtakAnnenPart?.grunnlag.termindato,
-    );
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
         erFarEllerMedmor,
         barn.antallBarn,
@@ -475,33 +472,24 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED) ||
         (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
 
-    const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
-        Api.useGetUttakskontoer(
-            getStønadskontoParams(
-                Dekningsgrad.HUNDRE_PROSENT,
-                barn,
-                annenForelder,
-                søkersituasjon,
-                farMedmorErAleneOmOmsorg,
-                morErAleneOmOmsorg,
-                dateToISOString(familieHendelseDatoNesteSak),
-                saksgrunnlagsAntallBarn,
-                saksgrunnlagsTermindato,
-            ),
-            kontoRequestIsSuspended,
-        );
-    const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(
-            Dekningsgrad.ÅTTI_PROSENT,
-            barn,
-            annenForelder,
-            søkersituasjon,
-            farMedmorErAleneOmOmsorg,
-            morErAleneOmOmsorg,
-            dateToISOString(familieHendelseDatoNesteSak),
-            saksgrunnlagsAntallBarn,
-            saksgrunnlagsTermindato,
-        ),
+    const { stønadskontoParams100, stønadskontoParams80 } = getStønadskontoParams(
+        barn,
+        annenForelder,
+        søkersituasjon,
+        søker,
+        barnFraNesteSak,
+        eksisterendeSakAnnenPartData,
+        eksisterendeSak,
+    );
+
+    const { data: stønadskontoer80 } = useApiGetData(
+        FpApiDataType.STØNADSKONTOER_80,
+        stønadskontoParams80,
+        kontoRequestIsSuspended,
+    );
+    const { data: stønadskontoer100, error: tilgjengeligeStønadskontoerError } = useApiGetData(
+        FpApiDataType.STØNADSKONTOER_100,
+        stønadskontoParams100,
         kontoRequestIsSuspended,
     );
 

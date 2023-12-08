@@ -7,6 +7,7 @@ type SøkersituasjonStepId = 'søkersituasjon';
 type OmBarnetStepId = 'omBarnet';
 type AnnenForelderId = 'annenForelder';
 type UttaksplanInfo = 'uttaksplanInfo';
+type PeriodeMedForeldrepenger = 'periodeMedForeldrepenger';
 type Uttaksplan = 'uttaksplan';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
 type UtenlandsoppholdSenereStepId = 'utenlandsoppholdSenere';
@@ -17,6 +18,7 @@ type OppsummeringStepId = 'oppsummering';
 type StepIdWithBackHref =
     | OmBarnetStepId
     | AnnenForelderId
+    | PeriodeMedForeldrepenger
     | UttaksplanInfo
     | Uttaksplan
     | UtenlandsoppholdStepId
@@ -64,38 +66,43 @@ const stepConfigFørstegangssøknad = (intl: IntlShape): StepConfig[] => [
         label: intlUtils(intl, 'steps.label.annenForelder'),
     },
     {
-        id: 'uttaksplanInfo',
+        id: 'periodeMedForeldrepenger',
         index: 3,
         label: intlUtils(intl, 'steps.label.uttaksplanInfo'),
     },
     {
-        id: 'uttaksplan',
+        id: 'uttaksplanInfo',
         index: 4,
+        label: intlUtils(intl, 'steps.label.uttaksplanInfo'),
+    },
+    {
+        id: 'uttaksplan',
+        index: 5,
         label: intlUtils(intl, 'steps.label.uttaksplan'),
     },
     {
         id: 'utenlandsopphold',
-        index: 5,
+        index: 6,
         label: intlUtils(intl, 'steps.label.utenlandsopphold'),
     },
     {
         id: 'utenlandsoppholdTidligere',
-        index: 6,
+        index: 7,
         label: intlUtils(intl, 'steps.label.utenlandsopphold.tidligere'),
     },
     {
         id: 'utenlandsoppholdSenere',
-        index: 7,
+        index: 8,
         label: intlUtils(intl, 'steps.label.utenlandsopphold.senere'),
     },
     {
         id: 'inntektsinformasjon',
-        index: 8,
+        index: 9,
         label: intlUtils(intl, 'steps.label.inntektsinformasjon'),
     },
     {
         id: 'oppsummering',
-        index: 9,
+        index: 10,
         label: intlUtils(intl, 'steps.label.oppsummering'),
     },
 ];
@@ -131,8 +138,11 @@ export const getPreviousStepHref = (id: StepIdWithBackHref): SøknadRoutes => {
         case 'annenForelder':
             href = SøknadRoutes.OM_BARNET;
             break;
-        case 'uttaksplanInfo':
+        case 'periodeMedForeldrepenger':
             href = SøknadRoutes.ANNEN_FORELDER;
+            break;
+        case 'uttaksplanInfo':
+            href = SøknadRoutes.PERIODE_MED_FORELDREPENGER;
             break;
         case 'uttaksplan':
             href = SøknadRoutes.UTTAKSPLAN_INFO;

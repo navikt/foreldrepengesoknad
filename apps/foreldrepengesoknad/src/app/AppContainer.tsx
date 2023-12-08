@@ -9,6 +9,7 @@ import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import { shouldChangeBrowser } from './utils/browserUtils';
 import nnMessages from './intl/nn_NO.json';
 import nbMessages from './intl/nb_NO.json';
+import { FpApiDataContext } from './api/context/FpApiDataContext';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 
@@ -24,17 +25,19 @@ const AppContainer = () => {
 
     return (
         <ErrorBoundary>
-            <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
-                <Foreldrepengesøknad
-                    locale={locale}
-                    onChangeLocale={(activeLocale: LocaleNo) => {
-                        setLocaleInSessionStorage(activeLocale);
-                        setLocale(activeLocale);
-                        document.documentElement.setAttribute('lang', activeLocale);
-                    }}
-                />
-            </IntlProvider>
+            <FpApiDataContext>
+                <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                    <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
+                    <Foreldrepengesøknad
+                        locale={locale}
+                        onChangeLocale={(activeLocale: LocaleNo) => {
+                            setLocaleInSessionStorage(activeLocale);
+                            setLocale(activeLocale);
+                            document.documentElement.setAttribute('lang', activeLocale);
+                        }}
+                    />
+                </IntlProvider>
+            </FpApiDataContext>
         </ErrorBoundary>
     );
 };

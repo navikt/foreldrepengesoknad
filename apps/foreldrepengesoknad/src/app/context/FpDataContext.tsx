@@ -6,6 +6,7 @@ import SøknadRoutes from 'app/routes/routes';
 import Søker from './types/Søker';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import UttaksplanInfo from './types/UttaksplanInfo';
+import PeriodeMedForeldrepenger from './types/PeriodeMedForeldrepenger';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
@@ -18,6 +19,7 @@ export enum ContextDataType {
     UTENLANDSOPPHOLD = 'UTENLANDSOPPHOLD',
     UTENLANDSOPPHOLD_SENERE = 'UTENLANDSOPPHOLD_SENERE',
     UTENLANDSOPPHOLD_TIDLIGERE = 'UTENLANDSOPPHOLD_TIDLIGERE',
+    PERIODE_MED_FORELDREPENGER = 'PERIODE_MED_FORELDREPENGER',
     UTTAKSPLAN_INFO = 'UTTAKSPLAN_INFO',
     UTTAKSPLAN = 'UTTAKSPLAN',
     UTTAKSPLAN_METADATA = 'UTTAKSPLAN_METADATA',
@@ -34,6 +36,7 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD]?: Opphold;
     [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: SenereOpphold;
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;
+    [ContextDataType.PERIODE_MED_FORELDREPENGER]?: PeriodeMedForeldrepenger;
     [ContextDataType.UTTAKSPLAN_INFO]?: UttaksplanInfo;
     [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;

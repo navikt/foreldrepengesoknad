@@ -120,7 +120,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
         oppdaterSøker(newSøker);
         oppdaterAnnenForeldre(mapAnnenForelderFormToState(values));
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+        oppdaterAppRoute(SøknadRoutes.PERIODE_MED_FORELDREPENGER);
 
         mellomlagreSøknadOgNaviger();
     };
