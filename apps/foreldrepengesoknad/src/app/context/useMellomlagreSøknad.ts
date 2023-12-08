@@ -89,6 +89,8 @@ const useMellomlagreSøknad = (
 
     useEffect(() => {
         if (skalMellomlagre) {
+            const currentRoute = notEmpty(getDataFromState(ContextDataType.APP_ROUTE));
+
             const lagre = async () => {
                 setSkalMellomlagre(false);
 
@@ -101,16 +103,17 @@ const useMellomlagreSøknad = (
                     søknadGjelderEtNyttBarn,
                 );
 
-                const currentRoute = notEmpty(getDataFromState(ContextDataType.APP_ROUTE));
                 navigate(currentRoute);
             };
 
             lagre().catch((error) => {
-                // TODO (TOR) Bør heller returnere error og håndtere feil frå API-kall på same måte
                 if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                     redirectToLogin();
                 } else {
+                    //Logg feil, men ikkje vis feilmelding til brukar
                     sendErrorMessageToSentry(error);
+
+                    navigate(currentRoute);
                 }
             });
         }

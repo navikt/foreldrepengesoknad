@@ -52,8 +52,12 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
         });
 
         reset();
-        await Api.deleteMellomlagretSøknad(søkerInfo.person.fnr);
-        //TODO (TOR) Slett vedlegg. Men vent til Andreas har fått inn vedleggsendringa si
+
+        try {
+            await Api.deleteMellomlagretSøknad(søkerInfo.person.fnr);
+        } catch (error) {
+            // Vi bryr oss ikke om feil her. Logges bare i backend
+        }
 
         window.location.href = 'https://nav.no';
     };
