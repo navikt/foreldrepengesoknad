@@ -3,7 +3,6 @@ import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
 import AttachmentList from 'app/components/attachment-list/AttachmentList';
 import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ScanDocumentInfo } from '@navikt/fp-ui';
 import { SkjemaFormComponents, SkjemaFormData, SkjemaFormField } from './skjemaFormTypes';
 import stepConfig, { getBackLinkForSkjemaSteg } from '../stepsConfig';
 import { AttachmentType } from 'app/types/AttachmentType';
@@ -130,9 +129,6 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                                 </div>
                             </Block>
 
-                            <Block padBottom="xxl">
-                                <ScanDocumentInfo />
-                            </Block>
                             {antallForMangeVedlegg > 0 && submitClicked && (
                                 <Block padBottom="l">
                                     <Alert variant="error">

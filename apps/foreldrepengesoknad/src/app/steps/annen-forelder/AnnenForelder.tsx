@@ -46,7 +46,6 @@ import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
 import BackButton from '../BackButton';
-import { ScanDocumentInfo } from '@navikt/fp-ui';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -256,8 +255,6 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                                             skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
                                         />{' '}
                                     </Block>
-
-                                    <ScanDocumentInfo />
                                 </Block>
                             )}
                             <Block

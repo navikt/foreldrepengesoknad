@@ -14,7 +14,7 @@ describe('<FormikFileUploader>', () => {
         );
 
         expect(screen.getByText('Opplastingsikon')).toBeInTheDocument();
-        expect(screen.getByText('Les mer om hvordan du tar et bra bilde av vedlegget')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan ta bilde av et dokument med mobilen')).toBeInTheDocument();
     });
 
     it('skal vise allerede opplastet vedlegg', () => {
