@@ -9,13 +9,12 @@ import {
     intlUtils,
     isAttachmentWithError,
     mapFilTilVedlegg,
-    PictureScanningGuide,
     Skjemanummer,
 } from '@navikt/fp-common';
 import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
 import { IntlShape, useIntl } from 'react-intl';
-import { BodyShort, ReadMore } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;
@@ -156,11 +155,6 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                         setFieldValue(name, deleteAttachment(attachments, file));
                     }}
                 />
-            </Block>
-            <Block>
-                <ReadMore header={intlUtils(intl, 'pictureScanninGuide.apneLabel')}>
-                    <PictureScanningGuide backgroundColor="blue" />
-                </ReadMore>
             </Block>
         </>
     );

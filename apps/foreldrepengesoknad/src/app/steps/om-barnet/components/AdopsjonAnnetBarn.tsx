@@ -12,7 +12,7 @@ import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUp
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
 import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import {
     validateAdopsjonsdato,
@@ -20,7 +20,8 @@ import {
     validateFødselsdatoAdopsjon,
 } from '../validation/omBarnetValidering';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { GuidePanel } from '@navikt/ds-react';
+import { ScanDocumentInfo } from '@navikt/fp-ui';
+import { BodyShort, Heading } from '@navikt/ds-react';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -137,19 +138,21 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                 />
             </Block>
             <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
-                <GuidePanel>
-                    <FormattedMessage id="omBarnet.veileder.omsorgsovertakelse" />
-                </GuidePanel>
-            </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
+                <Block padBottom="xl">
+                    <Heading level="2" size="xsmall">
+                        {intlUtils(intl, 'omBarnet.tittel.omsorgsovertakelse')}
+                    </Heading>
+                    <BodyShort> {intlUtils(intl, 'omBarnet.veileder.omsorgsovertakelse')}</BodyShort>
+                </Block>
                 <FormikFileUploader
-                    legend="Dokumentasjon om adopsjon"
+                    legend={''}
                     label={intlUtils(intl, 'omBarnet.adopsjon.vedlegg')}
                     name={OmBarnetFormField.omsorgsovertakelse}
                     attachments={formValues.omsorgsovertakelse || []}
                     attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                     skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
                 />
+                <ScanDocumentInfo />
             </Block>
         </>
     );
