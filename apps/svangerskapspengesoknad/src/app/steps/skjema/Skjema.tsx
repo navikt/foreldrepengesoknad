@@ -114,7 +114,7 @@ const Skjema: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
                                             }}
                                         />
                                     )}
-                                    <Block padBottom="xxl">
+                                    <Block padBottom="xl">
                                         <FormikFileUploader
                                             name={SkjemaFormField.vedlegg}
                                             buttonLabel={intlUtils(intl, 'skjema.vedlegg.buttonLabel')}
