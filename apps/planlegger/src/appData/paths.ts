@@ -6,7 +6,8 @@ export enum Path {
     ARBEIDSSITUASJON = '/arbeidssituasjon',
     PERIODE = '/periode',
     PLAN_INFO = '/planen-deres',
-    PLAN = '/deres-plan',
+    OVERSIKT = '/oversikt',
+    OPPSUMMERING = '/oppsummering',
 }
 
 export const PATH_ORDER = [
@@ -17,7 +18,8 @@ export const PATH_ORDER = [
     Path.ARBEIDSSITUASJON,
     Path.PERIODE,
     Path.PLAN_INFO,
-    Path.PLAN,
+    Path.OVERSIKT,
+    Path.OPPSUMMERING,
 ];
 
 export const REQUIRED_APP_STEPS = [
@@ -28,5 +30,6 @@ export const REQUIRED_APP_STEPS = [
     Path.ARBEIDSSITUASJON,
     Path.PERIODE,
     Path.PLAN_INFO,
-    Path.PLAN,
+    Path.OVERSIKT,
+    Path.OPPSUMMERING,
 ];
