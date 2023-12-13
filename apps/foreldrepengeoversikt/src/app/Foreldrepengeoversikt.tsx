@@ -42,6 +42,10 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         },
     });
 
+    if (oppdatertQuery.isError) {
+        console.log('error: ', oppdatertQuery.error, 'data:', oppdatertQuery.data);
+    }
+
     const minidialogQuery = useQuery<MinidialogInnslag[]>({
         queryKey: ['minidialog'],
         queryFn: async () =>
@@ -49,6 +53,10 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                 response.json(),
             ),
     });
+
+    if (minidialogQuery.isError) {
+        console.log('error: ', minidialogQuery.error, 'data:', minidialogQuery.data);
+    }
 
     const sakerSuspended = getSakerSuspended(oppdatertQuery);
 
