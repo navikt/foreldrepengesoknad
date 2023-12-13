@@ -5,11 +5,11 @@ import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import PlanleggerRoutes from '../../routes/routes';
 import { StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import useEsNavigator from 'appData/useEsNavigator';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 
 const PlanSteg = () => {
     const navigate = useNavigate();
-    const navigator = useEsNavigator();
+    const navigator = usePlanleggerNavigator();
 
     return (
         <ContentWrapper>

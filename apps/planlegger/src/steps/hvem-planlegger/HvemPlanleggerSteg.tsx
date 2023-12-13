@@ -5,19 +5,19 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { Block, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
-import useEsNavigator from '../../appData/useEsNavigator';
+import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
 import Info from 'components/ikoner/Info';
 import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
-import { EsDataType, useEsStateSaveFn } from 'appData/EsDataContext';
+import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { Path } from 'appData/paths';
 
 const HvemPlanleggerSteg: FunctionComponent = () => {
-    const navigator = useEsNavigator();
+    const navigator = usePlanleggerNavigator();
     const formMethods = useForm();
     const intl = useIntl();
     const hvemPlanlegger = formMethods.watch('hvemPlanlegger');
 
-    const lagreHvemPlanlegger = useEsStateSaveFn(EsDataType.HVEM_PLANLEGGER);
+    const lagreHvemPlanlegger = usePlanleggerStateSaveFn(PlanleggerDataType.HVEM_PLANLEGGER);
 
     const lagre = (formValues: any) => {
         lagreHvemPlanlegger(formValues);

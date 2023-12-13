@@ -6,12 +6,12 @@ import { FormattedMessage } from 'react-intl';
 import Penn from 'components/ikoner/Penn';
 import Check from 'components/ikoner/Check';
 import { StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import useEsNavigator from 'appData/useEsNavigator';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import PlanleggerRoutes from './../../routes/routes';
 import { useNavigate } from 'react-router-dom';
 
 const PlanInfoSteg = () => {
-    const navigator = useEsNavigator();
+    const navigator = usePlanleggerNavigator();
     const navigate = useNavigate();
 
     return (
