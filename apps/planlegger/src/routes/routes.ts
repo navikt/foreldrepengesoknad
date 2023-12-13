@@ -6,7 +6,8 @@ enum PlanleggerRoutes {
     ARBEIDSSITUASJON = '/arbeidssituasjon',
     PERIODE = '/periode',
     PLAN_INFO = '/planen-deres',
-    PLAN = '/deres-plan',
+    OVERSIKT = '/oversikt',
+    OPPSUMMERING = '/oppsummering',
 }
 
 export default PlanleggerRoutes;

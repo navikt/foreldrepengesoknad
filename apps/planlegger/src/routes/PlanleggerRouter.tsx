@@ -8,7 +8,8 @@ import BarnehageplassSteg from 'steps/barnehageplass/BarnehageplassSteg';
 import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
 import PeriodeSteg from 'steps/periode/PeriodeSteg';
 import PlanInfoSteg from 'steps/planen-deres/PlanInfoSteg';
-import PlanSteg from 'steps/deres-plan/PlanSteg';
+import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
+import OversiktSteg from 'steps/oversikt/OversiktSteg';
 
 const PlanleggerRouter: FunctionComponent = () => {
     return (
@@ -20,7 +21,8 @@ const PlanleggerRouter: FunctionComponent = () => {
             <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg />} />
             <Route path={PlanleggerRoutes.PERIODE} element={<PeriodeSteg />} />
             <Route path={PlanleggerRoutes.PLAN_INFO} element={<PlanInfoSteg />} />
-            <Route path={PlanleggerRoutes.PLAN} element={<PlanSteg />} />
+            <Route path={PlanleggerRoutes.OVERSIKT} element={<OversiktSteg />} />
+            <Route path={PlanleggerRoutes.OPPSUMMERING} element={<OppsummeringSteg />} />
             <Route path="*" element={<Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} />} />
         </Routes>
     );
