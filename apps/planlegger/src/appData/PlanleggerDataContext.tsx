@@ -95,7 +95,7 @@ export const useAllStateSaveFn = () => {
 };
 
 /** Hook returns state reset function  */
-export const useEsStateResetFn = () => {
+export const usePlanleggerStateResetFn = () => {
     const dispatch = useContext(PlanleggerDispatchContext);
     return useCallback(() => {
         if (dispatch) {
@@ -105,13 +105,13 @@ export const useEsStateResetFn = () => {
 };
 
 /** Hook returns data for one specific data type  */
-export const useEsStateData = <TYPE extends PlanleggerDataType>(key: TYPE): PlanleggerDataMap[TYPE] => {
+export const usePlanleggerStateData = <TYPE extends PlanleggerDataType>(key: TYPE): PlanleggerDataMap[TYPE] => {
     const state = useContext(PlanleggerStateContext);
     return state[key];
 };
 
 /** Hook returns function capable of getting all types of data from context state  */
-export const useEsStateAllDataFn = () => {
+export const usePlanleggerStateAllDataFn = () => {
     const state = useContext(PlanleggerStateContext);
 
     return useCallback(<TYPE extends PlanleggerDataType>(key: TYPE) => {
