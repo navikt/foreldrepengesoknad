@@ -6,7 +6,7 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Periode } from 'types/Periode';
 import { Søkersituasjon } from 'types/Søkersituasjon';
 
-export enum EsDataType {
+export enum PlanleggerDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
@@ -15,31 +15,35 @@ export enum EsDataType {
     PERIODE = 'PERIODE',
 }
 
-export type EsDataMap = {
-    [EsDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
-    [EsDataType.SØKERSITUASJON]?: Søkersituasjon;
-    [EsDataType.OM_BARNET]?: Barnet;
-    [EsDataType.BARNEHAGEPLASS]?: Barnehageplass;
-    [EsDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
-    [EsDataType.PERIODE]?: Periode;
+export type PlanleggerDataMap = {
+    [PlanleggerDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
+    [PlanleggerDataType.SØKERSITUASJON]?: Søkersituasjon;
+    [PlanleggerDataType.OM_BARNET]?: Barnet;
+    [PlanleggerDataType.BARNEHAGEPLASS]?: Barnehageplass;
+    [PlanleggerDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
+    [PlanleggerDataType.PERIODE]?: Periode;
 };
 
-const defaultInitialState = {} as EsDataMap;
+const defaultInitialState = {} as PlanleggerDataMap;
 
-export type Action = { type: 'update'; key: EsDataType; data: any } | { type: 'reset' };
+export type Action = { type: 'update'; key: PlanleggerDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
-type State = EsDataMap;
+type State = PlanleggerDataMap;
 
-const EsStateContext = createContext<State>(defaultInitialState);
-const EsDispatchContext = createContext<Dispatch | undefined>(undefined);
+const PlanleggerStateContext = createContext<State>(defaultInitialState);
+const PlanleggerDispatchContext = createContext<Dispatch | undefined>(undefined);
 
 interface OwnProps {
     children: ReactNode;
-    initialState?: EsDataMap;
+    initialState?: PlanleggerDataMap;
     testDispatcher?: (action: Action) => void;
 }
 
-export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialState, testDispatcher }): JSX.Element => {
+export const PlanleggerDataContext: FunctionComponent<OwnProps> = ({
+    children,
+    initialState,
+    testDispatcher,
+}): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: State, action: Action) => {
         switch (action.type) {
             case 'update':
@@ -62,16 +66,18 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
     }, []);
 
     return (
-        <EsStateContext.Provider value={state}>
-            <EsDispatchContext.Provider value={dispatchWrapper}>{children}</EsDispatchContext.Provider>
-        </EsStateContext.Provider>
+        <PlanleggerStateContext.Provider value={state}>
+            <PlanleggerDispatchContext.Provider value={dispatchWrapper}>{children}</PlanleggerDispatchContext.Provider>
+        </PlanleggerStateContext.Provider>
     );
 };
 
 /** Hook returns save function for one specific data type */
-export const useEsStateSaveFn = <TYPE extends EsDataType>(key: TYPE): ((data: EsDataMap[TYPE]) => void) => {
-    const dispatch = useContext(EsDispatchContext);
-    return useCallback((data: EsDataMap[TYPE]) => {
+export const usePlanleggerStateSaveFn = <TYPE extends PlanleggerDataType>(
+    key: TYPE,
+): ((data: PlanleggerDataMap[TYPE]) => void) => {
+    const dispatch = useContext(PlanleggerDispatchContext);
+    return useCallback((data: PlanleggerDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
         }
@@ -80,8 +86,8 @@ export const useEsStateSaveFn = <TYPE extends EsDataType>(key: TYPE): ((data: Es
 
 /** Hook returns save function usable with all data types  */
 export const useAllStateSaveFn = () => {
-    const dispatch = useContext(EsDispatchContext);
-    return useCallback(<TYPE extends EsDataType>(key: TYPE, data: EsDataMap[TYPE]) => {
+    const dispatch = useContext(PlanleggerDispatchContext);
+    return useCallback(<TYPE extends PlanleggerDataType>(key: TYPE, data: PlanleggerDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
         }
@@ -90,7 +96,7 @@ export const useAllStateSaveFn = () => {
 
 /** Hook returns state reset function  */
 export const useEsStateResetFn = () => {
-    const dispatch = useContext(EsDispatchContext);
+    const dispatch = useContext(PlanleggerDispatchContext);
     return useCallback(() => {
         if (dispatch) {
             dispatch({ type: 'reset' });
@@ -99,16 +105,16 @@ export const useEsStateResetFn = () => {
 };
 
 /** Hook returns data for one specific data type  */
-export const useEsStateData = <TYPE extends EsDataType>(key: TYPE): EsDataMap[TYPE] => {
-    const state = useContext(EsStateContext);
+export const useEsStateData = <TYPE extends PlanleggerDataType>(key: TYPE): PlanleggerDataMap[TYPE] => {
+    const state = useContext(PlanleggerStateContext);
     return state[key];
 };
 
 /** Hook returns function capable of getting all types of data from context state  */
 export const useEsStateAllDataFn = () => {
-    const state = useContext(EsStateContext);
+    const state = useContext(PlanleggerStateContext);
 
-    return useCallback(<TYPE extends EsDataType>(key: TYPE) => {
+    return useCallback(<TYPE extends PlanleggerDataType>(key: TYPE) => {
         return state[key];
     }, []);
 };

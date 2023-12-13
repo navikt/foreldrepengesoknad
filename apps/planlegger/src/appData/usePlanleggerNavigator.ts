@@ -4,7 +4,7 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Path } from './paths';
 import useStepData from './useStepData';
 
-const useEsNavigator = () => {
+const usePlanleggerNavigator = () => {
     const navigate = useNavigate();
     const { activeStepId, stepConfig } = useStepData();
 
@@ -50,4 +50,4 @@ const useEsNavigator = () => {
     );
 };
 
-export default useEsNavigator;
+export default usePlanleggerNavigator;

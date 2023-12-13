@@ -5,17 +5,17 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { Block, StepButtonWrapper } from '@navikt/fp-common';
-import useEsNavigator from '../../appData/useEsNavigator';
+import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
 import Info from 'components/ikoner/Info';
-import { EsDataType, useEsStateSaveFn } from 'appData/EsDataContext';
+import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { Path } from 'appData/paths';
 import { ArbeidssituasjonEnum } from './../../types/Arbeidssituasjon';
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
-    const navigator = useEsNavigator();
+    const navigator = usePlanleggerNavigator();
     const formMethods = useForm();
 
-    const lagreArbeidssituasjon = useEsStateSaveFn(EsDataType.ARBEIDSSITUASJON);
+    const lagreArbeidssituasjon = usePlanleggerStateSaveFn(PlanleggerDataType.ARBEIDSSITUASJON);
 
     const lagre = (formValues: any) => {
         lagreArbeidssituasjon(formValues);

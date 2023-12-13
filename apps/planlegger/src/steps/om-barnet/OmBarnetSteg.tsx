@@ -2,9 +2,9 @@ import { FormattedMessage } from 'react-intl';
 import { Block, StepButtonWrapper } from '@navikt/fp-common';
 import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
 import { Heading, Radio } from '@navikt/ds-react';
-import useEsNavigator from 'appData/useEsNavigator';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { useForm } from 'react-hook-form';
-import { EsDataType, useEsStateSaveFn } from 'appData/EsDataContext';
+import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { BarnetEnum } from '../../types/Barnet';
 import { Datepicker, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import dayjs from 'dayjs';
@@ -19,14 +19,14 @@ import {
 import { Path } from 'appData/paths';
 
 const OmBarnetSteg: React.FunctionComponent = () => {
-    const navigator = useEsNavigator();
+    const navigator = usePlanleggerNavigator();
     const formMethods = useForm();
     const { i18n } = useCustomIntl();
 
     const barnet = formMethods.watch('barnet');
     const erFødt = formMethods.watch('erFødt');
 
-    const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);
+    const lagreOmBarnet = usePlanleggerStateSaveFn(PlanleggerDataType.OM_BARNET);
     const lagre = (formValues: any) => {
         lagreOmBarnet(formValues);
         navigator.goToNextStep(Path.BARNEHAGEPLASS);

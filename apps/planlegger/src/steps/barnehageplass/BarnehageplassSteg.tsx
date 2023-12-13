@@ -2,9 +2,9 @@ import { FormattedMessage } from 'react-intl';
 import { Block, StepButtonWrapper } from '@navikt/fp-common';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { BodyLong, Button, ExpansionCard, Heading } from '@navikt/ds-react';
-import useEsNavigator from 'appData/useEsNavigator';
+import useEsNavigator from 'appData/usePlanleggerNavigator';
 import { useForm } from 'react-hook-form';
-import { EsDataType, useEsStateSaveFn } from 'appData/EsDataContext';
+import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import Info from 'components/ikoner/Info';
 import { Path } from 'appData/paths';
@@ -14,7 +14,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const navigator = useEsNavigator();
     const formMethods = useForm();
 
-    const lagreBarnehageplass = useEsStateSaveFn(EsDataType.BARNEHAGEPLASS);
+    const lagreBarnehageplass = usePlanleggerStateSaveFn(PlanleggerDataType.BARNEHAGEPLASS);
     const lagre = (formValues: any) => {
         lagreBarnehageplass(formValues);
         navigator.goToNextStep(Path.ARBEIDSSITUASJON);

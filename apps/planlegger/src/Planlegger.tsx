@@ -1,12 +1,12 @@
 import { FunctionComponent } from 'react';
 import PlanleggerRouter from './routes/PlanleggerRouter';
-import { EsDataContext } from 'appData/EsDataContext';
+import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 
 const Planlegger: FunctionComponent = () => {
     return (
-        <EsDataContext>
+        <PlanleggerDataContext>
             <PlanleggerRouter />
-        </EsDataContext>
+        </PlanleggerDataContext>
     );
 };
 
