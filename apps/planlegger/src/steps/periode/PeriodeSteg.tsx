@@ -4,7 +4,7 @@ import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useForm } from 'react-hook-form';
-import { Block, StepButtonWrapper } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
 import Info from 'components/ikoner/Info';
 import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
@@ -78,7 +78,7 @@ const PeriodeSteg: FunctionComponent = () => {
                     <ExpansionCard aria-label="">
                         <ExpansionCard.Header>
                             <div className="with-icon">
-                                <div className="icon">
+                                <div>
                                     <Info />
                                 </div>
                                 <div>
@@ -95,12 +95,12 @@ const PeriodeSteg: FunctionComponent = () => {
                 </Block>
 
                 <Block margin="xxl" className="button-wrapper content-wrapper">
-                    <StepButtonWrapper>
-                        <StepButtonsHookForm
-                            saveDataOnPreviousClick={lagrePeriode}
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        />
-                    </StepButtonWrapper>
+                    <StepButtonsHookForm
+                        saveDataOnPreviousClick={lagrePeriode}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        nextButtonText="Neste"
+                        previousButtonText="Tilbake"
+                    />
                 </Block>
             </Form>
         </ContentWrapper>

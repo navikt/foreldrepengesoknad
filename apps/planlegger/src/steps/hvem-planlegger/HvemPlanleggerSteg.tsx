@@ -4,7 +4,7 @@ import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
-import { Block, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
 import Info from 'components/ikoner/Info';
 import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
@@ -97,7 +97,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                     <ExpansionCard aria-label="">
                         <ExpansionCard.Header>
                             <div className="with-icon">
-                                <div className="icon">
+                                <div>
                                     <Info />
                                 </div>
                                 <div>
@@ -114,9 +114,11 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                 </Block>
 
                 <Block margin="xxl" className="button-wrapper content-wrapper">
-                    <StepButtonWrapper>
-                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                    </StepButtonWrapper>
+                    <StepButtonsHookForm
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        nextButtonText="Neste"
+                        previousButtonText="Tilbake"
+                    />
                 </Block>
             </Form>
         </ContentWrapper>
