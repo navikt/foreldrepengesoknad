@@ -1,14 +1,13 @@
 import { BodyShort, ExpansionCard, Heading, Ingress } from '@navikt/ds-react';
-import { Block, StepButtonWrapper } from '@navikt/fp-common';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { Block } from '@navikt/fp-common';
+import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import Kalender from 'components/ikoner/Kalender';
 import { FormattedMessage } from 'react-intl';
 import Penn from 'components/ikoner/Penn';
 import Check from 'components/ikoner/Check';
-import { StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import PlanleggerRoutes from './../../routes/routes';
 import { useNavigate } from 'react-router-dom';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 
 const PlanInfoSteg = () => {
     const navigator = usePlanleggerNavigator();
@@ -23,7 +22,7 @@ const PlanInfoSteg = () => {
 
                 <Block margin="xxl">
                     <Ingress>
-                        <FormattedMessage id="om.ingress" />
+                        <FormattedMessage id="planInfo.ingress.del1" />
                     </Ingress>
                 </Block>
                 <Block margin="xxl">
@@ -93,12 +92,12 @@ const PlanInfoSteg = () => {
                 </Block>
 
                 <Block margin="xxl" className="button-wrapper content-wrapper">
-                    <StepButtonWrapper>
-                        <StepButtonsHookForm
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            nextButtonOnClick={() => navigate(PlanleggerRoutes.PLAN)}
-                        />
-                    </StepButtonWrapper>
+                    <StepButtons
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        nextButtonOnClick={() => navigate(PlanleggerRoutes.OVERSIKT)}
+                        nextButtonText="Se oversikt"
+                        previousButtonText="Tilbake"
+                    />
                 </Block>
             </Heading>
         </ContentWrapper>
