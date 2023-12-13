@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { Block, StepButtonWrapper } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { BodyLong, Button, ExpansionCard, Heading } from '@navikt/ds-react';
 import useEsNavigator from 'appData/usePlanleggerNavigator';
@@ -79,7 +79,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     <ExpansionCard aria-label="">
                         <ExpansionCard.Header>
                             <div className="with-icon">
-                                <div className="icon">
+                                <div>
                                     <Info />
                                 </div>
                                 <div>
@@ -96,9 +96,11 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                 </Block>
 
                 <Block margin="xxl" className="button-wrapper content-wrapper">
-                    <StepButtonWrapper>
-                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                    </StepButtonWrapper>
+                    <StepButtonsHookForm
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        nextButtonText="Neste"
+                        previousButtonText="Tilbake"
+                    />
                 </Block>
             </Form>
         </ContentWrapper>

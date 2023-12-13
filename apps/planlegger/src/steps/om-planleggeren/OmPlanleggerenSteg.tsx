@@ -66,7 +66,7 @@ const OmPlanleggerenSteg = () => {
                     </div>
                 </Block>
 
-                <Block margin="xxl" className="center">
+                <Block margin="xxl" className="center-media">
                     <PlanleggerKnapp onClick={() => navigate(PlanleggerRoutes.HVEM_PLANLEGGER)}>
                         <FormattedMessage id="om.start.planlegger" />
                     </PlanleggerKnapp>

@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { Block, StepButtonWrapper } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
 import { Heading, Radio } from '@navikt/ds-react';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
@@ -107,12 +107,12 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     </Block>
                 )}
                 <Block margin="xxl" className="button-wrapper content-wrapper">
-                    <StepButtonWrapper>
-                        <StepButtonsHookForm
-                            saveDataOnPreviousClick={lagreOmBarnet}
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        />
-                    </StepButtonWrapper>
+                    <StepButtonsHookForm
+                        saveDataOnPreviousClick={lagreOmBarnet}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        nextButtonText="Neste"
+                        previousButtonText="Tilbake"
+                    />
                 </Block>
             </Form>
         </ContentWrapper>
