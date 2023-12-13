@@ -17,7 +17,6 @@ import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../
 import { validateAdopsjonsdato, validateFødselsdatoAdopsjon } from '../validation/omBarnetValidering';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { BodyShort, Heading } from '@navikt/ds-react';
-import { ScanDocumentInfo } from '@navikt/fp-ui';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -131,7 +130,6 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({
                     attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                     skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
                 />
-                <ScanDocumentInfo />
             </Block>
         </>
     );

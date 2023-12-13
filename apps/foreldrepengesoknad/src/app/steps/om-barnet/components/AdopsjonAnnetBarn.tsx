@@ -20,7 +20,6 @@ import {
     validateFødselsdatoAdopsjon,
 } from '../validation/omBarnetValidering';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { ScanDocumentInfo } from '@navikt/fp-ui';
 import { BodyShort, Heading } from '@navikt/ds-react';
 
 interface Props {
@@ -152,7 +151,6 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                     attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                     skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
                 />
-                <ScanDocumentInfo />
             </Block>
         </>
     );

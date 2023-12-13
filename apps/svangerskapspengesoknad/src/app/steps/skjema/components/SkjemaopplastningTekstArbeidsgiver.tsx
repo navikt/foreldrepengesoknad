@@ -1,5 +1,5 @@
 import { Label } from '@navikt/ds-react';
-import { intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import links from 'app/links/links';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -7,7 +7,7 @@ const SkjemaopplastningTekstArbeidsgiver: React.FunctionComponent = () => {
     const intl = useIntl();
 
     return (
-        <div style={{ marginBottom: '1rem' }}>
+        <Block padBottom="xl">
             <div>
                 <Label>{intlUtils(intl, 'skjema.vedlegg.label.arbeidsgiver')}</Label>
             </div>
@@ -26,7 +26,7 @@ const SkjemaopplastningTekstArbeidsgiver: React.FunctionComponent = () => {
                     ),
                 }}
             />
-        </div>
+        </Block>
     );
 };
 
