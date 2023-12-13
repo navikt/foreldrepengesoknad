@@ -22,21 +22,36 @@
     display: flex;
 }
 
+.list-item-oversikt {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0rem 4rem 0rem 0rem;
+    @media (max-width: @tablet-breakpoint) {
+        padding: 0rem 2rem 0rem 0rem;
+    }
+}
+
 .list-item {
     display: inline-block;
     vertical-align: middle;
     padding: 0rem 1rem 0rem 0rem;
+    @media (max-width: @tablet-breakpoint) {
+        padding: 0rem 2rem 0rem 0rem;
+    }
 }
 
 .center {
-    text-align: left;
+    text-align: center;
 }
 
-@media (max-width: @tablet-breakpoint) {
-    .center {
+.center-media {
+    text-align: left;
+    @media (max-width: @tablet-breakpoint) {
         text-align: center;
     }
 }
+
+
 .planleggerKnapp {
     --ac-button-secondary-bg: #007C2E;
     --ac-button-secondary-text: white;
@@ -47,35 +62,47 @@
 }
 
 .button-wrapper {
- align-items: center;
+    align-items: center;
 }
 
 .with-icon {
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
+}
   
-  .icon {
+.icon {
     font-size: 3rem;
     flex-shrink: 0;
     display: grid;
     place-content: center;
     border-radius: 1.25rem;
     background: var(--global-limegreen-300, #D9E366);
-  }
+}
 
-  .mt-10 {
+.icon-right {
+    place-content: flex-end;
+}
+
+.mt-10 {
     margin-top: 10px;
-  }
+}  
+  
+.mr-10 {
+    margin-right: 10px;
+} 
 
-  .border {
+.mr-30 {
+    margin-right: 30px;
+} 
+
+.border {
     padding: 1rem;
     border: solid thin;
     border-radius: 0.5rem !important;
-  }
+}
 
-  .beskrivelse {
+.beskrivelse {
     padding-left: 30px;
     color: grey;
-  }
+}
