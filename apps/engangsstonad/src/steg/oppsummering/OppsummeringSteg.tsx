@@ -50,7 +50,12 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad,
     };
 
     return (
-        <Step bannerTitle={i18n('Søknad.Pageheading')} onCancel={navigator.avbrytSøknad} steps={stepConfig}>
+        <Step
+            bannerTitle={i18n('Søknad.Pageheading')}
+            onCancel={navigator.avbrytSøknad}
+            onContinueLater={navigator.fortsettSøknadSenere}
+            steps={stepConfig}
+        >
             <VStack gap="10">
                 <Accordion indent={false}>
                     <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.OmDeg')}>

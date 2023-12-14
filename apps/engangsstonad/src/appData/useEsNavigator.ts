@@ -43,11 +43,21 @@ const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
         return mellomlagreOgNaviger();
     };
 
+    const fortsettSøknadSenere = () => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'engangsstonadny',
+            team: 'foreldrepenger',
+            hendelse: 'fortsettSenere',
+        });
+        (window as any).location = 'https://nav.no';
+    };
+
     return {
         goToPreviousDefaultStep,
         goToNextStep,
         goToNextDefaultStep,
         avbrytSøknad,
+        fortsettSøknadSenere,
     };
 };
 

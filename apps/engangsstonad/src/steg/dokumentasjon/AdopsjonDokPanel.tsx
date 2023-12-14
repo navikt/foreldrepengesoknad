@@ -31,7 +31,7 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
                 skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
+                saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'engangsstonad')}
             />
         </VStack>
     );

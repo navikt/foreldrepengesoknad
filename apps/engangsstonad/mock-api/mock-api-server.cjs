@@ -64,12 +64,12 @@ router.delete('/rest/storage/engangsstonad', (_req, res) => {
     return res.sendStatus(200);
 });
 
-router.post('/rest/storage/vedlegg', (req, res) => {
+router.post('/rest/storage/engangsstonad/vedlegg', (req, res) => {
     res.setHeader('Location', `http://localhost:8080/engangsstonad/dist/vedlegg/${req.body.id}`);
     res.sendStatus(201);
 });
 
-router.delete('/rest/storage/vedlegg', (_req, res) => {
+router.delete('/rest/storage/engangsstonad/vedlegg', (_req, res) => {
     res.sendStatus(204);
 });
 

@@ -33,6 +33,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
                 senereUtenlandsopphold={senereUtenlandsopphold}
                 saveOnNext={lagre}
                 saveOnPrevious={oppdaterSenereUtenlandsopphold}
+                onContinueLater={navigator.fortsettSøknadSenere}
                 cancelApplication={navigator.avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}

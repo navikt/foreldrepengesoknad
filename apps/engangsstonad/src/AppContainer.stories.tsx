@@ -62,8 +62,8 @@ const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndVersion
     });
 
     const attachmentApiMock = new MockAdapter(attachmentApi);
-    attachmentApiMock.onPost('/storage/vedlegg').reply(200); //story
-    attachmentApiMock.onPost('http://localhost:8888/rest/storage/vedlegg').reply(200); //test
+    attachmentApiMock.onPost('/storage/engangssoknad/vedlegg').reply(200); //story
+    attachmentApiMock.onPost('http://localhost:8888/rest/storage/engangssoknad/vedlegg').reply(200); //test
 
     return <AppContainer />;
 };
