@@ -17,6 +17,7 @@ import {
     isFarEllerMedmor,
     ISOStringToDate,
     isUfødtBarn,
+    lagSendSenereDokumentNårIngenAndreFinnes,
     links,
     SivilstandType,
     Step,
@@ -28,7 +29,7 @@ import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { ContextDataType, VedleggDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import {
@@ -63,11 +64,13 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
         kanIkkeOppgis: false,
     };
     const søker = useContextGetData(ContextDataType.SØKER);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søkerInfo.registrerteBarn);
@@ -109,15 +112,25 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
             datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
                 ? ISOStringToDate(values.datoForAleneomsorg)
                 : undefined,
-            dokumentasjonAvAleneomsorg:
-                values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
-                    ? values.dokumentasjonAvAleneomsorg
-                    : undefined,
+        };
+        const dokumentasjonAvAleneomsorg =
+            values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
+                ? lagSendSenereDokumentNårIngenAndreFinnes(
+                      values.dokumentasjonAvAleneomsorg,
+                      AttachmentType.ALENEOMSORG,
+                      Skjemanummer.DOK_AV_ALENEOMSORG,
+                  )
+                : [];
+
+        const nyeVedlegg = {
+            ...vedlegg,
+            [Skjemanummer.DOK_AV_ALENEOMSORG]: dokumentasjonAvAleneomsorg,
         };
 
         oppdaterOmBarnet(newBarn);
         oppdaterSøker(newSøker);
         oppdaterAnnenForeldre(mapAnnenForelderFormToState(values));
+        oppdaterVedlegg(nyeVedlegg);
 
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 

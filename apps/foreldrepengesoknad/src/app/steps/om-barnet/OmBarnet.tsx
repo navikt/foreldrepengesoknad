@@ -1,5 +1,6 @@
 import {
     andreAugust2022ReglerGjelder,
+    BarnType,
     Block,
     convertYesOrNoOrUndefinedToBoolean,
     hasValue,
@@ -8,6 +9,7 @@ import {
     isFødtBarn,
     ISOStringToDate,
     isUfødtBarn,
+    lagSendSenereDokumentNårIngenAndreFinnes,
     RegistrertBarn,
     Step,
     StepButtonWrapper,
@@ -31,9 +33,11 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { Button } from '@navikt/ds-react';
 import { useState } from 'react';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData, VedleggDataType } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import BackButton from '../BackButton';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -54,9 +58,11 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const { arbeidsforhold, registrerteBarn } = søkerInfo;
 
@@ -90,6 +96,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         setIsSubmitting(true);
 
         const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
+
         const oppdatertBarn = mapOmBarnetFormDataToState(
             values,
             arbeidsforhold,
@@ -97,6 +104,39 @@ const OmBarnet: React.FunctionComponent<Props> = ({
             søkersituasjon.situasjon,
             barnSøktOmFørMenIkkeRegistrert,
         );
+
+        if (
+            (values.adopsjonAvEktefellesBarn === YesOrNo.YES && oppdatertBarn.type === BarnType.ADOPTERT_STEBARN) ||
+            oppdatertBarn.type === BarnType.ADOPTERT_ANNET_BARN
+        ) {
+            const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
+                values.omsorgsovertakelse!,
+                AttachmentType.OMSORGSOVERTAKELSE,
+                Skjemanummer.OMSORGSOVERTAKELSE,
+            );
+
+            const nyeVedlegg = {
+                ...vedlegg,
+                [Skjemanummer.OMSORGSOVERTAKELSE]: omsorgsovertakelse,
+            };
+
+            oppdaterVedlegg(nyeVedlegg);
+        }
+
+        if (values.erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0) {
+            const terminbekreftelse = lagSendSenereDokumentNårIngenAndreFinnes(
+                values.terminbekreftelse!,
+                AttachmentType.TERMINBEKREFTELSE,
+                Skjemanummer.TERMINBEKREFTELSE,
+            );
+
+            const nyeVedlegg = {
+                ...vedlegg,
+                [Skjemanummer.TERMINBEKREFTELSE]: terminbekreftelse,
+            };
+
+            oppdaterVedlegg(nyeVedlegg);
+        }
 
         oppdaterOmBarnet(oppdatertBarn);
         oppdaterAppRoute(SøknadRoutes.ANNEN_FORELDER);
@@ -106,7 +146,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(arbeidsforhold, omBarnet)}
+            initialValues={getOmBarnetInitialValues(arbeidsforhold, vedlegg, omBarnet)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({

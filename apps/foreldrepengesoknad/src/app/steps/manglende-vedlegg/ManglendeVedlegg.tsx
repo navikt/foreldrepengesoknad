@@ -13,16 +13,13 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import FellesperiodeDok from './dokumentasjon/FellesperiodeDok';
 import {
     GyldigeSkjemanummer,
-    isArbeidUtdanningEllerSykdomVedlegg,
-    isFedrekvoteMorForSykVedlegg,
-    isFellesperiodeAttachment,
-    isIntroduksjonsprogramVedlegg,
-    isKvalifiseringsprogramVedlegg,
-    isOverføringsVedlegg,
+    getFedrekvoteMorForSykVedlegg,
+    getFellesperiodeVedlegg,
+    getOverføringsVedlegg,
 } from './util';
 import { Skjemanummer } from '@navikt/fp-constants';
 import OverføringsDok from './dokumentasjon/OverføringDok';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { ContextDataType, VedleggDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import FedrekvoteMorForSykDok from './dokumentasjon/FedrekvoteMorForSykDok';
@@ -46,7 +43,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || [];
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
     const manglerDokumentasjon = useContextGetData(ContextDataType.MANGLER_DOKUMENTASJON);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const saveNextRoute = useContextSaveData(ContextDataType.APP_ROUTE);
@@ -54,22 +51,25 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
-    const fellesperiodeVedlegg = vedlegg.filter(isFellesperiodeAttachment);
-    const overføringsVedlegg = vedlegg.filter(isOverføringsVedlegg);
-    const fedrekvoteMorForSykVedlegg = vedlegg.filter(isFedrekvoteMorForSykVedlegg);
+    const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
+    const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
+    const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
 
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
 
     const lagre = (formValues: ManglendeVedleggFormData) => {
-        const alleVedlegg = [
-            ...formValues[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM],
-            ...formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM],
-            ...formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET],
-            ...formValues[Skjemanummer.DOK_OVERFØRING_FOR_SYK],
-            ...formValues[Skjemanummer.DOK_INNLEGGELSE],
-        ];
+        const alleVedlegg = {
+            ...vedlegg,
+            [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]: formValues[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM],
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:
+                formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM],
+            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
+                formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET],
+            [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: formValues[Skjemanummer.DOK_OVERFØRING_FOR_SYK],
+            [Skjemanummer.DOK_INNLEGGELSE]: formValues[Skjemanummer.DOK_INNLEGGELSE],
+        };
 
         saveVedlegg(alleVedlegg);
         saveNextRoute(SøknadRoutes.UTENLANDSOPPHOLD);
@@ -79,11 +79,14 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
 
     const formMethods = useForm<ManglendeVedleggFormData>({
         defaultValues: {
-            [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]: vedlegg.filter(isArbeidUtdanningEllerSykdomVedlegg),
-            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: vedlegg.filter(isKvalifiseringsprogramVedlegg),
-            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: vedlegg.filter(isIntroduksjonsprogramVedlegg),
-            [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: vedlegg.filter(isOverføringsVedlegg),
-            [Skjemanummer.DOK_INNLEGGELSE]: vedlegg.filter(isFedrekvoteMorForSykVedlegg),
+            [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]:
+                vedlegg[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM] || [],
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:
+                vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM] || [],
+            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
+                vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET] || [],
+            [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: vedlegg[Skjemanummer.DOK_OVERFØRING_FOR_SYK] || [],
+            [Skjemanummer.DOK_INNLEGGELSE]: vedlegg[Skjemanummer.DOK_INNLEGGELSE] || [],
         },
     });
 

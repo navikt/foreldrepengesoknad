@@ -1,6 +1,8 @@
 export enum AttachmentMetadataType {
-    UTTAK = 'UTTAK',
+    BARN = 'BARN',
+    OPPTJENING = 'OPPTJENING',
     TILRETTELEGGING = 'TILRETTELEGGING',
+    UTTAK = 'UTTAK',
 }
 
 export type AttachmentMetadata = {

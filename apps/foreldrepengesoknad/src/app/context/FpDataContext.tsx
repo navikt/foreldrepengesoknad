@@ -6,6 +6,7 @@ import SøknadRoutes from 'app/routes/routes';
 import Søker from './types/Søker';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import UttaksplanInfo from './types/UttaksplanInfo';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
@@ -25,6 +26,17 @@ export enum ContextDataType {
     MANGLER_DOKUMENTASJON = 'MANGLER_DOKUMENTASJON',
 }
 
+export type VedleggDataType = {
+    [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]: Attachment[];
+    [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: Attachment[];
+    [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: Attachment[];
+    [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: Attachment[];
+    [Skjemanummer.DOK_INNLEGGELSE]: Attachment[];
+    [Skjemanummer.OMSORGSOVERTAKELSE]: Attachment[];
+    [Skjemanummer.DOK_AV_ALENEOMSORG]: Attachment[];
+    [Skjemanummer.TERMINBEKREFTELSE]: Attachment[];
+};
+
 export type ContextDataMap = {
     [ContextDataType.APP_ROUTE]?: SøknadRoutes;
     [ContextDataType.EKSISTERENDE_SAK]?: EksisterendeSak;
@@ -39,7 +51,7 @@ export type ContextDataMap = {
     [ContextDataType.UTTAKSPLAN_INFO]?: UttaksplanInfo;
     [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
-    [ContextDataType.VEDLEGG]?: Attachment[];
+    [ContextDataType.VEDLEGG]?: VedleggDataType;
     [ContextDataType.MANGLER_DOKUMENTASJON]?: boolean;
 };
 

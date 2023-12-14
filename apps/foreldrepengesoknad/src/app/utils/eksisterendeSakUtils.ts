@@ -346,7 +346,6 @@ const getBarnFromSaksgrunnlag = (
                 type: BarnType.UFØDT,
                 antallBarn: sak.antallBarn,
                 termindato: ISOStringToDate(sak.termindato)!,
-                terminbekreftelse: [],
             };
         case 'adopsjon':
             return {
@@ -354,7 +353,6 @@ const getBarnFromSaksgrunnlag = (
                 adopsjonsdato: ISOStringToDate(sak.omsorgsovertakelsesdato)!,
                 antallBarn: sak.antallBarn,
                 fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
-                omsorgsovertakelse: [],
                 fnr: valgteBarn?.fnr,
             };
         default:

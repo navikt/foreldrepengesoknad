@@ -89,6 +89,7 @@ export interface SøknadForInnsending
         | 'søkersituasjon'
         | 'tilleggsopplysninger'
         | 'manglerDokumentasjon'
+        | 'vedlegg'
     > {
     barn: BarnForInnsending;
     annenForelder: AnnenForelderForInnsending;

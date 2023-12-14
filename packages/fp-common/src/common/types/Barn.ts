@@ -1,4 +1,4 @@
-import { Attachment } from '@navikt/fp-types';
+// import { Attachment } from '@navikt/fp-types';
 
 export enum BarnType {
     FØDT = 'født',
@@ -11,7 +11,7 @@ export enum BarnType {
 interface Common {
     type: BarnType;
     antallBarn: number;
-    dokumentasjonAvAleneomsorg?: Attachment[];
+    // dokumentasjonAvAleneomsorg?: Attachment[];
     datoForAleneomsorg?: Date;
 }
 
@@ -31,7 +31,7 @@ export interface FødtBarn extends Common {
 export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
     termindato: Date;
-    terminbekreftelse?: Attachment[];
+    // terminbekreftelse?: Attachment[];
     terminbekreftelsedato?: Date;
 }
 
@@ -39,7 +39,7 @@ export interface AdoptertBarn extends Common {
     type: BarnType.ADOPTERT_STEBARN | BarnType.ADOPTERT_ANNET_BARN;
     adopsjonsdato: Date;
     fødselsdatoer: Date[];
-    omsorgsovertakelse: Attachment[];
+    // omsorgsovertakelse: Attachment[];
     fnr?: string[];
 }
 

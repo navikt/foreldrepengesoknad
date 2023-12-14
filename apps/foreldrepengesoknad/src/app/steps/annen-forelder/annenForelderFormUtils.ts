@@ -134,7 +134,6 @@ export const getAnnenForelderFormInitialValues = (
             bostedsland: annenForelder.bostedsland || '',
             erInformertOmSøknaden: convertBooleanOrUndefinedToYesOrNo(annenForelder.erInformertOmSøknaden),
             erMorUfør: convertBooleanOrUndefinedToYesOrNo(annenForelder.erUfør),
-            dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg || [],
             etternavn: annenForelder.etternavn,
             fornavn: annenForelder.fornavn === intlUtils(intl, 'annen.forelder') ? '' : annenForelder.fornavn,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,

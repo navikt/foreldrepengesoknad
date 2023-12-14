@@ -76,7 +76,6 @@ UttaksplanInfoFarMedmorFødselBeggeHarRett.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-06-14').toDate()],
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
 };
@@ -89,7 +88,6 @@ UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-08-02').toDate()],
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
 };

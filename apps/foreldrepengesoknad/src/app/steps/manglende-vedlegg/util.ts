@@ -1,6 +1,7 @@
 import { MorsAktivitet, Periode, isUttaksperiode } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, AttachmentMetadata, InnsendingsType } from '@navikt/fp-types';
+import { VedleggDataType } from 'app/context/FpDataContext';
 
 export type GyldigeSkjemanummer =
     | Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM
@@ -41,8 +42,24 @@ export const isOverføringsVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_OVERFØRING_FOR_SYK;
 };
 
+export const getOverføringsVedlegg = (vedlegg: VedleggDataType) => {
+    const overføringsVedlegg = vedlegg[Skjemanummer.DOK_OVERFØRING_FOR_SYK]
+        ? vedlegg[Skjemanummer.DOK_OVERFØRING_FOR_SYK]
+        : [];
+
+    return overføringsVedlegg;
+};
+
 export const isFedrekvoteMorForSykVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE;
+};
+
+export const getFedrekvoteMorForSykVedlegg = (vedlegg: VedleggDataType) => {
+    const fedrekvoteMorForSykVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE]
+        ? vedlegg[Skjemanummer.DOK_INNLEGGELSE]
+        : [];
+
+    return fedrekvoteMorForSykVedlegg;
 };
 
 export const isUtsettelseVedlegg = (attachment: Attachment) => {
@@ -69,6 +86,28 @@ export const isFellesperiodeAttachment = (attachment: Attachment) => {
         attachment.skjemanummer === Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET ||
         attachment.skjemanummer === Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
     );
+};
+
+export const getFellesperiodeVedlegg = (vedlegg: VedleggDataType) => {
+    const fellesperiodeVedlegg = [];
+
+    const aktivitetskravArbUtdSyk = vedlegg[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM];
+    const aktivitetskravIntro = vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET];
+    const aktivitetskravKval = vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM];
+
+    if (aktivitetskravArbUtdSyk) {
+        fellesperiodeVedlegg.push(...vedlegg[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]);
+    }
+
+    if (aktivitetskravIntro) {
+        fellesperiodeVedlegg.push(...vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]);
+    }
+
+    if (aktivitetskravKval) {
+        fellesperiodeVedlegg.push(...vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]);
+    }
+
+    return fellesperiodeVedlegg;
 };
 
 export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {

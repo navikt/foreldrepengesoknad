@@ -9,7 +9,6 @@ import {
     bemUtils,
     Block,
     getErSøkerFarEllerMedmor,
-    getFarMedmorErAleneOmOmsorg,
     getNavnPåForeldre,
     intlUtils,
     isAnnenForelderOppgitt,
@@ -82,11 +81,6 @@ const Oppsummering: FunctionComponent<Props> = ({
     const begrunnelseForSenEndring = tilleggsopplysninger?.begrunnelseForSenEndring
         ? beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring)
         : undefined;
-    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
-        søkerErFarEllerMedmor,
-        søker.erAleneOmOmsorg,
-        annenForelder,
-    );
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -142,8 +136,6 @@ const Oppsummering: FunctionComponent<Props> = ({
                                                 annenForelder={annenForelder}
                                                 søker={søker}
                                                 søkerrolle={søkersituasjon.rolle}
-                                                barn={barn}
-                                                farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
                                             />
                                         </OppsummeringsPanel>
                                     )}

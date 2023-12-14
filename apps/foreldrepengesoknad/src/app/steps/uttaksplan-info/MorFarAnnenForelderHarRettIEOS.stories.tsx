@@ -78,9 +78,7 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
         type: BarnType.ADOPTERT_ANNET_BARN,
         adopsjonsdato: dayjs('2021-03-15').toDate(),
         adoptertIUtlandet: false,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [],
-        omsorgsovertakelse: [],
     },
     annenForelder: {
         fornavn: 'Far',
@@ -112,9 +110,7 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
         type: BarnType.ADOPTERT_ANNET_BARN,
         adopsjonsdato: dayjs('2021-03-15').toDate(),
         adoptertIUtlandet: false,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [],
-        omsorgsovertakelse: [],
     },
     annenForelder: {
         fornavn: 'Mor',
@@ -176,7 +172,6 @@ UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
         rolle: 'mor',
     },
     barn: {
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2022-06-14').toDate()],
         termindato: dayjs('2022-08-14').toDate(),
         antallBarn: 1,

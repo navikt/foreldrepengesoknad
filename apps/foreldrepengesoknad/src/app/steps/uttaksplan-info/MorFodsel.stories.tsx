@@ -77,7 +77,6 @@ UttaksplanMedAleneomsorg.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -98,7 +97,6 @@ UttaksplanMedPrematurFødsel.args = {
         type: BarnType.FØDT,
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2021-01-11').toDate()],
         termindato: dayjs('2021-03-11').toDate(),
     },
@@ -123,7 +121,6 @@ UttaksplanMedDeltUttak.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -150,7 +147,6 @@ UttaksplanMedFlerbarnsukerTvillinger.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 2,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         fornavn: 'Espen',

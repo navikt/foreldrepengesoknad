@@ -2,7 +2,7 @@ import Barn from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
 import Søker from './Søker';
 import { AnnenForelder, Dekningsgrad, Periode, Søkersituasjon, Tilleggsopplysninger } from '@navikt/fp-common';
-import { Attachment } from '@navikt/fp-types';
+import { VedleggDataType } from '../FpDataContext';
 
 export interface Søknad {
     type: 'foreldrepenger';
@@ -18,6 +18,6 @@ export interface Søknad {
     tilleggsopplysninger: Tilleggsopplysninger;
     saksnummer?: string;
     ønskerJustertUttakVedFødsel: boolean | undefined;
-    vedlegg: Attachment[];
+    vedlegg: VedleggDataType;
     manglerDokumentasjon: boolean;
 }

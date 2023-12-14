@@ -44,7 +44,6 @@ const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
                         fødselsdatoer: [dayjs('2022-03-01').toDate()],
                         antallBarn: 1,
                         datoForAleneomsorg: dayjs('2022-03-24').toDate(),
-                        dokumentasjonAvAleneomsorg: [],
                     },
                     [ContextDataType.SØKER]: {
                         erAleneOmOmsorg: true,

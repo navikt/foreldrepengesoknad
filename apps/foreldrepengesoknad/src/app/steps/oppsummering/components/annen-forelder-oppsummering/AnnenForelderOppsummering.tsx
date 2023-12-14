@@ -1,6 +1,5 @@
 import {
     AnnenForelder,
-    Barn,
     Søkerrolle,
     intlUtils,
     isAnnenForelderIkkeOppgitt,
@@ -11,27 +10,17 @@ import Søker from 'app/context/types/Søker';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
-import OppsummeringAvDokumentasjon from '../uttaksplan-oppsummering/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     annenForelder: AnnenForelder;
     søker: Søker;
     søkerrolle: Søkerrolle;
-    barn: Barn;
-    farMedmorErAleneOmOmsorg: boolean;
 }
 
-const AnnenForelderOppsummering: FunctionComponent<Props> = ({
-    annenForelder,
-    søker,
-    søkerrolle,
-    barn,
-    farMedmorErAleneOmOmsorg,
-}) => {
+const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søker, søkerrolle }) => {
     const intl = useIntl();
     const erFarEllerMedmor = isFarEllerMedmor(søkerrolle);
-    const { dokumentasjonAvAleneomsorg } = barn;
 
     return (
         <>
@@ -111,12 +100,6 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({
                             </OppsummeringsPunkt>
                         )}
                 </>
-            )}
-            {farMedmorErAleneOmOmsorg && erFarEllerMedmor && (
-                <OppsummeringAvDokumentasjon
-                    vedlegg={dokumentasjonAvAleneomsorg || []}
-                    ledetekst={intlUtils(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg')}
-                />
             )}
         </>
     );
