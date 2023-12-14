@@ -1,4 +1,4 @@
-import { BodyLong, ExpansionCard, Heading, Radio } from '@navikt/ds-react';
+import { BodyLong, Heading, Radio } from '@navikt/ds-react';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
@@ -6,10 +6,10 @@ import { FormattedMessage } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { Block } from '@navikt/fp-common';
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
-import Info from 'components/ikoner/Info';
 import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { Path } from 'appData/paths';
 import { PeriodeEnum } from './../../types/Periode';
+import HvorforSpørViOmDette from 'components/expansion-card/HvorforSpørViOmDette';
 
 const PeriodeSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -74,25 +74,7 @@ const PeriodeSteg: FunctionComponent = () => {
                     </Block>
                 </Block>
 
-                <Block margin="xl">
-                    <ExpansionCard aria-label="">
-                        <ExpansionCard.Header>
-                            <div className="with-icon">
-                                <div>
-                                    <Info />
-                                </div>
-                                <div>
-                                    <ExpansionCard.Title size="medium">
-                                        <FormattedMessage id="hvem.info.tittel" />
-                                    </ExpansionCard.Title>
-                                </div>
-                            </div>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <FormattedMessage id="hvem.info.tekst" />
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
-                </Block>
+                <HvorforSpørViOmDette />
 
                 <Block margin="xxl" className="button-wrapper content-wrapper">
                     <StepButtonsHookForm
