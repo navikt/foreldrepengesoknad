@@ -50,7 +50,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
     };
 
     const updateAttachments = (attachments: Attachment[]) => {
-        formMethods.setValue('vedlegg', attachments);
+        formMethods.setValue('vedlegg', attachments, { shouldDirty: true, shouldTouch: true });
         formMethods.clearErrors('vedlegg');
     };
 
