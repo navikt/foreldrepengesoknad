@@ -17,6 +17,7 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 import { Path } from 'appData/paths';
+import HvorforSpørViOmDette from 'components/expansion-card/HvorforSpørViOmDette';
 
 const OmBarnetSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -106,6 +107,8 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         />
                     </Block>
                 )}
+
+                <HvorforSpørViOmDette />
                 <Block margin="xxl" className="button-wrapper content-wrapper">
                     <StepButtonsHookForm
                         saveDataOnPreviousClick={lagreOmBarnet}

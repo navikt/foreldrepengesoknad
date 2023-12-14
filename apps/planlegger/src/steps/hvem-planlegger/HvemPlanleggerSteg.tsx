@@ -1,4 +1,4 @@
-import { ExpansionCard, Heading, Radio, Textarea } from '@navikt/ds-react';
+import { Heading, Radio, Textarea } from '@navikt/ds-react';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
@@ -6,10 +6,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { Block, intlUtils } from '@navikt/fp-common';
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
-import Info from 'components/ikoner/Info';
 import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
 import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { Path } from 'appData/paths';
+import HvorforSpørViOmDette from 'components/expansion-card/HvorforSpørViOmDette';
 
 const HvemPlanleggerSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -93,25 +93,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         </div>
                     </Block>
                 )}
-                <Block margin="xl">
-                    <ExpansionCard aria-label="">
-                        <ExpansionCard.Header>
-                            <div className="with-icon">
-                                <div>
-                                    <Info />
-                                </div>
-                                <div>
-                                    <ExpansionCard.Title size="medium">
-                                        <FormattedMessage id="hvem.info.tittel" />
-                                    </ExpansionCard.Title>
-                                </div>
-                            </div>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <FormattedMessage id="hvem.info.tekst" />
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
-                </Block>
+                <HvorforSpørViOmDette />
 
                 <Block margin="xxl" className="button-wrapper content-wrapper">
                     <StepButtonsHookForm

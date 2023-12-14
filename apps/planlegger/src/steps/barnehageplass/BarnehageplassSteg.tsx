@@ -1,14 +1,14 @@
 import { FormattedMessage } from 'react-intl';
 import { Block } from '@navikt/fp-common';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { BodyLong, Button, ExpansionCard, Heading } from '@navikt/ds-react';
+import { BodyLong, Button, Heading } from '@navikt/ds-react';
 import useEsNavigator from 'appData/usePlanleggerNavigator';
 import { useForm } from 'react-hook-form';
 import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import Info from 'components/ikoner/Info';
 import { Path } from 'appData/paths';
 import Kalender from 'components/ikoner/Kalender';
+import HvorforSpørViOmDette from 'components/expansion-card/HvorforSpørViOmDette';
 
 const OmBarnetSteg: React.FunctionComponent = () => {
     const navigator = useEsNavigator();
@@ -75,25 +75,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     </Block>
                 </Block>
 
-                <Block margin="xl">
-                    <ExpansionCard aria-label="">
-                        <ExpansionCard.Header>
-                            <div className="with-icon">
-                                <div>
-                                    <Info />
-                                </div>
-                                <div>
-                                    <ExpansionCard.Title size="medium">
-                                        <FormattedMessage id="barnehageplass.info.tittel" />
-                                    </ExpansionCard.Title>
-                                </div>
-                            </div>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <FormattedMessage id="barnehageplass.info.tekst" />
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
-                </Block>
+                <HvorforSpørViOmDette />
 
                 <Block margin="xxl" className="button-wrapper content-wrapper">
                     <StepButtonsHookForm
