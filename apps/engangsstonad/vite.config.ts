@@ -21,7 +21,6 @@ export default defineConfig({
             styles: path.resolve(__dirname, './src/styles'),
             types: path.resolve(__dirname, './src/types/'),
             appData: path.resolve(__dirname, './src/appData/'),
-            storybook: path.resolve(__dirname, './src/storybook/'),
         },
     },
     test: {

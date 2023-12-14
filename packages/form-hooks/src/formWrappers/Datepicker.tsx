@@ -9,6 +9,9 @@ import { getError, getValidationRules } from './formUtils';
 
 dayjs.extend(customParseFormat);
 
+const INVALID_DATE = 'Invalid Date';
+const isValidDateString = (date: string): boolean => date !== INVALID_DATE;
+
 const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; to?: Date }> => {
     const disabledDays = [];
     if (minDate) {
@@ -61,7 +64,7 @@ const Datepicker: FunctionComponent<Props> = ({
     });
 
     const defaultDate = field.value ? dayjs(field.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
-    const [fieldValue, setFieldValue] = useState<string>(defaultDate);
+    const [fieldValue, setFieldValue] = useState<string>(isValidDateString(defaultDate) ? defaultDate : '');
 
     const { datepickerProps, inputProps } = useDatepicker({
         onDateChange: (date) => {
@@ -74,7 +77,10 @@ const Datepicker: FunctionComponent<Props> = ({
                 setFieldValue(dayjs(verdi, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT));
             }
         },
-        defaultSelected: field.value ? dayjs(field.value, ISO_DATE_FORMAT, true).toDate() : undefined,
+        defaultSelected:
+            field.value && isValidDateString(defaultDate)
+                ? dayjs(field.value, ISO_DATE_FORMAT, true).toDate()
+                : undefined,
         defaultMonth: defaultMonth,
         openOnFocus: false,
     });
@@ -82,13 +88,13 @@ const Datepicker: FunctionComponent<Props> = ({
     const onChangeInput = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             const verdi = dayjs(event.target.value, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
-            const validDate = verdi !== 'Invalid Date';
+            const isValidDate = isValidDateString(verdi);
 
             setFieldValue(event.target.value);
             if (onChange) {
-                onChange(validDate ? verdi : event.target.value);
+                onChange(isValidDate ? verdi : event.target.value);
             }
-            field.onChange(validDate ? verdi : event.target.value);
+            field.onChange(isValidDate ? verdi : event.target.value);
         },
         [setFieldValue, onChange, field],
     );

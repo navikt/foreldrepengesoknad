@@ -5,19 +5,23 @@ import { UtenlandsoppholdSenere } from '@navikt/fp-types';
 import { SenereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 
 import useEsNavigator from 'appData/useEsNavigator';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import useStepConfig from 'appData/useStepConfig';
 
-const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
-    const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+type Props = {
+    mellomlagreOgNaviger: () => Promise<void>;
+};
 
-    const senereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SENERE);
-    const lagreSenereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SENERE);
+const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
+    const stepConfig = useStepConfig();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
+
+    const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
     const lagre = (formValues: UtenlandsoppholdSenere) => {
-        lagreSenereUtenlandsopphold(formValues);
-        navigator.goToNextDefaultStep();
+        oppdaterSenereUtenlandsopphold(formValues);
+        return navigator.goToNextDefaultStep();
     };
 
     return (
@@ -28,7 +32,8 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent = () => {
             <SenereUtenlandsoppholdPanel
                 senereUtenlandsopphold={senereUtenlandsopphold}
                 saveOnNext={lagre}
-                saveOnPrevious={lagreSenereUtenlandsopphold}
+                saveOnPrevious={oppdaterSenereUtenlandsopphold}
+                onContinueLater={navigator.fortsettSøknadSenere}
                 cancelApplication={navigator.avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}

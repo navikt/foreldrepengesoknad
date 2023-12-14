@@ -20,6 +20,17 @@ import { getRelevanteSkjemanummer } from 'app/utils/skjemanummerUtils';
 import Environment from 'app/Environment';
 
 import './ettersending-page.css';
+import { Ytelse } from 'app/types/Ytelse';
+
+const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
+    if (sakstype === Ytelse.ENGANGSSTØNAD) {
+        return 'engangsstonad';
+    }
+    if (sakstype === Ytelse.FORELDREPENGER) {
+        return 'foreldrepenger';
+    }
+    return 'svangerskapspenger';
+};
 
 export const getListOfUniqueSkjemanummer = (attachments: Attachment[]) => {
     return attachments
@@ -154,7 +165,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
-                        saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
+                        saveAttachment={getSaveAttachment(Environment.REST_API_URL, mapYtelse(sak!.ytelse))}
                     />
                 )}
                 {vedlegg && vedlegg.length > 0 && (

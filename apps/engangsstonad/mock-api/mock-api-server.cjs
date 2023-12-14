@@ -1,9 +1,10 @@
 const express = require('express');
-const server = express();
-const morgan = require('morgan');
+const app = express();
+const router = express.Router();
 require('dotenv').config();
+const MockStorage = require('./mock-storage.cjs');
 
-const allowCrossDomain = function (req, res, next) {
+const allowCrossDomain = function (_req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
@@ -13,17 +14,16 @@ const allowCrossDomain = function (req, res, next) {
 };
 
 const delayAllResponses = function (millsec) {
-    return function (req, res, next) {
+    return function (_req, _res, next) {
         setTimeout(next, millsec);
     };
 };
 
-server.use(morgan('tiny'));
-server.use(allowCrossDomain);
-server.use(delayAllResponses(500));
-server.use(express.json());
+app.use(allowCrossDomain);
+app.use(delayAllResponses(500));
+app.use(express.json());
 
-const mockResponse = {
+const personMock = {
     fnr: '11111111111',
     fornavn: 'Henrikke',
     etternavn: 'Ibsen',
@@ -35,39 +35,47 @@ const mockResponse = {
     },
 };
 
-const kvittering = {
+const kvitteringMock = {
     mottattDato: '2019-02-19T13:40:45.115',
     referanseId: '3959c880-83d2-4f01-b107-035fa7693758',
     leveranseStatus: 'PÅ_VENT',
     journalId: '439772941',
 };
 
-const startServer = (html) => {
-    server.get(['/', '/rest/personinfo?'], (req, res) => {
-        res.send(mockResponse);
-    });
+router.get(['/', '/rest/personinfo?'], (_req, res) => {
+    res.send(personMock);
+});
 
-    server.get('/rest/storage', (req, res) => {
-        res.sendStatus(200);
-    });
+router.post('/rest/soknad/engangsstonad', (_req, res) => {
+    res.send(kvitteringMock);
+});
 
-    server.post('/rest/storage/vedlegg', (req, res) => {
-        res.setHeader('Location', `http://localhost:8080/engangsstonad/dist/vedlegg/${req.body.id}`);
-        res.sendStatus(201);
-    });
+router.get('/rest/storage/engangsstonad', (_req, res) => {
+    res.send(MockStorage.getMellomlagretData());
+});
 
-    server.delete('/rest/storage/vedlegg/:id', (req, res) => {
-        res.sendStatus(204);
-    });
+router.post('/rest/storage/engangsstonad', (req, res) => {
+    MockStorage.lagreMellomlagretData(req.body);
+    return res.sendStatus(200);
+});
 
-    server.post('/rest/soknad/engangssoknad', (req, res) => {
-        res.send(kvittering);
-    });
+router.delete('/rest/storage/engangsstonad', (_req, res) => {
+    MockStorage.deleteMellomlagretData();
+    return res.sendStatus(200);
+});
 
-    const port = process.env.PORT || 8888;
-    server.listen(port, () => {
-        console.log(`Mock-api listening on port: ${port}`);
-    });
-};
+router.post('/rest/storage/engangsstonad/vedlegg', (req, res) => {
+    res.setHeader('Location', `http://localhost:8080/engangsstonad/dist/vedlegg/${req.body.id}`);
+    res.sendStatus(201);
+});
 
-startServer();
+router.delete('/rest/storage/engangsstonad/vedlegg', (_req, res) => {
+    res.sendStatus(204);
+});
+
+app.use('', router);
+
+const port = process.env.PORT || 8888;
+app.listen(port, () => {
+    console.log(`Mock-api listening on port: ${port}`);
+});

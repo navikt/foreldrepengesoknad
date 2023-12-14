@@ -4,14 +4,17 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
+import { Path } from 'appData/paths';
+import { ContextDataType } from 'appData/EsDataContext';
 
 const { Default } = composeStories(stories);
 
 describe('<TidligereUtenlandsoppholdSteg>', () => {
     it('skal fylle ut to perioder og så gå videre', async () => {
         const nesteStegFn = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        const utils = render(<Default gåTilNesteSide={nesteStegFn} />);
+        const utils = render(<Default gåTilNesteSide={nesteStegFn} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
         expect(screen.getByText('Har bodd i utlandet')).toBeInTheDocument();
@@ -41,7 +44,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(nesteStegFn).toHaveBeenCalledTimes(1);
+        expect(nesteStegFn).toHaveBeenCalledTimes(2);
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: {
                 utenlandsoppholdSiste12Mnd: [
@@ -57,10 +60,16 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                     },
                 ],
             },
-            key: 'UTENLANDSOPPHOLD_TIDLIGERE',
+            key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
 
-        expect(await screen.findByText('Neste side: /soknad/oppsummering')).toBeInTheDocument();
+        expect(nesteStegFn).toHaveBeenNthCalledWith(2, {
+            data: Path.OPPSUMMERING,
+            key: ContextDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 });

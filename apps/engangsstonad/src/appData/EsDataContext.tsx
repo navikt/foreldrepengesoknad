@@ -2,8 +2,10 @@ import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdSenere, Utenlandsopp
 import { createContext, useReducer, FunctionComponent, ReactNode, useContext, useCallback } from 'react';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
+import { Path } from './paths';
 
-export enum EsDataType {
+export enum ContextDataType {
+    CURRENT_PATH = 'CURRENT_PATH',
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
     DOKUMENTASJON = 'DOKUMENTASJON',
@@ -12,27 +14,28 @@ export enum EsDataType {
     UTENLANDSOPPHOLD_TIDLIGERE = 'UTENLANDSOPPHOLD_TIDLIGERE',
 }
 
-export type EsDataMap = {
-    [EsDataType.SØKERSITUASJON]?: Søkersituasjon;
-    [EsDataType.OM_BARNET]?: OmBarnet;
-    [EsDataType.DOKUMENTASJON]?: Dokumentasjon;
-    [EsDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
-    [EsDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdSenere;
-    [EsDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdTidligere;
+export type ContextDataMap = {
+    [ContextDataType.CURRENT_PATH]?: Path;
+    [ContextDataType.SØKERSITUASJON]?: Søkersituasjon;
+    [ContextDataType.OM_BARNET]?: OmBarnet;
+    [ContextDataType.DOKUMENTASJON]?: Dokumentasjon;
+    [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
+    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdSenere;
+    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdTidligere;
 };
 
-const defaultInitialState = {} as EsDataMap;
+const defaultInitialState = {} as ContextDataMap;
 
-export type Action = { type: 'update'; key: EsDataType; data: any } | { type: 'reset' };
+export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
-type State = EsDataMap;
+type State = ContextDataMap;
 
 const EsStateContext = createContext<State>(defaultInitialState);
 const EsDispatchContext = createContext<Dispatch | undefined>(undefined);
 
 interface OwnProps {
     children: ReactNode;
-    initialState?: EsDataMap;
+    initialState?: ContextDataMap;
     onDispatch?: (action: Action) => void;
 }
 
@@ -68,11 +71,29 @@ export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialSt
     );
 };
 
+/** Hook returns data for one specific data type  */
+export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
+    const state = useContext(EsStateContext);
+    return state[key];
+};
+
+/** Hook returns function capable of getting all types of data from context state  */
+export const useContextGetAnyData = () => {
+    const state = useContext(EsStateContext);
+
+    return useCallback(
+        <TYPE extends ContextDataType>(key: TYPE) => {
+            return state[key];
+        },
+        [state],
+    );
+};
+
 /** Hook returns save function for one specific data type */
-export const useEsStateSaveFn = <TYPE extends EsDataType>(key: TYPE): ((data: EsDataMap[TYPE]) => void) => {
+export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = useContext(EsDispatchContext);
     return useCallback(
-        (data: EsDataMap[TYPE]) => {
+        (data: ContextDataMap[TYPE]) => {
             if (dispatch) {
                 dispatch({ type: 'update', key, data });
             }
@@ -82,10 +103,10 @@ export const useEsStateSaveFn = <TYPE extends EsDataType>(key: TYPE): ((data: Es
 };
 
 /** Hook returns save function usable with all data types  */
-export const useAllStateSaveFn = () => {
+export const useContextSaveAnyData = () => {
     const dispatch = useContext(EsDispatchContext);
     return useCallback(
-        <TYPE extends EsDataType>(key: TYPE, data: EsDataMap[TYPE]) => {
+        <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
             if (dispatch) {
                 dispatch({ type: 'update', key, data });
             }
@@ -95,7 +116,7 @@ export const useAllStateSaveFn = () => {
 };
 
 /** Hook returns state reset function  */
-export const useEsStateResetFn = () => {
+export const useContextReset = () => {
     const dispatch = useContext(EsDispatchContext);
     return useCallback(() => {
         if (dispatch) {
@@ -104,20 +125,7 @@ export const useEsStateResetFn = () => {
     }, [dispatch]);
 };
 
-/** Hook returns data for one specific data type  */
-export const useEsStateData = <TYPE extends EsDataType>(key: TYPE): EsDataMap[TYPE] => {
-    const state = useContext(EsStateContext);
-    return state[key];
-};
-
-/** Hook returns function capable of getting all types of data from context state  */
-export const useEsStateAllDataFn = () => {
-    const state = useContext(EsStateContext);
-
-    return useCallback(
-        <TYPE extends EsDataType>(key: TYPE) => {
-            return state[key];
-        },
-        [state],
-    );
+/** Hook returns state  */
+export const useContextComplete = (): ContextDataMap => {
+    return useContext(EsStateContext);
 };

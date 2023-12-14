@@ -18,7 +18,7 @@ export default {
 const Template: StoryFn<{ skalFeileOpplasting: boolean; send: () => void }> = ({ skalFeileOpplasting, send }) => {
     const apiMock = new MockAdapter(attachmentApi);
     if (!skalFeileOpplasting) {
-        apiMock.onPost('test/storage/vedlegg').reply(200);
+        apiMock.onPost('test/storage/foreldrepenger/vedlegg').reply(200);
     }
 
     return (

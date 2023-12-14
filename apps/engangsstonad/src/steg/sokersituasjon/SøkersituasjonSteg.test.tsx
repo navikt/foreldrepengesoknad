@@ -2,14 +2,17 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './SøkersituasjonSteg.stories';
+import { Path } from 'appData/paths';
+import { ContextDataType } from 'appData/EsDataContext';
 
 const { Default } = composeStories(stories);
 
 describe('<SøkersituasjonSteg>', () => {
     it('skal validere valg og så gå videre til neste steg', async () => {
         const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         expect(screen.getByText('Din situasjon')).toBeInTheDocument();
@@ -25,15 +28,21 @@ describe('<SøkersituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 situasjon: 'fødsel',
             },
-            key: 'SØKERSITUASJON',
+            key: ContextDataType.SØKERSITUASJON,
             type: 'update',
         });
 
-        expect(screen.getByText('Neste side: /soknad/om-barnet')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: Path.OM_BARNET,
+            key: ContextDataType.CURRENT_PATH,
+            type: 'update',
+        });
+
+        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 });

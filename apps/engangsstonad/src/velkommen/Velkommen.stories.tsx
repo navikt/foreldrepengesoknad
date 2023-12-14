@@ -1,24 +1,42 @@
 import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
-import withRouter from 'storybook/decorators/withRouter';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Path } from 'appData/paths';
 import Velkommen from './Velkommen';
+import { Action, EsDataContext } from 'appData/EsDataContext';
+
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 export default {
     title: 'Velkommen',
     component: Velkommen,
-    decorators: [withRouter],
-    parameters: {
-        routerDecoratorInitUrl: Path.VELKOMMEN,
-    },
 };
 
-const Template: StoryFn<{ startSøknad: (start: boolean) => void }> = ({ startSøknad }) => {
+const Template: StoryFn<{
+    startSøknad: (start: boolean) => void;
+    mellomlagreOgNaviger?: () => Promise<void>;
+    gåTilNesteSide: (action: Action) => void;
+}> = ({ startSøknad, mellomlagreOgNaviger = promiseAction(), gåTilNesteSide }) => {
     initAmplitude();
     return (
-        <Velkommen startSøknad={startSøknad} onChangeLocale={action('button-click')} locale="nb" erVelkommen={false} />
+        <MemoryRouter initialEntries={[Path.VELKOMMEN]}>
+            <EsDataContext onDispatch={gåTilNesteSide}>
+                <Velkommen
+                    startSøknad={startSøknad}
+                    onChangeLocale={action('button-click')}
+                    locale="nb"
+                    erVelkommen={false}
+                    mellomlagreOgNaviger={mellomlagreOgNaviger}
+                />
+            </EsDataContext>
+        </MemoryRouter>
     );
 };
 

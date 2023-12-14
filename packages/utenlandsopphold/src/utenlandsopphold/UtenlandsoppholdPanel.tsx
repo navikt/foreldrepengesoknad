@@ -30,7 +30,7 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     goToPreviousStep,
     stepConfig,
     stønadstype,
-    supportsTempSaving = false,
+    supportsTempSaving = true,
 }) => {
     const { i18n } = useUtenlandsoppholdIntl();
 
@@ -44,7 +44,7 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                 steps={stepConfig}
                 onCancel={cancelApplication}
                 onContinueLater={onContinueLater}
-                useNoTempSavingText={!supportsTempSaving}
+                useNoTempSavingText={supportsTempSaving}
             >
                 <Form formMethods={formMethods} onSubmit={saveOnNext}>
                     <VStack gap="10">

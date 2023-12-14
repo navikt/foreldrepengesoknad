@@ -82,7 +82,6 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 onContinueLater={onFortsettSøknadSenere}
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}
-                supportsTempSaving
             />
         </ContentWrapper>
     );

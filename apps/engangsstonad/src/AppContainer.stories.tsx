@@ -5,7 +5,10 @@ import { attachmentApi } from '@navikt/fp-api';
 
 import Person, { Kjønn } from 'types/Person';
 import AppContainer from './AppContainer';
-import { esApi } from './Engangsstønad';
+import { esApi } from './EngangsstønadRoutes';
+import { ContextDataType } from 'appData/EsDataContext';
+import { Path } from 'appData/paths';
+import { EsDataMapAndVersion } from 'appData/useEsMellomlagring';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -19,22 +22,77 @@ export default {
     component: AppContainer,
 };
 
-const Template: StoryFn<{ person: Person }> = ({ person }) => {
+const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndVersion; doLogging?: boolean }> = ({
+    person,
+    mellomlagretData,
+    doLogging = true,
+}) => {
     initAmplitude();
 
     const apiMock = new MockAdapter(esApi);
-    apiMock.onGet('/personinfo').reply(200, person);
-    apiMock.onPost('/soknad/engangssoknad').reply(200, kvittering);
+    apiMock.onGet('/personinfo').reply(() => {
+        if (doLogging) {
+            console.log('network request: get /personinfo');
+        }
+        return [200, person];
+    });
+    apiMock.onGet('/storage/engangsstonad').reply(() => {
+        if (doLogging) {
+            console.log('network request: get /storage/engangstonad');
+        }
+        return [200, mellomlagretData];
+    });
+    apiMock.onPost('/soknad/engangsstonad').reply(() => {
+        if (doLogging) {
+            console.log('network request: post /soknad/engangsstonad');
+        }
+        return [200, kvittering];
+    });
+    apiMock.onPost('/storage/engangsstonad').reply(() => {
+        if (doLogging) {
+            console.log('network request: post /storage/engangstonad');
+        }
+        return [200];
+    });
+    apiMock.onDelete('/storage/engangsstonad').reply(() => {
+        if (doLogging) {
+            console.log('network request: delete /storage/engangstonad');
+        }
+        return [200];
+    });
 
     const attachmentApiMock = new MockAdapter(attachmentApi);
-    attachmentApiMock.onPost('/storage/vedlegg').reply(200); //story
-    attachmentApiMock.onPost('http://localhost:8888/rest/storage/vedlegg').reply(200); //test
+    attachmentApiMock.onPost('/storage/engangsstonad/vedlegg').reply(200); //story
+    attachmentApiMock.onPost('http://localhost:8888/rest/storage/engangsstonad/vedlegg').reply(200); //test
 
     return <AppContainer />;
 };
 
 export const SøkerErKvinne = Template.bind({});
 SøkerErKvinne.args = {
+    person: {
+        fnr: '11111111111',
+        fornavn: 'Henrikke',
+        etternavn: 'Ibsen',
+        kjønn: Kjønn.KVINNE,
+        fødselsdato: '1979-01-28',
+        adresse: 'Oslo 123',
+        bankkonto: {
+            kontonummer: '49875234987',
+            banknavn: 'Storebank',
+        },
+    },
+};
+
+export const SøkerErKvinneMedMellomlagretData = Template.bind({});
+SøkerErKvinneMedMellomlagretData.args = {
+    mellomlagretData: {
+        version: 1,
+        [ContextDataType.SØKERSITUASJON]: {
+            situasjon: 'fødsel',
+        },
+        [ContextDataType.CURRENT_PATH]: Path.SØKERSITUASJON,
+    },
     person: {
         fnr: '11111111111',
         fornavn: 'Henrikke',

@@ -7,7 +7,7 @@ import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
 import Person from 'types/Person';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import { EsDataType, useEsStateData } from 'appData/EsDataContext';
+import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
@@ -19,19 +19,20 @@ const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string)
 export interface Props {
     person: Person;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad }) => {
+const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad, mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
-    const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
-    const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
-    const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
-    const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const senereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_SENERE);
+    const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
+    const dokumentasjon = useContextGetData(ContextDataType.DOKUMENTASJON);
+    const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const abortSignal = useAbortSignal();
 
     const [isChecked, setChecked] = useState(false);
@@ -52,8 +53,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad 
         <Step
             bannerTitle={i18n('Søknad.Pageheading')}
             onCancel={navigator.avbrytSøknad}
+            onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
-            useNoTempSavingText
         >
             <VStack gap="10">
                 <Accordion indent={false}>

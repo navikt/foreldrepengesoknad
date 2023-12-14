@@ -4,13 +4,13 @@ import { action } from '@storybook/addon-actions';
 import { AttachmentType, Skjemanummer, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
-import withRouter from 'storybook/decorators/withRouter';
-import { EsDataContext, EsDataType } from 'appData/EsDataContext';
+import { EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import { Kjønn } from 'types/Person';
 import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
 import OppsummeringSteg from './OppsummeringSteg';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { MemoryRouter } from 'react-router-dom';
 
 const promiseAction =
     () =>
@@ -50,10 +50,6 @@ const vedleggDefault = {
 export default {
     title: 'OppsummeringSteg',
     component: OppsummeringSteg,
-    decorators: [withRouter],
-    parameters: {
-        routerDecoratorInitUrl: Path.OPPSUMMERING,
-    },
 };
 
 const Template: StoryFn<{
@@ -63,6 +59,7 @@ const Template: StoryFn<{
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
     dokumentasjon?: Dokumentasjon;
+    mellomlagreOgNaviger?: () => Promise<void>;
 }> = ({
     sendSøknad,
     omBarnet = barnet,
@@ -70,20 +67,23 @@ const Template: StoryFn<{
     senereUtenlandsopphold,
     tidligereUtenlandsopphold,
     dokumentasjon = vedleggDefault,
+    mellomlagreOgNaviger = promiseAction(),
 }) => {
     initAmplitude();
     return (
-        <EsDataContext
-            initialState={{
-                [EsDataType.OM_BARNET]: omBarnet,
-                [EsDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                [EsDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
-                [EsDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
-                [EsDataType.DOKUMENTASJON]: dokumentasjon,
-            }}
-        >
-            <OppsummeringSteg person={person} sendSøknad={sendSøknad} />
-        </EsDataContext>
+        <MemoryRouter initialEntries={[Path.OPPSUMMERING]}>
+            <EsDataContext
+                initialState={{
+                    [ContextDataType.OM_BARNET]: omBarnet,
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    [ContextDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
+                    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
+                    [ContextDataType.DOKUMENTASJON]: dokumentasjon,
+                }}
+            >
+                <OppsummeringSteg person={person} sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
+            </EsDataContext>
+        </MemoryRouter>
     );
 };
 

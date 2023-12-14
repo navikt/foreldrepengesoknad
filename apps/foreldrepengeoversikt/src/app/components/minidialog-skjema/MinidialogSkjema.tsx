@@ -29,6 +29,16 @@ import ScrollToTop from '../scroll-to-top/ScrollToTop';
 import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
 import MinidialogVenterPåSvar from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
 
+const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
+    if (sakstype === Ytelse.ENGANGSSTØNAD) {
+        return 'engangsstonad';
+    }
+    if (sakstype === Ytelse.FORELDREPENGER) {
+        return 'foreldrepenger';
+    }
+    return 'svangerskapspenger';
+};
+
 export interface Props {
     ettersendelseErSendt: boolean;
     isSendingEttersendelse: boolean;
@@ -164,7 +174,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             updateAttachments={setVedlegg}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
-                            saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
+                            saveAttachment={getSaveAttachment(Environment.REST_API_URL, mapYtelse(sakstype))}
                         />
                     </>
                 )}

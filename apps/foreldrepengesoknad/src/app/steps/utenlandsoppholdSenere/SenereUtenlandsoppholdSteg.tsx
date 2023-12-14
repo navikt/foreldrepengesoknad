@@ -80,7 +80,6 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
                 onContinueLater={onFortsettSøknadSenere}
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}
-                supportsTempSaving
             />
         </ContentWrapper>
     );

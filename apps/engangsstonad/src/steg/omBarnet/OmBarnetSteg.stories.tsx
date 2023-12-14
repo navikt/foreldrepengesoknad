@@ -2,34 +2,40 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
-import withRouter from 'storybook/decorators/withRouter';
+import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import OmBarnetSteg from './OmBarnetSteg';
 import { Situasjon } from '@navikt/fp-types';
+import { MemoryRouter } from 'react-router-dom';
+
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 export default {
     title: 'OmBarnetSteg',
     component: OmBarnetSteg,
-    decorators: [withRouter],
-    parameters: {
-        routerDecoratorInitUrl: Path.OM_BARNET,
-    },
 };
 
 const Template: StoryFn<{
     søkersituasjon: Situasjon;
     kjønn: Kjønn;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ søkersituasjon, kjønn, gåTilNesteSide }) => {
+    mellomlagreOgNaviger?: () => Promise<void>;
+}> = ({ søkersituasjon, kjønn, gåTilNesteSide, mellomlagreOgNaviger = promiseAction() }) => {
     initAmplitude();
     return (
-        <EsDataContext
-            initialState={{ [EsDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
-            onDispatch={gåTilNesteSide}
-        >
-            <OmBarnetSteg kjønn={kjønn} />
-        </EsDataContext>
+        <MemoryRouter initialEntries={[Path.OM_BARNET]}>
+            <EsDataContext
+                initialState={{ [ContextDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
+                onDispatch={gåTilNesteSide}
+            >
+                <OmBarnetSteg kjønn={kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />
+            </EsDataContext>
+        </MemoryRouter>
     );
 };
 

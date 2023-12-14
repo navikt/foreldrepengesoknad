@@ -66,7 +66,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                     skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                     existingAttachments={attachments}
                     updateAttachments={updateAttachments}
-                    saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
+                    saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'engangsstonad')}
                 />
             </VStack>
         </>

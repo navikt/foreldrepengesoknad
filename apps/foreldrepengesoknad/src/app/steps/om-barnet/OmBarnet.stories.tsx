@@ -49,7 +49,7 @@ const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
 }) => {
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/vedlegg').reply(
+        apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
             200,
             { data: {} },
             {

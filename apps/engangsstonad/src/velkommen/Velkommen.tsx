@@ -23,14 +23,21 @@ export interface Props {
     locale: LocaleAll;
     startSøknad: (start: boolean) => void;
     erVelkommen: boolean;
+    mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const Velkommen: FunctionComponent<Props> = ({ locale, onChangeLocale, startSøknad, erVelkommen }) => {
+const Velkommen: FunctionComponent<Props> = ({
+    locale,
+    onChangeLocale,
+    startSøknad,
+    erVelkommen,
+    mellomlagreOgNaviger,
+}) => {
     const { i18n } = useCustomIntl();
 
     useDocumentTitle(i18n('Velkommen.Dokumenttittel'));
 
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const [isError, setIsError] = useState(false);
     const [isChecked, setChecked] = useState(erVelkommen);
