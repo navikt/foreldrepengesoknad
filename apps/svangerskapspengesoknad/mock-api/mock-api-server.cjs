@@ -36,12 +36,12 @@ router.post('/rest/soknad', (_req, res) => {
 
 const vedleggUpload = multer({ dest: './dist/vedlegg/' });
 
-router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
+router.post('/rest/storage/svangerskapspenger/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
     res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
     res.sendStatus(201);
 });
 
-router.delete('/rest/storage/vedlegg/:id', (_req, res) => {
+router.delete('/rest/storage/svangerskapspenger/vedlegg/:id', (_req, res) => {
     res.sendStatus(204);
 });
 

@@ -18,13 +18,14 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
 import Bankkonto from 'app/types/Bankkonto';
+import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 
 interface Props {
     alleYtelser: Sak[];
     grupperteSaker: GruppertSak[];
     avslåttSvangerskapspengesak: SvangerskapspengeSak | undefined;
     oppdatertData: boolean;
-    storageData: any;
+    storageData?: MellomlagredeYtelser;
     isFirstRender: React.MutableRefObject<boolean>;
     bankkonto: Bankkonto | undefined;
 }
@@ -67,9 +68,14 @@ const Forside: React.FunctionComponent<Props> = ({
                 )}
             </Block>
             <Block>
-                {storageData?.søknad.harGodkjentVilkår && (
+                {storageData?.engangsstonad && (
                     <Heading level="1" size="large">
-                        Dette er en mellomlagret søknad av typen: {storageData.søknad.type}
+                        Dette er en mellomlagret søknad av type: Engangsstønad
+                    </Heading>
+                )}
+                {storageData?.foreldrepenger && (
+                    <Heading level="1" size="large">
+                        Dette er en mellomlagret søknad av type: Foreldrepenger
                     </Heading>
                 )}
             </Block>

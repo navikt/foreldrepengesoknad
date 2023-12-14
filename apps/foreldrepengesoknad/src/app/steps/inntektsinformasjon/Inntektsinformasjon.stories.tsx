@@ -46,7 +46,7 @@ const Template: StoryFn<Props> = ({
     utenlandsopphold = defaultUtenlandsopphold,
 }) => {
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/vedlegg').reply(
+        apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
             200,
             { data: {} },
             {

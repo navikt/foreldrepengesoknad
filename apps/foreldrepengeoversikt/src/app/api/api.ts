@@ -9,6 +9,7 @@ import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import getAxiosInstance from './apiInterceptor';
 import { usePostRequest, useGetRequest } from './useRequest';
+import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 
 const useSøkerinfo = () => {
     const { data, error } = useGetRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
@@ -31,8 +32,8 @@ const useGetSaker = (sakerSuspended: boolean) => {
     };
 };
 
-const useGetMellomlagretSøknad = () => {
-    const { data, error } = useGetRequest<any>('/storage', {
+const useGetOversiktOverMellomlagredeYtelser = () => {
+    const { data, error } = useGetRequest<MellomlagredeYtelser>('/storage/aktive', {
         config: { withCredentials: true },
         isSuspended: true,
     });
@@ -147,7 +148,7 @@ const Api = {
     useGetMinidialog,
     useGetManglendeVedlegg,
     useErSakOppdatert,
-    useGetMellomlagretSøknad,
+    useGetMellomlagretSøknad: useGetOversiktOverMellomlagredeYtelser,
     sendEttersending,
 };
 

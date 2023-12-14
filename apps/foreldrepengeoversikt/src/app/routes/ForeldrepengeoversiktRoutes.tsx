@@ -20,6 +20,7 @@ import EttersendingPage from 'app/pages/ettersending/EttersendingPage';
 import Snarveier from 'app/components/snarveier/Snarveier';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
 import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
+import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -27,7 +28,7 @@ interface Props {
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
     oppdatertData: boolean;
-    storageData: any;
+    storageData?: MellomlagredeYtelser;
 }
 
 const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({

@@ -221,7 +221,11 @@ const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: 
 
         return result;
     }, []);
-    return getAxiosInstance(fnr).delete('/storage/vedlegg', { withCredentials: true, data: attachmentUUIDs, signal });
+    return getAxiosInstance(fnr).delete('/storage/foreldrepenger/vedlegg', {
+        withCredentials: true,
+        data: attachmentUUIDs,
+        signal,
+    });
 };
 
 const Api = {

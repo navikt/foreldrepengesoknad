@@ -71,7 +71,13 @@ router.delete('/rest/storage', (req, res) => {
     res.sendStatus(204);
 });
 
-router.get('/rest/storage/kvittering/foreldrepenger', (req, res) => {
+router.get('/rest/storage/foreldrepenger/kvittering/foreldrepenger', (req, res) => {
+    res.send(MockStorage.getKvitteringStorage());
+});
+router.get('/rest/storage/svangerskapspenger/kvittering/foreldrepenger', (req, res) => {
+    res.send(MockStorage.getKvitteringStorage());
+});
+router.get('/rest/storage/engangsstonad/kvittering/foreldrepenger', (req, res) => {
     res.send(MockStorage.getKvitteringStorage());
 });
 
@@ -90,12 +96,26 @@ const vedleggUpload = multer({
     },
 });
 
-router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
+router.post('/rest/storage/foreldrepenger/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
+    res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
+    res.sendStatus(201);
+});
+router.post('/rest/storage/svangerskapspenger/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
+    res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
+    res.sendStatus(201);
+});
+router.post('/rest/storage/engangsstonad/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
     res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
     res.sendStatus(201);
 });
 
-router.delete('/rest/storage/vedlegg/:id', (req, res) => {
+router.delete('/rest/storage/foreldrepenger/vedlegg/:id', (req, res) => {
+    res.sendStatus(204);
+});
+router.delete('/rest/storage/svangerskapspenger/vedlegg/:id', (req, res) => {
+    res.sendStatus(204);
+});
+router.delete('/rest/storage/engangsstonad/vedlegg/:id', (req, res) => {
     res.sendStatus(204);
 });
 
