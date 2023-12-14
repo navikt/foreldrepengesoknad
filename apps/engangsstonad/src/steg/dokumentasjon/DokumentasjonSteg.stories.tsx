@@ -40,8 +40,8 @@ const Template: StoryFn<{
 
     const apiMock = new MockAdapter(attachmentApi);
     if (!skalFeileOpplasting) {
-        apiMock.onPost('/storage/engangssoknad/vedlegg').reply(200); //story
-        apiMock.onPost('http://localhost:8888/rest/engangssoknad/storage/vedlegg').reply(200); //test
+        apiMock.onPost('/storage/engangsstonad/vedlegg').reply(200); //story
+        apiMock.onPost('http://localhost:8888/rest/storage/engangsstonad/vedlegg').reply(200); //test
     }
 
     return (

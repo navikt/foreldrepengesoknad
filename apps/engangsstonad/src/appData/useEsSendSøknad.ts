@@ -77,7 +77,7 @@ const useEsSendSøknad = (
             try {
                 kvittering = await postData<typeof søknad, Kvittering>(
                     esApi,
-                    '/soknad/engangssoknad',
+                    '/soknad/engangsstonad',
                     søknad,
                     FEIL_VED_INNSENDING,
                     true,

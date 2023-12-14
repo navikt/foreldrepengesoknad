@@ -46,7 +46,7 @@ router.get(['/', '/rest/personinfo?'], (_req, res) => {
     res.send(personMock);
 });
 
-router.post('/rest/soknad/engangssoknad', (_req, res) => {
+router.post('/rest/soknad/engangsstonad', (_req, res) => {
     res.send(kvitteringMock);
 });
 

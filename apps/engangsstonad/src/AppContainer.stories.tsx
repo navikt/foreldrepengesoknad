@@ -42,9 +42,9 @@ const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndVersion
         }
         return [200, mellomlagretData];
     });
-    apiMock.onPost('/soknad/engangssoknad').reply(() => {
+    apiMock.onPost('/soknad/engangsstonad').reply(() => {
         if (doLogging) {
-            console.log('network request: post /soknad/engangssoknad');
+            console.log('network request: post /soknad/engangsstonad');
         }
         return [200, kvittering];
     });
@@ -62,8 +62,8 @@ const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndVersion
     });
 
     const attachmentApiMock = new MockAdapter(attachmentApi);
-    attachmentApiMock.onPost('/storage/engangssoknad/vedlegg').reply(200); //story
-    attachmentApiMock.onPost('http://localhost:8888/rest/storage/engangssoknad/vedlegg').reply(200); //test
+    attachmentApiMock.onPost('/storage/engangsstonad/vedlegg').reply(200); //story
+    attachmentApiMock.onPost('http://localhost:8888/rest/storage/engangsstonad/vedlegg').reply(200); //test
 
     return <AppContainer />;
 };
