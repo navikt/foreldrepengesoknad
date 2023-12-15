@@ -1,8 +1,7 @@
 import { expect, vi } from 'vitest';
-import matchers from '@testing-library/jest-dom/matchers';
+import * as matchers from '@testing-library/jest-dom/matchers';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { Modal } from '@navikt/ds-react';
 import { setProjectAnnotations } from '@storybook/react';
 import * as globalStorybookConfig from '../.storybook/preview';
 
@@ -13,10 +12,6 @@ dayjs.extend(isSameOrAfter);
 expect.extend(matchers);
 
 window.scrollTo = () => undefined;
-
-if (Modal.setAppElement) {
-    Modal.setAppElement('body');
-}
 
 vi.mock('./../src/app/Environment.ts', async () => {
     return {

@@ -1,5 +1,5 @@
 import { expect, vi } from 'vitest';
-import matchers from '@testing-library/jest-dom/matchers';
+import * as matchers from '@testing-library/jest-dom/matchers';
 
 import { setProjectAnnotations } from '@storybook/react';
 import * as globalStorybookConfig from '../.storybook/preview';
