@@ -67,7 +67,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                 onCancel={cancelApplication}
                 onContinueLater={onContinueLater}
                 steps={stepConfig}
-                useNoTempSavingText={!supportsTempSaving}
+                supportsTempSaving={supportsTempSaving}
             >
                 <Form formMethods={formMethods} onSubmit={saveOnNext}>
                     <VStack gap="10">

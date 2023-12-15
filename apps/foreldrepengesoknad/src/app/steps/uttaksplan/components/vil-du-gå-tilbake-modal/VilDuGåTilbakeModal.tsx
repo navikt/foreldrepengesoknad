@@ -1,9 +1,6 @@
-import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
 import { Dispatch, FunctionComponent, SetStateAction } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
-
-import './vilDuGåTilbakeModal.less';
+import { FormattedMessage } from 'react-intl';
+import { BodyShort, Button, HStack, Heading, Modal } from '@navikt/ds-react';
 
 interface Props {
     isOpen: boolean;
@@ -12,36 +9,31 @@ interface Props {
 }
 
 const VilDuGåTilbakeModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, goToPreviousStep }) => {
-    const intl = useIntl();
-    const bem = bemUtils('vilDuGåTilbakeModal');
-
     return (
-        <Modal
-            className={bem.block}
-            aria-label={'Vil du gå tilbake'}
-            closeButton={false}
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
-        >
-            <Block padBottom="l">
+        <Modal aria-label={'Vil du gå tilbake'} open={isOpen} onClose={() => setIsOpen(false)}>
+            <Modal.Header>
                 <Heading size="small" as="h1">
-                    {intlUtils(intl, 'uttaksplan.vilDuGåTilbakeModal.tittel')}
+                    <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.tittel" />
                 </Heading>
-            </Block>
-            <Block padBottom="l">
-                <BodyShort>{intlUtils(intl, 'uttaksplan.vilDuGåTilbakeModal.intro')}</BodyShort>
-            </Block>
-            <Block padBottom="l">
-                <BodyShort>{intlUtils(intl, 'uttaksplan.vilDuGåTilbakeModal.spørsmål')}</BodyShort>
-            </Block>
-            <div className={bem.element('knapperad')}>
+            </Modal.Header>
+            <Modal.Body>
+                <HStack gap="4">
+                    <BodyShort>
+                        <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.intro" />
+                    </BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.spørsmål" />
+                    </BodyShort>
+                </HStack>
+            </Modal.Body>
+            <Modal.Footer>
                 <Button onClick={goToPreviousStep}>
                     <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.okLabel" />
                 </Button>
                 <Button variant="secondary" onClick={() => setIsOpen(false)}>
                     <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.avbrytLabel" />
                 </Button>
-            </div>
+            </Modal.Footer>
         </Modal>
     );
 };

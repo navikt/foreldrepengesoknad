@@ -128,7 +128,7 @@ const Oppsummering = () => {
                             pageTitle="Oppsummering"
                             steps={stepConfig(intl, søknad, arbeidsforhold)}
                             onCancel={onAvbrytSøknad}
-                            useNoTempSavingText={true}
+                            supportsTempSaving={false}
                         >
                             <Block padBottom="l">
                                 <div className={bem.block}>

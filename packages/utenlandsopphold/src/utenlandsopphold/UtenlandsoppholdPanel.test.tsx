@@ -149,6 +149,6 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Avslutt'));
 
-        expect(screen.getByText('Avslutt og slett søknad')).toBeInTheDocument();
+        expect(screen.getByText('Fortsett senere')).toBeInTheDocument();
     });
 });

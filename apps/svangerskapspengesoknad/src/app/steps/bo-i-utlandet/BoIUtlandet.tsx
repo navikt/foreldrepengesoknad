@@ -76,7 +76,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                         pageTitle={pageTitle}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        useNoTempSavingText={true}
+                        supportsTempSaving={false}
                     >
                         <BoIUtlandetFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <FieldArray

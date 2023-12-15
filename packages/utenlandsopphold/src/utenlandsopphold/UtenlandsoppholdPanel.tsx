@@ -44,7 +44,7 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                 steps={stepConfig}
                 onCancel={cancelApplication}
                 onContinueLater={onContinueLater}
-                useNoTempSavingText={supportsTempSaving}
+                supportsTempSaving={supportsTempSaving}
             >
                 <Form formMethods={formMethods} onSubmit={saveOnNext}>
                     <VStack gap="10">
