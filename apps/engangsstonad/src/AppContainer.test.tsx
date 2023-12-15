@@ -10,7 +10,7 @@ const { SøkerErKvinne } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     it('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
-        const utils = render(<SøkerErKvinne />);
+        const utils = render(<SøkerErKvinne doLogging={false} />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja, jeg har forstått mine plikter.'));

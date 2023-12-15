@@ -1,20 +1,14 @@
 import { useState } from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
-import {
-    Block,
-    deleteAttachment,
-    intlUtils,
-    isAttachmentWithError,
-    mapFilTilVedlegg,
-    PictureScanningGuide,
-} from '@navikt/fp-common';
+import { Block, deleteAttachment, intlUtils, isAttachmentWithError, mapFilTilVedlegg } from '@navikt/fp-common';
 import AttachmentApi from 'app/api/attachmentApi';
 import AttachmentList from '../attachment/AttachmentList';
 import { IntlShape, useIntl } from 'react-intl';
-import { BodyShort, ReadMore } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { Attachment } from '@navikt/fp-types';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { ScanDocumentInfo } from '@navikt/fp-ui';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;
@@ -126,7 +120,7 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <FormikFileInput
                     legend={legend}
                     buttonLabel={label}
@@ -147,7 +141,7 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                     {...otherProps}
                 />
             </Block>
-            <Block padBottom="l" visible={attachments.length > 0}>
+            <Block padBottom="xl" visible={attachments.length > 0}>
                 <AttachmentList
                     attachments={attachments.filter((a) => !isAttachmentWithError(a))}
                     showFileSize={true}
@@ -156,10 +150,8 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                     }}
                 />
             </Block>
-            <Block>
-                <ReadMore header={intlUtils(intl, 'pictureScanninGuide.apneLabel')}>
-                    <PictureScanningGuide backgroundColor="blue" />
-                </ReadMore>
+            <Block padBottom="l">
+                <ScanDocumentInfo />
             </Block>
         </>
     );

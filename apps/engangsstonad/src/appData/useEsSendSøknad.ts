@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 import { AxiosInstance } from 'axios';
 import { Kvittering, LocaleAll } from '@navikt/fp-types';
-import { sendApplication, ApiAccessError, ApiGeneralError, isApiError } from '@navikt/fp-api';
+import { postData, ApiAccessError, ApiGeneralError, isApiError, deleteData } from '@navikt/fp-api';
 import { notEmpty } from '@navikt/fp-validation';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
-import { EsDataType, useEsStateAllDataFn } from './EsDataContext';
+import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
 // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
 const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
@@ -42,21 +42,25 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     throw Error('Det er feil i data om barnet');
 };
 
+// TODO (TOR) Fiks lokalisering
+const FEIL_VED_INNSENDING =
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+
 const useEsSendSøknad = (
     esApi: AxiosInstance,
     locale: LocaleAll,
     setKvittering: (kvittering: Kvittering | (() => never)) => void,
 ) => {
-    const hentData = useEsStateAllDataFn();
+    const hentData = useContextGetAnyData();
 
     const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
     const sendSøknad = useCallback(
         async (abortSignal: AbortSignal) => {
-            const omBarnet = notEmpty(hentData(EsDataType.OM_BARNET));
-            const dokumentasjon = hentData(EsDataType.DOKUMENTASJON);
-            const tidligereUtenlandsopphold = hentData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-            const senereUtenlandsopphold = hentData(EsDataType.UTENLANDSOPPHOLD_SENERE);
+            const omBarnet = notEmpty(hentData(ContextDataType.OM_BARNET));
+            const dokumentasjon = hentData(ContextDataType.DOKUMENTASJON);
+            const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+            const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
             const søknad = {
                 type: 'engangsstønad',
@@ -69,15 +73,32 @@ const useEsSendSøknad = (
                 vedlegg: dokumentasjon?.vedlegg || [],
             };
 
+            let kvittering;
             try {
-                const kvittering = await sendApplication(esApi, abortSignal, '/soknad/engangssoknad', søknad);
-                setKvittering(kvittering);
+                kvittering = await postData<typeof søknad, Kvittering>(
+                    esApi,
+                    '/soknad/engangsstonad',
+                    søknad,
+                    FEIL_VED_INNSENDING,
+                    true,
+                    abortSignal,
+                );
             } catch (error: unknown) {
                 if (isApiError(error)) {
                     setError(error);
                 } else {
                     throw new Error('This should never happen');
                 }
+            }
+
+            if (kvittering) {
+                try {
+                    await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
+                } catch (error) {
+                    // Vi bryr oss ikke om feil her. Logges bare i backend
+                }
+
+                setKvittering(kvittering);
             }
         },
         [hentData, locale, setKvittering, esApi],

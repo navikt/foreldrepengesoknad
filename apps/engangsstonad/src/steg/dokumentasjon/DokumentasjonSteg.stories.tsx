@@ -5,47 +5,62 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { attachmentApi } from '@navikt/fp-api';
 
 import { Path } from 'appData/paths';
-import withRouter from 'storybook/decorators/withRouter';
-import { Action, EsDataContext, EsDataType } from 'appData/EsDataContext';
+import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import { OmBarnet } from 'types/OmBarnet';
 import DokumentasjonSteg from './DokumentasjonSteg';
+import { MemoryRouter } from 'react-router-dom';
+
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 export default {
     title: 'DokumentasjonSteg',
     component: DokumentasjonSteg,
-    decorators: [withRouter],
 };
 
 const Template: StoryFn<{
     routerDecoratorInitUrl: string;
-    gåTilNesteSide: (action: Action) => void;
+    gåTilNesteSide?: (action: Action) => void;
+    mellomlagreOgNaviger?: () => Promise<void>;
     omBarnet: OmBarnet;
     skalFeileOpplasting?: boolean;
-}> = ({ gåTilNesteSide, omBarnet, skalFeileOpplasting = false }) => {
+    path: Path;
+}> = ({
+    gåTilNesteSide = action('button-click'),
+    mellomlagreOgNaviger = promiseAction(),
+    omBarnet,
+    skalFeileOpplasting = false,
+    path,
+}) => {
     initAmplitude();
 
     const apiMock = new MockAdapter(attachmentApi);
     if (!skalFeileOpplasting) {
-        apiMock.onPost('/storage/vedlegg').reply(200); //story
-        apiMock.onPost('http://localhost:8888/rest/storage/vedlegg').reply(200); //test
+        apiMock.onPost('/storage/engangsstonad/vedlegg').reply(200); //story
+        apiMock.onPost('http://localhost:8888/rest/storage/engangsstonad/vedlegg').reply(200); //test
     }
 
     return (
-        <EsDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [EsDataType.OM_BARNET]: omBarnet,
-            }}
-        >
-            <DokumentasjonSteg />
-        </EsDataContext>
+        <MemoryRouter initialEntries={[path]}>
+            <EsDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.OM_BARNET]: omBarnet,
+                }}
+            >
+                <DokumentasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
+            </EsDataContext>
+        </MemoryRouter>
     );
 };
 
 export const Terminbekreftelse = Template.bind({});
 Terminbekreftelse.args = {
-    gåTilNesteSide: action('button-click'),
-    routerDecoratorInitUrl: Path.TERMINBEKREFTELSE,
+    path: Path.TERMINBEKREFTELSE,
     omBarnet: {
         erBarnetFødt: false,
         antallBarn: 1,
@@ -55,8 +70,7 @@ Terminbekreftelse.args = {
 
 export const Adopsjonsbekreftelse = Template.bind({});
 Adopsjonsbekreftelse.args = {
-    gåTilNesteSide: action('button-click'),
-    routerDecoratorInitUrl: Path.ADOPSJONSBEKREFTELSE,
+    path: Path.ADOPSJONSBEKREFTELSE,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         adopsjonsdato: '2020-01-01',
@@ -67,9 +81,8 @@ Adopsjonsbekreftelse.args = {
 
 export const FeilerOpplastinger = Template.bind({});
 FeilerOpplastinger.args = {
-    gåTilNesteSide: action('button-click'),
     skalFeileOpplasting: true,
-    routerDecoratorInitUrl: Path.ADOPSJONSBEKREFTELSE,
+    path: Path.ADOPSJONSBEKREFTELSE,
     omBarnet: {
         adopsjonAvEktefellesBarn: true,
         adopsjonsdato: '2020-01-01',

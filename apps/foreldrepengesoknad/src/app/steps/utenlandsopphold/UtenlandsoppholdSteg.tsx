@@ -78,7 +78,6 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøkn
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}
                 stønadstype="Foreldrepenger"
-                supportsTempSaving
             />
         </ContentWrapper>
     );

@@ -5,9 +5,7 @@
     "Umyndig.Tittel": "Fordi du er under 18 år, må du sende papirsøknad",
     "Umyndig.Tekst": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden din sammen med deg. Derfor må du fylle ut søknaden på papir og sende den i posten til NAV.",
     "Umyndig.Knapp.Papirsøknad": "Gå til papirsøknaden",
-
     "ErrorSummaryFp.Tittel": "Du må rette opp i følgende feil:",
-
     "FileInput.Vedlegg.Lastoppknapp": "Last opp fil",
     "FileInput.Vedlegg.Lastoppknapp.Flere": "Last opp flere filer",
     "Attachment.Vedlegg.Slett": "Fjern vedlegg {navn}",
@@ -15,10 +13,8 @@
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "{filename} - Vedlegg er ikke av gyldig type",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}KB.",
     "FailedAttachment.Vedlegg.Feilmelding.Timeout": "{filename} - Det tok for lang tid å laste opp dokumentet ditt. Sjekk nettverket ditt eller prøv å laste opp færre dokumenter på en gang",
-
     "StepButtons.Forrige": "Forrige steg",
     "StepButtons.Neste": "Neste steg",
-
     "ErrorPage.Engangsstønad": "Engangsstønad",
     "ErrorPage.Foreldrepenger": "Foreldrepenger",
     "ErrorPage.Svangerskapspenger": "Svangerskapspenger",
@@ -27,13 +23,13 @@
     "ErrorPage.Contact": "Kontakt brukerstøtte",
     "ErrorPage.TryAgain": "Søk på nytt",
     "ErrorPage.ErrorMessage": "Feilmelding",
-
-    "ScanDocumentInfo.Tittel": "Hvordan ta bilde av vedlegg med mobilen?",
+    "ScanDocumentInfo.Tittel": "Hvordan ta bilde av et dokument med mobilen",
     "ScanDocumentInfo.Del1": "Har du et dokument på papir, kan du ta et bilde av dokumentet for å sende det til oss.",
     "ScanDocumentInfo.Liste.Punkt1": "Ta bilde av dokumentet med smarttelefonen eller nettbrettet.",
     "ScanDocumentInfo.Liste.Punkt2": "Sjekk at dokumentet er lett å lese.",
-    "ScanDocumentInfo.Liste.Punkt3": "Bruker du PC eller Mac, kan du sende bilde(ne) til din private e-postkonto og lagre bildet på enheten din.",
-    "ScanDocumentInfo.Liste.Punkt4": "Last opp bildene.",
+    "ScanDocumentInfo.Liste.Punkt3": "Logg inn på nav.no via mobilen – last opp og legg bildene ved den elektroniske søknaden.",
+    "ScanDocumentInfo.Liste.Punkt4": "Ønsker du å bruke PC eller Mac, kan du sende bildene til din private e-postkonto og lagre bildene på enheten din.",
+    "ScanDocumentInfo.Liste.Punkt5": "Last opp og legg bildene ved den elektroniske søknaden din.",
     "ScanDocumentInfo.Del2": "Har du skanner, kan du skanne dokumenter.",
     "ScanDocumentInfo.Link": "Mer informasjon om å sende vedlegg på nav.no."
 }

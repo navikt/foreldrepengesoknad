@@ -57,7 +57,7 @@ const Template: StoryFn<Props> = ({
     avbrytSøknad = action('button-click'),
 }) => {
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/vedlegg').reply(
+        apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
             200,
             { data: {} },
             {

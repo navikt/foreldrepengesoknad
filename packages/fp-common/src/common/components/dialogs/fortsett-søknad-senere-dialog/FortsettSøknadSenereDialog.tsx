@@ -18,7 +18,6 @@ const FortsettSøknadSenereDialog: React.FunctionComponent<Props> = (props) => {
             open={synlig}
             bekreftLabel={intlHelper(intl, 'fortsettSøknadSenereDialog.avbrytSøknadLabel')}
             avbrytLabel={intlHelper(intl, 'fortsettSøknadSenereDialog.fortsettSøknadLabel')}
-            closeButton={false}
             aria-label={intlHelper(intl, 'fortsettSøknadSenereDialog.tittel')}
             onBekreft={onFortsettSøknadSenere}
             onClose={onFortsettSøknad}

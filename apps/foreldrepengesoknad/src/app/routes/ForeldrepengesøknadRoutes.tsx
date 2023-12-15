@@ -1,5 +1,4 @@
 import { LocaleNo } from '@navikt/fp-types';
-import IkkeMyndig from 'app/pages/ikkeMyndig/IkkeMyndig';
 import Velkommen from 'app/pages/velkommen/Velkommen';
 import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
@@ -22,6 +21,7 @@ import useSendSøknad from 'app/context/useSendSøknad';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { Kvittering } from 'app/types/Kvittering';
 import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
+import { Umyndig } from '@navikt/fp-ui';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
@@ -283,7 +283,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                     />
                 }
             />
-            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<IkkeMyndig søkerInfo={søkerInfo} />} />
+            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appnavn="Foreldrepenger" />} />
 
             {renderSøknadRoutes(
                 harGodkjentVilkår,

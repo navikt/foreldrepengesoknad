@@ -22,7 +22,7 @@ export interface StepProps {
     cancelOrContinueLaterAriaLabel?: string;
     pageAriaLabel?: string;
     infoMessage?: React.ReactNode;
-    useNoTempSavingText?: boolean;
+    supportsTempSaving?: boolean;
 }
 
 const Step: React.FunctionComponent<StepProps> = ({
@@ -37,7 +37,7 @@ const Step: React.FunctionComponent<StepProps> = ({
     children,
     pageAriaLabel,
     infoMessage,
-    useNoTempSavingText,
+    supportsTempSaving,
 }) => {
     const currentStepIndex = steps.findIndex((s) => s.id === activeStepId || s.isSelected);
 
@@ -82,7 +82,7 @@ const Step: React.FunctionComponent<StepProps> = ({
                         <StepFooter
                             onAvbrytOgSlett={onCancel}
                             onAvbrytOgFortsettSenere={onContinueLater}
-                            useNoTempSavingText={useNoTempSavingText}
+                            supportsTempSaving={supportsTempSaving}
                         />
                     </div>
                 )}

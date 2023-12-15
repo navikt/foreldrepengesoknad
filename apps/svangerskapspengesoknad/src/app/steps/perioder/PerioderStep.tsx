@@ -111,7 +111,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                         pageTitle={sideTittel}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        useNoTempSavingText={true}
+                        supportsTempSaving={false}
                     >
                         <PerioderFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {erFlereTilrettelegginger && (

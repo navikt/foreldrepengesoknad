@@ -244,7 +244,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                                     padBottom="xl"
                                     visible={visibility.isVisible(AnnenForelderFormField.datoForAleneomsorg)}
                                 >
-                                    <Block>
+                                    <Block padBottom="xl">
                                         <AnnenForelderFormComponents.DatePicker
                                             name={AnnenForelderFormField.datoForAleneomsorg}
                                             label={intlUtils(intl, 'annenForelder.datoForAleneomsorg')}
@@ -255,18 +255,19 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                                     </Block>
 
                                     <FarDokumentasjonAleneomsorgVeileder />
-
-                                    <FormikFileUploader
-                                        legend="Dokumentasjon for aleneomsorg"
-                                        label={intlUtils(
-                                            intl,
-                                            'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp',
-                                        )}
-                                        name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
-                                        attachments={formValues.dokumentasjonAvAleneomsorg || []}
-                                        attachmentType={AttachmentType.ALENEOMSORG}
-                                        skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
-                                    />
+                                    <Block padBottom="xl">
+                                        <FormikFileUploader
+                                            legend="Dokumentasjon for aleneomsorg"
+                                            label={intlUtils(
+                                                intl,
+                                                'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp',
+                                            )}
+                                            name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
+                                            attachments={formValues.dokumentasjonAvAleneomsorg || []}
+                                            attachmentType={AttachmentType.ALENEOMSORG}
+                                            skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
+                                        />{' '}
+                                    </Block>
                                 </Block>
                             )}
                             <Block

@@ -101,7 +101,7 @@ const MorsAktivitetIntroprogramUploader: FunctionComponent<Props> = ({
 
                     return updateAttachments(attachmentsMedMetadata);
                 }}
-                saveAttachment={getSaveAttachment(Environment.REST_API_URL)}
+                saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'foreldrepenger')}
             />
         </VStack>
     );

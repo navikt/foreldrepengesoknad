@@ -8,21 +8,25 @@ import { Form, StepButtonsHookForm, ErrorSummaryHookForm } from '@navikt/fp-form
 
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
 import AdopsjonDokPanel from './AdopsjonDokPanel';
 import TerminDokPanel from './TerminDokPanel';
 
-const DokumentasjonSteg: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreOgNaviger: () => Promise<void>;
+};
+
+const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
-    const dokumentasjon = useEsStateData(EsDataType.DOKUMENTASJON);
-    const lagreDokumentasjon = useEsStateSaveFn(EsDataType.DOKUMENTASJON);
-    const omBarnet = notEmpty(useEsStateData(EsDataType.OM_BARNET));
+    const dokumentasjon = useContextGetData(ContextDataType.DOKUMENTASJON);
+    const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
+    const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const erBarnetAdoptert = erAdopsjon(omBarnet);
     const harTermindato = erBarnetIkkeFødt(omBarnet);
@@ -38,14 +42,15 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
                     ? i18n('DokumentasjonSteg.MinstEttDokumentAdopsjon')
                     : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
             });
+            return Promise.resolve();
         } else {
-            lagreDokumentasjon(formValues);
-            navigator.goToNextDefaultStep();
+            oppdaterDokumentasjon(formValues);
+            return navigator.goToNextDefaultStep();
         }
     };
 
     const updateAttachments = (attachments: Attachment[]) => {
-        formMethods.setValue('vedlegg', attachments);
+        formMethods.setValue('vedlegg', attachments, { shouldDirty: true, shouldTouch: true });
         formMethods.clearErrors('vedlegg');
     };
 
@@ -53,8 +58,8 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
         <Step
             bannerTitle={i18n('Søknad.Pageheading')}
             onCancel={navigator.avbrytSøknad}
+            onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
-            useNoTempSavingText
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
@@ -72,7 +77,7 @@ const DokumentasjonSteg: React.FunctionComponent = () => {
                     <ScanDocumentInfo />
                     <StepButtonsHookForm<Dokumentasjon>
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        saveDataOnPreviousClick={lagreDokumentasjon}
+                        saveDataOnPreviousClick={oppdaterDokumentasjon}
                     />
                 </VStack>
             </Form>

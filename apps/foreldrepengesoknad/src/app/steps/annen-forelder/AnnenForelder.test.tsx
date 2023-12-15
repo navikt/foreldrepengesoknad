@@ -41,7 +41,7 @@ describe('<AnnenForelder>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(4);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(5);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallBarn: 1,
@@ -82,6 +82,13 @@ describe('<AnnenForelder>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
+            data: {
+                I000110: [],
+            },
+            key: ContextDataType.VEDLEGG,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(5, {
             data: SøknadRoutes.UTTAKSPLAN_INFO,
             key: ContextDataType.APP_ROUTE,
             type: 'update',

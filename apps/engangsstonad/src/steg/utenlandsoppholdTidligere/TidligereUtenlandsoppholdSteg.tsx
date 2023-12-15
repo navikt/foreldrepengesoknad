@@ -7,20 +7,24 @@ import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 
 import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';
-import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import useStepConfig from 'appData/useStepConfig';
 
-const TidligereUtenlandsoppholdSteg: React.FunctionComponent = () => {
-    const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+type Props = {
+    mellomlagreOgNaviger: () => Promise<void>;
+};
 
-    const utenlandsopphold = notEmpty(useEsStateData(EsDataType.UTENLANDSOPPHOLD));
-    const tidligereUtenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const lagreTidligereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
+    const stepConfig = useStepConfig();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
+
+    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
+    const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const oppdaterTidligereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
     const lagre = (formValues: UtenlandsoppholdTidligere) => {
-        lagreTidligereUtenlandsopphold(formValues);
-        navigator.goToNextStep(
+        oppdaterTidligereUtenlandsopphold(formValues);
+        return navigator.goToNextStep(
             utenlandsopphold.skalBoUtenforNorgeNeste12Mnd ? Path.SENERE_UTENLANDSOPPHOLD : Path.OPPSUMMERING,
         );
     };
@@ -33,7 +37,8 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent = () => {
             <TidligereUtenlandsoppholdPanel
                 tidligereUtenlandsopphold={tidligereUtenlandsopphold}
                 saveOnNext={lagre}
-                saveOnPrevious={lagreTidligereUtenlandsopphold}
+                saveOnPrevious={oppdaterTidligereUtenlandsopphold}
+                onContinueLater={navigator.fortsettSøknadSenere}
                 cancelApplication={navigator.avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}

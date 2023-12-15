@@ -39,7 +39,7 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     onContinueLater,
     goToPreviousStep,
     stepConfig,
-    supportsTempSaving = false,
+    supportsTempSaving = true,
 }) => {
     const defaultValues = useMemo(() => tidligereUtenlandsopphold || DEFAULT_FORM_VALUES, [tidligereUtenlandsopphold]);
     const formMethods = useForm<UtenlandsoppholdTidligere>({
@@ -66,7 +66,7 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                 onCancel={cancelApplication}
                 onContinueLater={onContinueLater}
                 steps={stepConfig}
-                useNoTempSavingText={!supportsTempSaving}
+                supportsTempSaving={supportsTempSaving}
             >
                 <Form formMethods={formMethods} onSubmit={saveOnNext}>
                     <VStack gap="10">

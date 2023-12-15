@@ -6,7 +6,7 @@ import { StepButtonsHookForm, Form, ErrorSummaryHookForm } from '@navikt/fp-form
 import { notEmpty } from '@navikt/fp-validation';
 import { omitOne } from '@navikt/fp-utils';
 
-import { EsDataType, useEsStateData, useEsStateSaveFn } from 'appData/EsDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import { Path } from 'appData/paths';
@@ -43,27 +43,28 @@ const mapOmBarnetFraStateTilForm = (omBarnet: OmBarnet) => ({
 
 export interface Props {
     kjønn: Kjønn;
+    mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
+const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
-    const omBarnet = useEsStateData(EsDataType.OM_BARNET);
-    const lagreOmBarnet = useEsStateSaveFn(EsDataType.OM_BARNET);
-    const lagreDokumentasjon = useEsStateSaveFn(EsDataType.DOKUMENTASJON);
-    const søkersituasjon = notEmpty(useEsStateData(EsDataType.SØKERSITUASJON));
+    const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
-    const mapOgLagreOmBarnet = (formValues: FormValues) => lagreOmBarnet(mapOmBarnetFraFormTilState(formValues));
+    const mapOgLagreOmBarnet = (formValues: FormValues) => oppdaterOmBarnet(mapOmBarnetFraFormTilState(formValues));
 
     const onSubmit = (formValues: FormValues) => {
         mapOgLagreOmBarnet(formValues);
         if (formValues.erBarnetFødt === true) {
-            lagreDokumentasjon(undefined);
+            oppdaterDokumentasjon(undefined);
         }
-        navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
+        return navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
     };
 
     const formMethods = useForm<FormValues>({
@@ -74,8 +75,8 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn }) => {
         <Step
             bannerTitle={i18n('Søknad.Pageheading')}
             onCancel={navigator.avbrytSøknad}
+            onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
-            useNoTempSavingText
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">

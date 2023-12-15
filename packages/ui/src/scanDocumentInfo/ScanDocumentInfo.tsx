@@ -30,6 +30,9 @@ const ScanDocumentInfo = () => (
                         <BodyLong>
                             <FormattedMessage tagName="li" id="ScanDocumentInfo.Liste.Punkt4" />
                         </BodyLong>
+                        <BodyLong>
+                            <FormattedMessage tagName="li" id="ScanDocumentInfo.Liste.Punkt5" />
+                        </BodyLong>
                     </ul>
                     <BodyLong>
                         <FormattedMessage id="ScanDocumentInfo.Del2" />

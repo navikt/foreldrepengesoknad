@@ -6,7 +6,7 @@ import { ContentWrapper } from '@navikt/fp-ui';
 
 import useEsNavigator from 'appData/useEsNavigator';
 import { Path } from 'appData/paths';
-import { EsDataType, useEsStateSaveFn, useEsStateData } from 'appData/EsDataContext';
+import { ContextDataType, useContextSaveData, useContextGetData } from 'appData/EsDataContext';
 import useStepConfig from 'appData/useStepConfig';
 
 const utledNesteSide = (formValues: Utenlandsopphold): Path => {
@@ -16,27 +16,31 @@ const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.SENERE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
 };
 
-const UtenlandsoppholdSteg: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreOgNaviger: () => Promise<void>;
+};
+
+const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
     const stepConfig = useStepConfig();
-    const navigator = useEsNavigator();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
 
-    const utenlandsopphold = useEsStateData(EsDataType.UTENLANDSOPPHOLD);
+    const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
 
-    const lagreUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD);
-    const lagreTidligereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const lagreSenereUtenlandsopphold = useEsStateSaveFn(EsDataType.UTENLANDSOPPHOLD_SENERE);
+    const oppdaterUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD);
+    const oppdaterTidligereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
     const lagre = (formValues: Utenlandsopphold) => {
-        lagreUtenlandsopphold(formValues);
+        oppdaterUtenlandsopphold(formValues);
 
         if (!formValues.harBoddUtenforNorgeSiste12Mnd) {
-            lagreTidligereUtenlandsopphold(undefined);
+            oppdaterTidligereUtenlandsopphold(undefined);
         }
         if (!formValues.skalBoUtenforNorgeNeste12Mnd) {
-            lagreSenereUtenlandsopphold(undefined);
+            oppdaterSenereUtenlandsopphold(undefined);
         }
 
-        navigator.goToNextStep(utledNesteSide(formValues));
+        return navigator.goToNextStep(utledNesteSide(formValues));
     };
 
     return (
@@ -47,8 +51,9 @@ const UtenlandsoppholdSteg: React.FunctionComponent = () => {
             <UtenlandsoppholdPanel
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={lagre}
-                saveOnPrevious={lagreUtenlandsopphold}
+                saveOnPrevious={oppdaterUtenlandsopphold}
                 cancelApplication={navigator.avbrytSøknad}
+                onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 stønadstype="Engangsstønad"

@@ -10,6 +10,7 @@ import { AttachmentType } from 'app/types/AttachmentType';
 import { mapFilTilVedlegg } from 'app/utils/attachmentUtils';
 import { intlUtils } from '@navikt/fp-common';
 import AttachmentApi from 'app/api/attachmentApi';
+import { ScanDocumentInfo } from '@navikt/fp-ui';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;
@@ -127,7 +128,7 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block padBottom="l">
+            <Block padBottom="xl">
                 <FormikFileInput
                     name={name}
                     accept={VALID_EXTENSIONS.join(', ')}
@@ -158,6 +159,9 @@ const FormikFileUploader: React.FunctionComponent<Props> = ({
                     }
                     {...otherProps}
                 />
+            </Block>
+            <Block padBottom="l">
+                <ScanDocumentInfo />
             </Block>
         </>
     );

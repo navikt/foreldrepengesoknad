@@ -19,7 +19,6 @@ const AvbrytSøknadDialog: React.FunctionComponent<AvbrytSøknadDialogProps> = (
             open={synlig}
             bekreftLabel={intlHelper(intl, 'avbrytSøknadDialog.avbrytSøknadLabel')}
             avbrytLabel={intlHelper(intl, 'avbrytSøknadDialog.fortsettSøknadLabel')}
-            closeButton={false}
             aria-label={intlHelper(intl, 'avbrytSøknadDialog.tittel')}
             onBekreft={onAvbrytSøknad}
             onClose={onFortsettSøknad}

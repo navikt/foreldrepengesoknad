@@ -79,12 +79,12 @@ router.delete('/rest/storage/foreldrepenger', (_req, res) => {
 const vedleggUpload = multer({
     dest: './dist/vedlegg/',
 });
-router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
+router.post('/rest/storage/foreldrepenger/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
     res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
     res.sendStatus(201);
 });
 
-router.delete('/rest/storage/vedlegg', (_req, res) => {
+router.delete('/rest/storage/foreldrepenger/vedlegg', (_req, res) => {
     MockStorage.deleteSoknad();
     return res.sendStatus(200);
 });

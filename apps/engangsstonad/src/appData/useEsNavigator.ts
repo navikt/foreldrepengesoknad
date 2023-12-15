@@ -1,14 +1,12 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { useEsStateResetFn } from './EsDataContext';
+import { ContextDataType, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';
 import useStepConfig from './useStepConfig';
 
-const useEsNavigator = () => {
-    const navigate = useNavigate();
+const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     const stepConfig = useStepConfig();
-    const resetEsData = useEsStateResetFn();
+    const oppdaterPath = useContextSaveData(ContextDataType.CURRENT_PATH);
 
     const activeStepId = stepConfig.find((sc) => sc.isSelected);
 
@@ -20,39 +18,47 @@ const useEsNavigator = () => {
         });
     }, [activeStepId]);
 
-    const goToPreviousDefaultStep = useCallback(() => {
+    const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id || Path.VELKOMMEN;
-        navigate(previousPath);
-    }, [navigate, stepConfig]);
+        oppdaterPath(previousPath);
+        return mellomlagreOgNaviger();
+    };
 
-    const goToNextStep = useCallback(
-        (path: Path) => {
-            navigate(path);
-        },
-        [navigate],
-    );
+    const goToNextStep = (path: Path) => {
+        oppdaterPath(path);
+        return mellomlagreOgNaviger();
+    };
 
-    const goToNextDefaultStep = useCallback(() => {
+    const goToNextDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
-        navigate(nextPath);
-    }, [navigate, stepConfig]);
 
-    const avbrytSøknad = useCallback(() => {
-        resetEsData();
-        navigate(Path.VELKOMMEN);
-    }, [navigate, resetEsData]);
+        oppdaterPath(nextPath);
+        return mellomlagreOgNaviger();
+    };
 
-    return useMemo(
-        () => ({
-            goToPreviousDefaultStep,
-            goToNextStep,
-            goToNextDefaultStep,
-            avbrytSøknad,
-        }),
-        [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep, avbrytSøknad],
-    );
+    const avbrytSøknad = () => {
+        oppdaterPath(undefined);
+        return mellomlagreOgNaviger();
+    };
+
+    const fortsettSøknadSenere = () => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'engangsstonadny',
+            team: 'foreldrepenger',
+            hendelse: 'fortsettSenere',
+        });
+        (window as any).location = 'https://nav.no';
+    };
+
+    return {
+        goToPreviousDefaultStep,
+        goToNextStep,
+        goToNextDefaultStep,
+        avbrytSøknad,
+        fortsettSøknadSenere,
+    };
 };
 
 export default useEsNavigator;
