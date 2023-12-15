@@ -6,6 +6,7 @@ import { Attachment } from '@navikt/fp-types';
 import { bytesString } from '../fileUtils';
 
 import './attachmentInfo.less';
+import { KeyboardEvent } from 'react';
 
 interface OwnProps {
     attachment: Attachment;
@@ -37,7 +38,11 @@ const AttachmentInfo: React.FunctionComponent<Props> = ({ attachment, showFileSi
                     <>
                         <Spacer />
                         <XMarkIcon
+                            tabIndex={0}
                             onClick={() => onDelete(attachment)}
+                            onKeyDown={(event: KeyboardEvent) => {
+                                event.code === 'Space' || event.code === 'Enter' ? onDelete(attachment) : undefined;
+                            }}
                             height={24}
                             width={24}
                             cursor="pointer"
