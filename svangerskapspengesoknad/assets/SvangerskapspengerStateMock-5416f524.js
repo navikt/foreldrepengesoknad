@@ -1,0 +1,2 @@
+import{a as p}from"./links-668a22c1.js";import{u as n}from"./useSvangerskapspengerContext-74455b5e.js";import{r as a}from"./_baseToString-8f5e3abd.js";const m=({children:s,context:r})=>{const[e,o]=a.useState(!1),{dispatch:t}=n();return a.useEffect(()=>{e||Promise.all([t(p.applyStoredState(r))]).then(()=>{o(!0)})},[t,e,r]),e?s:null};export{m as S};
+//# sourceMappingURL=SvangerskapspengerStateMock-5416f524.js.map
