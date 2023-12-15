@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosInstance } from 'axios';
-import { Kvittering } from '@navikt/fp-types';
+import { Kvittering, LocaleAll } from '@navikt/fp-types';
 import { postData, ApiAccessError, ApiGeneralError, deleteData } from '@navikt/fp-api';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
 export const VERSJON_MELLOMLAGRING = 1;
 
-export type EsDataMapAndVersion = { version: number } & ContextDataMap;
+export type EsDataMapAndMetaData = { version: number; locale: LocaleAll } & ContextDataMap;
 
 // TODO (TOR) Fiks lokalisering
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
-const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: boolean) => void) => {
+const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -31,11 +31,12 @@ const useEsMellomlagring = (esApi: AxiosInstance, setVelkommen: (erVelkommen: bo
 
                 const currentPath = state[ContextDataType.CURRENT_PATH];
                 if (currentPath) {
-                    await postData<EsDataMapAndVersion, Kvittering>(
+                    await postData<EsDataMapAndMetaData, Kvittering>(
                         esApi,
                         '/storage/engangsstonad',
                         {
                             version: VERSJON_MELLOMLAGRING,
+                            locale,
                             ...state,
                         },
                         FEIL_VED_INNSENDING,

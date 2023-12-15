@@ -8,7 +8,7 @@ import AppContainer from './AppContainer';
 import { esApi } from './EngangsstønadRoutes';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import { EsDataMapAndVersion } from 'appData/useEsMellomlagring';
+import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -22,7 +22,7 @@ export default {
     component: AppContainer,
 };
 
-const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndVersion; doLogging?: boolean }> = ({
+const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndMetaData; doLogging?: boolean }> = ({
     person,
     mellomlagretData,
     doLogging = true,
@@ -88,6 +88,7 @@ export const SøkerErKvinneMedMellomlagretData = Template.bind({});
 SøkerErKvinneMedMellomlagretData.args = {
     mellomlagretData: {
         version: 1,
+        locale: 'nb',
         [ContextDataType.SØKERSITUASJON]: {
             situasjon: 'fødsel',
         },
