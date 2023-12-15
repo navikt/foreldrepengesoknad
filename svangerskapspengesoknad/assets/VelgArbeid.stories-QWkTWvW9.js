@@ -1,0 +1,7 @@
+import{j as e}from"./fridagerUtils-6U_wRMrp.js";import{w as p}from"./withSvangerskapspengerContext-u9sK-EjA.js";import{w as m}from"./withRouter-EdHwJvn2.js";import{V as a}from"./SvangerskapspengesøknadRoutes-oJh5a_q5.js";import{S as g}from"./SvangerskapspengerStateMock-jzp54bxO.js";import{_ as c}from"./soknad-kEMKZJwR.js";import"./index-OjgoNOWw.js";import"./index-lbrLmSir.js";import"./index-SHZD1B3a.js";import"./v4-yQnnJER4.js";import"./links-LrZ6DeOC.js";import"./index--8UBiHiw.js";import"./Forside-e21R8gb3.js";import"./_baseToString-c7_W74Ua.js";import"./_createSet-hSZRoo1M.js";import"./useSvangerskapspengerContext-rPkOa1es.js";import"./_baseIteratee-j829L0Q9.js";import"./_baseUniq-2KlOTSab.js";import"./amplitude-IJJJ0bTm.js";import"./provider-n7b5NBGh.js";import"./ArrowRight-V5hi5Fm_.js";const O={title:"steps/VelgArbeid",component:a,decorators:[p,m]},r=c,l={...r,søknad:{...r.søknad,tilrettelegging:[]}},d=({contextUtenTilretteleggingValg:s})=>e.jsx(g,{context:s,children:e.jsx(a,{})}),t=d.bind({});t.args={contextUtenTilretteleggingValg:l};var o,n,i;t.parameters={...t.parameters,docs:{...(o=t.parameters)==null?void 0:o.docs,source:{originalSource:`({
+  contextUtenTilretteleggingValg
+}) => {
+  return <SvangerskapspengerStateMock context={contextUtenTilretteleggingValg}>
+            <VelgArbeid />
+        </SvangerskapspengerStateMock>;
+}`,...(i=(n=t.parameters)==null?void 0:n.docs)==null?void 0:i.source}}};const q=["Default"];export{t as Default,q as __namedExportsOrder,O as default};
