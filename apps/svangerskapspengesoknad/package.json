@@ -89,7 +89,7 @@
         "@testing-library/user-event": "^14.5.1",
         "@types/amplitude-js": "^8.16.2",
         "@types/bytes": "^3.1.1",
-        "@types/lodash": "^4.14.197",
+        "@types/lodash": "^4.14.202",
         "@types/react": "^18.2.20",
         "@types/react-aria-menubutton": "^6.2.9",
         "@types/react-collapse": "^5.0.1",

@@ -93,7 +93,7 @@
         "@testing-library/user-event": "^14.5.1",
         "@types/amplitude-js": "^8.16.2",
         "@types/bytes": "^3.1.1",
-        "@types/lodash": "^4.14.197",
+        "@types/lodash": "^4.14.202",
         "@types/lodash.groupby": "^4.6.7",
         "@types/lodash.throttle": "^4.1.7",
         "@types/node": "^20.5.0",

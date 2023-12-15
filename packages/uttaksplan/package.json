@@ -30,7 +30,7 @@
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.1.5",
         "@testing-library/react": "^14.1.2",
-        "@types/lodash": "^4.14.197",
+        "@types/lodash": "^4.14.202",
         "@types/lodash.throttle": "^4.1.7",
         "@vitejs/plugin-react": "^4.0.4",
         "lodash.throttle": "^4.1.1",
