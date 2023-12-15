@@ -68,7 +68,7 @@
         "sass": "^1.65.1",
         "storybook": "7.3.1",
         "storybook-react-intl": "^2.0.2",
-        "vite": "^4.4.9",
+        "vite": "^4.4.12",
         "vite-plugin-checker": "^0.6.1",
         "vitest": "^0.34.2"
     },
