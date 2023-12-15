@@ -78,8 +78,8 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Modal open={visible} closeButton={true} onClose={onAvbryt} aria-label="Endre tidsperiode">
-                <Modal.Content>
+            <Modal open={visible} onClose={onAvbryt} aria-label="Endre tidsperiode">
+                <Modal.Body>
                     <TidsperiodeForm
                         familiehendelsesdato={familiehendelsesdato}
                         onBekreft={handleOnSubmit}
@@ -94,7 +94,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         situasjon={situasjon}
                         erFarMedmorOgHarAleneomsorg={erFarMedmorOgHarAleneomsorg}
                     />
-                </Modal.Content>
+                </Modal.Body>
             </Modal>
             <Block padBottom="m">
                 <UkerDagerTeller

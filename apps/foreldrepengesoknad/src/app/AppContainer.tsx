@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import dayjs from 'dayjs';
-import { Modal } from '@navikt/ds-react';
 import { IntlProvider } from '@navikt/fp-ui';
 import { LocaleNo } from '@navikt/fp-types';
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
@@ -22,12 +21,6 @@ dayjs.locale(localeFromSessionStorage);
 
 const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
-
-    useEffect(() => {
-        if (Modal.setAppElement) {
-            Modal.setAppElement('#app');
-        }
-    });
 
     return (
         <ErrorBoundary>

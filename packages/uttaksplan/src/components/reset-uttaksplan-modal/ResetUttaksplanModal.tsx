@@ -15,31 +15,27 @@ const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handl
     const bem = bemUtils('resetUttaksplanModal');
 
     return (
-        <Modal
-            className={bem.block}
-            open={isOpen}
-            closeButton={true}
-            onClose={onClose}
-            aria-label="Tilbakestill uttaksplanen din"
-        >
-            <div className={bem.element('content')}>
-                <Block padBottom="l">
-                    <Heading size="small">
-                        <FormattedMessage id="uttaksplan.resetPlan.innhold1" />
-                    </Heading>
-                    <BodyShort>
-                        <FormattedMessage id="uttaksplan.resetPlan.innhold2" />
-                    </BodyShort>
-                </Block>
-                <div className={bem.element('knappWrapper')}>
-                    <Button onClick={handleResetUttaksplanModalBekreft}>
-                        <FormattedMessage id="uttaksplan.resetPlan.slett" />
-                    </Button>
-                    <Button variant="secondary" onClick={onClose}>
-                        <FormattedMessage id="uttaksplan.resetPlan.avbryt" />
-                    </Button>
+        <Modal className={bem.block} open={isOpen} onClose={onClose} aria-label="Tilbakestill uttaksplanen din">
+            <Modal.Body>
+                <div className={bem.element('content')}>
+                    <Block padBottom="l">
+                        <Heading size="small">
+                            <FormattedMessage id="uttaksplan.resetPlan.innhold1" />
+                        </Heading>
+                        <BodyShort>
+                            <FormattedMessage id="uttaksplan.resetPlan.innhold2" />
+                        </BodyShort>
+                    </Block>
+                    <div className={bem.element('knappWrapper')}>
+                        <Button onClick={handleResetUttaksplanModalBekreft}>
+                            <FormattedMessage id="uttaksplan.resetPlan.slett" />
+                        </Button>
+                        <Button variant="secondary" onClick={onClose}>
+                            <FormattedMessage id="uttaksplan.resetPlan.avbryt" />
+                        </Button>
+                    </div>
                 </div>
-            </div>
+            </Modal.Body>
         </Modal>
     );
 };

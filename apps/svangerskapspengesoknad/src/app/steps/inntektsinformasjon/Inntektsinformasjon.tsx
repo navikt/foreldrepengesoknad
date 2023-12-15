@@ -70,7 +70,7 @@ const Inntektsinformasjon: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'steps.label.arbeid')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        useNoTempSavingText={true}
+                        supportsTempSaving={false}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="xl">

@@ -57,7 +57,7 @@ const VelgArbeid: React.FunctionComponent = () => {
                         pageTitle={intlUtils(intl, 'steps.label.velgArbeid')}
                         onCancel={onAvbrytSøknad}
                         steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        useNoTempSavingText={true}
+                        supportsTempSaving={false}
                     >
                         <VelgArbeidFormComponents.Form
                             includeButtons={false}
