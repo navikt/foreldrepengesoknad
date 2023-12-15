@@ -68,11 +68,11 @@ export const getCountryName = (alphaCode: string, locale: string): string => {
     if (alphaCode === 'XXK') {
         alphaCode = 'XKX';
     }
-    return countries.getName(alphaCode, getLocaleKey(locale));
+    return countries.getName(alphaCode, getLocaleKey(locale))!;
 };
 
 export const getAlpha3Code = (alpha2Code: string) => {
-    const countryAlpha3Code = countries.alpha2ToAlpha3(alpha2Code).toUpperCase();
+    const countryAlpha3Code = countries.alpha2ToAlpha3(alpha2Code)!.toUpperCase();
 
     // i18n-iso-countries 7.5.0 bruker 'XKX' 'alpha3Code' for Kosovo. 'XXK' kode brukes i NAV.
     // Endrer i18n-iso-countries sin landkode til landkode som brukes i NAV for å sende riktig kode videre.
@@ -84,7 +84,7 @@ export const countryIsMemberOfEøsOrEfta = (isoCode: string) => {
     if (isoCodeToUse === 'XXK') {
         isoCodeToUse = 'XKX';
     }
-    isoCodeToUse = isoCodeToUse.length === 2 ? isoCodeToUse : countries.alpha3ToAlpha2(isoCodeToUse);
+    isoCodeToUse = isoCodeToUse.length === 2 ? isoCodeToUse : countries.alpha3ToAlpha2(isoCodeToUse)!;
     return filteredListEØSCountries(isoCodeToUse.toUpperCase(), true) === true;
 };
 
