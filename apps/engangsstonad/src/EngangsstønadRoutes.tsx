@@ -7,7 +7,7 @@ import { redirect, redirectToLogin } from '@navikt/fp-utils';
 import { ErrorPage } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataMap, ContextDataType } from 'appData/EsDataContext';
+import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import Environment from 'appData/Environment';
 import Person from './types/Person';
@@ -20,7 +20,7 @@ import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import useEsSendSøknad from 'appData/useEsSendSøknad';
-import useEsMellomlagring from 'appData/useEsMellomlagring';
+import useEsMellomlagring, { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 
 export const esApi = createApi(Environment.REST_API_URL);
 
@@ -42,7 +42,7 @@ interface Props {
     locale: LocaleAll;
     onChangeLocale: (locale: LocaleAll) => void;
     person: Person;
-    mellomlagretData?: ContextDataMap;
+    mellomlagretData?: EsDataMapAndMetaData;
 }
 
 const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChangeLocale, person, mellomlagretData }) => {
@@ -52,11 +52,14 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
-    const { mellomlagreOgNaviger, errorMellomlagre } = useEsMellomlagring(esApi, setVelkommen);
+    const { mellomlagreOgNaviger, errorMellomlagre } = useEsMellomlagring(esApi, locale, setVelkommen);
 
     useEffect(() => {
         if (mellomlagretData && mellomlagretData[ContextDataType.CURRENT_PATH]) {
             setVelkommen(true);
+            if (mellomlagretData.locale) {
+                onChangeLocale(mellomlagretData.locale);
+            }
             navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

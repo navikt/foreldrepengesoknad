@@ -3,15 +3,14 @@ import { BrowserRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 import { LocaleAll } from '@navikt/fp-types';
+import { deleteData } from '@navikt/fp-api';
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
 import { esApi } from './EngangsstønadRoutes';
-
 import Engangsstønad from './Engangsstønad';
 
 import nnMessages from './intl/messages/nn_NO.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import enMessages from './intl/messages/en_US.json';
-import { deleteData } from '@navikt/fp-api';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
@@ -39,6 +38,7 @@ const AppContainer = () => {
     const changeLocale = useCallback((activeLocale: LocaleAll) => {
         setLocaleInSessionStorage(activeLocale);
         setLocale(activeLocale);
+        document.documentElement.setAttribute('lang', activeLocale);
     }, []);
 
     return (

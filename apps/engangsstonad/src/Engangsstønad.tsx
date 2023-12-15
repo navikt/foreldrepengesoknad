@@ -7,7 +7,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { EsDataContext } from 'appData/EsDataContext';
 import Person from './types/Person';
 import EngangsstønadRoutes, { ApiErrorHandler, Spinner, esApi } from './EngangsstønadRoutes';
-import { EsDataMapAndVersion, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
+import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 
 interface Props {
     locale: LocaleAll;
@@ -21,7 +21,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         data: mellomlagretData,
         loading: loadingMellomlagretData,
         error: errorMellomlagretData,
-    } = useRequest<EsDataMapAndVersion>(esApi, '/storage/engangsstonad');
+    } = useRequest<EsDataMapAndMetaData>(esApi, '/storage/engangsstonad');
 
     if (errorHentPerson || errorMellomlagretData) {
         return <ApiErrorHandler error={notEmpty(errorHentPerson || errorMellomlagretData)} />;
