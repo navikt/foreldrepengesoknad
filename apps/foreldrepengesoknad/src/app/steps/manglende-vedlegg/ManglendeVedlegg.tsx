@@ -16,14 +16,16 @@ import {
     getFedrekvoteMorForSykVedlegg,
     getFellesperiodeVedlegg,
     getOverføringsVedlegg,
+    isSendSenereVedlegg,
 } from './util';
 import { Skjemanummer } from '@navikt/fp-constants';
 import OverføringsDok from './dokumentasjon/OverføringDok';
-import { ContextDataType, VedleggDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import FedrekvoteMorForSykDok from './dokumentasjon/FedrekvoteMorForSykDok';
 import UtsettelseDok from './dokumentasjon/UtsettelseDok';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 
 type Props = {
     person: Person;
@@ -91,7 +93,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     });
 
     const updateAttachments = (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => {
-        formMethods.setValue(skjemanummer, attachments);
+        formMethods.setValue(skjemanummer, attachments, { shouldDirty: true, shouldTouch: true });
         formMethods.clearErrors(skjemanummer);
     };
 
@@ -106,7 +108,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <FellesperiodeDok
-                    attachments={fellesperiodeVedlegg}
+                    attachments={fellesperiodeVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}
@@ -115,7 +117,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     updateAttachments={updateAttachments}
                 />
                 <OverføringsDok
-                    attachments={overføringsVedlegg}
+                    attachments={overføringsVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}
@@ -124,7 +126,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     updateAttachments={updateAttachments}
                 />
                 <FedrekvoteMorForSykDok
-                    attachments={fedrekvoteMorForSykVedlegg}
+                    attachments={fedrekvoteMorForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}
@@ -133,7 +135,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     updateAttachments={updateAttachments}
                 />
                 <UtsettelseDok
-                    attachments={fedrekvoteMorForSykVedlegg}
+                    attachments={fedrekvoteMorForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}

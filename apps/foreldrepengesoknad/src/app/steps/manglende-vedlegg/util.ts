@@ -1,7 +1,7 @@
-import { MorsAktivitet, Periode, isUttaksperiode } from '@navikt/fp-common';
-import { Skjemanummer } from '@navikt/fp-constants';
+import { MorsAktivitet, Periode, isUttaksperiode, lagSendSenereDokumentNårIngenAndreFinnes } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, AttachmentMetadata, InnsendingsType } from '@navikt/fp-types';
-import { VedleggDataType } from 'app/context/FpDataContext';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 
 export type GyldigeSkjemanummer =
     | Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM
@@ -108,6 +108,23 @@ export const getFellesperiodeVedlegg = (vedlegg: VedleggDataType) => {
     }
 
     return fellesperiodeVedlegg;
+};
+
+export const lagSendSenereDokumentOmPåkrevd = (
+    attachments: Attachment[],
+    required: boolean,
+    skjemanummer: Skjemanummer,
+    attachmentType: AttachmentType,
+) => {
+    if (required) {
+        return lagSendSenereDokumentNårIngenAndreFinnes(attachments, attachmentType, skjemanummer);
+    }
+
+    return attachments;
+};
+
+export const isSendSenereVedlegg = (attachment: Attachment) => {
+    return attachment.innsendingsType === InnsendingsType.SEND_SENERE;
 };
 
 export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {

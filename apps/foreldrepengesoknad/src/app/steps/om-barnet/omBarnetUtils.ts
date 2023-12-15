@@ -18,8 +18,8 @@ import {
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { VedleggDataType } from 'app/context/FpDataContext';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,

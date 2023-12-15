@@ -29,7 +29,7 @@ import Søker from 'app/context/types/Søker';
 import SøknadRoutes from 'app/routes/routes';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { ContextDataType, VedleggDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import {
@@ -46,6 +46,7 @@ import { validateDatoForAleneomsorg } from './validation/annenForelderValidering
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
 import BackButton from '../BackButton';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 
 type Props = {
     søkerInfo: Søkerinfo;

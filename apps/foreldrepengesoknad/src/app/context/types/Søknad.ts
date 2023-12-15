@@ -2,7 +2,7 @@ import Barn from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
 import Søker from './Søker';
 import { AnnenForelder, Dekningsgrad, Periode, Søkersituasjon, Tilleggsopplysninger } from '@navikt/fp-common';
-import { VedleggDataType } from '../FpDataContext';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 
 export interface Søknad {
     type: 'foreldrepenger';

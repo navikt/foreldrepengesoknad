@@ -1,18 +1,20 @@
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
-import { NavnPåForeldre, Periode, Situasjon, bemUtils } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Situasjon, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import Environment from 'app/Environment';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import './periode-attachment-uploader.css';
 import { addMetadata } from '../util';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { useFormContext } from 'react-hook-form';
+import { ManglendeVedleggFormData } from '../manglendeVedleggFormConfig';
 
 interface Props {
     attachments: Attachment[];
@@ -34,6 +36,27 @@ const MorsAktivitetKvalprogramUploader: FunctionComponent<Props> = ({
     situasjon,
 }) => {
     const bem = bemUtils('periode-attachment-uploader');
+
+    const { watch } = useFormContext<ManglendeVedleggFormData>();
+    const formAttachments = watch(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM);
+
+    useEffect(() => {
+        if (formAttachments.length === 0) {
+            const init = lagSendSenereDokument(
+                AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM,
+            );
+            const sendSenereVedlegg = addMetadata(init, {
+                type: AttachmentMetadataType.UTTAK,
+                perioder: perioder.map((p) => ({
+                    fom: dateToISOString(p.tidsperiode.fom),
+                    tom: dateToISOString(p.tidsperiode.tom),
+                })),
+            });
+
+            updateAttachments([sendSenereVedlegg]);
+        }
+    }, [updateAttachments, perioder, formAttachments]);
 
     return (
         <VStack gap="4">

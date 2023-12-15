@@ -33,11 +33,12 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { Button } from '@navikt/ds-react';
 import { useState } from 'react';
-import { ContextDataType, useContextGetData, useContextSaveData, VedleggDataType } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import BackButton from '../BackButton';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 
 type Props = {
     søkerInfo: Søkerinfo;

@@ -1,12 +1,12 @@
 import { createContext, useReducer, FunctionComponent, ReactNode, useContext } from 'react';
-import { Attachment, SøkersituasjonFp } from '@navikt/fp-types';
+import { SøkersituasjonFp } from '@navikt/fp-types';
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { Opphold, SenereOpphold, TidligereOpphold } from './types/InformasjonOmUtenlandsopphold';
 import SøknadRoutes from 'app/routes/routes';
 import Søker from './types/Søker';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import UttaksplanInfo from './types/UttaksplanInfo';
-import { Skjemanummer } from '@navikt/fp-constants';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
@@ -25,17 +25,6 @@ export enum ContextDataType {
     VEDLEGG = 'VEDLEGG',
     MANGLER_DOKUMENTASJON = 'MANGLER_DOKUMENTASJON',
 }
-
-export type VedleggDataType = {
-    [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]: Attachment[];
-    [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: Attachment[];
-    [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: Attachment[];
-    [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: Attachment[];
-    [Skjemanummer.DOK_INNLEGGELSE]: Attachment[];
-    [Skjemanummer.OMSORGSOVERTAKELSE]: Attachment[];
-    [Skjemanummer.DOK_AV_ALENEOMSORG]: Attachment[];
-    [Skjemanummer.TERMINBEKREFTELSE]: Attachment[];
-};
 
 export type ContextDataMap = {
     [ContextDataType.APP_ROUTE]?: SøknadRoutes;
