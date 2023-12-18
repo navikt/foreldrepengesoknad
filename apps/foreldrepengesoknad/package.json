@@ -96,7 +96,7 @@
         "@types/lodash": "^4.14.202",
         "@types/lodash.groupby": "^4.6.9",
         "@types/lodash.throttle": "^4.1.9",
-        "@types/node": "^20.10.4",
+        "@types/node": "^20.10.5",
         "@types/react": "^18.2.45",
         "@types/react-aria-menubutton": "^6.2.13",
         "@types/react-collapse": "^5.0.4",
