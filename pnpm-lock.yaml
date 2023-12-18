@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -1245,8 +1249,8 @@ importers:
         specifier: ^7.6.4
         version: 7.6.4
       '@storybook/addon-links':
-        specifier: ^7.6.4
-        version: 7.6.4(react@18.2.0)
+        specifier: ^7.6.5
+        version: 7.6.5(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
         version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
@@ -1390,8 +1394,8 @@ importers:
         specifier: ^7.6.4
         version: 7.6.4
       '@storybook/addon-links':
-        specifier: ^7.6.4
-        version: 7.6.4(react@18.2.0)
+        specifier: ^7.6.5
+        version: 7.6.5(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
         version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
@@ -1548,8 +1552,8 @@ importers:
         specifier: ^7.6.4
         version: 7.6.4
       '@storybook/addon-links':
-        specifier: ^7.6.4
-        version: 7.6.4(react@18.2.0)
+        specifier: ^7.6.5
+        version: 7.6.5(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
         version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
@@ -1660,8 +1664,8 @@ importers:
         specifier: ^7.6.4
         version: 7.6.4
       '@storybook/addon-links':
-        specifier: ^7.6.4
-        version: 7.6.4(react@18.2.0)
+        specifier: ^7.6.5
+        version: 7.6.5(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
         version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
@@ -5808,8 +5812,8 @@ packages:
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/addon-links@7.6.4(react@18.2.0):
-    resolution: {integrity: sha512-TEhxYdMhJO28gD84ej1FCwLv9oLuCPt77bRXip9ndaNPRTdHYdWv6IP94dhbuDi8eHux7Z4A/mllciFuDFrnCw==}
+  /@storybook/addon-links@7.6.5(react@18.2.0):
+    resolution: {integrity: sha512-Lx4Ng+iXt0YpIrKGr+nOZlpN9ypOoEDoP/7bZ6m7GXuVAkDm3JrRCBp7e2ZKSKcTxPdjPuO9HVKkIjtqjINlpw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     peerDependenciesMeta:
@@ -13967,6 +13971,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     optional: true
 
   /pseudomap@1.0.2:
@@ -14925,6 +14930,7 @@ packages:
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    requiresBuild: true
     optional: true
 
   /saxes@6.0.0:
@@ -17173,7 +17179,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
