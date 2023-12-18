@@ -39,6 +39,7 @@ import BackButton from '../BackButton';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { VedleggDataType } from 'app/types/VedleggDataType';
+import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -118,7 +119,12 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
             const nyeVedlegg = {
                 ...vedlegg,
-                [Skjemanummer.OMSORGSOVERTAKELSE]: omsorgsovertakelse,
+                [Skjemanummer.OMSORGSOVERTAKELSE]: {
+                    ...omsorgsovertakelse,
+                    dokumenterer: {
+                        type: AttachmentMetadataType.BARN,
+                    },
+                },
             };
 
             oppdaterVedlegg(nyeVedlegg);
@@ -133,7 +139,12 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
             const nyeVedlegg = {
                 ...vedlegg,
-                [Skjemanummer.TERMINBEKREFTELSE]: terminbekreftelse,
+                [Skjemanummer.TERMINBEKREFTELSE]: {
+                    ...terminbekreftelse,
+                    dokumenterer: {
+                        type: AttachmentMetadataType.BARN,
+                    },
+                },
             };
 
             oppdaterVedlegg(nyeVedlegg);
