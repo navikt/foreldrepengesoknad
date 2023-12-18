@@ -76,7 +76,7 @@
         "less": "^4.2.0",
         "multer": "1.4.5-lts.1",
         "mustache-loader": "^1.4.3",
-        "storybook": "7.6.4",
+        "storybook": "7.6.5",
         "tsconfig": "workspace:*",
         "typescript": "^5.3.3",
         "vite": "^5.0.9",
