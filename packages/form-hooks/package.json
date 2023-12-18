@@ -35,7 +35,7 @@
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@originjs/vite-plugin-commonjs": "^1.0.3",
         "@storybook/addon-essentials": "^7.6.4",
-        "@storybook/addon-interactions": "^7.6.4",
+        "@storybook/addon-interactions": "^7.6.5",
         "@storybook/addon-links": "^7.6.4",
         "@storybook/builder-vite": "^7.6.4",
         "@storybook/react": "^7.6.4",
