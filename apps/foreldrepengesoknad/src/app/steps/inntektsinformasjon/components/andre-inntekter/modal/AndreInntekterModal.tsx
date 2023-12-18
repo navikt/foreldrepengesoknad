@@ -58,22 +58,22 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
     const navnPåArbeidsgiverLabel = intlUtils(intl, 'annenInntekt.spørsmål.arbeidsgiver');
 
     return (
-        <Modal width="medium" open={isOpen} aria-label={contentLabel} onClose={onRequestClose}>
-            <Modal.Header>
-                <Heading size="small">
-                    <FormattedMessage id="inntektsinformasjon.andreInntekterModal.tittel" />
-                </Heading>
-            </Modal.Header>
-            <Modal.Body>
-                <AndreInntekterModalFormComponents.FormikWrapper
-                    initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt)}
-                    onSubmit={onValidSubmit}
-                    renderForm={({ values: formValues }) => {
-                        const visibility = andreInntekterModalQuestionsConfig.getVisbility(
-                            formValues as AndreInntekterFormData,
-                        );
+        <AndreInntekterModalFormComponents.FormikWrapper
+            initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt)}
+            onSubmit={onValidSubmit}
+            renderForm={({ values: formValues }) => {
+                const visibility = andreInntekterModalQuestionsConfig.getVisbility(
+                    formValues as AndreInntekterFormData,
+                );
 
-                        return (
+                return (
+                    <Modal portal width="medium" open={isOpen} aria-label={contentLabel} onClose={onRequestClose}>
+                        <Modal.Header>
+                            <Heading size="small">
+                                <FormattedMessage id="inntektsinformasjon.andreInntekterModal.tittel" />
+                            </Heading>
+                        </Modal.Header>
+                        <Modal.Body>
                             <AndreInntekterModalFormComponents.Form
                                 includeButtons={false}
                                 cleanup={(values) => cleanupAndreInntekterForm(values, visibility)}
@@ -158,14 +158,14 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                    <Button>{intlUtils(intl, 'søknad.gåVidere')}</Button>
+                                    <Button type="submit">{intlUtils(intl, 'søknad.gåVidere')}</Button>
                                 </Block>
                             </AndreInntekterModalFormComponents.Form>
-                        );
-                    }}
-                />
-            </Modal.Body>
-        </Modal>
+                        </Modal.Body>
+                    </Modal>
+                );
+            }}
+        />
     );
 };
 
