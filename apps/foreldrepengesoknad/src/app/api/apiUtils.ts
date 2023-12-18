@@ -363,7 +363,7 @@ const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Att
         return [];
     }
 
-    let vedleggArray: Attachment[] = [];
+    const vedleggArray: Attachment[] = [];
 
     Object.keys(vedlegg).forEach((key: unknown) => {
         const vedleggAvTypeSkjemanummer = vedlegg[key as GyldigeSkjemanummer];
