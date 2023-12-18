@@ -94,7 +94,7 @@
         "@types/react-aria-menubutton": "^6.2.13",
         "@types/react-collapse": "^5.0.4",
         "@types/react-document-title": "^2.0.8",
-        "@types/react-dom": "^18.2.17",
+        "@types/react-dom": "^18.2.18",
         "@types/react-redux": "^7.1.33",
         "@types/react-router-dom": "^5.3.3",
         "@types/react-test-renderer": "^18.0.7",
