@@ -56,7 +56,7 @@
         "@formatjs/cli-lib": "6.3.3",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@storybook/addon-essentials": "^7.6.4",
+        "@storybook/addon-essentials": "^7.6.5",
         "@storybook/cli": "^7.6.4",
         "@storybook/react": "^7.6.4",
         "@storybook/react-vite": "7.6.4",
