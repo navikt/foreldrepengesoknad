@@ -43,6 +43,8 @@ import {
 import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
+import { VedleggDataType } from 'app/types/VedleggDataType';
+import { GyldigeSkjemanummer } from 'app/steps/manglende-vedlegg/util';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
@@ -356,6 +358,24 @@ export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], end
     return uttaksplan;
 };
 
+const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
+    if (!vedlegg) {
+        return [];
+    }
+
+    let vedleggArray: Attachment[] = [];
+
+    Object.keys(vedlegg).forEach((key: unknown) => {
+        const vedleggAvTypeSkjemanummer = vedlegg[key as GyldigeSkjemanummer];
+
+        if (vedleggAvTypeSkjemanummer.length > 0) {
+            vedleggArray.push(...vedleggAvTypeSkjemanummer);
+        }
+    });
+
+    return vedleggArray;
+};
+
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     familiehendelsesdato: Date,
@@ -371,6 +391,7 @@ export const cleanSøknad = (
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
     const eksisterendeSak = hentData(ContextDataType.EKSISTERENDE_SAK);
+    const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
     const søkerInnsending = cleanSøker(søker, søkersituasjon, locale);
@@ -404,10 +425,10 @@ export const cleanSøknad = (
         },
         dekningsgrad: uttaksplanMetadata.dekningsgrad!,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-        vedlegg: [], //Vedlegga blir lagt til i funksjonen under
+        vedlegg: convertAttachmentsMapToArray(vedlegg), //Vedlegga blir lagt til i funksjonen under
     };
 
-    return mapAttachmentsToSøknadForInnsending(cleanedSøknad) as SøknadForInnsending; //TODO vedleggForSenEndring
+    return cleanedSøknad;
 };
 
 const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
