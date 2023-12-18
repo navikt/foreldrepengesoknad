@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -779,8 +783,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       snyk:
-        specifier: ^1.1203.0
-        version: 1.1203.0
+        specifier: ^1.1264.0
+        version: 1.1264.0
       storybook:
         specifier: 7.6.5
         version: 7.6.5
@@ -12096,6 +12100,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     optional: true
 
   /psl@1.9.0:
@@ -12971,6 +12976,7 @@ packages:
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    requiresBuild: true
     optional: true
 
   /saxes@6.0.0:
@@ -13182,8 +13188,8 @@ packages:
       is-fullwidth-code-point: 5.0.0
     dev: false
 
-  /snyk@1.1203.0:
-    resolution: {integrity: sha512-ohhSq1F5C97CVxmoPgTRMOM8LZ/QIFlATaeTfc05pSyrdup5TovwfzYTbPTm+lUFbTqsCEYzlEbq+dJajkLLvQ==}
+  /snyk@1.1264.0:
+    resolution: {integrity: sha512-1mYTi26jZ82pEC2mmYgvzp3+DYXqG5TNuVzUn1znTKu/k4K8si6efLC/IWMylAIk3KIEpnfhm4zdqxMb4UUvXg==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
@@ -14932,7 +14938,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
