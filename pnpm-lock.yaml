@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -139,7 +143,7 @@ importers:
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@storybook/react-vite':
         specifier: 7.6.4
-        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.10)
       '@testing-library/jest-dom':
         specifier: ^6.1.5
         version: 6.1.5(vitest@1.0.4)
@@ -163,7 +167,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
@@ -198,11 +202,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -374,7 +378,7 @@ importers:
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@storybook/react-vite':
         specifier: 7.6.4
-        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.10)
       '@testing-library/jest-dom':
         specifier: ^6.1.5
         version: 6.1.5(vitest@1.0.4)
@@ -422,7 +426,7 @@ importers:
         version: 4.4.10
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       ajv:
         specifier: ^8.12.0
         version: 8.12.0
@@ -475,11 +479,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -687,7 +691,7 @@ importers:
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@storybook/react-vite':
         specifier: 7.6.4
-        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.10)
       '@testing-library/dom':
         specifier: ^9.3.3
         version: 9.3.3
@@ -741,7 +745,7 @@ importers:
         version: 4.4.10
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
@@ -791,11 +795,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -979,7 +983,7 @@ importers:
         version: 7.6.4(@types/react-dom@18.2.17)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
-        version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(typescript@5.3.3)(vite@5.0.10)
       '@storybook/cli':
         specifier: ^7.6.4
         version: 7.6.4
@@ -988,7 +992,7 @@ importers:
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@storybook/react-vite':
         specifier: 7.6.4
-        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.10)
       '@testing-library/dom':
         specifier: ^9.3.3
         version: 9.3.3
@@ -1039,7 +1043,7 @@ importers:
         version: 4.4.10
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       acorn:
         specifier: ^8.11.2
         version: 8.11.2
@@ -1092,11 +1096,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -1249,7 +1253,7 @@ importers:
         version: 7.6.4(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
-        version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(typescript@5.3.3)(vite@5.0.10)
       '@storybook/react':
         specifier: ^7.6.4
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -1264,7 +1268,7 @@ importers:
         version: 14.5.1(@testing-library/dom@9.3.3)
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1278,11 +1282,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -1394,7 +1398,7 @@ importers:
         version: 7.6.4(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
-        version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(typescript@5.3.3)(vite@5.0.10)
       '@storybook/react':
         specifier: ^7.6.4
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -1418,7 +1422,7 @@ importers:
         version: 5.0.4
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       copyfiles:
         specifier: ^2.4.1
         version: 2.4.1
@@ -1447,11 +1451,11 @@ importers:
         specifier: ^2.0.10
         version: 2.0.10(@storybook/components@7.6.4)(@storybook/manager-api@7.6.4)(@storybook/preview-api@7.6.4)(@storybook/types@7.6.4)(react-dom@18.2.0)(react-intl@6.5.5)(react@18.2.0)
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
@@ -1552,7 +1556,7 @@ importers:
         version: 7.6.4(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
-        version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(typescript@5.3.3)(vite@5.0.10)
       '@storybook/react':
         specifier: ^7.6.4
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -1573,7 +1577,7 @@ importers:
         version: 18.2.45
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -1587,11 +1591,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -1664,7 +1668,7 @@ importers:
         version: 7.6.4(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.6.4
-        version: 7.6.4(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(typescript@5.3.3)(vite@5.0.10)
       '@storybook/react':
         specifier: ^7.6.4
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -1682,7 +1686,7 @@ importers:
         version: 18.2.45
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -1696,11 +1700,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -1746,7 +1750,7 @@ importers:
     dependencies:
       '@storybook/react-vite':
         specifier: 7.6.4
-        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.10)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1780,7 +1784,7 @@ importers:
         version: 18.2.17
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1788,11 +1792,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -1862,7 +1866,7 @@ importers:
         version: 4.1.9
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.9)
+        version: 4.2.1(vite@5.0.10)
       lodash.throttle:
         specifier: ^4.1.1
         version: 4.1.1
@@ -1876,11 +1880,11 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
       vite:
-        specifier: ^5.0.9
-        version: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9)
+        version: 0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10)
       vitest:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.4)(jsdom@23.0.1)(less@4.2.0)
@@ -4445,7 +4449,7 @@ packages:
       chalk: 4.1.2
     dev: true
 
-  /@joshwooding/vite-plugin-react-docgen-typescript@0.3.0(typescript@5.3.3)(vite@5.0.9):
+  /@joshwooding/vite-plugin-react-docgen-typescript@0.3.0(typescript@5.3.3)(vite@5.0.10):
     resolution: {integrity: sha512-2D6y7fNvFmsLmRt6UCOFJPvFoPMJGT0Uh1Wg0RaigUp7kdQPs6yYn8Dmx6GZkOH/NW0yMTwRz/p0SRMMRo50vA==}
     peerDependencies:
       typescript: '>= 4.3.x'
@@ -4459,7 +4463,7 @@ packages:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.3.3)
       typescript: 5.3.3
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
 
   /@jridgewell/gen-mapping@0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
@@ -5919,7 +5923,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/builder-vite@7.6.4(typescript@5.3.3)(vite@5.0.9):
+  /@storybook/builder-vite@7.6.4(typescript@5.3.3)(vite@5.0.10):
     resolution: {integrity: sha512-eqb3mLUfuXd4a7+46cWevQ9qH81FvHy1lrAbZGwp4bQ/Tj0YF8Ej7lKBbg7zoIwiu2zDci+BbMiaDOY1kPtILw==}
     peerDependencies:
       '@preact/preset-vite': '*'
@@ -5951,7 +5955,7 @@ packages:
       magic-string: 0.30.5
       rollup: 3.29.4
       typescript: 5.3.3
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -6276,7 +6280,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  /@storybook/react-vite@7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.9):
+  /@storybook/react-vite@7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.10):
     resolution: {integrity: sha512-1NYzCJRO6k/ZyoMzpu1FQiaUaiLNjAvTAB1x3HE7oY/tEIT8kGpzXGYH++LJVWvyP/5dSWlUnRSy2rJvySraiw==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -6284,16 +6288,16 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.3.3)(vite@5.0.9)
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.3.3)(vite@5.0.10)
       '@rollup/pluginutils': 5.1.0
-      '@storybook/builder-vite': 7.6.4(typescript@5.3.3)(vite@5.0.9)
+      '@storybook/builder-vite': 7.6.4(typescript@5.3.3)(vite@5.0.10)
       '@storybook/react': 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
-      '@vitejs/plugin-react': 3.1.0(vite@5.0.9)
+      '@vitejs/plugin-react': 3.1.0(vite@5.0.10)
       magic-string: 0.30.5
       react: 18.2.0
       react-docgen: 7.0.1
       react-dom: 18.2.0(react@18.2.0)
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -7111,7 +7115,7 @@ packages:
     hasBin: true
     dev: true
 
-  /@vitejs/plugin-react@3.1.0(vite@5.0.9):
+  /@vitejs/plugin-react@3.1.0(vite@5.0.10):
     resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -7122,11 +7126,11 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.6)
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
     transitivePeerDependencies:
       - supports-color
 
-  /@vitejs/plugin-react@4.2.1(vite@5.0.9):
+  /@vitejs/plugin-react@4.2.1(vite@5.0.10):
     resolution: {integrity: sha512-oojO9IDc4nCUUi8qIR11KoQm0XFFLIwsRBwHRR4d/88IWghn1y6ckz/bJ8GHDCsYEJee8mDzqtJxh15/cisJNQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -7137,7 +7141,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.6)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -13967,6 +13971,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     optional: true
 
   /pseudomap@1.0.2:
@@ -14925,6 +14930,7 @@ packages:
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    requiresBuild: true
     optional: true
 
   /saxes@6.0.0:
@@ -16531,7 +16537,7 @@ packages:
       debug: 4.3.4
       pathe: 1.1.1
       picocolors: 1.0.0
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -16543,7 +16549,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-checker@0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.9):
+  /vite-plugin-checker@0.6.2(eslint@8.55.0)(typescript@5.3.3)(vite@5.0.10):
     resolution: {integrity: sha512-YvvvQ+IjY09BX7Ab+1pjxkELQsBd4rPhWNw8WLBeFVxu/E7O+n6VYAqNsKdK/a2luFlX/sMpoWdGFfg4HvwdJQ==}
     engines: {node: '>=14.16'}
     peerDependencies:
@@ -16589,15 +16595,15 @@ packages:
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       typescript: 5.3.3
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.11
       vscode-uri: 3.0.8
     dev: true
 
-  /vite@5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5):
-    resolution: {integrity: sha512-wVqMd5kp28QWGgfYPDfrj771VyHTJ4UDlCteLH7bJDGDEamaz5hV8IX6h1brSGgnnyf9lI2RnzXq/JmD0c2wwg==}
+  /vite@5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5):
+    resolution: {integrity: sha512-2P8J7WWgmc355HUMlFrwofacvr98DAjoE52BfdbwQtyLH06XKwaL/FMnmKM2crF0iX4MpmMKoDlNCB1ok7zHCw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -16678,7 +16684,7 @@ packages:
       strip-literal: 1.3.0
       tinybench: 2.5.1
       tinypool: 0.8.1
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-node: 1.0.4(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
@@ -16735,7 +16741,7 @@ packages:
       strip-literal: 1.3.0
       tinybench: 2.5.1
       tinypool: 0.8.1
-      vite: 5.0.9(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
+      vite: 5.0.10(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       vite-node: 1.0.4(@types/node@20.10.4)(less@4.2.0)(sass@1.69.5)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
@@ -17173,7 +17179,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
