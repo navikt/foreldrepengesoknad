@@ -986,5 +986,8 @@
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Planen din inneholder kun utsetjingar",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad": "Hugs at du må legge inn alle nye periodar du skal ha foreldrepengar eller utsetje etter {sisteDag}, då denne endringssøknaden erstattar den tidlegare planen din.",
     "uttaksplan.veileder.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikkje vere lengre enn {maxLength} tegn.",
-    "vedlagtdokumentasjon": "Vedlagd dokumentasjon"
+    "vedlagtdokumentasjon": "Vedlagd dokumentasjon",
+
+    "DekningsgradValgtAvAnnenPartPanel.Heading": "Dykk har valgt {uker} veker med {dekningsgrad}% foreldrepengar",
+    "DekningsgradValgtAvAnnenPartPanel.ValgtAv": "Dette vart valgt av {navn}"
 }

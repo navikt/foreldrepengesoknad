@@ -986,5 +986,8 @@
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad.tittel": "Planen inneholder kun utsettelser",
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad": "Husk at du må legge inn alle perioder med foreldrepenger etter {sisteDag} på nytt, da endringssøknaden erstatter den  opprinnelige planen din.",
     "uttaksplan.veileder.fritekst.kanIkkeVæreLengreEnn": "Begrunnelse for søking tilbake i tid kan maks være {maxLength} tegn.",
-    "vedlagtdokumentasjon": "Vedlagt dokumentasjon"
+    "vedlagtdokumentasjon": "Vedlagt dokumentasjon",
+
+    "DekningsgradValgtAvAnnenPartPanel.Heading": "Dere har valgt {uker} uker med {dekningsgrad}% foreldrepenger",
+    "DekningsgradValgtAvAnnenPartPanel.ValgtAv": "Dette ble valgt av {navn}"
 }

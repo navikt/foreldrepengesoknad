@@ -4,15 +4,15 @@ import { composeStories } from '@storybook/react';
 import * as stories from './MorFodsel.stories';
 
 const {
-    UttaksplanMedAleneomsorg,
-    UttaksplanMedPrematurFødsel,
-    UttaksplanMedDeltUttak,
-    UttaksplanMedFlerbarnsukerTvillinger,
+    UttaksplanMedAleneomsorgDekningsgrad100,
+    UttaksplanMedPrematurFødselDekningsgrad100,
+    UttaksplanMedDeltUttakDekningsgrad100,
+    UttaksplanMedFlerbarnsukerTvillingerDekningsgrad100,
 } = composeStories(stories);
 
 describe('<UttaksplanInfo_MorFødsel>', () => {
     it('skal fylle ut dekningsgrad før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorg />);
+        render(<UttaksplanMedAleneomsorgDekningsgrad100 />);
 
         expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -31,7 +31,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om at stønadsperioden er forlenget når en har prematur fødsel', async () => {
-        render(<UttaksplanMedPrematurFødsel />);
+        render(<UttaksplanMedPrematurFødselDekningsgrad100 />);
 
         expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om delt uttak ved valg av 100 prosent foreldrepenger', async () => {
-        render(<UttaksplanMedDeltUttak />);
+        render(<UttaksplanMedDeltUttakDekningsgrad100 />);
 
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
         expect(screen.queryByText('TALENTFULL MYGGs del')).not.toBeInTheDocument();
@@ -80,7 +80,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise veileder info om mor velger å ikke ta foreldrepenger før fødsel', async () => {
-        render(<UttaksplanMedDeltUttak />);
+        render(<UttaksplanMedDeltUttakDekningsgrad100 />);
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
@@ -95,7 +95,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om delt uttak ved valg av 80 prosent foreldrepenger', async () => {
-        render(<UttaksplanMedDeltUttak />);
+        render(<UttaksplanMedDeltUttakDekningsgrad100 />);
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
@@ -107,7 +107,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om tvillingsfødsel ved valg av 100 prosent foreldrepenger', async () => {
-        render(<UttaksplanMedFlerbarnsukerTvillinger />);
+        render(<UttaksplanMedFlerbarnsukerTvillingerDekningsgrad100 />);
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
 
         expect(screen.queryByText('TALENTFULL MYGGs del')).not.toBeInTheDocument();
@@ -135,7 +135,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om tvillingsfødsel ved valg av 80 prosent foreldrepenger', async () => {
-        render(<UttaksplanMedFlerbarnsukerTvillinger />);
+        render(<UttaksplanMedFlerbarnsukerTvillingerDekningsgrad100 />);
 
         expect(await screen.findByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
         expect(screen.queryByText('TALENTFULL MYGGs del')).not.toBeInTheDocument();

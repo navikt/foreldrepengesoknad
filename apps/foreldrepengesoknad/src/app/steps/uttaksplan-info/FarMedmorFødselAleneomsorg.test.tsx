@@ -3,14 +3,14 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './FarMedmorFodselAleneomsorg.stories';
 
-const { UttaksplanInfoFarMedmorFødselAleneomsorg } = composeStories(stories);
+const { UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100 } = composeStories(stories);
 
 const GÅ_VIDERE_KNAPP = 'Neste steg';
 
 describe('<UttaksplanInfo_FarMedmorFødselAleneomsorg>', () => {
     // TODO Noko tull med locale og datoar
     it.skip('skal ved aleneomrsorg der far/medmor søker vise riktig dato på omsorgsovertakelse', async () => {
-        render(<UttaksplanInfoFarMedmorFødselAleneomsorg />);
+        render(<UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100 />);
 
         expect(await screen.findByText('Perioden din med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();

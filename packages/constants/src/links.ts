@@ -20,4 +20,5 @@ export const links = {
     engangsstonadHvem: 'https://www.nav.no/engangsstonad#hvem',
     scanneDokument: 'https://www.nav.no/brukerstotte#bilde-vedlegg',
     svangerskapspengerUtland: 'https://www.nav.no/no/person/familie/relatert-informasjon/svangerskapspenger-og-utland',
+    søknadsfrister: 'https://www.nav.no/foreldrepenger#soknadsfrister',
 };

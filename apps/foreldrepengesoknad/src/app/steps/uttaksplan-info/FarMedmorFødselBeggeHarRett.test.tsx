@@ -5,12 +5,14 @@ import * as stories from './FarMedmorFodselBeggeHarRett.stories';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
-const { UttaksplanInfoFarMedmorFødselBeggeHarRett, UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB } =
-    composeStories(stories);
+const {
+    UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad100,
+    UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB,
+} = composeStories(stories);
 
 describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 80', async () => {
-        render(<UttaksplanInfoFarMedmorFødselBeggeHarRett />);
+        render(<UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad100 />);
 
         expect(
             await screen.findByText(
@@ -46,7 +48,7 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 100, og siden WLB ikke gjeder, spørre om mors siste dag ', async () => {
         MockDate.set(new Date('2022-08-01'));
 
-        render(<UttaksplanInfoFarMedmorFødselBeggeHarRett />);
+        render(<UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad100 />);
 
         expect(
             await screen.findByText(

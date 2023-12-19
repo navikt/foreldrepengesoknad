@@ -4,12 +4,14 @@ import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
 import * as stories from './FarMedmorFodselOgMorHarIkkeRett.stories';
 
-const { UttaksplanDerMorIkkeHarRettPåForeldrepenger, UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør } =
-    composeStories(stories);
+const {
+    UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80,
+    UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør,
+} = composeStories(stories);
 
 describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     it('skal fylle ut dekningsgrad med 80 prosent', async () => {
-        render(<UttaksplanDerMorIkkeHarRettPåForeldrepenger />);
+        render(<UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80 />);
 
         expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -23,7 +25,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal fylle ut dekningsgrad med 100 prosent', async () => {
-        render(<UttaksplanDerMorIkkeHarRettPåForeldrepenger />);
+        render(<UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80 />);
 
         expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
