@@ -12,7 +12,6 @@ import {
     Uttaksdagen,
     formaterNavn,
     getFlerbarnsuker,
-    getNavnGenitivEierform,
     intlUtils,
     isAdoptertAnnetBarn,
     isAdoptertBarn,
@@ -39,7 +38,6 @@ import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
 import SøknadRoutes from 'app/routes/routes';
-import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
@@ -75,6 +73,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
@@ -86,6 +85,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const { fornavn, mellomnavn, etternavn } = person;
+    const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const søkerErAleneOmOmsorg = !!søker.erAleneOmOmsorg;
@@ -135,7 +135,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
             situasjon: søkersituasjon.situasjon,
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
             uttaksplanSkjema: {
                 fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
                 startdatoPermisjon: startdato,
@@ -159,10 +159,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
-            antallUkerIUttaksplan: getAntallUker(
-                tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80],
-            ),
+            dekningsgrad: getDekningsgradFromString(dekningsgrad),
+            antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad! === '100' ? 100 : 80]),
         });
 
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
@@ -209,7 +207,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     return (
         <MorFarAdopsjonFormComponents.FormikWrapper
-            initialValues={getInitialMorFarAdopsjonValues(uttaksplanInfo, uttaksplanMetadata?.dekningsgrad)}
+            initialValues={getInitialMorFarAdopsjonValues(uttaksplanInfo)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
@@ -218,7 +216,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     erAleneOmOmsorg: søker.erAleneOmOmsorg,
                 } as MorFarAdopsjonQuestionsPayload);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
 
                 const tilgjengeligeDager = valgtStønadskonto
                     ? getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor)
@@ -237,27 +235,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 })}
                             />
                         </Block>
-                        {formValues.harAnnenForelderSøktFP === YesOrNo.YES && (
-                            <Block padBottom="xl">
-                                <GuidePanel>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.informasjon.tilAnnenForelder"
-                                        values={{
-                                            navn: getNavnGenitivEierform(fornavnAnnenForeldre!, intl.locale),
-                                        }}
-                                    />
-                                </GuidePanel>
-                            </Block>
-                        )}
-                        <Block padBottom="xl" visible={visibility.isIncluded(MorFarAdopsjonFormField.dekningsgrad)}>
-                            <DekningsgradSpørsmål
-                                FormKomponent={MorFarAdopsjonFormComponents}
-                                dekningsgradFeltNavn={MorFarAdopsjonFormField.dekningsgrad}
-                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                erDeltUttak={erDeltUttak}
-                            />
-                        </Block>
-                        <Block padBottom="xl" visible={visibility.isAnswered(MorFarAdopsjonFormField.dekningsgrad)}>
+                        <Block padBottom="xl">
                             {tilgjengeligeDager && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={erDeltUttak}
@@ -361,7 +339,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="uttaksplaninfo.veileder.flerbarnsInformasjon"
                                         values={{
-                                            uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                            uker: getFlerbarnsuker(dekningsgrad, antallBarn),
                                             navnFar: navnFarMedmor,
                                             navnMor: navnMor,
                                         }}

@@ -28,15 +28,11 @@ const FarMedmorFødselBeggeHarRettFormConfig: QuestionConfig<
     FarMedmorFødselBeggeHarRettFormPayload,
     FarMedmorFødselBeggeHarRettFormField
 > = {
-    [FarMedmorFødselBeggeHarRettFormField.dekningsgrad]: {
-        isIncluded: () => true,
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-    },
     [FarMedmorFødselBeggeHarRettFormField.morsSisteDag]: {
         isIncluded: ({ familiehendelsesdato }) => !andreAugust2022ReglerGjelder(familiehendelsesdato),
         isAnswered: ({ morsSisteDag, familiehendelsesdato }) =>
             andreAugust2022ReglerGjelder(familiehendelsesdato) || hasValue(morsSisteDag),
-        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        visibilityFilter: () => true,
     },
     [FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag]: {
         isIncluded: ({ morsSisteDag, familiehendelsesdato }) =>

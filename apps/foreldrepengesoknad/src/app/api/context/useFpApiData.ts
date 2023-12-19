@@ -21,8 +21,8 @@ const TYPE_URL_MAP = {
     [FpApiDataType.STØNADSKONTOER_100]: `${Environment.REST_API_URL}/konto`,
 };
 
-export const useApiGetData = <DATA, PARAMS extends object>(
-    type: FpApiDataType,
+export const useApiGetData = <DATA_TYPE extends FpApiDataType, PARAMS extends object>(
+    type: DATA_TYPE,
     params: PARAMS,
     suspendRequest: boolean,
 ) => {
@@ -31,7 +31,7 @@ export const useApiGetData = <DATA, PARAMS extends object>(
     const apiData = useApiContextGetData(type, hashedParams);
     const updateApiData = useApiContextSaveData(type, hashedParams);
 
-    const { data, requestStatus, error } = useGetRequest<DATA>(TYPE_URL_MAP[type], {
+    const { data, requestStatus, error } = useGetRequest<typeof apiData>(TYPE_URL_MAP[type], {
         config: {
             timeout: 15 * 1000,
             params,
@@ -48,23 +48,19 @@ export const useApiGetData = <DATA, PARAMS extends object>(
     }, [data]);
 
     return {
-        data: apiData,
+        data: (data || apiData) as any,
         requestStatus,
         error,
     };
 };
 
-export const useApiPostData = <DATA, PARAMS extends object>(
-    type: FpApiDataType,
-    params: PARAMS,
-    suspendRequest: boolean,
-) => {
+export const useApiPostData = <PARAMS extends object>(type: FpApiDataType, params: PARAMS, suspendRequest: boolean) => {
     const hashedParams = hashCode(JSON.stringify(sortObject(params)));
 
     const apiData = useApiContextGetData(type, hashedParams);
     const updateApiData = useApiContextSaveData(type, hashedParams);
 
-    const { data, requestStatus, error } = usePostRequest<DATA>(TYPE_URL_MAP[type], params, {
+    const { data, requestStatus, error } = usePostRequest<typeof apiData>(TYPE_URL_MAP[type], params, {
         config: {
             withCredentials: true,
         },
@@ -79,7 +75,7 @@ export const useApiPostData = <DATA, PARAMS extends object>(
     }, [data]);
 
     return {
-        data: apiData,
+        data: (data || apiData) as any,
         requestStatus,
         error,
     };

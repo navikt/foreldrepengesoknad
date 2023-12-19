@@ -1,7 +1,7 @@
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { Radio, VStack, ReadMore, Loader } from '@navikt/ds-react';
+import { Radio, VStack, ReadMore, Loader, Link } from '@navikt/ds-react';
 import {
     AnnenForelder,
     Barn,
@@ -25,6 +25,7 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { RequestStatus } from 'app/types/RequestState';
 import stepConfig from '../stepsConfig';
+import { links } from '@navikt/fp-constants';
 
 const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
     const annenPartFnr =
@@ -37,7 +38,10 @@ const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
     };
 };
 
-const finnSisteDagMedForeldrepenger = (termindato: string, dager: number) => {
+const finnSisteDagMedForeldrepenger = (dager: number, termindato?: string) => {
+    if (!termindato) {
+        return undefined;
+    }
     const dager49 = Uttaksdagen(dayjs(termindato).toDate()).denneEllerNeste();
     const dag = Uttaksdagen(dager49).leggTil(dager);
     return dayjs(dag).format('dddd DD. MMMM YYYY');
@@ -126,11 +130,11 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
 
     const erDeltUttak =
         isAnnenForelderOppgitt(annenForelder) &&
-        annenForelder.harRettPåForeldrepengerINorge === true &&
-        annenForelder.harRettPåForeldrepengerIEØS === true;
+        (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
 
-    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(params.stønadskontoParams100.termindato!, 49 * 5);
-    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(params.stønadskontoParams80.termindato!, 59 * 5);
+    // FIXME termindato kan vera undefined
+    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(49 * 5, params.stønadskontoParams100.termindato);
+    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(59 * 5, params.stønadskontoParams80.termindato);
 
     return (
         <Step
@@ -199,8 +203,11 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
                                 />
                             </Radio>
                         </RadioGroup>
-                        <ReadMore header="Hva lønner seg for oss?">
+                        <ReadMore header={<FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.header" />}>
                             <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad" />
+                            <Link href={links.søknadsfrister} target="_blank">
+                                <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.link" />
+                            </Link>
                         </ReadMore>
                         <StepButtonsHookForm goToPreviousStep={goToPreviousStep} />
                     </VStack>

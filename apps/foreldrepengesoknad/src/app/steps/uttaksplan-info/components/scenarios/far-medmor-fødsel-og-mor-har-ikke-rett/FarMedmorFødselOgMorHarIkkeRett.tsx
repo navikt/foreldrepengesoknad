@@ -41,7 +41,6 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
-import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
@@ -84,6 +83,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const perioderMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -96,6 +96,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const { fornavn, mellomnavn, etternavn } = person;
+    const { dekningsgrad } = perioderMedForeldrepenger;
 
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
@@ -128,7 +129,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
             situasjon: søkersituasjon.situasjon,
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
             uttaksplanSkjema: {
                 startdatoPermisjon: startDatoUttaksplan,
             },
@@ -148,7 +149,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
+            dekningsgrad: getDekningsgradFromString(dekningsgrad),
         });
 
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
@@ -186,10 +187,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
 
     return (
         <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper
-            initialValues={getInitialFarMedmorFødselOgMorHarIkkeRettValues(
-                uttaksplanInfo,
-                uttaksplanMetadata?.dekningsgrad,
-            )}
+            initialValues={getInitialFarMedmorFødselOgMorHarIkkeRettValues(uttaksplanInfo)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = farMedmorFødselOgMorHarIkkeRettQuestionsConfig.getVisbility({
@@ -198,28 +196,14 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                     familiehendelsesdato: familiehendelsesdatoDate!,
                 } as FarMedmorFødselOgMorHarIkkeRettQuestionsPayload);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
 
                 return (
                     <FarMedmorFødselOgMorHarIkkeRettFormComponents.Form
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block
-                            padBottom="l"
-                            visible={visibility.isIncluded(FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad)}
-                        >
-                            <DekningsgradSpørsmål
-                                FormKomponent={FarMedmorFødselOgMorHarIkkeRettFormComponents}
-                                dekningsgradFeltNavn={FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad}
-                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                erDeltUttak={erDeltUttak}
-                            />
-                        </Block>
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isAnswered(FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad)}
-                        >
+                        <Block padBottom="xl">
                             {valgtStønadskonto && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={erDeltUttak}

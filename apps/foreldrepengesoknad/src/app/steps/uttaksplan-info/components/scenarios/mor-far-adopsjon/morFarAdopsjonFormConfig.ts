@@ -3,7 +3,6 @@ import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 
 export enum MorFarAdopsjonFormField {
     harAnnenForelderSøktFP = 'harAnnenForelderSøktFP',
-    dekningsgrad = 'dekningsgrad',
     startdatoAdopsjonValg = 'startdatoAdopsjonValg',
     annenStartdatoAdopsjon = 'annenStartdatoAdopsjon',
     annenForeldersSisteDag = 'annenForeldersSisteDag',
@@ -15,7 +14,6 @@ export enum MorFarAdopsjonFormField {
 
 export interface MorFarAdopsjonFormData {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: YesOrNo;
-    [MorFarAdopsjonFormField.dekningsgrad]: string;
     [MorFarAdopsjonFormField.startdatoAdopsjonValg]: AdopsjonStartdatoValg | undefined;
     [MorFarAdopsjonFormField.annenStartdatoAdopsjon]: string;
     [MorFarAdopsjonFormField.annenForeldersSisteDag]: string;

@@ -3,10 +3,8 @@ import {
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
-import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorFødselBeggeHarRettValues: FarMedmorFødselBeggeHarRettFormData = {
-    [FarMedmorFødselBeggeHarRettFormField.dekningsgrad]: '',
     [FarMedmorFødselBeggeHarRettFormField.morsSisteDag]: '',
     [FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag]: '',
     [FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode]: '0',
@@ -32,7 +30,6 @@ export const mapFarMedmorFødselBeggeHarRettToState = (
 
 export const getInitialFarMedmorFødselBeggeHarRettValues = (
     state: FarMedmorFødselBeggeHarRettUttaksplanInfo | undefined,
-    dekningsgrad?: Dekningsgrad,
 ): FarMedmorFødselBeggeHarRettFormData => {
     if (!state) {
         return initialFarMedmorFødselBeggeHarRettValues;
@@ -44,6 +41,5 @@ export const getInitialFarMedmorFødselBeggeHarRettValues = (
         antallUkerFellesperiode: state.antallUkerFellesperiode,
         morsSisteDag: state.morsSisteDag,
         farMedmorsFørsteDag: state.farMedmorsFørsteDag,
-        dekningsgrad: dekningsgrad!,
     };
 };

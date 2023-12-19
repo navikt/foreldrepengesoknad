@@ -2,11 +2,10 @@ import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { finnEnum } from './adopsjonStartdatoValg';
 import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { Dekningsgrad, convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common';
+import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common';
 
 const initialMorFarAdopsjonValues: MorFarAdopsjonFormData = {
     [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: YesOrNo.UNANSWERED,
-    [MorFarAdopsjonFormField.dekningsgrad]: '',
     [MorFarAdopsjonFormField.startdatoAdopsjonValg]: undefined,
     [MorFarAdopsjonFormField.annenStartdatoAdopsjon]: '',
     [MorFarAdopsjonFormField.annenForeldersSisteDag]: '',
@@ -31,12 +30,10 @@ export const mapMorFarAdopsjonFormToState = (values: Partial<MorFarAdopsjonFormD
 
 export const getInitialMorFarAdopsjonValues = (
     lagretUttaksplanInfo: MorFarAdopsjonUttaksplanInfo | undefined,
-    dekningsgrad?: Dekningsgrad,
 ): MorFarAdopsjonFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [MorFarAdopsjonFormField.dekningsgrad]: dekningsgrad!,
             [MorFarAdopsjonFormField.startdatoAdopsjonValg]: finnEnum(lagretUttaksplanInfo.startdatoAdopsjonValg),
             [MorFarAdopsjonFormField.harAnnenForelderSøktFP]: lagretUttaksplanInfo.harAnnenForelderSøktFP
                 ? YesOrNo.YES

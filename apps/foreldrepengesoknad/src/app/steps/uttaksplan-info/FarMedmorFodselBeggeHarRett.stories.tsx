@@ -11,7 +11,7 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { Barn, BarnType } from '@navikt/fp-common';
+import { Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
@@ -25,7 +25,7 @@ export default {
     decorators: [withRouter],
 };
 
-const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn }> = (args) => {
+const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dekningsgrad }> = (args) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
@@ -40,6 +40,9 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn }> = (args) => {
                         rolle: 'far',
                     },
                     [ContextDataType.OM_BARNET]: args.barn,
+                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                        dekningsgrad: args.dekningsgrad,
+                    },
                     [ContextDataType.SØKER]: {
                         erAleneOmOmsorg: false,
                         harJobbetSomFrilansSiste10Mnd: false,
@@ -68,8 +71,8 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn }> = (args) => {
     );
 };
 
-export const UttaksplanInfoFarMedmorFødselBeggeHarRett = Template.bind({});
-UttaksplanInfoFarMedmorFødselBeggeHarRett.args = {
+export const UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad100 = Template.bind({});
+UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad100.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
@@ -79,6 +82,21 @@ UttaksplanInfoFarMedmorFødselBeggeHarRett.args = {
         dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad80 = Template.bind({});
+UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad80.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-06-14').toDate()],
+        antallBarn: 1,
+        dokumentasjonAvAleneomsorg: [],
+    },
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
 export const UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB = Template.bind({});

@@ -49,14 +49,12 @@ export interface FarMedmorFødselBeggeHarRettUttaksplanInfo {
 
 export interface MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo {
     startdatoAdopsjonValg: AdopsjonStartdatoValg;
-    dekningsgrad: string;
     annenStartdatoAdopsjon: string | undefined;
 }
 
 export interface MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo {
     permisjonStartdato: string;
     skalIkkeHaUttakFørTermin: boolean | undefined;
-    dekningsgrad: string;
 }
 
 export const isFarMedmorFødselBeggeHarRettUttaksplanInfo = (
