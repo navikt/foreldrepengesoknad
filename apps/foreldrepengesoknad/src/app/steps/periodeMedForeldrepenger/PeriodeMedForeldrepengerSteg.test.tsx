@@ -5,7 +5,7 @@ import * as stories from './PeriodeMedForeldrepengerSteg.stories';
 import SøknadRoutes from 'app/routes/routes';
 import { ContextDataType } from 'app/context/FpDataContext';
 
-const { MedDeltUttak } = composeStories(stories);
+const { FarSøkerAdopsjonMedDeltUttak } = composeStories(stories);
 
 describe('<PeriodeMedForeldrepengerSteg>', () => {
     it('skal ha født og søke som mor', async () => {
@@ -13,7 +13,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const mellomlagreSøknadOgNaviger = vi.fn();
 
         render(
-            <MedDeltUttak gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />,
+            <FarSøkerAdopsjonMedDeltUttak
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
         );
 
         expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
