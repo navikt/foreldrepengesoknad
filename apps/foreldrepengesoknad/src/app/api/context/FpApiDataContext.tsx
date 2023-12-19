@@ -58,18 +58,16 @@ export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children, initia
     );
 };
 
-export const useApiContextGetData = <TYPE extends FpApiDataType>(key: TYPE, hash: number): FpApiDataMap[TYPE][any] => {
+export const useApiContextGetData = <TYPE extends FpApiDataType>(key: TYPE, hash: number) => {
     const state = useContext(FpApiStateContext);
     const typeData = state[key];
     return typeData ? typeData[hash] : undefined;
 };
 
-export const useApiContextSaveData = <TYPE extends FpApiDataType>(
-    key: TYPE,
-    hash: number,
-): ((data: FpApiDataMap[TYPE]) => void) => {
+export const useApiContextSaveData = <TYPE extends FpApiDataType>(key: TYPE, hash: number) => {
     const dispatch = useContext(FpApiDispatchContext);
-    return (data: FpApiDataMap[TYPE]) => {
+    //TODO (TOR) fix type her
+    return (data: any) => {
         if (dispatch) {
             dispatch({ type: 'update', key, hash, data });
         }

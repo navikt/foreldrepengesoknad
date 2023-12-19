@@ -14,7 +14,7 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import Søker from 'app/context/types/Søker';
 import dayjs from 'dayjs';
 import { SøkersituasjonFp } from '@navikt/fp-types';
@@ -37,6 +37,7 @@ const Template: StoryFn<
         annenForelder: AnnenForelder;
         barn: Barn;
         søker: Søker;
+        dekningsgrad: Dekningsgrad;
     }
 > = (args) => {
     const restMock = (apiMock: MockAdapter) => {
@@ -52,6 +53,9 @@ const Template: StoryFn<
                     [ContextDataType.OM_BARNET]: args.barn,
                     [ContextDataType.SØKER]: args.søker,
                     [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
+                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                        dekningsgrad: args.dekningsgrad,
+                    },
                 }}
             >
                 <UttaksplanInfo
@@ -97,6 +101,7 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoMorSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
 export const UttaksplanAdopsjonFarSøkerMorHarRettIEOS = Template.bind({});
@@ -131,6 +136,7 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
 export const UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger = Template.bind({});
@@ -165,6 +171,7 @@ UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
 export const UttaksplanFødselMorSøkerFarHarRettIEOSPrematur = Template.bind({});
@@ -186,7 +193,7 @@ UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
         type: BarnType.FØDT,
     },
     annenForelder: {
-        fornavn: 'Mor',
+        fornavn: 'Espen',
         etternavn: 'EØS',
         fnr: '2222UUUUU',
         harRettPåForeldrepengerINorge: false,
@@ -200,4 +207,5 @@ UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };

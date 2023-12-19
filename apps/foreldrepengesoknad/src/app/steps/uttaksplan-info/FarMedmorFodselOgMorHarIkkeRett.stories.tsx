@@ -12,7 +12,7 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { AnnenForelder, BarnType } from '@navikt/fp-common';
+import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
@@ -26,7 +26,9 @@ export default {
     decorators: [withRouter],
 };
 
-const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder }> = (args) => {
+const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; annenForelder: AnnenForelder }> = (
+    args,
+) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
@@ -45,6 +47,9 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder 
                         fødselsdatoer: [dayjs('2021-07-01').toDate()],
                         antallBarn: 1,
                         termindato: dayjs('2021-07-01').toDate(),
+                    },
+                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                        dekningsgrad: args.dekningsgrad,
                     },
                     [ContextDataType.SØKER]: {
                         erAleneOmOmsorg: false,
@@ -66,8 +71,8 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder 
     );
 };
 
-export const UttaksplanDerMorIkkeHarRettPåForeldrepenger = Template.bind({});
-UttaksplanDerMorIkkeHarRettPåForeldrepenger.args = {
+export const UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad100 = Template.bind({});
+UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad100.args = {
     stønadskonto100: stønadskonto100MorHarIkkeRett,
     stønadskonto80: stønadskonto80MorHarIkkeRett,
     søkerinfo: søkerinfoFarSøker,
@@ -81,6 +86,25 @@ UttaksplanDerMorIkkeHarRettPåForeldrepenger.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
     },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80 = Template.bind({});
+UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80.args = {
+    stønadskonto100: stønadskonto100MorHarIkkeRett,
+    stønadskonto80: stønadskonto80MorHarIkkeRett,
+    søkerinfo: søkerinfoFarSøker,
+    annenForelder: {
+        etternavn: 'dfg',
+        fornavn: 'dsgdfg',
+        fnr: '123123123',
+        utenlandskFnr: false,
+        erUfør: false,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: false,
+    },
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
 export const UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør = Template.bind({});

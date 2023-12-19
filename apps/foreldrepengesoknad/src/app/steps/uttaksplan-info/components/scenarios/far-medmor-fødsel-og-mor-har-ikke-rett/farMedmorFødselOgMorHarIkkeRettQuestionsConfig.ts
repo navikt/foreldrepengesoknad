@@ -15,14 +15,10 @@ const FarMedmorFødselOgMorHarIkkeRettFormConfig: QuestionConfig<
     FarMedmorFødselOgMorHarIkkeRettQuestionsPayload,
     FarMedmorFødselOgMorHarIkkeRettFormField
 > = {
-    [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: {
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-        isIncluded: () => true,
-    },
     [FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato]: {
         isAnswered: ({ permisjonStartdato }) => hasValue(permisjonStartdato),
-        isIncluded: ({ dekningsgrad, erMorUfør, familiehendelsesdato }) =>
-            andreAugust2022ReglerGjelder(familiehendelsesdato) || (hasValue(dekningsgrad) && erMorUfør),
+        isIncluded: ({ erMorUfør, familiehendelsesdato }) =>
+            andreAugust2022ReglerGjelder(familiehendelsesdato) || erMorUfør,
     },
 };
 

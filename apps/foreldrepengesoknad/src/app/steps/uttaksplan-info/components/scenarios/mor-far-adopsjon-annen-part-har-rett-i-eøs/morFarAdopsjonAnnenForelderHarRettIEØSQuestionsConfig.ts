@@ -13,18 +13,13 @@ const MorFarAdopsjonAnnenForelderHarRettIEØSFormConfig: QuestionConfig<
     MorFarAdopsjonAnnenForelderHarRettIEØSQuestionsPayload,
     MorFarAdopsjonAnnenForelderHarRettIEØSFormField
 > = {
-    [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.dekningsgrad]: {
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-        isIncluded: () => true,
-    },
     [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.startdatoAdopsjonValg]: {
         isAnswered: ({ startdatoAdopsjonValg }) => hasValue(startdatoAdopsjonValg),
-        isIncluded: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        isIncluded: () => true,
     },
     [MorFarAdopsjonAnnenForelderHarRettIEØSFormField.annenStartdatoAdopsjon]: {
         isAnswered: ({ annenStartdatoAdopsjon }) => hasValue(annenStartdatoAdopsjon),
-        isIncluded: ({ dekningsgrad, startdatoAdopsjonValg }) =>
-            startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN && hasValue(dekningsgrad),
+        isIncluded: ({ startdatoAdopsjonValg }) => startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN,
     },
 };
 export const morFarAdopsjonAnnenForelderHarRettIEØSQuestionsConfig = Questions<

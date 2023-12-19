@@ -4,10 +4,8 @@ import {
     FarMedmorFødselOgMorHarIkkeRettFormData,
     FarMedmorFødselOgMorHarIkkeRettFormField,
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
-import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorFødselOgMorHarIkkeRettValues: FarMedmorFødselOgMorHarIkkeRettFormData = {
-    [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: '',
     [FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato]: '',
 };
 
@@ -21,12 +19,10 @@ export const mapFarMedmorFødselOgMorHarIkkeRettFormToState = (
 
 export const getInitialFarMedmorFødselOgMorHarIkkeRettValues = (
     lagretUttaksplanInfo: FarMedmorFødselOgMorHarIkkeRettUttaksplanInfo | undefined,
-    dekningsgrad?: Dekningsgrad,
 ): FarMedmorFødselOgMorHarIkkeRettFormData => {
     if (lagretUttaksplanInfo) {
         return {
             ...lagretUttaksplanInfo,
-            [FarMedmorFødselOgMorHarIkkeRettFormField.dekningsgrad]: dekningsgrad!,
         };
     }
 

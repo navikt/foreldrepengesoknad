@@ -30,7 +30,7 @@ interface Props {
     annenForelder: AnnenForelder;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
