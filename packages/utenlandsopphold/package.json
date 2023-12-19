@@ -13,7 +13,7 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^5.12.0",
+        "@navikt/aksel-icons": "^5.12.1",
         "@navikt/ds-css": "5.12.0",
         "@navikt/ds-react": "5.12.0",
         "@navikt/fp-common": "workspace:*",
