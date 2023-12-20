@@ -76,7 +76,7 @@
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-essentials": "^7.6.5",
         "@storybook/cli": "^7.6.5",
-        "@storybook/react": "^7.6.5",
+        "@storybook/react": "^7.6.6",
         "@storybook/react-vite": "7.6.5",
         "@testing-library/jest-dom": "^6.1.5",
         "@testing-library/react": "^14.1.2",
