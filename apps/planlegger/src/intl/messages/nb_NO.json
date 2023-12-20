@@ -45,7 +45,7 @@
     "arbeid.tittel": "Arbeidssituasjon",
     "arbeid.hvaGjelder": "Hva gjelder for {navn}",
     "arbeid.jobber": "Jobber og tjener mer enn 50 000 i året eller er ufør",
-    "arbeid.jobber.beskrivelse": "Da planlegges det for at {navn} skal ha permisjon fra jobb mer foreldrepenger",
+    "arbeid.jobber.beskrivelse": "Da planlegges det for at {navn} skal ha permisjon fra jobb med foreldrepenger",
     "arbeid.jobberIkke": "Jobber ikke eller jobber og tjener under 50 000 i året eller er student uten deltidsjobb",
     "arbeid.jobberIkke.beskrivelse": "Da planlegges det ikke for at {navn} skal ha foreldrepenger, men kan søke om engangsstønad",
     "periode.tittel": "Hvor lang periode med foreldrepenger ønsker dere?",
