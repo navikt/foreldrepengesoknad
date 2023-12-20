@@ -33,7 +33,7 @@
         "@formatjs/cli-lib": "6.3.3",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@storybook/addon-essentials": "^7.6.5",
+        "@storybook/addon-essentials": "^7.6.6",
         "@storybook/addon-interactions": "^7.6.5",
         "@storybook/addon-links": "^7.6.5",
         "@storybook/builder-vite": "^7.6.5",
