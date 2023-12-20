@@ -18,6 +18,7 @@ export default defineConfig({
             steps: path.resolve(__dirname, './src/steps'),
             components: path.resolve(__dirname, './src/components'),
             appData: path.resolve(__dirname, './src/appData'),
+            types: path.resolve(__dirname, './src/types'),
         },
     },
 });
