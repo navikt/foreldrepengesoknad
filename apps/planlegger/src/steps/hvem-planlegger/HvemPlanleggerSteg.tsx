@@ -1,6 +1,6 @@
-import { Heading, Radio, Textarea } from '@navikt/ds-react';
+import { Heading, Radio } from '@navikt/ds-react';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
@@ -10,16 +10,16 @@ import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
 import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { Path } from 'appData/paths';
 import HvorforSpørViOmDette from 'components/expansion-card/HvorforSpørViOmDette';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 const HvemPlanleggerSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
-    const formMethods = useForm();
+    const formMethods = useForm<HvemPlanlegger>();
     const intl = useIntl();
-    const hvemPlanlegger = formMethods.watch('hvemPlanlegger');
+    const hvemPlanlegger = formMethods.watch('type');
 
     const lagreHvemPlanlegger = usePlanleggerStateSaveFn(PlanleggerDataType.HVEM_PLANLEGGER);
-
-    const lagre = (formValues: any) => {
+    const lagre = (formValues: HvemPlanlegger) => {
         lagreHvemPlanlegger(formValues);
         navigator.goToNextStep(Path.OM_BARNET);
     };
@@ -31,7 +31,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <Heading size="medium">
                     <FormattedMessage id="hvem.tittel" />
-                    <RadioGroup name="hvemPlanlegger">
+                    <RadioGroup name="type">
                         <Radio value={SøkersituasjonEnum.MOR_OG_FAR}>
                             <FormattedMessage id="hvem.morOgFar" />
                         </Radio>
@@ -52,44 +52,44 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                 {hvemPlanlegger === SøkersituasjonEnum.MOR_OG_FAR && (
                     <Block>
                         <div className="mt-10">
-                            <Textarea label={intlUtils(intl, 'navn.mor')} size="small" />
+                            <TextField label={intlUtils(intl, 'navn.mor')} name="navnPåMor" />
                         </div>
                         <div className="mt-10">
-                            <Textarea label={intlUtils(intl, 'navn.far')} size="small" />
+                            <TextField label={intlUtils(intl, 'navn.far')} name="navnPåFar" />
                         </div>
                     </Block>
                 )}
                 {hvemPlanlegger === SøkersituasjonEnum.MOR_OG_MEDMOR && (
                     <Block>
                         <div className="mt-10">
-                            <Textarea label={intlUtils(intl, 'navn.mor')} size="small" />
+                            <TextField label={intlUtils(intl, 'navn.mor')} name="navnPåMor" />
                         </div>
                         <div className="mt-10">
-                            <Textarea label={intlUtils(intl, 'navn.medmor')} size="small" />
+                            <TextField label={intlUtils(intl, 'navn.medmor')} name="navnPåMedmor" />
                         </div>
                     </Block>
                 )}
                 {hvemPlanlegger === SøkersituasjonEnum.FAR_OG_FAR && (
                     <Block>
                         <div className="mt-10">
-                            <Textarea label={intlUtils(intl, 'navn.far')} size="small" />
+                            <TextField label={intlUtils(intl, 'navn.far')} name="navnPåFar" />
                         </div>
                         <div className="mt-10">
-                            <Textarea label={intlUtils(intl, 'navn.far')} size="small" />
+                            <TextField label={intlUtils(intl, 'navn.far')} name="navnPåMedFar" />
                         </div>
                     </Block>
                 )}
                 {hvemPlanlegger === SøkersituasjonEnum.MOR && (
                     <Block>
                         <div className="mt-10">
-                            <Textarea label={intlUtils(intl, 'navn.mor')} size="small" />
+                            <TextField label={intlUtils(intl, 'navn.mor')} name="navnPåBareMor" />
                         </div>
                     </Block>
                 )}
                 {hvemPlanlegger === SøkersituasjonEnum.FAR && (
                     <Block>
                         <div className="mt-10">
-                            <Textarea label={intlUtils(intl, 'navn.far')} size="small" />
+                            <TextField label={intlUtils(intl, 'navn.far')} name="navnPåBareFar" />
                         </div>
                     </Block>
                 )}
