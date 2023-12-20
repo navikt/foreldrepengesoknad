@@ -77,7 +77,7 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-essentials": "^7.6.5",
-        "@storybook/builder-vite": "^7.6.5",
+        "@storybook/builder-vite": "^7.6.6",
         "@storybook/cli": "^7.6.5",
         "@storybook/react": "^7.6.5",
         "@storybook/react-vite": "7.6.5",
