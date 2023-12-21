@@ -282,8 +282,7 @@
     "uttaksplaninfo.spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
     "uttaksplaninfo.veileder.dekningsgrad.header": "Hva lønner seg for oss?",
     "uttaksplaninfo.veileder.dekningsgrad.header.alene": "Hva lønner seg for meg?",
-    "uttaksplaninfo.veileder.dekningsgrad": "Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%. Likevel kan det være andre faktorer som påvirker hva som lønner seg, hvis man for eksempel må ha ulønnet permisjon i en periode. Dette kan du lese mer om ",
-    "uttaksplaninfo.veileder.dekningsgrad.link": "her",
+    "uttaksplaninfo.veileder.dekningsgrad": "Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%. Likevel kan det være andre faktorer som påvirker hva som lønner seg, hvis man for eksempel må ha ulønnet permisjon i en periode. Dette kan du lese mer om på ",
     "uttaksplaninfo.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger vil dere ha?",
     "uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger vil du ha?",
     "uttaksplaninfo.dekningsgrad.beskrivelse": "Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.",
@@ -994,10 +993,10 @@
     "uttaksplan.veileder.fritekst.kanIkkeVæreLengreEnn": "Begrunnelse for søking tilbake i tid kan maks være {maxLength} tegn.",
     "vedlagtdokumentasjon": "Vedlagt dokumentasjon",
 
-    "DekningsgradForm.InformasjonPrematurukerHeader": "Dere får lenger periode med foreldrepenger siden du har født før uke 33",
+    "DekningsgradForm.InformasjonPrematurukerHeader": "{soker} får lenger periode med foreldrepenger siden du har født før uke 33",
     "DekningsgradForm.InformasjonPrematuruker": "Perioden din er forlenget med {uker} uker og {dager} dager siden du har født før svangerskapsuke 33.",
-    "DekningsgradForm.InformasjonFlerbarnHeader": "Dere får lenger periode med foreldrepenger siden dere skal ha tvillinger",
-    "DekningsgradForm.InformasjonFlerbarn": "Perioden din er forlenget med {uker} uker siden dere skal ha tvillinger.",
+    "DekningsgradForm.InformasjonToBarn": "{sokerStorBokstav} får lenger periode med foreldrepenger siden {soker} skal ha tvillinger",
+    "DekningsgradForm.InformasjonFlereEnnToBarn": "{sokerStorBokstav} får lenger periode med foreldrepenger siden {soker} skal ha flere barn",
 
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dere har valgt {uker} uker med {dekningsgrad}% foreldrepenger",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette ble valgt av {navn} i søknaden hennes, og det kan ikke endres av deg.",

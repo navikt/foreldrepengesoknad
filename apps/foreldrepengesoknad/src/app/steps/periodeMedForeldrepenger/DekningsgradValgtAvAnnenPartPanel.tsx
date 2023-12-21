@@ -85,7 +85,7 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
                         </BodyShort>
                     </VStack>
                     <div className={bem.block}>
-                        <CalendarIcon title="a11y-title" height={24} width={24} color="#005B82" />
+                        <CalendarIcon height={24} width={24} color="#005B82" />
                     </div>
                 </HStack>
             </Box>
