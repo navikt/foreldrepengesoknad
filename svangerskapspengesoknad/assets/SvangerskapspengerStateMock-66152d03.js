@@ -1,0 +1,1 @@
+import{a as p}from"./links-0d777f61.js";import{u as n}from"./useSvangerskapspengerContext-5e86d32f.js";import{r as a}from"./index-f1f2c4b1.js";const m=({children:s,context:r})=>{const[e,o]=a.useState(!1),{dispatch:t}=n();return a.useEffect(()=>{e||Promise.all([t(p.applyStoredState(r))]).then(()=>{o(!0)})},[t,e,r]),e?s:null};export{m as S};

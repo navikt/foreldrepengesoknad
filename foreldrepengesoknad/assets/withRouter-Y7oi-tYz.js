@@ -1,1 +1,0 @@
-import{j as t}from"./jsx-runtime-DtaoT6pD.js";import{B as o}from"./index-U0S_AV9L.js";const e=r=>t.jsx(o,{children:t.jsx(r,{})}),p=e;try{withRouter.displayName="withRouter",withRouter.__docgenInfo={description:"",displayName:"withRouter",props:{}}}catch{}export{p as w};
