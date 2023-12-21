@@ -29,10 +29,12 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
                   tidligereOpphold: søknad.informasjonOmUtenlandsopphold.tidligereOpphold,
               }
             : undefined,
+        [ContextDataType.PERIODE_MED_FORELDREPENGER]: søknad?.dekningsgrad
+            ? { dekningsgrad: søknad.dekningsgrad }
+            : undefined,
         [ContextDataType.UTTAKSPLAN_INFO]: mellomlagretState.uttaksplanInfo,
         [ContextDataType.UTTAKSPLAN]: søknad?.uttaksplan,
         [ContextDataType.UTTAKSPLAN_METADATA]: {
-            dekningsgrad: søknad?.dekningsgrad,
             ønskerJustertUttakVedFødsel: søknad?.ønskerJustertUttakVedFødsel,
             perioderSomSkalSendesInn: mellomlagretState.perioderSomSkalSendesInn,
             antallUkerIUttaksplan: mellomlagretState.antallUkerIUttaksplan,

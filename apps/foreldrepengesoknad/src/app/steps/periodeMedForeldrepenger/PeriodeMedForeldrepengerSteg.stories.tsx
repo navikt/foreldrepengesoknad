@@ -434,6 +434,31 @@ MorAleneomsorgFødsel.args = {
     },
 };
 
+export const MorFødselDeltUttakPrematurFødsel = Template.bind({});
+MorFødselDeltUttakPrematurFødsel.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    barnet: {
+        type: BarnType.FØDT,
+        antallBarn: 1,
+        datoForAleneomsorg: new Date(),
+        dokumentasjonAvAleneomsorg: [],
+        fødselsdatoer: [dayjs('2021-01-11').toDate()],
+        termindato: dayjs('2021-03-11').toDate(),
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+    },
+    stønadskonto100: STØNADSKONTO_100,
+    stønadskonto80: STØNADSKONTO_80,
+};
+
 export const MorAleneomsorgPrematurFødsel = Template.bind({});
 MorAleneomsorgPrematurFødsel.args = {
     erAleneOmOmsorg: true,
@@ -550,7 +575,7 @@ FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args = {
     annenForelder: {
         fornavn: 'Helga',
         etternavn: 'Utvikler',
-        fnr: '1212121313',
+        fnr: '12117212090',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },

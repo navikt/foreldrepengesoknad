@@ -137,7 +137,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(dekningsgrad),
             antallUkerIUttaksplan: getAntallUker(kontoerForValgtDekningsgrad),
         });
 
@@ -163,7 +162,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             initialValues={getInitialFarMedmorAleneomsorgFødselValues(
                 uttaksplanInfo,
                 dateToISOString(datoForAleneomsorg),
-                uttaksplanMetadata?.dekningsgrad,
+                dekningsgrad,
             )}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
@@ -178,7 +177,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block visible={dekningsgrad !== ''}>
+                        <Block>
                             {valgtStønadskonto && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={false}

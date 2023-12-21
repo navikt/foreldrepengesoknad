@@ -136,7 +136,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(dekningsgrad),
             antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
         });
 

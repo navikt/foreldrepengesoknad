@@ -5,6 +5,7 @@ import Person from '@navikt/fp-common/src/common/types/Person';
 import { Button, GuidePanel } from '@navikt/ds-react';
 import {
     Block,
+    Dekningsgrad,
     EksisterendeSak,
     Forelder,
     ISOStringToDate,
@@ -140,7 +141,6 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(dekningsgrad),
             antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad! === '100' ? 100 : 80]),
         });
 
@@ -159,7 +159,8 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                     familiehendelsesdato: familiehendelsesdatoDate!,
                 } as FarMedmorFødselBeggeHarRettFormPayload);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
+                const valgtStønadskonto =
+                    tilgjengeligeStønadskontoer[dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 100 : 80];
                 const tilgjengeligeDager = valgtStønadskonto
                     ? getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor)
                     : undefined;
@@ -169,7 +170,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block padBottom="xl" visible={dekningsgrad !== ''}>
+                        <Block padBottom="xl">
                             {tilgjengeligeDager && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={true}
@@ -184,7 +185,6 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                             padBottom="xl"
                             visible={
                                 erFarEllerMedmor &&
-                                dekningsgrad !== '' &&
                                 !andreAugust2022ReglerGjelder(ISOStringToDate(familiehendelsesdato)!)
                             }
                         >

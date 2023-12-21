@@ -80,7 +80,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
 
     const uker = getAntallUker(tilgjengeligeStønadskontoer);
@@ -95,7 +95,6 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const { rolle } = søkersituasjon;
-    const dekningsgradGrunnlag = eksisterendeSak ? eksisterendeSak.grunnlag.dekningsgrad : undefined;
     const situasjon = getForeldreparSituasjon(
         person.kjønn,
         annenForelderKjønn,
@@ -165,9 +164,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                             id="eksisterendeSak.tekst.html"
                             values={{
                                 uker: <strong>{getVarighetString(uker * 5, intl)}</strong>,
-                                dekningsgrad: (
-                                    <strong>{uttaksplanMetadata?.dekningsgrad ?? dekningsgradGrunnlag}</strong>
-                                ),
+                                dekningsgrad: <strong>{periodeMedForeldrepenger.dekningsgrad}</strong>,
                                 navn: hvem,
                             }}
                         />
