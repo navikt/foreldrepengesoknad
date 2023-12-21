@@ -21,6 +21,28 @@ import SøknadSendt from 'app/pages/søknad-sendt/SøknadSendt';
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import PerioderStep from 'app/steps/perioder/PerioderStep';
 import { LocaleNo } from '@navikt/fp-types';
+import { ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
+import { redirectToLogin } from '@navikt/fp-utils';
+import Environment from 'app/Environment';
+import { Loader } from '@navikt/ds-react';
+import { ErrorPage } from '@navikt/fp-ui';
+
+export const Spinner: React.FunctionComponent = () => (
+    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+        <Loader size="2xlarge" />
+    </div>
+);
+
+export const ApiErrorHandler: React.FunctionComponent<{ error: ApiAccessError | ApiGeneralError }> = ({ error }) => {
+    if (error instanceof ApiAccessError) {
+        redirectToLogin(Environment.LOGIN_URL);
+        return <Spinner />;
+    }
+    return (
+        <ErrorPage appName="Svangerskapspenger" errorMessage={error.message} retryCallback={() => location.reload()} />
+    );
+};
+
 interface Props {
     currentRoute: SøknadRoutes;
     locale: LocaleNo;
