@@ -117,8 +117,8 @@ describe('<Perioder>', () => {
 
         const nyPeriode = '30.10.2023 - 27.01.2024';
 
-        expect(screen.getAllByText('Slett perioden', { exact: false })[0]).toBeInTheDocument();
-        await user.click(screen.getAllByText('Slett perioden')[0]);
+        expect(screen.getAllByText('Fjern perioden', { exact: false })[0]).toBeInTheDocument();
+        await user.click(screen.getAllByText('Fjern perioden')[0]);
 
         expect(screen.queryByText(nyPeriode)).not.toBeInTheDocument();
     });

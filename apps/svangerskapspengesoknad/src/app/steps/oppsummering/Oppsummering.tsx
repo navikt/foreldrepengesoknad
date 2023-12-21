@@ -270,7 +270,7 @@ const Oppsummering = () => {
                                                 <FormattedMessage id="backlink.label" />
                                             </Button>
                                             <Button
-                                                icon={<PaperplaneIcon />}
+                                                icon={<PaperplaneIcon aria-hidden />}
                                                 iconPosition="right"
                                                 type="submit"
                                                 disabled={formSubmitted}

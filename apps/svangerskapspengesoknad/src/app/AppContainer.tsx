@@ -34,6 +34,7 @@ const AppContainer: FunctionComponent = () => {
                         onChangeLocale={(activeLocale: LocaleNo) => {
                             setLocaleInSessionStorage(activeLocale);
                             setLocale(activeLocale);
+                            document.documentElement.setAttribute('lang', activeLocale);
                         }}
                     />
                 </IntlProvider>

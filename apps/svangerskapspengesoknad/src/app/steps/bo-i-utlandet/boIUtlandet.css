@@ -1,0 +1,20 @@
+.boIUtlandet__countrySelect {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.boIUtlandet__delete {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .boIUtlandet__countrySelect {
+        display: block;
+    }
+
+    .boIUtlandet__delete {
+        margin-top: 1rem;
+    }
+}

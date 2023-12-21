@@ -154,7 +154,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     label={intlUtils(intl, 'egenNæring.næring.fom', {
                                         navnPåNæringen: formValues.egenNæringNavn,
                                     })}
-                                    placeholder="dd.mm.åååå"
+                                    placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringFom(intl, formValues.egenNæringTom!)}
@@ -186,7 +186,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                         navnPåNæringen: formValues.egenNæringNavn,
                                     })}
                                     description={intlUtils(intl, 'egenNæring.næring.tom.description')}
-                                    placeholder="dd.mm.åååå"
+                                    placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringTom(intl, formValues.egenNæringFom!)}
@@ -243,7 +243,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 <EgenNæringFormComponents.DatePicker
                                     name={EgenNæringFormField.egenNæringYrkesAktivDato}
                                     label={intlUtils(intl, 'egenNæring.yrkesaktivDato')}
-                                    placeholder="dd.mm.åååå"
+                                    placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringYrkesAktivDatoDato(intl)}

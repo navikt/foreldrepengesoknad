@@ -344,6 +344,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
                                     dayPickerProps={{ defaultMonth: defaultMonthPeriodeFom }}
+                                    placeholder={'dd.mm.åååå'}
                                 />
                             </Block>
 
@@ -390,6 +391,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
                                     dayPickerProps={{ defaultMonth: defaultMonthTilbakeIJobb }}
+                                    placeholder={'dd.mm.åååå'}
                                 />
                             </Block>
                             <Block padBottom="xxl">

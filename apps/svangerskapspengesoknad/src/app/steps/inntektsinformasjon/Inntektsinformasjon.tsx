@@ -16,7 +16,7 @@ import {
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 
-import { BodyShort, Button, Label } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { Link } from 'react-router-dom';
 import {
     getAktiveArbeidsforhold,
@@ -79,7 +79,9 @@ const Inntektsinformasjon: React.FunctionComponent = () => {
                                 </BodyShort>
                             </Block>
                             <Block padBottom="m">
-                                <Label>{intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.label')}</Label>
+                                <BodyShort style={{ fontWeight: 'bold' }}>
+                                    {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.label')}
+                                </BodyShort>
                             </Block>
                             <Block padBottom="xxl">
                                 <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />

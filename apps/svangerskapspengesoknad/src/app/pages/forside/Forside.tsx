@@ -81,7 +81,6 @@ const Forside: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => 
                                                     className="lenke"
                                                     rel="noopener noreferrer"
                                                     href={links.svangerskapspenger}
-                                                    target="_blank"
                                                 >
                                                     {msg}
                                                 </a>
@@ -104,7 +103,6 @@ const Forside: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => 
                                                         className="lenke"
                                                         rel="noopener noreferrer"
                                                         href={links.tilretteleggingsskjema}
-                                                        target="_blank"
                                                     >
                                                         {msg}
                                                     </a>
@@ -121,7 +119,6 @@ const Forside: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => 
                                                         className="lenke"
                                                         rel="noopener noreferrer"
                                                         href={links.slikSøkerDu}
-                                                        target="_blank"
                                                     >
                                                         {msg}
                                                     </a>
@@ -152,7 +149,6 @@ const Forside: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => 
                                                             className="lenke"
                                                             rel="noopener noreferrer"
                                                             href={links.rettOgPlikt}
-                                                            target="_blank"
                                                         >
                                                             {msg}
                                                         </a>

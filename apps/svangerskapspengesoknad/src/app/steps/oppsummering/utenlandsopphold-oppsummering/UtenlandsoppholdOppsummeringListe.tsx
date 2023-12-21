@@ -1,7 +1,7 @@
 import { Block, bemUtils, formatDate } from '@navikt/fp-common';
 import countries from 'i18n-iso-countries';
 import { FunctionComponent } from 'react';
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { Utenlandsopphold } from 'app/types/InformasjonOmUtenlandsopphold';
 import { FormattedMessage } from 'react-intl';
 
@@ -23,19 +23,19 @@ const UtenlandsoppholdOppsummeringListe: FunctionComponent<Props> = ({ utenlands
                         <div className={bem.block}>
                             <Block padBottom="m">
                                 {tidligereOpphold ? (
-                                    <Label>
+                                    <BodyShort className={bem.element('title')}>
                                         <FormattedMessage
                                             id="oppsummering.utenlandsopphold.harBoddINorge.utenlands"
                                             values={{ land: countries.getName(opphold.land, 'nb') }}
                                         />
-                                    </Label>
+                                    </BodyShort>
                                 ) : (
-                                    <Label>
+                                    <BodyShort className={bem.element('title')}>
                                         <FormattedMessage
                                             id="oppsummering.utenlandsopphold.skalBoINorge.utenlands"
                                             values={{ land: countries.getName(opphold.land, 'nb') }}
                                         />
-                                    </Label>
+                                    </BodyShort>
                                 )}
                             </Block>
                             <BodyShort>

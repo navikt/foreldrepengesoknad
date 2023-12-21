@@ -50,7 +50,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ visibility, formValu
                 <EgenNæringFormComponents.DatePicker
                     name={EgenNæringFormField.egenNæringVarigEndringDato}
                     label={intlUtils(intl, 'egenNæring.egenNæringVarigEndringDato')}
-                    placeholder="dd.mm.åååå"
+                    placeholder={'dd.mm.åååå'}
                     fullscreenOverlay={true}
                     showYearSelector={true}
                     validate={validateEgenNæringVarigEndringDato(

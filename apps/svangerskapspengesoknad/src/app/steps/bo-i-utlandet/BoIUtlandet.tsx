@@ -1,4 +1,4 @@
-import { Block, dateToday, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
+import { bemUtils, Block, dateToday, intlUtils, Step, StepButtonWrapper } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import stepConfig, {
@@ -13,7 +13,7 @@ import SøknadRoutes from 'app/routes/routes';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import { BoIUtlandetFormComponents, BoIUtlandetFormData, BoIUtlandetFormField } from './boIUtlandetFormConfig';
-import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
+import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { FieldArray } from 'formik';
 import {
     getInitialBostedIUtlandetFormData,
@@ -24,11 +24,13 @@ import {
 import { validateBostedUtlandLand, validateBostedUtlandFom, validateBostedUtlandTom } from './boIUtlandetValidering';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import './boIUtlandet.css';
 
 interface Props {
     oppgirIFortid: boolean;
 }
 const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
+    const bem = bemUtils('boIUtlandet');
     const intl = useIntl();
     const søknad = useSøknad();
     const { informasjonOmUtenlandsopphold, barn } = søknad;
@@ -87,7 +89,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                     formValues.bostedIUtlandet.length > 0 &&
                                     formValues.bostedIUtlandet.map((_opphold, index) => (
                                         <div key={index}>
-                                            <Block padBottom="xxl">
+                                            <Block padBottom="xxl" className={bem.element('countrySelect')}>
                                                 <BoIUtlandetFormComponents.CountrySelect
                                                     style={{ width: 'var(--app-text-input-width)' }}
                                                     name={`bostedIUtlandet.${index}.land`}
@@ -95,6 +97,17 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                     validate={validateBostedUtlandLand(intl)}
                                                     useAlpha3Code={false}
                                                 />
+                                                {index !== 0 && (
+                                                    <Button
+                                                        className={bem.element('delete')}
+                                                        icon={<XMarkIcon aria-hidden />}
+                                                        type="button"
+                                                        variant="tertiary"
+                                                        onClick={() => arrayHelpers.remove(index)}
+                                                    >
+                                                        {intlUtils(intl, 'boIUtlandet.slett')}
+                                                    </Button>
+                                                )}
                                             </Block>
                                             <Block padBottom="xxl">
                                                 <BoIUtlandetFormComponents.DatePicker
@@ -133,18 +146,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                     placeholder={'dd.mm.åååå'}
                                                 />
                                             </Block>
-                                            {index !== 0 && (
-                                                <Block>
-                                                    <Button
-                                                        icon={<TrashIcon />}
-                                                        type="button"
-                                                        variant="tertiary"
-                                                        onClick={() => arrayHelpers.remove(index)}
-                                                    >
-                                                        {intlUtils(intl, 'boIUtlandet.slett')}
-                                                    </Button>
-                                                </Block>
-                                            )}
+
                                             {formValues.bostedIUtlandet && formValues.bostedIUtlandet.length > 1 && (
                                                 <HorizontalLine />
                                             )}

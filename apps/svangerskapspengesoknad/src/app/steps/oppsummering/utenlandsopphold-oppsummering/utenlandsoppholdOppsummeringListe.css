@@ -5,3 +5,7 @@
     margin: 0;
     background-color: var(--a-deepblue-50);
 }
+
+.utenlandsoppholdOppsummering__title {
+    font-weight: bold;
+}
