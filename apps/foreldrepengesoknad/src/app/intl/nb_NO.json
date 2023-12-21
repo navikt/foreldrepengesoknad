@@ -996,6 +996,8 @@
 
     "DekningsgradForm.InformasjonPrematurukerHeader": "Dere får lenger periode med foreldrepenger siden du har født før uke 33",
     "DekningsgradForm.InformasjonPrematuruker": "Perioden din er forlenget med {uker} uker og {dager} dager siden du har født før svangerskapsuke 33.",
+    "DekningsgradForm.InformasjonFlerbarnHeader": "Dere får lenger periode med foreldrepenger siden dere skal ha tvillinger",
+    "DekningsgradForm.InformasjonFlerbarn": "Perioden din er forlenget med {uker} uker siden dere skal ha tvillinger.",
 
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dere har valgt {uker} uker med {dekningsgrad}% foreldrepenger",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette ble valgt av {navn} i søknaden hennes, og det kan ikke endres av deg.",
