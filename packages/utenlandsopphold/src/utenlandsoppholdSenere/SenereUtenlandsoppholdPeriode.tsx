@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { TrashIcon } from '@navikt/aksel-icons';
+import { XMarkIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { createCountryOptions, formatDate, isSameOrAfterToday } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
@@ -120,7 +120,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                     type="button"
                     variant="tertiary"
                     size="small"
-                    icon={<TrashIcon aria-hidden />}
+                    icon={<XMarkIcon aria-hidden />}
                     onClick={() => fjernOpphold(index)}
                 >
                     <FormattedMessage id="SenereUtenlandsoppholdSteg.Knapp.SlettOpphold" />

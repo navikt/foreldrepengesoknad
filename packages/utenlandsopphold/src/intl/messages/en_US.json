@@ -14,8 +14,10 @@
     "UtenlandsoppholdSteg.Info.Del4": "You are no longer a member of the National Insurance Scheme when you are considered resident abroad.",
     "UtenlandsoppholdSteg.Info.Undertittel": "Holidays and temporary stays abroad",
     "UtenlandsoppholdSteg.Info.Del5": "When you are on holiday abroad, you are considered a tourist and retain your membership in the national insurance, if you have no income from work during your stay and your stay does not last longer than 12 months. As long as you are a member of the National Insurance Scheme, you generally retain the benefit.",
-    "UtenlandsoppholdSteg.Info.Del6": "You can read more about stays abroad at",
-
+    "UtenlandsoppholdSteg.Info.Del6": "You can read more about ",
+    "UtenlandsoppholdSteg.Info.Del7.fp": "parental benefit and stays abroad.",
+    "UtenlandsoppholdSteg.Info.Del7.es": "lump-sum grant and stays abroad.",
+    "UtenlandsoppholdSteg.Info.Del7.svp": "maternity allowance and stays abroad.",
     "TidligereUtenlandsoppholdSteg.Knapp.LeggTilLand": "Add a new stay abroad",
     "TidligereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp": "You can't have several stays abroad during the same period",
     "TidligereUtenlandsoppholdSteg.Spørsmål.HvilketLandHarDuBoddI": "What country did you live in?",

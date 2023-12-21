@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { Arbeidsforhold, Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -23,11 +23,11 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                 <li key={arbforhold.arbeidsgiverId}>
                     <div className={bem.block}>
                         <div className={bem.element('topRow')}>
-                            <Label>
+                            <BodyShort className={bem.element('label')}>
                                 {arbforhold.arbeidsgiverIdType === 'orgnr'
                                     ? arbforhold.arbeidsgiverNavn
                                     : intlUtils(intl, 'arbeidsgiver')}
-                            </Label>
+                            </BodyShort>
                             <BodyShort className={bem.element('stillingsprosent')}>
                                 {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.stillingsprosent', {
                                     stillingsprosent: arbforhold.stillingsprosent,
