@@ -559,6 +559,45 @@ MorFødselMedTvillingFlerbarnsuker.args = {
     },
 };
 
+export const MorFødselAleneomsorgMedTrillingFlerbarnsuker = Template.bind({});
+MorFødselAleneomsorgMedTrillingFlerbarnsuker.args = {
+    erAleneOmOmsorg: true,
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    barnet: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        antallBarn: 3,
+        datoForAleneomsorg: new Date(),
+        dokumentasjonAvAleneomsorg: [],
+    },
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    stønadskonto100: {
+        ...STØNADSKONTO_100,
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 165,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+            FLERBARNSDAGER: 85,
+        },
+    },
+    stønadskonto80: {
+        ...STØNADSKONTO_80,
+        kontoer: {
+            MØDREKVOTE: 95,
+            FEDREKVOTE: 95,
+            FELLESPERIODE: 195,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+            FLERBARNSDAGER: 105,
+        },
+    },
+};
+
 export const FarEllerMedmorSøkerOgMorHarLagetUttaksplan = Template.bind({});
 FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args = {
     søkersituasjon: {

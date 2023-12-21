@@ -79,7 +79,7 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
         ? false
         : statusAnnenPartVedtak !== RequestStatus.FINISHED;
 
-    const { data: tilgjengeligeStønadskontoer80, error: error1 } = useApiGetData(
+    const { data: tilgjengeligeStønadskontoer80 } = useApiGetData(
         FpApiDataType.STØNADSKONTOER_80,
         params.stønadskontoParams80,
         suspendStønadskontoApiRequests,
@@ -89,8 +89,6 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
         params.stønadskontoParams100,
         suspendStønadskontoApiRequests,
     );
-    console.log(error1);
-    // console.log(error2);
 
     const tilgjengeligeStønadskontoer =
         tilgjengeligeStønadskontoer80 && tilgjengeligeStønadskontoer100

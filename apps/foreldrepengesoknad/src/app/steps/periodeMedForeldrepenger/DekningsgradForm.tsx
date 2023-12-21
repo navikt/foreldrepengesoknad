@@ -1,7 +1,7 @@
 import { useIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { FeedingBottleIcon } from '@navikt/aksel-icons';
+import { FeedingBottleIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Radio, VStack, ReadMore, Link, Box, BodyShort, Heading, HStack } from '@navikt/ds-react';
 import {
     Barn,
@@ -10,8 +10,8 @@ import {
     TilgjengeligStønadskonto,
     Uttaksdagen,
     bemUtils,
-    getFlerbarnsuker,
     isAnnenForelderOppgitt,
+    capitalizeFirstLetter,
 } from '@navikt/fp-common';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -35,7 +35,7 @@ const finnSisteDagMedForeldrepenger = (dager: number, termindato?: Date) => {
     return dayjs(dag).format('dddd DD. MMMM YYYY');
 };
 
-const getSøkerTekst = (intl: IntlShape, erDeltUttak: boolean) => {
+const getSøkerAntallTekst = (intl: IntlShape, erDeltUttak: boolean) => {
     return erDeltUttak
         ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
         : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.du' });
@@ -95,7 +95,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(49 * 5, termindato);
     const sisteDag80Prosent = finnSisteDagMedForeldrepenger(59 * 5, termindato);
 
-    const dekningsgrad = formMethods.watch('dekningsgrad');
+    const søkerAntallTekst = getSøkerAntallTekst(intl, erDeltUttak);
 
     return (
         <Form formMethods={formMethods} onSubmit={onSubmit}>
@@ -130,11 +130,11 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 fødselsdato
                                     ? intl.formatMessage(
                                           { id: 'uttaksplaninfo.Uker.beskrivelseErFodt' },
-                                          { dato: sisteDag100Prosent, soker: getSøkerTekst(intl, erDeltUttak) },
+                                          { dato: sisteDag100Prosent, soker: søkerAntallTekst },
                                       )
                                     : intl.formatMessage(
                                           { id: 'uttaksplaninfo.Uker.beskrivelse' },
-                                          { dato: sisteDag100Prosent, soker: getSøkerTekst(intl, erDeltUttak) },
+                                          { dato: sisteDag100Prosent, soker: søkerAntallTekst },
                                       )
                             }
                         >
@@ -151,11 +151,11 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 fødselsdato
                                     ? intl.formatMessage(
                                           { id: 'uttaksplaninfo.Uker.beskrivelseErFodt' },
-                                          { dato: sisteDag80Prosent, soker: getSøkerTekst(intl, erDeltUttak) },
+                                          { dato: sisteDag80Prosent, soker: søkerAntallTekst },
                                       )
                                     : intl.formatMessage(
                                           { id: 'uttaksplaninfo.Uker.beskrivelse' },
-                                          { dato: sisteDag80Prosent, soker: getSøkerTekst(intl, erDeltUttak) },
+                                          { dato: sisteDag80Prosent, soker: søkerAntallTekst },
                                       )
                             }
                         >
@@ -178,7 +178,8 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     >
                         <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad" />
                         <Link href={links.søknadsfrister} target="_blank">
-                            <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.link" />
+                            nav.no/foreldrepenger
+                            <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
                         </Link>
                     </ReadMore>
                 </VStack>
@@ -187,7 +188,12 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
                                 <Heading size="xsmall">
-                                    <FormattedMessage id="DekningsgradForm.InformasjonPrematurukerHeader" />
+                                    <FormattedMessage
+                                        id="DekningsgradForm.InformasjonPrematurukerHeader"
+                                        values={{
+                                            soker: capitalizeFirstLetter(søkerAntallTekst),
+                                        }}
+                                    />
                                 </Heading>
                                 <BodyShort>
                                     <FormattedMessage
@@ -200,7 +206,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 </BodyShort>
                             </VStack>
                             <div className={bem.block}>
-                                <FeedingBottleIcon title="a11y-title" height={24} width={24} color="#005B82" />
+                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
                             </div>
                         </HStack>
                     </Box>
@@ -210,19 +216,28 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
                                 <Heading size="xsmall">
-                                    <FormattedMessage id="DekningsgradForm.InformasjonFlerbarnHeader" />
+                                    {barn.antallBarn === 2 && (
+                                        <FormattedMessage
+                                            id="DekningsgradForm.InformasjonToBarn"
+                                            values={{
+                                                sokerStorBokstav: capitalizeFirstLetter(søkerAntallTekst),
+                                                soker: søkerAntallTekst,
+                                            }}
+                                        />
+                                    )}
+                                    {barn.antallBarn > 2 && (
+                                        <FormattedMessage
+                                            id="DekningsgradForm.InformasjonFlereEnnToBarn"
+                                            values={{
+                                                sokerStorBokstav: capitalizeFirstLetter(søkerAntallTekst),
+                                                soker: søkerAntallTekst,
+                                            }}
+                                        />
+                                    )}
                                 </Heading>
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="DekningsgradForm.InformasjonFlerbarn"
-                                        values={{
-                                            uker: getFlerbarnsuker(dekningsgrad, barn.antallBarn),
-                                        }}
-                                    />
-                                </BodyShort>
                             </VStack>
                             <div className={bem.block}>
-                                <FeedingBottleIcon title="a11y-title" height={24} width={24} color="#005B82" />
+                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
                             </div>
                         </HStack>
                     </Box>

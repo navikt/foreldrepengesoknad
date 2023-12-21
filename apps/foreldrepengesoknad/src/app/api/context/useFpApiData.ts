@@ -3,7 +3,13 @@ import { FpApiDataType, useApiContextGetData, useApiContextSaveData } from './Fp
 import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
 import Environment from 'app/Environment';
 
-const sortObject = (testObj: object) => Object.keys(testObj).reduce((a, c) => ((a[c] = testObj[c]), a), {});
+const sortObject = (unordered: Record<string, any>) =>
+    Object.keys(unordered)
+        .sort()
+        .reduce<Record<string, any>>((obj, key) => {
+            obj[key] = unordered[key];
+            return obj;
+        }, {});
 
 const hashCode = (string: string) => {
     let hash = 0;
