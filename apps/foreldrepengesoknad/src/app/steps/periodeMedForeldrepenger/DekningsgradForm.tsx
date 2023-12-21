@@ -10,6 +10,7 @@ import {
     TilgjengeligStønadskonto,
     Uttaksdagen,
     bemUtils,
+    getFlerbarnsuker,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -93,6 +94,8 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     // FIXME termindato kan vera undefined
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(49 * 5, termindato);
     const sisteDag80Prosent = finnSisteDagMedForeldrepenger(59 * 5, termindato);
+
+    const dekningsgrad = formMethods.watch('dekningsgrad');
 
     return (
         <Form formMethods={formMethods} onSubmit={onSubmit}>
@@ -192,6 +195,28 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                         values={{
                                             uker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
                                             dager: ekstraDagerGrunnetPrematurFødsel! % 5,
+                                        }}
+                                    />
+                                </BodyShort>
+                            </VStack>
+                            <div className={bem.block}>
+                                <FeedingBottleIcon title="a11y-title" height={24} width={24} color="#005B82" />
+                            </div>
+                        </HStack>
+                    </Box>
+                )}
+                {barn.antallBarn > 1 && (
+                    <Box padding="4" background="surface-action-subtle">
+                        <HStack justify="space-between" align="start">
+                            <VStack gap="2" style={{ width: '85%' }}>
+                                <Heading size="xsmall">
+                                    <FormattedMessage id="DekningsgradForm.InformasjonFlerbarnHeader" />
+                                </Heading>
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="DekningsgradForm.InformasjonFlerbarn"
+                                        values={{
+                                            uker: getFlerbarnsuker(dekningsgrad, barn.antallBarn),
                                         }}
                                     />
                                 </BodyShort>
