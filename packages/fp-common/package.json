@@ -12,7 +12,7 @@
         "test": "vitest run"
     },
     "dependencies": {
-        "@navikt/ds-css": "5.12.0",
+        "@navikt/ds-css": "5.12.2",
         "@navikt/ds-datepicker": "^4.2.0",
         "@navikt/ds-icons": "3.4.3",
         "@navikt/ds-react": "5.12.0",
