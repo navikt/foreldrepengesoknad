@@ -164,7 +164,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: grunnlag.dekningsgrad,
             antallUkerIUttaksplan: antallUker,
         });
 

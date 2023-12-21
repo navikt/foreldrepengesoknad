@@ -101,6 +101,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
@@ -558,7 +559,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const minsterettUkerToTette = getAntallUkerMinsterett(stønadskontoer100.minsteretter.toTette);
 
     const valgteStønadskontoer =
-        uttaksplanMetadata.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
+        periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? stønadskontoer[100]
+            : stønadskontoer[80];
 
     const erTomEndringssøknad =
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);
@@ -639,7 +642,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             erMorUfør={erMorUfør}
                             morHarRett={morHarRett}
                             søkersituasjon={søkersituasjon}
-                            dekningsgrad={uttaksplanMetadata.dekningsgrad!}
+                            dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
                             antallBarn={antallBarn}
                             tilleggsopplysninger={uttaksplanMetadata.tilleggsopplysninger || {}}
                             setUttaksplanErGyldig={setUttaksplanErGyldig}

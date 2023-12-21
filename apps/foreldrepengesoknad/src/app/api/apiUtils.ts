@@ -361,6 +361,7 @@ export const cleanSøknad = (
     const søker = notEmpty(hentData(ContextDataType.SØKER));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const utenlandsopphold = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD));
+    const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
@@ -397,7 +398,7 @@ export const cleanSøknad = (
             ...(senereUtenlandsopphold || { senereOpphold: [] }),
             ...(tidligereUtenlandsopphold || { tidligereOpphold: [] }),
         },
-        dekningsgrad: uttaksplanMetadata.dekningsgrad!,
+        dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: [], //Vedlegga blir lagt til i funksjonen under
     };
@@ -465,6 +466,7 @@ export const cleanEndringssøknad = (
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
     const søker = notEmpty(hentData(ContextDataType.SØKER));
+    const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -485,7 +487,7 @@ export const cleanEndringssøknad = (
         søker: cleanSøker(søker, søkersituasjon, locale),
         annenForelder: cleanAnnenForelder(annenForelder, true),
         barn: barn,
-        dekningsgrad: uttaksplanMetadata.dekningsgrad!,
+        dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         situasjon: søkersituasjon.situasjon,
         tilleggsopplysninger: cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger)),
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,

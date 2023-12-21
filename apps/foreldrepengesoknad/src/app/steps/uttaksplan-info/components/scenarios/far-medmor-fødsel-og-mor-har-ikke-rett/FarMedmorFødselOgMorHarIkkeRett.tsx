@@ -147,10 +147,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
 
         oppdaterUttaksplan(uttaksplan);
 
-        oppdaterBarnOgLagreUttaksplandata({
-            ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(dekningsgrad),
-        });
+        oppdaterBarnOgLagreUttaksplandata({ ...uttaksplanMetadata });
 
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
 

@@ -151,7 +151,6 @@ const Template: StoryFn<Props> = ({
                     [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                     [ContextDataType.UTTAKSPLAN_METADATA]: {
                         tilleggsopplysninger,
-                        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
                         ønskerJustertUttakVedFødsel: false,
                         harUttaksplanBlittSlettet: false,
                         antallUkerIUttaksplan: 1,
@@ -160,6 +159,7 @@ const Template: StoryFn<Props> = ({
                     [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                     [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
+                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
                     [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
                 }}
             >

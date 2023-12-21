@@ -68,7 +68,7 @@ const stepConfigFørstegangssøknad = (intl: IntlShape): StepConfig[] => [
     {
         id: 'periodeMedForeldrepenger',
         index: 3,
-        label: intlUtils(intl, 'steps.label.uttaksplanInfo'),
+        label: intlUtils(intl, 'steps.label.periodeMedForeldrepenger'),
     },
     {
         id: 'uttaksplanInfo',

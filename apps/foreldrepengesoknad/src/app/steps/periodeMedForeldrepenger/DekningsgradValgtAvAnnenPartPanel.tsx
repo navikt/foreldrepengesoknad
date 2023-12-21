@@ -1,26 +1,33 @@
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { BodyShort, Heading, Box, VStack } from '@navikt/ds-react';
-import { Dekningsgrad, TilgjengeligStønadskonto, getVarighetString } from '@navikt/fp-common';
+import { CalendarIcon } from '@navikt/aksel-icons';
+import { BodyShort, Heading, Box, VStack, HStack } from '@navikt/ds-react';
+import { Dekningsgrad, TilgjengeligStønadskonto, bemUtils, getVarighetString } from '@navikt/fp-common';
 import { StepButtons } from '@navikt/fp-ui';
 import { ContextDataType, useContextSaveData } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from '../uttaksplan-info/utils/stønadskontoer';
+import { Kjønn } from '@navikt/fp-types';
+
+import './dekningsgradValgtAvAnnenPartPanel.less';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => void;
-    fornavn: string;
+    fornavnAnnenForelder: string;
+    kjønnAnnenForelder?: Kjønn;
     dekningsgrad: Dekningsgrad;
     valgtStønadskonto: TilgjengeligStønadskonto[];
 };
 
 const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
-    fornavn,
+    fornavnAnnenForelder,
+    kjønnAnnenForelder,
     dekningsgrad,
     valgtStønadskonto,
 }) => {
     const intl = useIntl();
+    const bem = bemUtils('circle');
 
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
@@ -47,24 +54,40 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
 
     return (
         <VStack gap="10">
-            <Box padding="4" background="surface-alt-3-subtle">
-                <Heading size="xsmall">
-                    <FormattedMessage
-                        id="DekningsgradValgtAvAnnenPartPanel.Heading"
-                        values={{
-                            uker: getVarighetString(uker * 5, intl),
-                            dekningsgrad,
-                        }}
-                    />
-                </Heading>
-                <BodyShort>
-                    <FormattedMessage
-                        id="DekningsgradValgtAvAnnenPartPanel.ValgtAv"
-                        values={{
-                            navn: fornavn,
-                        }}
-                    />
-                </BodyShort>
+            <Box padding="4" background="surface-action-subtle">
+                <HStack justify="space-between" align="start">
+                    <VStack gap="2" style={{ width: '85%' }}>
+                        <Heading size="xsmall">
+                            <FormattedMessage
+                                id="DekningsgradValgtAvAnnenPartPanel.Heading"
+                                values={{
+                                    uker: getVarighetString(uker * 5, intl),
+                                    dekningsgrad,
+                                }}
+                            />
+                        </Heading>
+                        <BodyShort>
+                            {kjønnAnnenForelder === 'M' ? (
+                                <FormattedMessage
+                                    id="DekningsgradValgtAvAnnenPartPanel.ValgtAvHans"
+                                    values={{
+                                        navn: fornavnAnnenForelder,
+                                    }}
+                                />
+                            ) : (
+                                <FormattedMessage
+                                    id="DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes"
+                                    values={{
+                                        navn: fornavnAnnenForelder,
+                                    }}
+                                />
+                            )}
+                        </BodyShort>
+                    </VStack>
+                    <div className={bem.block}>
+                        <CalendarIcon title="a11y-title" height={24} width={24} color="#005B82" />
+                    </div>
+                </HStack>
             </Box>
             <StepButtons isSubmitting={isSubmitting} nextButtonOnClick={lagre} goToPreviousStep={goToPreviousStep} />
         </VStack>

@@ -6,6 +6,7 @@ import {
     Dekningsgrad,
     DekningsgradDTO,
     Step,
+    getKjønnFromFnr,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
@@ -103,7 +104,6 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             activeStepId="periodeMedForeldrepenger"
-            pageTitle={intl.formatMessage({ id: 'søknad.søkersituasjon' })}
             onCancel={avbrytSøknad}
             onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig(intl, false)}
@@ -118,7 +118,8 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
                     {visAnnenPartsValg && isAnnenForelderOppgitt(annenForelder) && (
                         <DekningsgradValgtAvAnnenPartPanel
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            fornavn={annenForelder.fornavn}
+                            fornavnAnnenForelder={annenForelder.fornavn}
+                            kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
                             dekningsgrad={
                                 annenPartsVedtak.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
                                     ? Dekningsgrad.HUNDRE_PROSENT
@@ -136,7 +137,8 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
                     {!visAnnenPartsValg && (
                         <DekningsgradForm
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            termindato={params.stønadskontoParams100.termindato}
+                            barn={barn}
+                            søkersituasjon={søkersituasjon}
                             stønadskonto100={tilgjengeligeStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]}
                             stønadskonto80={tilgjengeligeStønadskontoer[Dekningsgrad.ÅTTI_PROSENT]}
                         />
