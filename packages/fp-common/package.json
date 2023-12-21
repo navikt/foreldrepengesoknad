@@ -67,9 +67,9 @@
         "sass": "^1.69.5",
         "storybook": "7.6.5",
         "storybook-react-intl": "^2.0.10",
-        "vite": "^5.0.10",
-        "vite-plugin-checker": "^0.6.2",
-        "vitest": "^1.0.4"
+        "vite": "^4.4.9",
+        "vite-plugin-checker": "^0.6.1",
+        "vitest": "^0.34.2"
     },
     "peerDependencies": {
         "intl": "^1.2.5",
