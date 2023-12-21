@@ -11,9 +11,9 @@
     },
     "dependencies": {
         "@navikt/aksel-icons": "^5.12.0",
-        "@navikt/ds-css": "^5.12.0",
+        "@navikt/ds-css": "^5.12.2",
         "@navikt/ds-datepicker": "^4.2.0",
-        "@navikt/ds-react": "^5.12.0",
+        "@navikt/ds-react": "^5.12.1",
         "@navikt/fp-common": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@navikt/sif-common-question-config": "^0.0.7",
