@@ -1,13 +1,13 @@
 import { Block, NavnPåForeldre, Periode, Situasjon, isUttakAvFedrekvoteMorForSyk } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
 import React from 'react';
-import { GyldigeSkjemanummer } from '../util';
 import { Skjemanummer } from '@navikt/fp-constants';
 import FedrekvoteMorForSykUploader from '../periode-attachment-uploaders/FedrekvoteMorForSykUploader';
+import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
+    updateAttachments: (skjemanummer: GyldigeSkjemanummerUttak) => (attachments: Attachment[]) => void;
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;

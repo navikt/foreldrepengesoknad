@@ -20,7 +20,7 @@ import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import Oppsummering from './Oppsummering';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import Søker from 'app/context/types/Søker';
-import { Attachment, SøkersituasjonFp } from '@navikt/fp-types';
+import { SøkersituasjonFp } from '@navikt/fp-types';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 
 const promiseAction =
@@ -462,7 +462,6 @@ MedAndreInntekterJobbIUtlandet.args = {
                 },
                 arbeidsgiverNavn: 'Statoil',
                 land: 'SE',
-                vedlegg: [],
             },
         ],
         harJobbetSomFrilansSiste10Mnd: false,
@@ -484,13 +483,6 @@ MedAndreInntekterMilitærtjeneste.args = {
                     fom: '2018-01-01',
                     tom: '2021-01-01',
                 },
-                vedlegg: [
-                    {
-                        id: '1',
-                        url: 'Dette er en url',
-                        filename: 'Filnavn',
-                    },
-                ] as Attachment[],
             },
         ],
         harJobbetSomFrilansSiste10Mnd: false,

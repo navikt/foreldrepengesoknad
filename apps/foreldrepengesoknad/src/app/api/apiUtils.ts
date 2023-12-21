@@ -44,7 +44,7 @@ import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import { VedleggDataType } from 'app/types/VedleggDataType';
-import { GyldigeSkjemanummer } from 'app/steps/manglende-vedlegg/util';
+import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
@@ -368,7 +368,7 @@ const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Att
     Object.keys(vedlegg).forEach((key: unknown) => {
         const vedleggAvTypeSkjemanummer = vedlegg[key as GyldigeSkjemanummer];
 
-        if (vedleggAvTypeSkjemanummer.length > 0) {
+        if (vedleggAvTypeSkjemanummer && vedleggAvTypeSkjemanummer.length > 0) {
             vedleggArray.push(...vedleggAvTypeSkjemanummer);
         }
     });

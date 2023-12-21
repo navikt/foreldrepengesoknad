@@ -1,13 +1,13 @@
 import { Block, NavnPåForeldre, Periode, Situasjon, isOverføringsperiode } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
 import React from 'react';
-import { GyldigeSkjemanummer } from '../util';
 import { Skjemanummer } from '@navikt/fp-constants';
 import OverføringsUploader from '../periode-attachment-uploaders/OverføringsUploader';
+import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
+    updateAttachments: (skjemanummer: GyldigeSkjemanummerUttak) => (attachments: Attachment[]) => void;
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;

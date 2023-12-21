@@ -30,6 +30,7 @@ import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import BackButton from '../BackButton';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
     if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
@@ -59,10 +60,13 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
+    const andreInntekterVedlegg = vedlegg ? vedlegg[Skjemanummer.ANNET] : [];
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -72,6 +76,9 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
     );
+    const [andreInntekerVedlegg, setAndreInntekerVedlegg] = useState(vedlegg ? vedlegg[Skjemanummer.ANNET] : []);
+
+    console.log(andreInntekerVedlegg);
 
     const onSubmit = (values: Partial<InntektsinformasjonFormData>) => {
         setIsSubmitting(true);
@@ -84,6 +91,19 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
         );
 
         oppdaterSøker(updatedSøker);
+
+        if (vedlegg) {
+            oppdaterVedlegg({
+                ...vedlegg,
+                [Skjemanummer.ANNET]: andreInntekerVedlegg,
+            });
+        }
+
+        if (!vedlegg) {
+            oppdaterVedlegg({
+                [Skjemanummer.ANNET]: andreInntekerVedlegg,
+            });
+        }
 
         oppdaterAppRoute(SøknadRoutes.OPPSUMMERING);
 
@@ -144,6 +164,8 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                                 <AndreInntekter
                                     andreInntekterInformasjon={andreInntekterInformasjon}
                                     setAndreInntekterInformasjon={setAndreInntekterInformasjon}
+                                    setAndreInntekerVedlegg={setAndreInntekerVedlegg}
+                                    andreInntekterVedlegg={andreInntekterVedlegg || []}
                                     visibility={visibility}
                                     formValues={formValues as InntektsinformasjonFormData}
                                 />

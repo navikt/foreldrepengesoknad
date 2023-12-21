@@ -3,13 +3,6 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, AttachmentMetadata, InnsendingsType } from '@navikt/fp-types';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 
-export type GyldigeSkjemanummer =
-    | Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM
-    | Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
-    | Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
-    | Skjemanummer.DOK_OVERFØRING_FOR_SYK
-    | Skjemanummer.DOK_INNLEGGELSE;
-
 export const grupperteFellesperioderMorsAktivitetArbeidUtdanningEllerSykdom = (perioder: Periode[]) => {
     return perioder.filter(morsAktivitetErArbeidUtdanningEllerSykdom);
 };
@@ -96,15 +89,15 @@ export const getFellesperiodeVedlegg = (vedlegg: VedleggDataType) => {
     const aktivitetskravKval = vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM];
 
     if (aktivitetskravArbUtdSyk) {
-        fellesperiodeVedlegg.push(...vedlegg[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]);
+        fellesperiodeVedlegg.push(...aktivitetskravArbUtdSyk);
     }
 
     if (aktivitetskravIntro) {
-        fellesperiodeVedlegg.push(...vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]);
+        fellesperiodeVedlegg.push(...aktivitetskravIntro);
     }
 
     if (aktivitetskravKval) {
-        fellesperiodeVedlegg.push(...vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]);
+        fellesperiodeVedlegg.push(...aktivitetskravKval);
     }
 
     return fellesperiodeVedlegg;

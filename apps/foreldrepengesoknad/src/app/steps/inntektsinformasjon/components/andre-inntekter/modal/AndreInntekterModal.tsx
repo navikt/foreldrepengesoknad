@@ -20,14 +20,16 @@ import dayjs from 'dayjs';
 import { validateRequiredTextInputField } from 'app/utils/validationUtil';
 import { Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
 import { AttachmentType } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 interface Props {
     isOpen: boolean;
     contentLabel: string;
     onRequestClose: () => void;
-    addAnnenInntekt: (annenInntekt: AnnenInntekt) => void;
-    editAnnenInntekt: (annenInntekt: AnnenInntekt) => void;
+    addAnnenInntekt: (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => void;
+    editAnnenInntekt: (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => void;
     selectedAnnenInntekt: AnnenInntekt | undefined;
+    andreInntekterVedlegg: Attachment[];
 }
 
 const AndreInntekterModal: FunctionComponent<Props> = ({
@@ -37,14 +39,21 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
     selectedAnnenInntekt,
     addAnnenInntekt,
     editAnnenInntekt,
+    andreInntekterVedlegg,
 }) => {
     const intl = useIntl();
 
+    if (!isOpen) {
+        return null;
+    }
+
     const onValidSubmit = (values: Partial<AndreInntekterFormData>) => {
+        const vedlegg = values.dokumentasjon ? values.dokumentasjon : [];
+
         if (!selectedAnnenInntekt) {
-            addAnnenInntekt(mapAnnenInntektModalValuesToState(values));
+            addAnnenInntekt(mapAnnenInntektModalValuesToState(values), vedlegg);
         } else {
-            editAnnenInntekt(mapAnnenInntektModalValuesToState(values));
+            editAnnenInntekt(mapAnnenInntektModalValuesToState(values), vedlegg);
         }
         onRequestClose();
     };
@@ -59,7 +68,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
     const navnPåArbeidsgiverLabel = intlUtils(intl, 'annenInntekt.spørsmål.arbeidsgiver');
 
     return (
-        <Modal width="medium" open={isOpen} aria-label={contentLabel} onClose={onRequestClose}>
+        <Modal width="medium" portal={true} open={isOpen} aria-label={contentLabel} onClose={onRequestClose}>
             <Modal.Header>
                 <Heading size="small">
                     <FormattedMessage id="inntektsinformasjon.andreInntekterModal.tittel" />
@@ -67,7 +76,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
             </Modal.Header>
             <Modal.Body>
                 <AndreInntekterModalFormComponents.FormikWrapper
-                    initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt)}
+                    initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt, andreInntekterVedlegg)}
                     onSubmit={onValidSubmit}
                     renderForm={({ values: formValues }) => {
                         const visibility = andreInntekterModalQuestionsConfig.getVisbility(

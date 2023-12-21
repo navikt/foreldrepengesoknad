@@ -12,7 +12,6 @@ import { Attachment } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import FellesperiodeDok from './dokumentasjon/FellesperiodeDok';
 import {
-    GyldigeSkjemanummer,
     getFedrekvoteMorForSykVedlegg,
     getFellesperiodeVedlegg,
     getOverføringsVedlegg,
@@ -26,6 +25,7 @@ import Person from '@navikt/fp-common/src/common/types/Person';
 import FedrekvoteMorForSykDok from './dokumentasjon/FedrekvoteMorForSykDok';
 import UtsettelseDok from './dokumentasjon/UtsettelseDok';
 import { VedleggDataType } from 'app/types/VedleggDataType';
+import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
 type Props = {
     person: Person;
@@ -92,7 +92,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
         },
     });
 
-    const updateAttachments = (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => {
+    const updateAttachments = (skjemanummer: GyldigeSkjemanummerUttak) => (attachments: Attachment[]) => {
         formMethods.setValue(skjemanummer, attachments, { shouldDirty: true, shouldTouch: true });
         formMethods.clearErrors(skjemanummer);
     };

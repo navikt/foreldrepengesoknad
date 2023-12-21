@@ -12,10 +12,13 @@ import AndreInntekterListe from './AndreInntekterListe';
 import AndreInntekterModal from './modal/AndreInntekterModal';
 import { Button } from '@navikt/ds-react';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { Attachment } from '@navikt/fp-types';
 
 interface Props {
     andreInntekterInformasjon: AnnenInntekt[];
     setAndreInntekterInformasjon: any;
+    setAndreInntekerVedlegg: (attachments: Attachment[]) => void;
+    andreInntekterVedlegg: Attachment[];
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
 }
@@ -23,8 +26,10 @@ interface Props {
 const AndreInntekter: FunctionComponent<Props> = ({
     andreInntekterInformasjon,
     setAndreInntekterInformasjon,
+    setAndreInntekerVedlegg,
     visibility,
     formValues,
+    andreInntekterVedlegg,
 }) => {
     const intl = useIntl();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,9 +39,10 @@ const AndreInntekter: FunctionComponent<Props> = ({
         setIsModalOpen(true);
     };
 
-    const addAnnenInntekt = (annenInntekt: AnnenInntekt) => {
+    const addAnnenInntekt = (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => {
         const updatedandreInntekterInformasjon = andreInntekterInformasjon.concat(annenInntekt);
 
+        setAndreInntekerVedlegg(vedlegg);
         setAndreInntekterInformasjon(updatedandreInntekterInformasjon);
     };
 
@@ -45,14 +51,16 @@ const AndreInntekter: FunctionComponent<Props> = ({
             (inntekt) => inntekt !== annenInntekt,
         );
 
+        setAndreInntekerVedlegg([]);
         setAndreInntekterInformasjon(updatedAndreInntekterInformasjon);
     };
 
-    const editAnnenInntekt = (annenInntekt: AnnenInntekt) => {
+    const editAnnenInntekt = (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => {
         const updatedAndreInntekterInformasjon = andreInntekterInformasjon
             .filter((inntekt) => inntekt !== selectedAnnenInntekt)
             .concat(annenInntekt);
 
+        setAndreInntekerVedlegg(vedlegg);
         setAndreInntekterInformasjon(updatedAndreInntekterInformasjon);
     };
 
@@ -90,6 +98,7 @@ const AndreInntekter: FunctionComponent<Props> = ({
                         selectedAnnenInntekt={selectedAnnenInntekt}
                         addAnnenInntekt={addAnnenInntekt}
                         editAnnenInntekt={editAnnenInntekt}
+                        andreInntekterVedlegg={andreInntekterVedlegg}
                     />
                     <Block padBottom="l" visible={andreInntekterInformasjon.length > 0}>
                         <AndreInntekterListe

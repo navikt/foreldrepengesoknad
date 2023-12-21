@@ -5,7 +5,6 @@ import MorsAktivitetIntroprogramUploader from '../periode-attachment-uploaders/M
 import MorsAktivitetKvalprogramUploader from '../periode-attachment-uploaders/MorsAktivitetKvalprogramUploader';
 import MorsAktivitetSykdomUtdanningEllerArbeidUploader from '../periode-attachment-uploaders/MorsAktivitetSykdomUtdanningEllerArbeidUploader';
 import {
-    GyldigeSkjemanummer,
     grupperteFellesperioderIntroduksjonsprogram,
     grupperteFellesperioderKvalifiseringsprogram,
     grupperteFellesperioderMorsAktivitetArbeidUtdanningEllerSykdom,
@@ -14,10 +13,11 @@ import {
     isKvalifiseringsprogramVedlegg,
 } from '../util';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
+    updateAttachments: (skjemanummer: GyldigeSkjemanummerUttak) => (attachments: Attachment[]) => void;
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;

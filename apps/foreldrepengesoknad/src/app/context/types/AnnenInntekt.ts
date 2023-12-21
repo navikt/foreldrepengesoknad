@@ -1,5 +1,4 @@
 import { TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttdatoDate } from '@navikt/fp-common';
-import { Attachment } from '@navikt/fp-types';
 
 export enum AnnenInntektType {
     SLUTTPAKKE = 'ETTERLØNN_SLUTTPAKKE',
@@ -11,7 +10,6 @@ interface AnnenInntektBase {
     type: AnnenInntektType;
     tidsperiode: TidsperiodeMedValgfriSluttdato;
     pågående: boolean;
-    vedlegg: Attachment[];
 }
 
 export interface SluttpakkeInntekt extends AnnenInntektBase {

@@ -8,6 +8,7 @@ import {
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 const initialAndreInntekterFormValues: AndreInntekterFormData = {
     [AndreInntekterFormField.type]: undefined,
@@ -56,12 +57,17 @@ export const cleanupAndreInntekterForm = (
     };
 };
 
-export const getInitialAndreInntekterFormValues = (annenInntekt: AnnenInntekt | undefined): AndreInntekterFormData => {
+export const getInitialAndreInntekterFormValues = (
+    annenInntekt: AnnenInntekt | undefined,
+    andreInntekterVedlegg: Attachment[],
+): AndreInntekterFormData => {
     if (!annenInntekt) {
         return {
             ...initialAndreInntekterFormValues,
         };
     }
+
+    console.log(andreInntekterVedlegg);
 
     if (annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET) {
         return {
@@ -70,7 +76,6 @@ export const getInitialAndreInntekterFormValues = (annenInntekt: AnnenInntekt | 
             land: annenInntekt.land,
             fom: annenInntekt.tidsperiode.fom,
             tom: annenInntekt.tidsperiode.tom || '',
-            dokumentasjon: annenInntekt.vedlegg,
             pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
             type: annenInntekt.type,
         };
@@ -80,7 +85,7 @@ export const getInitialAndreInntekterFormValues = (annenInntekt: AnnenInntekt | 
         ...initialAndreInntekterFormValues,
         fom: annenInntekt.tidsperiode.fom,
         tom: annenInntekt.tidsperiode.tom || '',
-        dokumentasjon: annenInntekt.vedlegg,
+        dokumentasjon: andreInntekterVedlegg ? andreInntekterVedlegg : [],
         pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
         type: annenInntekt.type,
     };
@@ -97,7 +102,6 @@ export const mapAnnenInntektModalValuesToState = (annenInntekt: Partial<AndreInn
                 tom: annenInntekt.tom,
             },
             type: annenInntekt.type,
-            vedlegg: [],
         };
     }
 
@@ -108,6 +112,5 @@ export const mapAnnenInntektModalValuesToState = (annenInntekt: Partial<AndreInn
             tom: annenInntekt.tom,
         },
         type: annenInntekt.type!,
-        vedlegg: annenInntekt.dokumentasjon || [],
     };
 };
