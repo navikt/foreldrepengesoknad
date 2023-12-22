@@ -117,8 +117,8 @@ importers:
         specifier: ^6.5.5
         version: 6.5.5(react@18.2.0)(typescript@5.3.3)
       react-router-dom:
-        specifier: ^6.21.0
-        version: 6.21.0(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.21.1
+        version: 6.21.1(react-dom@18.2.0)(react@18.2.0)
       request:
         specifier: ^2.88.2
         version: 2.88.2
@@ -343,8 +343,8 @@ importers:
         specifier: ^9.0.2
         version: 9.0.2(react@18.2.0)
       react-router-dom:
-        specifier: ^6.21.0
-        version: 6.21.0(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.21.1
+        version: 6.21.1(react-dom@18.2.0)(react@18.2.0)
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
@@ -659,8 +659,8 @@ importers:
         specifier: ^3.16.1
         version: 3.16.1(react-dom@18.2.0)(react@18.2.0)
       react-router-dom:
-        specifier: ^6.21.0
-        version: 6.21.0(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.21.1
+        version: 6.21.1(react-dom@18.2.0)(react@18.2.0)
       react-scroll:
         specifier: ^1.9.0
         version: 1.9.0(react-dom@18.2.0)(react@18.2.0)
@@ -948,8 +948,8 @@ importers:
         specifier: ^0.5.2
         version: 0.5.2(react@18.2.0)
       react-router-dom:
-        specifier: ^6.21.0
-        version: 6.21.0(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.21.1
+        version: 6.21.1(react-dom@18.2.0)(react@18.2.0)
       react-scroll:
         specifier: ^1.9.0
         version: 1.9.0(react-dom@18.2.0)(react@18.2.0)
@@ -1082,7 +1082,7 @@ importers:
         version: 7.6.6
       storybook-addon-react-router-v6:
         specifier: ^2.0.10
-        version: 2.0.10(@storybook/blocks@7.6.6)(@storybook/channels@7.6.6)(@storybook/components@7.6.6)(@storybook/core-events@7.6.6)(@storybook/manager-api@7.6.6)(@storybook/preview-api@7.6.6)(@storybook/theming@7.6.6)(react-dom@18.2.0)(react-router-dom@6.21.0)(react@18.2.0)
+        version: 2.0.10(@storybook/blocks@7.6.6)(@storybook/channels@7.6.6)(@storybook/components@7.6.6)(@storybook/core-events@7.6.6)(@storybook/manager-api@7.6.6)(@storybook/preview-api@7.6.6)(@storybook/theming@7.6.6)(react-dom@18.2.0)(react-router-dom@6.21.1)(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1363,8 +1363,8 @@ importers:
         specifier: ^3.16.1
         version: 3.16.1(react-dom@18.2.0)(react@18.2.0)
       react-router-dom:
-        specifier: ^6.21.0
-        version: 6.21.0(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.21.1
+        version: 6.21.1(react-dom@18.2.0)(react@18.2.0)
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -4743,8 +4743,8 @@ packages:
       '@babel/runtime': 7.23.6
     dev: true
 
-  /@remix-run/router@1.14.0:
-    resolution: {integrity: sha512-WOHih+ClN7N8oHk9N4JUiMxQJmRVaOxcg8w7F/oHUXzJt920ekASLI/7cYX8XkntDWRhLZtsk6LbGrkgOAvi5A==}
+  /@remix-run/router@1.14.1:
+    resolution: {integrity: sha512-Qg4DMQsfPNAs88rb2xkdk03N3bjK4jgX5fR24eHCTR9q6PrhZQZ4UJBPzCHJkIpTRN1UKxx2DzjZmnC+7Lj0Ow==}
     engines: {node: '>=14.0.0'}
 
   /@rollup/pluginutils@5.1.0:
@@ -11886,25 +11886,25 @@ packages:
       shallow-equal: 1.2.1
     dev: false
 
-  /react-router-dom@6.21.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-1dUdVj3cwc1npzJaf23gulB562ESNvxf7E4x8upNJycqyUm5BRRZ6dd3LrlzhtLaMrwOCO8R0zoiYxdaJx4LlQ==}
+  /react-router-dom@6.21.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-QCNrtjtDPwHDO+AO21MJd7yIcr41UetYt5jzaB9Y1UYaPTCnVuJq6S748g1dE11OQlCFIQg+RtAA1SEZIyiBeA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
     dependencies:
-      '@remix-run/router': 1.14.0
+      '@remix-run/router': 1.14.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-router: 6.21.0(react@18.2.0)
+      react-router: 6.21.1(react@18.2.0)
 
-  /react-router@6.21.0(react@18.2.0):
-    resolution: {integrity: sha512-hGZ0HXbwz3zw52pLZV3j3+ec+m/PQ9cTpBvqjFQmy2XVUWGn5MD+31oXHb6dVTxYzmAeaiUBYjkoNz66n3RGCg==}
+  /react-router@6.21.1(react@18.2.0):
+    resolution: {integrity: sha512-W0l13YlMTm1YrpVIOpjCADJqEUpz1vm+CMo47RuFX4Ftegwm6KOYsL5G3eiE52jnJpKvzm6uB/vTKTPKM8dmkA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      '@remix-run/router': 1.14.0
+      '@remix-run/router': 1.14.1
       react: 18.2.0
 
   /react-scroll@1.9.0(react-dom@18.2.0)(react@18.2.0):
@@ -12714,7 +12714,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /storybook-addon-react-router-v6@2.0.10(@storybook/blocks@7.6.6)(@storybook/channels@7.6.6)(@storybook/components@7.6.6)(@storybook/core-events@7.6.6)(@storybook/manager-api@7.6.6)(@storybook/preview-api@7.6.6)(@storybook/theming@7.6.6)(react-dom@18.2.0)(react-router-dom@6.21.0)(react@18.2.0):
+  /storybook-addon-react-router-v6@2.0.10(@storybook/blocks@7.6.6)(@storybook/channels@7.6.6)(@storybook/components@7.6.6)(@storybook/core-events@7.6.6)(@storybook/manager-api@7.6.6)(@storybook/preview-api@7.6.6)(@storybook/theming@7.6.6)(react-dom@18.2.0)(react-router-dom@6.21.1)(react@18.2.0):
     resolution: {integrity: sha512-HnrjbujAW1oGCdgvv7W6QKskETNXvt0U5qR2pKD8GXHlqkV9wmWa6HW3J0ks0aiBJBsRrPdEViatrhnRD5RZZw==}
     peerDependencies:
       '@storybook/blocks': ^7.0.0
@@ -12744,7 +12744,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-inspector: 6.0.2(react@18.2.0)
-      react-router-dom: 6.21.0(react-dom@18.2.0)(react@18.2.0)
+      react-router-dom: 6.21.1(react-dom@18.2.0)(react@18.2.0)
     dev: true
 
   /storybook-i18n@2.0.13(@storybook/components@7.6.6)(@storybook/manager-api@7.6.6)(@storybook/preview-api@7.6.6)(@storybook/types@7.6.6)(react-dom@18.2.0)(react@18.2.0):
