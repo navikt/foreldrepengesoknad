@@ -7,7 +7,7 @@ const InfoOmFørstegangstjeneste = () => {
     return (
         <ExpansionCard size="small" aria-label="Er du i førstegangstjeneste?">
             <ExpansionCard.Header>
-                <ExpansionCard.Title size="small" as="h2">
+                <ExpansionCard.Title size="small" as="h3">
                     <FormattedMessage id="inntektsinformasjon.infoOmFørstegangstjeneste.tittel" />
                 </ExpansionCard.Title>
             </ExpansionCard.Header>

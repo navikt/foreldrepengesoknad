@@ -58,7 +58,7 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
     return (
         <div className={bem.block}>
             <div className={bem.element('perForelder')}>
-                <Heading size="small" as="h2" className="blokk-xs">
+                <Heading size="small" as="h3" className="blokk-xs">
                     {intlUtils(intl, 'uttaksplan.oversiktKvoter.tittel.foreldre')}
                 </Heading>
                 <TilesList columns={'flex'}>
@@ -108,7 +108,7 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
         : filtrerBortAnnenPartsKonto(uttaksstatus.uttak, erFarEllerMedmor);
     return (
         <div className={bem.element('perKvote')}>
-            <Heading size="small" as="h2" className="blokk-xs">
+            <Heading size="small" as="h3" className="blokk-xs">
                 <FormattedMessage
                     id={
                         uttaksstatus.gjelderDagerBrukt

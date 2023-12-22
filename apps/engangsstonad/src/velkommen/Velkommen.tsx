@@ -11,7 +11,7 @@ import {
     Link,
     VStack,
 } from '@navikt/ds-react';
-import { LanguageToggle, useDocumentTitle } from '@navikt/fp-common';
+import { LanguageToggle } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { LocaleAll } from '@navikt/fp-types';
 import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
@@ -34,8 +34,6 @@ const Velkommen: FunctionComponent<Props> = ({
     mellomlagreOgNaviger,
 }) => {
     const { i18n } = useCustomIntl();
-
-    useDocumentTitle(i18n('Velkommen.Dokumenttittel'));
 
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 

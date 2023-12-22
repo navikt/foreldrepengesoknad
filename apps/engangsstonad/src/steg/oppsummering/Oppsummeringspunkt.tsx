@@ -18,7 +18,7 @@ const Oppsummeringspunkt = ({ tittel, children }: Props) => {
                 className={isOpen ? bemUtils('accordian_header').block : undefined}
                 onClick={() => toggleOpen((open) => !open)}
             >
-                <Heading level="2" size="small">
+                <Heading level="3" size="small">
                     {tittel}
                 </Heading>
             </Accordion.Header>

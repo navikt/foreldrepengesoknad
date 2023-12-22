@@ -17,7 +17,7 @@ const DinePersonopplysningerModal = (props: Props) => {
             aria-label={intlUtils(intl, 'velkommen.dinePersonopplysninger.sectionheading')}
         >
             <Modal.Header>
-                <Heading size="medium" as="h1" className="velkommenModalContent__header">
+                <Heading size="medium" level="1" className="velkommenModalContent__header">
                     <FormattedMessage id="velkommen.dinePersonopplysninger.sectionheading" />
                 </Heading>
             </Modal.Header>

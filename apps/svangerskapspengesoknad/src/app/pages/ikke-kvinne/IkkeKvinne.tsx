@@ -1,6 +1,6 @@
-import { Block, bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
+import { Block, bemUtils } from '@navikt/fp-common';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { PageKeys } from 'app/types/PageKeys';
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
 
@@ -10,8 +10,6 @@ import links from 'app/links/links';
 
 const IkkeKvinne: React.FunctionComponent = () => {
     const bem = bemUtils('ikke-kvinne');
-    const intl = useIntl();
-    useDocumentTitle(intlUtils(intl, 'søknad.pageheading'));
 
     logAmplitudeEvent('sidevisning', {
         app: 'svangerskapspengerny',

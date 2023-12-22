@@ -1,6 +1,6 @@
 import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
 import { LocaleNo } from '@navikt/fp-types';
-import { bemUtils, Block, LanguageToggle, Sidebanner, Søkerinfo, useDocumentTitle } from '@navikt/fp-common';
+import { bemUtils, Block, LanguageToggle, Sidebanner, Søkerinfo } from '@navikt/fp-common';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Api from 'app/api/api';
 import { useContextReset } from 'app/context/FpDataContext';
@@ -28,7 +28,6 @@ export interface FeilsideProps {
 
 const Feilside: React.FunctionComponent<FeilsideProps> = ({
     containerId,
-    dokumenttittel,
     illustrasjon,
     tittel,
     ingress,
@@ -66,8 +65,6 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
         window.location.reload();
     };
 
-    useDocumentTitle(dokumenttittel);
-
     return (
         <>
             {setLanguage && språkkode && (
@@ -90,7 +87,9 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
             )}
             <div id={containerId} className={bem.block}>
                 <Block padBottom="l">
-                    <Heading size="large">{tittel}</Heading>
+                    <Heading size="large" level="2">
+                        {tittel}
+                    </Heading>
                 </Block>
                 <Block padBottom="l">
                     <BodyShort>{ingress}</BodyShort>

@@ -1,6 +1,6 @@
 import { bemUtils } from '@navikt/fp-common';
 import { FunctionComponent, useCallback, useState, ReactNode } from 'react';
-import { Accordion } from '@navikt/ds-react';
+import { Accordion, Heading } from '@navikt/ds-react';
 
 import '../accordion/accordion.css';
 
@@ -18,7 +18,9 @@ const AccordionContent: FunctionComponent<Props> = ({ title, children }) => {
     return (
         <Accordion.Item className={bem.element('specificity')}>
             <Accordion.Header className={isOpen ? 'accordion_headerOpen' : 'accordion_header'} onClick={toggle}>
-                {title}
+                <Heading level="3" size="small">
+                    {title}
+                </Heading>
             </Accordion.Header>
             <Accordion.Content>{children}</Accordion.Content>
         </Accordion.Item>

@@ -26,7 +26,7 @@ const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illust
             <div className={bem.element('contentWrapper')}>
                 <div className={bem.element('headerWrapper')}>
                     <header>
-                        <Heading size="medium" as="h2" className={bem.element('tittel')}>
+                        <Heading size="medium" level="3" className={bem.element('tittel')}>
                             {tittel}
                         </Heading>
                         {infoboks !== undefined && infoboks}

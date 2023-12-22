@@ -17,7 +17,7 @@ const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, retryCallb
         <UiIntlProvider>
             <ContentWrapper>
                 <VStack gap="20">
-                    <Heading size="large">
+                    <Heading size="large" level="2">
                         {appName === 'Engangsstønad' && <FormattedMessage id="ErrorPage.Engangsstønad" />}
                         {appName === 'Foreldrepenger' && <FormattedMessage id="ErrorPage.Foreldrepenger" />}
                         {appName === 'Svangerskapspenger' && <FormattedMessage id="ErrorPage.Svangerskapspenger" />}
@@ -25,7 +25,7 @@ const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, retryCallb
                     <VStack gap="10">
                         <Alert variant="warning">
                             <VStack gap="4">
-                                <Heading size="small">
+                                <Heading size="small" level="3">
                                     <FormattedMessage id="ErrorPage.Heading" />
                                 </Heading>
                                 <BodyShort>

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
-import { bemUtils, Block, LanguageToggle, Sidebanner, useDocumentTitle } from '@navikt/fp-common';
+import { bemUtils, Block, LanguageToggle, Sidebanner } from '@navikt/fp-common';
 import './feilside.css';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
@@ -27,7 +27,6 @@ export interface FeilsideProps {
 
 const Feilside: React.FunctionComponent<FeilsideProps> = ({
     containerId,
-    dokumenttittel,
     illustrasjon,
     tittel,
     ingress,
@@ -59,8 +58,6 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
     const gåTilbakeTilSøknadenHandler = useCallback(() => {
         window.location.reload();
     }, []);
-
-    useDocumentTitle(dokumenttittel);
 
     return (
         <>

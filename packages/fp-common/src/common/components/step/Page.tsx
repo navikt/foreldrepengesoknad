@@ -1,4 +1,3 @@
-import useDocumentTitle from '../../utils/useDocumentTitle';
 import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import intlHelper from '../../utils/intlUtils';
@@ -17,7 +16,6 @@ export interface PageProps {
 const Page: React.FunctionComponent<PageProps> = ({
     ariaLabel,
     id = 'pageMainContent',
-    title,
     className,
     topContentRenderer,
     children,
@@ -25,7 +23,6 @@ const Page: React.FunctionComponent<PageProps> = ({
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    useDocumentTitle(title);
 
     const intl = useIntl();
 
