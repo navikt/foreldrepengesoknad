@@ -66,7 +66,6 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
-    const andreInntekterVedlegg = vedlegg ? vedlegg[Skjemanummer.ANNET] : [];
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -76,9 +75,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
     );
-    const [andreInntekerVedlegg, setAndreInntekerVedlegg] = useState(vedlegg ? vedlegg[Skjemanummer.ANNET] : []);
-
-    console.log(andreInntekerVedlegg);
+    const [andreInntekterVedlegg, setAndreInntekerVedlegg] = useState(vedlegg ? vedlegg[Skjemanummer.ANNET] : []);
 
     const onSubmit = (values: Partial<InntektsinformasjonFormData>) => {
         setIsSubmitting(true);
@@ -95,13 +92,13 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
         if (vedlegg) {
             oppdaterVedlegg({
                 ...vedlegg,
-                [Skjemanummer.ANNET]: andreInntekerVedlegg,
+                [Skjemanummer.ANNET]: andreInntekterVedlegg,
             });
         }
 
         if (!vedlegg) {
             oppdaterVedlegg({
-                [Skjemanummer.ANNET]: andreInntekerVedlegg,
+                [Skjemanummer.ANNET]: andreInntekterVedlegg,
             });
         }
 
