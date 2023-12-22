@@ -8,52 +8,45 @@ export enum FpApiDataType {
     STØNADSKONTOER_80 = 'STØNADSKONTOER_80',
 }
 
-export type FpApiDataMap = {
-    [FpApiDataType.ANNEN_PART_VEDTAK]?: Record<number, AnnenPartVedtakDTO>;
-    [FpApiDataType.STØNADSKONTOER_100]?: Record<number, TilgjengeligeStønadskontoerDTO>;
-    [FpApiDataType.STØNADSKONTOER_80]?: Record<number, TilgjengeligeStønadskontoerDTO>;
+export type FpApiDataHashMap = {
+    [FpApiDataType.ANNEN_PART_VEDTAK]?: [number, AnnenPartVedtakDTO];
+    [FpApiDataType.STØNADSKONTOER_100]?: [number, TilgjengeligeStønadskontoerDTO];
+    [FpApiDataType.STØNADSKONTOER_80]?: [number, TilgjengeligeStønadskontoerDTO];
 };
 
-const defaultInitialState = {} as FpApiDataMap;
+const defaultInitialState = {} as FpApiDataHashMap;
 
 export type Action = { type: 'update'; key: FpApiDataType; hash: number; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
-type State = FpApiDataMap;
+type State = FpApiDataHashMap;
 
 const FpApiStateContext = createContext<State>(defaultInitialState);
 const FpApiDispatchContext = createContext<Dispatch | undefined>(undefined);
 
 interface OwnProps {
     children: ReactNode;
-    initialState?: FpApiDataMap;
+    initialState?: FpApiDataHashMap;
     onDispatch?: (action: Action) => void;
 }
 
-export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children, initialState, onDispatch }): JSX.Element => {
+export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children }): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: State, action: Action) => {
         switch (action.type) {
             case 'update':
                 return {
                     ...oldState,
-                    [action.key]: { [action.hash]: action.data },
+                    [action.key]: [action.hash, action.data],
                 };
             case 'reset':
                 return {};
             default:
                 throw new Error();
         }
-    }, initialState || defaultInitialState);
-
-    const dispatchWrapper = (a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
-        dispatch(a);
-    };
+    }, defaultInitialState);
 
     return (
         <FpApiStateContext.Provider value={state}>
-            <FpApiDispatchContext.Provider value={dispatchWrapper}>{children}</FpApiDispatchContext.Provider>
+            <FpApiDispatchContext.Provider value={dispatch}>{children}</FpApiDispatchContext.Provider>
         </FpApiStateContext.Provider>
     );
 };
@@ -61,13 +54,12 @@ export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children, initia
 export const useApiContextGetData = <TYPE extends FpApiDataType>(key: TYPE, hash: number) => {
     const state = useContext(FpApiStateContext);
     const typeData = state[key];
-    return typeData ? typeData[hash] : undefined;
+    return typeData && typeData[0] === hash ? typeData[1] : undefined;
 };
 
 export const useApiContextSaveData = <TYPE extends FpApiDataType>(key: TYPE, hash: number) => {
     const dispatch = useContext(FpApiDispatchContext);
-    //TODO (TOR) fix type her
-    return (data: any) => {
+    return (data: NonNullable<FpApiDataHashMap[TYPE]>[1]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, hash, data });
         }

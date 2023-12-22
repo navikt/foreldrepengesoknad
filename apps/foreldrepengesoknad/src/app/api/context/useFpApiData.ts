@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
-import { FpApiDataType, useApiContextGetData, useApiContextSaveData } from './FpApiDataContext';
+import { FpApiDataHashMap, FpApiDataType, useApiContextGetData, useApiContextSaveData } from './FpApiDataContext';
 import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
 import Environment from 'app/Environment';
+import { RequestStatus } from 'app/types/RequestState';
+import { AxiosError } from 'axios';
 
 const sortObject = (unordered: Record<string, any>) =>
     Object.keys(unordered)
@@ -31,10 +33,14 @@ export const useApiGetData = <DATA_TYPE extends FpApiDataType, PARAMS extends ob
     type: DATA_TYPE,
     params: PARAMS,
     suspendRequest: boolean,
-) => {
+): {
+    data: NonNullable<FpApiDataHashMap[DATA_TYPE]>[1] | undefined;
+    requestStatus: RequestStatus;
+    error: AxiosError<any, any> | null;
+} => {
     const hashedParams = hashCode(JSON.stringify(sortObject(params)));
 
-    const apiData = useApiContextGetData(type, hashedParams);
+    const apiData = useApiContextGetData<DATA_TYPE>(type, hashedParams);
     const updateApiData = useApiContextSaveData(type, hashedParams);
 
     const { data, requestStatus, error } = useGetRequest<typeof apiData>(TYPE_URL_MAP[type], {
@@ -54,16 +60,24 @@ export const useApiGetData = <DATA_TYPE extends FpApiDataType, PARAMS extends ob
     }, [data]);
 
     return {
-        data: (data || apiData) as any,
+        data: data || apiData,
         requestStatus,
         error,
     };
 };
 
-export const useApiPostData = <PARAMS extends object>(type: FpApiDataType, params: PARAMS, suspendRequest: boolean) => {
+export const useApiPostData = <DATA_TYPE extends FpApiDataType, PARAMS extends object>(
+    type: DATA_TYPE,
+    params: PARAMS,
+    suspendRequest: boolean,
+): {
+    data: NonNullable<FpApiDataHashMap[DATA_TYPE]>[1] | undefined;
+    requestStatus: RequestStatus;
+    error: AxiosError<any, any> | null;
+} => {
     const hashedParams = hashCode(JSON.stringify(sortObject(params)));
 
-    const apiData = useApiContextGetData(type, hashedParams);
+    const apiData = useApiContextGetData<DATA_TYPE>(type, hashedParams);
     const updateApiData = useApiContextSaveData(type, hashedParams);
 
     const { data, requestStatus, error } = usePostRequest<typeof apiData>(TYPE_URL_MAP[type], params, {
