@@ -96,7 +96,7 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                                         </BodyLong>
                                     </VStack>
                                     <VStack gap="5">
-                                        <Heading size="small">
+                                        <Heading size="small" level="4">
                                             <FormattedMessage id="UtenlandsoppholdSteg.Info.Undertittel" />
                                         </Heading>
                                         <BodyLong>

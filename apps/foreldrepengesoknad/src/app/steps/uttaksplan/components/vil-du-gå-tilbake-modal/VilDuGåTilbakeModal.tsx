@@ -12,7 +12,7 @@ const VilDuGåTilbakeModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, goT
     return (
         <Modal aria-label={'Vil du gå tilbake'} open={isOpen} onClose={() => setIsOpen(false)}>
             <Modal.Header>
-                <Heading size="small" as="h1">
+                <Heading size="small" level="1">
                     <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.tittel" />
                 </Heading>
             </Modal.Header>

@@ -25,7 +25,7 @@ const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, retryCallb
                     <VStack gap="10">
                         <Alert variant="warning">
                             <VStack gap="4">
-                                <Heading size="small">
+                                <Heading size="small" level="2">
                                     <FormattedMessage id="ErrorPage.Heading" />
                                 </Heading>
                                 <BodyShort>

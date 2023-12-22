@@ -6,7 +6,7 @@ const InfoTilFiskere = () => {
     return (
         <ExpansionCard aria-label="Info til fiskere">
             <ExpansionCard.Header>
-                <ExpansionCard.Title as="h2">
+                <ExpansionCard.Title as="h3">
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.tittel" />
                 </ExpansionCard.Title>
                 <ExpansionCard.Description>

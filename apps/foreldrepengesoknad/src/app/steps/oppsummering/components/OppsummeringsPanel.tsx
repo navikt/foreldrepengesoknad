@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode } from 'react';
 import { bemUtils } from '@navikt/fp-common';
-import { Accordion } from '@navikt/ds-react';
+import { Accordion, Heading } from '@navikt/ds-react';
 
 import './oppsummeringsPanel.less';
 
@@ -15,7 +15,11 @@ const OppsummeringsPanel: FunctionComponent<Props> = ({ title, children }) => {
     return (
         <Accordion>
             <Accordion.Item className={bem.element('specificity')}>
-                <Accordion.Header className={bem.element('header')}>{title}</Accordion.Header>
+                <Accordion.Header>
+                    <Heading level="2" size="small">
+                        {title}
+                    </Heading>
+                </Accordion.Header>
                 <Accordion.Content>{children}</Accordion.Content>
             </Accordion.Item>
         </Accordion>
