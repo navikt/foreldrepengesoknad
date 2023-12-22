@@ -1,7 +1,0 @@
-import{j as e}from"./fridagerUtils-662976c7.js";import{w as p}from"./withSvangerskapspengerContext-79abee75.js";import{w as m}from"./withRouter-ec6e7388.js";import{S as d}from"./SvangerskapspengerStateMock-30db77e7.js";import{A as s}from"./SvangerskapspengesøknadRoutes-8bfe9dc5.js";import{_ as c}from"./soknad-056e750f.js";import"./index-f1f2c4b1.js";import"./index-b580f7e8.js";import"./index-da441cba.js";import"./v4-4a60fe23.js";import"./links-50a9473b.js";import"./index-ef2e64ea.js";import"./useSvangerskapspengerContext-825c5c56.js";import"./Forside-7b7b6127.js";import"./_baseToString-375081cd.js";import"./_createSet-53ab95fd.js";import"./_baseIteratee-859b5d8a.js";import"./_baseUniq-627435a6.js";import"./amplitude-98a81243.js";import"./provider-bd6dcd95.js";import"./ArrowRight-468cc578.js";const H={title:"steps/ArbeidIUtlandet",component:s,decorators:[m,p]},r=c,x={...r,søknad:{...r.søknad,søker:{...r.søknad.søker,harHattAnnenInntekt:!0}}},l=({contextWithArbeidIUtlandet:i})=>e.jsx(d,{context:i,children:e.jsx(s,{})}),t=l.bind({});t.args={contextWithArbeidIUtlandet:x};var o,n,a;t.parameters={...t.parameters,docs:{...(o=t.parameters)==null?void 0:o.docs,source:{originalSource:`({
-  contextWithArbeidIUtlandet
-}) => {
-  return <SvangerskapspengerStateMock context={contextWithArbeidIUtlandet}>
-            <ArbeidIUtlandetStep />
-        </SvangerskapspengerStateMock>;
-}`,...(a=(n=t.parameters)==null?void 0:n.docs)==null?void 0:a.source}}};const O=["Default"];export{t as Default,O as __namedExportsOrder,H as default};
