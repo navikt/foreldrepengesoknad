@@ -13,3 +13,7 @@
 .bedriftsbanner__tekst {
     display: block;
 }
+
+.bedriftsbanner--bold {
+    font-weight: bold;
+}

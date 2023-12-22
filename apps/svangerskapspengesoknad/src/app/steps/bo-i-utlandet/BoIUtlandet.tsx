@@ -155,7 +155,7 @@ const BoIUtlandet: React.FunctionComponent<Props> = ({ oppgirIFortid }) => {
                                                 index === formValues.bostedIUtlandet.length - 1 && (
                                                     <Block padBottom="xxl">
                                                         <Button
-                                                            icon={<PlusIcon />}
+                                                            icon={<PlusIcon aria-hidden />}
                                                             type="button"
                                                             variant="secondary"
                                                             onClick={() =>

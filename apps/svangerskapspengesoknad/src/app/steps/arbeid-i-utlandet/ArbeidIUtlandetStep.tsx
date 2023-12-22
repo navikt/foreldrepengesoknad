@@ -166,7 +166,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                 index === formValues.arbeidIUtlandet.length - 1 && (
                                                     <Block padBottom="xl">
                                                         <Button
-                                                            icon={<PlusIcon />}
+                                                            icon={<PlusIcon aria-hidden />}
                                                             type="button"
                                                             variant="secondary"
                                                             onClick={() =>

@@ -291,7 +291,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                     index === formValues.varierendePerioder.length - 1 && (
                                                         <Block padBottom="xl">
                                                             <Button
-                                                                icon={<PlusIcon />}
+                                                                icon={<PlusIcon aria-hidden />}
                                                                 type="button"
                                                                 variant="secondary"
                                                                 onClick={() =>

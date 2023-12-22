@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import { Block } from '@navikt/fp-common';
 import links from 'app/links/links';
-import { BodyLong, ExpansionCard, Label } from '@navikt/ds-react';
+import { BodyLong, BodyShort, ExpansionCard } from '@navikt/ds-react';
 
 const InfoTilFiskere = () => {
     return (
@@ -17,9 +17,9 @@ const InfoTilFiskere = () => {
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />
                     </BodyLong>
                 </Block>
-                <Label as="h4" style={{ marginBottom: '.5rem' }}>
+                <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.hyre" />
-                </Label>
+                </BodyShort>
                 <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del2" />
@@ -44,9 +44,9 @@ const InfoTilFiskere = () => {
                         />
                     </BodyLong>
                 </Block>
-                <Label as="h4" style={{ marginBottom: '.5rem' }}>
+                <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lott" />
-                </Label>
+                </BodyShort>
                 <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del4" />
@@ -66,17 +66,17 @@ const InfoTilFiskere = () => {
                         />
                     </BodyLong>
                 </Block>
-                <Label as="h4" style={{ marginBottom: '.5rem' }}>
+                <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.egenBåt" />
-                </Label>
+                </BodyShort>
                 <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del6" />
                     </BodyLong>
                 </Block>
-                <Label as="h4" style={{ marginBottom: '.5rem' }}>
+                <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lottOgHyre" />
-                </Label>
+                </BodyShort>
                 <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del7" />

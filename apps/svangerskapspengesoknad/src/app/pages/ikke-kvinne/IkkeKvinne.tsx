@@ -36,7 +36,7 @@ const IkkeKvinne: React.FunctionComponent = () => {
 
                 <div style={{ textAlign: 'center' }} className={bem.element('papirsøknadKnapp')}>
                     <Block padBottom="xxxl">
-                        <Button as="a" icon={<ArrowRightIcon />} iconPosition="right" href={links.nav}>
+                        <Button as="a" icon={<ArrowRightIcon aria-hidden />} iconPosition="right" href={links.nav}>
                             <FormattedMessage id="ikkeKvinne.knappetekst" />
                         </Button>
                     </Block>

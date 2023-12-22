@@ -1,4 +1,4 @@
-import { HStack, Label, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { useIntl } from 'react-intl';
@@ -24,12 +24,16 @@ const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeid }) => {
         <div className={bem.block}>
             <HStack gap="5">
                 <div className={bem.element('ikon')}>
-                    <Buldings3Icon height={'24px'} width={'24px'} />
+                    <Buldings3Icon aria-hidden={true} height={'24px'} width={'24px'} />
                 </div>
                 <div className={bem.element('tekst')}>
                     <VStack gap="1">
-                        <Label size="small">{detailTekst}</Label>
-                        <Label size="medium">{navn}</Label>
+                        <BodyShort size="small" className={bem.modifier('bold')}>
+                            {detailTekst}
+                        </BodyShort>
+                        <BodyShort size="medium" className={bem.modifier('bold')}>
+                            {navn}
+                        </BodyShort>
                     </VStack>
                 </div>
             </HStack>

@@ -1,4 +1,4 @@
-import { Label } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { intlUtils } from '@navikt/fp-common';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
@@ -22,7 +22,7 @@ const SkjemaopplastningTekstFrilansSN: React.FunctionComponent<Props> = ({ typeA
     return (
         <div style={{ marginBottom: '1rem' }}>
             <div>
-                <Label>{label}</Label>
+                <BodyShort style={{ fontWeight: 'bold' }}>{label}</BodyShort>
             </div>
             <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
         </div>

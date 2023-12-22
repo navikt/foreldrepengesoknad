@@ -11,6 +11,7 @@
 .arbeidIUtlandetVisning__tittel {
     grid-column: 1;
     grid-row: 1;
+    font-weight: bold;
 }
 
 .arbeidIUtlandetVisning__land {

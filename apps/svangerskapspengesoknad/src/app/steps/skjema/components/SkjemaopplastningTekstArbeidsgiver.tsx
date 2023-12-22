@@ -1,4 +1,4 @@
-import { Label } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { Block, intlUtils } from '@navikt/fp-common';
 import links from 'app/links/links';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -9,7 +9,9 @@ const SkjemaopplastningTekstArbeidsgiver: React.FunctionComponent = () => {
     return (
         <Block padBottom="xl">
             <div>
-                <Label>{intlUtils(intl, 'skjema.vedlegg.label.arbeidsgiver')}</Label>
+                <BodyShort style={{ fontWeight: 'bold' }}>
+                    {intlUtils(intl, 'skjema.vedlegg.label.arbeidsgiver')}
+                </BodyShort>
             </div>
             <FormattedMessage
                 id={'skjema.vedlegg.description.arbeidsgiver'}

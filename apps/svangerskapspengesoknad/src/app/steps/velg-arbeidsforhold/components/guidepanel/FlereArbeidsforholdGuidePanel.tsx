@@ -14,12 +14,14 @@ const FlereArbeidsforholdGuidePanel: React.FunctionComponent = () => {
             <GuidePanel>
                 <BodyLong>
                     <FormattedMessage id="velgArbeid.guidepanel.tekst" />
-                    <li>
-                        <FormattedMessage id="velgArbeid.guidepanel.liste.del1" />
-                    </li>
-                    <li>
-                        <FormattedMessage id="velgArbeid.guidepanel.liste.del2" />
-                    </li>
+                    <ul>
+                        <li>
+                            <FormattedMessage id="velgArbeid.guidepanel.liste.del1" />
+                        </li>
+                        <li>
+                            <FormattedMessage id="velgArbeid.guidepanel.liste.del2" />
+                        </li>
+                    </ul>
                 </BodyLong>
             </GuidePanel>
         </Block>
