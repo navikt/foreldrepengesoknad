@@ -208,7 +208,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                                         }
                                     />
                                     <Button
-                                        icon={<PaperplaneIcon />}
+                                        icon={<PaperplaneIcon aria-hidden />}
                                         iconPosition="right"
                                         type="submit"
                                         disabled={isSubmitting}
