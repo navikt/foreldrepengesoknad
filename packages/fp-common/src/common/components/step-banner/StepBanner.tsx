@@ -7,7 +7,7 @@ interface StepBannerProps {
     level?: '1' | '2' | '3';
 }
 
-const StepBanner: React.FunctionComponent<StepBannerProps> = ({ text, level = '2' }) => (
+const StepBanner: React.FunctionComponent<StepBannerProps> = ({ text, level = '1' }) => (
     <Banner size="small">
         <Heading size="large" level={level}>
             {text}
