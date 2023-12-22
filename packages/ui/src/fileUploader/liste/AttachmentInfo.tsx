@@ -23,7 +23,7 @@ const AttachmentInfo: React.FunctionComponent<Props> = ({ attachment, showFileSi
         <div className="attachmentPanel">
             <HStack gap="4">
                 {attachment.pending && <Loader type="S" />}
-                {!attachment.pending && <FileCheckmarkIcon width={24} height={24} />}
+                {!attachment.pending && <FileCheckmarkIcon width={24} height={24} aria-hidden />}
                 <VStack gap="1">
                     {attachment.url ? (
                         <Link href={attachment.url} target="_blank">

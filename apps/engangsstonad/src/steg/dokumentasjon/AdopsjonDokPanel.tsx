@@ -1,4 +1,4 @@
-import { BodyLong, Label, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
 import { FileUploader } from '@navikt/fp-ui';
 import { Attachment } from '@navikt/fp-types';
@@ -16,9 +16,9 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
     return (
         <VStack gap="4">
             <div>
-                <Label>
+                <BodyShort style={{ fontWeight: 'bold' }}>
                     <FormattedMessage id="AdopsjonDokPanel.Vedlegg.Adopsjon" />
-                </Label>
+                </BodyShort>
                 <BodyLong>
                     <FormattedMessage id="AdopsjonDokPanel.Veilederpanel.Text" />
                 </BodyLong>
