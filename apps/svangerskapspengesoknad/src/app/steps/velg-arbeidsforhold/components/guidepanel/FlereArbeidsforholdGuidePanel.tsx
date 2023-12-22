@@ -1,12 +1,9 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { BodyLong, GuidePanel } from '@navikt/ds-react';
-import { Block, intlUtils, useDocumentTitle } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { PageKeys, logAmplitudeEvent } from 'app/amplitude/amplitude';
 
 const FlereArbeidsforholdGuidePanel: React.FunctionComponent = () => {
-    const intl = useIntl();
-    useDocumentTitle(intlUtils(intl, 'søknad.pageheading'));
-
     logAmplitudeEvent('sidevisning', {
         app: 'svangerskapspengerny',
         team: 'foreldrepenger',

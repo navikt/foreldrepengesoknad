@@ -395,7 +395,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                             <Block padBottom="xxl">
                                 <ExpansionCard size="small" aria-label="">
                                     <ExpansionCard.Header>
-                                        <ExpansionCard.Title size="small" as="h2">
+                                        <ExpansionCard.Title size="small" as="h3">
                                             <FormattedMessage id="tilrettelegging.expansion.tittel" />
                                         </ExpansionCard.Title>
                                     </ExpansionCard.Header>

@@ -15,7 +15,7 @@ const VeilederInfo: React.FunctionComponent<Props> = ({ messages, skjulMeldingIk
     return (
         <GuidePanel poster>
             {ariaTittel && (
-                <AriaText tag="h2">
+                <AriaText tag="h3">
                     <FormattedMessage id="uttaksplan.regelAvvik.ariaTittel" />
                 </AriaText>
             )}

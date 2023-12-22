@@ -7,7 +7,7 @@ const InfoTilFiskere = () => {
     return (
         <ExpansionCard size="small" aria-label="Info til fiskere">
             <ExpansionCard.Header>
-                <ExpansionCard.Title size="small" as="h2">
+                <ExpansionCard.Title size="small" as="h3">
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.tittel" />
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
@@ -17,7 +17,7 @@ const InfoTilFiskere = () => {
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />
                     </BodyLong>
                 </Block>
-                <Label as="h3" style={{ marginBottom: '.5rem' }}>
+                <Label as="h4" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.hyre" />
                 </Label>
                 <Block padBottom="l">
@@ -44,7 +44,7 @@ const InfoTilFiskere = () => {
                         />
                     </BodyLong>
                 </Block>
-                <Label as="h3" style={{ marginBottom: '.5rem' }}>
+                <Label as="h4" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lott" />
                 </Label>
                 <Block padBottom="l">
@@ -66,7 +66,7 @@ const InfoTilFiskere = () => {
                         />
                     </BodyLong>
                 </Block>
-                <Label as="h3" style={{ marginBottom: '.5rem' }}>
+                <Label as="h4" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.egenBåt" />
                 </Label>
                 <Block padBottom="l">
@@ -74,7 +74,7 @@ const InfoTilFiskere = () => {
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del6" />
                     </BodyLong>
                 </Block>
-                <Label as="h3" style={{ marginBottom: '.5rem' }}>
+                <Label as="h4" style={{ marginBottom: '.5rem' }}>
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lottOgHyre" />
                 </Label>
                 <Block padBottom="l">

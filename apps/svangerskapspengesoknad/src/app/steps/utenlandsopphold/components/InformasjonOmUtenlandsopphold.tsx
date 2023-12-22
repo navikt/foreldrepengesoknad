@@ -7,7 +7,7 @@ const InformasjonOmUtenlandsopphold = () => {
     return (
         <ExpansionCard size="small" aria-label="Informasjon om utenlandsopphold">
             <ExpansionCard.Header>
-                <ExpansionCard.Title size="small" as="h2">
+                <ExpansionCard.Title size="small" as="h3">
                     <FormattedMessage id="utenlandsopphold.oppholdOgStøtte.header.tittel" />
                 </ExpansionCard.Title>
             </ExpansionCard.Header>

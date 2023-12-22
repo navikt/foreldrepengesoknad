@@ -1,4 +1,6 @@
 {
+    "søknad.pagetitle": "Søknad om foreldrepenger",
+    "søknad.pageheading": "Søknad om foreldrepengar",
     "annen.forelder": "annen forelder",
     "hjemmeside": "heimesider ",
     "pågående": "Pågående",
@@ -58,7 +60,6 @@
     "byttBrowser.tittel": "Vi ser du bruker ein utdatert nettlesar",
     "byttBrowser.ingress": "For å få den beste brukaropplevinga anbefaler vi ein moderne nettlesar som støttar moderne webstandarder",
     "pictureScanninGuide.apneLabel": "Les meir om korleis ta eit bra bilde av vedlegg",
-    "søknad.pageheading": "Søknad om foreldrepengar",
     "søknad.gåVidere": "Neste steg",
     "søknad.søkersituasjon": "Din situasjon",
     "søknad.uttaksplan": "Din plan med foreldrepengar",

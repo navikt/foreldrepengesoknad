@@ -16,7 +16,7 @@ const OppsummeringsPanel: FunctionComponent<Props> = ({ title, children }) => {
         <Accordion>
             <Accordion.Item className={bem.element('specificity')}>
                 <Accordion.Header>
-                    <Heading level="2" size="small">
+                    <Heading level="3" size="small">
                         {title}
                     </Heading>
                 </Accordion.Header>

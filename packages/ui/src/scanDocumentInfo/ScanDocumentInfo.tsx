@@ -8,7 +8,7 @@ const ScanDocumentInfo = () => (
     <UiIntlProvider>
         <ExpansionCard size="small" aria-label={useUiIntl().formatMessage({ id: 'ScanDocumentInfo.Tittel' })}>
             <ExpansionCard.Header>
-                <ExpansionCard.Title size="small" as="h2">
+                <ExpansionCard.Title size="small" as="h4">
                     <FormattedMessage id="ScanDocumentInfo.Tittel" />
                 </ExpansionCard.Title>
             </ExpansionCard.Header>

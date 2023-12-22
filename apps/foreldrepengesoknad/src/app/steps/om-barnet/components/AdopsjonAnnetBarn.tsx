@@ -138,7 +138,7 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
             </Block>
             <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
                 <Block padBottom="xl">
-                    <Heading level="2" size="xsmall">
+                    <Heading level="3" size="xsmall">
                         {intlUtils(intl, 'omBarnet.tittel.omsorgsovertakelse')}
                     </Heading>
                     <BodyShort> {intlUtils(intl, 'omBarnet.veileder.omsorgsovertakelse')}</BodyShort>

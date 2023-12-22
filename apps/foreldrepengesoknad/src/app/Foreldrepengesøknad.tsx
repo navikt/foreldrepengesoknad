@@ -15,6 +15,8 @@ import { konverterMellomlagretDataTilAppData } from './context/konverterMellomla
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import { Kvittering } from './types/Kvittering';
 import Environment from './Environment';
+import { useIntl } from 'react-intl';
+import { useDocumentTitle } from '@navikt/fp-common';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -28,6 +30,9 @@ interface Props {
 }
 
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+    const intl = useIntl();
+    useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
+
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { sakerData, sakerError } = Api.useGetSaker();
     const { storageData, storageStatus } = Api.useStoredAppState();
