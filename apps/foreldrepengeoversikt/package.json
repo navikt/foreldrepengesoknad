@@ -35,7 +35,7 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@sentry/browser": "^7.88.0",
+        "@sentry/browser": "^7.91.0",
         "@tanstack/react-query": "^4.32.6",
         "amplitude-js": "^8.21.9",
         "axios": "^1.6.2",

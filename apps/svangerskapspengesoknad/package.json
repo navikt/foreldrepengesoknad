@@ -34,7 +34,7 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@navikt/sif-common-question-config": "^0.0.7",
-        "@sentry/browser": "^7.88.0",
+        "@sentry/browser": "^7.91.0",
         "amplitude-js": "^8.21.9",
         "axios": "^1.6.2",
         "babel-polyfill": "^6.26.0",

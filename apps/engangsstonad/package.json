@@ -33,7 +33,7 @@
         "@navikt/fp-utenlandsopphold": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "@sentry/browser": "^7.88.0",
+        "@sentry/browser": "^7.91.0",
         "axios": "^1.6.2",
         "compression": "^1.7.4",
         "dayjs": "^1.11.10",
