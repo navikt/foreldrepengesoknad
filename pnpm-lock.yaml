@@ -227,7 +227,7 @@ importers:
         version: 5.12.2
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons':
         specifier: ^3.4.3
         version: 3.4.3(@types/react@18.2.45)(react@18.2.0)
@@ -274,8 +274,8 @@ importers:
         specifier: ^3.1.2
         version: 3.1.2
       classnames:
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: ^2.3.3
+        version: 2.3.3
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -516,7 +516,7 @@ importers:
         version: 5.12.2
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-react':
         specifier: ^5.12.1
         version: 5.12.1(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
@@ -575,8 +575,8 @@ importers:
         specifier: ^3.1.2
         version: 3.1.2
       classnames:
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: ^2.3.3
+        version: 2.3.3
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -627,7 +627,7 @@ importers:
         version: 1.3.2
       nav-frontend-stegindikator:
         specifier: ^2.0.3
-        version: 2.0.3(classnames@2.3.2)(nav-frontend-js-utils@1.0.20)(nav-frontend-stegindikator-style@2.0.2)(react@18.2.0)
+        version: 2.0.3(classnames@2.3.3)(nav-frontend-js-utils@1.0.20)(nav-frontend-stegindikator-style@2.0.2)(react@18.2.0)
       nav-frontend-stegindikator-style:
         specifier: ^2.0.2
         version: 2.0.2(nav-frontend-core@6.0.1)(nav-frontend-typografi-style@2.0.2)
@@ -826,7 +826,7 @@ importers:
         version: 5.12.2
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-react':
         specifier: 5.12.1
         version: 5.12.1(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
@@ -870,8 +870,8 @@ importers:
         specifier: ^3.1.2
         version: 3.1.2
       classnames:
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: ^2.3.3
+        version: 2.3.3
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -1192,7 +1192,7 @@ importers:
         version: 5.12.2
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons':
         specifier: 3.4.3
         version: 3.4.3(@types/react@18.2.45)(react@18.2.0)
@@ -1289,7 +1289,7 @@ importers:
         version: 5.12.2
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons':
         specifier: 3.4.3
         version: 3.4.3(@types/react@18.2.45)(react@18.2.0)
@@ -1318,8 +1318,8 @@ importers:
         specifier: ^3.1.2
         version: 3.1.2
       classnames:
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: ^2.3.3
+        version: 2.3.3
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
@@ -1799,7 +1799,7 @@ importers:
         version: 5.12.2
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-react':
         specifier: ^5.12.1
         version: 5.12.1(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
@@ -1816,8 +1816,8 @@ importers:
         specifier: ^18.2.45
         version: 18.2.45
       classnames:
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: ^2.3.3
+        version: 2.3.3
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -3853,7 +3853,7 @@ packages:
     resolution: {integrity: sha512-HRlu4Eiqi0zjPWVUV/F7Q/cPLmP71m1dkGPNXlBrIPAZpNcQKutCE2Be1au4CxpiuwzsPPSXKHo3fVDDucWwKQ==}
     dev: false
 
-  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
+  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
     resolution: {integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A==}
     peerDependencies:
       '@navikt/ds-css': '>=2'
@@ -3867,7 +3867,7 @@ packages:
     dependencies:
       '@navikt/ds-css': 5.12.2
       '@navikt/ds-react': 5.12.1(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
-      classnames: 2.3.2
+      classnames: 2.3.3
       date-fns: 2.30.0
       dayjs: 1.11.10
       focus-trap-react: 10.1.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
@@ -3933,7 +3933,7 @@ packages:
       react-intl: 6.x
     dependencies:
       '@navikt/ds-css': 5.12.2
-      '@navikt/ds-datepicker': 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+      '@navikt/ds-datepicker': 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.1)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.9.1)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons': 3.4.3(@types/react@18.2.45)(react@18.2.0)
       '@navikt/ds-react': 5.12.1(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.2
@@ -7223,6 +7223,10 @@ packages:
 
   /classnames@2.3.2:
     resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
+
+  /classnames@2.3.3:
+    resolution: {integrity: sha512-1inzZmicIFcmUya7PGtUQeXtcF7zZpPnxtQoYOrz0uiOBGlLFa4ik4361seYL2JCcRDIyfdFHiwQolESFlw+Og==}
     dev: false
 
   /clean-css@4.2.4:
@@ -10830,7 +10834,7 @@ packages:
       nav-frontend-typografi-style: 2.0.2
     dev: false
 
-  /nav-frontend-stegindikator@2.0.3(classnames@2.3.2)(nav-frontend-js-utils@1.0.20)(nav-frontend-stegindikator-style@2.0.2)(react@18.2.0):
+  /nav-frontend-stegindikator@2.0.3(classnames@2.3.3)(nav-frontend-js-utils@1.0.20)(nav-frontend-stegindikator-style@2.0.2)(react@18.2.0):
     resolution: {integrity: sha512-VpiclgRm3EJzuNb4LwJLT95cVqhCDgKf/bieTtFssEF/I8+ss/Tzpnf3ldE7/VetRLsYVHRe/UH+Ml4Q5LFHjw==}
     peerDependencies:
       classnames: ^2.2.5
@@ -10838,7 +10842,7 @@ packages:
       nav-frontend-stegindikator-style: ^2.0.0
       react: ^16.8.0 || ^17.0.0
     dependencies:
-      classnames: 2.3.2
+      classnames: 2.3.3
       nav-frontend-js-utils: 1.0.20(lodash.throttle@4.1.1)(prop-types@15.8.1)(react@18.2.0)
       nav-frontend-stegindikator-style: 2.0.2(nav-frontend-core@6.0.1)(nav-frontend-typografi-style@2.0.2)
       react: 18.2.0
