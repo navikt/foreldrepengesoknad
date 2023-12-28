@@ -145,8 +145,8 @@ importers:
         specifier: 7.6.6
         version: 7.6.6(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@4.5.1)
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -380,8 +380,8 @@ importers:
         specifier: 7.6.6
         version: 7.6.6(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@4.5.1)
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -696,8 +696,8 @@ importers:
         specifier: ^9.3.3
         version: 9.3.3
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -991,8 +991,8 @@ importers:
         specifier: ^9.3.3
         version: 9.3.3
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -1118,8 +1118,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@types/react':
         specifier: ^18.2.45
         version: 18.2.45
@@ -1249,8 +1249,8 @@ importers:
         specifier: ^7.6.5
         version: 7.6.6(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -1391,8 +1391,8 @@ importers:
         specifier: ^7.6.5
         version: 7.6.6(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -1549,8 +1549,8 @@ importers:
         specifier: ^7.6.5
         version: 7.6.6(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -1661,8 +1661,8 @@ importers:
         specifier: ^7.6.5
         version: 7.6.6(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -1722,8 +1722,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@types/react':
         specifier: ^18.2.45
         version: 18.2.45
@@ -1756,8 +1756,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -1841,8 +1841,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
-        specifier: ^6.1.5
-        version: 6.1.5(vitest@0.34.6)
+        specifier: ^6.1.6
+        version: 6.1.6(vitest@0.34.6)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -5581,8 +5581,8 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
-  /@testing-library/jest-dom@6.1.5(vitest@0.34.6):
-    resolution: {integrity: sha512-3y04JLW+EceVPy2Em3VwNr95dOKqA8DhR0RJHhHKDZNYXcVXnEK7WIrpj4eYU8SVt/qYZ2aRWt/WgQ+grNES8g==}
+  /@testing-library/jest-dom@6.1.6(vitest@0.34.6):
+    resolution: {integrity: sha512-YwuiOdYEcxhfC2u5iNKlvg2Q5MgbutovP6drq7J1HrCbvR+G58BbtoCoq+L/kNlrNFsu2Kt3jaFAviLVxYHJZg==}
     engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
     peerDependencies:
       '@jest/globals': '>= 28'
