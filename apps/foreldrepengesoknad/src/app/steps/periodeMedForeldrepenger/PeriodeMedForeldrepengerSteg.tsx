@@ -43,7 +43,7 @@ const shouldSuspendAnnenPartVedtakApiRequest = (annenForelder: AnnenForelder) =>
 };
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 

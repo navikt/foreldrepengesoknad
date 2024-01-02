@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './PeriodeMedForeldrepengerSteg.stories';
-import SøknadRoutes from 'app/routes/routes';
-import { ContextDataType } from 'app/context/FpDataContext';
 import { Dekningsgrad } from '@navikt/fp-common';
+import SøknadRoutes from 'app/routes/routes';
+import * as stories from './PeriodeMedForeldrepengerSteg.stories';
+import { ContextDataType } from 'app/context/FpDataContext';
 
 const {
     FarEllerMedmorAleneomsorgFødsel,
