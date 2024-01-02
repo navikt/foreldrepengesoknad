@@ -174,7 +174,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad! === '100' ? 100 : 80]),
+            antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
         });
 
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);

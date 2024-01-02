@@ -12,6 +12,7 @@ import {
     bemUtils,
     isAnnenForelderOppgitt,
     capitalizeFirstLetter,
+    getFlerbarnsuker,
 } from '@navikt/fp-common';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -91,7 +92,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
         ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
         : undefined;
 
-    // FIXME termindato kan vera undefined
+    // FIXME termindato (og fødselsdato over her) kan vera undefined
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(49 * 5, termindato);
     const sisteDag80Prosent = finnSisteDagMedForeldrepenger(59 * 5, termindato);
 
@@ -183,7 +184,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         </Link>
                     </ReadMore>
                 </VStack>
-                {visInfoOmPrematuruker && (
+                {visInfoOmPrematuruker && ekstraDagerGrunnetPrematurFødsel && (
                     <Box padding="4" background="surface-action-subtle">
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
@@ -199,8 +200,11 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="DekningsgradForm.InformasjonPrematuruker"
                                         values={{
-                                            uker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
-                                            dager: ekstraDagerGrunnetPrematurFødsel! % 5,
+                                            uker: Math.floor(ekstraDagerGrunnetPrematurFødsel / 5),
+                                            dager: ekstraDagerGrunnetPrematurFødsel % 5,
+                                            soker: erDeltUttak
+                                                ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
+                                                : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.deg' }),
                                         }}
                                     />
                                 </BodyShort>
@@ -235,6 +239,16 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                         />
                                     )}
                                 </Heading>
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="DekningsgradForm.InformasjonFlerbarnUker"
+                                        values={{
+                                            uker80: getFlerbarnsuker(Dekningsgrad.ÅTTI_PROSENT, barn.antallBarn),
+                                            uker100: getFlerbarnsuker(Dekningsgrad.HUNDRE_PROSENT, barn.antallBarn),
+                                            soker: søkerAntallTekst,
+                                        }}
+                                    />
+                                </BodyShort>
                             </VStack>
                             <div className={bem.block}>
                                 <FeedingBottleIcon height={24} width={24} color="#005B82" />

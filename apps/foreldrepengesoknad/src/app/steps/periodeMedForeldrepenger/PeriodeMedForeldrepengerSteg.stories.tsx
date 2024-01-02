@@ -5,7 +5,6 @@ import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContex
 import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import MockAdapter from 'axios-mock-adapter';
-import { RequestStatus } from 'app/types/RequestState';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
@@ -99,7 +98,7 @@ const Template: StoryFn<Props> = ({
     annenPartVedtak,
 }) => {
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, annenPartVedtak, RequestStatus.FINISHED);
+        apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, annenPartVedtak);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto80);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto100);
     };

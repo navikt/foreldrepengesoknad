@@ -30,7 +30,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import Api from 'app/api/api';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
@@ -68,7 +67,7 @@ import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
-import { useApiGetData } from 'app/api/context/useFpApiData';
+import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
@@ -182,13 +181,19 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         initialRender.current = false;
     }, [debouncedState, mellomlagreSøknadOgNaviger]);
 
-    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
-        Api.useGetAnnenPartsVedtak(
-            annenForelderFnr,
-            barnFnr,
-            familiehendelsesdato,
-            eksisterendeSakAnnenPartRequestIsSuspended,
-        );
+    const {
+        data: eksisterendeSakAnnenPartData,
+        requestStatus: eksisterendeSakAnnenPartRequestStatus,
+        error: eksisterendeSakAnnenPartError,
+    } = useApiPostData(
+        FpApiDataType.ANNEN_PART_VEDTAK,
+        {
+            annenPartFødselsnummer: annenForelderFnr,
+            barnFødselsnummer: barnFnr,
+            familiehendelse: familiehendelsesdato,
+        },
+        eksisterendeSakAnnenPartRequestIsSuspended,
+    );
 
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
@@ -229,13 +234,16 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             : true;
 
     const {
-        eksisterendeSakAnnenPartData: nesteSakAnnenPartData,
-        eksisterendeSakAnnenPartError: nesteSakAnnenPartError,
-        eksisterendeSakAnnenPartRequestStatus: nesteSakAnnenPartRequestStatus,
-    } = Api.useGetAnnenPartsVedtak(
-        annenForelderFnrNesteSak,
-        førsteBarnFraNesteSakFnr,
-        dateToISOString(familieHendelseDatoNesteSak),
+        data: nesteSakAnnenPartData,
+        requestStatus: nesteSakAnnenPartRequestStatus,
+        error: nesteSakAnnenPartError,
+    } = useApiPostData(
+        FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK,
+        {
+            annenPartFødselsnummer: annenForelderFnrNesteSak,
+            barnFødselsnummer: førsteBarnFraNesteSakFnr,
+            familiehendelse: dateToISOString(familieHendelseDatoNesteSak),
+        },
         nesteBarnsSakAnnenPartRequestIsSuspended,
     );
 

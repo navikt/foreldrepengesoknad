@@ -25,13 +25,14 @@ import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
 
 const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
-    const annenPartFnr =
+    const annenPartFødselsnummer =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr === false ? annenForelder.fnr : undefined;
-    const barnFnr = isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
+    const barnFødselsnummer =
+        isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
     return {
-        annenPartFnr,
-        barnFnr,
-        familiehendelsesdato: getFamiliehendelsedato(barn),
+        annenPartFødselsnummer,
+        barnFødselsnummer,
+        familiehendelse: getFamiliehendelsedato(barn),
     };
 };
 
