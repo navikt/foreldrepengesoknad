@@ -5,7 +5,7 @@ import { Add } from '@navikt/ds-icons';
 import { Attachment } from '@navikt/fp-types';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Alert, BodyLong, BodyShort, Button, Link as NAVLink, Select, VStack, HStack } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { FileUploader } from '@navikt/fp-ui';
 import Api from 'app/api/api';
@@ -84,7 +84,7 @@ export interface Props {
 
 const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const intl = useIntl();
-
+    useDocumentTitle(`${intlUtils(intl, 'lastOppDokumenter')} - ${intlUtils(intl, 'dineForeldrepenger')}`);
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
 

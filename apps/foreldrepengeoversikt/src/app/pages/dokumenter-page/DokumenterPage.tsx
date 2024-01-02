@@ -1,5 +1,5 @@
 import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
-import { bemUtils, guid } from '@navikt/fp-common';
+import { bemUtils, guid, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
 
@@ -13,6 +13,7 @@ import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import { RequestStatus } from 'app/types/RequestStatus';
 
 import './dokumenter-page.css';
+import { useIntl } from 'react-intl';
 
 const DokumenterPage: React.FunctionComponent = () => {
     const bem = bemUtils('dokumenter-page');
@@ -20,6 +21,10 @@ const DokumenterPage: React.FunctionComponent = () => {
     useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
     const params = useParams();
 
+    const intl = useIntl();
+    const title = intlUtils(intl, 'dokumenter');
+    const lastOppDokTittel = intlUtils(intl, 'lastOppDokumenter');
+    useDocumentTitle(`${title} - ${intlUtils(intl, 'dineForeldrepenger')}`);
     const { dokumenterData, dokumenterError, dokumenterStatus } = Api.useGetDokumenter(params.saksnummer!);
 
     if (!dokumenterData && dokumenterStatus !== RequestStatus.FINISHED) {
@@ -36,7 +41,7 @@ const DokumenterPage: React.FunctionComponent = () => {
                 border={false}
                 className={bem.element('ettersend')}
             >
-                <LinkPanel.Title as="h2">Last opp dokumenter</LinkPanel.Title>
+                <LinkPanel.Title as="h2">{lastOppDokTittel}</LinkPanel.Title>
             </LinkPanel>
             {!dokumenterError && (
                 <>
