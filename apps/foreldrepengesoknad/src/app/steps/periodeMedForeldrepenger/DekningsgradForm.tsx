@@ -15,15 +15,15 @@ import {
     getFlerbarnsuker,
 } from '@navikt/fp-common';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { links } from '@navikt/fp-constants';
+import { SøkersituasjonFp } from '@navikt/fp-types';
 import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import SøknadRoutes from 'app/routes/routes';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
-import { links } from '@navikt/fp-constants';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
-import { SøkersituasjonFp } from '@navikt/fp-types';
 
 import './dekningsgradForm.less';
 
@@ -43,7 +43,7 @@ const getSøkerAntallTekst = (intl: IntlShape, erDeltUttak: boolean) => {
 };
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
     stønadskonto100: TilgjengeligStønadskonto[];
@@ -73,7 +73,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
         oppdaterPeriodeMedForeldrepenger(values);
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 
-        mellomlagreSøknadOgNaviger();
+        return mellomlagreSøknadOgNaviger();
     };
 
     const goToPreviousStep = () => {

@@ -1,19 +1,26 @@
-import { StoryFn } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import MockAdapter from 'axios-mock-adapter';
 import AxiosMock from 'storybook/utils/AxiosMock';
+import { StoryFn } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';
+import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { SøkersituasjonFp } from '@navikt/fp-types';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import Environment from 'app/Environment';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = `${Environment.REST_API_URL}/konto`;
+
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 const STØNADSKONTO_100 = {
     kontoer: {
@@ -74,7 +81,7 @@ export default {
 };
 
 interface Props {
-    mellomlagreSøknadOgNaviger?: () => void;
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
     avbrytSøknad: () => void;
     gåTilNesteSide: (action: Action) => void;
     søkersituasjon: SøkersituasjonFp;
@@ -87,7 +94,7 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = action('button-click'),
+    mellomlagreSøknadOgNaviger = promiseAction(),
     avbrytSøknad = action('button-click'),
     gåTilNesteSide,
     søkersituasjon,

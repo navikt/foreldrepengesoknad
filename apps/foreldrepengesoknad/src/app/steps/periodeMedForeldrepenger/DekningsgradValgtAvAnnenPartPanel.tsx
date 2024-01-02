@@ -4,15 +4,15 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import { BodyShort, Heading, Box, VStack, HStack } from '@navikt/ds-react';
 import { Dekningsgrad, TilgjengeligStønadskonto, bemUtils, getVarighetString } from '@navikt/fp-common';
 import { StepButtons } from '@navikt/fp-ui';
+import { Kjønn } from '@navikt/fp-types';
 import { ContextDataType, useContextSaveData } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from '../uttaksplan-info/utils/stønadskontoer';
-import { Kjønn } from '@navikt/fp-types';
 
 import './dekningsgradValgtAvAnnenPartPanel.less';
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => void;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     fornavnAnnenForelder: string;
     kjønnAnnenForelder?: Kjønn;
     dekningsgrad: Dekningsgrad;
