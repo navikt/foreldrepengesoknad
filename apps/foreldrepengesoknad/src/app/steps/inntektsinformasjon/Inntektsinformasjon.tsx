@@ -31,6 +31,8 @@ import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import BackButton from '../BackButton';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 
 const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
     if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
@@ -39,6 +41,21 @@ const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
         return SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
     }
     return SøknadRoutes.UTENLANDSOPPHOLD;
+};
+
+const leggTilMetadataPåAndreInntekter = (vedlegg: Attachment[] | undefined) => {
+    if (!vedlegg || vedlegg.length === 0) {
+        return vedlegg;
+    }
+
+    return vedlegg.map((v) => {
+        return {
+            ...v,
+            dokumenterer: {
+                type: AttachmentMetadataType.OPPTJENING,
+            },
+        } as Attachment;
+    });
 };
 
 type Props = {
@@ -92,13 +109,13 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
         if (vedlegg) {
             oppdaterVedlegg({
                 ...vedlegg,
-                [Skjemanummer.ANNET]: andreInntekterVedlegg,
+                [Skjemanummer.ANNET]: leggTilMetadataPåAndreInntekter(andreInntekterVedlegg),
             });
         }
 
         if (!vedlegg) {
             oppdaterVedlegg({
-                [Skjemanummer.ANNET]: andreInntekterVedlegg,
+                [Skjemanummer.ANNET]: leggTilMetadataPåAndreInntekter(andreInntekterVedlegg),
             });
         }
 
