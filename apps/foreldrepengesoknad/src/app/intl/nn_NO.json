@@ -258,6 +258,7 @@
     "uttaksplaninfo.Uker.beskrivelse": "Om barnet blir født på termin vil siste dag med foreldrepengar vera { dato } om { soker } tek foreldrepengar i eitt strekk utan ferie.",
     "uttaksplaninfo.Uker.beskrivelseErFodt": "Siste dag med foreldrepengar vil vera { dato } om { soker } tek foreldrepengar i eitt strekk utan ferie.",
     "uttaksplaninfo.Uker.soker.du": "du",
+    "uttaksplaninfo.Uker.soker.deg": "deg",
     "uttaksplaninfo.Uker.soker.dere": "dykk",
     "uttaksplaninfo.spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
     "uttaksplaninfo.spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
@@ -1005,10 +1006,11 @@
     "uttaksplan.veileder.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikkje vere lengre enn {maxLength} tegn.",
     "vedlagtdokumentasjon": "Vedlagd dokumentasjon",
 
-    "DekningsgradForm.InformasjonPrematurukerHeader": "{soker} får lenger periode med foreldrepengar sidan du har født før veke 33",
-    "DekningsgradForm.InformasjonPrematuruker": "Perioden din er forlenga med {uker} veker og {dager} dagar sidan du har født før svangerskapsveke 33.",
-    "DekningsgradForm.InformasjonToBarn": "Dykk får lenger periode med foreldrepengar sidan dykk skal ha tvillingar",
-    "DekningsgradForm.InformasjonFlereEnnToBarn": "Dykk får lenger periode med foreldrepengar sidan dykk skal ha fleire barn",
+    "DekningsgradForm.InformasjonPrematurukerHeader": "{soker} får lenger periode med foreldrepengar sidan barnet er født før veke 33",
+    "DekningsgradForm.InformasjonPrematuruker": "Perioden blir forlenga med like mange veker og dagar som barnet er født før termindato, som er {uker} veker og {dager} dagar for {soker}",
+    "DekningsgradForm.InformasjonToBarn": "{sokerStorBokstav} får lenger periode med foreldrepengar sidan {soker} skal ha tvillingar",
+    "DekningsgradForm.InformasjonFlereEnnToBarn": "{sokerStorBokstav} får lenger periode med foreldrepengar sidan {soker} skal ha fleire barn",
+    "DekningsgradForm.InformasjonFlerbarnUker": "Perioden blir forlenga med {uker100} veker om {soker} vel 100% foreldrepengar eller {uker80} veker om {soker} vel 80% foreldrepengar.",
 
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dykk har valgt {uker} veker med {dekningsgrad}% foreldrepengar",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette vart valgt av {navn} i søknaden hennar, og det kan ikkje endras av deg.",

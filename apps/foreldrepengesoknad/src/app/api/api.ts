@@ -1,6 +1,6 @@
 import { Kvittering } from 'app/types/Kvittering';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
+import { useGetRequest } from 'app/utils/hooks/useRequest';
 import { AxiosResponse } from 'axios';
 import getAxiosInstance from './apiInterceptor';
 import { storageParser } from './storageParser';
@@ -17,8 +17,6 @@ import {
     hasValue,
 } from '@navikt/fp-common';
 import { SakerOppslag } from 'app/types/SakerOppslag';
-import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
-import { RequestStatus } from 'app/types/RequestState';
 import SøknadRoutes from 'app/routes/routes';
 import { Søknad } from 'app/context/types/Søknad';
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
@@ -66,38 +64,6 @@ const useGetSaker = () => {
     return {
         sakerData: data,
         sakerError: error,
-    };
-};
-
-const useGetAnnenPartsVedtak = (
-    annenPartFnr: string | undefined,
-    barnFnr: string | undefined,
-    familiehendelsesdato: string | undefined,
-    isSuspended: boolean,
-) => {
-    const body = {
-        annenPartFødselsnummer: annenPartFnr,
-        barnFødselsnummer: barnFnr,
-        familiehendelse: familiehendelsesdato,
-    };
-    const { data, error, requestStatus } = usePostRequest<AnnenPartVedtakDTO>('/innsyn/v2/annenPartVedtak', body, {
-        config: {
-            withCredentials: true,
-        },
-        isSuspended,
-    });
-
-    if (error && error.message.includes('Ugyldig ident')) {
-        return {
-            eksisterendeSakAnnenPartData: undefined,
-            eksisterendeSakAnnenPartError: undefined,
-            eksisterendeSakAnnenPartRequestStatus: RequestStatus.FINISHED,
-        };
-    }
-    return {
-        eksisterendeSakAnnenPartData: data,
-        eksisterendeSakAnnenPartError: error,
-        eksisterendeSakAnnenPartRequestStatus: requestStatus,
     };
 };
 
@@ -232,7 +198,6 @@ const Api = {
     useGetUttakskontoer,
     storeAppState,
     getStorageKvittering,
-    useGetAnnenPartsVedtak,
     useStoredAppState,
     useSøkerinfo,
     sendSøknad,

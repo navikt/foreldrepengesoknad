@@ -7,7 +7,7 @@ import { AxiosError } from 'axios';
 
 const sortObject = (unordered: Record<string, any>) =>
     Object.keys(unordered)
-        .sort()
+        .sort((s1, s2) => s1.localeCompare(s2))
         .reduce<Record<string, any>>((obj, key) => {
             obj[key] = unordered[key];
             return obj;
@@ -25,6 +25,7 @@ const hashCode = (string: string) => {
 
 const TYPE_URL_MAP = {
     [FpApiDataType.ANNEN_PART_VEDTAK]: `/innsyn/v2/annenPartVedtak`,
+    [FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK]: `/innsyn/v2/annenPartVedtak`,
     [FpApiDataType.STØNADSKONTOER_80]: `${Environment.REST_API_URL}/konto`,
     [FpApiDataType.STØNADSKONTOER_100]: `${Environment.REST_API_URL}/konto`,
 };
@@ -94,8 +95,16 @@ export const useApiPostData = <DATA_TYPE extends FpApiDataType, PARAMS extends o
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
+    if (error && error.message.includes('Ugyldig ident')) {
+        return {
+            data: undefined,
+            requestStatus: RequestStatus.FINISHED,
+            error: null,
+        };
+    }
+
     return {
-        data: (data || apiData) as any,
+        data: data || apiData,
         requestStatus,
         error,
     };
