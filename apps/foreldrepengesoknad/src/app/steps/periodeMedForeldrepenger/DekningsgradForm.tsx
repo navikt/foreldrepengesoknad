@@ -184,7 +184,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         </Link>
                     </ReadMore>
                 </VStack>
-                {visInfoOmPrematuruker && ekstraDagerGrunnetPrematurFødsel && (
+                {visInfoOmPrematuruker && !!ekstraDagerGrunnetPrematurFødsel && (
                     <Box padding="4" background="surface-action-subtle">
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
