@@ -172,7 +172,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                     <HStack>
                         <Button
                             type="submit"
-                            icon={<Add />}
+                            icon={<Add aria-hidden={true} />}
                             loading={isEttersending || finnesPendingVedlegg}
                             disabled={isEttersending || finnesPendingVedlegg}
                         >

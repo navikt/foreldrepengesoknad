@@ -158,9 +158,9 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                                 </ReadMore>
                             )}
                             {hendelse.linkTittel && hendelse.eksternalUrl && (
-                                <Link href={hendelse.eksternalUrl}>
+                                <Link href={hendelse.eksternalUrl} className={bem.element('link')}>
                                     <BodyShort size="small">{hendelse.linkTittel}</BodyShort>
-                                    <ExternalLink fontSize={'16px'}></ExternalLink>
+                                    <ExternalLink fontSize={'16px'} aria-hidden={true}></ExternalLink>
                                 </Link>
                             )}
                             {hendelse.linkTittel && hendelse.internalUrl && (

@@ -20,7 +20,7 @@ const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, visesITids
 
     return (
         <li className={classNames(`${bem.block} ${visesITidslinjen ? bem.modifier('medium') : bem.modifier('large')}`)}>
-            <FileContent className={bem.element('ikon')} />
+            <FileContent className={bem.element('ikon')} aria-hidden={true} />
             <Link href={url} className={bem.element('ikon')} target="_blank">
                 {tittel}
             </Link>

@@ -18,7 +18,7 @@ const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => 
             <Accordion.Item className={bem.element('item')}>
                 <Accordion.Header className={bem.element('header')}>
                     <span className={bem.element('header-content')}>
-                        <Folder className={bem.element('ikon')} />
+                        <Folder className={bem.element('ikon')} aria-hidden={true} />
                         <BodyShort>{dokumenter.length} dokumenter</BodyShort>
                     </span>
                 </Accordion.Header>

@@ -90,7 +90,7 @@ const renderHeaderContent = (
             return (
                 <div className={bem.element('content')}>
                     <div className={bem.element('baby-ikonBox')}>
-                        <TåteflaskeBaby />
+                        <TåteflaskeBaby aria-hidden={true} />
                     </div>
                     <div className={bem.element('title-with-status-saksnr')}>
                         <Heading size="large">{getSaksoversiktHeading(sak.ytelse)}</Heading>
@@ -120,7 +120,7 @@ const renderHeaderContent = (
         return (
             <div className={bem.element('content')}>
                 <div className={bem.element('baby-ikonBox')}>
-                    <TåteflaskeBaby />
+                    <TåteflaskeBaby aria-hidden={true} />
                 </div>
                 <div className={bem.element('content-detaljer')}>
                     <div className={bem.element('title-with-status-saksnr')}>
@@ -140,7 +140,7 @@ const renderHeaderContent = (
     return (
         <div className={bem.element('content')}>
             <div className={bem.element('baby-ikonBox')}>
-                <TåteflaskeBaby />
+                <TåteflaskeBaby aria-hidden={true} />
             </div>
             <div className={bem.element('title-container')}>
                 <Heading size="large">Oversikt over foreldrepenger</Heading>

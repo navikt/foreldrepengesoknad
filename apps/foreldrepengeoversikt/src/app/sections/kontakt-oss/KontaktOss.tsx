@@ -18,7 +18,7 @@ const KontaktOss: React.FunctionComponent = () => {
                 <div className={bem.element('content')}>
                     <div className={bem.element('content_left')}>
                         <Link href={NavRoutes.CHAT_MED_OSS} className={bem.element('link')}>
-                            <Dialog className={bem.element('linkIcon')}></Dialog>
+                            <Dialog className={bem.element('linkIcon')} aria-hidden={true}></Dialog>
                             <BodyShort className={bem.element('linkTitle')}>
                                 {intlUtils(intl, 'kontaktOss.chatMedOss')}
                             </BodyShort>
@@ -27,7 +27,7 @@ const KontaktOss: React.FunctionComponent = () => {
                     </div>
                     <div className={bem.element('content_middle')}>
                         <Link href={NavRoutes.SKRIV_TIL_OSS} className={bem.element('link')}>
-                            <Send className={bem.element('linkIcon')}></Send>
+                            <Send className={bem.element('linkIcon')} aria-hidden={true}></Send>
                             <BodyShort className={bem.element('linkTitle')}>
                                 {intlUtils(intl, 'kontaktOss.skrivTilOss')}
                             </BodyShort>
@@ -39,7 +39,7 @@ const KontaktOss: React.FunctionComponent = () => {
                     </div>
                     <div className={bem.element('content_right')}>
                         <Link href={NavRoutes.RING_OSS} className={bem.element('link')}>
-                            <Telephone className={bem.element('linkIcon')}></Telephone>
+                            <Telephone className={bem.element('linkIcon')} aria-hidden={true}></Telephone>
                             <BodyShort className={bem.element('linkTitle')}>
                                 {intlUtils(intl, 'kontaktOss.ringOss')}
                             </BodyShort>

@@ -13,7 +13,13 @@ const SeDokumenter = () => {
     return (
         <LinkPanel as={Link} to={OversiktRoutes.DOKUMENTER} border={false} className={bem.element('linkPanel')}>
             <HStack gap="1">
-                <FolderFileIcon className={bem.element('icon')} width={52} height={52} color="#0056B4" />
+                <FolderFileIcon
+                    className={bem.element('icon')}
+                    width={52}
+                    height={52}
+                    color="#0056B4"
+                    aria-hidden={true}
+                />
                 <LinkPanel.Title className={bem.element('link')} as="h2">
                     <div className={bem.block}>Dokumenter</div>
                 </LinkPanel.Title>

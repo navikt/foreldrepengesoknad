@@ -83,7 +83,7 @@ const PeriodeOversikt: React.FunctionComponent<Props> = ({
             )}
             {!visHelePlanen && (
                 <Link className={bem.element('seHelePlanen')} as={RouterLink} to={OversiktRoutes.DIN_PLAN}>
-                    Se hele planen <Next />
+                    Se hele planen <Next aria-hidden={true} />
                 </Link>
             )}
         </div>

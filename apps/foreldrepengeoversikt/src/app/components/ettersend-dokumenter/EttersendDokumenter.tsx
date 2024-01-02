@@ -15,7 +15,7 @@ const EttersendDokumenter = () => {
             className={bem.element('linkPanel')}
         >
             <HStack gap="1">
-                <FilesIcon className={bem.element('icon')} width={52} height={52} color="#0056B4" />
+                <FilesIcon className={bem.element('icon')} width={52} height={52} color="#0056B4" aria-hidden={true} />
                 <LinkPanel.Title as="h2" className={bem.element('link')}>
                     Ettersend dokumentasjon
                 </LinkPanel.Title>
