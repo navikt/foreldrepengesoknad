@@ -131,8 +131,8 @@ UttaksplanMedDeltUttakDerMorSøker.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanMedDeltUttakDerFarSøker = Template.bind({});
-UttaksplanMedDeltUttakDerFarSøker.args = {
+export const UttaksplanMedDeltUttakDerFarSøker100 = Template.bind({});
+UttaksplanMedDeltUttakDerFarSøker100.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     erMor: false,
@@ -151,4 +151,26 @@ UttaksplanMedDeltUttakDerFarSøker.args = {
     },
     søkerinfo: søkerinfoFarSøker,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const UttaksplanMedDeltUttakDerFarSøker80 = Template.bind({});
+UttaksplanMedDeltUttakDerFarSøker80.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
+    erMor: false,
+    annenForelder: {
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+        fnr: '19047815714',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
