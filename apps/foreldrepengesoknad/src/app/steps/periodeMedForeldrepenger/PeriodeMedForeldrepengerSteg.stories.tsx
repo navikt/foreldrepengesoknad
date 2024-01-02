@@ -10,9 +10,10 @@ import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import Environment from 'app/Environment';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = 'test/konto';
+const STØNADSKONTO_URL = `${Environment.REST_API_URL}/konto`;
 
 const STØNADSKONTO_100 = {
     kontoer: {
