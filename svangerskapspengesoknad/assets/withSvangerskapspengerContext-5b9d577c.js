@@ -1,1 +1,0 @@
-import{j as r}from"./fridagerUtils-5c2e196a.js";import{S as t}from"./links-d39947cb.js";const p=e=>r.jsx(t,{children:r.jsx(e,{})});try{withSvangerskapspengerContext.displayName="withSvangerskapspengerContext",withSvangerskapspengerContext.__docgenInfo={description:"",displayName:"withSvangerskapspengerContext",props:{}}}catch{}export{p as w};
