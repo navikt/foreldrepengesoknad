@@ -88,9 +88,10 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
-    const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
-        ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
-        : undefined;
+    const ekstraDagerGrunnetPrematurFødsel =
+        visInfoOmPrematuruker && fødselsdato && termindato
+            ? Tidsperioden({ fom: fødselsdato, tom: termindato }).getAntallUttaksdager() - 1
+            : undefined;
 
     // FIXME termindato (og fødselsdato over her) kan vera undefined
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(49 * 5, termindato);
