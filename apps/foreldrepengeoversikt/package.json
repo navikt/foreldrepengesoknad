@@ -36,7 +36,7 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@sentry/browser": "^7.91.0",
-        "@tanstack/react-query": "^4.32.6",
+        "@tanstack/react-query": "^5.17.0",
         "amplitude-js": "^8.21.9",
         "axios": "^1.6.3",
         "babel-runtime": "^6.26.0",
