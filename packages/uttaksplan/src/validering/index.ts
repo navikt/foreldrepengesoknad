@@ -268,7 +268,7 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
     },
     {
         key: UttaksplanRegelKey.perioderManglerVedlegg,
-        alvorlighet: RegelAlvorlighet.ADVARSEL,
+        alvorlighet: RegelAlvorlighet.INFO,
         test: harPerioderManglendeVedleggTest,
         slåsSammenVedOppsummering: true,
     },
