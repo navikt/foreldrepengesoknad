@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import * as stories from './Inntektsinformasjon.stories';
 import { ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 const { HarIkkeArbeidsforhold, HarArbeidsforhold } = composeStories(stories);
 
@@ -44,7 +45,7 @@ describe('<Inntektsinformasjon>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 andreInntekterSiste10Mnd: [],
@@ -59,6 +60,13 @@ describe('<Inntektsinformasjon>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: {
+                [Skjemanummer.ANNET]: [],
+            },
+            key: ContextDataType.VEDLEGG,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.OPPSUMMERING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
