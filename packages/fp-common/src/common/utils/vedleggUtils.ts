@@ -1,4 +1,4 @@
-import { Attachment, InnsendingsType } from '@navikt/fp-types';
+import { Attachment, AttachmentMetadata, InnsendingsType } from '@navikt/fp-types';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { guid } from './guid';
 
@@ -9,6 +9,7 @@ export const mapFilTilVedlegg = (
     type: AttachmentType,
     skjemanummer: Skjemanummer,
     innsendingsType?: InnsendingsType,
+    dokumenterer?: AttachmentMetadata,
 ): Attachment => ({
     id: generateAttachmentId(),
     file,
@@ -19,22 +20,34 @@ export const mapFilTilVedlegg = (
     type,
     skjemanummer,
     innsendingsType,
+    dokumenterer,
 });
 
 export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachment) =>
     (pending === false && uploaded === false) || filesize === 0;
 
-export const lagSendSenereDokument = (type: AttachmentType, skjemanummer: Skjemanummer) => {
-    return mapFilTilVedlegg({ name: '', size: '' } as any, type, skjemanummer, InnsendingsType.SEND_SENERE);
+export const lagSendSenereDokument = (
+    type: AttachmentType,
+    skjemanummer: Skjemanummer,
+    dokumenterer?: AttachmentMetadata,
+) => {
+    return mapFilTilVedlegg(
+        { name: '', size: '' } as any,
+        type,
+        skjemanummer,
+        InnsendingsType.SEND_SENERE,
+        dokumenterer,
+    );
 };
 
 export const lagSendSenereDokumentNårIngenAndreFinnes = (
     dokumenter: Attachment[],
     type: AttachmentType,
     skjema: Skjemanummer,
+    dokumenterer?: AttachmentMetadata,
 ): Attachment[] => {
     if (dokumenter.length === 0) {
-        return [lagSendSenereDokument(type, skjema)];
+        return [lagSendSenereDokument(type, skjema, dokumenterer)];
     }
     if (dokumenter.length === 1) {
         return dokumenter;

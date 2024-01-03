@@ -37,9 +37,10 @@ import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import DokumentasjonOppsummering from './components/dokumentasjon-oppsummering/DokumentasjonOppsummering';
+import BackButton from '../BackButton';
 
 import './oppsummering.less';
-import BackButton from '../BackButton';
 
 export interface Props {
     søkerInfo: Søkerinfo;
@@ -179,6 +180,9 @@ const Oppsummering: FunctionComponent<Props> = ({
                                             antallBarn={barn.antallBarn}
                                             ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
                                         />
+                                    </OppsummeringsPanel>
+                                    <OppsummeringsPanel title="Dokumentasjon">
+                                        <DokumentasjonOppsummering />
                                     </OppsummeringsPanel>
                                 </div>
                             </Block>

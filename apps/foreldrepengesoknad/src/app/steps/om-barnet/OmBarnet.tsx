@@ -115,16 +115,14 @@ const OmBarnet: React.FunctionComponent<Props> = ({
                 values.omsorgsovertakelse!,
                 AttachmentType.OMSORGSOVERTAKELSE,
                 Skjemanummer.OMSORGSOVERTAKELSE,
+                {
+                    type: AttachmentMetadataType.BARN,
+                },
             );
 
             const nyeVedlegg = {
                 ...vedlegg,
-                [Skjemanummer.OMSORGSOVERTAKELSE]: {
-                    ...omsorgsovertakelse,
-                    dokumenterer: {
-                        type: AttachmentMetadataType.BARN,
-                    },
-                },
+                [Skjemanummer.OMSORGSOVERTAKELSE]: omsorgsovertakelse,
             };
 
             oppdaterVedlegg(nyeVedlegg);
@@ -135,16 +133,14 @@ const OmBarnet: React.FunctionComponent<Props> = ({
                 values.terminbekreftelse!,
                 AttachmentType.TERMINBEKREFTELSE,
                 Skjemanummer.TERMINBEKREFTELSE,
+                {
+                    type: AttachmentMetadataType.BARN,
+                },
             );
 
             const nyeVedlegg = {
                 ...vedlegg,
-                [Skjemanummer.TERMINBEKREFTELSE]: {
-                    ...terminbekreftelse,
-                    dokumenterer: {
-                        type: AttachmentMetadataType.BARN,
-                    },
-                },
+                [Skjemanummer.TERMINBEKREFTELSE]: terminbekreftelse,
             };
 
             oppdaterVedlegg(nyeVedlegg);
