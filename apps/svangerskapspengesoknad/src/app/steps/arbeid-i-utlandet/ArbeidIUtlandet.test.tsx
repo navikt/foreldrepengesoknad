@@ -106,7 +106,7 @@ describe('<ArbeidIUtlandet>', () => {
 
         expect(await screen.findByText('Når startet du i jobben?')).toBeInTheDocument();
         const startdatoInput = screen.getByLabelText('Når startet du i jobben?');
-        await userEvent.type(startdatoInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
+        await userEvent.type(startdatoInput, dayjs('2053-12-30').format('DD.MM.YYYY'));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
