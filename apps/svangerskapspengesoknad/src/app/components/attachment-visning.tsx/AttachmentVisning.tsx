@@ -4,7 +4,8 @@ import { FunctionComponent } from 'react';
 import { Block, bemUtils } from '@navikt/fp-common';
 import classNames from 'classnames';
 import './attachmentVisning.css';
-import { Attachment } from 'app/types/Attachment';
+import { Attachment } from '@navikt/fp-types';
+
 interface Props {
     vedlegg: Attachment;
     onDelete: (vedlegg: Attachment) => void;

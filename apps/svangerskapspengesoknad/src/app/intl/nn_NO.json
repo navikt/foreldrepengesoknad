@@ -294,9 +294,6 @@
     "valideringsfeil.risikofaktorer.frilanser.forLang": "Skildring av risikofaktorar kan maksimalt innehalde 1000 teikn.",
     "valideringsfeil.risikofaktorer.selvstendig.forLang": "Skildring av risikofaktorar kan maksimalt innehalde 1000 teikn.",
     "valideringsfeil.risikofaktorer.virksomhet.påkrevd": "Du må oppgi ei skildring av risikofaktorar i jobben din.",
-    "skjema.legend.virksomhet": "Skjema for risiko og tilrettelegging i svangerskapet",
-    "skjema.legend.selvstendig": "Bekrefting  for krav til svangerskapspengar til sjølvstendig næringsdrivande",
-    "skjema.legend.frilanser": "Bekrefting  for krav til svangerskapspengar til frilans",
     "skjema.risikofaktorer.frilanser": "Beskriv kva som kan skade det ufødde barnet i jobben din som frilansar",
     "skjema.risikofaktorer.selvstendig": "Beskriv kva som kan skade det ufødde barnet i jobben din som sjølvstendig næringsdrivande",
     "skjema.vedlegg.label.selvstendig": "Last opp bekrefting for krav til svangerskapspengar til sjølvstendig næringsdrivande",
@@ -304,9 +301,6 @@
     "perioder.alert.nySøknad.title": "Du må sende ny søknad viss du skal jobbe redusert etter ein periode du har vore tilbake i full stilling. ",
     "perioder.alert.nySøknad.del1": "Dette er fordi NAV må berekne inntekta di og kor mykje du skal ha utbetalt i svangerskapspengar på nytt. ",
     "perioder.alert.nySøknad.del2": "Viss det ikkje stemmer, må du justere periodane sånn at du ikkje har periode med redusert arbeid etter ein periode der du er tilbake i full stilling.",
-    "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale, prøv igjen.",
-    "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type.",
-    "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}kB.",
     "valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd": "Du må stadfeste at du har gjort deg kjent med vilkåra.",
     "utenlandsopphold.infotekst": "For å få rett til svangerskapspengar må du vere medlem av folketrygda i Noreg.",
     "utenlandsopphold.neste12Måneder.spørsmål": "Kor skal du bu dei neste 12 månadene?",
@@ -331,7 +325,6 @@
     "boIUtlandet.fraogmed": "Frå og med",
     "skjema.maks40Filer": "Du kan laste opp maksimalt 40 vedlegg i din søknad. Slett {antallVedlegg} vedlegg for å gå videre.",
     "skjema.vedlegg.label.arbeidsgiver": "Last opp skjema for risiko og tilrettelegging i svangerskapet",
-    "skjema.vedlegg.buttonLabel": "Last opp skjema",
     "skjema.vedlegg.description.frilansSN": "Her skal du laste opp bekrefting n som er skriven av din lege eller jordmor.",
     "skjema.vedlegg.description.arbeidsgiver": "Her skal du laste opp <a>skjemaet for risiko og tilrettelegging i svangerskapet</a> som er fylt ut av din lege eller jordmor, og din arbeidsgivar.",
     "skjema.risikofaktorer.description": "Beskrivinga vil bli brukt for å vurdere om du kan få svangerskapspengar.",
@@ -410,5 +403,6 @@
     "bedriftsbanner.detail.frilans": "Om ditt arbeid som",
     "bedriftsbanner.tittel.frilansarbeid": "Frilansar",
     "ny.periode": "Ny periode",
-    "sesjonUtløpt.tittel": "Du er no logga ut."
+    "sesjonUtløpt.tittel": "Du er no logga ut.",
+    "SkjemaSteg.MinstEttDokument": "Du må lasta opp minst eitt dokument"
 }

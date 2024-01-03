@@ -1,5 +1,5 @@
 import { guid } from '@navikt/fp-common';
-import { Attachment, InnsendingsType } from 'app/types/Attachment';
+import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import { AttachmentType } from 'app/types/AttachmentType';
 import { Skjemanummer } from 'app/types/Skjemanummer';
 import Bytes from 'bytes';
