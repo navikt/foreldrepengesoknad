@@ -35,7 +35,7 @@ const mellomlagre = (
 
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
-        version: 5,
+        version: 6,
         currentRoute,
         søknadGjelderEtNyttBarn,
         søknad: {
