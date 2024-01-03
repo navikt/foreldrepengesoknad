@@ -93,9 +93,14 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
             ? Tidsperioden({ fom: fødselsdato, tom: termindato }).getAntallUttaksdager() - 1
             : undefined;
 
-    // FIXME termindato (og fødselsdato over her) kan vera undefined
-    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(49 * 5, termindato);
-    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(59 * 5, termindato);
+    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(
+        getAntallUker(stønadskonto100) * 5,
+        fødselsdato || termindato,
+    );
+    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(
+        getAntallUker(stønadskonto80) * 5,
+        fødselsdato || termindato,
+    );
 
     const søkerAntallTekst = getSøkerAntallTekst(intl, erDeltUttak);
 
