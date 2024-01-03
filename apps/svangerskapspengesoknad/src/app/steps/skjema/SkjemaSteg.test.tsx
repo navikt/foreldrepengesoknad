@@ -3,7 +3,8 @@ import { composeStories } from '@storybook/react';
 import userEvent from '@testing-library/user-event';
 import * as stories from './SkjemaSteg.stories';
 
-const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrilans } = composeStories(stories);
+const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrilans, KanMaxHaToVedlegg } =
+    composeStories(stories);
 
 describe('<SkjemaSteg>', () => {
     it('skal vise feilmelding når en ikke har lastet opp minst ett vedlegg', async () => {
@@ -53,6 +54,28 @@ describe('<SkjemaSteg>', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText('Her skal du laste opp bekreftelsen som er skrevet av din lege eller jordmor.'),
+        ).toBeInTheDocument();
+    });
+
+    it('skal vise kunne laste opp maks 2 (40 i prod) vedlegg', async () => {
+        render(<KanMaxHaToVedlegg />);
+
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+
+        const file1 = new File(['hello'], 'hello.png', { type: 'image/png' });
+        const fileInput = screen.getByTestId('file-upload');
+        await fireEvent.change(fileInput, {
+            target: { files: { item: () => file1, length: 1, 0: file1 } },
+        });
+
+        const file2 = new File(['hello1'], 'hello1.png', { type: 'image/png' });
+        await fireEvent.change(fileInput, {
+            target: { files: { item: () => file2, length: 1, 0: file2 } },
+        });
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(
+            screen.getByText('Du kan laste opp maksimalt 40 vedlegg i din søknad. Slett 1 vedlegg for å gå videre.'),
         ).toBeInTheDocument();
     });
 });

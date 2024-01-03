@@ -1,7 +1,7 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Alert, VStack } from '@navikt/ds-react';
+import { useIntl } from 'react-intl';
+import { VStack } from '@navikt/ds-react';
 import { Step, intlUtils } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { FileUploader } from '@navikt/fp-ui';
@@ -33,9 +33,10 @@ export interface SkjemaFormData {
 
 export interface Props {
     id: string;
+    maxAntallVedlegg?: number;
 }
 
-const SkjemaSteg: FunctionComponent<Props> = ({ id }) => {
+const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTALL_VEDLEGG }) => {
     useUpdateCurrentTilretteleggingId(id);
     const navigate = useNavigate();
 
@@ -44,9 +45,6 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id }) => {
     const { arbeidsforhold } = useSøkerinfo();
     const søknad = useSøknad();
     const { søker, barn, tilrettelegging } = søknad;
-
-    const [antallForMangeVedlegg] = useState(0);
-    const [submitClicked, setSubmitClicked] = useState(false);
 
     const currentTilrettelegging = notEmpty(tilrettelegging.find((t) => t.id === id));
 
@@ -72,24 +70,24 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id }) => {
                 message: intl.formatMessage({ id: 'SkjemaSteg.MinstEttDokument' }),
             });
             return Promise.resolve();
+        }
+
+        const antallVedleggAndreTilrettelegginger = tilrettelegging
+            .filter((t) => t.id !== currentTilrettelegging!.id)
+            .reduce((total, tilrettelegging) => total + tilrettelegging.vedlegg.length, 0);
+        const antallNyeVedlegg = values.vedlegg ? values.vedlegg.length : 0;
+        const antallVedlegg = antallVedleggAndreTilrettelegginger + antallNyeVedlegg;
+
+        const antallForMange = antallVedlegg - maxAntallVedlegg;
+        if (antallForMange > 0) {
+            formMethods.setError('vedlegg', {
+                message: intl.formatMessage({ id: 'skjema.maks40Filer' }, { antallVedlegg: antallForMange }),
+            });
+            return Promise.resolve();
         } else {
-            setSubmitClicked(true);
-            if (antallForMangeVedlegg <= 0) {
-                return handleSubmit(values);
-            } else {
-                return Promise.resolve();
-            }
+            return handleSubmit(values);
         }
     };
-
-    // onClick={() => {
-    //     const antallVedleggAndreTilrettelegginger = tilrettelegging
-    //         .filter((t) => t.id !== currentTilrettelegging!.id)
-    //         .reduce((total, tilrettelegging) => total + tilrettelegging.vedlegg.length, 0);
-    //     const antallNyeVedlegg = formValues.vedlegg ? formValues.vedlegg.length : 0;
-    //     const antallVedlegg = antallVedleggAndreTilrettelegginger + antallNyeVedlegg;
-    //     setAntallForMangeVedlegg(antallVedlegg - MAX_ANTALL_VEDLEGG);
-    // }}
 
     const defaultValues = { vedlegg: currentTilrettelegging.vedlegg };
 
@@ -134,14 +132,6 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id }) => {
                             saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'svangerskapspenger')}
                         />
                     </VStack>
-                    {antallForMangeVedlegg > 0 && submitClicked && (
-                        <Alert variant="error">
-                            <FormattedMessage
-                                id="skjema.maks40Filer"
-                                values={{ antallVedlegg: antallForMangeVedlegg }}
-                            />
-                        </Alert>
-                    )}
                     <StepButtonsHookForm
                         goToPreviousStep={() =>
                             navigate(

@@ -22,9 +22,10 @@ const defaultContext = _context as any;
 interface TilretteleggingStepStoryProps {
     context: SvangerskapspengerContextState;
     skalFeileOpplasting: boolean;
+    maxAntallVedlegg: number;
 }
 
-const Template: StoryFn<TilretteleggingStepStoryProps> = ({ context, skalFeileOpplasting }) => {
+const Template: StoryFn<TilretteleggingStepStoryProps> = ({ context, skalFeileOpplasting, maxAntallVedlegg = 40 }) => {
     const apiMock = new MockAdapter(attachmentApi);
     if (!skalFeileOpplasting) {
         apiMock.onPost('/rest-api/storage/svangerskapspenger/vedlegg').reply(200); //story
@@ -32,7 +33,7 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = ({ context, skalFeileOp
     }
     return (
         <SvangerskapspengerStateMock context={context}>
-            <SkjemaSteg id={'263929546-6215-9868-5127-161910165730101'} />
+            <SkjemaSteg id={'263929546-6215-9868-5127-161910165730101'} maxAntallVedlegg={maxAntallVedlegg} />
         </SvangerskapspengerStateMock>
     );
 };
@@ -116,4 +117,11 @@ ErTypeFrilans.args = {
         },
     },
     skalFeileOpplasting: false,
+};
+
+export const KanMaxHaToVedlegg = Template.bind({});
+KanMaxHaToVedlegg.args = {
+    context: defaultContext,
+    skalFeileOpplasting: false,
+    maxAntallVedlegg: 2,
 };
