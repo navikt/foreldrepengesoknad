@@ -40,6 +40,10 @@ export const lagSendSenereDokument = (
     );
 };
 
+export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {
+    return { ...attachment, dokumenterer: metadata };
+};
+
 export const lagSendSenereDokumentNårIngenAndreFinnes = (
     dokumenter: Attachment[],
     type: AttachmentType,
@@ -52,6 +56,13 @@ export const lagSendSenereDokumentNårIngenAndreFinnes = (
     if (dokumenter.length === 1) {
         return dokumenter;
     }
+
+    if (dokumenterer) {
+        return dokumenter
+            .filter((dok) => dok.innsendingsType !== InnsendingsType.SEND_SENERE)
+            .map((dok) => addMetadata(dok, dokumenterer));
+    }
+
     return dokumenter.filter((dok) => dok.innsendingsType !== InnsendingsType.SEND_SENERE);
 };
 

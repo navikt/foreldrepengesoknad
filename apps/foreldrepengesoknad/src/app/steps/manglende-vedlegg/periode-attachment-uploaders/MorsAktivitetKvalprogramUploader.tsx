@@ -1,6 +1,6 @@
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
-import { NavnPåForeldre, Periode, Situasjon, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
@@ -10,7 +10,6 @@ import { FunctionComponent, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import './periode-attachment-uploader.css';
-import { addMetadata } from '../util';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { useFormContext } from 'react-hook-form';

@@ -1,6 +1,6 @@
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
-import { NavnPåForeldre, Periode, Situasjon, bemUtils } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
@@ -8,7 +8,6 @@ import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodelis
 import Environment from 'app/Environment';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { addMetadata } from '../util';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 

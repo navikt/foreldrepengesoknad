@@ -1,6 +1,6 @@
 import { MorsAktivitet, Periode, isUttaksperiode, lagSendSenereDokumentNårIngenAndreFinnes } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, AttachmentMetadata, InnsendingsType } from '@navikt/fp-types';
+import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 
 export const grupperteFellesperioderMorsAktivitetArbeidUtdanningEllerSykdom = (perioder: Periode[]) => {
@@ -118,10 +118,6 @@ export const lagSendSenereDokumentOmPåkrevd = (
 
 export const isSendSenereVedlegg = (attachment: Attachment) => {
     return attachment.innsendingsType === InnsendingsType.SEND_SENERE;
-};
-
-export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {
-    return { ...attachment, dokumenterer: metadata };
 };
 
 const isArrayOfAttachments = (object: any) => {
