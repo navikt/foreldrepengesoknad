@@ -15,7 +15,7 @@ const getVedleggTittel = (arbeidsforhold: ArbeidsforholdForTilrettelegging, intl
         case Arbeidsforholdstype.FRILANSER:
             return intlUtils(intl, 'oppsummering.skjema.frilanser');
         case Arbeidsforholdstype.SELVSTENDIG:
-            return intlUtils(intl, 'oppsummering.skjema.frilanser');
+            return intlUtils(intl, 'oppsummering.skjema.selvstendig');
         default:
             return `${intlUtils(intl, 'oppsummering.skjema.virksomhet')} for ${arbeidsforhold.navn}`;
     }
