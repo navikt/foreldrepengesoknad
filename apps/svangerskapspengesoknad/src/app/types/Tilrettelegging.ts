@@ -47,7 +47,6 @@ export interface TilretteleggingPeriode {
     tom: string;
     stillingsprosent: number;
     arbeidsforhold: ArbeidsforholdForTilrettelegging;
-    vedlegg: string[];
     risikofaktorer?: string;
     tilretteleggingstiltak?: string;
 }
@@ -80,7 +79,6 @@ interface TilretteleggingDTOBase {
     type: Tilretteleggingstype;
     behovForTilretteleggingFom: Date;
     arbeidsforhold: ArbeidsforholdDTO;
-    vedlegg: string[];
 }
 export interface DelvisTilretteleggingDTO extends TilretteleggingDTOBase {
     type: Tilretteleggingstype.DELVIS;
