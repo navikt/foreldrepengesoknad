@@ -26,7 +26,7 @@ const isUtstedtDatoIUke22 = (termindato: string, i18n: I18nFn) => (terminBekreft
 
 interface Props {
     attachments?: Attachment[];
-    updateAttachments: (attachments: Attachment[]) => void;
+    updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
     omBarnet: BarnetErIkkeFødt;
 }
 

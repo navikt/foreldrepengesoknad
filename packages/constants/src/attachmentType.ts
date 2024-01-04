@@ -12,4 +12,5 @@ export enum AttachmentType {
     HV_ØVELSE = 'hvØvelse',
     NAV_TILTAK = 'navTiltak',
     TILBAKEBETALING = 'tilbakebetaling',
+    TILRETTELEGGING = 'tilrettelegging',
 }

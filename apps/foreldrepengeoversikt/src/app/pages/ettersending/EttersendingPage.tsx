@@ -96,9 +96,15 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
 
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
+    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((sak) => sak.saksnummer === params.saksnummer);
+
+    const updateAttachments = (vedlegg: Attachment[], hasPendingUploads: boolean) => {
+        setVedlegg(vedlegg);
+        setAvventerVedlegg(hasPendingUploads);
+    };
 
     const onSubmit = (e: FormEvent<any>) => {
         e.preventDefault();
@@ -139,8 +145,6 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
         );
     }
 
-    const finnesPendingVedlegg = vedlegg ? !!vedlegg.find((file) => file.pending) : false;
-
     return (
         <form onSubmit={onSubmit}>
             <VStack gap="4">
@@ -161,7 +165,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                 </Select>
                 {type !== DEFAULT_OPTION && (
                     <FileUploader
-                        updateAttachments={setVedlegg}
+                        updateAttachments={updateAttachments}
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
@@ -173,8 +177,8 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                         <Button
                             type="submit"
                             icon={<Add aria-hidden={true} />}
-                            loading={isEttersending || finnesPendingVedlegg}
-                            disabled={isEttersending || finnesPendingVedlegg}
+                            loading={isEttersending || avventerVedlegg}
+                            disabled={isEttersending || avventerVedlegg}
                         >
                             Legg ved sak
                         </Button>

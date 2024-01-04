@@ -13,6 +13,7 @@ import Dokumentasjon from 'types/Dokumentasjon';
 import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
 import AdopsjonDokPanel from './AdopsjonDokPanel';
 import TerminDokPanel from './TerminDokPanel';
+import { useState } from 'react';
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;
@@ -23,6 +24,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
 
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
+    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
     const dokumentasjon = useContextGetData(ContextDataType.DOKUMENTASJON);
     const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
@@ -49,7 +51,8 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
         }
     };
 
-    const updateAttachments = (attachments: Attachment[]) => {
+    const updateAttachments = (attachments: Attachment[], hasPendingUploads: boolean) => {
+        setAvventerVedlegg(hasPendingUploads);
         formMethods.setValue('vedlegg', attachments, { shouldDirty: true, shouldTouch: true });
         formMethods.clearErrors('vedlegg');
     };
@@ -78,6 +81,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
                     <StepButtonsHookForm<Dokumentasjon>
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         saveDataOnPreviousClick={oppdaterDokumentasjon}
+                        isDisabledAndLoading={avventerVedlegg}
                     />
                 </VStack>
             </Form>

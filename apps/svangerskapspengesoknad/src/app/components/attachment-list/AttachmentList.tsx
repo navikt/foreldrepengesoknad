@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import AttachmentVisning from '../attachment-visning.tsx/AttachmentVisning';
-import { Attachment } from 'app/types/Attachment';
+import { Attachment } from '@navikt/fp-types';
 
 interface Props {
     vedlegg: Attachment[];
