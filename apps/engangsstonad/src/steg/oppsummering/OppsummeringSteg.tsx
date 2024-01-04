@@ -86,7 +86,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad,
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
                     nextButtonText={i18n('OppsummeringSteg.Button.SendSøknad')}
                     nextButtonOnClick={send}
-                    isSubmitting={isSubmitting}
+                    isDisabledAndLoading={isSubmitting}
                 />
             </VStack>
         </Step>

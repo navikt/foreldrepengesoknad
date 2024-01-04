@@ -7,6 +7,7 @@ interface Props<DATA_TYPE extends FieldValues> {
     saveDataOnPreviousClick?: (data: DATA_TYPE) => void;
     nextButtonText?: string;
     nextButtonOnClick?: (setButtonsDisabled: (isDisabled: boolean) => void) => void;
+    isDisabledAndLoading?: boolean;
 }
 
 const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
@@ -14,6 +15,7 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
     saveDataOnPreviousClick,
     nextButtonText,
     nextButtonOnClick,
+    isDisabledAndLoading = false,
 }: Props<DATA_TYPE>) => {
     const {
         getValues,
@@ -32,7 +34,7 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
             goToPreviousStep={onBackButtonClick}
             nextButtonText={nextButtonText}
             nextButtonOnClick={nextButtonOnClick}
-            isSubmitting={isSubmitting}
+            isDisabledAndLoading={isDisabledAndLoading || isSubmitting}
         />
     );
 };

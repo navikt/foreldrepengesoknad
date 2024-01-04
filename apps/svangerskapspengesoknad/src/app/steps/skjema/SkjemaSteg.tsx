@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
@@ -45,6 +45,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
     const { arbeidsforhold } = useSøkerinfo();
     const søknad = useSøknad();
     const { søker, barn, tilrettelegging } = søknad;
+    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
     const currentTilrettelegging = notEmpty(tilrettelegging.find((t) => t.id === id));
 
@@ -95,9 +96,12 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
         defaultValues: defaultValues,
     });
 
-    const updateAttachments = (attachments: Attachment[]) => {
+    const updateAttachments = (attachments: Attachment[], hasPendingUploads: boolean) => {
+        setAvventerVedlegg(hasPendingUploads);
         formMethods.setValue('vedlegg', attachments, { shouldDirty: true, shouldTouch: true });
-        formMethods.clearErrors('vedlegg');
+        if (!hasPendingUploads) {
+            formMethods.clearErrors('vedlegg');
+        }
     };
 
     const typeArbeid = currentTilrettelegging.arbeidsforhold.type;
@@ -144,6 +148,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
                                 ),
                             )
                         }
+                        isDisabledAndLoading={avventerVedlegg}
                     />
                 </VStack>
             </Form>

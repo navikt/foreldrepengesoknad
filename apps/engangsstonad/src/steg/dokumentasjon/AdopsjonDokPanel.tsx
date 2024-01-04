@@ -9,7 +9,7 @@ import Environment from 'appData/Environment';
 
 interface Props {
     attachments?: Attachment[];
-    updateAttachments: (attachments: Attachment[]) => void;
+    updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
 }
 
 const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAttachments }) => {
