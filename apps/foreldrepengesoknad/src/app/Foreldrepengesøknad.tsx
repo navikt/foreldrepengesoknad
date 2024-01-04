@@ -58,6 +58,8 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         [storageData],
     );
 
+    const applyStorage = storageData !== undefined && shouldApplyStorage(storageData);
+
     const søkerInfo = useMemo(
         () => (søkerinfoData ? mapSøkerinfoDTOToSøkerinfo(søkerinfoData) : undefined),
         [søkerinfoData],
@@ -95,10 +97,10 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
                         onChangeLocale={onChangeLocale}
                         søkerInfo={søkerInfo}
                         saker={sakerData.foreldrepenger}
-                        currentRoute={storageData ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
-                        lagretErEndringssøknad={storageData?.søknad?.erEndringssøknad}
-                        lagretHarGodkjentVilkår={storageData?.søknad?.harGodkjentVilkår}
-                        lagretSøknadGjelderNyttBarn={storageData?.søknadGjelderEtNyttBarn}
+                        currentRoute={applyStorage ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
+                        lagretErEndringssøknad={applyStorage ? storageData.søknad?.erEndringssøknad : false}
+                        lagretHarGodkjentVilkår={applyStorage ? storageData.søknad?.harGodkjentVilkår : false}
+                        lagretSøknadGjelderNyttBarn={applyStorage ? storageData.søknadGjelderEtNyttBarn : false}
                         setKvittering={setKvittering}
                     />
                 </BrowserRouter>
