@@ -34,7 +34,7 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@sentry/browser": "^7.91.0",
-        "axios": "^1.6.3",
+        "axios": "^1.6.4",
         "compression": "^1.7.4",
         "dayjs": "^1.11.10",
         "dotenv": "^16.3.1",
