@@ -42,7 +42,7 @@
         "@navikt/sif-common-question-config": "^0.0.7",
         "@navikt/uttaksplan": "workspace:*",
         "@sentry/browser": "^7.91.0",
-        "@snyk/protect": "^1.1264.0",
+        "@snyk/protect": "^1.1267.0",
         "amplitude-js": "^8.21.9",
         "axios": "^1.6.3",
         "bytes": "^3.1.2",

@@ -563,8 +563,8 @@ importers:
         specifier: ^7.91.0
         version: 7.91.0
       '@snyk/protect':
-        specifier: ^1.1264.0
-        version: 1.1266.0
+        specifier: ^1.1267.0
+        version: 1.1267.0
       amplitude-js:
         specifier: ^8.21.9
         version: 8.21.9
@@ -4959,8 +4959,8 @@ packages:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
 
-  /@snyk/protect@1.1266.0:
-    resolution: {integrity: sha512-SDrW7b4x4NQG/0aylXTi6QqMopXB1Kogga6bNp31lmR00eitGssINEoEBJMyXz4uj0cKDu/PzpwdNHDP6/ntbA==}
+  /@snyk/protect@1.1267.0:
+    resolution: {integrity: sha512-GV+PyMS9WdSQw6f3jYroO5xQ7bnx3aL5N4CowlQ/f/A1z7cGiA4E7wQyjZy4utohJ+O4z1naMPP2/Zr5IGlqOg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
