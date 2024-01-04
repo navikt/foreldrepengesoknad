@@ -13,11 +13,11 @@ interface Props {
 const getVedleggTittel = (arbeidsforhold: ArbeidsforholdForTilrettelegging, intl: IntlShape) => {
     switch (arbeidsforhold.type) {
         case Arbeidsforholdstype.FRILANSER:
-            return intlUtils(intl, 'skjema.legend.frilanser');
+            return intlUtils(intl, 'oppsummering.skjema.frilanser');
         case Arbeidsforholdstype.SELVSTENDIG:
-            return intlUtils(intl, 'skjema.legend.frilanser');
+            return intlUtils(intl, 'oppsummering.skjema.frilanser');
         default:
-            return `${intlUtils(intl, 'skjema.legend.virksomhet')} for ${arbeidsforhold.navn}`;
+            return `${intlUtils(intl, 'oppsummering.skjema.virksomhet')} for ${arbeidsforhold.navn}`;
     }
 };
 

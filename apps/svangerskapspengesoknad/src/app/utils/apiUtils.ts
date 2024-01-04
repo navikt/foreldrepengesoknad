@@ -2,7 +2,7 @@ import { ISOStringToDate } from '@navikt/fp-common';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
-import { AttachmentDTO, DokumentererType } from 'app/types/Attachment';
+import { AttachmentDTO, DokumentererType } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
 import { EgenNæring, EgenNæringDTO } from 'app/types/EgenNæring';
 import { Frilans, FrilansDTO } from 'app/types/Frilans';

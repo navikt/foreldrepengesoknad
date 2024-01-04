@@ -59,12 +59,18 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
     const intl = useIntl();
 
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
+    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
     const [brukerØnskerÅUttaleSeg, settBrukerØnskerÅUttaleSeg] = useState<boolean>();
     const [tilbakemelding, settTilbakemelding] = useState<string>();
     const [tilbakemeldingValideringsfeil, settTilbakemeldingValideringsfeil] = useState<string>();
 
     const [fetchCounter, setFetchCounter] = useState(0);
     const [allowedToFetch, setAllowedToFetch] = useState(true);
+
+    const updateAttachments = (vedlegg: Attachment[], hasPendingUploads: boolean) => {
+        setVedlegg(vedlegg);
+        setAvventerVedlegg(hasPendingUploads);
+    };
 
     useQuery<MinidialogInnslag[]>({
         queryKey: ['minidialog'],
@@ -86,8 +92,6 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         },
         enabled: ettersendelseErSendt && fetchCounter < 30 && allowedToFetch,
     });
-
-    const finnesPendingVedlegg = vedlegg ? vedlegg.some((file) => file.pending) : false;
 
     const handleSubmit = (e: FormEvent<any>) => {
         e.preventDefault();
@@ -171,7 +175,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             />
                         </div>
                         <FileUploader
-                            updateAttachments={setVedlegg}
+                            updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
                             saveAttachment={getSaveAttachment(Environment.REST_API_URL, mapYtelse(sakstype))}
@@ -187,8 +191,8 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                     <HStack>
                         <Button
                             type="submit"
-                            loading={isSendingEttersendelse || finnesPendingVedlegg}
-                            disabled={isSendingEttersendelse || finnesPendingVedlegg}
+                            loading={isSendingEttersendelse || avventerVedlegg}
+                            disabled={isSendingEttersendelse || avventerVedlegg}
                         >
                             <FormattedMessage id="miniDialog.tilbakekreving.sendButton" />
                         </Button>

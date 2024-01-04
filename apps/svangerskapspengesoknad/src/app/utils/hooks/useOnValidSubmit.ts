@@ -21,7 +21,7 @@ const useOnValidSubmit = <T>(submitHandler: (values: T) => SvangerskapspengerCon
         const actions = submitHandler(values);
         const dispatchRouteChange =
             nextRoute === SøknadRoutes.SØKNAD_SENDT ? undefined : dispatch(actionCreator.setCurrentRoute(nextRoute));
-        Promise.all([dispatchRouteChange, ...actions.map((a) => dispatch(a))]).then(() => setSubmitted(true));
+        return Promise.all([dispatchRouteChange, ...actions.map((a) => dispatch(a))]).then(() => setSubmitted(true));
     };
 
     return { handleSubmit, isSubmitting };

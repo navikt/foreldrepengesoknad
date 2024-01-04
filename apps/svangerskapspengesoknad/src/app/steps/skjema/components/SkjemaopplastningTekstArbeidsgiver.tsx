@@ -1,34 +1,31 @@
-import { BodyShort } from '@navikt/ds-react';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { FormattedMessage } from 'react-intl';
+import { BodyShort, VStack } from '@navikt/ds-react';
 import links from 'app/links/links';
-import { FormattedMessage, useIntl } from 'react-intl';
 
 const SkjemaopplastningTekstArbeidsgiver: React.FunctionComponent = () => {
-    const intl = useIntl();
-
     return (
-        <Block padBottom="xl">
+        <VStack>
+            <BodyShort style={{ fontWeight: 'bold' }}>
+                <FormattedMessage id="skjema.vedlegg.label.arbeidsgiver" />
+            </BodyShort>
             <div>
-                <BodyShort style={{ fontWeight: 'bold' }}>
-                    {intlUtils(intl, 'skjema.vedlegg.label.arbeidsgiver')}
-                </BodyShort>
+                <FormattedMessage
+                    id={'skjema.vedlegg.description.arbeidsgiver'}
+                    values={{
+                        a: (msg: any) => (
+                            <a
+                                className="lenke"
+                                rel="noopener noreferrer"
+                                href={links.arbeidstilsynetSkjema}
+                                target="_blank"
+                            >
+                                {msg}
+                            </a>
+                        ),
+                    }}
+                />
             </div>
-            <FormattedMessage
-                id={'skjema.vedlegg.description.arbeidsgiver'}
-                values={{
-                    a: (msg: any) => (
-                        <a
-                            className="lenke"
-                            rel="noopener noreferrer"
-                            href={links.arbeidstilsynetSkjema}
-                            target="_blank"
-                        >
-                            {msg}
-                        </a>
-                    ),
-                }}
-            />
-        </Block>
+        </VStack>
     );
 };
 

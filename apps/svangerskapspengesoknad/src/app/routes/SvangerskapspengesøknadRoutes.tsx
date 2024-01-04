@@ -9,7 +9,7 @@ import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasj
 import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
 import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
-import Skjema from 'app/steps/skjema/Skjema';
+import SkjemaSteg from 'app/steps/skjema/SkjemaSteg';
 import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import useSøknad from 'app/utils/hooks/useSøknad';
 import FrilansStep from 'app/steps/frilans/FrilansStep';
@@ -80,14 +80,7 @@ const getSkjemaRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) => 
             <Route
                 key={tilrettelegging.id}
                 path={`${SøknadRoutes.SKJEMA}/${tilrettelegging.id}`}
-                element={
-                    <Skjema
-                        key={tilrettelegging.id}
-                        id={tilrettelegging.id}
-                        typeArbeid={tilrettelegging.arbeidsforhold.type}
-                        navn={tilrettelegging.arbeidsforhold.navn}
-                    />
-                }
+                element={<SkjemaSteg key={tilrettelegging.id} id={tilrettelegging.id} />}
             />
         );
     });

@@ -1,6 +1,6 @@
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import { ArbeidsforholdDTO } from './Arbeidsforhold';
-import { Attachment } from './Attachment';
+import { Attachment } from '@navikt/fp-types';
 
 export enum TilretteleggingstypeOptions {
     'INGEN' = 'ingen',
