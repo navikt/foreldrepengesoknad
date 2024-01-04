@@ -89,7 +89,11 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
                     </div>
                 </HStack>
             </Box>
-            <StepButtons isSubmitting={isSubmitting} nextButtonOnClick={lagre} goToPreviousStep={goToPreviousStep} />
+            <StepButtons
+                isDisabledAndLoading={isSubmitting}
+                nextButtonOnClick={lagre}
+                goToPreviousStep={goToPreviousStep}
+            />
         </VStack>
     );
 };

@@ -1,12 +1,18 @@
+import dayjs from 'dayjs';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 import { Preview } from '@storybook/react';
 import { allCommonMessages } from '@navikt/fp-common';
+
+import 'dayjs/locale/nb.js';
+import 'dayjs/locale/nn.js';
 
 import '@navikt/ds-css';
 import '../src/app/styles/app.less';
 
 import nnMessages from '../src/app/intl/nn_NO.json';
 import nbMessages from '../src/app/intl/nb_NO.json';
+
+dayjs.locale('nb');
 
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';

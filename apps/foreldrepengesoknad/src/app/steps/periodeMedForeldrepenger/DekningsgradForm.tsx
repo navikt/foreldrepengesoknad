@@ -13,6 +13,7 @@ import {
     isAnnenForelderOppgitt,
     capitalizeFirstLetter,
     getFlerbarnsuker,
+    isAdoptertBarn,
 } from '@navikt/fp-common';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { links } from '@navikt/fp-constants';
@@ -93,14 +94,9 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
             ? Tidsperioden({ fom: fødselsdato, tom: termindato }).getAntallUttaksdager() - 1
             : undefined;
 
-    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(
-        getAntallUker(stønadskonto100) * 5,
-        fødselsdato || termindato,
-    );
-    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(
-        getAntallUker(stønadskonto80) * 5,
-        fødselsdato || termindato,
-    );
+    const dato = isAdoptertBarn(barn) ? barn.adopsjonsdato : fødselsdato || termindato;
+    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(getAntallUker(stønadskonto100) * 7, dato);
+    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(getAntallUker(stønadskonto80) * 7, dato);
 
     const søkerAntallTekst = getSøkerAntallTekst(intl, erDeltUttak);
 
