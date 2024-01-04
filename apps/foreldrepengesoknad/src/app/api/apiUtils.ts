@@ -358,7 +358,7 @@ export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], end
     return uttaksplan;
 };
 
-const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
+export const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
     if (!vedlegg) {
         return [];
     }

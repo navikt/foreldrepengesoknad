@@ -74,6 +74,7 @@ const Oppsummering: FunctionComponent<Props> = ({
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const tilleggsopplysninger = uttaksplanMetadata.tilleggsopplysninger;
 
@@ -181,9 +182,11 @@ const Oppsummering: FunctionComponent<Props> = ({
                                             ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
                                         />
                                     </OppsummeringsPanel>
-                                    <OppsummeringsPanel title="Dokumentasjon">
-                                        <DokumentasjonOppsummering />
-                                    </OppsummeringsPanel>
+                                    {vedlegg && (
+                                        <OppsummeringsPanel title="Dokumentasjon">
+                                            <DokumentasjonOppsummering vedlegg={vedlegg} />
+                                        </OppsummeringsPanel>
+                                    )}
                                 </div>
                             </Block>
                             <Block padBottom="l">
