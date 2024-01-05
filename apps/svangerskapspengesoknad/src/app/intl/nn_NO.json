@@ -1,4 +1,7 @@
 {
+    "egenNæring": "Eiga næring",
+    "valgfritt": "(valfritt)",
+    "harValgfrieFelt": "Alle felt må fyllast ut, bortsett frå felt markert med (valfritt).",
     "søknad.pagetitle": "Søknad om svangerskapspengar",
     "søknad.pageheading": "Søknad om svangerskapspengar",
     "ok": "OK",
@@ -294,6 +297,7 @@
     "valideringsfeil.risikofaktorer.frilanser.forLang": "Skildring av risikofaktorar kan maksimalt innehalde 1000 teikn.",
     "valideringsfeil.risikofaktorer.selvstendig.forLang": "Skildring av risikofaktorar kan maksimalt innehalde 1000 teikn.",
     "valideringsfeil.risikofaktorer.virksomhet.påkrevd": "Du må oppgi ei skildring av risikofaktorar i jobben din.",
+    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige teikn i feltet \"{feltNavn}\".",
     "skjema.risikofaktorer.frilanser": "Beskriv kva som kan skade det ufødde barnet i jobben din som frilansar",
     "skjema.risikofaktorer.selvstendig": "Beskriv kva som kan skade det ufødde barnet i jobben din som sjølvstendig næringsdrivande",
     "skjema.vedlegg.label.selvstendig": "Last opp bekrefting for krav til svangerskapspengar til sjølvstendig næringsdrivande",
