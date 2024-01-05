@@ -30,8 +30,8 @@ importers:
   apps/engangsstonad:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^5.12.0
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-css':
         specifier: 5.12.2
         version: 5.12.2
@@ -220,8 +220,8 @@ importers:
         specifier: ^11.2.10
         version: 11.2.10
       '@navikt/aksel-icons':
-        specifier: ^5.12.0
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-css':
         specifier: ^5.12.2
         version: 5.12.2
@@ -509,8 +509,8 @@ importers:
         specifier: ^11.2.10
         version: 11.2.10
       '@navikt/aksel-icons':
-        specifier: ^5.12.0
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-css':
         specifier: ^5.12.2
         version: 5.12.2
@@ -816,8 +816,8 @@ importers:
         specifier: ^11.2.10
         version: 11.2.10
       '@navikt/aksel-icons':
-        specifier: ^5.12.0
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-css':
         specifier: 5.12.2
         version: 5.12.2
@@ -1488,8 +1488,8 @@ importers:
   packages/ui:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^5.12.0
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-css':
         specifier: 5.12.2
         version: 5.12.2
@@ -1594,8 +1594,8 @@ importers:
   packages/utenlandsopphold:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^5.12.0
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-css':
         specifier: 5.12.2
         version: 5.12.2
@@ -1795,8 +1795,8 @@ importers:
   packages/uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^5.12.0
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-css':
         specifier: ^5.12.2
         version: 5.12.2
@@ -3940,8 +3940,8 @@ packages:
       react: 18.2.0
     dev: true
 
-  /@navikt/aksel-icons@5.12.2:
-    resolution: {integrity: sha512-dfjvEM0KoklKFmyeUUmzsoZZ+/6nvAfA8mrDFJkbUMgzRxZGyadxYOoIIdTQePDPFfl787S5M5fhvRzAHN8+bw==}
+  /@navikt/aksel-icons@5.12.3:
+    resolution: {integrity: sha512-kd8rcYMGusVr0JU4t+E69xuKZjkLnRAvLVJm4Q8Pj0tBdG1ArMeaNkOh6w/N4pYre1N19xk8Z1IWASq9H5ct8A==}
     dev: false
 
   /@navikt/ds-css@5.12.2:
@@ -4023,7 +4023,7 @@ packages:
         optional: true
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/aksel-icons': 5.12.2
+      '@navikt/aksel-icons': 5.12.3
       '@navikt/ds-tokens': 5.12.2
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0)(react@18.2.0)
