@@ -41,7 +41,7 @@
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@navikt/uttaksplan": "workspace:*",
-        "@sentry/browser": "^7.91.0",
+        "@sentry/browser": "^7.92.0",
         "@snyk/protect": "^1.1264.0",
         "amplitude-js": "^8.21.9",
         "axios": "^1.6.3",
