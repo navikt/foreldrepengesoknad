@@ -1,0 +1,13 @@
+import{j as o}from"./fridagerUtils-c18a0f00.js";import{w as x}from"./withSvangerskapspengerContext-4d93004b.js";import{w as v}from"./withRouter-feaf9ee1.js";import{_ as k}from"./soknad-056e750f.js";import{S as u}from"./SvangerskapspengerStateMock-54d6da63.js";import{P as m,T as d,D as c,b as E}from"./SvangerskapspengesøknadRoutes-78c69267.js";import"./index-f1f2c4b1.js";import"./index-b580f7e8.js";import"./index-da441cba.js";import"./v4-4a60fe23.js";import"./links-484cc4a2.js";import"./index-3a2de3aa.js";import"./useSvangerskapspengerContext-0f01bc86.js";import"./Forside-a954e32e.js";import"./_baseToString-375081cd.js";import"./_createSet-53ab95fd.js";import"./_baseIteratee-859b5d8a.js";import"./_baseUniq-7268ef2e.js";import"./amplitude-98a81243.js";import"./provider-400824f9.js";import"./ArrowRight-ecd2b00c.js";const q={title:"steps/PerioderStep",component:m,decorators:[x,v]},s=k,r={...s,søknad:{...s.søknad,tilrettelegging:[{id:"263929546-6215-9868-5127-161910165730101",arbeidsforhold:{navn:"Omsorgspartner Vestfold AS",stillinger:[{fom:"2019-01-01",stillingsprosent:100}]},type:d.DELVIS,delvisTilretteleggingPeriodeType:c.VARIERTE_PERIODER}]}},S=({context:f})=>o.jsx(u,{context:f,children:o.jsx(m,{id:"263929546-6215-9868-5127-161910165730101",navn:"Omsorgspartner Vestfold AS"})}),e=S.bind({});e.args={context:r};const t=S.bind({});t.args={context:{...r,søknad:{...r.søknad,tilrettelegging:[{id:"263929546-6215-9868-5127-161910165730101",behovForTilretteleggingFom:"2023-09-01",arbeidsforhold:{navn:"Omsorgspartner Vestfold AS",type:E.VIRKSOMHET,startdato:"2023-09-01",stillinger:[{fom:"2023-09-01",stillingsprosent:10},{fom:"2023-10-01",stillingsprosent:20},{fom:"2023-11-01",stillingsprosent:0}]},type:d.DELVIS,delvisTilretteleggingPeriodeType:c.VARIERTE_PERIODER}]}}};var n,i,a;e.parameters={...e.parameters,docs:{...(n=e.parameters)==null?void 0:n.docs,source:{originalSource:`({
+  context
+}) => {
+  return <SvangerskapspengerStateMock context={context}>
+            <PerioderStep id={'263929546-6215-9868-5127-161910165730101'} navn={'Omsorgspartner Vestfold AS'} />
+        </SvangerskapspengerStateMock>;
+}`,...(a=(i=e.parameters)==null?void 0:i.docs)==null?void 0:a.source}}};var p,l,g;t.parameters={...t.parameters,docs:{...(p=t.parameters)==null?void 0:p.docs,source:{originalSource:`({
+  context
+}) => {
+  return <SvangerskapspengerStateMock context={context}>
+            <PerioderStep id={'263929546-6215-9868-5127-161910165730101'} navn={'Omsorgspartner Vestfold AS'} />
+        </SvangerskapspengerStateMock>;
+}`,...(g=(l=t.parameters)==null?void 0:l.docs)==null?void 0:g.source}}};const z=["Default","FlereStillinger"];export{e as Default,t as FlereStillinger,z as __namedExportsOrder,q as default};

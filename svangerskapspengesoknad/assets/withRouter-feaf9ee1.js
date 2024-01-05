@@ -1,0 +1,1 @@
+import{j as t}from"./fridagerUtils-c18a0f00.js";import{B as o}from"./index-3a2de3aa.js";const s=r=>t.jsx(o,{children:t.jsx(r,{})});try{withRouter.displayName="withRouter",withRouter.__docgenInfo={description:"",displayName:"withRouter",props:{}}}catch{}export{s as w};
