@@ -33,8 +33,8 @@ importers:
         specifier: ^5.12.0
         version: 5.12.2
       '@navikt/ds-css':
-        specifier: 5.12.2
-        version: 5.12.2
+        specifier: 5.12.3
+        version: 5.12.3
       '@navikt/ds-react':
         specifier: 5.12.2
         version: 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -223,11 +223,11 @@ importers:
         specifier: ^5.12.0
         version: 5.12.2
       '@navikt/ds-css':
-        specifier: ^5.12.2
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons':
         specifier: ^3.4.3
         version: 3.4.3(@types/react@18.2.46)(react@18.2.0)
@@ -512,11 +512,11 @@ importers:
         specifier: ^5.12.0
         version: 5.12.2
       '@navikt/ds-css':
-        specifier: ^5.12.2
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-react':
         specifier: ^5.12.2
         version: 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -552,7 +552,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
-        version: 0.25.0(@navikt/ds-css@5.12.2)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0)
+        version: 0.25.0(@navikt/ds-css@5.12.3)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0)
       '@navikt/sif-common-question-config':
         specifier: ^0.0.7
         version: 0.0.7
@@ -819,11 +819,11 @@ importers:
         specifier: ^5.12.0
         version: 5.12.2
       '@navikt/ds-css':
-        specifier: 5.12.2
-        version: 5.12.2
+        specifier: 5.12.3
+        version: 5.12.3
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-react':
         specifier: 5.12.2
         version: 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -850,7 +850,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
-        version: 0.25.0(@navikt/ds-css@5.12.2)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0)
+        version: 0.25.0(@navikt/ds-css@5.12.3)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0)
       '@navikt/sif-common-question-config':
         specifier: ^0.0.7
         version: 0.0.7
@@ -1194,11 +1194,11 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(react-dom@18.2.0)(react-hook-form@7.49.2)(react@18.2.0)
       '@navikt/ds-css':
-        specifier: 5.12.2
-        version: 5.12.2
+        specifier: 5.12.3
+        version: 5.12.3
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons':
         specifier: 3.4.3
         version: 3.4.3(@types/react@18.2.46)(react@18.2.0)
@@ -1291,11 +1291,11 @@ importers:
   packages/fp-common:
     dependencies:
       '@navikt/ds-css':
-        specifier: 5.12.2
-        version: 5.12.2
+        specifier: 5.12.3
+        version: 5.12.3
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons':
         specifier: 3.4.3
         version: 3.4.3(@types/react@18.2.46)(react@18.2.0)
@@ -1310,7 +1310,7 @@ importers:
         version: link:../types
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
-        version: 0.25.0(@navikt/ds-css@5.12.2)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0)
+        version: 0.25.0(@navikt/ds-css@5.12.3)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0)
       '@types/node':
         specifier: ^20.10.6
         version: 20.10.6
@@ -1491,8 +1491,8 @@ importers:
         specifier: ^5.12.0
         version: 5.12.2
       '@navikt/ds-css':
-        specifier: 5.12.2
-        version: 5.12.2
+        specifier: 5.12.3
+        version: 5.12.3
       '@navikt/ds-react':
         specifier: 5.12.2
         version: 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -1597,8 +1597,8 @@ importers:
         specifier: ^5.12.0
         version: 5.12.2
       '@navikt/ds-css':
-        specifier: 5.12.2
-        version: 5.12.2
+        specifier: 5.12.3
+        version: 5.12.3
       '@navikt/ds-react':
         specifier: 5.12.2
         version: 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -1798,11 +1798,11 @@ importers:
         specifier: ^5.12.0
         version: 5.12.2
       '@navikt/ds-css':
-        specifier: ^5.12.2
-        version: 5.12.2
+        specifier: ^5.12.3
+        version: 5.12.3
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+        version: 4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-react':
         specifier: ^5.12.2
         version: 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -1811,7 +1811,7 @@ importers:
         version: link:../fp-common
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
-        version: 0.25.0(@navikt/ds-css@5.12.2)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0)
+        version: 0.25.0(@navikt/ds-css@5.12.3)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0)
       '@navikt/sif-common-question-config':
         specifier: ^0.0.7
         version: 0.0.7
@@ -3944,11 +3944,11 @@ packages:
     resolution: {integrity: sha512-dfjvEM0KoklKFmyeUUmzsoZZ+/6nvAfA8mrDFJkbUMgzRxZGyadxYOoIIdTQePDPFfl787S5M5fhvRzAHN8+bw==}
     dev: false
 
-  /@navikt/ds-css@5.12.2:
-    resolution: {integrity: sha512-HRlu4Eiqi0zjPWVUV/F7Q/cPLmP71m1dkGPNXlBrIPAZpNcQKutCE2Be1au4CxpiuwzsPPSXKHo3fVDDucWwKQ==}
+  /@navikt/ds-css@5.12.3:
+    resolution: {integrity: sha512-qH+P77dSn5HEhZX3J2uq1eqUy7kaJ1IOMTBomZAowWWAbxbS9tg0gSh3UinsnJtjvoNcKbV2LKrIZP4Exf7TQg==}
     dev: false
 
-  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
+  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
     resolution: {integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A==}
     peerDependencies:
       '@navikt/ds-css': '>=2'
@@ -3960,7 +3960,7 @@ packages:
       react-day-picker: 8.x
       uuid: '9'
     dependencies:
-      '@navikt/ds-css': 5.12.2
+      '@navikt/ds-css': 5.12.3
       '@navikt/ds-react': 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.3
       date-fns: 2.30.0
@@ -3974,7 +3974,7 @@ packages:
       - react-dom
     dev: false
 
-  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
+  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
     resolution: {integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A==}
     peerDependencies:
       '@navikt/ds-css': '>=2'
@@ -3986,7 +3986,7 @@ packages:
       react-day-picker: 8.x
       uuid: '9'
     dependencies:
-      '@navikt/ds-css': 5.12.2
+      '@navikt/ds-css': 5.12.3
       '@navikt/ds-react': 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.5.1
       date-fns: 2.30.0
@@ -4044,7 +4044,7 @@ packages:
     resolution: {integrity: sha512-FEcjhR/i5vfIrKHZ9C/fzfM/R5uoWsouktQHBEqMY4yqUNuqSdF9k6fUassxMIhLLUKsiJy10LA9NQ3z89Iltw==}
     dev: false
 
-  /@navikt/sif-common-formik-ds@0.25.0(@navikt/ds-css@5.12.2)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0):
+  /@navikt/sif-common-formik-ds@0.25.0(@navikt/ds-css@5.12.3)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.12.2)(@types/react@18.2.46)(formik@2.4.5)(react-intl@6.5.5)(react@18.2.0):
     resolution: {integrity: sha512-C5VWPWMSUQ/uD2bFYkc57Iq5yzec3LQxAgtFfkYawdhccWVnH0fQkltCXJwmOCmf7iyGzCDNiqY/mvm2/UDo8A==}
     peerDependencies:
       '@navikt/ds-css': '3'
@@ -4053,8 +4053,8 @@ packages:
       formik: 2.x
       react-intl: 6.x
     dependencies:
-      '@navikt/ds-css': 5.12.2
-      '@navikt/ds-datepicker': 4.2.0(@navikt/ds-css@5.12.2)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
+      '@navikt/ds-css': 5.12.3
+      '@navikt/ds-datepicker': 4.2.0(@navikt/ds-css@5.12.3)(@navikt/ds-react@5.12.2)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons': 3.4.3(@types/react@18.2.46)(react@18.2.0)
       '@navikt/ds-react': 5.12.2(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.2

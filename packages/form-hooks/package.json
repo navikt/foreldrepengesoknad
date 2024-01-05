@@ -16,7 +16,7 @@
     },
     "dependencies": {
         "@hookform/error-message": "^2.0.1",
-        "@navikt/ds-css": "5.12.2",
+        "@navikt/ds-css": "5.12.3",
         "@navikt/ds-datepicker": "^4.2.0",
         "@navikt/ds-icons": "3.4.3",
         "@navikt/ds-react": "5.12.2",
