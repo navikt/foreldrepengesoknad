@@ -189,5 +189,8 @@ export const validateEgenNæringLand = (intl: IntlShape) => (value: string) => {
     if (!hasValue(value)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringLand.påkrevd');
     }
+    if (hasValue(value) && value === 'NO') {
+        return intlUtils(intl, 'valideringsfeil.egenNæringLand.ikkeNorge');
+    }
     return undefined;
 };
