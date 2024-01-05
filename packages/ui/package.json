@@ -13,14 +13,14 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^5.12.0",
-        "@navikt/ds-css": "5.12.2",
-        "@navikt/ds-react": "5.12.2",
+        "@navikt/aksel-icons": "^5.12.3",
+        "@navikt/ds-css": "5.12.3",
+        "@navikt/ds-react": "5.12.3",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
-        "@sentry/browser": "^7.91.0",
+        "@sentry/browser": "^7.92.0",
         "bytes": "^3.1.2",
         "intl-messageformat": "^10.5.8",
         "react": "^18.2.0",
