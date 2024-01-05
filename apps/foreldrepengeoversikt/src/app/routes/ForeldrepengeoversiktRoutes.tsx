@@ -66,7 +66,10 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
         }
     }, [navigate, saker]);
 
-    const oppgaverIds = minidialogerData ? minidialogerData.map((oppgave) => oppgave.dialogId) : [];
+    const oppgaverIds =
+        minidialogerData && minidialogerData instanceof Array
+            ? minidialogerData.map((oppgave) => oppgave.dialogId)
+            : [];
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
     const alleYtelser = getAlleYtelser(saker);
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
