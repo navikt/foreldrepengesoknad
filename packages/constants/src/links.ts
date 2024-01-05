@@ -9,7 +9,7 @@ export const links = {
     papirsøknad: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     personvernerklæring:
         'https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten',
-    plikter: 'https://nav.no/rettOgPlikt',
+    plikter: 'https://www.nav.no/endringer',
     søknadsveileder: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     veiviser: 'https://familie.nav.no/veiviser',
     innsyn: 'https://foreldrepenger.nav.no',
