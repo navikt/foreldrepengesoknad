@@ -66,7 +66,8 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const alleSaker = getAlleYtelser(saker);
     const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
     useSetSelectedSak(gjeldendeSak);
-    useDocumentTitle(`${getSaksoversiktHeading(gjeldendeSak.ytelse)} - ${intlUtils(intl, 'dineForeldrepenger')}`);
+
+    useDocumentTitle(`${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intlUtils(intl, 'dineForeldrepenger')}`);
 
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 

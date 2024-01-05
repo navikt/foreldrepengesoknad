@@ -18,7 +18,7 @@ import StatusTag from '../status-tag/StatusTag';
 
 import './header.css';
 
-export const getSaksoversiktHeading = (ytelse: Ytelse) => {
+export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
         return 'Engangsstønadsak';
     }
