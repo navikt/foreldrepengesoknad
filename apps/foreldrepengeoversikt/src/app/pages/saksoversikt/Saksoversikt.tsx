@@ -139,9 +139,10 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     const navnPåSøker = søkerinfo.søker.fornavn;
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
-    const aktiveMinidialogerForSaken = minidialogerData
-        ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
-        : undefined;
+    const aktiveMinidialogerForSaken =
+        minidialogerData && minidialogerData instanceof Array
+            ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
+            : undefined;
 
     return (
         <div className={bem.block}>
