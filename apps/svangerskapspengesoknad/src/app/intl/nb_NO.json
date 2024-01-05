@@ -298,7 +298,6 @@
     "valideringsfeil.risikofaktorer.selvstendig.forLang": "Beskrivelse av risikofaktorer kan maksimalt inneholde 1000 tegn.",
     "valideringsfeil.risikofaktorer.frilanser.forKort": "Beskrivelse av risikofaktorer må være minst 10 tegn.",
     "valideringsfeil.risikofaktorer.selvstendig.forKort": "Beskrivelse av risikofaktorer må være minst 10 tegn.",
-    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\".",
     "perioder.alert.nySøknad.title": "Du må sende ny søknad hvis du skal jobbe redusert etter en periode du har vært tilbake i full stilling. ",
     "perioder.alert.nySøknad.del1": "Dette er fordi NAV må beregne inntekten din og hvor mye du skal ha utbetalt i svangerskapspenger på nytt. ",
     "perioder.alert.nySøknad.del2": "Hvis det ikke stemmer, må du justere periodene sånn at du ikke har periode med redusert arbeid etter en periode der du er tilbake i full stilling.",
