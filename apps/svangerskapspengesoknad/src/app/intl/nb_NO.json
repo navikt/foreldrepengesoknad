@@ -1,4 +1,7 @@
 {
+    "egenNæring": "Egen næring",
+    "valgfritt": "(valgfritt)",
+    "harValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
     "søknad.pagetitle": "Søknad om svangerskapspenger",
     "søknad.pageheading": "Søknad om svangerskapspenger",
     "ok": "OK",
@@ -167,6 +170,7 @@
     "valideringsfeil.tilrettelegging.påkrevd": "Du må velge hvilket arbeidsforhold du ønsker å søke svangerskapspenger for.",
     "valideringsfeil.egenNæringOrgnr.påkrevd": "Du må oppgi organisasjonsnummer.",
     "valideringsfeil.egenNæringLand.påkrevd": "Du må oppgi hvilket land næringen er registert i.",
+    "valideringsfeil.egenNæringLand.ikkeNorge": "Du svarte at virksomheten ikke er registrert i Norge og kan derfor ikke oppgi Norge som landet der næringen er registert.",
     "valideringsfeil.egenNæringType.påkrevd": "Du må oppgi type virksomhet du har.",
     "valideringsfeil.egenNæringRegistrertINorge.påkrevd": "Du må oppgi om virksomheten er registrert i Norge",
     "valideringsfeil.egenNæringNavn.påkrevd": "Du må oppgi navnet på virksomheten din",

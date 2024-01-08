@@ -7,6 +7,17 @@ import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
 import { Frilans, frilansId } from 'app/types/Frilans';
+import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+
+export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
+    if (type === Arbeidsforholdstype.FRILANSER) {
+        return capitalizeFirstLetter(navn);
+    }
+    if (type === Arbeidsforholdstype.SELVSTENDIG && navn.trim().length === 0) {
+        return intlUtils(intl, 'egenNæring');
+    }
+    return navn;
+};
 
 export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[]): VelgArbeidFormData => {
     return {

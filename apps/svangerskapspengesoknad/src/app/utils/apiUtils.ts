@@ -4,7 +4,7 @@ import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
 import { AttachmentDTO, DokumentererType } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
-import { EgenNæring, EgenNæringDTO } from 'app/types/EgenNæring';
+import { EgenNæring, EgenNæringDTO, Næringstype } from 'app/types/EgenNæring';
 import { Frilans, FrilansDTO } from 'app/types/Frilans';
 import InformasjonOmUtenlandsopphold, {
     InformasjonOmUtenlandsoppholdDTO,
@@ -133,16 +133,20 @@ const mapTilretteleggingerForInnsending = (
 
 const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {
     if (næring) {
+        const navn =
+            næring.næringstype === Næringstype.FISKER && næring.navnPåNæringen.trim().length === 0
+                ? undefined
+                : næring.navnPåNæringen;
         const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næring.tidsperiode.fom));
 
         const mappedNæring = {
-            næringstyper: næring.næringstyper,
+            næringstyper: [næring.næringstype],
             tidsperiode: {
                 fom: ISOStringToDate(næring.tidsperiode.fom),
                 tom: ISOStringToDate(næring.tidsperiode.tom),
             },
             næringsinntekt: næring.næringsinntekt ? parseInt(næring.næringsinntekt!, 10) : undefined,
-            navnPåNæringen: næring.navnPåNæringen,
+            navnPåNæringen: navn,
             organisasjonsnummer: næring.organisasjonsnummer ? næring.organisasjonsnummer : undefined,
             registrertINorge: næring.registrertINorge,
             registrertILand: næring.registrertILand ? næring.registrertILand : undefined,

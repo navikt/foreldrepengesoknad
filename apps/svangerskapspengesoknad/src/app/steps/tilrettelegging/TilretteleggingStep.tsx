@@ -84,7 +84,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const termindatoDate = ISOStringToDate(termindato);
-    const navnArbeidsgiver = currentTilrettelegging!.arbeidsforhold.navn;
+    const navnArbeidsgiver =
+        currentTilrettelegging!.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
+        currentTilrettelegging!.arbeidsforhold.navn.trim().length === 0
+            ? intlUtils(intl, 'egenNæring').toLowerCase()
+            : currentTilrettelegging!.arbeidsforhold.navn;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
         const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
             id,

@@ -1,7 +1,7 @@
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 import { bemUtils, intlUtils } from '@navikt/fp-common';
 import { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import './bedriftsbanner.css';
 import { Buldings3Icon } from '@navikt/aksel-icons';
 
@@ -9,13 +9,21 @@ interface Props {
     arbeid: ArbeidsforholdForTilrettelegging;
 }
 
+const getNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
+    if (type === Arbeidsforholdstype.FRILANSER) {
+        return intlUtils(intl, 'bedriftsbanner.tittel.frilansarbeid');
+    }
+    if (type === Arbeidsforholdstype.SELVSTENDIG && navn.trim().length === 0) {
+        return intlUtils(intl, 'egenNæring');
+    }
+    return navn;
+};
+
 const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeid }) => {
     const bem = bemUtils('bedriftsbanner');
     const intl = useIntl();
-    const navn =
-        arbeid.type !== Arbeidsforholdstype.FRILANSER
-            ? arbeid.navn
-            : intlUtils(intl, 'bedriftsbanner.tittel.frilansarbeid');
+    const navn = getNavn(arbeid.type, arbeid.navn, intl);
+
     const detailTekst =
         arbeid.type !== Arbeidsforholdstype.FRILANSER
             ? intlUtils(intl, 'bedriftsbanner.detail')

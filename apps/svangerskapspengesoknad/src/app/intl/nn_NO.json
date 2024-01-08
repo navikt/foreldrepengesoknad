@@ -1,4 +1,7 @@
 {
+    "egenNæring": "Eiga næring",
+    "valgfritt": "(valfritt)",
+    "harValgfrieFelt": "Alle felt må fyllast ut, bortsett frå felt markert med (valfritt).",
     "søknad.pagetitle": "Søknad om svangerskapspengar",
     "søknad.pageheading": "Søknad om svangerskapspengar",
     "ok": "OK",
@@ -168,6 +171,7 @@
     "valideringsfeil.egenNæringOrgnr.påkrevd": "Du må oppgi organisasjonsnummer.",
     "valideringsfeil.egenNæringLand.påkrevd": "Du må oppgi kva land næringa er registrert i.",
     "valideringsfeil.egenNæringType.påkrevd": "Du må oppgi type verksemd du har.",
+    "valideringsfeil.egenNæringLand.ikkeNorge": "Du svarte at verksemda ikkje er registrert i Noreg og kan derfor ikkje oppgi Noreg som landet der næringa er registert.",
     "valideringsfeil.egenNæringRegistrertINorge.påkrevd": "Du må oppgi om verksemda er registrert i Noreg.",
     "valideringsfeil.egenNæringNavn.påkrevd": "Du må oppgi namnet på verksemda di.",
     "valideringsfeil.egenNæringNavn.forLang": "Namnet på verksemda di kan maksimalt innehalda 100 teikn.",
