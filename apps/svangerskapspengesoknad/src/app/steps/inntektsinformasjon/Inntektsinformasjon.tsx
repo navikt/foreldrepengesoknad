@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { notEmpty } from '@navikt/fp-validation';
@@ -29,6 +28,8 @@ import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -43,6 +44,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(intl);
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søker = useContextGetData(ContextDataType.SØKER);
@@ -96,7 +98,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                         pageTitle={intlUtils(intl, 'steps.label.arbeid')}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
-                        supportsTempSaving={false}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="xl">
@@ -165,13 +167,10 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                             </Block>
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button
-                                        variant="secondary"
-                                        as={Link}
-                                        to={getBackLinkForArbeidSteg(utenlandsopphold)}
-                                    >
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getBackLinkForArbeidSteg(utenlandsopphold)}
+                                    />
                                     {!kanIkkeSøke && (
                                         <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                             <FormattedMessage id="søknad.gåVidere" />

@@ -1,7 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
 import { FieldArray } from 'formik';
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { Alert, BodyShort, Button, Heading, ReadMore, Tag } from '@navikt/ds-react';
@@ -38,6 +37,8 @@ import { validateStillingsprosentPåPerioder } from '../tilrettelegging/tilrette
 import { getRadioOptionsTomType } from '../tilrettelegging/tilretteleggingStepUtils';
 
 import './perioderStep.css';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
 export interface Props {
     id: string;
@@ -49,6 +50,7 @@ export interface Props {
 const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const stepConfig = useStepConfig(intl);
     const bem = bemUtils('perioderStep');
@@ -114,7 +116,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOg
                         pageTitle={getPeriodeSideTittel(erFlereTilrettelegginger, navn, intl)}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
-                        supportsTempSaving={false}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <PerioderFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {erFlereTilrettelegginger && (
@@ -317,13 +319,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOg
 
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button
-                                        variant="secondary"
-                                        as={Link}
-                                        to={getBackLinkPerioderSteg(currentTilretteleggingId)}
-                                    >
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getBackLinkPerioderSteg(currentTilretteleggingId)}
+                                    />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>

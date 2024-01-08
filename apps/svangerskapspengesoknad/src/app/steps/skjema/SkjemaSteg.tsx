@@ -20,6 +20,7 @@ import Environment from 'app/Environment';
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import { getBackLinkForSkjemaSteg, useStepConfig } from '../stepsConfig';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -45,6 +46,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
     useUpdateCurrentTilretteleggingId(id);
     const navigate = useNavigate();
     const intl = useIntl();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const stepConfig = useStepConfig(intl);
 
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
@@ -125,7 +127,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             }
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            supportsTempSaving={false}
+            onContinueLater={onFortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">

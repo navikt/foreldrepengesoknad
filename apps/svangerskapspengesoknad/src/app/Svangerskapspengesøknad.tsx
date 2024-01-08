@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Loader } from '@navikt/ds-react';
 import { sendErrorMessageToSentry } from './utils/errorUtils';
 import SvangerskapspengesøknadRoutes from './routes/SvangerskapspengesøknadRoutes';
@@ -9,16 +9,18 @@ import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import './styles/app.css';
 import { erMyndig, erKvinne, useDocumentTitle } from '@navikt/fp-common';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
-import { LocaleNo } from '@navikt/fp-types';
+import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
 import { useIntl } from 'react-intl';
+import Environment from './Environment';
+import { redirect } from '@navikt/fp-utils';
 
 interface Props {
     locale: LocaleNo;
     onChangeLocale: any;
 }
 
-const renderSpinner = () => (
+const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>
@@ -27,6 +29,7 @@ const renderSpinner = () => (
 const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
+    const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
 
@@ -44,8 +47,20 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
         [søkerinfoData],
     );
 
+    if (kvittering) {
+        if (Environment.INNSYN) {
+            redirect(
+                kvittering.saksNr
+                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
+                    : `${Environment.INNSYN}/redirectFromSoknad`,
+            );
+            return <Spinner />;
+        }
+        return <div>Redirected to Innsyn</div>;
+    }
+
     if (!søkerInfo) {
-        return renderSpinner();
+        return <Spinner />;
     }
 
     const erPersonKvinne = erKvinne(søkerInfo.person.kjønn);
@@ -66,6 +81,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
                         locale={locale}
                         onChangeLocale={onChangeLocale}
                         søkerInfo={søkerInfo}
+                        setKvittering={setKvittering}
                     />
                 </BrowserRouter>
             )}

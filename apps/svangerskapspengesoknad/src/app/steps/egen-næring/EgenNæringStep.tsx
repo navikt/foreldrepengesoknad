@@ -21,7 +21,6 @@ import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from
 
 import dayjs from 'dayjs';
 import { Alert, BodyShort, Button, ReadMore } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
 import {
     validateEgenNæringFom,
     validateEgenNæringNavn,
@@ -37,6 +36,8 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { notEmpty } from '@navikt/fp-validation';
 import { useState } from 'react';
 import { Søkerinfo } from 'app/types/Søkerinfo';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -47,6 +48,7 @@ type Props = {
 const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(intl);
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
@@ -102,7 +104,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                         pageTitle={intlUtils(intl, 'steps.label.næring')}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
-                        supportsTempSaving={false}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <EgenNæringFormComponents.Form
                             includeButtons={false}
@@ -285,9 +287,10 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                             </Block>
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getBackLinkForNæringSteg(søker)}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getBackLinkForNæringSteg(søker)}
+                                    />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>

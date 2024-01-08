@@ -1,125 +1,93 @@
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useIntl } from 'react-intl';
+import { PaperplaneIcon } from '@navikt/aksel-icons';
 import { Accordion, BodyShort, Button } from '@navikt/ds-react';
 import { Block, Step, StepButtonWrapper, bemUtils, formatDate, guid, intlUtils } from '@navikt/fp-common';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getBackLinkForOppsummeringSteg } from '../stepsConfig';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import { useAbortSignal } from '@navikt/fp-api';
+import { notEmpty } from '@navikt/fp-validation';
+import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
+import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { Link } from 'react-router-dom';
-import { PaperplaneIcon } from '@navikt/aksel-icons';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
+import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
+import SøknadRoutes from 'app/routes/routes';
+import EgenNæringVisning from 'app/components/egen-næring-visning/EgenNæringVisning';
+import ArbeidIUtlandetVisning from 'app/components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
+import AccordionItem from 'app/components/accordion/AccordionItem';
+import AccordionContent from 'app/components/accordion/AccordionContent';
+import { Søkerinfo } from 'app/types/Søkerinfo';
+import { ContextDataType, useContextGetData } from 'app/context/SvpDataContext';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
+import { getBackLinkForOppsummeringSteg, useStepConfig } from '../stepsConfig';
 import {
     OppsummeringFormComponents,
     OppsummeringFormData,
     OppsummeringFormField,
     getInitialOppsummeringValues,
 } from './oppsummeringFormConfig';
-import actionCreator from 'app/context/action/actionCreator';
-import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import { useEffect, useMemo, useState } from 'react';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
-import Api from 'app/api/api';
-import { redirect, redirectToLogin } from 'app/utils/redirectUtils';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import { getSøknadForInnsending } from 'app/utils/apiUtils';
-import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import { FEIL_VED_INNSENDING, UKJENT_UUID, getErrorCallId, sendErrorMessageToSentry } from 'app/utils/errorUtils';
-import { SendtSøknad } from 'app/types/SendtSøknad';
-import Environment from 'app/Environment';
 import UtenlandsoppholdOppsummering from './utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
-import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
-import EgenNæringVisning from 'app/components/egen-næring-visning/EgenNæringVisning';
-import ArbeidIUtlandetVisning from 'app/components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
-import AccordionItem from 'app/components/accordion/AccordionItem';
-import AccordionContent from 'app/components/accordion/AccordionContent';
-import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
-import { useAbortSignal } from '@navikt/fp-api';
-import './oppsummering.css';
 import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
+import BackButton from '../BackButton';
 
-const Oppsummering = () => {
+import './oppsummering.css';
+
+type Props = {
+    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
+};
+
+const Oppsummering: React.FunctionComponent<Props> = ({
+    sendSøknad,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+}) => {
     useUpdateCurrentTilretteleggingId(undefined);
-    const søknad = useSøknad();
-    const { søker, tilrettelegging } = søknad;
-    const søkerinfo = useSøkerinfo();
-    const { dispatch } = useSvangerskapspengerContext();
-    const [formSubmitted, setFormSubmitted] = useState(false);
-    const [isSendingSøknad, setIsSendingSøknad] = useState(false);
-    const [submitError, setSubmitError] = useState<any>(undefined);
-    const [sendtSøknad, setSendtSøknad] = useState<undefined | SendtSøknad>(undefined);
-    useUpdateCurrentTilretteleggingId(undefined);
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const abortSignal = useAbortSignal();
-    const { barn, informasjonOmUtenlandsopphold } = søknad;
-    const { arbeidsforhold } = søkerinfo;
     const intl = useIntl();
-    const formatertTermindato = formatDate(barn.termindato);
-    const formatertFødselsdato = barn.fødselsdato ? formatDate(barn.fødselsdato) : undefined;
+    const stepConfig = useStepConfig(intl);
+    const navigate = useNavigate();
     const bem = bemUtils('oppsummering');
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const abortSignal = useAbortSignal();
+
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
+    const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const allePerioderMedFomOgTom = useMemo(
-        () => mapTilretteleggingTilPerioder(søknad.tilrettelegging, sisteDagForSvangerskapspenger),
-        [søknad.tilrettelegging, sisteDagForSvangerskapspenger],
+        () => mapTilretteleggingTilPerioder(tilrettelegging, sisteDagForSvangerskapspenger),
+        [tilrettelegging, sisteDagForSvangerskapspenger],
     );
-    const søknadForInnsending = useMemo(
-        () => getSøknadForInnsending(søknad, allePerioderMedFomOgTom),
-        [søknad, allePerioderMedFomOgTom],
-    );
-    const handleSubmit = (values: Partial<OppsummeringFormData>) => {
-        dispatch(actionCreator.setGodkjentOppsummering(values.harGodkjentOppsummering!));
-        setFormSubmitted(true);
-    };
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, barn.termindato);
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato);
     const tilretteleggingMedFrilans = tilrettelegging.find(
         (t) => t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER,
     );
     const tilretteleggingMedSN = tilrettelegging.find((t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG);
-    useEffect(() => {
-        if (formSubmitted && !isSendingSøknad) {
-            setIsSendingSøknad(true);
 
-            Api.sendSøknad(søknadForInnsending, abortSignal)
-                .then((response) => {
-                    setSendtSøknad(response.data);
-                })
-                .catch((error) => {
-                    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                        redirectToLogin();
-                    } else {
-                        setSubmitError(error);
-                    }
-                });
+    const sendInn = async (values: Partial<OppsummeringFormData>) => {
+        if (values.harGodkjentOppsummering) {
+            setIsSubmitting(true);
+            await sendSøknad(abortSignal);
+            navigate(SøknadRoutes.SØKNAD_SENDT);
         }
-    }, [formSubmitted, isSendingSøknad, søknadForInnsending, abortSignal]);
-
-    useEffect(() => {
-        if (submitError !== undefined) {
-            sendErrorMessageToSentry(submitError);
-            const submitErrorCallId = getErrorCallId(submitError);
-            const callIdForBruker =
-                submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
-            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
-        }
-    }, [submitError]);
-
-    useEffect(() => {
-        if (sendtSøknad) {
-            let navigateTo = Environment.INNSYN;
-            if (sendtSøknad.saksNr) {
-                navigateTo = `${Environment.INNSYN}/sak/${sendtSøknad.saksNr}`;
-            }
-            const navigateToMedURLParams = `${navigateTo}/redirectFromSoknad`;
-            redirect(navigateToMedURLParams);
-        }
-    }, [sendtSøknad]);
+    };
 
     return (
         <OppsummeringFormComponents.FormikWrapper
             initialValues={getInitialOppsummeringValues()}
-            onSubmit={handleSubmit}
+            onSubmit={sendInn}
             renderForm={() => {
                 return (
                     <OppsummeringFormComponents.Form includeButtons={false}>
@@ -127,9 +95,9 @@ const Oppsummering = () => {
                             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                             activeStepId="oppsummering"
                             pageTitle="Oppsummering"
-                            steps={stepConfig(intl, søknad, arbeidsforhold)}
-                            onCancel={onAvbrytSøknad}
-                            supportsTempSaving={false}
+                            steps={stepConfig}
+                            onCancel={avbrytSøknad}
+                            onContinueLater={onFortsettSøknadSenere}
                         >
                             <Block padBottom="l">
                                 <div className={bem.block}>
@@ -137,19 +105,21 @@ const Oppsummering = () => {
                                         <AccordionItem title={intlUtils(intl, 'oppsummering.omDeg')}>
                                             <AccordionContent>
                                                 <Block padBottom="m">
-                                                    <BodyShort>{`${søkerinfo.person.fornavn} ${søkerinfo.person.etternavn}`}</BodyShort>
+                                                    <BodyShort>{`${søkerInfo.person.fornavn} ${søkerInfo.person.etternavn}`}</BodyShort>
                                                 </Block>
                                                 <Block>
-                                                    <BodyShort>{søkerinfo.person.fnr}</BodyShort>
+                                                    <BodyShort>{søkerInfo.person.fnr}</BodyShort>
                                                 </Block>
                                             </AccordionContent>
                                         </AccordionItem>
                                         <AccordionItem title={intlUtils(intl, 'oppsummering.omBarnet')}>
                                             <AccordionContent>
-                                                <BodyShort>{`Termindato: ${formatertTermindato}`}</BodyShort>
+                                                <BodyShort>{`Termindato: ${formatDate(barn.termindato)}`}</BodyShort>
                                                 {barn.erBarnetFødt && barn.fødselsdato && (
                                                     <Block margin="m">
-                                                        <BodyShort>{`Fødselsdato: ${formatertFødselsdato}`}</BodyShort>
+                                                        <BodyShort>{`Fødselsdato: ${
+                                                            barn.fødselsdato ? formatDate(barn.fødselsdato) : undefined
+                                                        }`}</BodyShort>
                                                     </Block>
                                                 )}
                                             </AccordionContent>
@@ -157,7 +127,10 @@ const Oppsummering = () => {
                                         <AccordionItem title={intlUtils(intl, 'oppsummering.omUtenlandsopphold')}>
                                             <AccordionContent>
                                                 <UtenlandsoppholdOppsummering
-                                                    informasjonOmUtenlandsopphold={informasjonOmUtenlandsopphold}
+                                                    barn={barn}
+                                                    utenlandsopphold={utenlandsopphold}
+                                                    senereUtenlandsopphold={utenlandsoppholdSenere}
+                                                    tidligereUtenlandsopphold={utenlandsoppholdTidligere}
                                                 />
                                             </AccordionContent>
                                         </AccordionItem>
@@ -205,7 +178,7 @@ const Oppsummering = () => {
                                         </AccordionItem>
                                         <AccordionItem title={intlUtils(intl, 'oppsummering.skjema')}>
                                             <AccordionContent>
-                                                <VedleggOppsummering tilrettelegging={søknad.tilrettelegging} />
+                                                <VedleggOppsummering tilrettelegging={tilrettelegging} />
                                             </AccordionContent>
                                         </AccordionItem>
                                         <AccordionItem
@@ -268,19 +241,16 @@ const Oppsummering = () => {
                                     </Block>
                                     <Block padBottom="l">
                                         <StepButtonWrapper>
-                                            <Button
-                                                variant="secondary"
-                                                as={Link}
-                                                to={getBackLinkForOppsummeringSteg(tilrettelegging)}
-                                            >
-                                                <FormattedMessage id="backlink.label" />
-                                            </Button>
+                                            <BackButton
+                                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                                route={getBackLinkForOppsummeringSteg(tilrettelegging)}
+                                            />
                                             <Button
                                                 icon={<PaperplaneIcon aria-hidden />}
                                                 iconPosition="right"
                                                 type="submit"
-                                                disabled={formSubmitted}
-                                                loading={formSubmitted}
+                                                disabled={isSubmitting}
+                                                loading={isSubmitting}
                                             >
                                                 {intlUtils(intl, 'send.søknad')}
                                             </Button>

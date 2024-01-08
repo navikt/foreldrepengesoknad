@@ -1,5 +1,4 @@
 import { FunctionComponent, useState } from 'react';
-import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyLong, BodyShort, Button, ExpansionCard, ReadMore } from '@navikt/ds-react';
@@ -51,6 +50,8 @@ import {
     validateTilretteleggingPeriodetype,
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
@@ -78,6 +79,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
     const stepConfig = useStepConfig(intl);
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const tilretteleggingFraState = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
@@ -167,7 +169,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                         pageTitle={getTilretteleggingSideTittel(erFlereTilrettelegginger, intl, navn)}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
-                        supportsTempSaving={false}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <TilretteleggingFormComponents.Form
                             includeButtons={false}
@@ -435,13 +437,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                             </Block>
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button
-                                        variant="secondary"
-                                        as={Link}
-                                        to={getBackLinkForTilretteleggingSteg(tilretteleggingId)}
-                                    >
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getBackLinkForTilretteleggingSteg(tilretteleggingId)}
+                                    />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>

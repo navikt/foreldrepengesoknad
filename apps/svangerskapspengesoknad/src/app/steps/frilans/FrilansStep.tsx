@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
 import {
@@ -21,6 +20,8 @@ import { cleanupFrilansFormData, getInitialFrilansFormValues, mapFrilansDataToS�
 import frilansSubformQuestionsConfig from './frilansFormQuestionsConfig';
 import { validateFrilansStart } from './frilansValidation';
 import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -31,6 +32,7 @@ type Props = {
 const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(intl);
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
@@ -79,7 +81,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                         pageTitle={intlUtils(intl, 'steps.label.frilans')}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
-                        supportsTempSaving={false}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <FrilansFormComponents.Form
                             includeButtons={false}
@@ -129,9 +131,10 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                             </Block> */}
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousSetStepHref('frilans')}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousSetStepHref('frilans')}
+                                    />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>

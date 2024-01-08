@@ -1,12 +1,11 @@
 import { Button } from '@navikt/ds-react';
 import { Block, Step, StepButtonWrapper, bemUtils, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import {
     getBackLinkForArbeidIUtlandetSteg,
     getNextRouteValgAvArbeidEllerSkjema,
     useStepConfig,
 } from 'app/steps/stepsConfig';
-import { Link } from 'react-router-dom';
 import {
     ArbeidIUtlandetFormComponents,
     ArbeidIUtlandetFormData,
@@ -36,6 +35,8 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 import { useState } from 'react';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -50,6 +51,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
 }) => {
     const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const stepConfig = useStepConfig(intl);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -87,7 +89,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                         pageTitle={intlUtils(intl, 'steps.label.arbeidIUtlandet')}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
-                        supportsTempSaving={false}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <ArbeidIUtlandetFormComponents.Form
                             includeButtons={false}
@@ -202,9 +204,10 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                             />
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getBackLinkForArbeidIUtlandetSteg(søker)}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getBackLinkForArbeidIUtlandetSteg(søker)}
+                                    />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>
