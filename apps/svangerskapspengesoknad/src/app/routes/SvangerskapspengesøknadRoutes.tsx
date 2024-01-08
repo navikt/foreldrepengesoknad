@@ -6,7 +6,7 @@ import Forside from 'app/pages/forside/Forside';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import Barnet from 'app/steps/barnet/Barnet';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
-import Utenlandsopphold from 'app/steps/utenlandsopphold/Utenlandsopphold';
+import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
 import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import SkjemaSteg from 'app/steps/skjema/SkjemaSteg';
@@ -16,16 +16,15 @@ import FrilansStep from 'app/steps/frilans/FrilansStep';
 import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
 import VelgArbeid from 'app/steps/velg-arbeidsforhold/VelgArbeid';
 import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
-import BoIUtlandet from 'app/steps/bo-i-utlandet/BoIUtlandet';
 import SøknadSendt from 'app/pages/søknad-sendt/SøknadSendt';
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import PerioderStep from 'app/steps/perioder/PerioderStep';
 import { LocaleNo } from '@navikt/fp-types';
-interface Props {
-    currentRoute: SøknadRoutes;
-    locale: LocaleNo;
-    onChangeLocale: (locale: LocaleNo) => void;
-}
+import { Søkerinfo } from 'app/types/Søkerinfo';
+import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
+import useAvbrytSøknad from 'app/context/useAvbrytSøknad';
+import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
+import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 
 export const getForrigeTilrettelegging = (
     tilretteleggingBehov: Tilrettelegging[],
@@ -74,19 +73,36 @@ export const findNextRoute = (
     }
 };
 
-const getSkjemaRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) => {
+const getSkjemaRoutes = (
+    søkerInfo: Søkerinfo,
+    mellomlagreSøknadOgNaviger: () => Promise<void>,
+    avbrytSøknad: () => Promise<void>,
+    tilretteleggingValg: Tilrettelegging[] | undefined,
+) => {
     return tilretteleggingValg?.map((tilrettelegging) => {
         return (
             <Route
                 key={tilrettelegging.id}
                 path={`${SøknadRoutes.SKJEMA}/${tilrettelegging.id}`}
-                element={<SkjemaSteg key={tilrettelegging.id} id={tilrettelegging.id} />}
+                element={
+                    <SkjemaSteg
+                        key={tilrettelegging.id}
+                        id={tilrettelegging.id}
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
             />
         );
     });
 };
 
-const getPerioderRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) => {
+const getPerioderRoutes = (
+    mellomlagreSøknadOgNaviger: () => Promise<void>,
+    avbrytSøknad: () => Promise<void>,
+    tilretteleggingValg: Tilrettelegging[] | undefined,
+) => {
     return tilretteleggingValg
         ?.filter(
             (t) =>
@@ -103,6 +119,8 @@ const getPerioderRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) =
                             key={tilrettelegging.id}
                             id={tilrettelegging.id}
                             navn={tilrettelegging.arbeidsforhold.navn}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
                         />
                     }
                 />
@@ -110,7 +128,11 @@ const getPerioderRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) =
         });
 };
 
-const getTilretteleggingRoutes = (tilretteleggingValg: Tilrettelegging[] | undefined) => {
+const getTilretteleggingRoutes = (
+    mellomlagreSøknadOgNaviger: () => Promise<void>,
+    avbrytSøknad: () => Promise<void>,
+    tilretteleggingValg: Tilrettelegging[] | undefined,
+) => {
     return tilretteleggingValg?.map((tilrettelegging) => {
         return (
             <Route
@@ -122,6 +144,8 @@ const getTilretteleggingRoutes = (tilretteleggingValg: Tilrettelegging[] | undef
                         id={tilrettelegging.id}
                         typeArbeid={tilrettelegging.arbeidsforhold.type}
                         navn={tilrettelegging.arbeidsforhold.navn}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
                     />
                 }
             />
@@ -129,43 +153,131 @@ const getTilretteleggingRoutes = (tilretteleggingValg: Tilrettelegging[] | undef
     });
 };
 
-const renderSøknadRoutes = (harGodkjentVilkår: boolean, tilretteleggingBehov: Tilrettelegging[]) => {
+const renderSøknadRoutes = (
+    harGodkjentVilkår: boolean,
+    tilretteleggingBehov: Tilrettelegging[],
+    søkerInfo: Søkerinfo,
+    mellomlagreSøknadOgNaviger: () => Promise<void>,
+    avbrytSøknad: () => Promise<void>,
+) => {
     if (!harGodkjentVilkår) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.FORSIDE} />} />;
     }
     return (
         <>
-            <Route path={SøknadRoutes.BARNET} element={<Barnet />} />
-            <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
+            <Route
+                path={SøknadRoutes.BARNET}
+                element={<Barnet mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />}
+            />
+            <Route
+                path={SøknadRoutes.UTENLANDSOPPHOLD}
+                element={
+                    <UtenlandsoppholdSteg
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
             <Route
                 path={SøknadRoutes.HAR_BODD_I_UTLANDET}
-                element={<BoIUtlandet key={'iFortid'} oppgirIFortid={true} />}
+                element={
+                    <TidligereUtenlandsoppholdSteg
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
             />
             <Route
                 path={SøknadRoutes.SKAL_BO_I_UTLANDET}
-                element={<BoIUtlandet key={'iFremtid'} oppgirIFortid={false} />}
+                element={
+                    <SenereUtenlandsoppholdSteg
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
             />
-            <Route path={SøknadRoutes.UTENLANDSOPPHOLD} element={<Utenlandsopphold />} />
-            <Route path={SøknadRoutes.ARBEID} element={<Inntektsinformasjon />} />
-            <Route path={SøknadRoutes.FRILANS} element={<FrilansStep />} />
-            <Route path={SøknadRoutes.NÆRING} element={<EgenNæringStep />} />
-            <Route path={SøknadRoutes.ARBEID_I_UTLANDET} element={<ArbeidIUtlandetStep />} />
-            <Route path={SøknadRoutes.VELG_ARBEID} element={<VelgArbeid />} />
-            {getSkjemaRoutes(tilretteleggingBehov)}
-            {getTilretteleggingRoutes(tilretteleggingBehov)}
-            {getPerioderRoutes(tilretteleggingBehov)}
+            <Route
+                path={SøknadRoutes.ARBEID}
+                element={
+                    <Inntektsinformasjon
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.FRILANS}
+                element={
+                    <FrilansStep
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.NÆRING}
+                element={
+                    <EgenNæringStep
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.ARBEID_I_UTLANDET}
+                element={
+                    <ArbeidIUtlandetStep
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.VELG_ARBEID}
+                element={
+                    <VelgArbeid
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            {getSkjemaRoutes(søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad, tilretteleggingBehov)}
+            {getTilretteleggingRoutes(mellomlagreSøknadOgNaviger, avbrytSøknad, tilretteleggingBehov)}
+            {getPerioderRoutes(mellomlagreSøknadOgNaviger, avbrytSøknad, tilretteleggingBehov)}
             <Route path={SøknadRoutes.OPPSUMMERING} element={<Oppsummering />} />
             <Route path={SøknadRoutes.SØKNAD_SENDT} element={<SøknadSendt />} />
         </>
     );
 };
 
-const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute, locale, onChangeLocale }) => {
+interface Props {
+    currentRoute: SøknadRoutes;
+    locale: LocaleNo;
+    onChangeLocale: (locale: LocaleNo) => void;
+    søkerInfo: Søkerinfo;
+}
+
+const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
+    søkerInfo,
+    currentRoute,
+    locale,
+    onChangeLocale,
+}) => {
     const { state } = useSvangerskapspengerContext();
     const { tilrettelegging } = useSøknad();
     const navigate = useNavigate();
-    const harGodkjentVilkår = state.søknad.harGodkjentVilkår;
     const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
+
+    const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(state.søknad.harGodkjentVilkår || false);
+
+    const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(locale, søkerInfo.person.fnr, harGodkjentVilkår);
+
+    const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
 
     useEffect(() => {
         if (currentRoute && harGodkjentVilkår && isFirstTimeLoadingApp) {
@@ -178,9 +290,25 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({ currentRoute
 
     return (
         <Routes>
-            <Route path={SøknadRoutes.FORSIDE} element={<Forside locale={locale} onChangeLocale={onChangeLocale} />} />
+            <Route
+                path={SøknadRoutes.FORSIDE}
+                element={
+                    <Forside
+                        setHarGodkjentVilkår={setHarGodkjentVilkår}
+                        harGodkjentVilkår={harGodkjentVilkår}
+                        locale={locale}
+                        onChangeLocale={onChangeLocale}
+                    />
+                }
+            />
 
-            {renderSøknadRoutes(harGodkjentVilkår, tilrettelegging)}
+            {renderSøknadRoutes(
+                harGodkjentVilkår,
+                tilrettelegging,
+                søkerInfo,
+                mellomlagreSøknadOgNaviger,
+                avbrytSøknad,
+            )}
         </Routes>
     );
 };

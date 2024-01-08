@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
-import { useSvangerskapspengerContext } from './context/hooks/useSvangerskapspengerContext';
+import { useEffect, useMemo } from 'react';
 import { Loader } from '@navikt/ds-react';
-import actionCreator from './context/action/actionCreator';
 import { sendErrorMessageToSentry } from './utils/errorUtils';
 import SvangerskapspengesøknadRoutes from './routes/SvangerskapspengesøknadRoutes';
 import SøknadRoutes from './routes/routes';
@@ -31,13 +29,6 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
-    const { dispatch, state } = useSvangerskapspengerContext();
-
-    useEffect(() => {
-        if (søkerinfoData !== undefined) {
-            dispatch(actionCreator.setSøkerinfo(mapSøkerinfoDTOToSøkerinfo(søkerinfoData)));
-        }
-    }, [søkerinfoData, dispatch]);
 
     useEffect(() => {
         if (søkerinfoError) {
@@ -48,17 +39,22 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
         }
     }, [søkerinfoError]);
 
-    if (!state.søkerinfo || !søkerinfoData) {
+    const søkerInfo = useMemo(
+        () => (søkerinfoData ? mapSøkerinfoDTOToSøkerinfo(søkerinfoData) : undefined),
+        [søkerinfoData],
+    );
+
+    if (!søkerInfo) {
         return renderSpinner();
     }
 
-    const erPersonKvinne = erKvinne(søkerinfoData.søker.kjønn);
+    const erPersonKvinne = erKvinne(søkerInfo.person.kjønn);
 
     if (!erPersonKvinne) {
         return <IkkeKvinne />;
     }
 
-    const erPersonMyndig = erMyndig(søkerinfoData.søker.fødselsdato);
+    const erPersonMyndig = erMyndig(søkerInfo.person.fødselsdato);
     return (
         <div>
             {!erPersonMyndig ? (
@@ -69,6 +65,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
                         currentRoute={SøknadRoutes.FORSIDE}
                         locale={locale}
                         onChangeLocale={onChangeLocale}
+                        søkerInfo={søkerInfo}
                     />
                 </BrowserRouter>
             )}

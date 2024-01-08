@@ -1,15 +1,15 @@
-import actionCreator from '../../context/action/actionCreator';
 import { useEffect } from 'react';
-import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 
-const useUpdateCurrentTilretteleggingId = (currentTilretteleggingId: string | undefined) => {
-    const { dispatch, state } = useSvangerskapspengerContext();
+const useUpdateCurrentTilretteleggingId = (newTilretteleggingId: string | undefined) => {
+    const currentTilretteleggingId = useContextGetData(ContextDataType.TILRETTELEGGING_ID);
+    const oppdaterTilretteleggingId = useContextSaveData(ContextDataType.TILRETTELEGGING_ID);
 
     useEffect(() => {
-        if (state.currentTilretteleggingId !== currentTilretteleggingId) {
-            dispatch(actionCreator.setCurrentTilretteleggingId(currentTilretteleggingId));
+        if (currentTilretteleggingId !== newTilretteleggingId) {
+            oppdaterTilretteleggingId(newTilretteleggingId);
         }
-    }, [currentTilretteleggingId, dispatch, state]);
+    }, [newTilretteleggingId, currentTilretteleggingId, oppdaterTilretteleggingId]);
 };
 
 export default useUpdateCurrentTilretteleggingId;

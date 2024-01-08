@@ -1,14 +1,21 @@
-import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import stepConfig, { getBackLinkForTilretteleggingSteg, getNextRouteForTilretteleggingSteg } from '../stepsConfig';
-import { BodyLong, BodyShort, Button, ExpansionCard, ReadMore } from '@navikt/ds-react';
+import { FunctionComponent, useState } from 'react';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { BodyLong, BodyShort, Button, ExpansionCard, ReadMore } from '@navikt/ds-react';
+import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { notEmpty } from '@navikt/fp-validation';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
+import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import {
-    TilretteleggingFormComponents,
-    TilretteleggingFormData,
-    TilretteleggingFormField,
-    DelivisTilretteleggingPeriodeType,
-} from './tilretteleggingStepFormConfig';
+    getSisteDagForSvangerskapspenger,
+    getKanHaSvpFremTilTreUkerFørTermin,
+    tiMånederSidenDato,
+    getDefaultMonth,
+} from 'app/utils/dateUtils';
 import {
     cleanUpTilretteleggingStepFormValues,
     getBehovForTilretteleggingFomLabel,
@@ -23,24 +30,16 @@ import {
     getTilretteleggingTypeLabel,
     mapOmTilretteleggingFormDataToState,
 } from './tilretteleggingStepUtils';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import actionCreator from 'app/context/action/actionCreator';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-import { Link } from 'react-router-dom';
-import { FunctionComponent, useState } from 'react';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
-import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import {
-    getSisteDagForSvangerskapspenger,
-    getKanHaSvpFremTilTreUkerFørTermin,
-    tiMånederSidenDato,
-    getDefaultMonth,
-} from 'app/utils/dateUtils';
 import tilretteleggingQuestionsConfig, {
     TilretteleggingFormQuestionsPayload,
 } from './tilretteleggingStepQuestionsConfig';
+import {
+    TilretteleggingFormComponents,
+    TilretteleggingFormData,
+    TilretteleggingFormField,
+    DelivisTilretteleggingPeriodeType,
+} from './tilretteleggingStepFormConfig';
+import { getBackLinkForTilretteleggingSteg, getNextRouteForTilretteleggingSteg, useStepConfig } from '../stepsConfig';
 import {
     validateRisikofaktorer,
     validateSammePeriodeFremTilTerminFom,
@@ -52,10 +51,6 @@ import {
     validateTilretteleggingPeriodetype,
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
-import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
-import dayjs from 'dayjs';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
@@ -65,47 +60,45 @@ const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype)
     }
 };
 
-interface Props {
+export interface Props {
     id: string;
     typeArbeid: Arbeidsforholdstype;
     navn: string;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
 }
 
-const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid }) => {
+const TilretteleggingStep: FunctionComponent<Props> = ({
+    navn,
+    id,
+    typeArbeid,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
-    const [nextRoute, setNextRoute] = useState(SøknadRoutes.OPPSUMMERING.toString());
-    const { arbeidsforhold } = useSøkerinfo();
-    const søknad = useSøknad();
-    const { tilrettelegging: tilretteleggingFraState, barn } = søknad;
-    const { termindato } = barn;
-    const { state } = useSvangerskapspengerContext();
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
-    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
-    const termindatoDate = ISOStringToDate(termindato);
+    const stepConfig = useStepConfig(intl);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const tilretteleggingFraState = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const tilretteleggingId = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING_ID));
+
+    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const currentTilrettelegging = notEmpty(tilretteleggingFraState.find((t) => t.id === id));
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
+    const termindatoDate = ISOStringToDate(barnet.termindato);
     const navnArbeidsgiver =
-        currentTilrettelegging!.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
-        currentTilrettelegging!.arbeidsforhold.navn.trim().length === 0
+        currentTilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
+        currentTilrettelegging.arbeidsforhold.navn.trim().length === 0
             ? intlUtils(intl, 'egenNæring').toLowerCase()
-            : currentTilrettelegging!.arbeidsforhold.navn;
-    const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
-        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
-            id,
-            values,
-            tilretteleggingFraState,
-            currentTilrettelegging!,
-        );
-        return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
-    };
+            : currentTilrettelegging.arbeidsforhold.navn;
 
     const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
-    const sideTittel = getTilretteleggingSideTittel(erFlereTilrettelegginger, intl, navn);
-
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
     const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeid);
-
     const tilretteleggingTypeLabel = getTilretteleggingTypeLabel(
         erFlereTilrettelegginger,
         typeArbeid,
@@ -118,22 +111,43 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
         navnArbeidsgiver,
         intl,
     );
+
     const labelTiltak = intlUtils(intl, 'tilrettelegging.tilretteleggingstiltak.label');
     const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
-    const stillinger = currentTilrettelegging!.arbeidsforhold.stillinger;
-    const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
-    const startDatoArbeid = currentTilrettelegging!.arbeidsforhold.startdato;
+    const sluttDatoArbeid = currentTilrettelegging.arbeidsforhold.sluttdato;
+    const startDatoArbeid = currentTilrettelegging.arbeidsforhold.startdato;
     const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(termindatoDate!)), dayjs(startDatoArbeid))!.toDate();
     const maxDatoBehovFom = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
-    const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
-    const defaultMonthBehovFomDato = getDefaultMonth(minDatoBehovFom, maxDatoBehovFom);
+    const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barnet);
+
+    const onSubmit = (values: Partial<TilretteleggingFormData>) => {
+        setIsSubmitting(true);
+
+        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
+            id,
+            values,
+            tilretteleggingFraState,
+            currentTilrettelegging,
+        );
+        oppdaterTilrettelegging(mappedTilrettelegging);
+
+        const nextRoute = getNextRouteForTilretteleggingSteg(
+            values,
+            tilretteleggingFraState,
+            currentTilrettelegging.id,
+        );
+        oppdaterAppRoute(nextRoute);
+
+        mellomlagreSøknadOgNaviger();
+    };
+
     return (
         <TilretteleggingFormComponents.FormikWrapper
             enableReinitialize={true}
-            initialValues={getTilretteleggingInitialValues(currentTilrettelegging!)}
-            onSubmit={handleSubmit}
+            initialValues={getTilretteleggingInitialValues(currentTilrettelegging)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = tilretteleggingQuestionsConfig.getVisbility({
                     ...formValues,
@@ -150,9 +164,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId={`tilrettelegging-${id}`}
-                        pageTitle={sideTittel}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
+                        pageTitle={getTilretteleggingSideTittel(erFlereTilrettelegginger, intl, navn)}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
                         supportsTempSaving={false}
                     >
                         <TilretteleggingFormComponents.Form
@@ -162,7 +176,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                         >
                             {erFlereTilrettelegginger && (
                                 <Block padBottom="xxl">
-                                    <Bedriftsbanner arbeid={currentTilrettelegging!.arbeidsforhold} />
+                                    <Bedriftsbanner arbeid={currentTilrettelegging.arbeidsforhold} />
                                 </Block>
                             )}
                             <Block padBottom="xxl">
@@ -181,13 +195,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         intl,
                                         sisteDagForSvangerskapspenger,
                                         termindatoDate!,
-                                        currentTilrettelegging!.arbeidsforhold.navn,
+                                        currentTilrettelegging.arbeidsforhold.navn,
                                         startDatoArbeid,
                                         sluttDatoArbeid,
                                         kanHaSVPFremTilTreUkerFørTermin,
                                         typeArbeid === Arbeidsforholdstype.FRILANSER,
                                     )}
-                                    dayPickerProps={{ defaultMonth: defaultMonthBehovFomDato }}
+                                    dayPickerProps={{ defaultMonth: getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) }}
                                 />
                             </Block>
                             <Block
@@ -302,7 +316,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         validate={validateStillingsprosentEnDelvisPeriode(
                                             intl,
                                             formValues.enPeriodeMedTilretteleggingFom,
-                                            stillinger,
+                                            currentTilrettelegging.arbeidsforhold.stillinger,
                                         )}
                                     />
                                 </Block>
@@ -343,7 +357,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         formValues.behovForTilretteleggingFom,
                                         sisteDagForSvangerskapspenger,
                                         formValues.tilretteleggingType!,
-                                        currentTilrettelegging!.arbeidsforhold.navn,
+                                        currentTilrettelegging.arbeidsforhold.navn,
                                         sluttDatoArbeid,
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
@@ -367,7 +381,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         formValues.tilretteleggingType!,
                                         formValues.behovForTilretteleggingFom,
                                         sisteDagForSvangerskapspenger,
-                                        currentTilrettelegging!.arbeidsforhold.navn,
+                                        currentTilrettelegging.arbeidsforhold.navn,
                                         sluttDatoArbeid,
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
@@ -390,7 +404,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         sisteDagForSvangerskapspenger,
                                         formValues.enPeriodeMedTilretteleggingFom,
                                         formValues.tilretteleggingType!,
-                                        currentTilrettelegging!.arbeidsforhold.navn,
+                                        currentTilrettelegging.arbeidsforhold.navn,
                                         sluttDatoArbeid,
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
@@ -424,24 +438,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getBackLinkForTilretteleggingSteg(state.currentTilretteleggingId)}
+                                        to={getBackLinkForTilretteleggingSteg(tilretteleggingId)}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
-                                    <Button
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                        loading={isSubmitting}
-                                        onClick={() =>
-                                            setNextRoute(
-                                                getNextRouteForTilretteleggingSteg(
-                                                    formValues,
-                                                    tilretteleggingFraState,
-                                                    currentTilrettelegging!.id,
-                                                ),
-                                            )
-                                        }
-                                    >
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>
                                 </StepButtonWrapper>

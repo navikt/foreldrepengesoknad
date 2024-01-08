@@ -15,7 +15,6 @@ export interface Søker {
     selvstendigNæringsdrivendeInformasjon?: EgenNæring;
     harHattAnnenInntekt: boolean;
     andreInntekter?: ArbeidIUtlandet[];
-    språkkode: LocaleNo;
 }
 
 export interface SøkerDTO

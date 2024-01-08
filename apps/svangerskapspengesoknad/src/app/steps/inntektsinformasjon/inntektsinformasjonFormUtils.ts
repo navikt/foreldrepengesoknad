@@ -14,12 +14,12 @@ export const initialInntektsinformasjonFormValues: InntektsinformasjonFormData =
 
 export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
-    søker: Søker,
+    søker?: Søker,
 ): Søker => {
-    const oppdatertFrilansInfo = values.hattInntektSomFrilans === YesOrNo.YES ? søker.frilansInformasjon : undefined;
+    const oppdatertFrilansInfo = values.hattInntektSomFrilans === YesOrNo.YES ? søker?.frilansInformasjon : undefined;
     const oppdatertNæringInfo =
-        values.hattInntektSomNæringsdrivende === YesOrNo.YES ? søker.selvstendigNæringsdrivendeInformasjon : undefined;
-    const oppdatertArbeidUtlandInfo = values.hattArbeidIUtlandet === YesOrNo.YES ? søker.andreInntekter : undefined;
+        values.hattInntektSomNæringsdrivende === YesOrNo.YES ? søker?.selvstendigNæringsdrivendeInformasjon : undefined;
+    const oppdatertArbeidUtlandInfo = values.hattArbeidIUtlandet === YesOrNo.YES ? søker?.andreInntekter : undefined;
     return {
         ...søker,
         rolle: Søkerrolle.MOR,

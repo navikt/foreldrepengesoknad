@@ -6,33 +6,6 @@ const svangerskapspengerReducer = (
     action: SvangerskapspengerContextAction,
 ): SvangerskapspengerContextState => {
     switch (action.type) {
-        case SvangerskapspengerContextActionKeys.SET_BARN:
-            return {
-                ...state,
-                søknad: {
-                    ...state.søknad,
-                    barn: action.payload,
-                },
-            };
-        case SvangerskapspengerContextActionKeys.SET_SØKER:
-            return {
-                ...state,
-                søknad: {
-                    ...state.søknad,
-                    søker: action.payload,
-                },
-            };
-        case SvangerskapspengerContextActionKeys.SET_SØKERINFO:
-            return {
-                ...state,
-                søkerinfo: { ...action.payload },
-            };
-
-        case SvangerskapspengerContextActionKeys.SET_CURRENT_ROUTE:
-            return {
-                ...state,
-                currentRoute: action.payload,
-            };
         case SvangerskapspengerContextActionKeys.SET_CURRENT_TILRETTELEGGING_ID:
             return {
                 ...state,
@@ -44,14 +17,6 @@ const svangerskapspengerReducer = (
                 søknad: {
                     ...state.søknad,
                     harGodkjentVilkår: action.payload,
-                },
-            };
-        case SvangerskapspengerContextActionKeys.SET_UTENLANDSOPPHOLD:
-            return {
-                ...state,
-                søknad: {
-                    ...state.søknad,
-                    informasjonOmUtenlandsopphold: action.payload,
                 },
             };
         case SvangerskapspengerContextActionKeys.SET_TILRETTELEGGING:
@@ -73,17 +38,6 @@ const svangerskapspengerReducer = (
                 søknad: {
                     ...state.søknad,
                     harGodkjentOppsummering: true,
-                },
-            };
-        case SvangerskapspengerContextActionKeys.SET_SPRÅKKODE:
-            return {
-                ...state,
-                søknad: {
-                    ...state.søknad,
-                    søker: {
-                        ...state.søknad.søker,
-                        språkkode: action.payload,
-                    },
                 },
             };
         case SvangerskapspengerContextActionKeys.APPLY_STORED_STATE:

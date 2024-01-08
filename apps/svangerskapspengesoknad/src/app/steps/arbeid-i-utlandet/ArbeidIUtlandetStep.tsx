@@ -1,16 +1,12 @@
 import { Button } from '@navikt/ds-react';
 import { Block, Step, StepButtonWrapper, bemUtils, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
-import actionCreator from 'app/context/action/actionCreator';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import stepConfig, {
+import {
     getBackLinkForArbeidIUtlandetSteg,
     getNextRouteValgAvArbeidEllerSkjema,
+    useStepConfig,
 } from 'app/steps/stepsConfig';
 import { Link } from 'react-router-dom';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import {
     ArbeidIUtlandetFormComponents,
     ArbeidIUtlandetFormData,
@@ -36,29 +32,52 @@ import {
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import './arbeidIUtlandet.css';
+import { Søkerinfo } from 'app/types/Søkerinfo';
+import { useState } from 'react';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
 
-const ArbeidIUtlandetStep: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
+};
+
+const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+}) => {
     const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
-    const { arbeidsforhold } = useSøkerinfo();
-    const søknad = useSøknad();
-    const { søker, barn } = søknad;
-    const arbeidIUtlandet = søker.andreInntekter;
+    const stepConfig = useStepConfig(intl);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const onValidSubmitHandler = (values: Partial<ArbeidIUtlandetFormData>) => {
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const onSubmit = (values: Partial<ArbeidIUtlandetFormData>) => {
+        setIsSubmitting(true);
+
         const arbeidIUtlandet = mapArbeidIUtlandetTilState(values);
         const søkerMedArbeidIUtlandet = { ...søker, andreInntekter: arbeidIUtlandet };
-        return [actionCreator.setSøker(søkerMedArbeidIUtlandet)];
+
+        oppdaterSøker(søkerMedArbeidIUtlandet);
+
+        const nextRoute = getNextRouteValgAvArbeidEllerSkjema(barnet.termindato, søkerInfo.arbeidsforhold, søker);
+        oppdaterAppRoute(nextRoute);
+
+        mellomlagreSøknadOgNaviger();
     };
-    const nextRoute = getNextRouteValgAvArbeidEllerSkjema(barn.termindato, arbeidsforhold, søker);
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <ArbeidIUtlandetFormComponents.FormikWrapper
             enableReinitialize={true}
-            initialValues={getInitialArbeidIUtlandetFormData(arbeidIUtlandet)}
-            onSubmit={handleSubmit}
+            initialValues={getInitialArbeidIUtlandetFormData(søker.andreInntekter)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const navnPåArbeidsgiverLabel = intlUtils(intl, 'arbeidIUtlandet.navn');
                 return (
@@ -66,8 +85,8 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="arbeidIUtlandet"
                         pageTitle={intlUtils(intl, 'steps.label.arbeidIUtlandet')}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
                         supportsTempSaving={false}
                     >
                         <ArbeidIUtlandetFormComponents.Form

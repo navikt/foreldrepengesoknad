@@ -848,6 +848,9 @@ importers:
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@navikt/fp-utenlandsopphold':
+        specifier: workspace:*
+        version: link:../../packages/utenlandsopphold
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils

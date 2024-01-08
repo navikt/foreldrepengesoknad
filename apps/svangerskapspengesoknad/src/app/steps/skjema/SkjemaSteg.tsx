@@ -1,4 +1,5 @@
 import { FunctionComponent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
@@ -8,21 +9,17 @@ import { FileUploader } from '@navikt/fp-ui';
 import { Attachment } from '@navikt/fp-types';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Skjemanummer } from 'app/types/Skjemanummer';
-import actionCreator from 'app/context/action/actionCreator';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import SøknadRoutes from 'app/routes/routes';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import Environment from 'app/Environment';
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
-import stepConfig, { getBackLinkForSkjemaSteg } from '../stepsConfig';
-import { useNavigate } from 'react-router-dom';
+import { getBackLinkForSkjemaSteg, useStepConfig } from '../stepsConfig';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -32,39 +29,36 @@ export interface SkjemaFormData {
 
 export interface Props {
     id: string;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
     maxAntallVedlegg?: number;
 }
 
-const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTALL_VEDLEGG }) => {
+const SkjemaSteg: FunctionComponent<Props> = ({
+    id,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+    maxAntallVedlegg = MAX_ANTALL_VEDLEGG,
+}) => {
     useUpdateCurrentTilretteleggingId(id);
     const navigate = useNavigate();
-
     const intl = useIntl();
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const { arbeidsforhold } = useSøkerinfo();
-    const søknad = useSøknad();
-    const { søker, barn, tilrettelegging } = søknad;
+    const stepConfig = useStepConfig(intl);
+
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
     const currentTilrettelegging = notEmpty(tilrettelegging.find((t) => t.id === id));
 
-    const onValidSubmitHandler = (values: SkjemaFormData) => {
-        const oppdatertTilrettelegging = {
-            ...currentTilrettelegging,
-            vedlegg: values.vedlegg,
-        };
-
-        const alleTilrettelegginger = tilrettelegging.map((t) => {
-            return t.id === currentTilrettelegging.id ? oppdatertTilrettelegging : t;
-        });
-
-        return [actionCreator.setTilrettelegging(alleTilrettelegginger)];
-    };
-
-    const nextRoute = `${SøknadRoutes.TILRETTELEGGING}/${currentTilrettelegging.id}`;
-    const { handleSubmit } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-
-    const handleOnSubmit = (values: SkjemaFormData) => {
+    const onSubmit = (values: SkjemaFormData) => {
         if (values.vedlegg.length === 0) {
             formMethods.setError('vedlegg', {
                 message: intl.formatMessage({ id: 'SkjemaSteg.MinstEttDokument' }),
@@ -85,7 +79,20 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
             });
             return Promise.resolve();
         } else {
-            return handleSubmit(values);
+            const oppdatertTilrettelegging = {
+                ...currentTilrettelegging,
+                vedlegg: values.vedlegg,
+            };
+
+            const alleTilrettelegginger = tilrettelegging.map((t) => {
+                return t.id === currentTilrettelegging.id ? oppdatertTilrettelegging : t;
+            });
+
+            oppdaterTilrettelegging(alleTilrettelegginger);
+
+            oppdaterAppRoute(`${SøknadRoutes.TILRETTELEGGING}/${currentTilrettelegging.id}`);
+
+            return mellomlagreSøknadOgNaviger();
         }
     };
 
@@ -116,11 +123,11 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
                     ? intlUtils(intl, 'steps.label.skjema.flere', { navn: currentTilrettelegging.arbeidsforhold.navn })
                     : intlUtils(intl, 'steps.label.skjema.en')
             }
-            onCancel={onAvbrytSøknad}
-            steps={stepConfig(intl, søknad, arbeidsforhold)}
+            onCancel={avbrytSøknad}
+            steps={stepConfig}
             supportsTempSaving={false}
         >
-            <Form formMethods={formMethods} onSubmit={handleOnSubmit}>
+            <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {tilrettelegging.length > 1 && <Bedriftsbanner arbeid={currentTilrettelegging.arbeidsforhold} />}
@@ -139,8 +146,8 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
                         goToPreviousStep={() =>
                             navigate(
                                 getBackLinkForSkjemaSteg(
-                                    barn.termindato,
-                                    arbeidsforhold,
+                                    barnet.termindato,
+                                    søkerInfo.arbeidsforhold,
                                     søker,
                                     tilrettelegging,
                                     currentTilrettelegging.id,

@@ -1,17 +1,27 @@
 import { StoryFn } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import Forside from './Forside';
-import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
-import withRouterProvider from 'storybook/decorators/withRouter';
 
 const defaultExport = {
     title: 'pages/Forside',
     component: Forside,
-    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;
 
-const Template: StoryFn = () => {
-    return <Forside onChangeLocale={() => undefined} locale="nb" />;
+const Template: StoryFn<{
+    setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
+}> = () => {
+    return (
+        <Forside
+            setHarGodkjentVilkår={() => true}
+            harGodkjentVilkår={false}
+            onChangeLocale={() => undefined}
+            locale="nb"
+        />
+    );
 };
 export const Default = Template.bind({});
+Default.args = {
+    setHarGodkjentVilkår: action('button-click'),
+};

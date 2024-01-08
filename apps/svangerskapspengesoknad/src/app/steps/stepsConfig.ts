@@ -8,8 +8,7 @@ import { InntektsinformasjonFormData } from './inntektsinformasjon/inntektsinfor
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import { UtenlandsoppholdFormData } from './utenlandsopphold/utenlandsoppholdFormTypes';
-import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsopphold';
+import InformasjonOmUtenlandsopphold, { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
 import {
     DelivisTilretteleggingPeriodeType,
     TilretteleggingFormData,
@@ -20,6 +19,7 @@ import { egenNæringId } from 'app/types/EgenNæring';
 import { Søknad } from 'app/types/Søknad';
 import { getPeriodeSideTittel } from './perioder/perioderStepUtils';
 import { getTilretteleggingSideTittel } from './tilrettelegging/tilretteleggingStepUtils';
+import { Utenlandsopphold } from '@navikt/fp-types';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -55,6 +55,76 @@ interface StepConfig {
     index: number;
     label: string;
 }
+
+export const useStepConfig = (intl: IntlShape) => {
+    const steps = [
+        {
+            id: 'barnet',
+            index: 0,
+            label: intlUtils(intl, 'steps.label.barnet'),
+        },
+        {
+            id: 'utenlandsopphold',
+            index: 1,
+            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+        },
+        {
+            id: 'utenlandsoppholdTidligere',
+            index: 1,
+            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+        },
+        {
+            id: 'utenlandsoppholdSenere',
+            index: 1,
+            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+        },
+        {
+            id: 'arbeidIUtlandet',
+            index: 1,
+            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+        },
+        {
+            id: 'næring',
+            index: 1,
+            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+        },
+        {
+            id: 'frilans',
+            index: 1,
+            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+        },
+        {
+            id: 'velgArbeid',
+            index: 1,
+            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+        },
+    ] as StepConfig[];
+
+    steps.push({
+        id: 'arbeid',
+        index: steps.length,
+        label: intlUtils(intl, 'steps.label.arbeid'),
+    });
+
+    steps.push({
+        id: 'skjema',
+        index: steps.length,
+        label: intlUtils(intl, 'steps.label.skjema.en'),
+    });
+    steps.push({
+        id: 'tilrettelegging',
+        index: steps.length,
+        label: intlUtils(intl, 'steps.label.tilrettelegging.en'),
+    });
+
+    steps.push({
+        id: 'oppsummering',
+        index: steps.length,
+        label: intlUtils(intl, 'steps.label.oppsummering'),
+    });
+
+    return steps;
+};
 
 const stepConfigFørstegangssøknad = (
     intl: IntlShape,
@@ -296,7 +366,7 @@ export const getBackLinkForBostedIFremtid = (informasjonOmUtenlandsopphold: Info
     return SøknadRoutes.UTENLANDSOPPHOLD;
 };
 
-export const getBackLinkForArbeidSteg = (informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold) => {
+export const getBackLinkForArbeidSteg = (informasjonOmUtenlandsopphold: Opphold) => {
     if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
         return SøknadRoutes.SKAL_BO_I_UTLANDET;
     }
@@ -304,6 +374,19 @@ export const getBackLinkForArbeidSteg = (informasjonOmUtenlandsopphold: Informas
         return SøknadRoutes.HAR_BODD_I_UTLANDET;
     }
     return SøknadRoutes.UTENLANDSOPPHOLD;
+};
+
+export const getPreviousStep = (id: StepIdWithSetBackHref): SøknadRoutes => {
+    switch (id) {
+        case 'utenlandsopphold':
+            return SøknadRoutes.BARNET;
+        case 'boIUtlandetIFortid':
+            return SøknadRoutes.UTENLANDSOPPHOLD;
+        case 'frilans':
+            return SøknadRoutes.ARBEID;
+        default:
+            return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
+    }
 };
 
 export const getPreviousSetStepHref = (id: StepIdWithSetBackHref): string => {
@@ -351,25 +434,24 @@ export const getNextRouteForInntektsinformasjon = (
     values: Partial<InntektsinformasjonFormData>,
 ): string => {
     if (hasValue(values.hattInntektSomFrilans) && values.hattInntektSomFrilans === YesOrNo.YES) {
-        return SøknadRoutes.FRILANS.toString();
+        return SøknadRoutes.FRILANS;
     }
     if (hasValue(values.hattInntektSomNæringsdrivende) && values.hattInntektSomNæringsdrivende === YesOrNo.YES) {
-        return SøknadRoutes.NÆRING.toString();
+        return SøknadRoutes.NÆRING;
     }
     if (hasValue(values.hattArbeidIUtlandet) && values.hattArbeidIUtlandet === YesOrNo.YES) {
-        return SøknadRoutes.ARBEID_I_UTLANDET.toString();
+        return SøknadRoutes.ARBEID_I_UTLANDET;
     }
     if (automatiskValgtTilrettelegging) {
         return `${SøknadRoutes.SKJEMA}/${automatiskValgtTilrettelegging.id}`;
     }
-    return SøknadRoutes.VELG_ARBEID.toString();
+    return SøknadRoutes.VELG_ARBEID;
 };
 
-export const getNextRouteForUtenlandsopphold = (values: Partial<UtenlandsoppholdFormData>) => {
-    if (hasValue(values.harBoddINorgeSiste12Mnd) && values.harBoddINorgeSiste12Mnd === YesOrNo.NO) {
+export const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
+    if (values.harBoddUtenforNorgeSiste12Mnd) {
         return SøknadRoutes.HAR_BODD_I_UTLANDET;
-    }
-    if (hasValue(values.skalBoINorgeNeste12Mnd) && values.skalBoINorgeNeste12Mnd === YesOrNo.NO) {
+    } else if (values.skalBoUtenforNorgeNeste12Mnd) {
         return SøknadRoutes.SKAL_BO_I_UTLANDET;
     }
     return SøknadRoutes.ARBEID;

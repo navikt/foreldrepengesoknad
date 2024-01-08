@@ -1,13 +1,12 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 import withRouterProvider from 'storybook/decorators/withRouter';
-import VelgArbeid from './VelgArbeid';
-import _context from 'storybook/storydata/soknad/soknad.json';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { Action, SvpDataContext } from 'app/context/SvpDataContext';
 
 const defaultExport = {
-    title: 'steps/VelgArbeid',
-    component: VelgArbeid,
+    title: 'steps/UtenlandsoppholdSteg',
+    component: UtenlandsoppholdSteg,
     decorators: [withRouterProvider],
 };
 
@@ -20,8 +19,6 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const context = _context as any;
-
 interface Props {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide?: (action: Action) => void;
@@ -29,20 +26,13 @@ interface Props {
 
 const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.SØKER]: context.søknad.søker,
-                [ContextDataType.TILRETTELEGGING]: [],
-                [ContextDataType.OM_BARNET]: context.søknad.barn,
-            }}
-        >
-            <VelgArbeid
+        <SvpDataContext onDispatch={gåTilNesteSide}>
+            <UtenlandsoppholdSteg
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
-                søkerInfo={context.søkerinfo}
             />
         </SvpDataContext>
     );
 };
+
 export const Default = Template.bind({});

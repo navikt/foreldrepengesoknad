@@ -1,10 +1,12 @@
-import { Block, intlUtils, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
-import actionCreator from 'app/context/action/actionCreator';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import stepConfig, { getBackLinkForArbeidSteg, getNextRouteForInntektsinformasjon } from '../stepsConfig';
+import { Link } from 'react-router-dom';
+import { BodyShort, Button } from '@navikt/ds-react';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { notEmpty } from '@navikt/fp-validation';
+import { Block, intlUtils, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { getBackLinkForArbeidSteg, getNextRouteForInntektsinformasjon, useStepConfig } from '../stepsConfig';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import {
     InntektsinformasjonFormComponents,
@@ -16,51 +18,75 @@ import {
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 
-import { BodyShort, Button } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
 import {
     getAktiveArbeidsforhold,
     getAutomatiskValgtTilretteleggingHvisKunEtArbeid,
 } from 'app/utils/arbeidsforholdUtils';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import SøknadRoutes from 'app/routes/routes';
-import { useState } from 'react';
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
-import Tilrettelegging from 'app/types/Tilrettelegging';
 
-const Inntektsinformasjon: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
+};
+
+const Inntektsinformasjon: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+}) => {
     const intl = useIntl();
-    const { arbeidsforhold } = useSøkerinfo();
-    const søknad = useSøknad();
-    const { søker, barn, tilrettelegging, informasjonOmUtenlandsopphold } = søknad;
-    const [nextRoute, setNextRoute] = useState(SøknadRoutes.ARBEID.toString());
-    const [autoValgtTilrettelegging, setAutoValgtTilrettelegging] = useState<Tilrettelegging | undefined>(undefined);
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const { termindato } = barn;
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
-    const onValidSubmitHandler = (values: Partial<InntektsinformasjonFormData>) => {
-        const updatedSøker = mapInntektsinformasjonFormDataToState(values, søker);
-        if (autoValgtTilrettelegging) {
-            return [actionCreator.setSøker(updatedSøker), actionCreator.setTilrettelegging([autoValgtTilrettelegging])];
+    const stepConfig = useStepConfig(intl);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const søker = useContextGetData(ContextDataType.SØKER);
+    const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
+    const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
+
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, termindato);
+
+    const onSubmit = (values: Partial<InntektsinformasjonFormData>) => {
+        setIsSubmitting(true);
+
+        const automatiskValgtTilrettelegging = getAutomatiskValgtTilretteleggingHvisKunEtArbeid(
+            values,
+            aktiveArbeidsforhold,
+            termindato,
+            tilrettelegging || [],
+            intl,
+        );
+
+        if (automatiskValgtTilrettelegging) {
+            oppdaterTilrettelegging([automatiskValgtTilrettelegging]);
         }
 
-        return [actionCreator.setSøker(updatedSøker)];
+        const updatedSøker = mapInntektsinformasjonFormDataToState(values, søker);
+        oppdaterSøker(updatedSøker);
+
+        const neste = getNextRouteForInntektsinformasjon(automatiskValgtTilrettelegging, values);
+        oppdaterAppRoute(neste);
+
+        mellomlagreSøknadOgNaviger();
     };
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
-            initialValues={getInitialInntektsinformasjonFormValues(søker)}
-            onSubmit={handleSubmit}
+            initialValues={søker ? getInitialInntektsinformasjonFormValues(søker) : {}}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const kanIkkeSøke =
-                    arbeidsforhold.length === 0 &&
+                    søkerInfo.arbeidsforhold.length === 0 &&
                     formValues.hattInntektSomFrilans === YesOrNo.NO &&
                     formValues.hattInntektSomNæringsdrivende === YesOrNo.NO;
                 return (
@@ -68,19 +94,19 @@ const Inntektsinformasjon: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="arbeid"
                         pageTitle={intlUtils(intl, 'steps.label.arbeid')}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
                         supportsTempSaving={false}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="xl">
                                 <BodyShort>
-                                    {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV')}
+                                    <FormattedMessage id="inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV" />
                                 </BodyShort>
                             </Block>
                             <Block padBottom="m">
                                 <BodyShort style={{ fontWeight: 'bold' }}>
-                                    {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.label')}
+                                    <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
                                 </BodyShort>
                             </Block>
                             <Block padBottom="xxl">
@@ -142,34 +168,13 @@ const Inntektsinformasjon: React.FunctionComponent = () => {
                                     <Button
                                         variant="secondary"
                                         as={Link}
-                                        to={getBackLinkForArbeidSteg(informasjonOmUtenlandsopphold)}
+                                        to={getBackLinkForArbeidSteg(utenlandsopphold)}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>
                                     {!kanIkkeSøke && (
-                                        <Button
-                                            type="submit"
-                                            disabled={isSubmitting}
-                                            loading={isSubmitting}
-                                            onClick={() => {
-                                                const automatiskValgtTilrettelegging =
-                                                    getAutomatiskValgtTilretteleggingHvisKunEtArbeid(
-                                                        formValues,
-                                                        aktiveArbeidsforhold,
-                                                        termindato,
-                                                        tilrettelegging,
-                                                        intl,
-                                                    );
-                                                setAutoValgtTilrettelegging(automatiskValgtTilrettelegging);
-                                                setNextRoute(
-                                                    getNextRouteForInntektsinformasjon(
-                                                        automatiskValgtTilrettelegging,
-                                                        formValues,
-                                                    ),
-                                                );
-                                            }}
-                                        >
-                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            <FormattedMessage id="søknad.gåVidere" />
                                         </Button>
                                     )}
                                 </StepButtonWrapper>

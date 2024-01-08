@@ -1,33 +1,25 @@
 import { StoryFn } from '@storybook/react';
-import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
-import withRouterProvider from 'storybook/decorators/withRouter';
+import { action } from '@storybook/addon-actions';
 import Barnet from './Barnet';
-import _context from 'storybook/storydata/soknad/soknad.json';
-import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
-import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
 
 const defaultExport = {
     title: 'steps/Barnet',
     component: Barnet,
-    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
-
 export default defaultExport;
 
-const context = _context as any;
-const contextUtenOppgittBarn = {
-    ...context,
-    søknad: { ...context.søknad, barn: undefined! },
-} as SvangerskapspengerContextState;
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
-const Template: StoryFn = () => {
-    return (
-        <SvangerskapspengerStateMock context={contextUtenOppgittBarn}>
-            <Barnet />
-        </SvangerskapspengerStateMock>
-    );
+interface Props {
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+}
+
+const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction() }) => {
+    return <Barnet mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={promiseAction()} />;
 };
 export const Default = Template.bind({});
-Default.args = {
-    contextUtenOppgittBarn,
-};

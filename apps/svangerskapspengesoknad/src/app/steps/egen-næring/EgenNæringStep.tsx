@@ -17,14 +17,10 @@ import {
 } from '@navikt/fp-common';
 import { getMinInputTilOgMedValue, hasValue } from 'app/utils/validationUtils';
 import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getBackLinkForNæringSteg, getNextRouteForNæring } from 'app/steps/stepsConfig';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
+import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
 
 import dayjs from 'dayjs';
 import { Alert, BodyShort, Button, ReadMore } from '@navikt/ds-react';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import actionCreator from 'app/context/action/actionCreator';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
 import { Link } from 'react-router-dom';
 import {
     validateEgenNæringFom,
@@ -33,23 +29,42 @@ import {
     validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
 } from './egenNæringValidation';
-import OrgnummerEllerLand from './components/OrgnummerEllerLand';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import OrgnummerEllerLand from '../../components/egen-næring-visning/OrgnummerEllerLand';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
+import { useState } from 'react';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 
-const EgenNæringStep: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
+};
+
+const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
-    const søknad = useSøknad();
-    const { søker, barn, tilrettelegging } = søknad;
-    const { arbeidsforhold } = useSøkerinfo();
-    const onValidSubmitHandler = (values: Partial<EgenNæringFormData>) => {
+    const stepConfig = useStepConfig(intl);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const onSubmit = (values: Partial<EgenNæringFormData>) => {
+        setIsSubmitting(true);
+
         const søkerMedNæring = mapNæringDataToSøkerState(søker, values as EgenNæringFormData);
         if (
             søkerHarKunEtAktivtArbeid(
-                barn.termindato,
-                arbeidsforhold,
+                barnet.termindato,
+                søkerInfo.arbeidsforhold,
                 søkerMedNæring.harJobbetSomFrilans,
                 søkerMedNæring.harJobbetSomSelvstendigNæringsdrivende,
             )
@@ -58,23 +73,22 @@ const EgenNæringStep: React.FunctionComponent = () => {
                 getNæringTilretteleggingOption(tilrettelegging, søkerMedNæring.selvstendigNæringsdrivendeInformasjon!),
             ];
 
-            return [
-                actionCreator.setSøker(søkerMedNæring),
-                actionCreator.setTilrettelegging(automatiskValgtTilrettelegging),
-            ];
+            oppdaterTilrettelegging(automatiskValgtTilrettelegging);
         }
 
-        return [actionCreator.setSøker(søkerMedNæring)];
-    };
-    const nextRoute = getNextRouteForNæring(søker, barn.termindato, arbeidsforhold);
+        oppdaterSøker(søkerMedNæring);
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-    const onAvbrytSøknad = useAvbrytSøknad();
+        const neste = getNextRouteForNæring(søker, barnet.termindato, søkerInfo.arbeidsforhold);
+        oppdaterAppRoute(neste);
+
+        mellomlagreSøknadOgNaviger();
+    };
+
     const navnPåNæringSpm = intlUtils(intl, 'egenNæring.navnPåNæring');
     return (
         <EgenNæringFormComponents.FormikWrapper
             initialValues={getInitialEgenNæringFormValues(søker.selvstendigNæringsdrivendeInformasjon)}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = egenNæringFormQuestionsConfig.getVisbility(formValues as EgenNæringFormData);
                 const navnPåNæringLabel =
@@ -86,8 +100,8 @@ const EgenNæringStep: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="næring"
                         pageTitle={intlUtils(intl, 'steps.label.næring')}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
                         supportsTempSaving={false}
                     >
                         <EgenNæringFormComponents.Form
