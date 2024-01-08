@@ -8,17 +8,23 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import SøknadRoutes from 'app/routes/routes';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { useStepConfig } from '../stepsConfig';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
+    søkerInfo: Søkerinfo;
 };
 
-const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+}) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl).map((config) => ({
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold).map((config) => ({
         ...config,
-        isSelected: config.id === 'utenlandsoppholdSenere',
+        isSelected: config.id === 'boIUtlandetIFremtid',
     }));
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 

@@ -29,7 +29,7 @@ type Props = {
 const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl);
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 

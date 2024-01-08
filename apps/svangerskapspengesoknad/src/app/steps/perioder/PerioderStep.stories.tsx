@@ -2,6 +2,7 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import withRouterProvider from 'storybook/decorators/withRouter';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import _context from 'storybook/storydata/soknad/soknad.json';
 import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import PerioderStep from './PerioderStep';
 import { DelivisTilretteleggingPeriodeType } from '../tilrettelegging/tilretteleggingStepFormConfig';
@@ -13,6 +14,8 @@ const defaultExport = {
 };
 
 export default defaultExport;
+
+const context = _context as any;
 
 const promiseAction =
     () =>
@@ -49,6 +52,7 @@ const Template: StoryFn<Props> = ({
                 navn={'Omsorgspartner Vestfold AS'}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
+                søkerInfo={context.søkerinfo}
             />
         </SvpDataContext>
     );

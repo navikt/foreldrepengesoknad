@@ -1,7 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import SøknadRoutes from './routes';
-import isAvailable from './isAvailable';
+import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import Forside from 'app/pages/forside/Forside';
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import Barnet from 'app/steps/barnet/Barnet';
@@ -19,13 +18,14 @@ import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
 import SøknadSendt from 'app/pages/søknad-sendt/SøknadSendt';
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import PerioderStep from 'app/steps/perioder/PerioderStep';
-import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
 import useAvbrytSøknad from 'app/context/useAvbrytSøknad';
 import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import useSendSøknad from 'app/context/useSendSøknad';
+import SøknadRoutes from './routes';
+import isAvailable from './isAvailable';
 
 export const getForrigeTilrettelegging = (
     tilretteleggingBehov: Tilrettelegging[],
@@ -100,6 +100,7 @@ const getSkjemaRoutes = (
 };
 
 const getPerioderRoutes = (
+    søkerInfo: Søkerinfo,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     avbrytSøknad: () => Promise<void>,
     tilretteleggingValg: Tilrettelegging[] | undefined,
@@ -120,6 +121,7 @@ const getPerioderRoutes = (
                             key={tilrettelegging.id}
                             id={tilrettelegging.id}
                             navn={tilrettelegging.arbeidsforhold.navn}
+                            søkerInfo={søkerInfo}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
                         />
@@ -130,6 +132,7 @@ const getPerioderRoutes = (
 };
 
 const getTilretteleggingRoutes = (
+    søkerInfo: Søkerinfo,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     avbrytSøknad: () => Promise<void>,
     tilretteleggingValg: Tilrettelegging[] | undefined,
@@ -145,6 +148,7 @@ const getTilretteleggingRoutes = (
                         id={tilrettelegging.id}
                         typeArbeid={tilrettelegging.arbeidsforhold.type}
                         navn={tilrettelegging.arbeidsforhold.navn}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -169,12 +173,19 @@ const renderSøknadRoutes = (
         <>
             <Route
                 path={SøknadRoutes.BARNET}
-                element={<Barnet mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />}
+                element={
+                    <Barnet
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
             />
             <Route
                 path={SøknadRoutes.UTENLANDSOPPHOLD}
                 element={
                     <UtenlandsoppholdSteg
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -184,6 +195,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.HAR_BODD_I_UTLANDET}
                 element={
                     <TidligereUtenlandsoppholdSteg
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -193,6 +205,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.SKAL_BO_I_UTLANDET}
                 element={
                     <SenereUtenlandsoppholdSteg
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -249,8 +262,8 @@ const renderSøknadRoutes = (
                 }
             />
             {getSkjemaRoutes(søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad, tilretteleggingBehov)}
-            {getTilretteleggingRoutes(mellomlagreSøknadOgNaviger, avbrytSøknad, tilretteleggingBehov)}
-            {getPerioderRoutes(mellomlagreSøknadOgNaviger, avbrytSøknad, tilretteleggingBehov)}
+            {getTilretteleggingRoutes(søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad, tilretteleggingBehov)}
+            {getPerioderRoutes(søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad, tilretteleggingBehov)}
             <Route
                 path={SøknadRoutes.OPPSUMMERING}
                 element={

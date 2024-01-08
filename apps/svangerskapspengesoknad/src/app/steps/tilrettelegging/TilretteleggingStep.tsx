@@ -52,6 +52,7 @@ import {
 } from './tilretteleggingValidation';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import BackButton from '../BackButton';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
@@ -67,6 +68,7 @@ export interface Props {
     navn: string;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
 }
 
 const TilretteleggingStep: FunctionComponent<Props> = ({
@@ -75,10 +77,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
     typeArbeid,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
+    søkerInfo,
 }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl);
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 

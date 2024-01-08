@@ -1,6 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import withRouter from 'storybook/decorators/withRouter';
+import _context from 'storybook/storydata/soknad/soknad.json';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
 import { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
@@ -17,6 +18,8 @@ export default {
     component: TidligereUtenlandsoppholdSteg,
     decorators: [withRouter],
 };
+
+const context = _context as any;
 
 interface Props {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
@@ -42,6 +45,7 @@ const Template: StoryFn<Props> = ({
             <TidligereUtenlandsoppholdSteg
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={() => undefined}
+                søkerInfo={context.søkerinfo}
             />
         </SvpDataContext>
     );

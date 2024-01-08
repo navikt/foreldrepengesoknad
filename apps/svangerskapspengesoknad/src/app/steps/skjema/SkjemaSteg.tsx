@@ -47,7 +47,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
     const navigate = useNavigate();
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const stepConfig = useStepConfig(intl);
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
 
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));

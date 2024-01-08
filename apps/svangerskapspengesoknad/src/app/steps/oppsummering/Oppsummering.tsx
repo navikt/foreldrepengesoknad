@@ -51,7 +51,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
 }) => {
     useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl);
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const navigate = useNavigate();
     const bem = bemUtils('oppsummering');
     const onFortsettSøknadSenere = useFortsettSøknadSenere();

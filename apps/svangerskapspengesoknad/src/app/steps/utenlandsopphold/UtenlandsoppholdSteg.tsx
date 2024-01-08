@@ -6,15 +6,21 @@ import { getNextRouteForUtenlandsopphold, getPreviousStep, useStepConfig } from 
 import { ContentWrapper } from '@navikt/fp-ui';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
 };
 
-const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+}) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl).map((config) => ({
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold).map((config) => ({
         ...config,
         isSelected: config.id === 'utenlandsopphold',
     }));

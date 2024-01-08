@@ -52,7 +52,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const stepConfig = useStepConfig(intl);
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));

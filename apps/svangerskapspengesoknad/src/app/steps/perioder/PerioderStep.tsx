@@ -39,20 +39,22 @@ import { getRadioOptionsTomType } from '../tilrettelegging/tilretteleggingStepUt
 import './perioderStep.css';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import BackButton from '../BackButton';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 
 export interface Props {
     id: string;
     navn: string;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
 }
 
-const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     useUpdateCurrentTilretteleggingId(id);
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const stepConfig = useStepConfig(intl);
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const bem = bemUtils('perioderStep');
 
     const tilretteleggingFraState = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));

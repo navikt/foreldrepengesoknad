@@ -1,5 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import _context from 'storybook/storydata/soknad/soknad.json';
 import Barnet from './Barnet';
 
 const defaultExport = {
@@ -7,6 +8,8 @@ const defaultExport = {
     component: Barnet,
 };
 export default defaultExport;
+
+const context = _context as any;
 
 const promiseAction =
     () =>
@@ -20,6 +23,12 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction() }) => {
-    return <Barnet mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={promiseAction()} />;
+    return (
+        <Barnet
+            søkerInfo={context.søkerinfo}
+            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            avbrytSøknad={promiseAction()}
+        />
+    );
 };
 export const Default = Template.bind({});

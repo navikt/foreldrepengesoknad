@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 import withRouter from 'storybook/decorators/withRouter';
 import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
+import _context from 'storybook/storydata/soknad/soknad.json';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
 import { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
@@ -13,6 +14,8 @@ const promiseAction =
         action('button-click')(...args);
         return Promise.resolve();
     };
+
+const context = _context as any;
 
 const defaultUtenlandsopphold = {
     iNorgeNeste12Mnd: false,
@@ -50,6 +53,7 @@ const Template: StoryFn<Props> = ({
                 <SenereUtenlandsoppholdSteg
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     avbrytSøknad={action('button-click')}
+                    søkerInfo={context.søkerinfo}
                 />
             </SvpDataContext>
         </AxiosMock>

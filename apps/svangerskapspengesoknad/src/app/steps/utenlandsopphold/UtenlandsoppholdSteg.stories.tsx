@@ -1,5 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import _context from 'storybook/storydata/soknad/soknad.json';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 import withRouterProvider from 'storybook/decorators/withRouter';
 import { Action, SvpDataContext } from 'app/context/SvpDataContext';
@@ -11,6 +12,8 @@ const defaultExport = {
 };
 
 export default defaultExport;
+
+const context = _context as any;
 
 const promiseAction =
     () =>
@@ -30,6 +33,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
             <UtenlandsoppholdSteg
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
+                søkerInfo={context.søkerinfo}
             />
         </SvpDataContext>
     );

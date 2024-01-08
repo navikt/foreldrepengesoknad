@@ -16,10 +16,10 @@ import {
 import { hasValue } from 'app/utils/validationUtils';
 import { frilansId } from 'app/types/Frilans';
 import { egenNæringId } from 'app/types/EgenNæring';
-import { Søknad } from 'app/types/Søknad';
 import { getPeriodeSideTittel } from './perioder/perioderStepUtils';
 import { getTilretteleggingSideTittel } from './tilrettelegging/tilretteleggingStepUtils';
 import { Utenlandsopphold } from '@navikt/fp-types';
+import { ContextDataType, useContextGetData } from 'app/context/SvpDataContext';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -56,81 +56,12 @@ interface StepConfig {
     label: string;
 }
 
-export const useStepConfig = (intl: IntlShape) => {
-    const steps = [
-        {
-            id: 'barnet',
-            index: 0,
-            label: intlUtils(intl, 'steps.label.barnet'),
-        },
-        {
-            id: 'utenlandsopphold',
-            index: 1,
-            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-        },
-        {
-            id: 'utenlandsoppholdTidligere',
-            index: 1,
-            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-        },
-        {
-            id: 'utenlandsoppholdSenere',
-            index: 1,
-            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-        },
-        {
-            id: 'arbeidIUtlandet',
-            index: 1,
-            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-        },
-        {
-            id: 'næring',
-            index: 1,
-            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-        },
-        {
-            id: 'frilans',
-            index: 1,
-            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-        },
-        {
-            id: 'velgArbeid',
-            index: 1,
-            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
-        },
-    ] as StepConfig[];
+export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[]) => {
+    const søker = useContextGetData(ContextDataType.SØKER);
+    const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
+    const barn = useContextGetData(ContextDataType.OM_BARNET);
+    const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
 
-    steps.push({
-        id: 'arbeid',
-        index: steps.length,
-        label: intlUtils(intl, 'steps.label.arbeid'),
-    });
-
-    steps.push({
-        id: 'skjema',
-        index: steps.length,
-        label: intlUtils(intl, 'steps.label.skjema.en'),
-    });
-    steps.push({
-        id: 'tilrettelegging',
-        index: steps.length,
-        label: intlUtils(intl, 'steps.label.tilrettelegging.en'),
-    });
-
-    steps.push({
-        id: 'oppsummering',
-        index: steps.length,
-        label: intlUtils(intl, 'steps.label.oppsummering'),
-    });
-
-    return steps;
-};
-
-const stepConfigFørstegangssøknad = (
-    intl: IntlShape,
-    søknad: Søknad,
-    arbeidsforhold: Arbeidsforhold[],
-): StepConfig[] => {
     const steps = [
         {
             id: 'barnet',
@@ -144,14 +75,14 @@ const stepConfigFørstegangssøknad = (
         },
     ] as StepConfig[];
 
-    if (søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd === false) {
+    if (utenlandsopphold?.iNorgeSiste12Mnd === false) {
         steps.push({
             id: 'boIUtlandetIFortid',
             index: steps.length,
             label: intlUtils(intl, 'steps.label.boIUtlandetIFortid'),
         });
     }
-    if (søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd === false) {
+    if (utenlandsopphold?.iNorgeNeste12Mnd === false) {
         steps.push({
             id: 'boIUtlandetIFremtid',
             index: steps.length,
@@ -165,7 +96,7 @@ const stepConfigFørstegangssøknad = (
         label: intlUtils(intl, 'steps.label.arbeid'),
     });
 
-    if (søknad.søker.harJobbetSomFrilans) {
+    if (søker?.harJobbetSomFrilans) {
         steps.push({
             id: 'frilans',
             index: steps.length,
@@ -173,7 +104,7 @@ const stepConfigFørstegangssøknad = (
         });
     }
 
-    if (søknad.søker.harJobbetSomSelvstendigNæringsdrivende) {
+    if (søker?.harJobbetSomSelvstendigNæringsdrivende) {
         steps.push({
             id: 'næring',
             index: steps.length,
@@ -181,7 +112,7 @@ const stepConfigFørstegangssøknad = (
         });
     }
 
-    if (søknad.søker.harHattAnnenInntekt) {
+    if (søker?.harHattAnnenInntekt) {
         steps.push({
             id: 'arbeidIUtlandet',
             index: steps.length,
@@ -190,12 +121,12 @@ const stepConfigFørstegangssøknad = (
     }
 
     const harKunEtArbeid =
-        søknad.barn && søknad.barn.termindato
+        barn && barn.termindato
             ? søkerHarKunEtAktivtArbeid(
-                  søknad.barn.termindato,
+                  barn.termindato,
                   arbeidsforhold,
-                  søknad.søker.harJobbetSomFrilans,
-                  søknad.søker.harJobbetSomSelvstendigNæringsdrivende,
+                  søker?.harJobbetSomFrilans || false,
+                  søker?.harJobbetSomSelvstendigNæringsdrivende || false,
               )
             : true;
 
@@ -207,9 +138,9 @@ const stepConfigFørstegangssøknad = (
         });
     }
 
-    if (søknad.tilrettelegging.length > 0) {
-        const erFlereTilrettelegginger = søknad.tilrettelegging.length > 1;
-        søknad.tilrettelegging.forEach((tilrettelegging: Tilrettelegging) => {
+    if (tilrettelegging && tilrettelegging.length > 0) {
+        const erFlereTilrettelegginger = tilrettelegging.length > 1;
+        tilrettelegging.forEach((tilrettelegging: Tilrettelegging) => {
             const navn = tilrettelegging.arbeidsforhold.navn;
             steps.push({
                 id: `skjema-${tilrettelegging.id}`,
@@ -254,10 +185,6 @@ const stepConfigFørstegangssøknad = (
     });
 
     return steps;
-};
-
-const stepConfig = (intl: IntlShape, søknad: Søknad, arbeidsforhold: Arbeidsforhold[]): StepConfig[] => {
-    return stepConfigFørstegangssøknad(intl, søknad, arbeidsforhold);
 };
 
 export const getNæringRouteIfNæring = (søker: Søker): SøknadRoutes | undefined => {
@@ -407,8 +334,6 @@ export const getPreviousSetStepHref = (id: StepIdWithSetBackHref): string => {
 
     return href;
 };
-
-export default stepConfig;
 
 export const getNextRouteForTilretteleggingSteg = (
     values: Partial<TilretteleggingFormData>,

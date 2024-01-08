@@ -44,6 +44,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
                 navn={'Omsorgspartner Vestfold AS'}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
+                søkerInfo={context.søkerinfo}
             />
         </SvpDataContext>
     );

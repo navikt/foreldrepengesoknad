@@ -6,6 +6,7 @@ import { BodyShort, Button, ReadMore } from '@navikt/ds-react';
 import { niMånederFremITid, halvannetÅrSiden } from 'app/utils/dateUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import SøknadRoutes from 'app/routes/routes';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 import { BarnetFormComponents, BarnetFormData, BarnetFormField } from './barnetFormConfig';
 import {
     cleanupOmBarnetFormData,
@@ -20,11 +21,12 @@ import { validateFødselsdato, validateTermindato } from './barnetValidering';
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
 };
 
-const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl);
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const barnet = useContextGetData(ContextDataType.OM_BARNET);
