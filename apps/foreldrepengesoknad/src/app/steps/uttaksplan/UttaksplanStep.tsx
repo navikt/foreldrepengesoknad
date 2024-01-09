@@ -598,7 +598,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     return (
         <UttaksplanFormComponents.FormikWrapper
-            initialValues={getUttaksplanFormInitialValues(uttaksplanMetadata.ønskerJustertUttakVedFødsel)}
+            initialValues={getUttaksplanFormInitialValues(
+                uttaksplanMetadata.ønskerJustertUttakVedFødsel,
+                visAutomatiskJusteringForm,
+            )}
             onSubmit={onSubmit}
             innerRef={ref}
             renderForm={({ values }) => {
