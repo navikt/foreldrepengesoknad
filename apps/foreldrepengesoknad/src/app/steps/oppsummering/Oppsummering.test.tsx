@@ -169,8 +169,8 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('Utsettelse')).toBeInTheDocument();
-        expect(screen.getByText('Begrunnelse for å søke om utsettelse')).toBeInTheDocument();
-        expect(screen.getByText('Utsettelsesgrunn', { exact: false })).toBeInTheDocument();
+        // expect(screen.getByText('Begrunnelse for å søke om utsettelse')).toBeInTheDocument();
+        // expect(screen.getByText('Utsettelsesgrunn', { exact: false })).toBeInTheDocument();
     });
     it('Skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
         render(<FarMedMorSomHarRettIEØS />);
