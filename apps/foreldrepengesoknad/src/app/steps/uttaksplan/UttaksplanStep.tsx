@@ -62,8 +62,8 @@ import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttak
 import AttachmentApi from '../../api/attachmentApi';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import {
-    getKanJustereAutomatiskVedFødsel,
-    getVisAutomatiskJusteringForm,
+    getKanPerioderRundtFødselAutomatiskJusteres,
+    getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
@@ -412,7 +412,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         termindato,
     );
 
-    const visAutomatiskJusteringForm = getVisAutomatiskJusteringForm(
+    const visAutomatiskJusteringForm = getKanSøkersituasjonAutomatiskJustereRundtFødsel(
         erFarEllerMedmor,
         familiehendelsesdatoDate!,
         situasjon,
@@ -422,15 +422,14 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         bareFarMedmorHarRett,
     );
 
-    const kanJustereAutomatiskVedFødsel = getKanJustereAutomatiskVedFødsel(
+    const periodeRundtFødselKanAutomatiskJusteres = getKanPerioderRundtFødselAutomatiskJusteres(
+        visAutomatiskJusteringForm,
         perioderMedUttakRundtFødsel,
         termindato,
-        erFarEllerMedmor,
-        barn,
     );
 
     const setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig = () => {
-        if ((visAutomatiskJusteringForm || erEndringssøknad) && !kanJustereAutomatiskVedFødsel) {
+        if (!periodeRundtFødselKanAutomatiskJusteres) {
             oppdaterUttaksplanMetadata({
                 ...uttaksplanMetadata,
                 ønskerJustertUttakVedFødsel: undefined,
@@ -439,9 +438,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     };
 
     const ønskerJustertUttakVedFødselErBesvart = (ønskerAutomatiskJusteringSvar: boolean | undefined) => {
-        return (
-            visAutomatiskJusteringForm && kanJustereAutomatiskVedFødsel && ønskerAutomatiskJusteringSvar !== undefined
-        );
+        return periodeRundtFødselKanAutomatiskJusteres && ønskerAutomatiskJusteringSvar !== undefined;
     };
 
     const ref = useRef<FormikValues>(null);
@@ -600,15 +597,14 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         <UttaksplanFormComponents.FormikWrapper
             initialValues={getUttaksplanFormInitialValues(
                 uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-                visAutomatiskJusteringForm,
+                periodeRundtFødselKanAutomatiskJusteres,
             )}
             onSubmit={onSubmit}
             innerRef={ref}
             renderForm={({ values }) => {
                 const visibility = uttaksplanQuestionsConfig.getVisbility({
                     ønskerAutomatiskJustering: values[UttaksplanFormField.ønskerAutomatiskJustering] ?? YesOrNo.NO,
-                    termindato,
-                    perioderMedUttakRundtFødsel,
+                    periodeRundtFødselKanAutomatiskJusteres,
                 });
 
                 return (

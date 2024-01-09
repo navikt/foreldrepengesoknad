@@ -26,11 +26,11 @@ export const mapUttaksplanFormValueToState = (value: YesOrNo): boolean | undefin
 
 export const getUttaksplanFormInitialValues = (
     ønskerAutomatiskJustering: boolean | undefined,
-    visAutomatiskJusteringForm: boolean,
+    periodeKanJusteresAutomatiskVedFødsel: boolean,
 ): UttaksplanFormData => {
     return {
         ønskerAutomatiskJustering:
-            ønskerAutomatiskJustering !== undefined && visAutomatiskJusteringForm
+            ønskerAutomatiskJustering !== undefined && periodeKanJusteresAutomatiskVedFødsel
                 ? convertBooleanOrUndefinedToYesOrNo(ønskerAutomatiskJustering)
                 : YesOrNo.UNANSWERED,
     };
