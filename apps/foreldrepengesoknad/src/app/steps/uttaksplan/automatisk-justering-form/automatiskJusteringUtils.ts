@@ -1,6 +1,5 @@
 import {
     Barn,
-    BarnType,
     Forelder,
     Periode,
     Situasjon,
@@ -27,21 +26,19 @@ export const getKanPeriodenRundtFødselJusteres = (
     );
 };
 
-export const getKanJustereAutomatiskVedFødsel = (
+export const getKanPerioderRundtFødselAutomatiskJusteres = (
+    kanSøkersituasjonAutomatiskJustereRundtFødsel: boolean,
     perioderMedUttakRundtFødsel: Periode[],
     termindato: Date | undefined,
-    erFarEllerMedmor: boolean,
-    barn: Barn,
 ): boolean => {
     return (
-        barn.type === BarnType.UFØDT &&
-        erFarEllerMedmor &&
+        kanSøkersituasjonAutomatiskJustereRundtFødsel &&
         perioderMedUttakRundtFødsel.length === 1 &&
         getKanPeriodenRundtFødselJusteres(perioderMedUttakRundtFødsel[0], termindato)
     );
 };
 
-export const getVisAutomatiskJusteringForm = (
+export const getKanSøkersituasjonAutomatiskJustereRundtFødsel = (
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     situasjon: Situasjon,
