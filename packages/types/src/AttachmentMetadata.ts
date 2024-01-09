@@ -5,8 +5,13 @@ export enum AttachmentMetadataType {
     UTTAK = 'UTTAK',
 }
 
+interface Tidsperiode {
+    fom: string;
+    tom: string;
+}
+
 export type AttachmentMetadata = {
     type: AttachmentMetadataType;
-    perioder?: any[];
+    perioder?: Tidsperiode[];
     arbeidsforhold?: any;
 };
