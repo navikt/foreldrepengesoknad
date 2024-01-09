@@ -23,20 +23,10 @@ import {
     PeriodeHull,
     Periodetype,
     PeriodeUtenUttak,
-    SenEndringÅrsak,
     StønadskontoType,
     Utsettelsesperiode,
     Uttaksperiode,
 } from '../types';
-import {
-    erUtsettelse,
-    erUtsettelseGrunnetPgaArbeid,
-    erUtsettelsePgaSykdom,
-    erUtsettelseTilbakeITid,
-    erUttakEllerOppholdMerEnnTreMånederSiden,
-    erUttakGrunnetSykdom,
-    erUttakTilbakeITid,
-} from './periodeUtils';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -350,35 +340,6 @@ function finnSisteInfoperiode(perioder: Periode[]) {
         .sort(sorterPerioder)
         .reverse()[0];
 }
-
-export const getSeneEndringerSomKreverBegrunnelse = (uttaksplan: Periode[]): SenEndringÅrsak => {
-    const utsettelsesPerioder = uttaksplan.filter(erUtsettelse) as Utsettelsesperiode[];
-    const utsettelseSykdomKreverBegrunnelse = utsettelsesPerioder.some(erUtsettelsePgaSykdom);
-    const uttakSykdomKreverBegrunnelse = uttaksplan.some(erUttakGrunnetSykdom);
-    const utsettelseSykdomKreverBegrunnelsePgaSøktSent = utsettelsesPerioder
-        .filter(erUtsettelseTilbakeITid)
-        .some(erUtsettelsePgaSykdom);
-    const uttakSykdomKreverBegrunnelsePgaSøktSent = uttaksplan.filter(erUttakTilbakeITid).some(erUttakGrunnetSykdom);
-    const utsettelseArbeidKreverBegrunnelsePgaSøktSent = utsettelsesPerioder
-        .filter(erUtsettelseTilbakeITid)
-        .some(erUtsettelseGrunnetPgaArbeid);
-    const uttakKreverBegrunnelsePgaSøktSent = uttaksplan.some(erUttakEllerOppholdMerEnnTreMånederSiden);
-
-    if (utsettelseArbeidKreverBegrunnelsePgaSøktSent) {
-        return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.ArbeidOgUttak : SenEndringÅrsak.Arbeid;
-    }
-
-    if (
-        utsettelseSykdomKreverBegrunnelse ||
-        utsettelseSykdomKreverBegrunnelsePgaSøktSent ||
-        uttakSykdomKreverBegrunnelsePgaSøktSent ||
-        uttakSykdomKreverBegrunnelse
-    ) {
-        return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
-    }
-
-    return uttakKreverBegrunnelsePgaSøktSent ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
-};
 
 export const uttaksplanErBareOpphold = (perioder: Periode[]): boolean => {
     const perioderUtenInfoPerioder = perioder.filter((p) => !isInfoPeriode(p));

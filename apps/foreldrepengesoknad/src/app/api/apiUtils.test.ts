@@ -80,11 +80,6 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
                 situasjon: 'fødsel',
             };
         }
-        if (type === ContextDataType.UTTAKSPLAN_METADATA) {
-            return {
-                tilleggsopplysninger: {},
-            };
-        }
         return {};
     };
 };
