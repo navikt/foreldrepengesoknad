@@ -646,7 +646,7 @@
     "valideringsfeil.inntektsinformasjon.varigEndringAvInntekt.ugyldigFormat": "Varig endring av inntekt kan kun bestå av siffer og må oppgis i heile kroner",
     "valideringsfeil.inntektsinformasjon.næringsinntekt.ugyldigFormat": "Næringsresultat kan kun bestå av siffer og må oppgis i heile kroner",
     "valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat": "Organisasjonsnummeret er ikkje et gyldig norsk organisasjonsnummer",
-    "valideringsfeil.inntektsinformasjon.forklaringTilEndring.forKort": "Forklaring av endring må vere minst 25 tegn",
+    "valideringsfeil.inntektsinformasjon.forklaringTilEndring.forKort": "Du må skrive minst 25 tegn",
     "valideringsfeil.inntektsinformasjon.forklaringTilEndring.forLang": "Forklaring av endring kan maksimalt inneholde 1000 tegn",
     "valideringsfeil.inntektsinformasjon.andreInntekter.måHaOppdrag": "Du må legge til minst et oppdrag",
     "valideringsfeil.inntektsinformasjon.andreInntekter.måHaVirksomhet": "Du må legge til minst ei verdsemd",
