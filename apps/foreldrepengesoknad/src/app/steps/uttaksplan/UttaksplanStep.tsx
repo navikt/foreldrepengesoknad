@@ -21,7 +21,6 @@ import {
     isUttaksperiode,
     Periode,
     Periodene,
-    SenEndringÅrsak,
     Step,
     StepButtonWrapper,
     Søkerinfo,
@@ -41,7 +40,6 @@ import useDebounce from 'app/utils/hooks/useDebounce';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
-import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
@@ -338,23 +336,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         oppdaterUttaksplanMetadata,
     ]);
 
-    const handleBegrunnelseChange = (årsak: SenEndringÅrsak, begrunnelse: string) => {
-        const ekstraInformasjon = årsak !== SenEndringÅrsak.Ingen ? årsak : undefined;
-        const opplysninger = {
-            ...(uttaksplanMetadata.tilleggsopplysninger || {}),
-            begrunnelseForSenEndring: {
-                ...(uttaksplanMetadata.tilleggsopplysninger || {}).begrunnelseForSenEndring,
-                tekst: begrunnelse,
-                ekstraInformasjon: ekstraInformasjon,
-            },
-        };
-
-        oppdaterUttaksplanMetadata({
-            ...uttaksplanMetadata,
-            tilleggsopplysninger: opplysninger,
-        });
-    };
-
     useEffect(() => {
         const periodeAngittAvAnnenPart = opprinneligPlan?.find((p) => isUttaksperiode(p) && p.angittAvAnnenPart);
 
@@ -390,15 +371,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         setIsSubmitting(true);
         setSubmitIsClicked(true);
 
-        const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(
-            uttaksplanMetadata.tilleggsopplysninger,
-        );
-
         oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
             endringstidspunkt,
             perioderSomSkalSendesInn,
-            tilleggsopplysninger: cleanedTilleggsopplysninger,
         });
 
         oppdaterAppRoute(nextRoute);
@@ -652,9 +628,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             søkersituasjon={søkersituasjon}
                             dekningsgrad={uttaksplanMetadata.dekningsgrad!}
                             antallBarn={antallBarn}
-                            tilleggsopplysninger={uttaksplanMetadata.tilleggsopplysninger || {}}
                             setUttaksplanErGyldig={setUttaksplanErGyldig}
-                            handleBegrunnelseChange={handleBegrunnelseChange}
                             eksisterendeSak={eksisterendeSak}
                             perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                             morsSisteDag={morsSisteDag}
