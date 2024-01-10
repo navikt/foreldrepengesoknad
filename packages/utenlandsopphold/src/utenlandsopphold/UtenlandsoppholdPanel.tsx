@@ -18,7 +18,6 @@ export interface Props {
     goToPreviousStep: () => void;
     stepConfig: StepConfig[];
     stønadstype: 'Engangsstønad' | 'Foreldrepenger' | 'Svangerskapspenger';
-    supportsTempSaving?: boolean;
 }
 
 const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
@@ -30,7 +29,6 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     goToPreviousStep,
     stepConfig,
     stønadstype,
-    supportsTempSaving = true,
 }) => {
     const { i18n } = useUtenlandsoppholdIntl();
 
@@ -40,12 +38,7 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
 
     return (
         <UtenlandsoppholdIntlProvider>
-            <Step
-                steps={stepConfig}
-                onCancel={cancelApplication}
-                onContinueLater={onContinueLater}
-                supportsTempSaving={supportsTempSaving}
-            >
+            <Step steps={stepConfig} onCancel={cancelApplication} onContinueLater={onContinueLater}>
                 <Form formMethods={formMethods} onSubmit={saveOnNext}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />

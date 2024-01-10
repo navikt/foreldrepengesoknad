@@ -1,12 +1,12 @@
 import { Block, bemUtils } from '@navikt/fp-common';
-import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { FormattedMessage } from 'react-intl';
-import { PageKeys } from 'app/types/PageKeys';
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
+import { ArrowRightIcon } from '@navikt/aksel-icons';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { PageKeys } from 'app/types/PageKeys';
+import links from 'app/links/links';
 
 import './ikkeKvinne.css';
-import { ArrowRightIcon } from '@navikt/aksel-icons';
-import links from 'app/links/links';
 
 const IkkeKvinne: React.FunctionComponent = () => {
     const bem = bemUtils('ikke-kvinne');

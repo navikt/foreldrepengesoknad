@@ -1,65 +1,51 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Loader } from '@navikt/ds-react';
-import { sendErrorMessageToSentry } from './utils/errorUtils';
-import SvangerskapspengesøknadRoutes from './routes/SvangerskapspengesøknadRoutes';
-import SøknadRoutes from './routes/routes';
-import { BrowserRouter } from 'react-router-dom';
-import Api from './api/api';
-import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
-import './styles/app.css';
-import { erMyndig, erKvinne, useDocumentTitle } from '@navikt/fp-common';
-import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
-import { Kvittering, LocaleNo } from '@navikt/fp-types';
-import { Umyndig } from '@navikt/fp-ui';
+import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import Environment from './Environment';
-import { redirect } from '@navikt/fp-utils';
+import { BrowserRouter } from 'react-router-dom';
+import { erMyndig, erKvinne, useDocumentTitle } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
+import { Umyndig } from '@navikt/fp-ui';
+import { useRequest } from '@navikt/fp-api';
+import { notEmpty } from '@navikt/fp-validation';
+import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
+import SvangerskapspengesøknadRoutes, {
+    ApiErrorHandler,
+    Spinner,
+    svpApi,
+} from './routes/SvangerskapspengesøknadRoutes';
+import { SvpDataContext } from './context/SvpDataContext';
+import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
+import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './context/useMellomlagreSøknad';
+import { SøkerinfoDTO } from './types/SøkerinfoDTO';
+
+import './styles/app.css';
 
 interface Props {
     locale: LocaleNo;
     onChangeLocale: any;
 }
 
-const Spinner: React.FunctionComponent = () => (
-    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-        <Loader size="2xlarge" />
-    </div>
-);
-
 const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
-    const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
+    const { data: søkerinfoData, error: søkerinfoError } = useRequest<SøkerinfoDTO>(svpApi, '/sokerinfo');
 
-    useEffect(() => {
-        if (søkerinfoError) {
-            sendErrorMessageToSentry(søkerinfoError);
-            throw new Error(
-                `Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
-            );
-        }
-    }, [søkerinfoError]);
+    const {
+        data: mellomlagretData,
+        loading: loadingMellomlagretData,
+        error: errorMellomlagretData,
+    } = useRequest<SvpDataMapAndMetaData>(svpApi, '/storage/svangerskapspenger');
 
     const søkerInfo = useMemo(
         () => (søkerinfoData ? mapSøkerinfoDTOToSøkerinfo(søkerinfoData) : undefined),
         [søkerinfoData],
     );
 
-    if (kvittering) {
-        if (Environment.INNSYN) {
-            redirect(
-                kvittering.saksNr
-                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
-                    : `${Environment.INNSYN}/redirectFromSoknad`,
-            );
-            return <Spinner />;
-        }
-        return <div>Redirected to Innsyn</div>;
+    if (søkerinfoError || errorMellomlagretData) {
+        return <ApiErrorHandler error={notEmpty(søkerinfoError || errorMellomlagretData)} />;
     }
 
-    if (!søkerInfo) {
+    if (!søkerInfo || loadingMellomlagretData) {
         return <Spinner />;
     }
 
@@ -70,19 +56,23 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
     }
 
     const erPersonMyndig = erMyndig(søkerInfo.person.fødselsdato);
+
+    const mellomlagretState = mellomlagretData?.version === VERSJON_MELLOMLAGRING ? mellomlagretData : undefined;
+
     return (
         <div>
             {!erPersonMyndig ? (
                 <Umyndig appnavn="Svangerskapspenger" />
             ) : (
                 <BrowserRouter>
-                    <SvangerskapspengesøknadRoutes
-                        currentRoute={SøknadRoutes.FORSIDE}
-                        locale={locale}
-                        onChangeLocale={onChangeLocale}
-                        søkerInfo={søkerInfo}
-                        setKvittering={setKvittering}
-                    />
+                    <SvpDataContext initialState={mellomlagretState}>
+                        <SvangerskapspengesøknadRoutes
+                            locale={locale}
+                            onChangeLocale={onChangeLocale}
+                            søkerInfo={søkerInfo}
+                            mellomlagretData={mellomlagretState}
+                        />
+                    </SvpDataContext>
                 </BrowserRouter>
             )}
         </div>

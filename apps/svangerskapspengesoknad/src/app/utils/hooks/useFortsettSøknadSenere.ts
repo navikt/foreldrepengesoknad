@@ -1,4 +1,4 @@
-import { logAmplitudeEvent } from 'app/amplitude/amplitude';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 const useFortsettSøknadSenere = () => {
     const useFortsettSøknadSenere = () => {

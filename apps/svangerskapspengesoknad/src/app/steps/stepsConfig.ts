@@ -1,5 +1,4 @@
 import { assertUnreachable, intlUtils } from '@navikt/fp-common';
-import { getForrigeTilrettelegging, getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import SøknadRoutes from 'app/routes/routes';
 import { Søker } from 'app/types/Søker';
 import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
@@ -187,6 +186,20 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
     return steps;
 };
 
+const getForrigeTilrettelegging = (
+    tilretteleggingBehov: Tilrettelegging[],
+    currentTilretteleggingId: string | undefined,
+) => {
+    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
+        return tilretteleggingBehov[tilretteleggingBehov.length - 1];
+    }
+    const forrigeTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) - 1;
+    if (forrigeTilretteleggingIndex < 0) {
+        return undefined;
+    }
+    return tilretteleggingBehov[forrigeTilretteleggingIndex];
+};
+
 export const getNæringRouteIfNæring = (søker: Søker): SøknadRoutes | undefined => {
     if (søker.harJobbetSomSelvstendigNæringsdrivende) {
         return SøknadRoutes.NÆRING;
@@ -333,6 +346,20 @@ export const getPreviousSetStepHref = (id: StepIdWithSetBackHref): string => {
     }
 
     return href;
+};
+
+export const getNesteTilretteleggingId = (
+    tilretteleggingBehov: Tilrettelegging[],
+    currentTilretteleggingId: string | undefined,
+) => {
+    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
+        return tilretteleggingBehov[0].id;
+    }
+    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
+    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
+        return undefined;
+    }
+    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
 };
 
 export const getNextRouteForTilretteleggingSteg = (

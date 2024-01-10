@@ -1,8 +1,7 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, redirect, useNavigate } from 'react-router-dom';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import Forside from 'app/pages/forside/Forside';
-import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import Barnet from 'app/steps/barnet/Barnet';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
@@ -10,68 +9,43 @@ import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import SkjemaSteg from 'app/steps/skjema/SkjemaSteg';
 import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-import useSøknad from 'app/utils/hooks/useSøknad';
 import FrilansStep from 'app/steps/frilans/FrilansStep';
 import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
 import VelgArbeid from 'app/steps/velg-arbeidsforhold/VelgArbeid';
 import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
-import SøknadSendt from 'app/pages/søknad-sendt/SøknadSendt';
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import PerioderStep from 'app/steps/perioder/PerioderStep';
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
+import useMellomlagreSøknad, { SvpDataMapAndMetaData } from 'app/context/useMellomlagreSøknad';
 import useAvbrytSøknad from 'app/context/useAvbrytSøknad';
 import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import useSendSøknad from 'app/context/useSendSøknad';
 import SøknadRoutes from './routes';
-import isAvailable from './isAvailable';
+import Environment from 'app/Environment';
+import { Loader } from '@navikt/ds-react';
+import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
+import { redirectToLogin } from '@navikt/fp-utils';
+import { ErrorPage } from '@navikt/fp-ui';
+import { ContextDataType, useContextGetData } from 'app/context/SvpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
 
-export const getForrigeTilrettelegging = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-) => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[tilretteleggingBehov.length - 1];
-    }
-    const forrigeTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) - 1;
-    if (forrigeTilretteleggingIndex < 0) {
-        return undefined;
-    }
-    return tilretteleggingBehov[forrigeTilretteleggingIndex];
-};
+export const Spinner: React.FunctionComponent = () => (
+    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+        <Loader size="2xlarge" />
+    </div>
+);
 
-export const getNesteTilretteleggingId = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-) => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[0].id;
-    }
-    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
-    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
-        return undefined;
-    }
-    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-};
+export const svpApi = createApi(Environment.REST_API_URL);
 
-export const findNextRoute = (
-    currentRoute: SøknadRoutes,
-    nextRoute: SøknadRoutes,
-    currentTilretteleggingId: string | undefined,
-    tilretteleggingBehov: Tilrettelegging[],
-): any => {
-    if (currentRoute !== SøknadRoutes.SKJEMA && currentRoute !== SøknadRoutes.TILRETTELEGGING) {
-        return nextRoute;
+export const ApiErrorHandler: React.FunctionComponent<{ error: ApiAccessError | ApiGeneralError }> = ({ error }) => {
+    if (error instanceof ApiAccessError) {
+        redirectToLogin(Environment.LOGIN_URL);
+        return <Spinner />;
     }
-
-    const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingBehov, currentTilretteleggingId);
-
-    if (nesteTilretteleggingId) {
-        return `${SøknadRoutes.TILRETTELEGGING}/${nesteTilretteleggingId}`;
-    } else {
-        return SøknadRoutes.OPPSUMMERING;
-    }
+    return (
+        <ErrorPage appName="Svangerskapspenger" errorMessage={error.message} retryCallback={() => location.reload()} />
+    );
 };
 
 const getSkjemaRoutes = (
@@ -275,47 +249,61 @@ const renderSøknadRoutes = (
                     />
                 }
             />
-            <Route path={SøknadRoutes.SØKNAD_SENDT} element={<SøknadSendt />} />
         </>
     );
 };
 
+const EMPTY_ARRAY = [] as Tilrettelegging[];
+
 interface Props {
-    currentRoute: SøknadRoutes;
     locale: LocaleNo;
     onChangeLocale: (locale: LocaleNo) => void;
     søkerInfo: Søkerinfo;
-    setKvittering: (kvittering: Kvittering) => void;
+    mellomlagretData?: SvpDataMapAndMetaData;
 }
 
 const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
     søkerInfo,
-    currentRoute,
     locale,
     onChangeLocale,
-    setKvittering,
+    mellomlagretData,
 }) => {
-    const { state } = useSvangerskapspengerContext();
-    const { tilrettelegging } = useSøknad();
     const navigate = useNavigate();
-    const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
+    const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING) || EMPTY_ARRAY;
 
-    const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(state.søknad.harGodkjentVilkår || false);
+    const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);
+    const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(locale, søkerInfo.person.fnr, harGodkjentVilkår);
-
-    const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
-
-    const sendSøknad = useSendSøknad(søkerInfo.person.fnr, setKvittering, locale);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(svpApi, setKvittering, locale);
+    const { mellomlagreOgNaviger, errorMellomlagre } = useMellomlagreSøknad(svpApi, locale, setHarGodkjentVilkår);
+    const avbrytSøknad = useAvbrytSøknad(svpApi, setHarGodkjentVilkår);
 
     useEffect(() => {
-        if (currentRoute && harGodkjentVilkår && isFirstTimeLoadingApp) {
-            setIsFirstTimeLoadingApp(false);
-            if (isAvailable(currentRoute, harGodkjentVilkår)) {
-                navigate(currentRoute);
+        if (mellomlagretData && mellomlagretData[ContextDataType.APP_ROUTE]) {
+            setHarGodkjentVilkår(true);
+            if (mellomlagretData.locale) {
+                onChangeLocale(mellomlagretData.locale);
             }
+            navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
         }
-    }, [currentRoute, harGodkjentVilkår, navigate, isFirstTimeLoadingApp]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mellomlagretData]);
+
+    if (kvittering) {
+        if (Environment.INNSYN) {
+            redirect(
+                kvittering.saksNr
+                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
+                    : `${Environment.INNSYN}/redirectFromSoknad`,
+            );
+            return <Spinner />;
+        }
+        return <div>Redirected to Innsyn</div>;
+    }
+
+    if (errorSendSøknad || errorMellomlagre) {
+        return <ApiErrorHandler error={notEmpty(errorSendSøknad || errorMellomlagre)} />;
+    }
 
     return (
         <Routes>
@@ -323,6 +311,7 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
                 path={SøknadRoutes.FORSIDE}
                 element={
                     <Forside
+                        mellomlagreSøknadOgNaviger={mellomlagreOgNaviger}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
                         harGodkjentVilkår={harGodkjentVilkår}
                         locale={locale}
@@ -335,7 +324,7 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
                 harGodkjentVilkår,
                 tilrettelegging,
                 søkerInfo,
-                mellomlagreSøknadOgNaviger,
+                mellomlagreOgNaviger,
                 avbrytSøknad,
                 sendSøknad,
             )}

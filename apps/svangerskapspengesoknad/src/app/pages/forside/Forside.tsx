@@ -7,8 +7,11 @@ import { LocaleNo } from '@navikt/fp-types';
 import { links } from '@navikt/fp-constants';
 
 import './forside.css';
+import { ContextDataType, useContextSaveData } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 export interface Props {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     harGodkjentVilkår: boolean;
     onChangeLocale: (locale: LocaleNo) => void;
@@ -16,6 +19,7 @@ export interface Props {
 }
 
 const Forside: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
     setHarGodkjentVilkår,
     harGodkjentVilkår,
     locale,
@@ -23,6 +27,8 @@ const Forside: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const bem = bemUtils('forside');
+
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const [isError, setIsError] = useState(false);
     const [isChecked, setChecked] = useState(harGodkjentVilkår);
@@ -32,6 +38,10 @@ const Forside: React.FunctionComponent<Props> = ({
             setIsError(true);
         } else {
             setHarGodkjentVilkår(true);
+
+            oppdaterAppRoute(SøknadRoutes.BARNET);
+
+            mellomlagreSøknadOgNaviger();
         }
     };
 

@@ -13,7 +13,6 @@ import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { getOpprinneligStillingsprosent } from 'app/utils/tilretteleggingUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
-import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
 import {
     getSisteDagForSvangerskapspenger,
     getKanHaSvpFremTilTreUkerFørTermin,
@@ -21,7 +20,7 @@ import {
 } from 'app/utils/dateUtils';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import { validatePeriodeFom, validatePeriodeTom, validatePeriodeTomType } from './perioderValidation';
-import { getBackLinkPerioderSteg, useStepConfig } from '../stepsConfig';
+import { getBackLinkPerioderSteg, useStepConfig, getNesteTilretteleggingId } from '../stepsConfig';
 import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 import {
     getDescriptionTekst,

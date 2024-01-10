@@ -1,9 +1,11 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logAmplitudeEvent } from 'app/amplitude/amplitude';
+import { AxiosInstance } from 'axios';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { useContextReset } from './SvpDataContext';
+import { deleteData } from '@navikt/fp-api';
 
-const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
+const useAvbrytSøknad = (svpApi: AxiosInstance, setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
     const navigate = useNavigate();
     const reset = useContextReset();
 
@@ -18,14 +20,14 @@ const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boolean) =
 
         setHarGodkjentVilkår(false);
 
-        // try {
-        //     await Api.deleteMellomlagretSøknad(fødselsnr);
-        // } catch (error) {
-        //     // Vi bryr oss ikke om feil her. Logges bare i backend
-        // }
+        try {
+            await deleteData(svpApi, '/storage/svangerskapspenger', 'Feil ved sletting av mellomlagret data');
+        } catch (error) {
+            // Vi bryr oss ikke om feil her. Logges bare i backend
+        }
 
         navigate('/');
-    }, [navigate, setHarGodkjentVilkår, reset]);
+    }, [navigate, setHarGodkjentVilkår, reset, svpApi]);
 
     return avbrytSøknadHandler;
 };

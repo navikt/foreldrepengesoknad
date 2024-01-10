@@ -1,7 +1,8 @@
 import { FormattedMessage } from 'react-intl';
 import { BodyLong, GuidePanel } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
-import { PageKeys, logAmplitudeEvent } from 'app/amplitude/amplitude';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { PageKeys } from 'app/types/PageKeys';
 
 const FlereArbeidsforholdGuidePanel: React.FunctionComponent = () => {
     logAmplitudeEvent('sidevisning', {

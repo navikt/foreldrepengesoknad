@@ -1,6 +1,5 @@
 export enum PageKeys {
-    Velkommen = 'velkommen',
-    Situasjon = 'situasjon',
+    Forside = 'forside',
     OmBarnet = 'om-barnet',
     Utenlandsopphold = 'utenlandsopphold',
     Oppsummering = 'oppsummering',

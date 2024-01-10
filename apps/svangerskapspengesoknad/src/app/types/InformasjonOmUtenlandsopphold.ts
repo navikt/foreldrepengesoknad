@@ -49,11 +49,8 @@ interface InformasjonOmUtenlandsopphold {
 }
 
 export interface InformasjonOmUtenlandsoppholdDTO {
-    iNorgePåHendelsestidspunktet: boolean;
     iNorgeSiste12Mnd: boolean;
     iNorgeNeste12Mnd: boolean;
-    jobbetINorgeSiste12Mnd: boolean;
-
     tidligereOpphold: UtenlandsoppholdDTO[];
     senereOpphold: UtenlandsoppholdDTO[];
 }

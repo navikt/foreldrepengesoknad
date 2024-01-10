@@ -1,40 +1,25 @@
-import { ContextDataMap, ContextDataType, useContextGetAnyData } from './SvpDataContext';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { notEmpty } from '@navikt/fp-validation';
+import { AxiosInstance } from 'axios';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { redirectToLogin } from 'app/utils/redirectToLogin';
-import { LocaleNo } from '@navikt/fp-types';
+import { Kvittering, LocaleNo } from '@navikt/fp-types';
+import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/fp-api';
+import { FEIL_VED_INNSENDING } from 'app/utils/errorUtils';
+import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
-const mellomlagre = (
+export const VERSJON_MELLOMLAGRING = 1;
+
+export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo } & ContextDataMap;
+
+const useMellomlagreSøknad = (
+    svpApi: AxiosInstance,
     locale: LocaleNo,
-    getDataFromState: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    fødselsnr: string,
-    harGodkjentVilkår: boolean,
+    setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
 ) => {
-    const currentRoute = notEmpty(getDataFromState(ContextDataType.APP_ROUTE));
-
-    const barn = getDataFromState(ContextDataType.OM_BARNET);
-
-    // TODO (TOR) Dropp mapping her og lagre context rått
-    const dataSomSkalMellomlagres = {
-        version: 5,
-        currentRoute,
-        søknad: {
-            harGodkjentVilkår,
-            barn,
-            søker: {
-                språkkode: locale,
-            } as Søker,
-            vedlegg: [],
-        },
-    };
-
-    //return Api.storeAppState(dataSomSkalMellomlagres, fødselsnr);
-};
-
-const useMellomlagreSøknad = (locale: LocaleNo, fødselsnr: string, harGodkjentVilkår: boolean) => {
     const navigate = useNavigate();
-    const getDataFromState = useContextGetAnyData();
+    const state = useContextComplete();
+    const resetState = useContextReset();
+
+    const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
@@ -42,29 +27,39 @@ const useMellomlagreSøknad = (locale: LocaleNo, fødselsnr: string, harGodkjent
 
     useEffect(() => {
         if (skalMellomlagre) {
-            const currentRoute = notEmpty(getDataFromState(ContextDataType.APP_ROUTE));
-
-            const lagre = async () => {
+            const lagreEllerSlett = async () => {
                 setSkalMellomlagre(false);
 
-                await mellomlagre(locale, getDataFromState, fødselsnr, harGodkjentVilkår);
+                const currentPath = state[ContextDataType.APP_ROUTE];
+                if (currentPath) {
+                    await postData<SvpDataMapAndMetaData, Kvittering>(
+                        svpApi,
+                        '/storage/svangerskapspenger',
+                        {
+                            version: VERSJON_MELLOMLAGRING,
+                            locale,
+                            ...state,
+                        },
+                        FEIL_VED_INNSENDING,
+                    );
 
-                navigate(currentRoute);
+                    navigate(currentPath);
+                } else {
+                    // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
+                    await deleteData(svpApi, '/storage/svangerskapspenger', FEIL_VED_INNSENDING);
+
+                    setHarGodkjentVilkår(false);
+                    resetState();
+                    navigate('/');
+                }
 
                 if (promiseRef.current) {
                     promiseRef.current();
                 }
             };
 
-            lagre().catch((error) => {
-                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                    redirectToLogin();
-                } else {
-                    //Logg feil, men ikkje vis feilmelding til brukar
-                    sendErrorMessageToSentry(error);
-
-                    navigate(currentRoute);
-                }
+            lagreEllerSlett().catch((error: ApiAccessError | ApiGeneralError) => {
+                setError(error);
 
                 if (promiseRef.current) {
                     promiseRef.current();
@@ -74,7 +69,7 @@ const useMellomlagreSøknad = (locale: LocaleNo, fødselsnr: string, harGodkjent
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [skalMellomlagre]);
 
-    const mellomlagreSøknadOgNaviger = useCallback(() => {
+    const mellomlagreOgNaviger = useCallback(() => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
 
@@ -85,7 +80,13 @@ const useMellomlagreSøknad = (locale: LocaleNo, fødselsnr: string, harGodkjent
         return promise;
     }, []);
 
-    return mellomlagreSøknadOgNaviger;
+    return useMemo(
+        () => ({
+            mellomlagreOgNaviger,
+            errorMellomlagre: error,
+        }),
+        [mellomlagreOgNaviger, error],
+    );
 };
 
 export default useMellomlagreSøknad;

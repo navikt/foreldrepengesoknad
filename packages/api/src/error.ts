@@ -1,8 +1,13 @@
 import { AxiosError } from 'axios';
 
 export class ApiGeneralError extends Error {
-    constructor(message: string) {
+    callId?: string;
+    timestamp?: string;
+
+    constructor(message: string, callId?: string, timestamp?: string) {
         super(message);
+        this.callId = callId;
+        this.timestamp = timestamp;
     }
 }
 

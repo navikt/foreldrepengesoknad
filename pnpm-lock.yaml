@@ -845,6 +845,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
+      '@navikt/fp-metrics':
+        specifier: workspace:*
+        version: link:../../packages/metrics
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -1472,6 +1475,9 @@ importers:
       '@types/amplitude-js':
         specifier: ^8.16.5
         version: 8.16.5
+      '@types/node':
+        specifier: ^20.10.6
+        version: 20.10.6
       '@types/react':
         specifier: ^18.2.48
         version: 18.2.48
@@ -6214,7 +6220,11 @@ packages:
   /@types/node-fetch@2.6.11:
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
     dependencies:
+<<<<<<< HEAD
       '@types/node': 20.11.6
+=======
+      '@types/node': 20.10.6
+>>>>>>> 4b195e21c (div)
       form-data: 4.0.0
 
   /@types/node@17.0.45:

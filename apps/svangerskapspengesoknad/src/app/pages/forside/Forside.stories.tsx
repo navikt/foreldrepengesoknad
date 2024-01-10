@@ -9,12 +9,21 @@ const defaultExport = {
 
 export default defaultExport;
 
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
 const Template: StoryFn<{
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
-}> = () => {
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+}> = ({ setHarGodkjentVilkår, mellomlagreSøknadOgNaviger = promiseAction() }) => {
     return (
         <Forside
-            setHarGodkjentVilkår={() => true}
+            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            setHarGodkjentVilkår={setHarGodkjentVilkår}
             harGodkjentVilkår={false}
             onChangeLocale={() => undefined}
             locale="nb"

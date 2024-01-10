@@ -35,7 +35,11 @@ const postData = async <REQUEST_DATA, RESPONSE_DATA>(
                     : UKJENT_UUID;
             const callIdForBruker =
                 submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
-            throw new ApiGeneralError(errorMessage + callIdForBruker);
+            throw new ApiGeneralError(
+                errorMessage + callIdForBruker,
+                submitErrorCallId,
+                error.response?.data?.timestamp,
+            );
         }
         if (error instanceof Error) {
             throw new ApiGeneralError(error.message);

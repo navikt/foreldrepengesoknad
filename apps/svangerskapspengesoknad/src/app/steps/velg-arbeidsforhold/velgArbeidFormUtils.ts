@@ -19,7 +19,7 @@ export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: Int
     return navn;
 };
 
-export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[]): VelgArbeidFormData => {
+export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[] = []): VelgArbeidFormData => {
     return {
         arbeidMedTilrettelegging: tilretteleggingsBehov.map((t) => t.id),
     };

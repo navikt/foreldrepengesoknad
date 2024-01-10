@@ -1,8 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import withRouter from 'storybook/decorators/withRouter';
-import MockAdapter from 'axios-mock-adapter/types';
-import AxiosMock from 'storybook/utils/AxiosMock';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
@@ -39,24 +37,19 @@ const Template: StoryFn<Props> = ({
     gåTilNesteSide,
     utenlandsforhold = defaultUtenlandsopphold,
 }) => {
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
-    };
     return (
-        <AxiosMock mock={restMock}>
-            <SvpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
-                }}
-            >
-                <SenereUtenlandsoppholdSteg
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={action('button-click')}
-                    søkerInfo={context.søkerinfo}
-                />
-            </SvpDataContext>
-        </AxiosMock>
+        <SvpDataContext
+            onDispatch={gåTilNesteSide}
+            initialState={{
+                [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
+            }}
+        >
+            <SenereUtenlandsoppholdSteg
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                avbrytSøknad={action('button-click')}
+                søkerInfo={context.søkerinfo}
+            />
+        </SvpDataContext>
     );
 };
 

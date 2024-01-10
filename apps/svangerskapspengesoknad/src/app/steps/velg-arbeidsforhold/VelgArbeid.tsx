@@ -34,7 +34,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
-    const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
@@ -43,7 +43,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const { termindato } = barnet;
 
     const tilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
-        tilrettelegging,
+        tilrettelegging || [],
         søker,
         søkerInfo.arbeidsforhold,
         termindato,

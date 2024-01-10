@@ -32,6 +32,7 @@
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
+        "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utenlandsopphold": "workspace:*",
         "@navikt/fp-utils": "workspace:*",

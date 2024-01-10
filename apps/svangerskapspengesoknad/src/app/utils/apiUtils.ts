@@ -1,4 +1,7 @@
 import { ISOStringToDate } from '@navikt/fp-common';
+import { LocaleNo } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
+import { ContextDataMap, ContextDataType } from 'app/context/SvpDataContext';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
@@ -6,13 +9,16 @@ import { AttachmentDTO, DokumentererType } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
 import { EgenNæring, EgenNæringDTO, Næringstype } from 'app/types/EgenNæring';
 import { Frilans, FrilansDTO } from 'app/types/Frilans';
-import InformasjonOmUtenlandsopphold, {
+import {
     InformasjonOmUtenlandsoppholdDTO,
+    Opphold,
+    SenereOpphold,
+    TidligereOpphold,
     Utenlandsopphold,
     UtenlandsoppholdDTO,
 } from 'app/types/InformasjonOmUtenlandsopphold';
 import { Søker, SøkerDTO } from 'app/types/Søker';
-import { Søknad, SøknadDTO, Søknadstype } from 'app/types/Søknad';
+import { SøknadDTO, Søknadstype } from 'app/types/Søknad';
 import Tilrettelegging, {
     Arbeidsforholdstype,
     DelvisTilretteleggingDTO,
@@ -22,6 +28,8 @@ import Tilrettelegging, {
     TilretteleggingPeriode,
     Tilretteleggingstype,
 } from 'app/types/Tilrettelegging';
+import { getSisteDagForSvangerskapspenger } from './dateUtils';
+import { mapTilretteleggingTilPerioder } from './tilretteleggingUtils';
 
 const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegging): ArbeidsforholdDTO => {
     if (
@@ -51,19 +59,15 @@ const mapBostedUtlandTilDTO = (utenlandsopphold: Utenlandsopphold): Utenlandsopp
 };
 
 const mapUtenlandsOppholdForInnsending = (
-    utenlandsopphold: InformasjonOmUtenlandsopphold,
+    utenlandsopphold: Opphold,
+    senereUtenlandsopphold?: SenereOpphold,
+    tidligereUtenlandsopphold?: TidligereOpphold,
 ): InformasjonOmUtenlandsoppholdDTO => {
     return {
-        iNorgePåHendelsestidspunktet: utenlandsopphold.iNorgePåHendelsestidspunktet,
         iNorgeSiste12Mnd: utenlandsopphold.iNorgeSiste12Mnd,
         iNorgeNeste12Mnd: utenlandsopphold.iNorgeNeste12Mnd,
-        jobbetINorgeSiste12Mnd: utenlandsopphold.jobbetINorgeSiste12Mnd,
-        tidligereOpphold: utenlandsopphold.tidligereOpphold.map((opphold) => {
-            return mapBostedUtlandTilDTO(opphold);
-        }),
-        senereOpphold: utenlandsopphold.senereOpphold.map((opphold) => {
-            return mapBostedUtlandTilDTO(opphold);
-        }),
+        tidligereOpphold: (tidligereUtenlandsopphold?.tidligereOpphold || []).map(mapBostedUtlandTilDTO),
+        senereOpphold: (senereUtenlandsopphold?.senereOpphold || []).map(mapBostedUtlandTilDTO),
     };
 };
 
@@ -203,14 +207,14 @@ const mapArbeidIUtlandetForInnsending = (arbeid: ArbeidIUtlandet): ArbeidIUtland
     };
 };
 
-const mapSøkerForInnsending = (søker: Søker): SøkerDTO => {
+const mapSøkerForInnsending = (søker: Søker, locale: LocaleNo): SøkerDTO => {
     const mappedNæring = mapEgenNæringForInnsending(søker.selvstendigNæringsdrivendeInformasjon);
     const mappedArbeidIUtlandet = søker.andreInntekter
         ? søker.andreInntekter.map((inntekt) => mapArbeidIUtlandetForInnsending(inntekt))
         : undefined;
     const mappedSøker: SøkerDTO = {
         rolle: søker.rolle,
-        språkkode: søker.språkkode,
+        språkkode: locale,
         frilansInformasjon: søker.harJobbetSomFrilans ? mapFrilansForInnsending(søker.frilansInformasjon) : undefined,
         selvstendigNæringsdrivendeInformasjon: mappedNæring ? [mappedNæring] : undefined,
         andreInntekterSiste10Mnd: mappedArbeidIUtlandet,
@@ -234,14 +238,26 @@ const mapVedleggForInnsending = (tilrettelegginger: Tilrettelegging[]): Attachme
 };
 
 export const getSøknadForInnsending = (
-    søknad: Søknad,
-    tilretteleggingsPerioder: TilretteleggingPeriode[],
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    locale: LocaleNo,
 ): SøknadDTO => {
-    const utenlandsoppholdForInnsending = mapUtenlandsOppholdForInnsending(søknad.informasjonOmUtenlandsopphold);
-    const barnForInnsending = mapBarnForInnsending(søknad.barn);
-    const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilretteleggingsPerioder);
-    const søkerForInnsending = mapSøkerForInnsending(søknad.søker);
-    const vedleggForInnsending = mapVedleggForInnsending(søknad.tilrettelegging);
+    const utenlandsoppholdForInnsending = mapUtenlandsOppholdForInnsending(
+        notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD)),
+        hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE),
+        hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE),
+    );
+
+    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
+    const tilrettelegging = notEmpty(hentData(ContextDataType.TILRETTELEGGING));
+
+    const barnForInnsending = mapBarnForInnsending(barn);
+    const vedleggForInnsending = mapVedleggForInnsending(tilrettelegging);
+    const søkerForInnsending = mapSøkerForInnsending(notEmpty(hentData(ContextDataType.SØKER)), locale);
+
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
+    const allePerioderMedFomOgTom = mapTilretteleggingTilPerioder(tilrettelegging, sisteDagForSvangerskapspenger);
+    const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(allePerioderMedFomOgTom);
+
     return {
         type: Søknadstype.SVANGERSKAPSPENGER,
         erEndringssøknad: false,

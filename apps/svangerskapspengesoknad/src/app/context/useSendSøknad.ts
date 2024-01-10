@@ -1,57 +1,64 @@
-import { AxiosError } from 'axios';
+import { useCallback, useMemo, useState } from 'react';
+import { AxiosInstance } from 'axios';
+import * as Sentry from '@sentry/browser';
+import { Kvittering, LocaleNo } from '@navikt/fp-types';
+import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
 import { getSøknadForInnsending } from 'app/utils/apiUtils';
+import Environment from 'app/Environment';
+import { FEIL_VED_INNSENDING } from 'app/utils/errorUtils';
 import { useContextGetAnyData } from './SvpDataContext';
-import Api from 'app/api/api';
-import { FEIL_VED_INNSENDING, UKJENT_UUID, getErrorCallId, sendErrorMessageToSentry } from 'app/utils/errorUtils';
-import { redirectToLogin } from 'app/utils/redirectToLogin';
-import { LocaleNo } from '@navikt/fp-types';
 
-export const isAxiosError = (candidate: unknown): candidate is AxiosError<any> => {
-    if (candidate && typeof candidate === 'object' && 'isAxiosError' in candidate) {
-        return true;
-    }
-    return false;
-};
-
-const useSendSøknad = (fødselsnr: string, setKvittering: (kvittering: Kvittering) => void, locale: LocaleNo) => {
+const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvittering) => void, locale: LocaleNo) => {
     const hentData = useContextGetAnyData();
 
-    const sendSøknad = async (abortSignal: AbortSignal) => {
-        const søknadForInnsending = getSøknadForInnsending(hentData);
+    const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
-        let kvittering;
+    const sendSøknad = useCallback(
+        async (abortSignal: AbortSignal) => {
+            const søknadForInnsending = getSøknadForInnsending(hentData, locale);
 
-        try {
-            const response = await Api.sendSøknad(søknadForInnsending, abortSignal);
-            kvittering = response.data;
-        } catch (error: unknown) {
-            //TODO (TOR) Håndter dette utanfor denne hook'en (På same måte i alle appane)
+            let kvittering;
 
-            if (isAxiosError(error)) {
-                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                    redirectToLogin();
+            try {
+                kvittering = await postData<typeof søknadForInnsending, Kvittering>(
+                    svpApi,
+                    `${Environment.REST_API_URL}/soknad/svangerskapspenger`,
+                    søknadForInnsending,
+                    FEIL_VED_INNSENDING,
+                    true,
+                    abortSignal,
+                );
+            } catch (error: unknown) {
+                if (isApiError(error)) {
+                    if (error instanceof ApiGeneralError) {
+                        Sentry.captureMessage(error.message);
+                    }
+                    setError(error);
+                } else {
+                    throw new Error('This should never happen');
+                }
+            }
+
+            if (kvittering) {
+                try {
+                    await deleteData(svpApi, '/storage/svangerskapspenger', FEIL_VED_INNSENDING, abortSignal);
+                } catch (error) {
+                    // Vi bryr oss ikke om feil her. Logges bare i backend
                 }
 
-                sendErrorMessageToSentry(error);
-
-                const submitErrorCallId = getErrorCallId(error);
-                const callIdForBruker =
-                    submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
-                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                setKvittering(kvittering);
             }
-            throw new Error(String(error));
-        }
+        },
+        [hentData, setKvittering, locale, svpApi],
+    );
 
-        try {
-            await Api.deleteMellomlagretSøknad(fødselsnr, abortSignal);
-        } catch (error) {
-            // Vi bryr oss ikke om feil her. Logges bare i backend
-        }
-
-        setKvittering(kvittering);
-    };
-
-    return sendSøknad;
+    return useMemo(
+        () => ({
+            sendSøknad,
+            errorSendSøknad: error,
+        }),
+        [sendSøknad, error],
+    );
 };
 
 export default useSendSøknad;

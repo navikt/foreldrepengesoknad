@@ -27,6 +27,7 @@ export interface SøkerDTO
         | 'harJobbetSomSelvstendigNæringsdrivende'
         | 'harHattAnnenInntekt'
     > {
+    språkkode: LocaleNo;
     frilansInformasjon?: FrilansDTO;
     selvstendigNæringsdrivendeInformasjon?: EgenNæringDTO[];
     andreInntekterSiste10Mnd?: ArbeidIUtlandetDTO[];

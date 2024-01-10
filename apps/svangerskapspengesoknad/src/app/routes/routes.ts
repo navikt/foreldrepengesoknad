@@ -13,7 +13,6 @@ enum SøknadRoutes {
     TILRETTELEGGING = '/tilrettelegging',
     PERIODER = '/perioder',
     OPPSUMMERING = '/oppsummering',
-    SØKNAD_SENDT = '/soknad-sendt',
 }
 
 export default SøknadRoutes;

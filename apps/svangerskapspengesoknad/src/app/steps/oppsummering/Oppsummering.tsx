@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
 import { Accordion, BodyShort, Button } from '@navikt/ds-react';
@@ -11,7 +10,6 @@ import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
-import SøknadRoutes from 'app/routes/routes';
 import EgenNæringVisning from 'app/components/egen-næring-visning/EgenNæringVisning';
 import ArbeidIUtlandetVisning from 'app/components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import AccordionItem from 'app/components/accordion/AccordionItem';
@@ -52,7 +50,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
-    const navigate = useNavigate();
     const bem = bemUtils('oppsummering');
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,7 +77,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
         if (values.harGodkjentOppsummering) {
             setIsSubmitting(true);
             await sendSøknad(abortSignal);
-            navigate(SøknadRoutes.SØKNAD_SENDT);
         }
     };
 
