@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './TilretteleggingStep.stories';
 import dayjs from 'dayjs';
+import { ContextDataType } from 'app/context/SvpDataContext';
 
 const { Default } = composeStories(stories);
 
@@ -23,7 +24,10 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
-        render(<Default />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
         expect(
             await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
         ).toBeInTheDocument();
@@ -31,16 +35,69 @@ describe('<Behov for tilrettelegging>', () => {
         const tilretteleggingsdatoInput = screen.getByLabelText(
             'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
         );
-        await user.type(tilretteleggingsdatoInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
+        await user.type(tilretteleggingsdatoInput, dayjs().format('DD.MM.YYYY'));
         await user.tab();
 
         expect(screen.getByText('Hvor mye kan du jobbe?')).toBeInTheDocument();
-        // Fiks skrivefeil i mmye
+
         await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+
+        await user.click(screen.getByText('Du skal ha perioder med ulik arbeidsprosent'));
+
         await user.click(screen.getByText('Neste steg'));
 
         expect(screen.queryByText('Du må oppgi startdatoen for behov for tilrettelegging.')).not.toBeInTheDocument();
         expect(screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: '263929546-6215-9868-5127-161910165730101',
+            key: ContextDataType.TILRETTELEGGING_ID,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: [
+                {
+                    arbeidsforhold: {
+                        arbeidsgiverId: '990322244',
+                        navn: 'Omsorgspartner Vestfold AS',
+                        opprinneligstillingsprosent: 100,
+                        type: 'virksomhet',
+                    },
+                    behovForTilretteleggingFom: '2024-01-10',
+                    delvisTilretteleggingPeriodeType: 'VARIERTE_PERIODER',
+                    enPeriodeMedTilretteleggingFom: undefined,
+                    enPeriodeMedTilretteleggingStillingsprosent: undefined,
+                    enPeriodeMedTilretteleggingTilbakeIJobbDato: undefined,
+                    enPeriodeMedTilretteleggingTomType: undefined,
+                    id: '263929546-6215-9868-5127-161910165730101',
+                    risikofaktorer: undefined,
+                    tilretteleggingstiltak: undefined,
+                    type: 'delvis',
+                    varierendePerioder: [],
+                    vedlegg: [
+                        expect.objectContaining({
+                            filename: 'vedlegg – Kopi (7).png',
+                            filesize: 7477,
+                            pending: false,
+                            skjemanummer: 'I000109',
+                            type: 'tilrettelegging',
+                            uploaded: true,
+                            url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
+                            uuid: 'Created',
+                        }),
+                    ],
+                },
+            ],
+            key: ContextDataType.TILRETTELEGGING,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: '/perioder/263929546-6215-9868-5127-161910165730101',
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('validering av for sen tilrettelegging', async () => {

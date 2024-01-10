@@ -32,7 +32,7 @@ const VedleggOppsummering: FunctionComponent<Props> = ({ tilrettelegging }) => {
                 {t.vedlegg.map((v) => (
                     <div key={guid()}>
                         <HStack>
-                            <Link className={bem.element('link')} href={v.url} target="_blank" icon>
+                            <Link className={bem.element('link')} href={v.url} target="_blank">
                                 <FileIcon className={bem.element('icon')} title="Opplastet fil" />
                                 <BodyShort> {v.filename}</BodyShort>
                             </Link>

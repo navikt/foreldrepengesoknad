@@ -2,6 +2,8 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './Inntektsinformasjon.stories';
 import { render, screen } from '@testing-library/react';
+import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 const { Default } = composeStories(stories);
 
@@ -28,7 +30,10 @@ describe('<Inntektsinformasjon>', () => {
     });
 
     it('skal ikke vise feilmelding', async () => {
-        render(<Default />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
 
@@ -50,5 +55,26 @@ describe('<Inntektsinformasjon>', () => {
         expect(
             screen.queryByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.'),
         ).not.toBeInTheDocument();
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                andreInntekter: undefined,
+                frilansInformasjon: undefined,
+                harHattAnnenInntekt: true,
+                harJobbetSomFrilans: false,
+                harJobbetSomSelvstendigNæringsdrivende: false,
+                rolle: 'mor',
+                selvstendigNæringsdrivendeInformasjon: undefined,
+            },
+            key: ContextDataType.SØKER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.ARBEID_I_UTLANDET,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 });

@@ -1,5 +1,5 @@
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { getTotalStillingsprosentPåSkjæringstidspunktet, getUnikeArbeidsforhold } from '../arbeidsforholdUtils';
+import { getTotalStillingsprosentPåSkjæringstidspunktet, getUnikeArbeidsforhold } from './arbeidsforholdUtils';
 
 describe('getUnikeArbeidsforhold', () => {
     it('Skal finne to unike arbeidsforhold der første er avsluttet og andre pågående', () => {

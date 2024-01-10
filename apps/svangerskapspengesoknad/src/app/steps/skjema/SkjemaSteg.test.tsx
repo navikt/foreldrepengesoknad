@@ -2,13 +2,22 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import userEvent from '@testing-library/user-event';
 import * as stories from './SkjemaSteg.stories';
+import { ContextDataType } from 'app/context/SvpDataContext';
 
 const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrilans, KanMaxHaToVedlegg } =
     composeStories(stories);
 
 describe('<SkjemaSteg>', () => {
     it('skal vise feilmelding når en ikke har lastet opp minst ett vedlegg', async () => {
-        render(<SkalIkkeFeileOpplasting />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(
+            <SkalIkkeFeileOpplasting
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
         expect(screen.getByText('Last opp skjema')).toBeInTheDocument();
@@ -27,6 +36,47 @@ describe('<SkjemaSteg>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.queryByText('Du må laste opp minst ett dokument')).not.toBeInTheDocument();
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: '263929546-6215-9868-5127-161910165730101',
+            key: ContextDataType.TILRETTELEGGING_ID,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: [
+                {
+                    arbeidsforhold: {
+                        arbeidsgiverId: '990322244',
+                        navn: 'Omsorgspartner Vestfold AS',
+                        opprinneligstillingsprosent: 100,
+                        type: 'virksomhet',
+                    },
+                    id: '263929546-6215-9868-5127-161910165730101',
+                    varierendePerioder: [],
+                    vedlegg: [
+                        expect.objectContaining({
+                            filename: 'hello.png',
+                            filesize: 5,
+                            pending: false,
+                            skjemanummer: 'I000109',
+                            type: 'tilrettelegging',
+                            uploaded: true,
+                            url: undefined,
+                            uuid: undefined,
+                        }),
+                    ],
+                },
+            ],
+            key: ContextDataType.TILRETTELEGGING,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: '/tilrettelegging/263929546-6215-9868-5127-161910165730101',
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal vise opplaster vedlegg', async () => {

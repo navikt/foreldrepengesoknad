@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './PerioderStep.stories';
 import dayjs from 'dayjs';
+import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 const { Default, FlereStillinger } = composeStories(stories);
 
@@ -26,7 +28,10 @@ describe('<Perioder>', () => {
         expect(screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')).toHaveLength(2);
     });
     it('skal ikke vise feilmelding når alt er utfylt', async () => {
-        render(<Default />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Du skal jobbe fra:')).toBeInTheDocument();
 
@@ -51,6 +56,48 @@ describe('<Perioder>', () => {
             ),
         ).not.toBeInTheDocument();
         expect(screen.queryByText('Du må oppgi stillingsprosenten du skal jobbe.')).not.toBeInTheDocument();
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: '263929546-6215-9868-5127-161910165730101',
+            key: ContextDataType.TILRETTELEGGING_ID,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: [
+                {
+                    arbeidsforhold: {
+                        navn: 'Omsorgspartner Vestfold AS',
+                        stillinger: [
+                            {
+                                fom: '2019-01-01',
+                                stillingsprosent: 100,
+                            },
+                        ],
+                    },
+                    delvisTilretteleggingPeriodeType: 'VARIERTE_PERIODER',
+                    id: '263929546-6215-9868-5127-161910165730101',
+                    type: 'delvis',
+                    varierendePerioder: [
+                        {
+                            fom: '2023-10-30',
+                            stillingsprosent: '20',
+                            tom: '',
+                            tomType: 'SISTE_DAG_MED_SVP',
+                            type: 'delvis',
+                        },
+                    ],
+                },
+            ],
+            key: ContextDataType.TILRETTELEGGING,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: SøknadRoutes.OPPSUMMERING,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
     it('validering av dato på feil format', async () => {
         render(<Default />);
