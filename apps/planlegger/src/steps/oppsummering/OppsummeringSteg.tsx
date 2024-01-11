@@ -1,4 +1,4 @@
-import { Button, ExpansionCard, Heading, Ingress } from '@navikt/ds-react';
+import { BodyLong, Button, ExpansionCard, Heading } from '@navikt/ds-react';
 import { Block, StepButtonWrapper } from '@navikt/fp-common';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { FormattedMessage } from 'react-intl';
@@ -24,9 +24,9 @@ const Oppsummering = () => {
                 </Block>
 
                 <Block padBottom="xl">
-                    <Ingress>
+                    <BodyLong size="large">
                         <FormattedMessage id="oppsummering.ingress" />
-                    </Ingress>
+                    </BodyLong>
                 </Block>
 
                 <Block padBottom="xl">
