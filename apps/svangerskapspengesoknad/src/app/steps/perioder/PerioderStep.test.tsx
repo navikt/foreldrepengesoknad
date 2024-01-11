@@ -58,11 +58,6 @@ describe('<Perioder>', () => {
         expect(screen.queryByText('Du må oppgi stillingsprosenten du skal jobbe.')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: '263929546-6215-9868-5127-161910165730101',
-            key: ContextDataType.TILRETTELEGGING_ID,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: [
                 {
                     arbeidsforhold: {
@@ -91,7 +86,7 @@ describe('<Perioder>', () => {
             key: ContextDataType.TILRETTELEGGING,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.OPPSUMMERING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',

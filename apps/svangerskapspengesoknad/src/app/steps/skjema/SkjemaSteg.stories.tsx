@@ -51,11 +51,11 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = ({
             initialState={{
                 [ContextDataType.SØKER]: defaultContext.søknad.søker,
                 [ContextDataType.TILRETTELEGGING]: tilrettelegging,
+                [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
                 [ContextDataType.OM_BARNET]: defaultContext.søknad.barn,
             }}
         >
             <SkjemaSteg
-                id={'263929546-6215-9868-5127-161910165730101'}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
                 søkerInfo={defaultContext.søkerinfo}

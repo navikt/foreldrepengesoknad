@@ -38,6 +38,9 @@ const Step: React.FunctionComponent<StepProps> = ({
     infoMessage,
 }) => {
     const currentStepIndex = steps.findIndex((s) => s.id === activeStepId || s.isSelected);
+    if (currentStepIndex === -1) {
+        throw new Error(`${activeStepId} not found in step-config`);
+    }
 
     const title = pageTitle || steps[currentStepIndex].label;
 

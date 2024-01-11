@@ -8,7 +8,6 @@ import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validati
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import {
     getSisteDagForSvangerskapspenger,
     getKanHaSvpFremTilTreUkerFørTermin,
@@ -38,7 +37,7 @@ import {
     TilretteleggingFormField,
     DelivisTilretteleggingPeriodeType,
 } from './tilretteleggingStepFormConfig';
-import { getBackLinkForTilretteleggingSteg, getNextRouteForTilretteleggingSteg, useStepConfig } from '../stepsConfig';
+import { getNextRouteAndTilretteleggingIdForTilretteleggingSteg, useStepConfig } from '../stepsConfig';
 import {
     validateRisikofaktorer,
     validateSammePeriodeFremTilTerminFom,
@@ -53,6 +52,7 @@ import {
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import BackButton from '../BackButton';
 import { Søkerinfo } from 'app/types/Søkerinfo';
+import SøknadRoutes from 'app/routes/routes';
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
@@ -63,23 +63,12 @@ const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype)
 };
 
 export interface Props {
-    id: string;
-    typeArbeid: Arbeidsforholdstype;
-    navn: string;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
     søkerInfo: Søkerinfo;
 }
 
-const TilretteleggingStep: FunctionComponent<Props> = ({
-    navn,
-    id,
-    typeArbeid,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    søkerInfo,
-}) => {
-    useUpdateCurrentTilretteleggingId(id);
+const TilretteleggingStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
@@ -87,12 +76,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
 
     const tilretteleggingFraState = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const tilretteleggingId = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING_ID));
+    const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
 
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
-    const currentTilrettelegging = notEmpty(tilretteleggingFraState.find((t) => t.id === id));
+    const currentTilrettelegging = notEmpty(tilretteleggingFraState.find((t) => t.id === valgtTilretteleggingId));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
     const termindatoDate = ISOStringToDate(barnet.termindato);
     const navnArbeidsgiver =
@@ -102,6 +92,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
             : currentTilrettelegging.arbeidsforhold.navn;
 
     const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
+
+    const typeArbeid = currentTilrettelegging.arbeidsforhold.type;
 
     const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeid);
     const tilretteleggingTypeLabel = getTilretteleggingTypeLabel(
@@ -131,18 +123,19 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
         setIsSubmitting(true);
 
         const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
-            id,
+            valgtTilretteleggingId,
             values,
             tilretteleggingFraState,
             currentTilrettelegging,
         );
         oppdaterTilrettelegging(mappedTilrettelegging);
 
-        const nextRoute = getNextRouteForTilretteleggingSteg(
+        const { nextRoute, nextTilretteleggingId } = getNextRouteAndTilretteleggingIdForTilretteleggingSteg(
             values,
             tilretteleggingFraState,
             currentTilrettelegging.id,
         );
+        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
         oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();
@@ -168,8 +161,12 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId={`tilrettelegging-${id}`}
-                        pageTitle={getTilretteleggingSideTittel(erFlereTilrettelegginger, intl, navn)}
+                        activeStepId={`tilrettelegging-${valgtTilretteleggingId}`}
+                        pageTitle={getTilretteleggingSideTittel(
+                            erFlereTilrettelegginger,
+                            intl,
+                            currentTilrettelegging.arbeidsforhold.navn,
+                        )}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
                         onContinueLater={onFortsettSøknadSenere}
@@ -442,10 +439,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 <StepButtonWrapper>
                                     <BackButton
                                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getBackLinkForTilretteleggingSteg(tilretteleggingId)}
+                                        route={SøknadRoutes.SKJEMA}
                                     />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                        <FormattedMessage id="søknad.gåVidere" />
                                     </Button>
                                 </StepButtonWrapper>
                             </Block>

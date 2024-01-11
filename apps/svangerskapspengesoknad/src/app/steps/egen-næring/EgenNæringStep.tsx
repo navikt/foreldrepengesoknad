@@ -57,6 +57,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
 
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: Partial<EgenNæringFormData>) => {
@@ -80,8 +81,13 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
 
         oppdaterSøker(søkerMedNæring);
 
-        const neste = getNextRouteForNæring(søker, barnet.termindato, søkerInfo.arbeidsforhold);
-        oppdaterAppRoute(neste);
+        const { nextRoute, nextTilretteleggingId } = getNextRouteForNæring(
+            søker,
+            barnet.termindato,
+            søkerInfo.arbeidsforhold,
+        );
+        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
+        oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();
     };

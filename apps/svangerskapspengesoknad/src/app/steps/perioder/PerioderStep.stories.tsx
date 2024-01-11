@@ -40,6 +40,7 @@ const Template: StoryFn<Props> = ({
             onDispatch={gåTilNesteSide}
             initialState={{
                 [ContextDataType.TILRETTELEGGING]: tilrettelegging,
+                [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
                 [ContextDataType.OM_BARNET]: {
                     erBarnetFødt: false,
                     termindato: '2024-02-18',
@@ -48,8 +49,6 @@ const Template: StoryFn<Props> = ({
             }}
         >
             <PerioderStep
-                id={'263929546-6215-9868-5127-161910165730101'}
-                navn={'Omsorgspartner Vestfold AS'}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
                 søkerInfo={context.søkerinfo}

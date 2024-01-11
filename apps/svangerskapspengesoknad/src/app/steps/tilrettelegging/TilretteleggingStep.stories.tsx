@@ -3,7 +3,6 @@ import { action } from '@storybook/addon-actions';
 import withRouterProvider from 'storybook/decorators/withRouter';
 import TilretteleggingStep from './TilretteleggingStep';
 import _context from 'storybook/storydata/soknad/soknad.json';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
 
 const defaultExport = {
@@ -34,14 +33,11 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
             onDispatch={gåTilNesteSide}
             initialState={{
                 [ContextDataType.TILRETTELEGGING]: context.søknad.tilrettelegging,
-                [ContextDataType.TILRETTELEGGING_ID]: context.currentTilretteleggingId,
+                [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
                 [ContextDataType.OM_BARNET]: context.søknad.barn,
             }}
         >
             <TilretteleggingStep
-                id={'263929546-6215-9868-5127-161910165730101'}
-                typeArbeid={Arbeidsforholdstype.VIRKSOMHET}
-                navn={'Omsorgspartner Vestfold AS'}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
                 søkerInfo={context.søkerinfo}

@@ -2,11 +2,21 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import { getNextRouteForUtenlandsopphold, getPreviousStep, useStepConfig } from '../stepsConfig';
+import { getPreviousStep, useStepConfig } from '../stepsConfig';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { Søkerinfo } from 'app/types/Søkerinfo';
+import SøknadRoutes from 'app/routes/routes';
+
+const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
+    if (values.harBoddUtenforNorgeSiste12Mnd) {
+        return SøknadRoutes.HAR_BODD_I_UTLANDET;
+    } else if (values.skalBoUtenforNorgeNeste12Mnd) {
+        return SøknadRoutes.SKAL_BO_I_UTLANDET;
+    }
+    return SøknadRoutes.ARBEID;
+};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;

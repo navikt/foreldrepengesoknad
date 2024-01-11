@@ -8,7 +8,6 @@ import { Block, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-
 import { notEmpty } from '@navikt/fp-validation';
 import SøknadRoutes from 'app/routes/routes';
 import { TilOgMedDatoType } from 'app/types/Tilrettelegging';
-import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { getOpprinneligStillingsprosent } from 'app/utils/tilretteleggingUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
@@ -20,7 +19,7 @@ import {
 } from 'app/utils/dateUtils';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import { validatePeriodeFom, validatePeriodeTom, validatePeriodeTomType } from './perioderValidation';
-import { getBackLinkPerioderSteg, useStepConfig, getNesteTilretteleggingId } from '../stepsConfig';
+import { useStepConfig, getNesteTilretteleggingId } from '../stepsConfig';
 import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 import {
     getDescriptionTekst,
@@ -41,15 +40,12 @@ import BackButton from '../BackButton';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 
 export interface Props {
-    id: string;
-    navn: string;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
     søkerInfo: Søkerinfo;
 }
 
-const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
-    useUpdateCurrentTilretteleggingId(id);
+const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,12 +54,13 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOg
 
     const tilretteleggingFraState = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const currentTilretteleggingId = useContextGetData(ContextDataType.TILRETTELEGGING_ID);
+    const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
-    const currentTilrettelegging = notEmpty(tilretteleggingFraState.find((t) => t.id === id));
+    const currentTilrettelegging = notEmpty(tilretteleggingFraState.find((t) => t.id === valgtTilretteleggingId));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
 
@@ -77,18 +74,33 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOg
     const onSubmit = (values: Partial<PerioderFormData>) => {
         setIsSubmitting(true);
 
-        const mappedTilrettelegging = mapPerioderFormDataToState(id, values, tilretteleggingFraState);
+        const mappedTilrettelegging = mapPerioderFormDataToState(
+            valgtTilretteleggingId,
+            values,
+            tilretteleggingFraState,
+        );
         oppdaterTilrettelegging(mappedTilrettelegging);
 
-        let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
-        const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, currentTilretteleggingId);
+        const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, valgtTilretteleggingId);
         if (nesteTilretteleggingId) {
-            nextRoute = `${SøknadRoutes.SKJEMA}/${nesteTilretteleggingId}`;
+            oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
+            oppdaterAppRoute(SøknadRoutes.SKJEMA);
+        } else {
+            oppdaterAppRoute(SøknadRoutes.OPPSUMMERING);
         }
-        oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();
     };
+
+    const setTilretteleggingIdOgMellomlagre = () => {
+        oppdaterValgtTilretteleggingId(valgtTilretteleggingId);
+        return mellomlagreSøknadOgNaviger();
+    };
+
+    const activeStepId = `periode-${valgtTilretteleggingId}`;
+    if (!stepConfig.some((step) => step.id === activeStepId)) {
+        return null;
+    }
 
     return (
         <PerioderFormComponents.FormikWrapper
@@ -113,8 +125,12 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOg
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId={`periode-${id}`}
-                        pageTitle={getPeriodeSideTittel(erFlereTilrettelegginger, navn, intl)}
+                        activeStepId={activeStepId}
+                        pageTitle={getPeriodeSideTittel(
+                            erFlereTilrettelegginger,
+                            currentTilrettelegging.arbeidsforhold.navn,
+                            intl,
+                        )}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
                         onContinueLater={onFortsettSøknadSenere}
@@ -321,8 +337,8 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id, mellomlagreSøknadOg
                             <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getBackLinkPerioderSteg(currentTilretteleggingId)}
+                                        mellomlagreSøknadOgNaviger={setTilretteleggingIdOgMellomlagre}
+                                        route={SøknadRoutes.TILRETTELEGGING}
                                     />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

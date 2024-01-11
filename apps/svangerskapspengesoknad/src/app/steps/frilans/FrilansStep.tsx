@@ -41,6 +41,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
 
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: Partial<FrilansFormData>) => {
@@ -62,8 +63,13 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
 
         oppdaterSøker(søkerMedFrilans);
 
-        const neste = getNextRouteForFrilans(søker, barnet.termindato, søkerInfo.arbeidsforhold);
-        oppdaterAppRoute(neste);
+        const { nextRoute, nextTilretteleggingId } = getNextRouteForFrilans(
+            søker,
+            barnet.termindato,
+            søkerInfo.arbeidsforhold,
+        );
+        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
+        oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();
     };

@@ -59,6 +59,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: Partial<ArbeidIUtlandetFormData>) => {
@@ -69,7 +70,12 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
 
         oppdaterSøker(søkerMedArbeidIUtlandet);
 
-        const nextRoute = getNextRouteValgAvArbeidEllerSkjema(barnet.termindato, søkerInfo.arbeidsforhold, søker);
+        const { nextRoute, nextTilretteleggingId } = getNextRouteValgAvArbeidEllerSkjema(
+            barnet.termindato,
+            søkerInfo.arbeidsforhold,
+            søker,
+        );
+        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
         oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();

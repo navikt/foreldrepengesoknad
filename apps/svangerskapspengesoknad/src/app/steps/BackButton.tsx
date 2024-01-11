@@ -6,7 +6,7 @@ import { ContextDataType, useContextSaveData } from 'app/context/SvpDataContext'
 // TODO (TOR) Midlertidig komponent. Erstatt med StepButtonsHookForm når ein skriv om til react-hook-form
 
 type Props = {
-    route: SøknadRoutes | string;
+    route: SøknadRoutes;
     mellomlagreSøknadOgNaviger: () => void;
 };
 

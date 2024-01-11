@@ -4,6 +4,8 @@ import { composeStories } from '@storybook/react';
 import * as stories from './TilretteleggingStep.stories';
 import dayjs from 'dayjs';
 import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const { Default } = composeStories(stories);
 
@@ -50,11 +52,6 @@ describe('<Behov for tilrettelegging>', () => {
         expect(screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: '263929546-6215-9868-5127-161910165730101',
-            key: ContextDataType.TILRETTELEGGING_ID,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: [
                 {
                     arbeidsforhold: {
@@ -63,7 +60,7 @@ describe('<Behov for tilrettelegging>', () => {
                         opprinneligstillingsprosent: 100,
                         type: 'virksomhet',
                     },
-                    behovForTilretteleggingFom: '2024-01-10',
+                    behovForTilretteleggingFom: dayjs().format(ISO_DATE_FORMAT),
                     delvisTilretteleggingPeriodeType: 'VARIERTE_PERIODER',
                     enPeriodeMedTilretteleggingFom: undefined,
                     enPeriodeMedTilretteleggingStillingsprosent: undefined,
@@ -91,8 +88,13 @@ describe('<Behov for tilrettelegging>', () => {
             key: ContextDataType.TILRETTELEGGING,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: '/perioder/263929546-6215-9868-5127-161910165730101',
+            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: SøknadRoutes.PERIODER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

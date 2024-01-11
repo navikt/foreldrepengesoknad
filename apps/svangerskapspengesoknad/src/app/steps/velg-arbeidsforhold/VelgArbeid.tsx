@@ -12,7 +12,6 @@ import {
     mapArbeidsforholdToVelgArbeidOptions,
     validateVelgArbeidIsAnswered,
 } from './velgArbeidFormUtils';
-import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import FlereArbeidsforholdGuidePanel from './components/guidepanel/FlereArbeidsforholdGuidePanel';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
@@ -27,7 +26,6 @@ type Props = {
 };
 
 const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
-    useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
@@ -38,6 +36,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const { termindato } = barnet;
@@ -59,7 +58,8 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
         oppdaterTilrettelegging(tilretteleggingValg);
 
         if (tilretteleggingValg.length > 0) {
-            oppdaterAppRoute(`${SøknadRoutes.SKJEMA}/${tilretteleggingValg[0].id}`);
+            oppdaterValgtTilretteleggingId(tilretteleggingValg[0].id);
+            oppdaterAppRoute(SøknadRoutes.SKJEMA);
         } else {
             oppdaterAppRoute(SøknadRoutes.SKJEMA);
         }

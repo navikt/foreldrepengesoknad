@@ -8,17 +8,16 @@ import { notEmpty } from '@navikt/fp-validation';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
 import EgenNæringVisning from 'app/components/egen-næring-visning/EgenNæringVisning';
 import ArbeidIUtlandetVisning from 'app/components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import AccordionItem from 'app/components/accordion/AccordionItem';
 import AccordionContent from 'app/components/accordion/AccordionContent';
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import { ContextDataType, useContextGetData } from 'app/context/SvpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
-import { getBackLinkForOppsummeringSteg, useStepConfig } from '../stepsConfig';
+import { getBackLinkAndIdForOppsummeringSteg, useStepConfig } from '../stepsConfig';
 import {
     OppsummeringFormComponents,
     OppsummeringFormData,
@@ -47,7 +46,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     avbrytSøknad,
     søkerInfo,
 }) => {
-    useUpdateCurrentTilretteleggingId(undefined);
     const intl = useIntl();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const bem = bemUtils('oppsummering');
@@ -62,6 +60,8 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const allePerioderMedFomOgTom = useMemo(
         () => mapTilretteleggingTilPerioder(tilrettelegging, sisteDagForSvangerskapspenger),
@@ -72,6 +72,13 @@ const Oppsummering: React.FunctionComponent<Props> = ({
         (t) => t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER,
     );
     const tilretteleggingMedSN = tilrettelegging.find((t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG);
+
+    const { previousRoute, previousTilretteleggingId } = getBackLinkAndIdForOppsummeringSteg(tilrettelegging);
+
+    const setForrigeTilretteleggingIdOgMellomlagre = () => {
+        oppdaterValgtTilretteleggingId(previousTilretteleggingId);
+        return mellomlagreSøknadOgNaviger();
+    };
 
     const sendInn = async (values: Partial<OppsummeringFormData>) => {
         if (values.harGodkjentOppsummering) {
@@ -238,8 +245,8 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                                     <Block padBottom="l">
                                         <StepButtonWrapper>
                                             <BackButton
-                                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                                route={getBackLinkForOppsummeringSteg(tilrettelegging)}
+                                                mellomlagreSøknadOgNaviger={setForrigeTilretteleggingIdOgMellomlagre}
+                                                route={previousRoute}
                                             />
                                             <Button
                                                 icon={<PaperplaneIcon aria-hidden />}

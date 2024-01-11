@@ -30,6 +30,7 @@ import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOm
 import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import BackButton from '../BackButton';
+import SøknadRoutes from 'app/routes/routes';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -55,6 +56,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterVAlgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, termindato);
 
@@ -77,6 +79,10 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
         oppdaterSøker(updatedSøker);
 
         const neste = getNextRouteForInntektsinformasjon(automatiskValgtTilrettelegging, values);
+        if (neste === SøknadRoutes.SKJEMA && automatiskValgtTilrettelegging) {
+            oppdaterVAlgtTilretteleggingId(automatiskValgtTilrettelegging.id);
+        }
+
         oppdaterAppRoute(neste);
 
         mellomlagreSøknadOgNaviger();

@@ -38,11 +38,6 @@ describe('<SkjemaSteg>', () => {
         expect(screen.queryByText('Du må laste opp minst ett dokument')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: '263929546-6215-9868-5127-161910165730101',
-            key: ContextDataType.TILRETTELEGGING_ID,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: [
                 {
                     arbeidsforhold: {
@@ -70,7 +65,7 @@ describe('<SkjemaSteg>', () => {
             key: ContextDataType.TILRETTELEGGING,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: '/tilrettelegging/263929546-6215-9868-5127-161910165730101',
             key: ContextDataType.APP_ROUTE,
             type: 'update',

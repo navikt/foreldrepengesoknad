@@ -13,18 +13,18 @@ export enum ContextDataType {
     UTENLANDSOPPHOLD_TIDLIGERE = 'UTENLANDSOPPHOLD_TIDLIGERE',
     SØKER = 'SØKER',
     TILRETTELEGGING = 'TILRETTELEGGING',
-    TILRETTELEGGING_ID = 'TILRETTELEGGING_ID',
+    VALGT_TILRETTELEGGING_ID = 'VALGT_TILRETTELEGGING_ID',
 }
 
 export type ContextDataMap = {
-    [ContextDataType.APP_ROUTE]?: SøknadRoutes | string;
+    [ContextDataType.APP_ROUTE]?: SøknadRoutes;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.UTENLANDSOPPHOLD]?: Opphold;
     [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: SenereOpphold;
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;
     [ContextDataType.SØKER]?: Søker;
     [ContextDataType.TILRETTELEGGING]?: Tilrettelegging[];
-    [ContextDataType.TILRETTELEGGING_ID]?: string;
+    [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 
 const defaultInitialState = {} as ContextDataMap;
