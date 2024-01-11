@@ -14,7 +14,7 @@ interface Props {
 const KvoteOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, currentUthevet, setCurrentUthevet }) => {
     const bem = bemUtils('kvoteOversikt');
     const isUthevet = currentUthevet === kvoteInformasjon.konto;
-    const shadow = isUthevet ? '0 5px 15px rgba(0, 0, 0, 0.8)' : '0 0px 0px white';
+    const shadow = isUthevet ? '4px 4px 4px rgba(0, 0, 0, 0.15)' : '0 0px 0px white';
     const sumUker = kvoteInformasjon.fordeling.reduce((sum, f) => {
         return sum + f.uker;
     }, 0);
