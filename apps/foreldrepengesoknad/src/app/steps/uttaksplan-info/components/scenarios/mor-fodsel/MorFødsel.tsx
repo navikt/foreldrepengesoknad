@@ -1,13 +1,13 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, GuidePanel } from '@navikt/ds-react';
+import { Button, GuidePanel, VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
     EksisterendeSak,
-    Forelder,
+    // Forelder,
     ISOStringToDate,
     StepButtonWrapper,
     Tidsperioden,
@@ -23,8 +23,8 @@ import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/util
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { MorFødselFormComponents, MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
-import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
+// import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
+// import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getInitialMorFødselValues, mapMorFødselFormToState } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
@@ -40,6 +40,8 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import SøknadRoutes from 'app/routes/routes';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { UttaksplanInfoScenario } from '../scenarios';
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -47,6 +49,7 @@ interface Props {
     eksisterendeSakFar: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
     person: Person;
+    scenario: UttaksplanInfoScenario;
     mellomlagreSøknadOgNaviger: () => void;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
@@ -57,6 +60,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     eksisterendeSakFar,
     erEndringssøknad,
     person,
+    scenario,
     mellomlagreSøknadOgNaviger,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
@@ -111,6 +115,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO,
     );
+
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
 
     const onSubmit = (values: Partial<MorFødselFormData>) => {
@@ -196,89 +201,92 @@ const MorFødsel: FunctionComponent<Props> = ({
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
 
                 return (
-                    <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                        <Block padBottom="xl">
-                            {valgtStønadskonto && (
-                                <TilgjengeligeDagerGraf
-                                    erDeltUttak={erDeltUttak}
-                                    erFarEllerMedmor={false}
-                                    navnFarMedmor={navnFarMedmor}
-                                    navnMor={navnMor}
-                                    tilgjengeligeDager={getTilgjengeligeDager(
-                                        valgtStønadskonto,
-                                        false,
-                                        Forelder.farMedmor,
-                                    )}
-                                />
-                            )}
-                        </Block>
-                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
-                            <GuidePanel>
-                                <FormattedMessage
-                                    id="uttaksplaninfo.veileder.informasjonPrematuruker"
-                                    values={{
-                                        antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
-                                        antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
-                                    }}
-                                />
-                            </GuidePanel>
-                        </Block>
-                        <Block>
-                            <StartdatoPermisjonMor
-                                permisjonStartdato={formValues.permisjonStartdato!}
-                                skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
-                                termindato={termindato}
-                                barn={barn}
-                            />
-                        </Block>
-                        <Block visible={søker.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
-                            <Block
-                                padBottom="xl"
-                                visible={
-                                    antallBarn > 1 &&
-                                    (formValues.permisjonStartdato !== undefined ||
-                                        formValues.skalIkkeHaUttakFørTermin === true)
-                                }
-                            >
+                    <VStack gap="5">
+                        <FordelingOversikt kontoer={valgtStønadskonto} scenario={scenario}></FordelingOversikt>
+                        <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
+                            {/* <Block padBottom="xl">
+                                {valgtStønadskonto && (
+                                    <TilgjengeligeDagerGraf
+                                        erDeltUttak={erDeltUttak}
+                                        erFarEllerMedmor={false}
+                                        navnFarMedmor={navnFarMedmor}
+                                        navnMor={navnMor}
+                                        tilgjengeligeDager={getTilgjengeligeDager(
+                                            valgtStønadskonto,
+                                            false,
+                                            Forelder.farMedmor,
+                                        )}
+                                    />
+                                )}
+                            </Block> */}
+                            <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                                 <GuidePanel>
                                     <FormattedMessage
-                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                        id="uttaksplaninfo.veileder.informasjonPrematuruker"
                                         values={{
-                                            uker: getFlerbarnsuker(dekningsgrad, antallBarn),
-                                            navnFar: navnFarMedmor,
-                                            navnMor: navnMor,
+                                            antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
+                                            antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
                                         }}
                                     />
                                 </GuidePanel>
                             </Block>
-                            <Block
-                                padBottom="xl"
-                                visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}
-                            >
-                                <FordelingFellesperiodeSpørsmål
-                                    setFieldValue={setFieldValue}
-                                    valgtStønadskonto={valgtStønadskonto}
-                                    valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
-                                    mor={navnMor}
-                                    farMedmor={navnFarMedmor}
-                                    annenForelderErFarEllerMedmor={!erFarEllerMedmor}
+                            <Block>
+                                <StartdatoPermisjonMor
+                                    permisjonStartdato={formValues.permisjonStartdato!}
+                                    skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
+                                    termindato={termindato}
+                                    barn={barn}
                                 />
                             </Block>
-                        </Block>
-                        <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
-                                />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
-                        </Block>
-                    </MorFødselFormComponents.Form>
+                            <Block visible={søker.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
+                                <Block
+                                    padBottom="xl"
+                                    visible={
+                                        antallBarn > 1 &&
+                                        (formValues.permisjonStartdato !== undefined ||
+                                            formValues.skalIkkeHaUttakFørTermin === true)
+                                    }
+                                >
+                                    <GuidePanel>
+                                        <FormattedMessage
+                                            id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                            values={{
+                                                uker: getFlerbarnsuker(dekningsgrad, antallBarn),
+                                                navnFar: navnFarMedmor,
+                                                navnMor: navnMor,
+                                            }}
+                                        />
+                                    </GuidePanel>
+                                </Block>
+                                <Block
+                                    padBottom="xl"
+                                    visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}
+                                >
+                                    <FordelingFellesperiodeSpørsmål
+                                        setFieldValue={setFieldValue}
+                                        valgtStønadskonto={valgtStønadskonto}
+                                        valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
+                                        mor={navnMor}
+                                        farMedmor={navnFarMedmor}
+                                        annenForelderErFarEllerMedmor={!erFarEllerMedmor}
+                                    />
+                                </Block>
+                            </Block>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousStepHref('uttaksplanInfo')}
+                                    />
+                                    {visibility.areAllQuestionsAnswered() && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
+                            </Block>
+                        </MorFødselFormComponents.Form>
+                    </VStack>
                 );
             }}
         />

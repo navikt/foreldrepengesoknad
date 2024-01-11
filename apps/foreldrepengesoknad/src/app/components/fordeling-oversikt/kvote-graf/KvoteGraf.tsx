@@ -8,26 +8,35 @@ interface Props {
 }
 
 const KvoteGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker, farge }) => {
-    return fordelingList.map((fordeling: KvoteFordeling) => {
-        const width = (fordeling.uker / sumUker) * 100 * 0.98;
-        const borderColor = farge === '#ECEEF0' ? 'black' : `${farge}`;
-        return (
-            <div
-                key={guid()}
-                style={{
-                    width: `${width}%`,
-                    backgroundColor: `${farge}`,
-                    height: '10px',
-                    borderRadius: '5px',
-                    borderColor: `${borderColor}`,
-                    borderWidth: '1px',
-                    borderStyle: 'solid',
-                    padding: '0',
-                    margin: '0',
-                }}
-            ></div>
-        );
-    });
+    const rowHeightRem = 0.75;
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+            }}
+        >
+            {fordelingList.map((fordeling: KvoteFordeling) => {
+                const width = (fordeling.uker / sumUker) * 100;
+                const borderColor = farge === '#ECEEF0' ? 'black' : `${farge}`;
+                return (
+                    <div
+                        key={guid()}
+                        style={{
+                            width: `${width}%`,
+                            backgroundColor: `${farge}`,
+                            height: `${rowHeightRem}rem`,
+                            borderRadius: `${rowHeightRem / 2}rem`,
+                            borderColor: `${borderColor}`,
+                            borderWidth: '1px',
+                            borderStyle: 'solid',
+                            margin: '0px 2px',
+                        }}
+                    ></div>
+                );
+            })}
+        </div>
+    );
 };
 
 export default KvoteGraf;

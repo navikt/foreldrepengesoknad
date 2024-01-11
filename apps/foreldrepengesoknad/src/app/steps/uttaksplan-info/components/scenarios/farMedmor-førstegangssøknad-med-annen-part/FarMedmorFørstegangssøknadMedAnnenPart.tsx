@@ -41,14 +41,16 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import Person from '@navikt/fp-common/src/common/types/Person';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { UttaksplanInfoScenario } from '../scenarios';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
-    mellomlagreSøknadOgNaviger: () => void;
     person: Person;
+    scenario: UttaksplanInfoScenario;
+    mellomlagreSøknadOgNaviger: () => void;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 

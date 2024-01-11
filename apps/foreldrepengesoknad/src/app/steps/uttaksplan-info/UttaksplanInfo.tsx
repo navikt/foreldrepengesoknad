@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Loader, VStack } from '@navikt/ds-react';
+import { Loader } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
 import { intlUtils, isAnnenForelderOppgitt, isFarEllerMedmor, isFødtBarn, Step, Søkerinfo } from '@navikt/fp-common';
 import stepConfig from '../stepsConfig';
@@ -17,8 +17,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
-import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'app/utils/stønadskontoUtils';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -182,23 +180,18 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
             onContinueLater={onFortsettSøknadSenere}
             steps={stepConfig(intl, false)}
         >
-            <VStack>
-                <UttaksplanInfoScenarios
-                    tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
-                    tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
-                    eksisterendeSakAnnenPart={eksisterendeVedtakAnnenPart}
-                    søkersituasjon={søkersituasjon}
-                    søker={søker}
-                    annenForelder={annenForelder}
-                    erEndringssøknad={erEndringssøknad}
-                    person={søkerInfo.person}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
-                />
-                <FordelingOversikt
-                    kontoer={mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer100)}
-                />
-            </VStack>
+            <UttaksplanInfoScenarios
+                tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
+                tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
+                eksisterendeSakAnnenPart={eksisterendeVedtakAnnenPart}
+                søkersituasjon={søkersituasjon}
+                søker={søker}
+                annenForelder={annenForelder}
+                erEndringssøknad={erEndringssøknad}
+                person={søkerInfo.person}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
+            />
         </Step>
     );
 };

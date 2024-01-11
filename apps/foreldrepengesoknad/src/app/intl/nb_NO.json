@@ -1017,7 +1017,7 @@
     "fordeling.antallUkerTiLDeg": "{antallUker} uker til deg",
     "fordeling.antallUkerSkalDeles": "{antallUker} uker som skal deles",
     "fordeling.antallUkerTilAnnenForelder": "{antallUker} uker til {navn}",
-    "fordeling.info.mor.førFødsel": "<b>3 uker</b>  kan kun brukes før fødsel. Hvi man føder før termin, slettes det som er igjen av disse ukene, og tiden fram mot opprinnelig termindato tas fra fellesperioden.",
+    "fordeling.info.mor.førFødsel": "<b>3 uker</b> kan kun brukes før fødsel. Hvis man føder før termin, slettes det som er igjen av disse ukene, og tiden fram mot opprinnelig termindato tas fra fellesperioden.",
     "fordeling.info.mor.første6Uker": "<b>6 uker</b>  er satt av til rett etter fødsel. Disse kan ikke brukes senere.",
     "fordeling.info.mor.resterendeUker": "<b>{antallUker} uker</b> kan brukes når som helst før barnet er 3 år.",
     "fordeling.info.felles": "<b>{antallUker} uker</b> kan deles slik man ønsker mellom foreldrene, og brukes når som helst før barnet fyller 3 år. Når far/medmor skla ha dager fra denne perioden, må mor være i aktivitet. Les om hva det betyr <a>her</a>.",

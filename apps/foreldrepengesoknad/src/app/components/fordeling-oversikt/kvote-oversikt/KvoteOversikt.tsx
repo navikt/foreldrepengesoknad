@@ -20,13 +20,11 @@ const KvoteOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon }) => 
                 <BodyLong className={bem.element('uker')}>{kvoteInformasjon.kvoteTittel}</BodyLong>
                 <Detail className={bem.element('kvoteNavn')}>{kvoteInformasjon.kvoteNavn}</Detail>
             </div>
-            <HStack gap="1" className={bem.element('graf')}>
-                <KvoteGraf
-                    fordelingList={kvoteInformasjon.fordeling}
-                    sumUker={sumUker}
-                    farge={kvoteInformasjon.kvoteFarge}
-                />
-            </HStack>
+            <KvoteGraf
+                fordelingList={kvoteInformasjon.fordeling}
+                sumUker={sumUker}
+                farge={kvoteInformasjon.kvoteFarge}
+            />
             <HStack gap="4">
                 {kvoteInformasjon.fordeling.map((fordeling: KvoteFordeling) => {
                     return (
