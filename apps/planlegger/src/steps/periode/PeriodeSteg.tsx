@@ -36,39 +36,40 @@ const PeriodeSteg: FunctionComponent = () => {
     return (
         <ContentWrapper>
             <Form formMethods={formMethods} onSubmit={lagre}>
-                <Heading size="medium">
+                <Heading size="large">
                     <FormattedMessage id="periode.tittel" />
                 </Heading>
                 <Block margin="xl">
                     <Heading size="small">
                         <FormattedMessage id="periode.hvaGjelder" />
                     </Heading>
+                    {/* TODO: Add a panel/box component */}
                     <RadioGroup name="periode">
-                        <Radio value={PeriodeEnum.HUNDRE}>
-                            <FormattedMessage id="periode.100" />
-                        </Radio>
-                        <div className="beskrivelse">
-                            <FormattedMessage
-                                id={intlUtils(intl, 'periode.100.beskrivelse', {
+                        <div className="panel green">
+                            <Radio
+                                value={PeriodeEnum.HUNDRE}
+                                description={intlUtils(intl, 'periode.100.beskrivelse', {
                                     navn1: navnMor,
-                                    kr1: '10',
                                     navn2: navnFar,
-                                    kr2: '12',
+                                    kr1: '10',
+                                    kr2: '20',
                                 })}
-                            />
+                            >
+                                <FormattedMessage id="periode.100" />
+                            </Radio>
                         </div>
-                        <Radio value={PeriodeEnum.ÅTTI}>
-                            <FormattedMessage id="periode.80" />
-                        </Radio>
-                        <div className="beskrivelse">
-                            <FormattedMessage
-                                id={intlUtils(intl, 'periode.100.beskrivelse', {
+                        <div className="panel green">
+                            <Radio
+                                value={PeriodeEnum.ÅTTI}
+                                description={intlUtils(intl, 'periode.80.beskrivelse', {
                                     navn1: navnMor,
-                                    kr1: '10',
                                     navn2: navnFar,
-                                    kr2: '12',
+                                    kr1: '10',
+                                    kr2: '20',
                                 })}
-                            />
+                            >
+                                <FormattedMessage id="periode.80" />
+                            </Radio>
                         </div>
                     </RadioGroup>
                 </Block>
@@ -83,7 +84,8 @@ const PeriodeSteg: FunctionComponent = () => {
                         </BodyLong>
                     </div>
                 </Block>
-                <Block margin="xl">
+                {/* TODO: Add a panel/box component */}
+                <Block margin="xl" className="panel grey">
                     <Heading size="small">
                         <FormattedMessage id="periode.utbetalingTittel" />
                     </Heading>
@@ -94,7 +96,6 @@ const PeriodeSteg: FunctionComponent = () => {
                         <FormattedMessage id="periode.utbetalingTekst.del2" />
                     </Block>
                 </Block>
-
                 {hvem === SøkersituasjonEnum.MOR_OG_FAR && (
                     <>
                         <Block margin="xl">
@@ -141,7 +142,8 @@ const PeriodeSteg: FunctionComponent = () => {
                                 </BodyLong>
                             </div>
                         </Block>
-                        <Block margin="xl">
+                        {/* TODO: Add a panel/box component */}
+                        <Block margin="xl" className="panel grey">
                             <Heading size="small">
                                 <FormattedMessage id="periode.utbetalingTittel" />
                             </Heading>
@@ -154,9 +156,7 @@ const PeriodeSteg: FunctionComponent = () => {
                         </Block>
                     </>
                 )}
-
                 <HvorforSpørViOmDette />
-
                 <Block margin="xxl" className="button-wrapper content-wrapper">
                     <StepButtonsHookForm
                         saveDataOnPreviousClick={lagrePeriode}

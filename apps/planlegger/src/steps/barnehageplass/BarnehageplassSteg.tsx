@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import { Block } from '@navikt/fp-common';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { BodyLong, Button, Heading } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button, Heading } from '@navikt/ds-react';
 import useEsNavigator from 'appData/usePlanleggerNavigator';
 import { useForm } from 'react-hook-form';
 import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
@@ -43,7 +43,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         </BodyLong>
                     </div>
                 </Block>
-                <Block margin="xl">
+                <Block margin="xl" className="panel grey">
                     <Heading size="small">
                         <FormattedMessage id="barnehageplass.barnehageTittel" />
                     </Heading>
@@ -52,7 +52,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     </Block>
                 </Block>
 
-                <Block margin="xl">
+                <Block margin="xl" className="panel grey">
                     <Heading size="small">
                         <FormattedMessage id="barnehageplass.kommuneTittel" />
                     </Heading>
@@ -61,7 +61,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     </Block>
                 </Block>
 
-                <Block margin="xl">
+                <Block margin="xl" className="panel grey">
                     <Heading size="small">
                         <FormattedMessage id="barnehageplass.alleredeTittel" />
                     </Heading>

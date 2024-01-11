@@ -1,4 +1,4 @@
-import { BodyLong, BodyShort, Heading, Ingress } from '@navikt/ds-react';
+import { BodyLong, BodyShort, HStack, Heading, Ingress, VStack } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { FormattedMessage } from 'react-intl';
@@ -17,31 +17,30 @@ const OversiktSteg = () => {
 
     return (
         <ContentWrapper>
-            <Heading size="large">
-                <Block padBottom="xl">
-                    <FormattedMessage id="oversikt.tittel" />
-                </Block>
+            <VStack gap="10">
+                {/* TODO: Add a panel/box component */}
+                <div className="panel green">
+                    <Heading size="large" spacing>
+                        <FormattedMessage id="oversikt.tittel" />
+                    </Heading>
 
-                <Block padBottom="xl">
                     <Ingress>
                         <FormattedMessage id="oversikt.ingress" />
                     </Ingress>
-                </Block>
-
-                <Block padBottom="xxl" className="border">
-                    <Heading size="small">
+                </div>
+                <Block className="border">
+                    <Heading size="small" spacing>
                         <FormattedMessage id="oversikt.valgtTittel" />
                     </Heading>
 
-                    <div className="mt-10 with-icon">
+                    <HStack gap="20">
                         <BodyLong>
                             <FormattedMessage id="oversikt.valgtTekst" />
                         </BodyLong>
                         <Button icon={<PencilIcon aria-hidden />} className="icon-right" />
-                    </div>
+                    </HStack>
                 </Block>
-
-                <Block padBottom="l">
+                <Block>
                     <div className="list-content">
                         <div className="list-item-oversikt with-icon">
                             <BlåSirkel />
@@ -66,25 +65,24 @@ const OversiktSteg = () => {
                         </div>
                     </div>
                 </Block>
-
-                <Block margin="xl" padBottom="xxl">
+                <Block>
                     <Heading size="small" spacing>
                         <FormattedMessage id="oversikt.2024" />
                     </Heading>
-                    <div className="border">
+                    {/* TODO: Add a panel/box component*/}
+                    <div className="panel green">
                         <BodyShort>Kalenderoversikt</BodyShort>
                     </div>
                 </Block>
-
-                <Block margin="xl" padBottom="xxl">
+                <Block>
                     <Heading size="small" spacing>
                         <FormattedMessage id="oversikt.2025" />
                     </Heading>
-                    <div className="border">
+                    {/* TODO: Add a panel/box component*/}
+                    <div className="panel green">
                         <BodyShort>Kalenderoversikt</BodyShort>
                     </div>
                 </Block>
-
                 <Block margin="xxl" className="button-wrapper content-wrapper">
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
@@ -93,7 +91,7 @@ const OversiktSteg = () => {
                         previousButtonText="Tilbake"
                     />
                 </Block>
-            </Heading>
+            </VStack>
         </ContentWrapper>
     );
 };

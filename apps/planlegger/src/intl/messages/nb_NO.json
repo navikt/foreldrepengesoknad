@@ -82,5 +82,7 @@
     "oppsummering.info.tittel": "Informasjonen dere oppga",
     "oppsummering.info.tekst": "TODO",
     "oppsummering.planInfo.tittel": "Planen deres",
-    "oppsummering.planInfo.tekst": "TODO"
+    "oppsummering.planInfo.tekst": "TODO",
+    "feilmelding.fødselPanel.fødselsdato.duMåOppgi": "Du må oppgi fødselsdato.",
+    "feilmelding.fødselPanel.termindato.duMåOppgi": "Du må oppgi termindato."
 }
