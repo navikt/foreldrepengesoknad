@@ -79,15 +79,17 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             minDate={dayjs().subtract(6, 'month').toDate()}
                             maxDate={dayjs().toDate()}
                             validate={[
-                                isRequired(i18n('FødselPanel.Fødselsdato.DuMåOppgi')),
-                                isValidDate(i18n('FødselPanel.Fødselsdato.Gyldig')),
-                                isBeforeTodayOrToday(i18n('FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere')),
-                                isAfterOrSameAsSixMonthsAgo(i18n('FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake')),
+                                isRequired(i18n('feilmelding.fødselPanel.fødselsdato.duMåOppgi')),
+                                isValidDate(i18n('TODO.FødselPanel.Fødselsdato.Gyldig')),
+                                isBeforeTodayOrToday(i18n('TODO.FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere')),
+                                isAfterOrSameAsSixMonthsAgo(
+                                    i18n('TODO.FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake'),
+                                ),
                             ]}
                         />
                     </Block>
                 )}
-                {!erFødt && (
+                {erFødt === false && (
                     <Block margin="xl">
                         <Heading size="small">
                             <FormattedMessage id="barnet.termin" />
@@ -97,12 +99,12 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             minDate={dayjs().subtract(3, 'week').toDate()}
                             maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                             validate={[
-                                isRequired(i18n('FødselPanel.Termindato.DuMåOppgi')),
-                                isValidDate(i18n('FødselPanel.Termindato.Gyldig')),
+                                isRequired(i18n('feilmelding.fødselPanel.termindato.duMåOppgi')),
+                                isValidDate(i18n('TODO.FødselPanel.Termindato.Gyldig')),
                                 isLessThanThreeWeeksAgo(
-                                    i18n('FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag'),
+                                    i18n('TODO.FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag'),
                                 ),
-                                erI22SvangerskapsukeEllerSenere(i18n('FødselPanel.Termindato.DuMåVæreIUke22')),
+                                erI22SvangerskapsukeEllerSenere(i18n('TODO.FødselPanel.Termindato.DuMåVæreIUke22')),
                             ]}
                         />
                     </Block>
