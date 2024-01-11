@@ -38,7 +38,11 @@ const Template: StoryFn<Props> = ({
             onDispatch={gåTilNesteSide}
             initialState={{
                 [ContextDataType.TILRETTELEGGING]: context.søknad.tilrettelegging,
-                [ContextDataType.SØKER]: context.søknad.søker,
+                [ContextDataType.INNTEKTSINFORMASJON]: {
+                    harHattAnnenInntekt: false,
+                    harJobbetSomFrilans: false,
+                    harJobbetSomSelvstendigNæringsdrivende: false,
+                },
                 [ContextDataType.OM_BARNET]: context.søknad.barn,
                 [ContextDataType.UTENLANDSOPPHOLD]: {
                     iNorgeNeste12Mnd: true,

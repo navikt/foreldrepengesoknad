@@ -31,7 +31,9 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const frilans = useContextGetData(ContextDataType.FRILANS);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
@@ -43,10 +45,12 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
 
     const tilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegging || [],
-        søker,
+        inntektsinformasjon,
         søkerInfo.arbeidsforhold,
         termindato,
         intl,
+        frilans,
+        egenNæring,
     );
 
     const onSubmit = (formValues: Partial<VelgArbeidFormData>) => {
@@ -108,7 +112,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
                                 <StepButtonWrapper>
                                     <BackButton
                                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getBackLinkForVelgArbeidSteg(søker)}
+                                        route={getBackLinkForVelgArbeidSteg(inntektsinformasjon)}
                                     />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         <FormattedMessage id="søknad.gåVidere" />

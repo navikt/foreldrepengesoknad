@@ -70,30 +70,25 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                harJobbetSomSelvstendigNæringsdrivende: true,
-                rolle: 'mor',
-                selvstendigNæringsdrivendeInformasjon: {
-                    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-                    hattVarigEndringAvNæringsinntektSiste4Kalenderår: undefined,
-                    navnPåNæringen: 'Virksomhetsnavn AS',
-                    næringsinntekt: '1000',
-                    næringstyper: ['FISKE'],
-                    oppstartsdato: '',
-                    organisasjonsnummer: '997519485',
-                    pågående: true,
-                    registrertILand: undefined,
-                    registrertINorge: true,
-                    tidsperiode: {
-                        fom: '2023-04-30',
-                        tom: '',
-                    },
-                    varigEndringBeskrivelse: undefined,
-                    varigEndringDato: '',
-                    varigEndringInntektEtterEndring: '',
+                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                hattVarigEndringAvNæringsinntektSiste4Kalenderår: undefined,
+                navnPåNæringen: 'Virksomhetsnavn AS',
+                næringsinntekt: '1000',
+                næringstyper: ['FISKE'],
+                oppstartsdato: '',
+                organisasjonsnummer: '997519485',
+                pågående: true,
+                registrertILand: undefined,
+                registrertINorge: true,
+                tidsperiode: {
+                    fom: '2023-04-30',
+                    tom: '',
                 },
-                språkkode: 'nb',
+                varigEndringBeskrivelse: undefined,
+                varigEndringDato: '',
+                varigEndringInntektEtterEndring: '',
             },
-            key: ContextDataType.SØKER,
+            key: ContextDataType.EGEN_NÆRING,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {

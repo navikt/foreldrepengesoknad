@@ -49,7 +49,11 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = ({
         <SvpDataContext
             onDispatch={gåTilNesteSide}
             initialState={{
-                [ContextDataType.SØKER]: defaultContext.søknad.søker,
+                [ContextDataType.INNTEKTSINFORMASJON]: {
+                    harHattAnnenInntekt: false,
+                    harJobbetSomFrilans: false,
+                    harJobbetSomSelvstendigNæringsdrivende: false,
+                },
                 [ContextDataType.TILRETTELEGGING]: tilrettelegging,
                 [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
                 [ContextDataType.OM_BARNET]: defaultContext.søknad.barn,

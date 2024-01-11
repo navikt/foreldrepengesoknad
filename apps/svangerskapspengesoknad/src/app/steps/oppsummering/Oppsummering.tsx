@@ -53,7 +53,10 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const abortSignal = useAbortSignal();
 
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const frilans = useContextGetData(ContextDataType.FRILANS);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
@@ -146,20 +149,16 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                                                             arbeidsforhold={aktiveArbeidsforhold}
                                                         />
                                                     )}
-                                                    {søker.harJobbetSomFrilans && søker.frilansInformasjon && (
-                                                        <FrilansVisning
-                                                            frilans={søker.frilansInformasjon}
-                                                        ></FrilansVisning>
+                                                    {inntektsinformasjon.harJobbetSomFrilans && frilans && (
+                                                        <FrilansVisning frilans={frilans}></FrilansVisning>
                                                     )}
-                                                    {søker.harJobbetSomSelvstendigNæringsdrivende &&
-                                                        søker.selvstendigNæringsdrivendeInformasjon && (
-                                                            <EgenNæringVisning
-                                                                næring={søker.selvstendigNæringsdrivendeInformasjon}
-                                                            ></EgenNæringVisning>
+                                                    {inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende &&
+                                                        egenNæring && (
+                                                            <EgenNæringVisning næring={egenNæring}></EgenNæringVisning>
                                                         )}
-                                                    {søker.harHattAnnenInntekt &&
-                                                        søker.andreInntekter &&
-                                                        søker.andreInntekter.map((arbeid) => {
+                                                    {inntektsinformasjon.harHattAnnenInntekt &&
+                                                        arbeidIUtlandet &&
+                                                        arbeidIUtlandet.map((arbeid) => {
                                                             return (
                                                                 <ArbeidIUtlandetVisning
                                                                     key={guid()}
@@ -167,12 +166,15 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                                                                 ></ArbeidIUtlandetVisning>
                                                             );
                                                         })}
-                                                    {(!søker.harJobbetSomFrilans ||
-                                                        !søker.harJobbetSomSelvstendigNæringsdrivende ||
-                                                        !søker.harHattAnnenInntekt) && (
+                                                    {(!inntektsinformasjon.harJobbetSomFrilans ||
+                                                        !inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ||
+                                                        !inntektsinformasjon.harHattAnnenInntekt) && (
                                                         <Block padBottom="m">
                                                             <BodyShort>
-                                                                {getTekstOmManglendeArbeidsforhold(søker, intl)}
+                                                                {getTekstOmManglendeArbeidsforhold(
+                                                                    inntektsinformasjon,
+                                                                    intl,
+                                                                )}
                                                             </BodyShort>
                                                         </Block>
                                                     )}

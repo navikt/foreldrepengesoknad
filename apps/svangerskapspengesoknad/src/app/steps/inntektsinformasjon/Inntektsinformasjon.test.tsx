@@ -58,15 +58,11 @@ describe('<Inntektsinformasjon>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                andreInntekter: undefined,
-                frilansInformasjon: undefined,
                 harHattAnnenInntekt: true,
                 harJobbetSomFrilans: false,
                 harJobbetSomSelvstendigNæringsdrivende: false,
-                rolle: 'mor',
-                selvstendigNæringsdrivendeInformasjon: undefined,
             },
-            key: ContextDataType.SØKER,
+            key: ContextDataType.INNTEKTSINFORMASJON,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {

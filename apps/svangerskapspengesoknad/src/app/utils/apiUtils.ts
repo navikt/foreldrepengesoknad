@@ -17,7 +17,7 @@ import {
     Utenlandsopphold,
     UtenlandsoppholdDTO,
 } from 'app/types/InformasjonOmUtenlandsopphold';
-import { Søker, SøkerDTO } from 'app/types/Søker';
+import { SøkerDTO, Søkerrolle } from 'app/types/Søker';
 import { SøknadDTO, Søknadstype } from 'app/types/Søknad';
 import Tilrettelegging, {
     Arbeidsforholdstype,
@@ -30,6 +30,7 @@ import Tilrettelegging, {
 } from 'app/types/Tilrettelegging';
 import { getSisteDagForSvangerskapspenger } from './dateUtils';
 import { mapTilretteleggingTilPerioder } from './tilretteleggingUtils';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 
 const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegging): ArbeidsforholdDTO => {
     if (
@@ -189,7 +190,6 @@ const mapFrilansForInnsending = (frilans: Frilans | undefined): FrilansDTO | und
         return {
             ...frilans,
             oppstart: ISOStringToDate(frilans.oppstart)!,
-            // sluttDato: ISOStringToDate(frilans.sluttDato),
         };
     }
     return undefined;
@@ -207,15 +207,21 @@ const mapArbeidIUtlandetForInnsending = (arbeid: ArbeidIUtlandet): ArbeidIUtland
     };
 };
 
-const mapSøkerForInnsending = (søker: Søker, locale: LocaleNo): SøkerDTO => {
-    const mappedNæring = mapEgenNæringForInnsending(søker.selvstendigNæringsdrivendeInformasjon);
-    const mappedArbeidIUtlandet = søker.andreInntekter
-        ? søker.andreInntekter.map((inntekt) => mapArbeidIUtlandetForInnsending(inntekt))
+const mapSøkerForInnsending = (
+    locale: LocaleNo,
+    inntektsinformasjon: Inntektsinformasjon,
+    egenNæring?: EgenNæring,
+    frilans?: Frilans,
+    arbeidIUtlandet?: ArbeidIUtlandet[],
+): SøkerDTO => {
+    const mappedNæring = mapEgenNæringForInnsending(egenNæring);
+    const mappedArbeidIUtlandet = arbeidIUtlandet
+        ? arbeidIUtlandet.map((inntekt) => mapArbeidIUtlandetForInnsending(inntekt))
         : undefined;
     const mappedSøker: SøkerDTO = {
-        rolle: søker.rolle,
+        rolle: Søkerrolle.MOR,
         språkkode: locale,
-        frilansInformasjon: søker.harJobbetSomFrilans ? mapFrilansForInnsending(søker.frilansInformasjon) : undefined,
+        frilansInformasjon: inntektsinformasjon.harJobbetSomFrilans ? mapFrilansForInnsending(frilans) : undefined,
         selvstendigNæringsdrivendeInformasjon: mappedNæring ? [mappedNæring] : undefined,
         andreInntekterSiste10Mnd: mappedArbeidIUtlandet,
     };
@@ -252,7 +258,13 @@ export const getSøknadForInnsending = (
 
     const barnForInnsending = mapBarnForInnsending(barn);
     const vedleggForInnsending = mapVedleggForInnsending(tilrettelegging);
-    const søkerForInnsending = mapSøkerForInnsending(notEmpty(hentData(ContextDataType.SØKER)), locale);
+    const søkerForInnsending = mapSøkerForInnsending(
+        locale,
+        notEmpty(hentData(ContextDataType.INNTEKTSINFORMASJON)),
+        hentData(ContextDataType.EGEN_NÆRING),
+        hentData(ContextDataType.FRILANS),
+        hentData(ContextDataType.ARBEID_I_UTLANDET),
+    );
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const allePerioderMedFomOgTom = mapTilretteleggingTilPerioder(tilrettelegging, sisteDagForSvangerskapspenger);

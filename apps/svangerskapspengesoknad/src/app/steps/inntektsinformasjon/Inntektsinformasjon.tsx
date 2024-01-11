@@ -3,7 +3,21 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { notEmpty } from '@navikt/fp-validation';
-import { Block, intlUtils, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
+import {
+    Block,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+    intlUtils,
+    Step,
+    StepButtonWrapper,
+    validateYesOrNoIsAnswered,
+} from '@navikt/fp-common';
+import {
+    getAktiveArbeidsforhold,
+    getAutomatiskValgtTilretteleggingHvisKunEtArbeid,
+} from 'app/utils/arbeidsforholdUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import SøknadRoutes from 'app/routes/routes';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { getBackLinkForArbeidSteg, getNextRouteForInntektsinformasjon, useStepConfig } from '../stepsConfig';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
@@ -12,15 +26,6 @@ import {
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
 } from './inntektsinformasjonFormConfig';
-import {
-    getInitialInntektsinformasjonFormValues,
-    mapInntektsinformasjonFormDataToState,
-} from './inntektsinformasjonFormUtils';
-
-import {
-    getAktiveArbeidsforhold,
-    getAutomatiskValgtTilretteleggingHvisKunEtArbeid,
-} from 'app/utils/arbeidsforholdUtils';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
@@ -28,9 +33,7 @@ import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import BackButton from '../BackButton';
-import SøknadRoutes from 'app/routes/routes';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -48,15 +51,15 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søker = useContextGetData(ContextDataType.SØKER);
+    const inntektsinformasjon = useContextGetData(ContextDataType.INNTEKTSINFORMASJON);
     const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
-    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterInntektsinformasjon = useContextSaveData(ContextDataType.INNTEKTSINFORMASJON);
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
-    const oppdaterVAlgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, termindato);
 
@@ -75,12 +78,17 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
             oppdaterTilrettelegging([automatiskValgtTilrettelegging]);
         }
 
-        const updatedSøker = mapInntektsinformasjonFormDataToState(values, søker);
-        oppdaterSøker(updatedSøker);
+        oppdaterInntektsinformasjon({
+            harHattAnnenInntekt: convertYesOrNoOrUndefinedToBoolean(values.hattArbeidIUtlandet)!,
+            harJobbetSomFrilans: convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans)!,
+            harJobbetSomSelvstendigNæringsdrivende: convertYesOrNoOrUndefinedToBoolean(
+                values.hattInntektSomNæringsdrivende,
+            )!,
+        });
 
         const neste = getNextRouteForInntektsinformasjon(automatiskValgtTilrettelegging, values);
         if (neste === SøknadRoutes.SKJEMA && automatiskValgtTilrettelegging) {
-            oppdaterVAlgtTilretteleggingId(automatiskValgtTilrettelegging.id);
+            oppdaterValgtTilretteleggingId(automatiskValgtTilrettelegging.id);
         }
 
         oppdaterAppRoute(neste);
@@ -90,7 +98,21 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 
     return (
         <InntektsinformasjonFormComponents.FormikWrapper
-            initialValues={søker ? getInitialInntektsinformasjonFormValues(søker) : {}}
+            initialValues={
+                inntektsinformasjon
+                    ? {
+                          hattArbeidIUtlandet: convertBooleanOrUndefinedToYesOrNo(
+                              inntektsinformasjon.harHattAnnenInntekt,
+                          ),
+                          hattInntektSomNæringsdrivende: convertBooleanOrUndefinedToYesOrNo(
+                              inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
+                          ),
+                          hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(
+                              inntektsinformasjon.harJobbetSomFrilans,
+                          ),
+                      }
+                    : {}
+            }
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const kanIkkeSøke =

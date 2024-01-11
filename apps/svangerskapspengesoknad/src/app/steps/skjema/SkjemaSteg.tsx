@@ -45,7 +45,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
 
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
     const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -147,7 +147,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                             const linkData = getBackLinkForSkjemaSteg(
                                 barnet.termindato,
                                 søkerInfo.arbeidsforhold,
-                                søker,
+                                inntektsinformasjon,
                                 tilrettelegging,
                                 currentTilrettelegging.id,
                             );

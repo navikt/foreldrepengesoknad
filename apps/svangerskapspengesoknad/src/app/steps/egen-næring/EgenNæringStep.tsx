@@ -2,7 +2,7 @@ import { EgenNæringFormComponents, EgenNæringFormData, EgenNæringFormField } 
 import {
     cleanupEgenNæringFormData,
     getInitialEgenNæringFormValues,
-    mapNæringDataToSøkerState,
+    mapEgenNæringFormValuesToState,
 } from './egenNæringFormUtils';
 import { Næringstype } from 'app/types/EgenNæring';
 import { egenNæringFormQuestionsConfig } from './egenNæringFormQuestions';
@@ -51,11 +51,12 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
@@ -63,26 +64,25 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
     const onSubmit = (values: Partial<EgenNæringFormData>) => {
         setIsSubmitting(true);
 
-        const søkerMedNæring = mapNæringDataToSøkerState(søker, values as EgenNæringFormData);
+        const næringsdata = mapEgenNæringFormValuesToState(values as EgenNæringFormData);
+
         if (
             søkerHarKunEtAktivtArbeid(
                 barnet.termindato,
                 søkerInfo.arbeidsforhold,
-                søkerMedNæring.harJobbetSomFrilans,
-                søkerMedNæring.harJobbetSomSelvstendigNæringsdrivende,
+                inntektsinformasjon.harJobbetSomFrilans,
+                inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
             )
         ) {
-            const automatiskValgtTilrettelegging = [
-                getNæringTilretteleggingOption(tilrettelegging, søkerMedNæring.selvstendigNæringsdrivendeInformasjon!),
-            ];
+            const automatiskValgtTilrettelegging = [getNæringTilretteleggingOption(tilrettelegging, næringsdata)];
 
             oppdaterTilrettelegging(automatiskValgtTilrettelegging);
         }
 
-        oppdaterSøker(søkerMedNæring);
+        oppdaterEgenNæring(næringsdata);
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteForNæring(
-            søker,
+            inntektsinformasjon,
             barnet.termindato,
             søkerInfo.arbeidsforhold,
         );
@@ -95,7 +95,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
     const navnPåNæringSpm = intlUtils(intl, 'egenNæring.navnPåNæring');
     return (
         <EgenNæringFormComponents.FormikWrapper
-            initialValues={getInitialEgenNæringFormValues(søker.selvstendigNæringsdrivendeInformasjon)}
+            initialValues={getInitialEgenNæringFormValues(egenNæring)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = egenNæringFormQuestionsConfig.getVisbility(formValues as EgenNæringFormData);
@@ -295,7 +295,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                                 <StepButtonWrapper>
                                     <BackButton
                                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getBackLinkForNæringSteg(søker)}
+                                        route={getBackLinkForNæringSteg(inntektsinformasjon)}
                                     />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}

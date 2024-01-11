@@ -1,6 +1,5 @@
 import { assertUnreachable, intlUtils } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
-import { Søker } from 'app/types/Søker';
 import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { IntlShape } from 'react-intl';
 import { InntektsinformasjonFormData } from './inntektsinformasjon/inntektsinformasjonFormConfig';
@@ -18,6 +17,7 @@ import { egenNæringId } from 'app/types/EgenNæring';
 import { getPeriodeSideTittel } from './perioder/perioderStepUtils';
 import { getTilretteleggingSideTittel } from './tilrettelegging/tilretteleggingStepUtils';
 import { ContextDataType, useContextGetData } from 'app/context/SvpDataContext';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -55,7 +55,7 @@ interface StepConfig {
 }
 
 export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[]): StepConfig[] => {
-    const søker = useContextGetData(ContextDataType.SØKER);
+    const inntektsinformasjon = useContextGetData(ContextDataType.INNTEKTSINFORMASJON);
     const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
     const barn = useContextGetData(ContextDataType.OM_BARNET);
     const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
@@ -94,7 +94,7 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         label: intlUtils(intl, 'steps.label.arbeid'),
     });
 
-    if (søker?.harJobbetSomFrilans) {
+    if (inntektsinformasjon?.harJobbetSomFrilans) {
         steps.push({
             id: 'frilans',
             index: steps.length,
@@ -102,7 +102,7 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         });
     }
 
-    if (søker?.harJobbetSomSelvstendigNæringsdrivende) {
+    if (inntektsinformasjon?.harJobbetSomSelvstendigNæringsdrivende) {
         steps.push({
             id: 'næring',
             index: steps.length,
@@ -110,7 +110,7 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         });
     }
 
-    if (søker?.harHattAnnenInntekt) {
+    if (inntektsinformasjon?.harHattAnnenInntekt) {
         steps.push({
             id: 'arbeidIUtlandet',
             index: steps.length,
@@ -123,8 +123,8 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
             ? søkerHarKunEtAktivtArbeid(
                   barn.termindato,
                   arbeidsforhold,
-                  søker?.harJobbetSomFrilans || false,
-                  søker?.harJobbetSomSelvstendigNæringsdrivende || false,
+                  inntektsinformasjon?.harJobbetSomFrilans || false,
+                  inntektsinformasjon?.harJobbetSomSelvstendigNæringsdrivende || false,
               )
             : true;
 
@@ -199,22 +199,22 @@ const getForrigeTilrettelegging = (
     return tilretteleggingBehov[forrigeTilretteleggingIndex];
 };
 
-const getNæringRouteIfNæring = (søker: Søker): SøknadRoutes | undefined => {
-    if (søker.harJobbetSomSelvstendigNæringsdrivende) {
+const getNæringRouteIfNæring = (harJobbetSomSelvstendigNæringsdrivende: boolean): SøknadRoutes | undefined => {
+    if (harJobbetSomSelvstendigNæringsdrivende) {
         return SøknadRoutes.NÆRING;
     }
     return undefined;
 };
 
-const getFrilansRouteIfFrilans = (søker: Søker): SøknadRoutes | undefined => {
-    if (søker.harJobbetSomFrilans) {
+const getFrilansRouteIfFrilans = (harJobbetSomFrilans: boolean): SøknadRoutes | undefined => {
+    if (harJobbetSomFrilans) {
         return SøknadRoutes.FRILANS;
     }
     return undefined;
 };
 
-const getArbeidUtlandRouteIfArbeidUtland = (søker: Søker): SøknadRoutes | undefined => {
-    if (søker.harHattAnnenInntekt) {
+const getArbeidUtlandRouteIfArbeidUtland = (harHattAnnenInntekt: boolean): SøknadRoutes | undefined => {
+    if (harHattAnnenInntekt) {
         return SøknadRoutes.ARBEID_I_UTLANDET;
     }
     return undefined;
@@ -236,7 +236,7 @@ export const getBackLinkAndIdForOppsummeringSteg = (
 export const getBackLinkForSkjemaSteg = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
-    søker: Søker,
+    inntektsinformasjon: Inntektsinformasjon,
     tilrettelegginger: Tilrettelegging[] | undefined,
     currentTilretteleggingId: string | undefined,
 ): { previousRoute: SøknadRoutes; previousTilretteleggingId?: string } => {
@@ -257,37 +257,43 @@ export const getBackLinkForSkjemaSteg = (
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
         termindato,
         arbeidsforhold,
-        søker.harJobbetSomFrilans,
-        søker.harJobbetSomSelvstendigNæringsdrivende,
+        inntektsinformasjon.harJobbetSomFrilans,
+        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
     );
     if (harKunEtArbeid) {
-        return { previousRoute: getBackLinkForVelgArbeidSteg(søker) };
+        return { previousRoute: getBackLinkForVelgArbeidSteg(inntektsinformasjon) };
     }
     return { previousRoute: SøknadRoutes.VELG_ARBEID };
 };
 
-export const getBackLinkForNæringSteg = (søker: Søker | undefined): SøknadRoutes => {
-    if (!søker) {
+export const getBackLinkForNæringSteg = (inntektsinformasjon: Inntektsinformasjon | undefined): SøknadRoutes => {
+    if (!inntektsinformasjon) {
         return SøknadRoutes.ARBEID;
     }
-    return getFrilansRouteIfFrilans(søker) ?? SøknadRoutes.ARBEID;
+    return getFrilansRouteIfFrilans(inntektsinformasjon.harJobbetSomFrilans) ?? SøknadRoutes.ARBEID;
 };
 
-export const getBackLinkForArbeidIUtlandetSteg = (søker: Søker | undefined): SøknadRoutes => {
-    if (!søker) {
-        return SøknadRoutes.ARBEID;
-    }
-    return getNæringRouteIfNæring(søker) ?? getFrilansRouteIfFrilans(søker) ?? SøknadRoutes.ARBEID;
-};
-
-export const getBackLinkForVelgArbeidSteg = (søker: Søker | undefined): SøknadRoutes => {
-    if (!søker) {
+export const getBackLinkForArbeidIUtlandetSteg = (
+    inntektsinformasjon: Inntektsinformasjon | undefined,
+): SøknadRoutes => {
+    if (!inntektsinformasjon) {
         return SøknadRoutes.ARBEID;
     }
     return (
-        getArbeidUtlandRouteIfArbeidUtland(søker) ??
-        getNæringRouteIfNæring(søker) ??
-        getFrilansRouteIfFrilans(søker) ??
+        getNæringRouteIfNæring(inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende) ??
+        getFrilansRouteIfFrilans(inntektsinformasjon.harJobbetSomFrilans) ??
+        SøknadRoutes.ARBEID
+    );
+};
+
+export const getBackLinkForVelgArbeidSteg = (inntektsinformasjon: Inntektsinformasjon | undefined): SøknadRoutes => {
+    if (!inntektsinformasjon) {
+        return SøknadRoutes.ARBEID;
+    }
+    return (
+        getArbeidUtlandRouteIfArbeidUtland(inntektsinformasjon.harHattAnnenInntekt) ??
+        getNæringRouteIfNæring(inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende) ??
+        getFrilansRouteIfFrilans(inntektsinformasjon.harJobbetSomFrilans) ??
         SøknadRoutes.ARBEID
     );
 };
@@ -397,18 +403,18 @@ export const getNextRouteForInntektsinformasjon = (
 export const getNextRouteValgAvArbeidEllerSkjema = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
-    søker: Søker,
+    inntektsinformasjon: Inntektsinformasjon,
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
         termindato,
         aktiveArbeidsforhold,
-        søker.harJobbetSomFrilans,
-        søker.harJobbetSomSelvstendigNæringsdrivende,
+        inntektsinformasjon.harJobbetSomFrilans,
+        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
     );
     if (harKunEtArbeid) {
         if (aktiveArbeidsforhold.length === 0) {
-            const frilansEllerNæringId = søker.harJobbetSomFrilans ? frilansId : egenNæringId;
+            const frilansEllerNæringId = inntektsinformasjon.harJobbetSomFrilans ? frilansId : egenNæringId;
             return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: frilansEllerNæringId };
         } else {
             return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: arbeidsforhold[0].id };
@@ -418,19 +424,25 @@ export const getNextRouteValgAvArbeidEllerSkjema = (
 };
 
 export const getNextRouteForFrilans = (
-    søker: Søker,
+    inntektsinformasjon: Inntektsinformasjon,
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
-    const nextRoute = getNæringRouteIfNæring(søker) ?? getArbeidUtlandRouteIfArbeidUtland(søker);
-    return nextRoute ? { nextRoute } : getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, søker);
+    const nextRoute =
+        getNæringRouteIfNæring(inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende) ??
+        getArbeidUtlandRouteIfArbeidUtland(inntektsinformasjon.harHattAnnenInntekt);
+    return nextRoute
+        ? { nextRoute }
+        : getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, inntektsinformasjon);
 };
 
 export const getNextRouteForNæring = (
-    søker: Søker,
+    inntektsinformasjon: Inntektsinformasjon,
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
-    const nextRoute = getArbeidUtlandRouteIfArbeidUtland(søker);
-    return nextRoute ? { nextRoute } : getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, søker);
+    const nextRoute = getArbeidUtlandRouteIfArbeidUtland(inntektsinformasjon.harHattAnnenInntekt);
+    return nextRoute
+        ? { nextRoute }
+        : getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, inntektsinformasjon);
 };

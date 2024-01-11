@@ -1,6 +1,5 @@
 import { intlUtils } from '@navikt/fp-common';
 import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
-import { Søker } from 'app/types/Søker';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
@@ -11,6 +10,7 @@ import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsf
 import Tilrettelegging, { Stilling } from 'app/types/Tilrettelegging';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { isISODateString } from '@navikt/ds-datepicker';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
@@ -161,10 +161,13 @@ export const getAutomatiskValgtTilretteleggingHvisKunEtArbeid = (
     return automatiskValgtTilrettelegging;
 };
 
-export const getTekstOmManglendeArbeidsforhold = (søker: Søker, intl: IntlShape): string => {
-    const erFrilanser = søker.harJobbetSomFrilans;
-    const harNæring = søker.harJobbetSomSelvstendigNæringsdrivende;
-    const harJobbetIUtlandet = søker.harHattAnnenInntekt;
+export const getTekstOmManglendeArbeidsforhold = (
+    inntektsinformasjon: Inntektsinformasjon,
+    intl: IntlShape,
+): string => {
+    const erFrilanser = inntektsinformasjon.harJobbetSomFrilans;
+    const harNæring = inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende;
+    const harJobbetIUtlandet = inntektsinformasjon.harHattAnnenInntekt;
     if (erFrilanser && !harNæring && !harJobbetIUtlandet) {
         return intlUtils(intl, 'oppsummering.harIkkeNæringEllerJobbIUtlandet');
     }

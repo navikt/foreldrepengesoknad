@@ -1,32 +1,14 @@
 import { Attachment } from '@navikt/fp-types';
-import { Barn, BarnDTO } from './Barn';
-import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdDTO } from './InformasjonOmUtenlandsopphold';
-import { Søker, SøkerDTO } from './Søker';
-import { Tilrettelegging, TilretteleggingDTO } from './Tilrettelegging';
-
-export interface Søknad {
-    barn: Barn;
-    harGodkjentVilkår: boolean;
-    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
-    søker: Søker;
-    tilrettelegging: Tilrettelegging[];
-    harGodkjentOppsummering: boolean;
-}
+import { BarnDTO } from './Barn';
+import { InformasjonOmUtenlandsoppholdDTO } from './InformasjonOmUtenlandsopphold';
+import { SøkerDTO } from './Søker';
+import { TilretteleggingDTO } from './Tilrettelegging';
 
 export enum Søknadstype {
     'SVANGERSKAPSPENGER' = 'svangerskapspenger',
 }
 
-export interface SøknadDTO
-    extends Omit<
-        Søknad,
-        | 'informasjonOmUtenlandsopphold'
-        | 'barn'
-        | 'tilrettelegging'
-        | 'søker'
-        | 'harGodkjentOppsummering'
-        | 'harGodkjentVilkår'
-    > {
+export interface SøknadDTO {
     type: Søknadstype;
     erEndringssøknad: boolean;
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;

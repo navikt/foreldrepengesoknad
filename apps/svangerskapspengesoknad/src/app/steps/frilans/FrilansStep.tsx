@@ -6,6 +6,7 @@ import {
     Block,
     Step,
     StepButtonWrapper,
+    convertYesOrNoOrUndefinedToBoolean,
     date20YearsAgo,
     dateToday,
     intlUtils,
@@ -16,7 +17,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import { getNextRouteForFrilans, getPreviousSetStepHref, useStepConfig } from 'app/steps/stepsConfig';
 import { FrilansFormComponents, FrilansFormData, FrilansFormField } from './frilansFormConfig';
-import { cleanupFrilansFormData, getInitialFrilansFormValues, mapFrilansDataToSøkerState } from './frilansFormUtils';
+import { cleanupFrilansFormData, getInitialFrilansFormValues } from './frilansFormUtils';
 import frilansSubformQuestionsConfig from './frilansFormQuestionsConfig';
 import { validateFrilansStart } from './frilansValidation';
 import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
@@ -35,11 +36,12 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const frilans = useContextGetData(ContextDataType.FRILANS);
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
     const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
@@ -47,24 +49,24 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const onSubmit = (values: Partial<FrilansFormData>) => {
         setIsSubmitting(true);
 
-        const søkerMedFrilans = mapFrilansDataToSøkerState(søker, values as FrilansFormData);
         const harKunEtAktivtArbeid = søkerHarKunEtAktivtArbeid(
             barnet.termindato,
             søkerInfo.arbeidsforhold,
-            søkerMedFrilans.harJobbetSomFrilans,
-            søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivende,
+            inntektsinformasjon.harJobbetSomFrilans,
+            inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
         );
         if (harKunEtAktivtArbeid) {
-            const tilretteleggingOptions = [
-                getFrilansTilretteleggingOption(tilrettelegging, søkerMedFrilans.frilansInformasjon!),
-            ];
+            const tilretteleggingOptions = [getFrilansTilretteleggingOption(tilrettelegging, values.frilansFom!)];
             oppdaterTilrettelegging(tilretteleggingOptions);
         }
 
-        oppdaterSøker(søkerMedFrilans);
+        oppdaterFrilans({
+            jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
+            oppstart: values.frilansFom!,
+        });
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteForFrilans(
-            søker,
+            inntektsinformasjon,
             barnet.termindato,
             søkerInfo.arbeidsforhold,
         );
@@ -76,7 +78,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
 
     return (
         <FrilansFormComponents.FormikWrapper
-            initialValues={getInitialFrilansFormValues(søker.frilansInformasjon)}
+            initialValues={getInitialFrilansFormValues(frilans)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = frilansSubformQuestionsConfig.getVisbility(formValues as FrilansFormData);
@@ -120,21 +122,6 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                                     }
                                 />
                             </Block>
-                            {/* <Block padBottom="xxl" visible={visibility.isVisible(FrilansFormField.frilansTom)}>
-                                <FrilansFormComponents.DatePicker
-                                    name={FrilansFormField.frilansTom}
-                                    label={intlUtils(intl, 'frilans.slutt')}
-                                    minDate={getMinInputTilOgMedValue(formValues.frilansFom, date4WeeksAgo)}
-                                    maxDate={dateToday}
-                                    showYearSelector={true}
-                                    placeholder={'dd.mm.åååå'}
-                                    validate={validateFrilansSlutt(
-                                        intl,
-                                        formValues.jobberFremdelesSomFrilanser!,
-                                        formValues.frilansFom!,
-                                    )}
-                                />
-                            </Block> */}
                             <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <BackButton

@@ -42,15 +42,10 @@ describe('<Arbeid som frilanser>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                frilansInformasjon: {
-                    jobberFremdelesSomFrilans: true,
-                    oppstart: '2023-12-30',
-                },
-                harJobbetSomFrilans: true,
-                rolle: 'mor',
-                språkkode: 'nb',
+                jobberFremdelesSomFrilans: true,
+                oppstart: '2023-12-30',
             },
-            key: ContextDataType.SØKER,
+            key: ContextDataType.FRILANS,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {

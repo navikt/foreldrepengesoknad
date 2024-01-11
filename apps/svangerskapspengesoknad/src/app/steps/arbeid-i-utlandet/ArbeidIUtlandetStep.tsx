@@ -55,10 +55,11 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
 
-    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
@@ -66,14 +67,12 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
         setIsSubmitting(true);
 
         const arbeidIUtlandet = mapArbeidIUtlandetTilState(values);
-        const søkerMedArbeidIUtlandet = { ...søker, andreInntekter: arbeidIUtlandet };
-
-        oppdaterSøker(søkerMedArbeidIUtlandet);
+        oppdaterArbeidIUtlandet(arbeidIUtlandet);
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteValgAvArbeidEllerSkjema(
             barnet.termindato,
             søkerInfo.arbeidsforhold,
-            søker,
+            inntektsinformasjon,
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
         oppdaterAppRoute(nextRoute);
@@ -84,7 +83,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     return (
         <ArbeidIUtlandetFormComponents.FormikWrapper
             enableReinitialize={true}
-            initialValues={getInitialArbeidIUtlandetFormData(søker.andreInntekter)}
+            initialValues={getInitialArbeidIUtlandetFormData(arbeidIUtlandet)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const navnPåArbeidsgiverLabel = intlUtils(intl, 'arbeidIUtlandet.navn');
@@ -212,7 +211,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                                 <StepButtonWrapper>
                                     <BackButton
                                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getBackLinkForArbeidIUtlandetSteg(søker)}
+                                        route={getBackLinkForArbeidIUtlandetSteg(inntektsinformasjon)}
                                     />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
