@@ -1,4 +1,4 @@
-import { BodyLong, BodyShort, HStack, Heading, Ingress, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { FormattedMessage } from 'react-intl';
@@ -24,9 +24,9 @@ const OversiktSteg = () => {
                         <FormattedMessage id="oversikt.tittel" />
                     </Heading>
 
-                    <Ingress>
+                    <BodyLong size="large">
                         <FormattedMessage id="oversikt.ingress" />
-                    </Ingress>
+                    </BodyLong>
                 </div>
                 <Block className="border">
                     <Heading size="small" spacing>

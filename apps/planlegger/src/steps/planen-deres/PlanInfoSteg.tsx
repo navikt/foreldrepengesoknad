@@ -1,4 +1,4 @@
-import { BodyShort, ExpansionCard, Heading, Ingress } from '@navikt/ds-react';
+import { BodyLong, BodyShort, ExpansionCard, Heading } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import Kalender from 'components/ikoner/Kalender';
@@ -21,14 +21,14 @@ const PlanInfoSteg = () => {
                 </Block>
 
                 <Block margin="xxl">
-                    <Ingress>
+                    <BodyLong size="large">
                         <FormattedMessage id="planInfo.ingress.del1" />
-                    </Ingress>
+                    </BodyLong>
                 </Block>
                 <Block margin="xxl">
-                    <Ingress>
+                    <BodyLong size="large">
                         <FormattedMessage id="planInfo.ingress.del2" />
-                    </Ingress>
+                    </BodyLong>
                 </Block>
 
                 <Block margin="xxl">
