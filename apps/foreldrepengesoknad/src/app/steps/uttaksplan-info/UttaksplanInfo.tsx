@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Loader, VStack } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { notEmpty } from '@navikt/fp-validation';
 import { intlUtils, isAnnenForelderOppgitt, isFarEllerMedmor, isFødtBarn, Step, Søkerinfo } from '@navikt/fp-common';
 import stepConfig from '../stepsConfig';
