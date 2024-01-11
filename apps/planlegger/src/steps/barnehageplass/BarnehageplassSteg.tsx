@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import { Block } from '@navikt/fp-common';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { BodyLong, BodyShort, Button, Heading } from '@navikt/ds-react';
+import { BodyLong, Button, Heading } from '@navikt/ds-react';
 import useEsNavigator from 'appData/usePlanleggerNavigator';
 import { useForm } from 'react-hook-form';
 import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
