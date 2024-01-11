@@ -8,27 +8,20 @@ import { Block, intlUtils } from '@navikt/fp-common';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { PlanleggerDataType, usePlanleggerStateData, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
 import { Path } from 'appData/paths';
-import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import HvorforSpørViOmDette from 'components/expansion-card/HvorforSpørViOmDette';
 import { notEmpty } from '@navikt/fp-validation';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
-type FormValues = {
-    arbeidssituasjonMor?: boolean;
-    arbeidssituasjonFar?: boolean;
-    arbeidssituasjonMedmor?: boolean;
-    arbeidssituasjonMedfar?: boolean;
-};
-
 const ArbeidssituasjonSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
-    const formMethods = useForm<FormValues>();
+    const formMethods = useForm<Arbeidssituasjon>();
     const intl = useIntl();
 
     const hvemPlanlegger = notEmpty(usePlanleggerStateData(PlanleggerDataType.HVEM_PLANLEGGER));
 
     const lagreArbeidssituasjon = usePlanleggerStateSaveFn(PlanleggerDataType.ARBEIDSSITUASJON);
-    const lagre = (formValues: any) => {
+    const lagre = (formValues: Arbeidssituasjon) => {
         lagreArbeidssituasjon(formValues);
         navigator.goToNextStep(Path.PERIODE);
     };
