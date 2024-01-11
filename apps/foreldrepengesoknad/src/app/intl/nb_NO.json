@@ -1005,14 +1005,29 @@
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad": "Husk at du må legge inn alle perioder med foreldrepenger etter {sisteDag} på nytt, da endringssøknaden erstatter den  opprinnelige planen din.",
     "uttaksplan.veileder.fritekst.kanIkkeVæreLengreEnn": "Begrunnelse for søking tilbake i tid kan maks være {maxLength} tegn.",
     "vedlagtdokumentasjon": "Vedlagt dokumentasjon",
-
     "DekningsgradForm.InformasjonPrematurukerHeader": "{soker} får lenger periode med foreldrepenger siden barnet er født før uke 33",
     "DekningsgradForm.InformasjonPrematuruker": "Perioden blir forlenget med like mange uker og dager som barnet er født før termindato, som er {uker} uker og {dager} dager for {soker}",
     "DekningsgradForm.InformasjonToBarn": "{sokerStorBokstav} får lenger periode med foreldrepenger siden {soker} skal ha tvillinger",
     "DekningsgradForm.InformasjonFlereEnnToBarn": "{sokerStorBokstav} får lenger periode med foreldrepenger siden {soker} skal ha flere barn",
     "DekningsgradForm.InformasjonFlerbarnUker": "Perioden blir forlenget med {uker100} uker hvis {soker} velger 100% foreldrepenger eller {uker80} uker hvis {soker} velger 80% foreldrepenger.",
-
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dere har valgt {uker} uker med {dekningsgrad}% foreldrepenger",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette ble valgt av {navn} i søknaden hennes, og det kan ikke endres av deg.",
-    "DekningsgradValgtAvAnnenPartPanel.ValgtAvHans": "Dette ble valgt av {navn} i søknaden hans, og det kan ikke endres av deg."
+    "DekningsgradValgtAvAnnenPartPanel.ValgtAvHans": "Dette ble valgt av {navn} i søknaden hans, og det kan ikke endres av deg.",
+    "fordeling.kvoteForNavn": "{navn} sin kvote",
+    "fordeling.antallUkerTiLDeg": "{antallUker} uker til deg",
+    "fordeling.antallUkerSkalDeles": "{antallUker} uker som skal deles",
+    "fordeling.antallUkerTilAnnenForelder": "{antallUker} uker til {navn}",
+    "fordeling.info.mor.førFødsel": "<b>3 uker</b>  kan kun brukes før fødsel. Hvi man føder før termin, slettes det som er igjen av disse ukene, og tiden fram mot opprinnelig termindato tas fra fellesperioden.",
+    "fordeling.info.mor.første6Uker": "<b>6 uker</b>  er satt av til rett etter fødsel. Disse kan ikke brukes senere.",
+    "fordeling.info.mor.resterendeUker": "<b>{antallUker} uker</b> kan brukes når som helst før barnet er 3 år.",
+    "fordeling.info.felles": "<b>{antallUker} uker</b> kan deles slik man ønsker mellom foreldrene, og brukes når som helst før barnet fyller 3 år. Når far/medmor skla ha dager fra denne perioden, må mor være i aktivitet. Les om hva det betyr <a>her</a>.",
+    "fordeling.info.felles.annenForelder.del1": "<b>{antallUker} uker</b> er allerede brukt av Heidi. Det vil si at det gjenstår 8 uker som kan brukes av deg eller Heidi.",
+    "fordeling.info.felles.annenForelder.del2": "Hvis du vil ha ukene som er satt av til {navn}, må {navn} sende inn en søknad hvor {hunEllerHan} frigjør disse ukene. Etter dette kan du søke om å bruke disse ukene. Det er den siste søknaden som er gjeldende.",
+    "fordeling.info.felles.annenForelder.eøs": "Hvis du {navn} bruker mer enn  {antall} uker med foreldrepenger i et annet EØS land, skal perioden utover trekkes fra fellesperioden. Les mer om dette <a>her</a>.",
+    "fordeling.info.farMedmor": "<b>{antallUker} uker</b> kan brukes når som helst før barnet fyller 3 år. Når far/medmor skla ha dager fra denne perioden, må mor være i aktivitet. Les om hva det betyr <a>her</a>.",
+    "fordeling.info.farMedmor.rundtFødsel": "<b>2 av disse ukene</b> kan rett etter fødsel. Ofte får fedre permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette, kan far søke om foreldrepenger fra NAV i disse to ukene, og bruke av denne kvoten.",
+    "fordeling.info.far.aleneomsorg": "Disse ukene kan brukes når som helst før barnet er 3 år.",
+    "fordeling.info.far.utenAktivitetskrav": "<b>{antallUker} uker</b> kan brukes av deg uten krav til mors aktivitet",
+    "fordeling.info.far.medAktivitetskrav": "<b>{antallUker} uker</b> kan brukes av deg hvis mor er i aktivitet. Les mer om hva som er godkjent aktivitet <a>her</a>.",
+    "fordeling.info.far.opphold": "<b>Periode uten foreldrepenger/opphold</b> vil gjøre at du mister dager med foreldrepenger hvis ikke mor er i aktivitet. Hvis mor er i aktivitet når du har opphold i foreldrepengene, mister du ikke dager."
 }

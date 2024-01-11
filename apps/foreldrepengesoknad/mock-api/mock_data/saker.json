@@ -1,47 +1,94 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352011594",
+            "saksnummer": "352013898",
             "sakAvsluttet": false,
-            "sisteSøknadMottattDato": "2023-03-31",
-            "kanSøkeOmEndring": false,
-            "sakTilhørerMor": false,
-            "gjelderAdopsjon": true,
+            "kanSøkeOmEndring": true,
+            "sakTilhørerMor": true,
+            "gjelderAdopsjon": false,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "type": "person",
-                "fnr": "05489305072",
-                "fornavn": "Sentral",
-                "etternavn": "Tangent"
+                "fnr": "03439013124"
             },
             "familiehendelse": {
-                "fødselsdato": "2023-02-01",
-                "antallBarn": 1,
-                "omsorgsovertakelse": "2023-04-10"
+                "fødselsdato": "2023-10-02",
+                "termindato": "2023-10-01",
+                "antallBarn": 1
             },
-            "åpenBehandling": {
-                "tilstand": "VENT_INNTEKTSMELDING",
-                "søknadsperioder": [
+            "gjeldendeVedtak": {
+                "perioder": [
                     {
-                        "fom": "2023-04-10",
-                        "tom": "2023-07-21",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2023-09-11",
+                        "tom": "2023-09-29",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2023-07-24",
-                        "tom": "2023-09-15",
-                        "kontoType": "FELLESPERIODE",
-                        "morsAktivitet": "UTDANNING",
+                        "fom": "2023-10-02",
+                        "tom": "2023-11-12",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-11-13",
+                        "tom": "2023-12-03",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-12-04",
+                        "tom": "2023-12-22",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": false,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2023-12-23",
+                        "tom": "2023-12-25",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
                         "flerbarnsdager": false
                     }
                 ]
             },
-            "barn": [],
-            "dekningsgrad": "HUNDRE"
+            "barn": [
+                {
+                    "fnr": "02502350547"
+                }
+            ],
+            "dekningsgrad": "HUNDRE",
+            "oppdatertTidspunkt": "2023-12-12T09:53:56.657"
         }
     ],
     "engangsstønad": [],

@@ -1,0 +1,16 @@
+{
+    "perioder": [
+        {
+            "fom": "2023-12-04",
+            "tom": "2023-12-22",
+            "kontoType": "FEDREKVOTE",
+
+            "resultat": {
+                "innvilget": true,
+                "trekkerMinsterett": false,
+                "trekkerDager": true,
+                "årsak": "ANNET"
+            }
+        }
+    ]
+}
