@@ -1,6 +1,5 @@
 import { guid } from '@navikt/fp-common';
 import { KvoteFordeling } from '../FordelingOversikt';
-
 interface Props {
     fordelingList: KvoteFordeling[];
     sumUker: number;

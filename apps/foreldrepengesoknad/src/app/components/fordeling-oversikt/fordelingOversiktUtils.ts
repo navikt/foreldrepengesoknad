@@ -1,6 +1,6 @@
 import { KvoteFordeling, KvoteInformasjon, getFormattedMessage } from './FordelingOversikt';
 import { getAntallUkerMødrekvote } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { TilgjengeligStønadskonto } from '@navikt/fp-common';
+import { StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 import { UttaksplanInfoScenario } from 'app/steps/uttaksplan-info/components/scenarios/scenarios';
 
 const MORS_UKER_FØR_FØDSEL = 3;
@@ -8,6 +8,9 @@ const MORS_UKER_ETTER_FØDSEL = 6;
 export const MØDREKVOTE_FARGE = '#3386E0';
 export const FEDREKVOTE_FARGE = '#99DEAD';
 export const FELLESPERIODE_FARGE = '#ECEEF0';
+export const MØDREKVOTE_ID = 'MOR';
+export const FEDREKVOTE_ID = 'FAR';
+export const FELLESPERIODE_ID = 'FEL';
 
 export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligStønadskonto[]): KvoteInformasjon[] => {
     const antallUkerMor = getAntallUkerMødrekvote(kontoer);
@@ -40,10 +43,11 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
 
     const kvoteInformasjonMorsKvote = {
         antallUker: antallUkerMor,
-        kvoteTittel: `${antallUkerMor} uker til deg`,
-        kvoteNavn: 'DIN KVOTE',
-        kvoteFarge: MØDREKVOTE_FARGE,
+        kvoteTittel: `${antallUkerMor} uker til deg`, //TODO: Remove  this and figure out when displaying?
+        kvoteNavn: 'DIN KVOTE', //TODO: Remove  this and figure out when displaying?
+        kvoteFarge: MØDREKVOTE_FARGE, //TODO: Remove  this and figure out when displaying?
         fordeling: [førFødsel, seksUkerEtterFødsel, restUkerMor],
+        konto: StønadskontoType.Mødrekvote,
     };
 
     const kvoteInformasjonFarsKvote = {
@@ -52,6 +56,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         kvoteNavn: 'PETTER SIN KVOTE',
         kvoteFarge: FEDREKVOTE_FARGE,
         fordeling: [far],
+        konto: StønadskontoType.Fedrekvote,
     };
 
     const kvoteInformasjonFellesKvote = {
@@ -60,6 +65,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         kvoteNavn: 'FELLESPERIODE',
         kvoteFarge: FELLESPERIODE_FARGE,
         fordeling: [felles],
+        konto: StønadskontoType.Fellesperiode,
     };
     return [kvoteInformasjonMorsKvote, kvoteInformasjonFarsKvote, kvoteInformasjonFellesKvote];
 };

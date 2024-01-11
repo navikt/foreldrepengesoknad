@@ -5,6 +5,10 @@
     margin: 0.5rem 0;
 }
 
+.kvoteOversikt:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
 .kvoteOversikt__uker {
     width: 60%;
     float: left;

@@ -1,22 +1,37 @@
-import { guid } from '@navikt/fp-common';
+import { StønadskontoType, bemUtils, guid } from '@navikt/fp-common';
 import { BodyShort } from '@navikt/ds-react';
 import { HeartFillIcon } from '@navikt/aksel-icons';
+import './fordeling-graf.css';
+import { Dispatch, SetStateAction } from 'react';
 
 interface FordelingGrafInfo {
     tekst: string;
     uker: number;
     farge: string;
+    konto?: StønadskontoType;
 }
 
 interface Props {
     fordelingList: FordelingGrafInfo[];
     sumUker: number;
+    currentUthevet: StønadskontoType | undefined;
+    setCurrentUthevet: Dispatch<SetStateAction<StønadskontoType | undefined>>;
 }
 
-const FordelingGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker }) => {
+const FordelingGraf: React.FunctionComponent<Props> = ({
+    fordelingList,
+    sumUker,
+    currentUthevet,
+    setCurrentUthevet,
+}) => {
+    const bem = bemUtils('fordeling-graf');
     const iconSize = 24;
     const rowHeight = 16;
     const iconFieldWidth = 12;
+
+    const handleOnMouseLeave = () => {
+        setCurrentUthevet(undefined);
+    };
     return (
         <div
             style={{
@@ -27,6 +42,11 @@ const FordelingGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker 
             {fordelingList.map((fordeling: FordelingGrafInfo) => {
                 const width = fordeling.uker === 0 ? iconFieldWidth : (fordeling.uker / sumUker) * 100;
                 const borderColor = fordeling.farge === '#ECEEF0' ? 'black' : `${fordeling.farge}`;
+                const isUthevet = currentUthevet === fordeling.konto;
+                const shadow = isUthevet ? '0 5px 15px rgba(0, 0, 0, 0.8)' : '0 0px 0px white';
+                const handleOnMouseEnter = () => {
+                    setCurrentUthevet(fordeling.konto);
+                };
                 return ['Termin', 'Fødsel', 'Adopsjon'].includes(fordeling.tekst) ? (
                     <div
                         style={{
@@ -79,7 +99,10 @@ const FordelingGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker 
                             }}
                         >
                             <div
+                                className={bem.element('kvote')}
                                 key={guid()}
+                                onMouseEnter={handleOnMouseEnter}
+                                onMouseLeave={handleOnMouseLeave}
                                 style={{
                                     width: '100%',
                                     backgroundColor: `${fordeling.farge}`,
@@ -90,6 +113,7 @@ const FordelingGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker 
                                     borderStyle: 'solid',
                                     marginLeft: '2px',
                                     marginRight: '2px',
+                                    boxShadow: `${shadow}`,
                                 }}
                             ></div>
                         </div>
