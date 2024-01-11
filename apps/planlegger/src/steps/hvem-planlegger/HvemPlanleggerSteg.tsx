@@ -75,21 +75,21 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                             <TextField label={intlUtils(intl, 'navn.far')} name="navnPåFar" />
                         </div>
                         <div className="mt-10">
-                            <TextField label={intlUtils(intl, 'navn.far')} name="navnPåMedFar" />
+                            <TextField label={intlUtils(intl, 'navn.far')} name="navnPåMedfar" />
                         </div>
                     </Block>
                 )}
                 {hvemPlanlegger === SøkersituasjonEnum.MOR && (
                     <Block>
                         <div className="mt-10">
-                            <TextField label={intlUtils(intl, 'navn.mor')} name="navnPåBareMor" />
+                            <TextField label={intlUtils(intl, 'navn.mor')} name="navnPåMor" />
                         </div>
                     </Block>
                 )}
                 {hvemPlanlegger === SøkersituasjonEnum.FAR && (
                     <Block>
                         <div className="mt-10">
-                            <TextField label={intlUtils(intl, 'navn.far')} name="navnPåBareFar" />
+                            <TextField label={intlUtils(intl, 'navn.far')} name="navnPåFar" />
                         </div>
                     </Block>
                 )}

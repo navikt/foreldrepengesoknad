@@ -23,12 +23,12 @@ export type FarOgFar = {
 
 export type Mor = {
     type: SøkersituasjonEnum.MOR;
-    navnPåBareMor: string;
+    navnPåMor: string;
 };
 
 export type Far = {
     type: SøkersituasjonEnum.FAR;
-    navnPåBareFar: string;
+    navnPåFar: string;
 };
 
 export const isMorOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar => {
