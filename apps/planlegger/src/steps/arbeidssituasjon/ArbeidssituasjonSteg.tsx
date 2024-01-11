@@ -41,17 +41,11 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         <FormattedMessage id="arbeid.tittel" />
                     </Heading>
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR && (
-                        <Block margin="xl">
-                            <Heading size="small">
-                                <FormattedMessage
-                                    id={'arbeid.hvaGjelder'}
-                                    values={{ navn: hvemPlanlegger.navnPåMor }}
-                                />
-                            </Heading>
+                        <VStack gap="10">
                             <RadioGroup name="arbeidssituasjonMor">
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
-                                    description={intlUtils(intl, 'arbeid,jobber.beskrivelse', {
+                                    description={intlUtils(intl, 'arbeid.jobber.beskrivelse', {
                                         navn: hvemPlanlegger.navnPåMor,
                                     })}
                                 >
@@ -66,16 +60,10 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     <FormattedMessage id="arbeid.jobberIkke" />
                                 </Radio>
                             </RadioGroup>
-                        </Block>
+                        </VStack>
                     )}
                     {hvemPlanlegger.type === SøkersituasjonEnum.FAR && (
-                        <Block margin="xl">
-                            <Heading size="small">
-                                <FormattedMessage
-                                    id={'arbeid.hvaGjelder'}
-                                    values={{ navn: hvemPlanlegger.navnPåFar }}
-                                />
-                            </Heading>
+                        <VStack gap="10">
                             <RadioGroup name="arbeidssituasjonFar">
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
@@ -94,7 +82,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     <FormattedMessage id="arbeid.jobberIkke" />
                                 </Radio>
                             </RadioGroup>
-                        </Block>
+                        </VStack>
                     )}
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR && (
                         <VStack gap="10">
@@ -139,13 +127,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                             navn: hvemPlanlegger.navnPåFar,
                                         })}
                                     >
-                                        <FormattedMessage id="arbeid.jobber" />
+                                        <FormattedMessage id={intlUtils(intl, 'arbeid.jobber')} />
                                     </Radio>
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                        description={intlUtils(intl, 'arbeid.jobberIkke.beskrivelse', {
-                                            navn: hvemPlanlegger.navnPåFar,
-                                        })}
+                                        description={intlUtils(
+                                            intl,
+                                            'arbeid.jobberIkke.beskrivelse',
+
+                                            { navn: hvemPlanlegger.navnPåFar },
+                                        )}
                                     >
                                         <FormattedMessage id="arbeid.jobberIkke" />
                                     </Radio>
@@ -156,7 +147,6 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR && (
                         <VStack gap="10">
                             <div>
-                                {' '}
                                 <Heading size="small">
                                     <FormattedMessage
                                         id={'arbeid.hvaGjelder'}
@@ -213,7 +203,6 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     {hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR && (
                         <VStack gap="10">
                             <div>
-                                {' '}
                                 <Heading size="small">
                                     <FormattedMessage
                                         id={'arbeid.hvaGjelder'}
