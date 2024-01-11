@@ -1,7 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import * as countries from 'i18n-iso-countries';
-import { Modal } from '@navikt/ds-react';
 import AppContainer from './AppContainer';
 import { initAmplitude } from '@navikt/fp-metrics';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
@@ -12,8 +11,6 @@ import '@navikt/ds-css';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
-
-Modal.setAppElement('#app');
 
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
