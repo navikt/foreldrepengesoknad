@@ -6,7 +6,7 @@ import Planlegger from './Planlegger';
 const AppContainer = () => {
     return (
         <IntlProvider språkkode="nb">
-            <ErrorBoundary appnavn="Foreldrepengeplanlegger">
+            <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
                 <BrowserRouter>
                     <Planlegger />
                 </BrowserRouter>
