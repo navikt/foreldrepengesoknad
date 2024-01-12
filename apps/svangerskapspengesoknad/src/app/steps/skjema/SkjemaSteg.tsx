@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
-import { AttachmentType, Step, intlUtils } from '@navikt/fp-common';
+import { AttachmentType, Step } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { FileUploader } from '@navikt/fp-ui';
 import { Attachment } from '@navikt/fp-types';
@@ -114,14 +114,17 @@ const SkjemaSteg: FunctionComponent<Props> = ({
 
     return (
         <Step
-            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             activeStepId={`skjema-${valgtTilrettelegging.id}`}
             pageTitle={
                 tilrettelegginger.length > 1
-                    ? intlUtils(intl, 'steps.label.skjema.flere', {
-                          navn: valgtTilrettelegging.arbeidsforhold.navn,
-                      })
-                    : intlUtils(intl, 'steps.label.skjema.en')
+                    ? intl.formatMessage(
+                          { id: 'steps.label.skjema.flere' },
+                          {
+                              navn: valgtTilrettelegging.arbeidsforhold.navn,
+                          },
+                      )
+                    : intl.formatMessage({ id: 'steps.label.skjema.en' })
             }
             onCancel={avbrytSøknad}
             steps={stepConfig}

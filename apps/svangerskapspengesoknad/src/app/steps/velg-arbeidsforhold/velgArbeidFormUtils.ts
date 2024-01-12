@@ -1,5 +1,4 @@
 import { VelgArbeidFormData } from './velgArbeidFormConfig';
-import { intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
@@ -108,7 +107,7 @@ export const getArbeidsforholdTilretteleggingOptions = (
                 navn:
                     forhold.arbeidsgiverIdType === 'orgnr' || forhold.arbeidsgiverNavn
                         ? forhold.arbeidsgiverNavn
-                        : intlUtils(intl, 'privat.arbeidsgiver'),
+                        : intl.formatMessage({ id: 'privat.arbeidsgiver' }),
                 stillinger: forhold.stillinger,
                 startdato: forhold.fom,
                 sluttdato: forhold.tom,
@@ -159,7 +158,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
 
 export const validateVelgArbeidIsAnswered = (value: string, intl: IntlShape) => {
     if (value.length === 0) {
-        return intlUtils(intl, 'valideringsfeil.tilrettelegging.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' });
     }
     return undefined;
 };

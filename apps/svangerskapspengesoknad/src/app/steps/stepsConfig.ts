@@ -1,4 +1,4 @@
-import { assertUnreachable, intlUtils } from '@navikt/fp-common';
+import { assertUnreachable } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { IntlShape } from 'react-intl';
@@ -64,12 +64,12 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         {
             id: 'barnet',
             index: 0,
-            label: intlUtils(intl, 'steps.label.barnet'),
+            label: intl.formatMessage({ id: 'steps.label.barnet' }),
         },
         {
             id: 'utenlandsopphold',
             index: 1,
-            label: intlUtils(intl, 'steps.label.utenlandsopphold'),
+            label: intl.formatMessage({ id: 'steps.label.utenlandsopphold' }),
         },
     ] as StepConfig[];
 
@@ -77,28 +77,28 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         steps.push({
             id: 'boIUtlandetIFortid',
             index: steps.length,
-            label: intlUtils(intl, 'steps.label.boIUtlandetIFortid'),
+            label: intl.formatMessage({ id: 'steps.label.boIUtlandetIFortid' }),
         });
     }
     if (utenlandsopphold?.iNorgeNeste12Mnd === false) {
         steps.push({
             id: 'boIUtlandetIFremtid',
             index: steps.length,
-            label: intlUtils(intl, 'steps.label.boIUtlandetIFremtid'),
+            label: intl.formatMessage({ id: 'steps.label.boIUtlandetIFremtid' }),
         });
     }
 
     steps.push({
         id: 'arbeid',
         index: steps.length,
-        label: intlUtils(intl, 'steps.label.arbeid'),
+        label: intl.formatMessage({ id: 'steps.label.arbeid' }),
     });
 
     if (inntektsinformasjon?.harJobbetSomFrilans) {
         steps.push({
             id: 'frilans',
             index: steps.length,
-            label: intlUtils(intl, 'steps.label.frilans'),
+            label: intl.formatMessage({ id: 'steps.label.frilans' }),
         });
     }
 
@@ -106,7 +106,7 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         steps.push({
             id: 'næring',
             index: steps.length,
-            label: intlUtils(intl, 'steps.label.næring'),
+            label: intl.formatMessage({ id: 'steps.label.næring' }),
         });
     }
 
@@ -114,7 +114,7 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         steps.push({
             id: 'arbeidIUtlandet',
             index: steps.length,
-            label: intlUtils(intl, 'steps.label.arbeidIUtlandet'),
+            label: intl.formatMessage({ id: 'steps.label.arbeidIUtlandet' }),
         });
     }
 
@@ -132,7 +132,7 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         steps.push({
             id: 'velgArbeid',
             index: steps.length,
-            label: intlUtils(intl, 'steps.label.velgArbeid'),
+            label: intl.formatMessage({ id: 'steps.label.velgArbeid' }),
         });
     }
 
@@ -144,8 +144,8 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
                 id: `skjema-${tilrettelegging.id}`,
                 index: steps.length,
                 label: erFlereTilrettelegginger
-                    ? intlUtils(intl, 'steps.label.skjema.flere', { navn })
-                    : intlUtils(intl, 'steps.label.skjema.en'),
+                    ? intl.formatMessage({ id: 'steps.label.skjema.flere' }, { navn })
+                    : intl.formatMessage({ id: 'steps.label.skjema.en' }),
             });
             steps.push({
                 id: `tilrettelegging-${tilrettelegging.id}`,
@@ -167,19 +167,19 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         steps.push({
             id: 'skjema',
             index: steps.length,
-            label: intlUtils(intl, 'steps.label.skjema.en'),
+            label: intl.formatMessage({ id: 'steps.label.skjema.en' }),
         });
         steps.push({
             id: 'tilrettelegging',
             index: steps.length,
-            label: intlUtils(intl, 'steps.label.tilrettelegging.en'),
+            label: intl.formatMessage({ id: 'steps.label.tilrettelegging.en' }),
         });
     }
 
     steps.push({
         id: 'oppsummering',
         index: steps.length,
-        label: intlUtils(intl, 'steps.label.oppsummering'),
+        label: intl.formatMessage({ id: 'steps.label.oppsummering' }),
     });
 
     return steps;

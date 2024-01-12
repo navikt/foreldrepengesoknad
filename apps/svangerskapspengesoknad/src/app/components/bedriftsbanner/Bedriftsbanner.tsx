@@ -1,5 +1,5 @@
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
-import { bemUtils, intlUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-common';
 import { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { IntlShape, useIntl } from 'react-intl';
 import './bedriftsbanner.css';
@@ -11,10 +11,10 @@ interface Props {
 
 const getNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
     if (type === Arbeidsforholdstype.FRILANSER) {
-        return intlUtils(intl, 'bedriftsbanner.tittel.frilansarbeid');
+        return intl.formatMessage({ id: 'bedriftsbanner.tittel.frilansarbeid' });
     }
     if (type === Arbeidsforholdstype.SELVSTENDIG && navn.trim().length === 0) {
-        return intlUtils(intl, 'egenNæring');
+        return intl.formatMessage({ id: 'egenNæring' });
     }
     return navn;
 };
@@ -26,8 +26,8 @@ const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeid }) => {
 
     const detailTekst =
         arbeid.type !== Arbeidsforholdstype.FRILANSER
-            ? intlUtils(intl, 'bedriftsbanner.detail')
-            : intlUtils(intl, 'bedriftsbanner.detail.frilans');
+            ? intl.formatMessage({ id: 'bedriftsbanner.detail' })
+            : intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' });
     return (
         <div className={bem.block}>
             <HStack gap="5">

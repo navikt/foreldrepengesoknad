@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { VelgArbeidFormComponents, VelgArbeidFormData, VelgArbeidFormField } from './velgArbeidFormConfig';
-import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getBackLinkForVelgArbeidSteg, useStepConfig } from 'app/steps/stepsConfig';
 import { Button } from '@navikt/ds-react';
@@ -75,9 +75,9 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
                 const visInfo = formValues.arbeidMedTilrettelegging && formValues.arbeidMedTilrettelegging.length > 1;
                 return (
                     <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
                         activeStepId="velgArbeid"
-                        pageTitle={intlUtils(intl, 'steps.label.velgArbeid')}
+                        pageTitle={intl.formatMessage({ id: 'steps.label.velgArbeid' })}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
                         onContinueLater={onFortsettSøknadSenere}
@@ -90,7 +90,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
                             <Block padBottom="l">
                                 <VelgArbeidFormComponents.CheckboxGroup
                                     name={VelgArbeidFormField.arbeidMedTilrettelegging}
-                                    legend={intlUtils(intl, 'velgArbeid.hvor')}
+                                    legend={intl.formatMessage({ id: 'velgArbeid.hvor' })}
                                     checkboxes={tilretteleggingOptions.map((option) => ({
                                         label: getOptionNavn(
                                             option.arbeidsforhold.type,

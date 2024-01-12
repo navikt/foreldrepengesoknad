@@ -1,5 +1,5 @@
 import { isISODateString } from '@navikt/ds-datepicker';
-import { ISOStringToDate, formatDate, intlUtils } from '@navikt/fp-common';
+import { ISOStringToDate, formatDate } from '@navikt/fp-common';
 import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
 import { TilOgMedDatoType } from 'app/types/Tilrettelegging';
 import { IntlShape } from 'react-intl';
@@ -25,5 +25,5 @@ export const getPeriodeInfoTekst = (
                 : ISOStringToDate(formValues.varierendePerioder[index].tom)!;
         return `${formatDate(formValues.varierendePerioder[index].fom)} - ${formatDate(tomDato)}`;
     }
-    return intlUtils(intl, 'ny.periode');
+    return intl.formatMessage({ id: 'ny.periode' });
 };

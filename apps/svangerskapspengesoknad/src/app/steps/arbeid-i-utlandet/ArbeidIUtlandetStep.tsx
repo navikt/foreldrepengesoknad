@@ -1,5 +1,5 @@
 import { Button } from '@navikt/ds-react';
-import { Block, Step, StepButtonWrapper, bemUtils, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, bemUtils, date20YearsAgo, date5MonthsAgo } from '@navikt/fp-common';
 import { useIntl } from 'react-intl';
 import {
     getBackLinkForArbeidIUtlandetSteg,
@@ -86,12 +86,12 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
             initialValues={getInitialArbeidIUtlandetFormData(arbeidIUtlandet)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
-                const navnPåArbeidsgiverLabel = intlUtils(intl, 'arbeidIUtlandet.navn');
+                const navnPåArbeidsgiverLabel = intl.formatMessage({ id: 'arbeidIUtlandet.navn' });
                 return (
                     <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
                         activeStepId="arbeidIUtlandet"
-                        pageTitle={intlUtils(intl, 'steps.label.arbeidIUtlandet')}
+                        pageTitle={intl.formatMessage({ id: 'steps.label.arbeidIUtlandet' })}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
                         onContinueLater={onFortsettSøknadSenere}
@@ -113,7 +113,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                                                 <ArbeidIUtlandetFormComponents.CountrySelect
                                                     name={`arbeidIUtlandet.${index}.land`}
                                                     style={{ width: 'var(--app-text-input-width)' }}
-                                                    label={intlUtils(intl, 'arbeidIUtlandet.land')}
+                                                    label={intl.formatMessage({ id: 'arbeidIUtlandet.land' })}
                                                     useAlpha3Code={false}
                                                     validate={validateArbeidIUtlandetLand(intl)}
                                                 />
@@ -125,7 +125,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                                                         variant="tertiary"
                                                         onClick={() => arrayHelpers.remove(index)}
                                                     >
-                                                        {intlUtils(intl, 'perioder.varierende.slett')}
+                                                        {intl.formatMessage({ id: 'perioder.varierende.slett' })}
                                                     </Button>
                                                 )}
                                             </Block>
@@ -144,7 +144,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                                             <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.DatePicker
                                                     name={`arbeidIUtlandet.${index}.fom`}
-                                                    label={intlUtils(intl, 'arbeidIUtlandet.fom')}
+                                                    label={intl.formatMessage({ id: 'arbeidIUtlandet.fom' })}
                                                     placeholder={'dd.mm.åååå'}
                                                     fullscreenOverlay={true}
                                                     showYearSelector={true}
@@ -159,7 +159,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                                             <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.YesOrNoQuestion
                                                     name={`arbeidIUtlandet.${index}.pågående`}
-                                                    legend={intlUtils(intl, 'egenNæring.næring.pågående')}
+                                                    legend={intl.formatMessage({ id: 'egenNæring.næring.pågående' })}
                                                     validate={validateArbeidIUtlandetPågående(intl)}
                                                 />
                                             </Block>
@@ -169,8 +169,10 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                                             >
                                                 <ArbeidIUtlandetFormComponents.DatePicker
                                                     name={`arbeidIUtlandet.${index}.tom`}
-                                                    label={intlUtils(intl, 'arbeidIUtlandet.tom')}
-                                                    description={intlUtils(intl, 'egenNæring.arbeid.tom.description')}
+                                                    label={intl.formatMessage({ id: 'arbeidIUtlandet.tom' })}
+                                                    description={intl.formatMessage({
+                                                        id: 'egenNæring.arbeid.tom.description',
+                                                    })}
                                                     placeholder={'dd.mm.åååå'}
                                                     fullscreenOverlay={true}
                                                     showYearSelector={true}
@@ -199,7 +201,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                                                                 arrayHelpers.push(getUferdigArbeidIUtlandetInput())
                                                             }
                                                         >
-                                                            {intlUtils(intl, 'arbeidIUtlandet.tittel.ny')}
+                                                            {intl.formatMessage({ id: 'arbeidIUtlandet.tittel.ny' })}
                                                         </Button>
                                                     </Block>
                                                 )}
@@ -214,7 +216,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                                         route={getBackLinkForArbeidIUtlandetSteg(inntektsinformasjon)}
                                     />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                        {intl.formatMessage({ id: 'søknad.gåVidere' })}
                                     </Button>
                                 </StepButtonWrapper>
                             </Block>
