@@ -5,6 +5,7 @@ import * as stories from './Barnet.stories';
 import dayjs from 'dayjs';
 import { ContextDataType } from 'app/context/SvpDataContext';
 import SøknadRoutes from 'app/routes/routes';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const { Default } = composeStories(stories);
 
@@ -48,8 +49,8 @@ describe('<Barnet>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 erBarnetFødt: true,
-                fødselsdato: '2024-01-10',
-                termindato: '2024-01-10',
+                fødselsdato: dayjs().format(ISO_DATE_FORMAT),
+                termindato: dayjs().format(ISO_DATE_FORMAT),
             },
             key: ContextDataType.OM_BARNET,
             type: 'update',

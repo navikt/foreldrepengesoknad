@@ -4,7 +4,7 @@ import withRouter from 'storybook/decorators/withRouter';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
-import { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
+import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 
 const promiseAction =
     () =>
@@ -29,7 +29,7 @@ export default {
 interface Props {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
-    utenlandsforhold: Opphold;
+    utenlandsforhold: Utenlandsopphold;
 }
 
 const Template: StoryFn<Props> = ({

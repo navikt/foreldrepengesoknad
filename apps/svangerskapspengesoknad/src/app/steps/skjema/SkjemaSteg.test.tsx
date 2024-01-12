@@ -3,6 +3,7 @@ import { composeStories } from '@storybook/react';
 import userEvent from '@testing-library/user-event';
 import * as stories from './SkjemaSteg.stories';
 import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrilans, KanMaxHaToVedlegg } =
     composeStories(stories);
@@ -66,7 +67,12 @@ describe('<SkjemaSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '/tilrettelegging/263929546-6215-9868-5127-161910165730101',
+            data: '263929546-6215-9868-5127-161910165730101',
+            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: SøknadRoutes.TILRETTELEGGING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

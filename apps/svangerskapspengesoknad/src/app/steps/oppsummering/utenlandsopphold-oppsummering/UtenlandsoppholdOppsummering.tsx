@@ -2,17 +2,22 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 import { Block, intlUtils } from '@navikt/fp-common';
-import { Opphold, SenereOpphold, TidligereOpphold, Utenlandsopphold } from 'app/types/InformasjonOmUtenlandsopphold';
+import {
+    Utenlandsopphold,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+    UtenlandsoppholdPeriode,
+} from 'app/types/Utenlandsopphold';
 import UtenlandsoppholdListe from './UtenlandsoppholdOppsummeringListe';
 import dayjs from 'dayjs';
 import { Barn } from 'app/types/Barn';
 
-const EMPTY_ARRAY = [] as Utenlandsopphold[];
+const EMPTY_ARRAY = [] as UtenlandsoppholdPeriode[];
 
 const getErINorgePåFamiliehendelsedato = (
     familiehendelsedato: string,
-    tidligereUtenlandsopphold: Utenlandsopphold[] = EMPTY_ARRAY,
-    senereUtenlandsopphold: Utenlandsopphold[] = EMPTY_ARRAY,
+    tidligereUtenlandsopphold: UtenlandsoppholdPeriode[] = EMPTY_ARRAY,
+    senereUtenlandsopphold: UtenlandsoppholdPeriode[] = EMPTY_ARRAY,
 ): boolean => {
     let erINorge = true;
 
@@ -33,9 +38,9 @@ const getErINorgePåFamiliehendelsedato = (
 
 interface Props {
     barn: Barn;
-    utenlandsopphold: Opphold;
-    tidligereUtenlandsopphold?: TidligereOpphold;
-    senereUtenlandsopphold?: SenereOpphold;
+    utenlandsopphold: Utenlandsopphold;
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
+    senereUtenlandsopphold?: UtenlandsoppholdSenere;
 }
 
 const UtenlandsoppholdOppsummering: FunctionComponent<Props> = ({

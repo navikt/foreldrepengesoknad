@@ -1,7 +1,7 @@
 import { createContext, useReducer, FunctionComponent, ReactNode, useContext } from 'react';
 import SøknadRoutes from 'app/routes/routes';
 import { Barn } from 'app/types/Barn';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'app/types/InformasjonOmUtenlandsopphold';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'app/types/Utenlandsopphold';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { Frilans } from 'app/types/Frilans';
@@ -25,9 +25,9 @@ export enum ContextDataType {
 export type ContextDataMap = {
     [ContextDataType.APP_ROUTE]?: SøknadRoutes;
     [ContextDataType.OM_BARNET]?: Barn;
-    [ContextDataType.UTENLANDSOPPHOLD]?: Opphold;
-    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: SenereOpphold;
-    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;
+    [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
+    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdSenere;
+    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdTidligere;
     [ContextDataType.INNTEKTSINFORMASJON]?: Inntektsinformasjon;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet[];

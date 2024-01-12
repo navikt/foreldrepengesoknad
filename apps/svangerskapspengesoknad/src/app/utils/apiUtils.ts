@@ -11,12 +11,12 @@ import { EgenNæring, EgenNæringDTO, Næringstype } from 'app/types/EgenNæring
 import { Frilans, FrilansDTO } from 'app/types/Frilans';
 import {
     InformasjonOmUtenlandsoppholdDTO,
-    Opphold,
-    SenereOpphold,
-    TidligereOpphold,
     Utenlandsopphold,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+    UtenlandsoppholdPeriode,
     UtenlandsoppholdDTO,
-} from 'app/types/InformasjonOmUtenlandsopphold';
+} from 'app/types/Utenlandsopphold';
 import { SøkerDTO, Søkerrolle } from 'app/types/Søker';
 import { SøknadDTO, Søknadstype } from 'app/types/Søknad';
 import Tilrettelegging, {
@@ -49,7 +49,7 @@ const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegg
     };
 };
 
-const mapBostedUtlandTilDTO = (utenlandsopphold: Utenlandsopphold): UtenlandsoppholdDTO => {
+const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode): UtenlandsoppholdDTO => {
     return {
         land: utenlandsopphold.land,
         tidsperiode: {
@@ -60,9 +60,9 @@ const mapBostedUtlandTilDTO = (utenlandsopphold: Utenlandsopphold): Utenlandsopp
 };
 
 const mapUtenlandsOppholdForInnsending = (
-    utenlandsopphold: Opphold,
-    senereUtenlandsopphold?: SenereOpphold,
-    tidligereUtenlandsopphold?: TidligereOpphold,
+    utenlandsopphold: Utenlandsopphold,
+    senereUtenlandsopphold?: UtenlandsoppholdSenere,
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
 ): InformasjonOmUtenlandsoppholdDTO => {
     return {
         iNorgeSiste12Mnd: utenlandsopphold.iNorgeSiste12Mnd,

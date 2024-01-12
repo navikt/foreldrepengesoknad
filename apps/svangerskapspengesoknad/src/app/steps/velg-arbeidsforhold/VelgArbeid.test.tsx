@@ -3,6 +3,7 @@ import { composeStories } from '@storybook/react';
 import * as stories from './VelgArbeid.stories';
 import { render, screen } from '@testing-library/react';
 import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 const { Default } = composeStories(stories);
 
@@ -73,7 +74,12 @@ describe('<Velg arbeid>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '/skjema/186699244-06994-0884-1562-860234771205',
+            data: '186699244-06994-0884-1562-860234771205',
+            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: SøknadRoutes.SKJEMA,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

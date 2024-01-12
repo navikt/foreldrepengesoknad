@@ -89,7 +89,7 @@ describe('<Behov for tilrettelegging>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '/perioder/263929546-6215-9868-5127-161910165730101',
+            data: '263929546-6215-9868-5127-161910165730101',
             key: ContextDataType.VALGT_TILRETTELEGGING_ID,
             type: 'update',
         });

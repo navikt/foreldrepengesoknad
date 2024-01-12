@@ -6,7 +6,7 @@ import { InntektsinformasjonFormData } from './inntektsinformasjon/inntektsinfor
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import InformasjonOmUtenlandsopphold, { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
+import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 import {
     DelivisTilretteleggingPeriodeType,
     TilretteleggingFormData,
@@ -298,20 +298,11 @@ export const getBackLinkForVelgArbeidSteg = (inntektsinformasjon: Inntektsinform
     );
 };
 
-export const getBackLinkForBostedIFremtid = (
-    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold,
-): SøknadRoutes => {
-    if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
-        return SøknadRoutes.HAR_BODD_I_UTLANDET;
-    }
-    return SøknadRoutes.UTENLANDSOPPHOLD;
-};
-
-export const getBackLinkForArbeidSteg = (informasjonOmUtenlandsopphold: Opphold): SøknadRoutes => {
-    if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
+export const getBackLinkForArbeidSteg = (utenlandsopphold: Utenlandsopphold): SøknadRoutes => {
+    if (!utenlandsopphold.iNorgeNeste12Mnd) {
         return SøknadRoutes.SKAL_BO_I_UTLANDET;
     }
-    if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
+    if (!utenlandsopphold.iNorgeSiste12Mnd) {
         return SøknadRoutes.HAR_BODD_I_UTLANDET;
     }
     return SøknadRoutes.UTENLANDSOPPHOLD;
