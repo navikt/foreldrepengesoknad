@@ -4,7 +4,6 @@ import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-for
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
-import { Block } from '@navikt/fp-common';
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
 import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
@@ -95,15 +94,16 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                             </Box>
                         </VStack>
                     )}
-                    <HvorforSpørViOmDette />
-
-                    <Block margin="xxl" className="button-wrapper content-wrapper">
-                        <StepButtonsHookForm
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            nextButtonText="Neste"
-                            previousButtonText="Tilbake"
-                        />
-                    </Block>
+                    <VStack gap="20">
+                        <HvorforSpørViOmDette />
+                        <VStack className="button-wrapper content-wrapper">
+                            <StepButtonsHookForm
+                                goToPreviousStep={navigator.goToPreviousDefaultStep}
+                                nextButtonText="Neste"
+                                previousButtonText="Tilbake"
+                            />
+                        </VStack>
+                    </VStack>
                 </VStack>
             </Form>
         </ContentWrapper>

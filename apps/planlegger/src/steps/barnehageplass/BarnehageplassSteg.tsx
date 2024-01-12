@@ -1,5 +1,4 @@
 import { FormattedMessage } from 'react-intl';
-import { Block } from '@navikt/fp-common';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { BodyLong, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 import { PlanleggerRoutes } from 'appData/routes';
@@ -71,18 +70,19 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                     </VStack>
                 </Box>
 
-                <HvorforSpørViOmDette />
-
-                <Block margin="xxl" className="button-wrapper content-wrapper">
-                    <StepButtons
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonText="Neste"
-                        previousButtonText="Tilbake"
-                        nextButtonOnClick={() => {
-                            navigator.goToNextStep(PlanleggerRoutes.ARBEIDSSITUASJON);
-                        }}
-                    />
-                </Block>
+                <VStack gap="20">
+                    <HvorforSpørViOmDette />
+                    <VStack className="button-wrapper content-wrapper">
+                        <StepButtons
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            nextButtonText="Neste"
+                            previousButtonText="Tilbake"
+                            nextButtonOnClick={() => {
+                                navigator.goToNextStep(PlanleggerRoutes.ARBEIDSSITUASJON);
+                            }}
+                        />
+                    </VStack>
+                </VStack>
             </VStack>
         </ContentWrapper>
     );
