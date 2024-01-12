@@ -1,5 +1,5 @@
-import { BodyLong, Button, ExpansionCard, Heading } from '@navikt/ds-react';
-import { Block, StepButtonWrapper } from '@navikt/fp-common';
+import { BodyLong, Button, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
+import { StepButtonWrapper } from '@navikt/fp-common';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -15,78 +15,74 @@ const Oppsummering = () => {
 
     return (
         <ContentWrapper>
-            <Heading size="large">
-                <Block padBottom="xl">
-                    <div className="with-icon">
+            <VStack gap="10">
+                <Heading size="large">
+                    <HStack gap="5" align="center">
                         <OppsummeringCheck />
                         <FormattedMessage id="oppsummering.tittel" />
-                    </div>
-                </Block>
+                    </HStack>
+                </Heading>
 
-                <Block padBottom="xl">
-                    <BodyLong size="large">
-                        <FormattedMessage id="oppsummering.ingress" />
-                    </BodyLong>
-                </Block>
+                <BodyLong size="large">
+                    <FormattedMessage id="oppsummering.ingress" />
+                </BodyLong>
 
-                <Block padBottom="xl">
-                    <ExpansionCard aria-label="">
-                        <ExpansionCard.Header>
-                            <div className="with-icon">
-                                <Spørsmålstegn />
-                                <ExpansionCard.Title size="medium">
-                                    <FormattedMessage id="oppsummering.info.tittel" />
-                                </ExpansionCard.Title>
-                            </div>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <FormattedMessage id="oppsummering.info.tekst" />
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
-                </Block>
+                <ExpansionCard aria-label="">
+                    <ExpansionCard.Header>
+                        <HStack gap="5" align="center">
+                            <Spørsmålstegn />
+                            <ExpansionCard.Title size="medium">
+                                <FormattedMessage id="oppsummering.info.tittel" />
+                            </ExpansionCard.Title>
+                        </HStack>
+                    </ExpansionCard.Header>
+                    <ExpansionCard.Content>
+                        <FormattedMessage id="oppsummering.info.tekst" />
+                    </ExpansionCard.Content>
+                </ExpansionCard>
 
-                <Block padBottom="xxl">
-                    <ExpansionCard aria-label="">
-                        <ExpansionCard.Header>
-                            <div className="with-icon">
-                                <Kalender />
+                <ExpansionCard aria-label="">
+                    <ExpansionCard.Header>
+                        <HStack gap="5" align="center">
+                            <Kalender />
+                            <ExpansionCard.Title size="medium">
+                                <FormattedMessage id="oppsummering.planInfo.tittel" />
+                            </ExpansionCard.Title>
+                        </HStack>
+                    </ExpansionCard.Header>
+                    <ExpansionCard.Content>
+                        <FormattedMessage id="oppsummering.planInfo.tekst" />
+                    </ExpansionCard.Content>
+                </ExpansionCard>
 
-                                <ExpansionCard.Title size="medium">
-                                    <FormattedMessage id="oppsummering.planInfo.tittel" />
-                                </ExpansionCard.Title>
-                            </div>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <FormattedMessage id="oppsummering.planInfo.tekst" />
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
-                </Block>
+                <VStack gap="32">
+                    <VStack gap="20">
+                        <StepButtonWrapper>
+                            <Button variant="secondary" type="button">
+                                Eksporter kalender
+                            </Button>
+                            <Button variant="secondary" type="button">
+                                Gjør endringer
+                            </Button>
+                        </StepButtonWrapper>
+                    </VStack>
 
-                <Block margin="xxl" padBottom="xxxl">
-                    <StepButtonWrapper>
-                        <Button variant="secondary" type="button">
-                            Eksporter kalender
-                        </Button>
-                        <Button variant="secondary" type="button">
-                            Gjør endringer
-                        </Button>
-                    </StepButtonWrapper>
-                </Block>
+                    <VStack gap="10" className="button-wrapper content-wrapper">
+                        <StepButtons
+                            nextButtonText="Legg til i søknad"
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            nextButtonOnClick={() => navigate(PlanleggerRoutes.OM_PLANLEGGEREN)}
+                            previousButtonText="Tilbake"
+                        ></StepButtons>
 
-                <Block margin="xxl" padBottom="xl">
-                    <StepButtons
-                        nextButtonText="Legg til i søknad"
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonOnClick={() => navigate(PlanleggerRoutes.OM_PLANLEGGEREN)}
-                        previousButtonText="Tilbake"
-                    ></StepButtons>
-                </Block>
-                <Block className="center">
-                    <Button variant="tertiary" onClick={() => navigate(PlanleggerRoutes.OM_PLANLEGGEREN)}>
-                        Avbryt
-                    </Button>
-                </Block>
-            </Heading>
+                        <VStack align="center">
+                            <Button variant="tertiary" onClick={() => navigate(PlanleggerRoutes.OM_PLANLEGGEREN)}>
+                                Avbryt
+                            </Button>
+                        </VStack>
+                    </VStack>
+                </VStack>
+            </VStack>
         </ContentWrapper>
     );
 };
