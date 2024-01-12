@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
-import PlanleggerRouter from './routes/PlanleggerRouter';
 import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import PlanleggerRouter from './PlanleggerRouter';
 
 const Planlegger: FunctionComponent = () => {
     return (
