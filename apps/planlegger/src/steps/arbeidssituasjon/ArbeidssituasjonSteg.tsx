@@ -270,7 +270,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         </VStack>
                     )}
                     <VStack gap="20">
-                        <HvorforSpørViOmDette />
+                        <HvorforSpørViOmDette text="TODO" />
                         <VStack className="button-wrapper content-wrapper">
                             <StepButtonsHookForm
                                 saveDataOnPreviousClick={lagreArbeidssituasjon}
