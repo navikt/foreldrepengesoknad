@@ -4,7 +4,7 @@ import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
@@ -47,18 +47,24 @@ const PeriodeSteg: FunctionComponent = () => {
                                 <RadioGroup name="periode">
                                     <Radio
                                         value={PeriodeEnum.HUNDRE}
-                                        description={intlUtils(intl, 'periode.100.beskrivelseDeg', {
-                                            kr1: '10',
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'periode.100.beskrivelseDeg' },
+                                            {
+                                                kr1: '10',
+                                            },
+                                        )}
                                         className="margin-bottom-2 panel green"
                                     >
                                         <FormattedMessage id="periode.100" />
                                     </Radio>
                                     <Radio
                                         value={PeriodeEnum.ÅTTI}
-                                        description={intlUtils(intl, 'periode.80.beskrivelseDeg', {
-                                            kr1: '10',
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'periode.80.beskrivelseDeg' },
+                                            {
+                                                kr1: '10',
+                                            },
+                                        )}
                                         className="margin-bottom-2 panel green"
                                     >
                                         <FormattedMessage id="periode.80" />
@@ -96,24 +102,30 @@ const PeriodeSteg: FunctionComponent = () => {
                             <RadioGroup name="periode">
                                 <Radio
                                     value={PeriodeEnum.HUNDRE}
-                                    description={intlUtils(intl, 'periode.100.beskrivelse', {
-                                        navn1: navnMor,
-                                        kr1: '10',
-                                        navn2: navnFar,
-                                        kr2: '12',
-                                    })}
+                                    description={intl.formatMessage(
+                                        { id: 'periode.100.beskrivelse' },
+                                        {
+                                            navn1: navnMor,
+                                            kr1: '10',
+                                            navn2: navnFar,
+                                            kr2: '12',
+                                        },
+                                    )}
                                     className="margin-bottom-2 panel green"
                                 >
                                     <FormattedMessage id="periode.100" />
                                 </Radio>
                                 <Radio
                                     value={PeriodeEnum.ÅTTI}
-                                    description={intlUtils(intl, 'periode.100.beskrivelse', {
-                                        navn1: navnMor,
-                                        kr1: '10',
-                                        navn2: navnFar,
-                                        kr2: '12',
-                                    })}
+                                    description={intl.formatMessage(
+                                        { id: 'periode.100.beskrivelse' },
+                                        {
+                                            navn1: navnMor,
+                                            kr1: '10',
+                                            navn2: navnFar,
+                                            kr2: '12',
+                                        },
+                                    )}
                                     className="margin-bottom-2 panel green"
                                 >
                                     <FormattedMessage id="periode.80" />
