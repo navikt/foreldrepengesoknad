@@ -1,41 +1,38 @@
 import { createContext, useReducer, FunctionComponent, ReactNode, useContext, useCallback } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { Barnehageplass } from 'types/Barnehageplass';
 import { Barnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Periode } from 'types/Periode';
 import { Søkersituasjon } from 'types/Søkersituasjon';
 
-export enum PlanleggerDataType {
+export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
-    BARNEHAGEPLASS = 'BARNEHAGEPLASS',
     ARBEIDSSITUASJON = 'ARBEIDSSITUASJON',
     PERIODE = 'PERIODE',
 }
 
-export type PlanleggerDataMap = {
-    [PlanleggerDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
-    [PlanleggerDataType.SØKERSITUASJON]?: Søkersituasjon;
-    [PlanleggerDataType.OM_BARNET]?: Barnet;
-    [PlanleggerDataType.BARNEHAGEPLASS]?: Barnehageplass;
-    [PlanleggerDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
-    [PlanleggerDataType.PERIODE]?: Periode;
+export type ContextDataMap = {
+    [ContextDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
+    [ContextDataType.SØKERSITUASJON]?: Søkersituasjon;
+    [ContextDataType.OM_BARNET]?: Barnet;
+    [ContextDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
+    [ContextDataType.PERIODE]?: Periode;
 };
 
-const defaultInitialState = {} as PlanleggerDataMap;
+const defaultInitialState = {} as ContextDataMap;
 
-export type Action = { type: 'update'; key: PlanleggerDataType; data: any } | { type: 'reset' };
+export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
-type State = PlanleggerDataMap;
+type State = ContextDataMap;
 
 const PlanleggerStateContext = createContext<State>(defaultInitialState);
 const PlanleggerDispatchContext = createContext<Dispatch | undefined>(undefined);
 
 interface OwnProps {
     children: ReactNode;
-    initialState?: PlanleggerDataMap;
+    initialState?: ContextDataMap;
     testDispatcher?: (action: Action) => void;
 }
 
@@ -73,11 +70,9 @@ export const PlanleggerDataContext: FunctionComponent<OwnProps> = ({
 };
 
 /** Hook returns save function for one specific data type */
-export const usePlanleggerStateSaveFn = <TYPE extends PlanleggerDataType>(
-    key: TYPE,
-): ((data: PlanleggerDataMap[TYPE]) => void) => {
+export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback((data: PlanleggerDataMap[TYPE]) => {
+    return useCallback((data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
         }
@@ -85,9 +80,9 @@ export const usePlanleggerStateSaveFn = <TYPE extends PlanleggerDataType>(
 };
 
 /** Hook returns save function usable with all data types  */
-export const useAllStateSaveFn = () => {
+export const useContextSaveAnyData = () => {
     const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback(<TYPE extends PlanleggerDataType>(key: TYPE, data: PlanleggerDataMap[TYPE]) => {
+    return useCallback(<TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
         }
@@ -95,7 +90,7 @@ export const useAllStateSaveFn = () => {
 };
 
 /** Hook returns state reset function  */
-export const usePlanleggerStateResetFn = () => {
+export const useContextReset = () => {
     const dispatch = useContext(PlanleggerDispatchContext);
     return useCallback(() => {
         if (dispatch) {
@@ -105,16 +100,16 @@ export const usePlanleggerStateResetFn = () => {
 };
 
 /** Hook returns data for one specific data type  */
-export const usePlanleggerStateData = <TYPE extends PlanleggerDataType>(key: TYPE): PlanleggerDataMap[TYPE] => {
+export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
     const state = useContext(PlanleggerStateContext);
     return state[key];
 };
 
 /** Hook returns function capable of getting all types of data from context state  */
-export const usePlanleggerStateAllDataFn = () => {
+export const useContextGetAnyData = () => {
     const state = useContext(PlanleggerStateContext);
 
-    return useCallback(<TYPE extends PlanleggerDataType>(key: TYPE) => {
+    return useCallback(<TYPE extends ContextDataType>(key: TYPE) => {
         return state[key];
     }, []);
 };
