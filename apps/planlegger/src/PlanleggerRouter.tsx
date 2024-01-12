@@ -1,12 +1,12 @@
 import { FunctionComponent } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import HvemPlanleggerSteg from 'steps/hvem-planlegger/HvemPlanleggerSteg';
-import OmPlanleggerenSteg from 'steps/om-planleggeren/OmPlanleggerenSteg';
-import OmBarnetSteg from 'steps/om-barnet/OmBarnetSteg';
+import HvemPlanleggerSteg from 'steps/hvemPlanlegger/HvemPlanleggerSteg';
+import OmPlanleggerenSteg from 'steps/omPlanleggeren/OmPlanleggerenSteg';
+import OmBarnetSteg from 'steps/omBarnet/OmBarnetSteg';
 import BarnehageplassSteg from 'steps/barnehageplass/BarnehageplassSteg';
 import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
 import PeriodeSteg from 'steps/periode/PeriodeSteg';
-import PlanInfoSteg from 'steps/planen-deres/PlanInfoSteg';
+import PlanInfoSteg from 'steps/planenDeres/PlanInfoSteg';
 import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
 import OversiktSteg from 'steps/oversikt/OversiktSteg';
 import { PlanleggerRoutes } from 'appData/routes';
