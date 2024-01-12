@@ -3,11 +3,11 @@ import { Block, StepButtonWrapper } from '@navikt/fp-common';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import PlanleggerRoutes from './../../routes/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
 import Kalender from 'components/ikoner/Kalender';
 import OppsummeringCheck from 'components/ikoner/OppsummeringCheck';
+import { PlanleggerRoutes } from 'appData/routes';
 
 const Oppsummering = () => {
     const navigate = useNavigate();
@@ -64,8 +64,12 @@ const Oppsummering = () => {
 
                 <Block margin="xxl" padBottom="xxxl">
                     <StepButtonWrapper>
-                        <Button variant="secondary">Eksporter kalender</Button>
-                        <Button variant="secondary">Gjør endringer</Button>
+                        <Button variant="secondary" type="button">
+                            Eksporter kalender
+                        </Button>
+                        <Button variant="secondary" type="button">
+                            Gjør endringer
+                        </Button>
                     </StepButtonWrapper>
                 </Block>
 
@@ -74,7 +78,7 @@ const Oppsummering = () => {
                         nextButtonText="Legg til i søknad"
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={() => navigate(PlanleggerRoutes.OM_PLANLEGGEREN)}
-                        previousButtonText="Lagre i Mitt NAV"
+                        previousButtonText="Tilbake"
                     ></StepButtons>
                 </Block>
                 <Block className="center">

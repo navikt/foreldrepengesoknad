@@ -1,13 +1,12 @@
 import { ClockIcon } from '@navikt/aksel-icons';
-import { BodyShort, Heading, Ingress } from '@navikt/ds-react';
+import { BodyShort, Button, Heading, Ingress } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
 import { ContentWrapper } from '@navikt/fp-ui';
+import { PlanleggerRoutes } from 'appData/routes';
 import Kalender from 'components/ikoner/Kalender';
 import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
-import PlanleggerKnapp from 'components/planlegger-knapp/PlanleggerKnapp';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import PlanleggerRoutes from '../../routes/routes';
 
 const OmPlanleggerenSteg = () => {
     const navigate = useNavigate();
@@ -67,9 +66,13 @@ const OmPlanleggerenSteg = () => {
                 </Block>
 
                 <Block margin="xxl" className="center-media">
-                    <PlanleggerKnapp onClick={() => navigate(PlanleggerRoutes.HVEM_PLANLEGGER)}>
+                    <Button
+                        variant="secondary"
+                        className="planleggerKnapp"
+                        onClick={() => navigate(PlanleggerRoutes.HVEM_PLANLEGGER)}
+                    >
                         <FormattedMessage id="om.start.planlegger" />
-                    </PlanleggerKnapp>
+                    </Button>
                 </Block>
             </Heading>
         </ContentWrapper>
