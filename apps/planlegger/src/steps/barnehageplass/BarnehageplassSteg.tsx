@@ -1,92 +1,91 @@
 import { FormattedMessage } from 'react-intl';
 import { Block } from '@navikt/fp-common';
-import { ContentWrapper } from '@navikt/fp-ui';
-import { BodyLong, Button, Heading } from '@navikt/ds-react';
-import useEsNavigator from 'appData/usePlanleggerNavigator';
-import { useForm } from 'react-hook-form';
-import { PlanleggerDataType, usePlanleggerStateSaveFn } from 'appData/PlanleggerDataContext';
-import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Path } from 'appData/paths';
+import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
+import { BodyLong, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
+import { PlanleggerRoutes } from 'appData/routes';
 import Kalender from 'components/ikoner/Kalender';
-import HvorforSpørViOmDette from 'components/expansion-card/HvorforSpørViOmDette';
+import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 
-const OmBarnetSteg: React.FunctionComponent = () => {
-    const navigator = useEsNavigator();
-    const formMethods = useForm();
-
-    const lagreBarnehageplass = usePlanleggerStateSaveFn(PlanleggerDataType.BARNEHAGEPLASS);
-    const lagre = (formValues: any) => {
-        lagreBarnehageplass(formValues);
-        navigator.goToNextStep(Path.ARBEIDSSITUASJON);
-    };
-
-    console.log('formMethods', formMethods);
+const BarnehageplassSteg: React.FunctionComponent = () => {
+    const navigator = usePlanleggerNavigator();
 
     return (
         <ContentWrapper>
-            <Form formMethods={formMethods} onSubmit={lagre}>
+            <VStack gap="10">
                 <Heading size="large">
                     <FormattedMessage id="barnehageplass.tittel" />
                 </Heading>
-                <Block margin="xl" className="border">
-                    <Heading size="small">
-                        <FormattedMessage id="barnehageplass.datoTittel" />
-                    </Heading>
 
-                    <div className="mt-10 with-icon">
-                        <Kalender />
-                        <FormattedMessage id="barnehageplass.dato" />
-                    </div>
-                    <div className="mt-10">
+                <Box borderColor="border-alt-3" padding="4" borderWidth="2" borderRadius="xlarge">
+                    <VStack gap="2">
+                        <Heading size="small">
+                            <FormattedMessage id="barnehageplass.datoTittel" />
+                        </Heading>
+
+                        <HStack gap="5" align="center">
+                            <Kalender />
+                            <FormattedMessage id="barnehageplass.dato" />
+                        </HStack>
                         <BodyLong>
                             <FormattedMessage id="barnehageplass.datoTekst" />
                         </BodyLong>
-                    </div>
-                </Block>
-                <Block margin="xl" className="panel grey">
-                    <Heading size="small">
-                        <FormattedMessage id="barnehageplass.barnehageTittel" />
-                    </Heading>
-                    <Block margin="l">
-                        <FormattedMessage id="barnehageplass.barnehageTekst" />
-                    </Block>
-                </Block>
+                    </VStack>
+                </Box>
 
-                <Block margin="xl" className="panel grey">
-                    <Heading size="small">
-                        <FormattedMessage id="barnehageplass.kommuneTittel" />
-                    </Heading>
-                    <Block margin="l">
-                        <FormattedMessage id="barnehageplass.kommuneTekst" />
-                    </Block>
-                </Block>
+                <Box padding="4" borderRadius="large" background="bg-subtle">
+                    <VStack gap="2">
+                        <Heading size="small">
+                            <FormattedMessage id="barnehageplass.barnehageTittel" />
+                        </Heading>
+                        <BodyLong>
+                            <FormattedMessage id="barnehageplass.barnehageTekst" />
+                        </BodyLong>
+                    </VStack>
+                </Box>
 
-                <Block margin="xl" className="panel grey">
-                    <Heading size="small">
-                        <FormattedMessage id="barnehageplass.alleredeTittel" />
-                    </Heading>
-                    <Block margin="l">
-                        <FormattedMessage id="barnehageplass.alleredeTekst" />
-                    </Block>
-                    <Block margin="l">
-                        <Button variant="secondary">
-                            <FormattedMessage id="barnehageplass.knapp" />
-                        </Button>
-                    </Block>
-                </Block>
+                <Box padding="4" borderRadius="large" background="bg-subtle">
+                    <VStack gap="2">
+                        <Heading size="small">
+                            <FormattedMessage id="barnehageplass.kommuneTittel" />
+                        </Heading>
+                        <BodyLong>
+                            <FormattedMessage id="barnehageplass.kommuneTekst" />
+                        </BodyLong>
+                    </VStack>
+                </Box>
+
+                <Box padding="4" borderRadius="large" background="bg-subtle">
+                    <VStack gap="2">
+                        <Heading size="small">
+                            <FormattedMessage id="barnehageplass.alleredeTittel" />
+                        </Heading>
+                        <BodyLong>
+                            <FormattedMessage id="barnehageplass.alleredeTekst" />
+                        </BodyLong>
+                        <HStack>
+                            <Button variant="secondary" type="button">
+                                <FormattedMessage id="barnehageplass.knapp" />
+                            </Button>
+                        </HStack>
+                    </VStack>
+                </Box>
 
                 <HvorforSpørViOmDette />
 
                 <Block margin="xxl" className="button-wrapper content-wrapper">
-                    <StepButtonsHookForm
+                    <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonText="Neste"
                         previousButtonText="Tilbake"
+                        nextButtonOnClick={() => {
+                            navigator.goToNextStep(PlanleggerRoutes.ARBEIDSSITUASJON);
+                        }}
                     />
                 </Block>
-            </Form>
+            </VStack>
         </ContentWrapper>
     );
 };
 
-export default OmBarnetSteg;
+export default BarnehageplassSteg;

@@ -5,9 +5,9 @@ import Kalender from 'components/ikoner/Kalender';
 import { FormattedMessage } from 'react-intl';
 import Penn from 'components/ikoner/Penn';
 import Check from 'components/ikoner/Check';
-import PlanleggerRoutes from './../../routes/routes';
 import { useNavigate } from 'react-router-dom';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import { PlanleggerRoutes } from 'appData/routes';
 
 const PlanInfoSteg = () => {
     const navigator = usePlanleggerNavigator();
