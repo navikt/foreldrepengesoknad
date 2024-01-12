@@ -3,6 +3,7 @@ enum SøknadRoutes {
     SØKERSITUASJON = '/soknad/sokersituasjon',
     OM_BARNET = '/soknad/om-barnet',
     ANNEN_FORELDER = '/soknad/annen-forelder',
+    PERIODE_MED_FORELDREPENGER = '/soknad/periode-med-foreldrepenger',
     UTTAKSPLAN_INFO = '/soknad/uttaksplan-info',
     UTTAKSPLAN = '/soknad/uttaksplan',
     UTENLANDSOPPHOLD = '/soknad/utenlandsopphold',

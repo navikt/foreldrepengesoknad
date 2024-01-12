@@ -1,3 +1,7 @@
+import { FunctionComponent, useEffect, useState } from 'react';
+import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-dom';
+import { Sak, Søkerinfo } from '@navikt/fp-common';
+import { Umyndig } from '@navikt/fp-ui';
 import { LocaleNo } from '@navikt/fp-types';
 import Velkommen from 'app/pages/velkommen/Velkommen';
 import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
@@ -7,20 +11,17 @@ import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import SøkersituasjonSteg from 'app/steps/søkersituasjon/SøkersituasjonSteg';
 import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-dom';
-import isAvailable from './isAvailable';
-import SøknadRoutes from './routes';
 import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
-import { Sak, Søkerinfo } from '@navikt/fp-common';
 import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
 import useSendSøknad from 'app/context/useSendSøknad';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { Kvittering } from 'app/types/Kvittering';
 import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
-import { Umyndig } from '@navikt/fp-ui';
+import PeriodeMedForeldrepengerSteg from 'app/steps/periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
+import isAvailable from './isAvailable';
+import SøknadRoutes from './routes';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
@@ -98,6 +99,15 @@ const renderSøknadRoutes = (
                 element={
                     <AnnenForelder
                         søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.PERIODE_MED_FORELDREPENGER}
+                element={
+                    <PeriodeMedForeldrepengerSteg
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
