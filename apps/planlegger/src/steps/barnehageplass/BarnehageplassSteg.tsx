@@ -71,7 +71,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                 </Box>
 
                 <VStack gap="20">
-                    <HvorforSpørViOmDette />
+                    <HvorforSpørViOmDette text="TODO" />
                     <VStack className="button-wrapper content-wrapper">
                         <StepButtons
                             goToPreviousStep={navigator.goToPreviousDefaultStep}

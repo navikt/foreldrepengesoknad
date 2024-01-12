@@ -41,7 +41,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         <Heading size="large">
                             <FormattedMessage id="barnet.tittel" />
                         </Heading>
-                        <VStack gap="2">
+                        <VStack gap="1">
                             <Heading size="small">
                                 <FormattedMessage id="barnet.hvaGjelder" />
                             </Heading>
@@ -49,14 +49,14 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                 <Radio value={BarnetEnum.FØDSEL}>
                                     <FormattedMessage id="barnet.fødsel" />
                                 </Radio>
-                                <Radio value={BarnetEnum.ADOPSJON}>
+                                <Radio value={BarnetEnum.ADOPSJON} disabled>
                                     <FormattedMessage id="barnet.adopsjon" />
                                 </Radio>
                             </RadioGroup>
                         </VStack>
                     </VStack>
                     {barnet === BarnetEnum.FØDSEL && (
-                        <VStack gap="10">
+                        <VStack gap="1">
                             <Heading size="small">
                                 <FormattedMessage id="barnet.erFødt" />
                             </Heading>
@@ -71,7 +71,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         </VStack>
                     )}
                     {erFødt && (
-                        <VStack gap="10">
+                        <VStack gap="1">
                             <Heading size="small">
                                 <FormattedMessage id="barnet.fødselsdato" />
                             </Heading>
@@ -99,7 +99,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         </VStack>
                     )}
                     {erFødt === false && (
-                        <VStack gap="10">
+                        <VStack gap="1">
                             <Heading size="small">
                                 <FormattedMessage id="barnet.termin" />
                             </Heading>
@@ -125,7 +125,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         </VStack>
                     )}
                     <VStack gap="20">
-                        <HvorforSpørViOmDette />
+                        <HvorforSpørViOmDette text="TODO" />
                         <VStack className="button-wrapper content-wrapper">
                             <StepButtonsHookForm<Barnet>
                                 saveDataOnPreviousClick={lagreOmBarnet}
