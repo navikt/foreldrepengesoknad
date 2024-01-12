@@ -109,6 +109,8 @@
     "oppsummering.planInfo.tittelDeg": "Planen din",
     "oppsummering.planInfo.tittel": "Planen deres",
     "oppsummering.planInfo.tekst": "TODO",
+    "oppsummering.eksporterKalender": "Eksporter kalender",
+    "oppsummering.gjørEndringer": "Gjør endringer",
     "feilmelding.fødselPanel.fødselsdato.duMåOppgi": "Du må oppgi fødselsdato.",
     "feilmelding.fødselPanel.termindato.duMåOppgi": "Du må oppgi termindato."
 }
