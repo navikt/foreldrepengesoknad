@@ -135,7 +135,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNav
             tilrettelegginger,
             currentTilrettelegging.id,
         );
-        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
+        if (nextTilretteleggingId) {
+            oppdaterValgtTilretteleggingId(nextTilretteleggingId);
+        }
         oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();

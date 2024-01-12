@@ -1,5 +1,4 @@
 import { FunctionComponent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
@@ -40,7 +39,6 @@ const SkjemaSteg: FunctionComponent<Props> = ({
     søkerInfo,
     maxAntallVedlegg = MAX_ANTALL_VEDLEGG,
 }) => {
-    const navigate = useNavigate();
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
@@ -154,8 +152,11 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                                 valgtTilrettelegging.id,
                             );
 
-                            oppdaterValgtTilretteleggingId(linkData.previousTilretteleggingId);
-                            navigate(linkData.previousRoute);
+                            if (linkData.previousTilretteleggingId) {
+                                oppdaterValgtTilretteleggingId(linkData.previousTilretteleggingId);
+                            }
+                            oppdaterAppRoute(linkData.previousRoute);
+                            mellomlagreSøknadOgNaviger();
                         }}
                         isDisabledAndLoading={avventerVedlegg}
                     />

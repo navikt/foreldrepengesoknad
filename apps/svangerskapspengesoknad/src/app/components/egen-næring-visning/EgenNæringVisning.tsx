@@ -51,7 +51,7 @@ const EgenNæringVisning: FunctionComponent<Props> = ({ næring }) => {
                         <div>
                             <BodyShort>
                                 {intlUtils(intl, 'egenNæring.visning.varigEndring', {
-                                    dato: formatDate(næring.varigEndringDato!),
+                                    dato: næring.varigEndringDato ? formatDate(næring.varigEndringDato) : '-',
                                     inntekt: næring.varigEndringInntektEtterEndring,
                                 })}
                             </BodyShort>
@@ -71,7 +71,7 @@ const EgenNæringVisning: FunctionComponent<Props> = ({ næring }) => {
                         <div>
                             <BodyShort>
                                 {intlUtils(intl, 'egenNæring.visning.yrkesaktivSiste3år', {
-                                    dato: formatDate(næring.oppstartsdato!),
+                                    dato: næring.oppstartsdato ? formatDate(næring.oppstartsdato) : '-',
                                 })}
                             </BodyShort>
                         </div>

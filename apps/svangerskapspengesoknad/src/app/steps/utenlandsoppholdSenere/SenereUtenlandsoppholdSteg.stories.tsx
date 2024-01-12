@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouter from 'storybook/decorators/withRouter';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
@@ -23,7 +22,6 @@ const defaultUtenlandsopphold = {
 export default {
     title: 'steps/SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
-    decorators: [withRouter],
 };
 
 interface Props {

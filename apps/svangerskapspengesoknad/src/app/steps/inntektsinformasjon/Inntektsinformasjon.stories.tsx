@@ -1,16 +1,12 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouterProvider from 'storybook/decorators/withRouter';
 import Inntektsinformasjon from './Inntektsinformasjon';
-import søkerinfo from 'storybook/storydata/sokerinfo/sokerinfo.json';
+import soknad from 'storybook/storydata/soknad/soknad.json';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 const defaultExport = {
     title: 'steps/Inntektsinformasjon',
     component: Inntektsinformasjon,
-    decorators: [withRouterProvider],
 };
 
 export default defaultExport;
@@ -46,7 +42,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
             <Inntektsinformasjon
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
-                søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo as SøkerinfoDTO)}
+                søkerInfo={soknad.søkerinfo as any}
             />
         </SvpDataContext>
     );

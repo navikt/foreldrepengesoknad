@@ -1,7 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import MockAdapter from 'axios-mock-adapter';
-import withRouterProvider from 'storybook/decorators/withRouter';
 import SkjemaSteg from './SkjemaSteg';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
@@ -11,7 +10,6 @@ import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataCont
 const defaultExport = {
     title: 'steps/SkjemaSteg',
     component: SkjemaSteg,
-    decorators: [withRouterProvider],
 };
 
 export default defaultExport;

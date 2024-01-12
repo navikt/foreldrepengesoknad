@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouterProvider from 'storybook/decorators/withRouter';
 import TilretteleggingStep from './TilretteleggingStep';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
@@ -8,7 +7,6 @@ import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataCont
 const defaultExport = {
     title: 'steps/TilretteleggingStep',
     component: TilretteleggingStep,
-    decorators: [withRouterProvider],
 };
 
 export default defaultExport;

@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouter from 'storybook/decorators/withRouter';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
@@ -16,7 +15,6 @@ const promiseAction =
 export default {
     title: 'steps/TidligereUtenlandsoppholdSteg',
     component: TidligereUtenlandsoppholdSteg,
-    decorators: [withRouter],
 };
 
 const context = _context as any;

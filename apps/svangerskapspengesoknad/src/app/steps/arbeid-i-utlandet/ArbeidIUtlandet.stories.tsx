@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouterProvider from 'storybook/decorators/withRouter';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
 import ArbeidIUtlandetStep from '../arbeid-i-utlandet/ArbeidIUtlandetStep';
@@ -9,7 +8,6 @@ import ArbeidIUtlandet from './ArbeidIUtlandetStep';
 const defaultExport = {
     title: 'steps/ArbeidIUtlandet',
     component: ArbeidIUtlandet,
-    decorators: [withRouterProvider],
 };
 
 export default defaultExport;

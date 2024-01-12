@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouterProvider from 'storybook/decorators/withRouter';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
@@ -10,7 +9,6 @@ import { DelivisTilretteleggingPeriodeType } from '../tilrettelegging/tilrettele
 const defaultExport = {
     title: 'steps/PerioderStep',
     component: PerioderStep,
-    decorators: [withRouterProvider],
 };
 
 export default defaultExport;
