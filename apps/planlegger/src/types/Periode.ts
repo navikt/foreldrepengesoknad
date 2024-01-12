@@ -4,5 +4,5 @@ export enum PeriodeEnum {
 }
 
 export type Periode = {
-    omPeriode?: PeriodeEnum;
+    periode: PeriodeEnum;
 };
