@@ -5,7 +5,6 @@ import { convertBooleanOrUndefinedToYesOrNo } from '@navikt/fp-common/src/common
 
 export const initialFrilansFormValues: FrilansFormData = {
     [FrilansFormField.frilansFom]: '',
-    // [FrilansFormField.frilansTom]: undefined,
     [FrilansFormField.jobberFremdelesSomFrilanser]: YesOrNo.UNANSWERED,
 };
 
@@ -16,7 +15,6 @@ export const getInitialFrilansFormValues = (frilans: Frilans | undefined): Frila
     return {
         ...initialFrilansFormValues,
         frilansFom: frilans.oppstart,
-        // frilansTom: frilans.sluttDato,
         jobberFremdelesSomFrilanser: convertBooleanOrUndefinedToYesOrNo(frilans.jobberFremdelesSomFrilans),
     };
 };
@@ -29,9 +27,6 @@ export const cleanupFrilansFormData = (
         frilansFom: visibility.isVisible(FrilansFormField.frilansFom)
             ? values.frilansFom
             : initialFrilansFormValues.frilansFom,
-        // frilansTom: visibility.isVisible(FrilansFormField.frilansTom)
-        //     ? values.frilansTom
-        //     : initialFrilansFormValues.frilansTom,
         jobberFremdelesSomFrilanser: visibility.isVisible(FrilansFormField.jobberFremdelesSomFrilanser)
             ? values.jobberFremdelesSomFrilanser
             : initialFrilansFormValues.jobberFremdelesSomFrilanser,
