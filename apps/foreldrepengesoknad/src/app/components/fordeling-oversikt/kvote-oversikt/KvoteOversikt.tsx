@@ -14,7 +14,8 @@ interface Props {
 const KvoteOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, currentUthevet, setCurrentUthevet }) => {
     const bem = bemUtils('kvoteOversikt');
     const isUthevet = currentUthevet === kvoteInformasjon.konto;
-    const shadow = isUthevet ? '4px 4px 4px rgba(0, 0, 0, 0.15)' : '0 0px 0px white';
+    const border = isUthevet ? '2px solid rgba(7, 26, 54, 0.21)' : '0px none white';
+    const shadow = isUthevet ? '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' : '0px 0px 0px 0px white';
     const sumUker = kvoteInformasjon.fordeling.reduce((sum, f) => {
         return sum + f.uker;
     }, 0);
@@ -29,7 +30,7 @@ const KvoteOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, curre
         <VStack
             className={bem.block}
             gap="2"
-            style={{ boxShadow: `${shadow}` }}
+            style={{ border: `${border}`, boxShadow: `${shadow}` }}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >

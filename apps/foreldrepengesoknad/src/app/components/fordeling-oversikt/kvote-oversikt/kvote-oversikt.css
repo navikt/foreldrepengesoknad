@@ -6,6 +6,7 @@
 }
 
 .kvoteOversikt:hover {
+    border: 2px solid rgba(7, 26, 54, 0.21);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
@@ -19,9 +20,6 @@
 .kvoteOversikt__graf {
     display: 'flex';
     flex-direction: 'row';
-    /* padding-top: 0; */
-    /* margin: 0; */
-    /* width: 100%; */
 }
 
 .kvoteOversikt__kvoteNavn {
