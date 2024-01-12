@@ -24,19 +24,16 @@ import {
     UttaksperiodeBase,
     andreAugust2022ReglerGjelder,
     assertUnreachable,
-    extractAttachments,
     førsteOktober2021ReglerGjelder,
     guid,
     isAdoptertBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
-    isArrayOfAttachments,
     isFarEllerMedmor,
     isForeldrepengerFørFødselUttaksperiode,
     isFødtBarn,
     isUttaksperiode,
     isValidTidsperiode,
-    removeAttachmentsWithUploadError,
     sorterPerioder,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
@@ -425,7 +422,7 @@ export const cleanSøknad = (
         },
         dekningsgrad: uttaksplanMetadata.dekningsgrad!,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-        vedlegg: convertAttachmentsMapToArray(vedlegg), //Vedlegga blir lagt til i funksjonen under
+        vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 
     return cleanedSøknad;
@@ -455,29 +452,6 @@ export const getSøknadsdataForInnsending = (
     }
 };
 
-export const cleanAttachments = (object: any): Attachment[] => {
-    const foundAttachments = [] as Attachment[];
-
-    if (object === null || object === undefined) {
-        return foundAttachments;
-    }
-
-    Object.keys(object).forEach((key: string) => {
-        if (typeof object[key] === 'object') {
-            if (isArrayOfAttachments(object[key])) {
-                const attachmentWithoutUploadError = [...removeAttachmentsWithUploadError(object[key])];
-                foundAttachments.push(...attachmentWithoutUploadError);
-                object[key] = (object[key] as Attachment[])
-                    .filter((attachment: Attachment) => attachmentWithoutUploadError.includes(attachment))
-                    .map((attachment: Attachment) => attachment.id);
-            } else {
-                foundAttachments.push(...cleanAttachments(object[key]));
-            }
-        }
-    });
-    return foundAttachments;
-};
-
 export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
@@ -493,6 +467,8 @@ export const cleanEndringssøknad = (
     const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const termindato = getTermindato(barn);
+    const vedlegg = hentData(ContextDataType.VEDLEGG);
+
     const cleanedSøknad: EndringssøknadForInnsending = {
         type: 'foreldrepenger',
         erEndringssøknad: true,
@@ -513,10 +489,10 @@ export const cleanEndringssøknad = (
         situasjon: søkersituasjon.situasjon,
         tilleggsopplysninger: cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger)),
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-        vedlegg: [], //Vedlegga blir lagt til i funksjonen under
+        vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 
-    return mapAttachmentsToSøknadForInnsending(cleanedSøknad);
+    return cleanedSøknad;
 };
 
 const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
@@ -552,25 +528,4 @@ export const getErrorCallId = (error: AxiosError<any>): string => {
 
 export const getErrorTimestamp = (error: AxiosError<any>): string => {
     return error.response && error.response.data && error.response.data.timestamp ? error.response.data.timestamp : '';
-};
-
-export const mapAttachmentsToSøknadForInnsending = (
-    søknad: SøknadForInnsending | EndringssøknadForInnsending,
-): SøknadForInnsending | EndringssøknadForInnsending => {
-    const vedlegg: Attachment[] = [];
-    const søknadCopy = extractAttachments(søknad, vedlegg);
-
-    const vedleggWithoutDuplicates = vedlegg.reduce((result, current) => {
-        if (result.find((att: Attachment) => att.id === current.id)) {
-            return result;
-        }
-
-        result.push(current);
-        return result;
-    }, [] as Attachment[]);
-
-    return {
-        ...søknadCopy,
-        vedlegg: vedleggWithoutDuplicates,
-    };
 };

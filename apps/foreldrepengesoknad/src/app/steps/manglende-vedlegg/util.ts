@@ -119,34 +119,3 @@ export const lagSendSenereDokumentOmPåkrevd = (
 export const isSendSenereVedlegg = (attachment: Attachment) => {
     return attachment.innsendingsType === InnsendingsType.SEND_SENERE;
 };
-
-const isArrayOfAttachments = (object: any) => {
-    return (
-        Array.isArray(object) &&
-        object[0] !== null &&
-        object.some((element) => element && element.innsendingsType === InnsendingsType.SEND_SENERE)
-    );
-};
-
-export const finnSendSenereVedlegg = (
-    object: any,
-    currentKey?: string,
-    previousEntries?: Map<string, Attachment[]>,
-): Map<string, Attachment> => {
-    if (object === null || object === undefined) {
-        return new Map();
-    }
-
-    const path: string = currentKey || 'søknad';
-    let foundAttachments = previousEntries || new Map();
-    Object.keys(object).forEach((key: string) => {
-        if (typeof object[key] === 'object') {
-            if (isArrayOfAttachments(object[key])) {
-                foundAttachments.set(path + '.' + key, object[key][0]);
-            } else {
-                foundAttachments = finnSendSenereVedlegg(object[key], path + '.' + key, foundAttachments);
-            }
-        }
-    });
-    return foundAttachments;
-};
