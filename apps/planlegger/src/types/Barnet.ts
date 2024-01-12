@@ -4,5 +4,6 @@ export enum BarnetEnum {
 }
 
 export type Barnet = {
-    omBarnet?: BarnetEnum;
+    barnet: BarnetEnum;
+    erFødt: boolean;
 };
