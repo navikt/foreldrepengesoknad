@@ -4,7 +4,6 @@ import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
-import { Block } from '@navikt/fp-common';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
@@ -270,16 +269,17 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                             </div>
                         </VStack>
                     )}
-
-                    <HvorforSpørViOmDette />
-                    <Block margin="xxl" className="button-wrapper content-wrapper">
-                        <StepButtonsHookForm
-                            saveDataOnPreviousClick={lagreArbeidssituasjon}
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            nextButtonText="Neste"
-                            previousButtonText="Tilbake"
-                        />
-                    </Block>
+                    <VStack gap="20">
+                        <HvorforSpørViOmDette />
+                        <VStack className="button-wrapper content-wrapper">
+                            <StepButtonsHookForm
+                                saveDataOnPreviousClick={lagreArbeidssituasjon}
+                                goToPreviousStep={navigator.goToPreviousDefaultStep}
+                                nextButtonText="Neste"
+                                previousButtonText="Tilbake"
+                            />
+                        </VStack>
+                    </VStack>
                 </VStack>
             </Form>
         </ContentWrapper>
