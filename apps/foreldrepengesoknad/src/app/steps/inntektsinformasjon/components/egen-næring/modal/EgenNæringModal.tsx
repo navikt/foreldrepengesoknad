@@ -61,6 +61,10 @@ const EgenNæringModal: FunctionComponent<Props> = ({
         intl,
         'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektForklaring',
     );
+    const varigEndringAntallTegnLabel = intlUtils(
+        intl,
+        'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektAntallTegn',
+    );
 
     return (
         <Modal portal width="medium" open={isOpen} aria-label={title} onClose={onRequestClose}>
@@ -84,7 +88,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                 cleanup={(values) => cleanupEgenNæringForm(values, visibility)}
                                 includeValidationSummary={true}
                             >
-                                <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.type)}>
+                                <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringModalFormField.type)}>
                                     <EgenNæringModalFormComponents.RadioGroup
                                         name={EgenNæringModalFormField.type}
                                         legend={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.næringstype')}
@@ -121,7 +125,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(EgenNæringModalFormField.navnPåNæringen)}
                                 >
                                     <EgenNæringModalFormComponents.TextField
@@ -132,7 +136,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(EgenNæringModalFormField.registrertINorge)}
                                 >
                                     <EgenNæringModalFormComponents.YesOrNoQuestion
@@ -157,7 +161,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <OrgnummerEllerLand visibility={visibility} />
-                                <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.fom)}>
+                                <Block padBottom="xl" visible={visibility.isVisible(EgenNæringModalFormField.fom)}>
                                     <EgenNæringModalFormComponents.DatePicker
                                         name={EgenNæringModalFormField.fom}
                                         label={intlUtils(
@@ -174,7 +178,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         maxDate={dayjs().toDate()}
                                     />
                                 </Block>
-                                <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.pågående)}>
+                                <Block padBottom="xl" visible={visibility.isVisible(EgenNæringModalFormField.pågående)}>
                                     <EgenNæringModalFormComponents.YesOrNoQuestion
                                         name={EgenNæringModalFormField.pågående}
                                         legend={intlUtils(
@@ -186,7 +190,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                         )}
                                     />
                                 </Block>
-                                <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.tom)}>
+                                <Block padBottom="xl" visible={visibility.isVisible(EgenNæringModalFormField.tom)}>
                                     <EgenNæringModalFormComponents.DatePicker
                                         name={EgenNæringModalFormField.tom}
                                         label={intlUtils(
@@ -205,7 +209,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(EgenNæringModalFormField.næringsresultat)}
                                 >
                                     <EgenNæringModalFormComponents.NumberInput
@@ -228,7 +232,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     </ReadMore>
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(
                                         EgenNæringModalFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
                                     )}
@@ -254,7 +258,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     </ReadMore>
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(EgenNæringModalFormField.yrkesAktivDato)}
                                 >
                                     <EgenNæringModalFormComponents.DatePicker
@@ -268,7 +272,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(
                                         EgenNæringModalFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                                     )}
@@ -292,7 +296,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     </ReadMore>
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(EgenNæringModalFormField.datoForEndring)}
                                 >
                                     <EgenNæringModalFormComponents.DatePicker
@@ -309,7 +313,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(EgenNæringModalFormField.inntektEtterEndring)}
                                 >
                                     <EgenNæringModalFormComponents.NumberInput
@@ -318,6 +322,10 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                             intl,
                                             'inntektsinformasjon.egenNæringModal.inntektEtterEndring',
                                         )}
+                                        description={intlUtils(
+                                            intl,
+                                            'inntektsinformasjon.egenNæringModal.inntektEtterEndring.description',
+                                        )}
                                         validate={validateNumber(
                                             intl,
                                             'valideringsfeil.inntektsinformasjon.varigEndringAvInntekt.ugyldigFormat',
@@ -325,12 +333,13 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block
-                                    padBottom="l"
+                                    padBottom="xl"
                                     visible={visibility.isVisible(EgenNæringModalFormField.forklaringEndring)}
                                 >
                                     <EgenNæringModalFormComponents.Textarea
                                         name={EgenNæringModalFormField.forklaringEndring}
                                         label={varigEndringForklaringLabel}
+                                        description={varigEndringAntallTegnLabel}
                                         maxLength={1000}
                                         validate={validateEgenNæringForklaringTilEndring(
                                             intl,
