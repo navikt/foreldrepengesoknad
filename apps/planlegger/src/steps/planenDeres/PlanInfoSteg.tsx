@@ -1,5 +1,4 @@
-import { BodyLong, BodyShort, ExpansionCard, Heading } from '@navikt/ds-react';
-import { Block } from '@navikt/fp-common';
+import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import Kalender from 'components/ikoner/Kalender';
 import { FormattedMessage } from 'react-intl';
@@ -15,68 +14,46 @@ const PlanInfoSteg = () => {
 
     return (
         <ContentWrapper>
-            <Heading size="large">
-                <Block>
+            <VStack gap="10">
+                <Heading size="large">
                     <FormattedMessage id="planInfo.tittel" />
-                </Block>
+                </Heading>
 
-                <Block margin="xxl">
-                    <BodyLong size="large">
-                        <FormattedMessage id="planInfo.ingress.del1" />
-                    </BodyLong>
-                </Block>
-                <Block margin="xxl">
-                    <BodyLong size="large">
-                        <FormattedMessage id="planInfo.ingress.del2" />
-                    </BodyLong>
-                </Block>
+                <BodyLong size="large">
+                    <FormattedMessage id="planInfo.ingress.del1" />
+                </BodyLong>
+                <BodyLong size="large">
+                    <FormattedMessage id="planInfo.ingress.del2" />
+                </BodyLong>
 
-                <Block margin="xxl">
-                    <Heading level="2" size="xsmall">
-                        <FormattedMessage id="planInfo.underoverskrift" />
-                    </Heading>
-                </Block>
+                <Heading level="2" size="small">
+                    <FormattedMessage id="planInfo.underoverskrift" />
+                </Heading>
 
-                <Block margin="l">
-                    <div className="list-content">
-                        <div className="list-item">
-                            <Kalender />
-                        </div>
-                        <div className="list-item">
-                            <BodyShort>
-                                <FormattedMessage id="planInfo.trinn1" />
-                            </BodyShort>
-                        </div>
-                    </div>
-                </Block>
+                <VStack gap="5">
+                    <HStack gap="4" align="center">
+                        <Kalender />
+                        <BodyShort>
+                            <FormattedMessage id="planInfo.trinn1" />
+                        </BodyShort>
+                    </HStack>
 
-                <Block margin="l">
-                    <div className="list-content">
-                        <div className="list-item">
-                            <Penn />
-                        </div>
-                        <div className="list-item">
-                            <BodyShort>
-                                <FormattedMessage id="planInfo.trinn2" />
-                            </BodyShort>
-                        </div>
-                    </div>
-                </Block>
+                    <HStack gap="4" align="center">
+                        <Penn />
+                        <BodyShort>
+                            <FormattedMessage id="planInfo.trinn2" />
+                        </BodyShort>
+                    </HStack>
 
-                <Block margin="l">
-                    <div className="list-content">
-                        <div className="list-item">
-                            <Check />
-                        </div>
-                        <div className="list-item">
-                            <BodyShort>
-                                <FormattedMessage id="planInfo.trinn3" />
-                            </BodyShort>
-                        </div>
-                    </div>
-                </Block>
+                    <HStack gap="4" align="center">
+                        <Check />
+                        <BodyShort>
+                            <FormattedMessage id="planInfo.trinn3" />
+                        </BodyShort>
+                    </HStack>
+                </VStack>
 
-                <Block margin="xl">
+                <VStack gap="20">
                     <ExpansionCard aria-label="">
                         <ExpansionCard.Header>
                             <div>
@@ -89,17 +66,17 @@ const PlanInfoSteg = () => {
                             <FormattedMessage id="planInfo.info.tekst" />
                         </ExpansionCard.Content>
                     </ExpansionCard>
-                </Block>
 
-                <Block margin="xxl" className="button-wrapper content-wrapper">
-                    <StepButtons
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonOnClick={() => navigate(PlanleggerRoutes.OVERSIKT)}
-                        nextButtonText="Se oversikt"
-                        previousButtonText="Tilbake"
-                    />
-                </Block>
-            </Heading>
+                    <VStack gap="10" className="button-wrapper content-wrapper">
+                        <StepButtons
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            nextButtonOnClick={() => navigate(PlanleggerRoutes.OVERSIKT)}
+                            nextButtonText="Se oversikt"
+                            previousButtonText="Tilbake"
+                        />
+                    </VStack>
+                </VStack>
+            </VStack>
         </ContentWrapper>
     );
 };
