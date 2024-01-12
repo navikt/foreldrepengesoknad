@@ -20,9 +20,9 @@
     },
     "dependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
-        "@navikt/aksel-icons": "^4.12.1",
-        "@navikt/ds-css": "4.12.1",
-        "@navikt/ds-react": "4.12.1",
+        "@navikt/aksel-icons": "^5.12.0",
+        "@navikt/ds-css": "5.12.2",
+        "@navikt/ds-react": "5.12.2",
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
@@ -47,7 +47,7 @@
         "react": "^18.2.0",
         "react-document-title": "^2.0.3",
         "react-dom": "^18.2.0",
-        "react-hook-form": "7.45.4",
+        "react-hook-form": "7.49.2",
         "react-intl": "^6.4.4",
         "react-router-dom": "^6.15.0",
         "request": "^2.88.2"
