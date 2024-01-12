@@ -1,6 +1,5 @@
 import { ClockIcon } from '@navikt/aksel-icons';
-import { BodyShort, Button, Heading, Ingress } from '@navikt/ds-react';
-import { Block } from '@navikt/fp-common';
+import { BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { PlanleggerRoutes } from 'appData/routes';
 import Kalender from 'components/ikoner/Kalender';
@@ -13,59 +12,43 @@ const OmPlanleggerenSteg = () => {
 
     return (
         <ContentWrapper>
-            <Heading size="large">
-                <Block>
-                    <FormattedMessage id="om.tittel" />
-                </Block>
-
-                <Block margin="m">
-                    <Heading size="xsmall">
-                        <div className="list-item">
+            <VStack gap="10">
+                <VStack gap="1">
+                    <Heading size="large">
+                        <FormattedMessage id="om.tittel" />
+                    </Heading>
+                    <Heading size="small">
+                        <HStack gap="4" align="center">
                             <ClockIcon />
-                        </div>
-                        <FormattedMessage id="om.label" />
+                            <FormattedMessage id="om.label" />
+                        </HStack>
                     </Heading>
-                </Block>
+                </VStack>
 
-                <Block margin="xxl">
-                    <Ingress>
-                        <FormattedMessage id="om.ingress" />
-                    </Ingress>
-                </Block>
+                <BodyShort size="large">
+                    <FormattedMessage id="om.ingress" />
+                </BodyShort>
 
-                <Block margin="xxl">
-                    <Heading level="2" size="xsmall">
-                        <FormattedMessage id="om.underoverskrift" />
-                    </Heading>
-                </Block>
+                <Heading level="2" size="xsmall">
+                    <FormattedMessage id="om.underoverskrift" />
+                </Heading>
 
-                <Block margin="l">
-                    <div className="list-content">
-                        <div className="list-item">
-                            <Spørsmålstegn />
-                        </div>
-                        <div className="list-item">
-                            <BodyShort>
-                                <FormattedMessage id="om.trinn1" />
-                            </BodyShort>
-                        </div>
-                    </div>
-                </Block>
+                <VStack gap="5">
+                    <HStack gap="4" align="center">
+                        <Spørsmålstegn />
+                        <BodyShort>
+                            <FormattedMessage id="om.trinn1" />
+                        </BodyShort>
+                    </HStack>
+                    <HStack gap="4" align="center">
+                        <Kalender />
+                        <BodyShort>
+                            <FormattedMessage id="om.trinn2" />
+                        </BodyShort>
+                    </HStack>
+                </VStack>
 
-                <Block margin="l">
-                    <div className="list-content">
-                        <div className="list-item">
-                            <Kalender />
-                        </div>
-                        <div className="list-item">
-                            <BodyShort>
-                                <FormattedMessage id="om.trinn2" />
-                            </BodyShort>
-                        </div>
-                    </div>
-                </Block>
-
-                <Block margin="xxl" className="center-media">
+                <VStack gap="10" className="content-wrapper button-wrapper">
                     <Button
                         variant="secondary"
                         className="planleggerKnapp"
@@ -73,8 +56,8 @@ const OmPlanleggerenSteg = () => {
                     >
                         <FormattedMessage id="om.start.planlegger" />
                     </Button>
-                </Block>
-            </Heading>
+                </VStack>
+            </VStack>
         </ContentWrapper>
     );
 };
