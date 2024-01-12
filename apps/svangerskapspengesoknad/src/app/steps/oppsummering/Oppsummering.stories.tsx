@@ -37,7 +37,7 @@ const Template: StoryFn<Props> = ({
         <SvpDataContext
             onDispatch={gåTilNesteSide}
             initialState={{
-                [ContextDataType.TILRETTELEGGING]: context.søknad.tilrettelegging,
+                [ContextDataType.TILRETTELEGGINGER]: context.søknad.tilrettelegging,
                 [ContextDataType.INNTEKTSINFORMASJON]: {
                     harHattAnnenInntekt: false,
                     harJobbetSomFrilans: false,

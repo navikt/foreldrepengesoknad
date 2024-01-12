@@ -57,7 +57,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
-    const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
     const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
@@ -67,16 +67,18 @@ const Oppsummering: React.FunctionComponent<Props> = ({
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const allePerioderMedFomOgTom = useMemo(
-        () => mapTilretteleggingTilPerioder(tilrettelegging, sisteDagForSvangerskapspenger),
-        [tilrettelegging, sisteDagForSvangerskapspenger],
+        () => mapTilretteleggingTilPerioder(tilrettelegginger, sisteDagForSvangerskapspenger),
+        [tilrettelegginger, sisteDagForSvangerskapspenger],
     );
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato);
-    const tilretteleggingMedFrilans = tilrettelegging.find(
+    const tilretteleggingMedFrilans = tilrettelegginger.find(
         (t) => t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER,
     );
-    const tilretteleggingMedSN = tilrettelegging.find((t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG);
+    const tilretteleggingMedSN = tilrettelegginger.find(
+        (t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG,
+    );
 
-    const { previousRoute, previousTilretteleggingId } = getBackLinkAndIdForOppsummeringSteg(tilrettelegging);
+    const { previousRoute, previousTilretteleggingId } = getBackLinkAndIdForOppsummeringSteg(tilrettelegginger);
 
     const setForrigeTilretteleggingIdOgMellomlagre = () => {
         oppdaterValgtTilretteleggingId(previousTilretteleggingId);
@@ -183,7 +185,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                                         </AccordionItem>
                                         <AccordionItem title={intlUtils(intl, 'oppsummering.skjema')}>
                                             <AccordionContent>
-                                                <VedleggOppsummering tilrettelegging={tilrettelegging} />
+                                                <VedleggOppsummering tilrettelegging={tilrettelegginger} />
                                             </AccordionContent>
                                         </AccordionItem>
                                         <AccordionItem

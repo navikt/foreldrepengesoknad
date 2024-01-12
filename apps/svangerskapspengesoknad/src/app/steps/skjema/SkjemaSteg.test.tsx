@@ -62,7 +62,7 @@ describe('<SkjemaSteg>', () => {
                     ],
                 },
             ],
-            key: ContextDataType.TILRETTELEGGING,
+            key: ContextDataType.TILRETTELEGGINGER,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {

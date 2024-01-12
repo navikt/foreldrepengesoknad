@@ -2,13 +2,12 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong, GuidePanel } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { PageKeys } from 'app/types/PageKeys';
 
 const FlereArbeidsforholdGuidePanel: React.FunctionComponent = () => {
     logAmplitudeEvent('sidevisning', {
         app: 'svangerskapspengerny',
         team: 'foreldrepenger',
-        pageKey: PageKeys.Umyndig,
+        pageKey: 'umyndig',
     });
     return (
         <Block padBottom="xl">

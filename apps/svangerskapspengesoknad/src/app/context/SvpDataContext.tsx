@@ -18,7 +18,7 @@ export enum ContextDataType {
     FRILANS = 'FRILANS',
     ARBEID_I_UTLANDET = 'ARBEID_I_UTLANDET',
     EGEN_NÆRING = 'EGEN_NÆRING',
-    TILRETTELEGGING = 'TILRETTELEGGING',
+    TILRETTELEGGINGER = 'TILRETTELEGGINGER',
     VALGT_TILRETTELEGGING_ID = 'VALGT_TILRETTELEGGING_ID',
 }
 
@@ -32,7 +32,7 @@ export type ContextDataMap = {
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet[];
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
-    [ContextDataType.TILRETTELEGGING]?: Tilrettelegging[];
+    [ContextDataType.TILRETTELEGGINGER]?: Tilrettelegging[];
     [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 

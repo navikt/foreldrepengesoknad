@@ -52,13 +52,13 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const inntektsinformasjon = useContextGetData(ContextDataType.INNTEKTSINFORMASJON);
-    const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
+    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterInntektsinformasjon = useContextSaveData(ContextDataType.INNTEKTSINFORMASJON);
-    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, termindato);
@@ -70,12 +70,12 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
             values,
             aktiveArbeidsforhold,
             termindato,
-            tilrettelegging || [],
+            tilrettelegginger || [],
             intl,
         );
 
         if (automatiskValgtTilrettelegging) {
-            oppdaterTilrettelegging([automatiskValgtTilrettelegging]);
+            oppdaterTilrettelegginger([automatiskValgtTilrettelegging]);
         }
 
         oppdaterInntektsinformasjon({

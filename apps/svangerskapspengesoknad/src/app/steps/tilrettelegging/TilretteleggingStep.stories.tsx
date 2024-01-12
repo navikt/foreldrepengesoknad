@@ -32,7 +32,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
         <SvpDataContext
             onDispatch={gåTilNesteSide}
             initialState={{
-                [ContextDataType.TILRETTELEGGING]: context.søknad.tilrettelegging,
+                [ContextDataType.TILRETTELEGGINGER]: context.søknad.tilrettelegging,
                 [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
                 [ContextDataType.OM_BARNET]: context.søknad.barn,
             }}

@@ -254,7 +254,7 @@ export const getSøknadForInnsending = (
     );
 
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const tilrettelegging = notEmpty(hentData(ContextDataType.TILRETTELEGGING));
+    const tilrettelegging = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER));
 
     const barnForInnsending = mapBarnForInnsending(barn);
     const vedleggForInnsending = mapVedleggForInnsending(tilrettelegging);

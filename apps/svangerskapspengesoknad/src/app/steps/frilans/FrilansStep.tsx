@@ -38,11 +38,11 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
 
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
-    const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
-    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
@@ -56,8 +56,8 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
             inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
         );
         if (harKunEtAktivtArbeid) {
-            const tilretteleggingOptions = [getFrilansTilretteleggingOption(tilrettelegging, values.frilansFom!)];
-            oppdaterTilrettelegging(tilretteleggingOptions);
+            const tilretteleggingOptions = [getFrilansTilretteleggingOption(tilrettelegginger, values.frilansFom!)];
+            oppdaterTilrettelegginger(tilretteleggingOptions);
         }
 
         oppdaterFrilans({

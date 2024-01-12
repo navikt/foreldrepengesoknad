@@ -74,15 +74,15 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNav
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const tilretteleggingFraState = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
 
-    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
-    const currentTilrettelegging = notEmpty(tilretteleggingFraState.find((t) => t.id === valgtTilretteleggingId));
+    const currentTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
     const termindatoDate = ISOStringToDate(barnet.termindato);
     const navnArbeidsgiver =
@@ -91,7 +91,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNav
             ? intlUtils(intl, 'egenNæring').toLowerCase()
             : currentTilrettelegging.arbeidsforhold.navn;
 
-    const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
+    const erFlereTilrettelegginger = tilrettelegginger.length > 1;
 
     const typeArbeid = currentTilrettelegging.arbeidsforhold.type;
 
@@ -122,17 +122,17 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNav
     const onSubmit = (values: Partial<TilretteleggingFormData>) => {
         setIsSubmitting(true);
 
-        const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
+        const mappedTilrettelegginger = mapOmTilretteleggingFormDataToState(
             valgtTilretteleggingId,
             values,
-            tilretteleggingFraState,
+            tilrettelegginger,
             currentTilrettelegging,
         );
-        oppdaterTilrettelegging(mappedTilrettelegging);
+        oppdaterTilrettelegginger(mappedTilrettelegginger);
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteAndTilretteleggingIdForTilretteleggingSteg(
             values,
-            tilretteleggingFraState,
+            tilrettelegginger,
             currentTilrettelegging.id,
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);

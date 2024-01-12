@@ -56,7 +56,7 @@ interface StepConfig {
 
 export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[]): StepConfig[] => {
     const inntektsinformasjon = useContextGetData(ContextDataType.INNTEKTSINFORMASJON);
-    const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
+    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const barn = useContextGetData(ContextDataType.OM_BARNET);
     const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
 
@@ -136,9 +136,9 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
         });
     }
 
-    if (tilrettelegging && tilrettelegging.length > 0) {
-        const erFlereTilrettelegginger = tilrettelegging.length > 1;
-        tilrettelegging.forEach((tilrettelegging: Tilrettelegging) => {
+    if (tilrettelegginger && tilrettelegginger.length > 0) {
+        const erFlereTilrettelegginger = tilrettelegginger.length > 1;
+        tilrettelegginger.forEach((tilrettelegging: Tilrettelegging) => {
             const navn = tilrettelegging.arbeidsforhold.navn;
             steps.push({
                 id: `skjema-${tilrettelegging.id}`,
@@ -368,14 +368,15 @@ export const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     tilrettelegging: Tilrettelegging[],
     currentTilretteleggingId: string,
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
-    const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegging, currentTilretteleggingId);
-
     if (
         values.tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
         values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
     ) {
         return { nextRoute: SøknadRoutes.PERIODER, nextTilretteleggingId: currentTilretteleggingId };
-    } else if (nesteTilretteleggingId) {
+    }
+
+    const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegging, currentTilretteleggingId);
+    if (nesteTilretteleggingId) {
         return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: nesteTilretteleggingId };
     }
     return { nextRoute: SøknadRoutes.OPPSUMMERING };

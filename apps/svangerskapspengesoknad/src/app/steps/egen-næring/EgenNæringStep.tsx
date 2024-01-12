@@ -28,7 +28,6 @@ import {
     validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
 } from './egenNæringValidation';
-import OrgnummerEllerLand from '../../components/egen-næring-visning/OrgnummerEllerLand';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
@@ -38,6 +37,7 @@ import { useState } from 'react';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import BackButton from '../BackButton';
+import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -53,11 +53,11 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
-    const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
-    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
@@ -74,9 +74,8 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                 inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
             )
         ) {
-            const automatiskValgtTilrettelegging = [getNæringTilretteleggingOption(tilrettelegging, næringsdata)];
-
-            oppdaterTilrettelegging(automatiskValgtTilrettelegging);
+            const automatiskValgtTilrettelegging = [getNæringTilretteleggingOption(tilrettelegginger, næringsdata)];
+            oppdaterTilrettelegginger(automatiskValgtTilrettelegging);
         }
 
         oppdaterEgenNæring(næringsdata);

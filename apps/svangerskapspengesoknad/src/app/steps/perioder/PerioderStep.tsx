@@ -52,36 +52,32 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const bem = bemUtils('perioderStep');
 
-    const tilretteleggingFraState = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
-    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
-    const currentTilrettelegging = notEmpty(tilretteleggingFraState.find((t) => t.id === valgtTilretteleggingId));
+    const valgtTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
-    const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
+    const erFlereTilrettelegginger = tilrettelegginger.length > 1;
 
-    const sluttDatoArbeid = currentTilrettelegging.arbeidsforhold.sluttdato;
+    const sluttDatoArbeid = valgtTilrettelegging.arbeidsforhold.sluttdato;
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
     const maxDato = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
-    const minDatoFom = new Date(currentTilrettelegging.behovForTilretteleggingFom);
+    const minDatoFom = new Date(valgtTilrettelegging.behovForTilretteleggingFom);
 
     const onSubmit = (values: Partial<PerioderFormData>) => {
         setIsSubmitting(true);
 
-        const mappedTilrettelegging = mapPerioderFormDataToState(
-            valgtTilretteleggingId,
-            values,
-            tilretteleggingFraState,
-        );
-        oppdaterTilrettelegging(mappedTilrettelegging);
+        const mappedTilrettelegging = mapPerioderFormDataToState(valgtTilretteleggingId, values, tilrettelegginger);
+        oppdaterTilrettelegginger(mappedTilrettelegging);
 
-        const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, valgtTilretteleggingId);
+        const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, valgtTilretteleggingId);
         if (nesteTilretteleggingId) {
             oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
             oppdaterAppRoute(SøknadRoutes.SKJEMA);
@@ -105,12 +101,12 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     return (
         <PerioderFormComponents.FormikWrapper
             enableReinitialize={true}
-            initialValues={getPerioderInitialValues(currentTilrettelegging)}
+            initialValues={getPerioderInitialValues(valgtTilrettelegging)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const opprinneligStillingsprosent = getOpprinneligStillingsprosent(
                     formValues.varierendePerioder,
-                    currentTilrettelegging.arbeidsforhold.stillinger,
+                    valgtTilrettelegging.arbeidsforhold.stillinger,
                 );
                 const periodeDerSøkerErTilbakeIOpprinneligStilling = getPeriodeDerSøkerErTilbakeIFullStilling(
                     formValues.varierendePerioder,
@@ -128,7 +124,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                         activeStepId={activeStepId}
                         pageTitle={getPeriodeSideTittel(
                             erFlereTilrettelegginger,
-                            currentTilrettelegging.arbeidsforhold.navn,
+                            valgtTilrettelegging.arbeidsforhold.navn,
                             intl,
                         )}
                         onCancel={avbrytSøknad}
@@ -138,7 +134,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                         <PerioderFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {erFlereTilrettelegginger && (
                                 <Block padBottom="xxl">
-                                    <Bedriftsbanner arbeid={currentTilrettelegging.arbeidsforhold} />
+                                    <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />
                                 </Block>
                             )}
                             <Block padBottom="xl">
@@ -196,9 +192,9 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                                             intl,
                                                             index,
                                                             formValues.varierendePerioder,
-                                                            currentTilrettelegging.behovForTilretteleggingFom,
+                                                            valgtTilrettelegging.behovForTilretteleggingFom,
                                                             sisteDagForSvangerskapspenger,
-                                                            currentTilrettelegging.arbeidsforhold.navn,
+                                                            valgtTilrettelegging.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
                                                             kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
@@ -220,7 +216,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                                         validate={validatePeriodeTomType(
                                                             intl,
                                                             sisteDagForSvangerskapspenger,
-                                                            currentTilrettelegging.arbeidsforhold.navn,
+                                                            valgtTilrettelegging.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
                                                             kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
@@ -242,7 +238,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                                             index,
                                                             formValues.varierendePerioder,
                                                             sisteDagForSvangerskapspenger,
-                                                            currentTilrettelegging.arbeidsforhold.navn,
+                                                            valgtTilrettelegging.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
                                                             kanHaSVPFremTilTreUkerFørTermin,
                                                         )}

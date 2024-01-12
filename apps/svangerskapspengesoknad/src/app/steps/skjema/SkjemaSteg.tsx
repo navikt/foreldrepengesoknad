@@ -11,7 +11,6 @@ import { getSaveAttachment } from '@navikt/fp-api';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import { Skjemanummer } from 'app/types/Skjemanummer';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import SøknadRoutes from 'app/routes/routes';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
@@ -20,6 +19,7 @@ import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekst
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import { getBackLinkForSkjemaSteg, useStepConfig } from '../stepsConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -46,17 +46,17 @@ const SkjemaSteg: FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
 
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
-    const tilrettelegging = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGING));
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
-    const currentTilrettelegging = notEmpty(tilrettelegging.find((t) => t.id === valgtTilretteleggingId));
+    const valgtTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
 
     const onSubmit = (values: SkjemaFormData) => {
         if (values.vedlegg.length === 0) {
@@ -66,8 +66,8 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             return Promise.resolve();
         }
 
-        const antallVedleggAndreTilrettelegginger = tilrettelegging
-            .filter((t) => t.id !== currentTilrettelegging!.id)
+        const antallVedleggAndreTilrettelegginger = tilrettelegginger
+            .filter((t) => t.id !== valgtTilrettelegging!.id)
             .reduce((total, tilrettelegging) => total + tilrettelegging.vedlegg.length, 0);
         const antallNyeVedlegg = values.vedlegg ? values.vedlegg.length : 0;
         const antallVedlegg = antallVedleggAndreTilrettelegginger + antallNyeVedlegg;
@@ -79,24 +79,24 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             });
             return Promise.resolve();
         } else {
-            const oppdatertTilrettelegging = {
-                ...currentTilrettelegging,
+            const oppdatertTilrettelegginger = {
+                ...valgtTilrettelegging,
                 vedlegg: values.vedlegg,
             };
 
-            const alleTilrettelegginger = tilrettelegging.map((t) => {
-                return t.id === currentTilrettelegging.id ? oppdatertTilrettelegging : t;
+            const alleValgteTilrettelegginger = tilrettelegginger.map((t) => {
+                return t.id === valgtTilrettelegging.id ? oppdatertTilrettelegginger : t;
             });
 
-            oppdaterTilrettelegging(alleTilrettelegginger);
-            oppdaterValgtTilretteleggingId(currentTilrettelegging.id);
+            oppdaterTilrettelegginger(alleValgteTilrettelegginger);
+            oppdaterValgtTilretteleggingId(valgtTilrettelegging.id);
             oppdaterAppRoute(SøknadRoutes.TILRETTELEGGING);
 
             return mellomlagreSøknadOgNaviger();
         }
     };
 
-    const defaultValues = { vedlegg: currentTilrettelegging.vedlegg };
+    const defaultValues = { vedlegg: valgtTilrettelegging.vedlegg };
 
     const formMethods = useForm<SkjemaFormData>({
         defaultValues: defaultValues,
@@ -110,17 +110,19 @@ const SkjemaSteg: FunctionComponent<Props> = ({
         }
     };
 
-    const typeArbeid = currentTilrettelegging.arbeidsforhold.type;
+    const typeArbeid = valgtTilrettelegging.arbeidsforhold.type;
     const erSNEllerFrilans =
         typeArbeid === Arbeidsforholdstype.FRILANSER || typeArbeid === Arbeidsforholdstype.SELVSTENDIG;
 
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            activeStepId={`skjema-${currentTilrettelegging.id}`}
+            activeStepId={`skjema-${valgtTilrettelegging.id}`}
             pageTitle={
-                tilrettelegging.length > 1
-                    ? intlUtils(intl, 'steps.label.skjema.flere', { navn: currentTilrettelegging.arbeidsforhold.navn })
+                tilrettelegginger.length > 1
+                    ? intlUtils(intl, 'steps.label.skjema.flere', {
+                          navn: valgtTilrettelegging.arbeidsforhold.navn,
+                      })
                     : intlUtils(intl, 'steps.label.skjema.en')
             }
             onCancel={avbrytSøknad}
@@ -130,7 +132,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    {tilrettelegging.length > 1 && <Bedriftsbanner arbeid={currentTilrettelegging.arbeidsforhold} />}
+                    {tilrettelegginger.length > 1 && <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />}
                     <VStack gap="4">
                         {erSNEllerFrilans && <SkjemaopplastningTekstFrilansSN typeArbeid={typeArbeid} />}
                         {!erSNEllerFrilans && <SkjemaopplastningTekstArbeidsgiver />}
@@ -148,8 +150,8 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                                 barnet.termindato,
                                 søkerInfo.arbeidsforhold,
                                 inntektsinformasjon,
-                                tilrettelegging,
-                                currentTilrettelegging.id,
+                                tilrettelegginger,
+                                valgtTilrettelegging.id,
                             );
 
                             oppdaterValgtTilretteleggingId(linkData.previousTilretteleggingId);

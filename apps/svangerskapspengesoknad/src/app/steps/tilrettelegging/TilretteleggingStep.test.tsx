@@ -85,7 +85,7 @@ describe('<Behov for tilrettelegging>', () => {
                     ],
                 },
             ],
-            key: ContextDataType.TILRETTELEGGING,
+            key: ContextDataType.TILRETTELEGGINGER,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {

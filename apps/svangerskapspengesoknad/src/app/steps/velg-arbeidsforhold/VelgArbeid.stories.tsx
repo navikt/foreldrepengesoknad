@@ -37,7 +37,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
                     harJobbetSomFrilans: false,
                     harJobbetSomSelvstendigNæringsdrivende: false,
                 },
-                [ContextDataType.TILRETTELEGGING]: [],
+                [ContextDataType.TILRETTELEGGINGER]: [],
                 [ContextDataType.OM_BARNET]: context.søknad.barn,
             }}
         >

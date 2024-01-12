@@ -35,7 +35,7 @@ const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvitt
                     }
                     setError(error);
                 } else {
-                    throw new Error('This should never happen');
+                    throw new Error('SendSøknad - This should never happen');
                 }
             }
 

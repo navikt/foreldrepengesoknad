@@ -54,7 +54,7 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = ({
                     harJobbetSomFrilans: false,
                     harJobbetSomSelvstendigNæringsdrivende: false,
                 },
-                [ContextDataType.TILRETTELEGGING]: tilrettelegging,
+                [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
                 [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
                 [ContextDataType.OM_BARNET]: defaultContext.søknad.barn,
             }}

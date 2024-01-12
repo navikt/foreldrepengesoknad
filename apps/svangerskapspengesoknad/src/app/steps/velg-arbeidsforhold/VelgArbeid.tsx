@@ -34,17 +34,17 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
-    const tilrettelegging = useContextGetData(ContextDataType.TILRETTELEGGING);
+    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const oppdaterTilrettelegging = useContextSaveData(ContextDataType.TILRETTELEGGING);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const { termindato } = barnet;
 
     const tilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
-        tilrettelegging || [],
+        tilrettelegginger || [],
         inntektsinformasjon,
         søkerInfo.arbeidsforhold,
         termindato,
@@ -56,24 +56,20 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const onSubmit = (formValues: Partial<VelgArbeidFormData>) => {
         setIsSubmitting(true);
 
-        const tilretteleggingValg = tilretteleggingOptions.filter((o) =>
-            formValues.arbeidMedTilrettelegging!.find((t) => t === o.id),
+        const valgteTilrettelegginger = tilretteleggingOptions.filter((o) =>
+            formValues.arbeidMedTilrettelegging!.some((t) => t === o.id),
         );
-        oppdaterTilrettelegging(tilretteleggingValg);
+        oppdaterTilrettelegginger(valgteTilrettelegginger);
 
-        if (tilretteleggingValg.length > 0) {
-            oppdaterValgtTilretteleggingId(tilretteleggingValg[0].id);
-            oppdaterAppRoute(SøknadRoutes.SKJEMA);
-        } else {
-            oppdaterAppRoute(SøknadRoutes.SKJEMA);
-        }
+        oppdaterValgtTilretteleggingId(valgteTilrettelegginger[0].id);
+        oppdaterAppRoute(SøknadRoutes.SKJEMA);
 
         mellomlagreSøknadOgNaviger();
     };
 
     return (
         <VelgArbeidFormComponents.FormikWrapper
-            initialValues={getInitialVelgArbeidFormValues(tilrettelegging)}
+            initialValues={getInitialVelgArbeidFormValues(tilrettelegginger)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visInfo = formValues.arbeidMedTilrettelegging && formValues.arbeidMedTilrettelegging.length > 1;
