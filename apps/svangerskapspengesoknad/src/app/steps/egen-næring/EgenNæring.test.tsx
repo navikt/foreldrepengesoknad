@@ -74,7 +74,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
                 hattVarigEndringAvNæringsinntektSiste4Kalenderår: undefined,
                 navnPåNæringen: 'Virksomhetsnavn AS',
                 næringsinntekt: '1000',
-                næringstyper: ['FISKE'],
+                næringstype: 'JORDBRUK_SKOGBRUK',
                 oppstartsdato: '',
                 organisasjonsnummer: '997519485',
                 pågående: true,
@@ -104,51 +104,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
-    it('skal ikke vise feilmelding, alt er utfylt', async () => {
-        render(<Default />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Jordbruk'));
-
-        expect(screen.getByText('Hva heter virksomheten?')).toBeInTheDocument();
-        const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
-        await userEvent.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
-        await userEvent.tab();
-
-        expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
-
-        expect(screen.getByText('Hva er organisasjonsnummeret?')).toBeInTheDocument();
-        const orgnummerInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
-        await userEvent.type(orgnummerInput, '997519485');
-        await userEvent.tab();
-
-        const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
-        await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
-        await userEvent.tab();
-
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
-
-        expect(
-            screen.getByText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
-        ).toBeInTheDocument();
-        const næringsresultatInput = screen.getByLabelText(
-            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
-        );
-        await userEvent.type(næringsresultatInput, '1000');
-        await userEvent.tab();
-
-        expect(
-            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
-        ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]);
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.queryByText('Du må oppgi organisasjonsnummer.')).not.toBeInTheDocument();
-        expect(screen.queryByText('Du må oppgi næringsresultat de siste 12 månedene.')).not.toBeInTheDocument();
-    });
     it('skal ikke vise feilmelding hvis fisker ikke fyller ut navn eller orgnummer', async () => {
         render(<Default />);
 
