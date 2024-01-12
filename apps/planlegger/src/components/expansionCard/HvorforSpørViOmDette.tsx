@@ -1,9 +1,11 @@
 import { ExpansionCard, HStack } from '@navikt/ds-react';
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Info from 'components/ikoner/Info';
 
-const HvorforSpørViOmDette: FunctionComponent = () => {
+interface Props {
+    text: string;
+}
+const HvorforSpørViOmDette: React.FunctionComponent<Props> = ({ text }) => {
     return (
         <ExpansionCard aria-label="">
             <ExpansionCard.Header>
@@ -14,9 +16,7 @@ const HvorforSpørViOmDette: FunctionComponent = () => {
                     </ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>
-            <ExpansionCard.Content>
-                <FormattedMessage id="hvem.info.tekst" />
-            </ExpansionCard.Content>
+            <ExpansionCard.Content>{text}</ExpansionCard.Content>
         </ExpansionCard>
     );
 };
