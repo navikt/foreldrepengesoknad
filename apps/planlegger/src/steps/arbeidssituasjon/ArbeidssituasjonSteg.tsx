@@ -4,7 +4,7 @@ import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
@@ -40,13 +40,13 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                             <RadioGroup name="arbeidssituasjonMor">
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
-                                    description={intlUtils(intl, 'arbeid.jobber.beskrivelseDeg')}
+                                    description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}
                                 >
                                     <FormattedMessage id="arbeid.jobber" />
                                 </Radio>
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                    description={intlUtils(intl, 'arbeid.jobberIkke.beskrivelseDeg')}
+                                    description={intl.formatMessage({ id: 'arbeid.jobberIkke.beskrivelseDeg' })}
                                 >
                                     <FormattedMessage id="arbeid.jobberIkke" />
                                 </Radio>
@@ -58,13 +58,13 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                             <RadioGroup name="arbeidssituasjonFar">
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
-                                    description={intlUtils(intl, 'arbeid.jobber.beskrivelseDeg')}
+                                    description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}
                                 >
                                     <FormattedMessage id="arbeid.jobber" />
                                 </Radio>
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                    description={intlUtils(intl, 'arbeid.jobberIkke.beskrivelseDeg')}
+                                    description={intl.formatMessage({ id: 'arbeid.jobberIkke.beskrivelseDeg' })}
                                 >
                                     <FormattedMessage id="arbeid.jobberIkke" />
                                 </Radio>
@@ -82,18 +82,24 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                             <RadioGroup name="arbeidssituasjonMor">
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
-                                    description={intlUtils(intl, 'arbeid.jobber.beskrivelse', {
-                                        navn: hvemPlanlegger.navnPåMor,
-                                    })}
+                                    description={intl.formatMessage(
+                                        { id: 'arbeid.jobber.beskrivelse' },
+                                        {
+                                            navn: hvemPlanlegger.navnPåMor,
+                                        },
+                                    )}
                                 >
                                     <FormattedMessage id="arbeid.jobber" />
                                 </Radio>
 
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                    description={intlUtils(intl, 'arbeid.jobberIkke.beskrivelse', {
-                                        navn: hvemPlanlegger.navnPåMor,
-                                    })}
+                                    description={intl.formatMessage(
+                                        { id: 'arbeid.jobberIkke.beskrivelse' },
+                                        {
+                                            navn: hvemPlanlegger.navnPåMor,
+                                        },
+                                    )}
                                 >
                                     <FormattedMessage id="arbeid.jobberIkke" />
                                 </Radio>
@@ -107,17 +113,19 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                             <RadioGroup name="arbeidssituasjonFar">
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
-                                    description={intlUtils(intl, 'arbeid.jobber.beskrivelse', {
-                                        navn: hvemPlanlegger.navnPåFar,
-                                    })}
+                                    description={intl.formatMessage(
+                                        { id: 'arbeid.jobber.beskrivelse' },
+                                        {
+                                            navn: hvemPlanlegger.navnPåFar,
+                                        },
+                                    )}
                                 >
-                                    <FormattedMessage id={intlUtils(intl, 'arbeid.jobber')} />
+                                    <FormattedMessage id={intl.formatMessage({ id: 'arbeid.jobber' })} />
                                 </Radio>
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                    description={intlUtils(
-                                        intl,
-                                        'arbeid.jobberIkke.beskrivelse',
+                                    description={intl.formatMessage(
+                                        { id: 'arbeid.jobberIkke.beskrivelse' },
 
                                         { navn: hvemPlanlegger.navnPåFar },
                                     )}
@@ -139,17 +147,23 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 <RadioGroup name="arbeidssituasjonMor">
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
-                                        description={intlUtils(intl, 'arbeid.jobber.beskrivelse', {
-                                            navn: hvemPlanlegger.navnPåMor,
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobber.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåMor,
+                                            },
+                                        )}
                                     >
                                         <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                        description={intlUtils(intl, 'arbeid.jobberIkke.beskrivelse', {
-                                            navn: hvemPlanlegger.navnPåMor,
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobberIkke.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåMor,
+                                            },
+                                        )}
                                     >
                                         <FormattedMessage id="arbeid.jobberIkke" />
                                     </Radio>
@@ -165,17 +179,23 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 <RadioGroup name="arbeidssituasjonMedmor">
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
-                                        description={intlUtils(intl, 'arbeid.jobber.beskrivelse', {
-                                            navn: hvemPlanlegger.navnPåMedmor,
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobber.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåMedmor,
+                                            },
+                                        )}
                                     >
                                         <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                        description={intlUtils(intl, 'arbeid.jobberIkke.beskrivelse', {
-                                            navn: hvemPlanlegger.navnPåMedmor,
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobberIkke.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåMedmor,
+                                            },
+                                        )}
                                     >
                                         <FormattedMessage id="arbeid.jobberIkke" />
                                     </Radio>
@@ -195,17 +215,19 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 <RadioGroup name="arbeidssituasjonFar">
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
-                                        description={intlUtils(intl, 'arbeid.jobber.beskrivelse', {
-                                            navn: hvemPlanlegger.navnPåFar,
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobber.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåFar,
+                                            },
+                                        )}
                                     >
-                                        <FormattedMessage id={intlUtils(intl, 'arbeid.jobber')} />
+                                        <FormattedMessage id={intl.formatMessage({ id: 'arbeid.jobber' })} />
                                     </Radio>
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                        description={intlUtils(
-                                            intl,
-                                            'arbeid.jobberIkke.beskrivelse',
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobberIkke.beskrivelse' },
 
                                             { navn: hvemPlanlegger.navnPåFar },
                                         )}
@@ -224,17 +246,23 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 <RadioGroup name="arbeidssituasjonMedfar">
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
-                                        description={intlUtils(intl, 'arbeid.jobber.beskrivelse', {
-                                            navn: hvemPlanlegger.navnPåMedfar,
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobber.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåMedfar,
+                                            },
+                                        )}
                                     >
                                         <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                        description={intlUtils(intl, 'arbeid.jobberIkke.beskrivelse', {
-                                            navn: hvemPlanlegger.navnPåMedfar,
-                                        })}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobberIkke.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåMedfar,
+                                            },
+                                        )}
                                     >
                                         <FormattedMessage id="arbeid.jobberIkke" />
                                     </Radio>

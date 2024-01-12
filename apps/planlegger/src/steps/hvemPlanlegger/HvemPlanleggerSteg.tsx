@@ -4,7 +4,7 @@ import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-for
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
 import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
@@ -64,34 +64,34 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                     {planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR && (
                         <VStack gap="5">
                             <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
-                                <TextField label={intlUtils(intl, 'navn.mor')} name="navnPåMor" />
+                                <TextField label={intl.formatMessage({ id: 'navn.mor' })} name="navnPåMor" />
                             </Box>
                             <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
-                                <TextField label={intlUtils(intl, 'navn.medmor')} name="navnPåMedmor" />
+                                <TextField label={intl.formatMessage({ id: 'navn.medmor' })} name="navnPåMedmor" />
                             </Box>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.FAR_OG_FAR && (
                         <VStack gap="5">
                             <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
-                                <TextField label={intlUtils(intl, 'navn.far')} name="navnPåFar" />
+                                <TextField label={intl.formatMessage({ id: 'navn.far' })} name="navnPåFar" />
                             </Box>
                             <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
-                                <TextField label={intlUtils(intl, 'navn.far')} name="navnPåMedfar" />
+                                <TextField label={intl.formatMessage({ id: 'navn.far' })} name="navnPåMedfar" />
                             </Box>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.MOR && (
                         <VStack gap="5">
                             <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
-                                <TextField label={intlUtils(intl, 'navn.mor')} name="navnPåMor" />
+                                <TextField label={intl.formatMessage({ id: 'navn.mor' })} name="navnPåMor" />
                             </Box>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.FAR && (
                         <VStack gap="5">
                             <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
-                                <TextField label={intlUtils(intl, 'navn.far')} name="navnPåFar" />
+                                <TextField label={intl.formatMessage({ id: 'navn.far' })} name="navnPåFar" />
                             </Box>
                         </VStack>
                     )}
