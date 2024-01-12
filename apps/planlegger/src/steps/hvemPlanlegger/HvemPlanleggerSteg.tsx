@@ -29,26 +29,26 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <VStack gap="10">
-                        <Heading size="large" spacing>
+                        <Heading size="large">
                             <FormattedMessage id="hvem.tittel" />
-                            <RadioGroup name="type">
-                                <Radio value={SøkersituasjonEnum.MOR_OG_FAR}>
-                                    <FormattedMessage id="hvem.morOgFar" />
-                                </Radio>
-                                <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
-                                    <FormattedMessage id="hvem.morOgMedmor" />
-                                </Radio>
-                                <Radio value={SøkersituasjonEnum.FAR_OG_FAR}>
-                                    <FormattedMessage id="hvem.farOgFar" />
-                                </Radio>
-                                <Radio value={SøkersituasjonEnum.MOR}>
-                                    <FormattedMessage id="hvem.bareMor" />
-                                </Radio>
-                                <Radio value={SøkersituasjonEnum.FAR}>
-                                    <FormattedMessage id="hvem.bareFar" />
-                                </Radio>
-                            </RadioGroup>
                         </Heading>
+                        <RadioGroup name="type">
+                            <Radio value={SøkersituasjonEnum.MOR_OG_FAR}>
+                                <FormattedMessage id="hvem.morOgFar" />
+                            </Radio>
+                            <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
+                                <FormattedMessage id="hvem.morOgMedmor" />
+                            </Radio>
+                            <Radio value={SøkersituasjonEnum.FAR_OG_FAR}>
+                                <FormattedMessage id="hvem.farOgFar" />
+                            </Radio>
+                            <Radio value={SøkersituasjonEnum.MOR}>
+                                <FormattedMessage id="hvem.bareMor" />
+                            </Radio>
+                            <Radio value={SøkersituasjonEnum.FAR}>
+                                <FormattedMessage id="hvem.bareFar" />
+                            </Radio>
+                        </RadioGroup>
                     </VStack>
                     {planleggerType === SøkersituasjonEnum.MOR_OG_FAR && (
                         <VStack gap="5">
@@ -95,7 +95,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         </VStack>
                     )}
                     <VStack gap="20">
-                        <HvorforSpørViOmDette />
+                        <HvorforSpørViOmDette text="TODO" />
                         <VStack className="button-wrapper content-wrapper">
                             <StepButtonsHookForm
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}

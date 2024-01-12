@@ -10,8 +10,8 @@ import { Periode } from 'types/Periode';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { notEmpty } from '@navikt/fp-validation';
-import Aleneforsørger from './hvemPlanlegger/aleneForsørger';
-import FlereForsørgere from './hvemPlanlegger/FlereForsørgere';
+import FlereForsørgere from './situasjon/FlereForsørgere';
+import Aleneforsørger from './situasjon/Aleneforsørger';
 
 const PeriodeSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -37,8 +37,8 @@ const PeriodeSteg: FunctionComponent = () => {
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR && <FlereForsørgere />}
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR && <FlereForsørgere />}
                     {hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR && <FlereForsørgere />}
-                    <VStack gap="10">
-                        <HvorforSpørViOmDette />
+                    <VStack gap="20">
+                        <HvorforSpørViOmDette text="TODO" />
                         <VStack gap="10" className="button-wrapper content-wrapper">
                             <StepButtonsHookForm<Periode>
                                 saveDataOnPreviousClick={lagrePeriode}

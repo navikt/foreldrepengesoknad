@@ -59,10 +59,10 @@ const Oppsummering = () => {
                     <VStack gap="20">
                         <StepButtonWrapper>
                             <Button variant="secondary" type="button">
-                                Eksporter kalender
+                                <FormattedMessage id="oppsummering.eksporterKalender" />
                             </Button>
                             <Button variant="secondary" type="button">
-                                Gjør endringer
+                                <FormattedMessage id="oppsummering.gjørEndringer" />
                             </Button>
                         </StepButtonWrapper>
                     </VStack>
