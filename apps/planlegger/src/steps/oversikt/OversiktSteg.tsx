@@ -1,5 +1,4 @@
 import { BodyLong, BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
-import { Block } from '@navikt/fp-common';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -73,31 +72,34 @@ const OversiktSteg = () => {
                         </HStack>
                     </HStack>
                 </VStack>
-                <Block>
-                    <Heading size="small" spacing>
-                        <FormattedMessage id="oversikt.2024" />
-                    </Heading>
-                    {/* TODO: Add a panel/box component*/}
-                    <Box padding="4" borderRadius="large" background="surface-alt-3-subtle">
-                        <BodyShort>Kalenderoversikt</BodyShort>
-                    </Box>
-                </Block>
-                <Block>
-                    <Heading size="small" spacing>
-                        <FormattedMessage id="oversikt.2025" />
-                    </Heading>
-                    <Box padding="4" borderRadius="large" background="surface-alt-3-subtle">
-                        <BodyShort>Kalenderoversikt</BodyShort>
-                    </Box>
-                </Block>
-                <Block margin="xxl" className="button-wrapper content-wrapper">
+                <VStack gap="10">
+                    <VStack gap="2">
+                        <Heading size="small" spacing>
+                            <FormattedMessage id="oversikt.2024" />
+                        </Heading>
+                        {/* TODO: Add a panel/box component*/}
+                        <Box padding="4" borderRadius="large" background="surface-alt-3-subtle">
+                            <BodyShort>Kalenderoversikt</BodyShort>
+                        </Box>
+                    </VStack>
+                    <VStack gap="2">
+                        <Heading size="small" spacing>
+                            <FormattedMessage id="oversikt.2025" />
+                        </Heading>
+                        <Box padding="4" borderRadius="large" background="surface-alt-3-subtle">
+                            <BodyShort>Kalenderoversikt</BodyShort>
+                        </Box>
+                    </VStack>
+                </VStack>
+
+                <VStack gap="10" className="button-wrapper content-wrapper">
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={() => navigate(PlanleggerRoutes.OPPSUMMERING)}
                         nextButtonText="Tilpass plan"
                         previousButtonText="Tilbake"
                     />
-                </Block>
+                </VStack>
             </VStack>
         </ContentWrapper>
     );
