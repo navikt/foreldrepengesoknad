@@ -61,6 +61,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         kvoteFarge: getKvoteFarge(FordelingType.Mor, false), //TODO: Remove  this and figure out when displaying?
         fordeling: [førFødsel, seksUkerEtterFødsel, restUkerMor],
         konto: StønadskontoType.Mødrekvote,
+        type: FordelingType.Mor,
     };
 
     const kvoteInformasjonFarsKvote = {
@@ -70,6 +71,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         kvoteFarge: getKvoteFarge(FordelingType.FarMedmor, true),
         fordeling: [far],
         konto: StønadskontoType.Fedrekvote,
+        type: FordelingType.FarMedmor,
     };
 
     const kvoteInformasjonFellesKvote = {
@@ -79,6 +81,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         kvoteFarge: getKvoteFarge(FordelingType.Felles),
         fordeling: [felles],
         konto: StønadskontoType.Fellesperiode,
+        type: FordelingType.Felles,
     };
     return [kvoteInformasjonMorsKvote, kvoteInformasjonFellesKvote, kvoteInformasjonFarsKvote];
 };

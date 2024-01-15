@@ -1,19 +1,19 @@
 import { BodyLong, HStack, VStack } from '@navikt/ds-react';
 import './del-oversikt.css';
-import { StønadskontoType, bemUtils, guid } from '@navikt/fp-common';
+import { bemUtils, guid } from '@navikt/fp-common';
 import DelGraf from '../del-graf/DelGraf';
-import { KvoteFordeling, KvoteInformasjon } from '../FordelingOversikt';
+import { FordelingType, KvoteFordeling, KvoteInformasjon } from '../FordelingOversikt';
 import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
     kvoteInformasjon: KvoteInformasjon;
-    currentUthevet: StønadskontoType | undefined;
-    setCurrentUthevet: Dispatch<SetStateAction<StønadskontoType | undefined>>;
+    currentUthevet: FordelingType | undefined;
+    setCurrentUthevet: Dispatch<SetStateAction<FordelingType | undefined>>;
 }
 
 const DelOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, currentUthevet, setCurrentUthevet }) => {
     const bem = bemUtils('delOversikt');
-    const isUthevet = currentUthevet === kvoteInformasjon.konto;
+    const isUthevet = currentUthevet === kvoteInformasjon.type;
 
     //TODO: GR - Gjør om til klassenavn og bruk shadows (og borders?) fra Aksel design tokens.
     const border = isUthevet ? '2px solid rgba(7, 26, 54, 0.21)' : '2px solid transparent';
@@ -22,7 +22,7 @@ const DelOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, current
         return sum + f.uker;
     }, 0);
     const handleOnMouseEnter = () => {
-        setCurrentUthevet(kvoteInformasjon.konto);
+        setCurrentUthevet(kvoteInformasjon.type);
     };
     const handleOnMouseLeave = () => {
         setCurrentUthevet(undefined);

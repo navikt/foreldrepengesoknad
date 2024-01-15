@@ -10,13 +10,14 @@ interface FordelingGrafInfo {
     tekst: string;
     uker: number;
     farge: string;
+    type?: FordelingType;
     konto?: StønadskontoType;
 }
 
 interface Props {
     sumUker: number;
-    currentUthevet: StønadskontoType | undefined;
-    setCurrentUthevet: Dispatch<SetStateAction<StønadskontoType | undefined>>;
+    currentUthevet: FordelingType | undefined;
+    setCurrentUthevet: Dispatch<SetStateAction<FordelingType | undefined>>;
 }
 
 const BeggeHarRettGraf: React.FunctionComponent<Props> = ({ sumUker, currentUthevet, setCurrentUthevet }) => {
@@ -26,6 +27,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({ sumUker, currentUthe
             uker: 3,
             farge: getKvoteFarge(FordelingType.Mor, false),
             konto: StønadskontoType.Mødrekvote,
+            type: FordelingType.Mor,
         },
         { tekst: 'Termin', uker: 0, farge: '' },
         {
@@ -33,18 +35,21 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({ sumUker, currentUthe
             uker: 16,
             farge: getKvoteFarge(FordelingType.Mor, false),
             konto: StønadskontoType.Mødrekvote,
+            type: FordelingType.Mor,
         },
         {
             tekst: 'Fellesperiode',
             uker: 15,
             farge: getKvoteFarge(FordelingType.Felles),
             konto: StønadskontoType.Fellesperiode,
+            type: FordelingType.Felles,
         },
         {
             tekst: 'Petters del',
             uker: 16,
             farge: getKvoteFarge(FordelingType.FarMedmor, true),
             konto: StønadskontoType.Fedrekvote,
+            type: FordelingType.FarMedmor,
         },
     ];
     const bem = bemUtils('begge-har-rett-graf');
@@ -65,10 +70,10 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({ sumUker, currentUthe
             {fordelingList.map((fordeling: FordelingGrafInfo) => {
                 const width = fordeling.uker === 0 ? iconFieldWidth : (fordeling.uker / sumUker) * 100;
                 const borderColor = fordeling.farge === '#ECEEF0' ? 'black' : `${fordeling.farge}`;
-                const isUthevet = currentUthevet === fordeling.konto;
+                const isUthevet = currentUthevet === fordeling.type;
                 const shadow = isUthevet ? '0 4px 4px rgba(0, 0, 0, 0.25)' : '0 4px 4px transparent';
                 const handleOnMouseEnter = () => {
-                    setCurrentUthevet(fordeling.konto);
+                    setCurrentUthevet(fordeling.type);
                 };
                 return ['Termin', 'Fødsel', 'Adopsjon'].includes(fordeling.tekst) ? (
                     <div

@@ -24,6 +24,7 @@ export interface KvoteInformasjon {
     kvoteFarge: string;
     fordeling: KvoteFordeling[];
     konto: StønadskontoType;
+    type: FordelingType;
 }
 
 export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
@@ -51,7 +52,7 @@ interface Props {
 
 const FordelingOversikt: React.FunctionComponent<Props> = ({ kontoer, scenario }) => {
     const kvoteListe = getFordelingForScenario(scenario, kontoer);
-    const [currentUthevet, setCurrentUthevet] = useState<StønadskontoType | undefined>(undefined);
+    const [currentUthevet, setCurrentUthevet] = useState<FordelingType | undefined>(undefined);
     return (
         <>
             <Block padBottom="l">
