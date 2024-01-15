@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import DelOversikt from './del-oversikt/DelOversikt';
 import { UttaksplanInfoScenario } from 'app/steps/uttaksplan-info/components/scenarios/scenarios';
 import { Block, StønadskontoType, TilgjengeligStønadskonto, guid } from '@navikt/fp-common';
@@ -20,7 +20,6 @@ export interface KvoteFordeling {
 export interface KvoteInformasjon {
     antallUker: number;
     kvoteTittel: string;
-    kvoteNavn: string;
     colorClass: string;
     fordeling: KvoteFordeling[];
     konto: StønadskontoType;
@@ -62,7 +61,8 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     navnMor,
     erAdopsjon,
 }) => {
-    const kvoteListe = getFordelingForScenario(scenario, kontoer);
+    const intl = useIntl();
+    const kvoteListe = getFordelingForScenario(scenario, kontoer, intl, navnMor, navnFarMedmor);
     const [currentUthevet, setCurrentUthevet] = useState<FordelingType | undefined>(undefined);
     return (
         <>
