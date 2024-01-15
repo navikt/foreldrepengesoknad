@@ -9,7 +9,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
-import { notEmpty } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
@@ -39,7 +39,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     </Heading>
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR && (
                         <VStack gap="10">
-                            <RadioGroup name="arbeidssituasjonMor">
+                            <RadioGroup
+                                name="arbeidssituasjonMor"
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.arbeidssituasjonMor.duMåOppgi',
+                                        }),
+                                    ),
+                                ]}
+                            >
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
                                     description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}
@@ -57,7 +66,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     )}
                     {hvemPlanlegger.type === SøkersituasjonEnum.FAR && (
                         <VStack gap="10">
-                            <RadioGroup name="arbeidssituasjonFar">
+                            <RadioGroup
+                                name="arbeidssituasjonFar"
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.arbeidssituasjonFar.duMåOppgi',
+                                        }),
+                                    ),
+                                ]}
+                            >
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
                                     description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}
@@ -82,7 +100,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         values={{ navn: hvemPlanlegger.navnPåMor }}
                                     />
                                 </Heading>
-                                <RadioGroup name="arbeidssituasjonMor">
+                                <RadioGroup
+                                    name="arbeidssituasjonMor"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.arbeidssituasjonMor.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
                                         description={intl.formatMessage(
@@ -116,7 +143,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         values={{ navn: hvemPlanlegger.navnPåFar }}
                                     />
                                 </Heading>
-                                <RadioGroup name="arbeidssituasjonFar">
+                                <RadioGroup
+                                    name="arbeidssituasjonFar"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.arbeidssituasjonFar.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
                                         description={intl.formatMessage(
@@ -151,7 +187,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         values={{ navn: hvemPlanlegger.navnPåMor }}
                                     />
                                 </Heading>
-                                <RadioGroup name="arbeidssituasjonMor">
+                                <RadioGroup
+                                    name="arbeidssituasjonMor"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.arbeidssituasjonMor.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
                                         description={intl.formatMessage(
@@ -183,7 +228,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         values={{ navn: hvemPlanlegger.navnPåMedmor }}
                                     />
                                 </Heading>
-                                <RadioGroup name="arbeidssituasjonMedmor">
+                                <RadioGroup
+                                    name="arbeidssituasjonMedmor"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.arbeidssituasjonMedmor.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
                                         description={intl.formatMessage(
@@ -211,7 +265,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         </VStack>
                     )}
                     {hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR && (
-                        <VStack gap="5">
+                        <VStack gap="10">
                             <VStack gap="1">
                                 <Heading size="small">
                                     <FormattedMessage
@@ -219,7 +273,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         values={{ navn: hvemPlanlegger.navnPåFar }}
                                     />
                                 </Heading>
-                                <RadioGroup name="arbeidssituasjonFar">
+                                <RadioGroup
+                                    name="arbeidssituasjonFar"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.arbeidssituasjonFar.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
                                         description={intl.formatMessage(
@@ -250,7 +313,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         values={{ navn: hvemPlanlegger.navnPåMedfar }}
                                     />
                                 </Heading>
-                                <RadioGroup name="arbeidssituasjonMedfar">
+                                <RadioGroup
+                                    name="arbeidssituasjonMedfar"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.arbeidssituasjonMedfar.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER}
                                         description={intl.formatMessage(
