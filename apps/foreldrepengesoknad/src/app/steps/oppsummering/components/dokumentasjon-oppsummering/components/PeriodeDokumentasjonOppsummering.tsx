@@ -1,9 +1,12 @@
-import { getFellesperiodeVedlegg, getOverføringsVedlegg } from 'app/steps/manglende-vedlegg/util';
+import {
+    getFedrekvoteMorForSykVedlegg,
+    getFellesperiodeVedlegg,
+    getOverføringsVedlegg,
+} from 'app/steps/manglende-vedlegg/util';
 import { FunctionComponent } from 'react';
 import DokumentasjonContainer from './DokumentasjonContainer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
-import FellesperiodeDokumentasjon from './FellesperiodeDokumentasjon';
-import OverføringsperiodeDokumentasjon from './OverføringsperiodeDokumentasjon';
+import PeriodeDokumentasjon from './PeriodeDokumentasjon';
 
 interface Props {
     vedlegg: VedleggDataType;
@@ -12,15 +15,18 @@ interface Props {
 const PeriodeDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg }) => {
     const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
     const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
-    // const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
+    const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
 
     return (
         <>
             <DokumentasjonContainer>
-                <FellesperiodeDokumentasjon vedlegg={fellesperiodeVedlegg} />
+                <PeriodeDokumentasjon vedlegg={fellesperiodeVedlegg} />
             </DokumentasjonContainer>
             <DokumentasjonContainer>
-                <OverføringsperiodeDokumentasjon vedlegg={overføringsVedlegg} />
+                <PeriodeDokumentasjon vedlegg={overføringsVedlegg} />
+            </DokumentasjonContainer>
+            <DokumentasjonContainer>
+                <PeriodeDokumentasjon vedlegg={fedrekvoteMorForSykVedlegg} />
             </DokumentasjonContainer>
         </>
     );

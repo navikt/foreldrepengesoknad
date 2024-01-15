@@ -10,8 +10,12 @@ interface Props {
     vedlegg: Attachment[];
 }
 
-const FellesperiodeDokumentasjon: FunctionComponent<Props> = ({ vedlegg }) => {
+const PeriodeDokumentasjon: FunctionComponent<Props> = ({ vedlegg }) => {
     const intl = useIntl();
+
+    if (vedlegg.length === 0) {
+        return null;
+    }
 
     return (
         <div>
@@ -32,4 +36,4 @@ const FellesperiodeDokumentasjon: FunctionComponent<Props> = ({ vedlegg }) => {
     );
 };
 
-export default FellesperiodeDokumentasjon;
+export default PeriodeDokumentasjon;
