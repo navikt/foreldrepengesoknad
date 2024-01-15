@@ -43,7 +43,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
 
     const kvoteInformasjonMorsKvote = {
         antallUker: antallUkerMor,
-        kvoteTittel: `${antallUkerMor} uker til deg`, //TODO: Remove  this and figure out when displaying?
+        kvoteTittel: `${antallUkerMor + MORS_UKER_FØR_FØDSEL} uker til deg`, //TODO: Remove  this and figure out when displaying?
         kvoteNavn: 'DIN KVOTE', //TODO: Remove  this and figure out when displaying?
         kvoteFarge: MØDREKVOTE_FARGE, //TODO: Remove  this and figure out when displaying?
         fordeling: [førFødsel, seksUkerEtterFødsel, restUkerMor],
