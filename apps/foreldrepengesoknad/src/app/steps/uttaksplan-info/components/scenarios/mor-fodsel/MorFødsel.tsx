@@ -96,10 +96,10 @@ const MorFødsel: FunctionComponent<Props> = ({
     const erMorUfør = !!oppgittAnnenForelder?.erUfør;
     const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const navnFarMedmor = oppgittAnnenForelder
-        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
+        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, false)
         : '';
 
-    const navnMor = formaterNavn(person.fornavn, person.etternavn, true, person.mellomnavn);
+    const navnMor = formaterNavn(person.fornavn, person.etternavn, false, person.mellomnavn);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
@@ -202,7 +202,14 @@ const MorFødsel: FunctionComponent<Props> = ({
 
                 return (
                     <VStack gap="5">
-                        <FordelingOversikt kontoer={valgtStønadskonto} scenario={scenario}></FordelingOversikt>
+                        <FordelingOversikt
+                            kontoer={valgtStønadskonto}
+                            scenario={scenario}
+                            erFarEllerMedmor={false}
+                            navnFarMedmor={navnFarMedmor}
+                            navnMor={navnMor}
+                            erAdopsjon={erAdopsjon}
+                        ></FordelingOversikt>
                         <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {/* <Block padBottom="xl">
                                 {valgtStønadskonto && (

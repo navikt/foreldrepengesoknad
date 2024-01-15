@@ -4,20 +4,24 @@ import { bemUtils, guid } from '@navikt/fp-common';
 import DelGraf from '../del-graf/DelGraf';
 import { FordelingType, KvoteFordeling, KvoteInformasjon } from '../FordelingOversikt';
 import { Dispatch, SetStateAction } from 'react';
+import { getErAnnenForeldersDel, getFordelingBoxColorClass, getFordelingType } from '../fordelingOversiktUtils';
+import classNames from 'classnames';
 
 interface Props {
     kvoteInformasjon: KvoteInformasjon;
     currentUthevet: FordelingType | undefined;
+    erFarEllerMedmor: boolean;
     setCurrentUthevet: Dispatch<SetStateAction<FordelingType | undefined>>;
 }
 
-const DelOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, currentUthevet, setCurrentUthevet }) => {
+const DelOversikt: React.FunctionComponent<Props> = ({
+    kvoteInformasjon,
+    currentUthevet,
+    erFarEllerMedmor,
+    setCurrentUthevet,
+}) => {
     const bem = bemUtils('delOversikt');
-    const isUthevet = currentUthevet === kvoteInformasjon.type;
-
-    //TODO: GR - Gjør om til klassenavn og bruk shadows (og borders?) fra Aksel design tokens.
-    const border = isUthevet ? '2px solid rgba(7, 26, 54, 0.21)' : '2px solid transparent';
-    const shadow = isUthevet ? '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' : '0px 4px 4px 0px transparent';
+    const hoverClass = currentUthevet === kvoteInformasjon.type ? 'hover' : 'no-hover';
     const sumUker = kvoteInformasjon.fordeling.reduce((sum, f) => {
         return sum + f.uker;
     }, 0);
@@ -27,19 +31,21 @@ const DelOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, current
     const handleOnMouseLeave = () => {
         setCurrentUthevet(undefined);
     };
+    const type = getFordelingType(kvoteInformasjon.konto, erFarEllerMedmor);
+    const erAnnenForeldersDel = getErAnnenForeldersDel(erFarEllerMedmor, type);
+    const colorClass = getFordelingBoxColorClass(type, erAnnenForeldersDel);
 
     return (
         <VStack
-            className={bem.block}
+            className={classNames(bem.block, bem.modifier(`${hoverClass}`))}
             gap="2"
-            style={{ border: `${border}`, boxShadow: `${shadow}` }}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
             <div>
                 <BodyLong className={bem.element('uker')}>{kvoteInformasjon.kvoteTittel}</BodyLong>
             </div>
-            <DelGraf fordelingList={kvoteInformasjon.fordeling} sumUker={sumUker} farge={kvoteInformasjon.kvoteFarge} />
+            <DelGraf fordelingList={kvoteInformasjon.fordeling} sumUker={sumUker} colorClass={colorClass} />
             <HStack gap="4">
                 {kvoteInformasjon.fordeling.map((fordeling: KvoteFordeling) => {
                     return (

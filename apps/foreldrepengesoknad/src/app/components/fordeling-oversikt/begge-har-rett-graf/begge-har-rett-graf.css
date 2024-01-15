@@ -1,7 +1,77 @@
-.begge-har-rett-graf__kvote {
+.begge-har-rett-graf {
+    display: flex;
+    flex-direction: row;
+}
+
+.begge-har-rett-graf__søyle {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.begge-har-rett-graf__del {
+    grid-row: 2;
+    grid-column: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.begge-har-rett-graf__del-box {
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    margin-left: 2px;
+    margin-right: 2px;
     box-shadow: 0px 4px 4px 0px transparent;
 }
 
-.begge-har-rett-graf__kvote:hover {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+.begge-har-rett-graf__del-tekst {
+    grid-row: 3;
+    grid-column: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.begge-har-rett-graf__del-box:hover {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.begge-har-rett-graf--shadow {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.begge-har-rett-graf--no-shadow {
+    box-shadow: 0px 4px 4px transparent;
+}
+
+.begge-har-rett-graf--mor-aktiv {
+    background-color: #3386e0;
+    border-color: #3386e0;
+}
+
+.begge-har-rett-graf--mor-passiv {
+    background-color: #99c4dd;
+    border-color: #99c4dd;
+}
+
+.begge-har-rett-graf--far-aktiv {
+    background-color: #33aa5f;
+    border-color: #33aa5f;
+}
+
+.begge-har-rett-graf--far-passiv {
+    background-color: #99dead;
+    border-color: #99dead;
+}
+
+.begge-har-rett-graf--fellesperiode {
+    background-color: #eceef0;
+    border-color: black;
+}
+
+.begge-har-rett-graf__del-graf-box {
+    border-width: 1px;
+    border-style: solid;
+    margin: 0px 2px;
 }

@@ -5,23 +5,65 @@ import { UttaksplanInfoScenario } from 'app/steps/uttaksplan-info/components/sce
 
 const MORS_UKER_FØR_FØDSEL = 3;
 const MORS_UKER_ETTER_FØDSEL = 6;
-export const MØDREKVOTE_FARGE_AKTIV = '#3386E0';
-export const MØDREKVOTE_FARGE_PASSIV = '#99C4DD';
-export const FEDREKVOTE_FARGE_AKTIV = '#33AA5F';
-export const FEDREKVOTE_FARGE_PASSIV = '#99DEAD';
-export const FELLESPERIODE_FARGE = '#ECEEF0';
-export const MØDREKVOTE_ID = 'MOR';
-export const FEDREKVOTE_ID = 'FAR';
-export const FELLESPERIODE_ID = 'FEL';
 
-export const getKvoteFarge = (delType: FordelingType, erAnnenForeldersKvote?: boolean): string => {
-    switch (delType) {
+export const getErAnnenForeldersDel = (erFarEllerMedmor: boolean, type: FordelingType): boolean | undefined => {
+    if (type === FordelingType.Felles) {
+        return undefined;
+    }
+    if ((erFarEllerMedmor && type === FordelingType.Mor) || (!erFarEllerMedmor && type === FordelingType.FarMedmor)) {
+        return true;
+    }
+    return false;
+};
+
+export const getFordelingType = (konto: StønadskontoType, erFarEllerMedmor: boolean): FordelingType => {
+    switch (konto) {
+        case StønadskontoType.ForeldrepengerFørFødsel:
+            return FordelingType.Mor;
+        case StønadskontoType.Mødrekvote:
+            return FordelingType.Mor;
+        case StønadskontoType.Fedrekvote:
+            return FordelingType.FarMedmor;
+        case StønadskontoType.Fellesperiode:
+            return FordelingType.Felles;
+        case StønadskontoType.Foreldrepenger:
+        case StønadskontoType.Flerbarnsdager:
+            return erFarEllerMedmor ? FordelingType.FarMedmor : FordelingType.Mor;
+        case StønadskontoType.AktivitetsfriKvote:
+            return FordelingType.FarMedmor;
+    }
+};
+
+export const getFordelingBoxColorClass = (fordelingType: FordelingType, erAnnenForeldersDel?: boolean): string => {
+    switch (fordelingType) {
         case FordelingType.Mor:
-            return erAnnenForeldersKvote ? MØDREKVOTE_FARGE_PASSIV : MØDREKVOTE_FARGE_AKTIV;
+            return erAnnenForeldersDel ? 'mor-passiv' : 'mor-aktiv';
         case FordelingType.FarMedmor:
-            return erAnnenForeldersKvote ? FEDREKVOTE_FARGE_PASSIV : FEDREKVOTE_FARGE_AKTIV;
+            return erAnnenForeldersDel ? 'far-passiv' : 'far-aktiv';
+        case FordelingType.Felles:
+            return 'fellesperiode';
+    }
+};
+
+export const getShadowClass = (isUthevet: boolean): string => {
+    return isUthevet ? 'shadow' : 'no-shadow';
+};
+
+export const getFordelingTekst = (
+    konto: StønadskontoType,
+    navnMor: string,
+    navnFarMedmor: string,
+    erAnnenForeldersKvote?: boolean,
+): string => {
+    switch (konto) {
+        case StønadskontoType.Mødrekvote:
+            return erAnnenForeldersKvote ? `${navnMor}s del` : 'Din del';
+        case StønadskontoType.Fedrekvote:
+            return erAnnenForeldersKvote ? `${navnFarMedmor}s del` : 'Din del';
+        case StønadskontoType.Fellesperiode:
+            return 'Fellesperiode';
         default:
-            return FELLESPERIODE_FARGE;
+            return '';
     }
 };
 
@@ -58,7 +100,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         antallUker: antallUkerMor,
         kvoteTittel: `${antallUkerMor + MORS_UKER_FØR_FØDSEL} uker til deg`, //TODO: Remove  this and figure out when displaying?
         kvoteNavn: 'DIN KVOTE', //TODO: Remove  this and figure out when displaying?
-        kvoteFarge: getKvoteFarge(FordelingType.Mor, false), //TODO: Remove  this and figure out when displaying?
+        colorClass: getFordelingBoxColorClass(FordelingType.Mor, false), //TODO: Remove  this and figure out when displaying?
         fordeling: [førFødsel, seksUkerEtterFødsel, restUkerMor],
         konto: StønadskontoType.Mødrekvote,
         type: FordelingType.Mor,
@@ -68,7 +110,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         antallUker: 15,
         kvoteTittel: '15 uker til Petter',
         kvoteNavn: 'PETTER SIN KVOTE',
-        kvoteFarge: getKvoteFarge(FordelingType.FarMedmor, true),
+        colorClass: getFordelingBoxColorClass(FordelingType.FarMedmor, true),
         fordeling: [far],
         konto: StønadskontoType.Fedrekvote,
         type: FordelingType.FarMedmor,
@@ -78,7 +120,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         antallUker: 16,
         kvoteTittel: '16 uker skal deles, fellesperiode',
         kvoteNavn: 'FELLESPERIODE',
-        kvoteFarge: getKvoteFarge(FordelingType.Felles),
+        colorClass: getFordelingBoxColorClass(FordelingType.Felles),
         fordeling: [felles],
         konto: StønadskontoType.Fellesperiode,
         type: FordelingType.Felles,

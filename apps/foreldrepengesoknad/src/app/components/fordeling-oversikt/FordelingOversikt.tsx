@@ -21,7 +21,7 @@ export interface KvoteInformasjon {
     antallUker: number;
     kvoteTittel: string;
     kvoteNavn: string;
-    kvoteFarge: string;
+    colorClass: string;
     fordeling: KvoteFordeling[];
     konto: StønadskontoType;
     type: FordelingType;
@@ -48,17 +48,33 @@ export const getFormattedMessage = (id: string, values?: any, link?: string): Re
 interface Props {
     kontoer: TilgjengeligStønadskonto[];
     scenario: UttaksplanInfoScenario;
+    erFarEllerMedmor: boolean;
+    navnFarMedmor: string;
+    navnMor: string;
+    erAdopsjon: boolean;
 }
 
-const FordelingOversikt: React.FunctionComponent<Props> = ({ kontoer, scenario }) => {
+const FordelingOversikt: React.FunctionComponent<Props> = ({
+    kontoer,
+    scenario,
+    erFarEllerMedmor,
+    navnFarMedmor,
+    navnMor,
+    erAdopsjon,
+}) => {
     const kvoteListe = getFordelingForScenario(scenario, kontoer);
     const [currentUthevet, setCurrentUthevet] = useState<FordelingType | undefined>(undefined);
     return (
         <>
             <Block padBottom="l">
                 <BeggeHarRettGraf
+                    kontoer={kontoer}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    erAdopsjon={erAdopsjon}
                     sumUker={49}
                     currentUthevet={currentUthevet}
+                    navnMor={navnMor}
+                    navnFarMedmor={navnFarMedmor}
                     setCurrentUthevet={setCurrentUthevet}
                 ></BeggeHarRettGraf>
             </Block>
@@ -69,6 +85,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({ kontoer, scenario }
                             key={guid()}
                             kvoteInformasjon={kvoteInfo}
                             currentUthevet={currentUthevet}
+                            erFarEllerMedmor={erFarEllerMedmor}
                             setCurrentUthevet={setCurrentUthevet}
                         />
                     );
