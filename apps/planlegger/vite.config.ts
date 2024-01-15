@@ -21,4 +21,17 @@ export default defineConfig({
             types: path.resolve(__dirname, './src/types'),
         },
     },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './vitest/setupTests.ts',
+        deps: {
+            inline: ['@navikt/ds-react'],
+        },
+        coverage: {
+            include: ['src/**/*'],
+            exclude: [],
+        },
+        testTimeout: 10000,
+    },
 });
