@@ -43,7 +43,7 @@ const FordelingGraf: React.FunctionComponent<Props> = ({
                 const width = fordeling.uker === 0 ? iconFieldWidth : (fordeling.uker / sumUker) * 100;
                 const borderColor = fordeling.farge === '#ECEEF0' ? 'black' : `${fordeling.farge}`;
                 const isUthevet = currentUthevet === fordeling.konto;
-                const shadow = isUthevet ? '0 4px 4px rgba(0, 0, 0, 0.25)' : '0 0px 0px white';
+                const shadow = isUthevet ? '0 4px 4px rgba(0, 0, 0, 0.25)' : '0 4px 4px transparent';
                 const handleOnMouseEnter = () => {
                     setCurrentUthevet(fordeling.konto);
                 };

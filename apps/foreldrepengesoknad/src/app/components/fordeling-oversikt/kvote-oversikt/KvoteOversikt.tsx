@@ -14,8 +14,10 @@ interface Props {
 const KvoteOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, currentUthevet, setCurrentUthevet }) => {
     const bem = bemUtils('kvoteOversikt');
     const isUthevet = currentUthevet === kvoteInformasjon.konto;
-    const border = isUthevet ? '2px solid rgba(7, 26, 54, 0.21)' : '0px none white';
-    const shadow = isUthevet ? '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' : '0px 0px 0px 0px white';
+
+    //TODO: GR - Gjør om til klassenavn
+    const border = isUthevet ? '2px solid rgba(7, 26, 54, 0.21)' : '2px solid transparent';
+    const shadow = isUthevet ? '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' : '0px 4px 4px 0px transparent';
     const sumUker = kvoteInformasjon.fordeling.reduce((sum, f) => {
         return sum + f.uker;
     }, 0);
