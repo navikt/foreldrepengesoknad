@@ -1,6 +1,6 @@
 import { BodyLong, Box, Heading, Radio, VStack } from '@navikt/ds-react';
 import { RadioGroup } from '@navikt/fp-form-hooks';
-import { notEmpty } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -23,7 +23,16 @@ const FlereForsørgere: FunctionComponent = () => {
                 <Heading size="small">
                     <FormattedMessage id="periode.hvaGjelderBegge" />
                 </Heading>
-                <RadioGroup name="periode">
+                <RadioGroup
+                    name="periode"
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({
+                                id: 'feilmelding.periode.hvorLangPeriode.duMåOppgi',
+                            }),
+                        ),
+                    ]}
+                >
                     <Radio
                         value={PeriodeEnum.HUNDRE}
                         description={intl.formatMessage(
