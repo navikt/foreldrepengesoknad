@@ -19,7 +19,7 @@ const FlereForsørgere: FunctionComponent = () => {
             <Heading size="large">
                 <FormattedMessage id="periode.tittel" />
             </Heading>
-            <VStack gap="5">
+            <VStack gap="1">
                 <Heading size="small">
                     <FormattedMessage id="periode.hvaGjelderBegge" />
                 </Heading>
@@ -55,9 +55,11 @@ const FlereForsørgere: FunctionComponent = () => {
                         <FormattedMessage id="periode.80" />
                     </Radio>
                 </RadioGroup>
+            </VStack>
 
+            <VStack gap="10">
                 <Box padding="4" borderRadius="large" borderColor="border-alt-3" borderWidth="2">
-                    <Heading size="small">
+                    <Heading size="small" spacing>
                         <FormattedMessage id="periode.ikkeDekketTittel" />
                     </Heading>
 
@@ -67,7 +69,7 @@ const FlereForsørgere: FunctionComponent = () => {
                 </Box>
 
                 <Box padding="4" borderColor="border-alt-3" borderRadius="large" background="bg-subtle">
-                    <Heading size="small">
+                    <Heading size="small" spacing>
                         <FormattedMessage id="periode.utbetalingTittel" />
                     </Heading>
                     <BodyLong>
