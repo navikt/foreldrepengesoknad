@@ -1,7 +1,7 @@
-import { BodyLong, Detail, HStack, VStack } from '@navikt/ds-react';
-import './kvote-oversikt.css';
+import { BodyLong, HStack, VStack } from '@navikt/ds-react';
+import './del-oversikt.css';
 import { StønadskontoType, bemUtils, guid } from '@navikt/fp-common';
-import KvoteGraf from '../kvote-graf/KvoteGraf';
+import DelGraf from '../del-graf/DelGraf';
 import { KvoteFordeling, KvoteInformasjon } from '../FordelingOversikt';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -11,11 +11,11 @@ interface Props {
     setCurrentUthevet: Dispatch<SetStateAction<StønadskontoType | undefined>>;
 }
 
-const KvoteOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, currentUthevet, setCurrentUthevet }) => {
-    const bem = bemUtils('kvoteOversikt');
+const DelOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, currentUthevet, setCurrentUthevet }) => {
+    const bem = bemUtils('delOversikt');
     const isUthevet = currentUthevet === kvoteInformasjon.konto;
 
-    //TODO: GR - Gjør om til klassenavn
+    //TODO: GR - Gjør om til klassenavn og bruk shadows (og borders?) fra Aksel design tokens.
     const border = isUthevet ? '2px solid rgba(7, 26, 54, 0.21)' : '2px solid transparent';
     const shadow = isUthevet ? '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' : '0px 4px 4px 0px transparent';
     const sumUker = kvoteInformasjon.fordeling.reduce((sum, f) => {
@@ -38,13 +38,8 @@ const KvoteOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, curre
         >
             <div>
                 <BodyLong className={bem.element('uker')}>{kvoteInformasjon.kvoteTittel}</BodyLong>
-                <Detail className={bem.element('kvoteNavn')}>{kvoteInformasjon.kvoteNavn}</Detail>
             </div>
-            <KvoteGraf
-                fordelingList={kvoteInformasjon.fordeling}
-                sumUker={sumUker}
-                farge={kvoteInformasjon.kvoteFarge}
-            />
+            <DelGraf fordelingList={kvoteInformasjon.fordeling} sumUker={sumUker} farge={kvoteInformasjon.kvoteFarge} />
             <HStack gap="4">
                 {kvoteInformasjon.fordeling.map((fordeling: KvoteFordeling) => {
                     return (
@@ -58,4 +53,4 @@ const KvoteOversikt: React.FunctionComponent<Props> = ({ kvoteInformasjon, curre
     );
 };
 
-export default KvoteOversikt;
+export default DelOversikt;

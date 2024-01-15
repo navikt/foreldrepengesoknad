@@ -1,8 +1,10 @@
 import { StønadskontoType, bemUtils, guid } from '@navikt/fp-common';
 import { BodyShort } from '@navikt/ds-react';
 import { HeartFillIcon } from '@navikt/aksel-icons';
-import './fordeling-graf.css';
+import './begge-har-rett-graf.css';
 import { Dispatch, SetStateAction } from 'react';
+import { getKvoteFarge } from '../fordelingOversiktUtils';
+import { FordelingType } from '../FordelingOversikt';
 
 interface FordelingGrafInfo {
     tekst: string;
@@ -12,19 +14,40 @@ interface FordelingGrafInfo {
 }
 
 interface Props {
-    fordelingList: FordelingGrafInfo[];
     sumUker: number;
     currentUthevet: StønadskontoType | undefined;
     setCurrentUthevet: Dispatch<SetStateAction<StønadskontoType | undefined>>;
 }
 
-const FordelingGraf: React.FunctionComponent<Props> = ({
-    fordelingList,
-    sumUker,
-    currentUthevet,
-    setCurrentUthevet,
-}) => {
-    const bem = bemUtils('fordeling-graf');
+const BeggeHarRettGraf: React.FunctionComponent<Props> = ({ sumUker, currentUthevet, setCurrentUthevet }) => {
+    const fordelingList = [
+        {
+            tekst: '',
+            uker: 3,
+            farge: getKvoteFarge(FordelingType.Mor, false),
+            konto: StønadskontoType.Mødrekvote,
+        },
+        { tekst: 'Termin', uker: 0, farge: '' },
+        {
+            tekst: 'Din del',
+            uker: 16,
+            farge: getKvoteFarge(FordelingType.Mor, false),
+            konto: StønadskontoType.Mødrekvote,
+        },
+        {
+            tekst: 'Fellesperiode',
+            uker: 15,
+            farge: getKvoteFarge(FordelingType.Felles),
+            konto: StønadskontoType.Fellesperiode,
+        },
+        {
+            tekst: 'Petters del',
+            uker: 16,
+            farge: getKvoteFarge(FordelingType.FarMedmor, true),
+            konto: StønadskontoType.Fedrekvote,
+        },
+    ];
+    const bem = bemUtils('begge-har-rett-graf');
     const iconSize = 24;
     const rowHeight = 16;
     const iconFieldWidth = 12;
@@ -135,4 +158,4 @@ const FordelingGraf: React.FunctionComponent<Props> = ({
     );
 };
 
-export default FordelingGraf;
+export default BeggeHarRettGraf;

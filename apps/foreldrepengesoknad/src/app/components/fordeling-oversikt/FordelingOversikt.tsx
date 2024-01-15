@@ -1,15 +1,16 @@
 import { FormattedMessage } from 'react-intl';
-import KvoteOversikt from './kvote-oversikt/KvoteOversikt';
+import DelOversikt from './del-oversikt/DelOversikt';
 import { UttaksplanInfoScenario } from 'app/steps/uttaksplan-info/components/scenarios/scenarios';
 import { Block, StønadskontoType, TilgjengeligStønadskonto, guid } from '@navikt/fp-common';
-import {
-    FEDREKVOTE_FARGE,
-    FELLESPERIODE_FARGE,
-    MØDREKVOTE_FARGE,
-    getFordelingForScenario,
-} from './fordelingOversiktUtils';
-import FordelingGraf from './fordeling-graf/FordelingGraf';
+import { getFordelingForScenario } from './fordelingOversiktUtils';
+import BeggeHarRettGraf from './begge-har-rett-graf/BeggeHarRettGraf';
 import { useState } from 'react';
+
+export enum FordelingType {
+    Mor = 'MOR',
+    FarMedmor = 'FARMEDMOR',
+    Felles = 'FELLES',
+}
 
 export interface KvoteFordeling {
     uker: number;
@@ -54,38 +55,16 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({ kontoer, scenario }
     return (
         <>
             <Block padBottom="l">
-                <FordelingGraf
+                <BeggeHarRettGraf
                     sumUker={49}
-                    fordelingList={[
-                        { tekst: '', uker: 3, farge: MØDREKVOTE_FARGE, konto: StønadskontoType.Mødrekvote },
-                        { tekst: 'Termin', uker: 0, farge: '' },
-                        {
-                            tekst: 'Din kvote',
-                            uker: 16,
-                            farge: MØDREKVOTE_FARGE,
-                            konto: StønadskontoType.Mødrekvote,
-                        },
-                        {
-                            tekst: 'Petters kvote',
-                            uker: 16,
-                            farge: FEDREKVOTE_FARGE,
-                            konto: StønadskontoType.Fedrekvote,
-                        },
-                        {
-                            tekst: 'Fellesperiode',
-                            uker: 15,
-                            farge: FELLESPERIODE_FARGE,
-                            konto: StønadskontoType.Fellesperiode,
-                        },
-                    ]}
                     currentUthevet={currentUthevet}
                     setCurrentUthevet={setCurrentUthevet}
-                ></FordelingGraf>
+                ></BeggeHarRettGraf>
             </Block>
             <Block padBottom="xl">
                 {kvoteListe.map((kvoteInfo) => {
                     return (
-                        <KvoteOversikt
+                        <DelOversikt
                             key={guid()}
                             kvoteInformasjon={kvoteInfo}
                             currentUthevet={currentUthevet}

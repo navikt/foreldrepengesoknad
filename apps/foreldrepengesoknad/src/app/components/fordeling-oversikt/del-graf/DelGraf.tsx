@@ -6,7 +6,7 @@ interface Props {
     farge: string;
 }
 
-const KvoteGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker, farge }) => {
+const DelGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker, farge }) => {
     const rowHeightRem = 0.75;
     return (
         <div
@@ -38,4 +38,4 @@ const KvoteGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker, far
     );
 };
 
-export default KvoteGraf;
+export default DelGraf;

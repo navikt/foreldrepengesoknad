@@ -1,16 +1,29 @@
-import { KvoteFordeling, KvoteInformasjon, getFormattedMessage } from './FordelingOversikt';
+import { FordelingType, KvoteFordeling, KvoteInformasjon, getFormattedMessage } from './FordelingOversikt';
 import { getAntallUkerMødrekvote } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
 import { UttaksplanInfoScenario } from 'app/steps/uttaksplan-info/components/scenarios/scenarios';
 
 const MORS_UKER_FØR_FØDSEL = 3;
 const MORS_UKER_ETTER_FØDSEL = 6;
-export const MØDREKVOTE_FARGE = '#3386E0';
-export const FEDREKVOTE_FARGE = '#99DEAD';
+export const MØDREKVOTE_FARGE_AKTIV = '#3386E0';
+export const MØDREKVOTE_FARGE_PASSIV = '#99C4DD';
+export const FEDREKVOTE_FARGE_AKTIV = '#33AA5F';
+export const FEDREKVOTE_FARGE_PASSIV = '#99DEAD';
 export const FELLESPERIODE_FARGE = '#ECEEF0';
 export const MØDREKVOTE_ID = 'MOR';
 export const FEDREKVOTE_ID = 'FAR';
 export const FELLESPERIODE_ID = 'FEL';
+
+export const getKvoteFarge = (delType: FordelingType, erAnnenForeldersKvote?: boolean): string => {
+    switch (delType) {
+        case FordelingType.Mor:
+            return erAnnenForeldersKvote ? MØDREKVOTE_FARGE_PASSIV : MØDREKVOTE_FARGE_AKTIV;
+        case FordelingType.FarMedmor:
+            return erAnnenForeldersKvote ? FEDREKVOTE_FARGE_PASSIV : FEDREKVOTE_FARGE_AKTIV;
+        default:
+            return FELLESPERIODE_FARGE;
+    }
+};
 
 export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligStønadskonto[]): KvoteInformasjon[] => {
     const antallUkerMor = getAntallUkerMødrekvote(kontoer);
@@ -45,7 +58,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         antallUker: antallUkerMor,
         kvoteTittel: `${antallUkerMor + MORS_UKER_FØR_FØDSEL} uker til deg`, //TODO: Remove  this and figure out when displaying?
         kvoteNavn: 'DIN KVOTE', //TODO: Remove  this and figure out when displaying?
-        kvoteFarge: MØDREKVOTE_FARGE, //TODO: Remove  this and figure out when displaying?
+        kvoteFarge: getKvoteFarge(FordelingType.Mor, false), //TODO: Remove  this and figure out when displaying?
         fordeling: [førFødsel, seksUkerEtterFødsel, restUkerMor],
         konto: StønadskontoType.Mødrekvote,
     };
@@ -54,20 +67,20 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         antallUker: 15,
         kvoteTittel: '15 uker til Petter',
         kvoteNavn: 'PETTER SIN KVOTE',
-        kvoteFarge: FEDREKVOTE_FARGE,
+        kvoteFarge: getKvoteFarge(FordelingType.FarMedmor, true),
         fordeling: [far],
         konto: StønadskontoType.Fedrekvote,
     };
 
     const kvoteInformasjonFellesKvote = {
         antallUker: 16,
-        kvoteTittel: '16 uker skal deles',
+        kvoteTittel: '16 uker skal deles, fellesperiode',
         kvoteNavn: 'FELLESPERIODE',
-        kvoteFarge: FELLESPERIODE_FARGE,
+        kvoteFarge: getKvoteFarge(FordelingType.Felles),
         fordeling: [felles],
         konto: StønadskontoType.Fellesperiode,
     };
-    return [kvoteInformasjonMorsKvote, kvoteInformasjonFarsKvote, kvoteInformasjonFellesKvote];
+    return [kvoteInformasjonMorsKvote, kvoteInformasjonFellesKvote, kvoteInformasjonFarsKvote];
 };
 
 export const getFordelingForScenario = (

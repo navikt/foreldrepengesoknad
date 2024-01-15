@@ -1,4 +1,4 @@
-.kvoteOversikt {
+.delOversikt {
     border-radius: 2px;
     background: #f2f3f5;
     padding: 0.5rem;
@@ -7,23 +7,23 @@
     box-shadow: 0px 4px 4px 0px transparent;
 }
 
-.kvoteOversikt:hover {
+.delOversikt:hover {
     border: 2px solid rgba(7, 26, 54, 0.21);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.kvoteOversikt__uker {
+.delOversikt__uker {
     width: 60%;
     float: left;
     font-size: '24px';
     font-weight: bold;
 }
 
-.kvoteOversikt__graf {
+.delOversikt__graf {
     display: 'flex';
     flex-direction: 'row';
 }
 
-.kvoteOversikt__kvoteNavn {
+.delOversikt__kvoteNavn {
     float: right;
 }

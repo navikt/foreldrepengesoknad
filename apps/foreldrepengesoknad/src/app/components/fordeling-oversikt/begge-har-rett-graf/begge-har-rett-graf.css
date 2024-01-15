@@ -1,7 +1,7 @@
-.fordeling-graf__kvote {
+.begge-har-rett-graf__kvote {
     box-shadow: 0px 4px 4px 0px transparent;
 }
 
-.fordeling-graf__kvote:hover {
+.begge-har-rett-graf__kvote:hover {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
