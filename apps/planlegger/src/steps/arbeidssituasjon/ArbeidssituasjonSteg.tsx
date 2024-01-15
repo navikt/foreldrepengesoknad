@@ -35,7 +35,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         <FormattedMessage id="arbeid.tittel" />
                     </Heading>
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR && (
-                        <VStack gap="5">
+                        <VStack gap="10">
                             <RadioGroup name="arbeidssituasjonMor">
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
@@ -53,7 +53,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         </VStack>
                     )}
                     {hvemPlanlegger.type === SøkersituasjonEnum.FAR && (
-                        <VStack gap="5">
+                        <VStack gap="10">
                             <RadioGroup name="arbeidssituasjonFar">
                                 <Radio
                                     value={ArbeidssituasjonEnum.JOBBER}
@@ -71,72 +71,77 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         </VStack>
                     )}
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR && (
-                        <VStack gap="5">
-                            <Heading size="small">
-                                <FormattedMessage
-                                    id={'arbeid.hvaGjelder'}
-                                    values={{ navn: hvemPlanlegger.navnPåMor }}
-                                />
-                            </Heading>
-                            <RadioGroup name="arbeidssituasjonMor">
-                                <Radio
-                                    value={ArbeidssituasjonEnum.JOBBER}
-                                    description={intl.formatMessage(
-                                        { id: 'arbeid.jobber.beskrivelse' },
-                                        {
-                                            navn: hvemPlanlegger.navnPåMor,
-                                        },
-                                    )}
-                                >
-                                    <FormattedMessage id="arbeid.jobber" />
-                                </Radio>
+                        <VStack gap="10">
+                            <VStack gap="1">
+                                <Heading size="small">
+                                    <FormattedMessage
+                                        id={'arbeid.hvaGjelder'}
+                                        values={{ navn: hvemPlanlegger.navnPåMor }}
+                                    />
+                                </Heading>
+                                <RadioGroup name="arbeidssituasjonMor">
+                                    <Radio
+                                        value={ArbeidssituasjonEnum.JOBBER}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobber.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåMor,
+                                            },
+                                        )}
+                                    >
+                                        <FormattedMessage id="arbeid.jobber" />
+                                    </Radio>
 
-                                <Radio
-                                    value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                    description={intl.formatMessage(
-                                        { id: 'arbeid.jobberIkke.beskrivelse' },
-                                        {
-                                            navn: hvemPlanlegger.navnPåMor,
-                                        },
-                                    )}
-                                >
-                                    <FormattedMessage id="arbeid.jobberIkke" />
-                                </Radio>
-                            </RadioGroup>
-                            <Heading size="small">
-                                <FormattedMessage
-                                    id={'arbeid.hvaGjelder'}
-                                    values={{ navn: hvemPlanlegger.navnPåFar }}
-                                />
-                            </Heading>
-                            <RadioGroup name="arbeidssituasjonFar">
-                                <Radio
-                                    value={ArbeidssituasjonEnum.JOBBER}
-                                    description={intl.formatMessage(
-                                        { id: 'arbeid.jobber.beskrivelse' },
-                                        {
-                                            navn: hvemPlanlegger.navnPåFar,
-                                        },
-                                    )}
-                                >
-                                    <FormattedMessage id={intl.formatMessage({ id: 'arbeid.jobber' })} />
-                                </Radio>
-                                <Radio
-                                    value={ArbeidssituasjonEnum.JOBBER_IKKE}
-                                    description={intl.formatMessage(
-                                        { id: 'arbeid.jobberIkke.beskrivelse' },
+                                    <Radio
+                                        value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobberIkke.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåMor,
+                                            },
+                                        )}
+                                    >
+                                        <FormattedMessage id="arbeid.jobberIkke" />
+                                    </Radio>
+                                </RadioGroup>
+                            </VStack>
 
-                                        { navn: hvemPlanlegger.navnPåFar },
-                                    )}
-                                >
-                                    <FormattedMessage id="arbeid.jobberIkke" />
-                                </Radio>
-                            </RadioGroup>
+                            <VStack gap="1">
+                                <Heading size="small">
+                                    <FormattedMessage
+                                        id={'arbeid.hvaGjelder'}
+                                        values={{ navn: hvemPlanlegger.navnPåFar }}
+                                    />
+                                </Heading>
+                                <RadioGroup name="arbeidssituasjonFar">
+                                    <Radio
+                                        value={ArbeidssituasjonEnum.JOBBER}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobber.beskrivelse' },
+                                            {
+                                                navn: hvemPlanlegger.navnPåFar,
+                                            },
+                                        )}
+                                    >
+                                        <FormattedMessage id={intl.formatMessage({ id: 'arbeid.jobber' })} />
+                                    </Radio>
+                                    <Radio
+                                        value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                        description={intl.formatMessage(
+                                            { id: 'arbeid.jobberIkke.beskrivelse' },
+
+                                            { navn: hvemPlanlegger.navnPåFar },
+                                        )}
+                                    >
+                                        <FormattedMessage id="arbeid.jobberIkke" />
+                                    </Radio>
+                                </RadioGroup>
+                            </VStack>
                         </VStack>
                     )}
                     {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR && (
-                        <VStack gap="5">
-                            <div>
+                        <VStack gap="10">
+                            <VStack gap="1">
                                 <Heading size="small">
                                     <FormattedMessage
                                         id={'arbeid.hvaGjelder'}
@@ -167,8 +172,8 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobberIkke" />
                                     </Radio>
                                 </RadioGroup>
-                            </div>
-                            <div>
+                            </VStack>
+                            <VStack gap="1">
                                 <Heading size="small">
                                     <FormattedMessage
                                         id={'arbeid.hvaGjelder'}
@@ -199,12 +204,12 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobberIkke" />
                                     </Radio>
                                 </RadioGroup>
-                            </div>
+                            </VStack>
                         </VStack>
                     )}
                     {hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR && (
                         <VStack gap="5">
-                            <div>
+                            <VStack gap="1">
                                 <Heading size="small">
                                     <FormattedMessage
                                         id={'arbeid.hvaGjelder'}
@@ -234,8 +239,8 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobberIkke" />
                                     </Radio>
                                 </RadioGroup>
-                            </div>
-                            <div>
+                            </VStack>
+                            <VStack gap="1">
                                 <Heading size="small">
                                     <FormattedMessage
                                         id={'arbeid.hvaGjelder'}
@@ -266,7 +271,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobberIkke" />
                                     </Radio>
                                 </RadioGroup>
-                            </div>
+                            </VStack>
                         </VStack>
                     )}
                     <VStack gap="20">
