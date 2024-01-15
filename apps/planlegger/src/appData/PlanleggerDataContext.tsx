@@ -33,13 +33,13 @@ const PlanleggerDispatchContext = createContext<Dispatch | undefined>(undefined)
 interface OwnProps {
     children: ReactNode;
     initialState?: ContextDataMap;
-    testDispatcher?: (action: Action) => void;
+    onDispatch?: (action: Action) => void;
 }
 
 export const PlanleggerDataContext: FunctionComponent<OwnProps> = ({
     children,
     initialState,
-    testDispatcher,
+    onDispatch,
 }): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: State, action: Action) => {
         switch (action.type) {
@@ -56,8 +56,8 @@ export const PlanleggerDataContext: FunctionComponent<OwnProps> = ({
     }, initialState || defaultInitialState);
 
     const dispatchWrapper = useCallback((a: Action) => {
-        if (testDispatcher) {
-            testDispatcher(a);
+        if (onDispatch) {
+            onDispatch(a);
         }
         dispatch(a);
     }, []);

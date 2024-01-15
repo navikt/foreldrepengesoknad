@@ -7,9 +7,9 @@
             "styles/*": ["styles/*"],
             "intl/*": ["intl/*"],
             "types/*": ["types/*"],
-            "appData/*": ["appData/*"],
-            "storybookHelpers/*": ["storybookHelpers/*"]
-        }
+            "appData/*": ["appData/*"]
+        },
+        "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
     "exclude": ["node_modules"]
 }

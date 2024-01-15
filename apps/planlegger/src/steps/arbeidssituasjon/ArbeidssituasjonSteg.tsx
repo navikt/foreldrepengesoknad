@@ -13,15 +13,18 @@ import { notEmpty } from '@navikt/fp-validation';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
-    const navigator = usePlanleggerNavigator();
-    const formMethods = useForm<Arbeidssituasjon>({
-        defaultValues: useContextGetData(ContextDataType.ARBEIDSSITUASJON),
-    });
     const intl = useIntl();
+    const navigator = usePlanleggerNavigator();
 
+    const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
     const lagreArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
+
+    const formMethods = useForm<Arbeidssituasjon>({
+        defaultValues: arbeidssituasjon,
+    });
+
     const lagre = (formValues: Arbeidssituasjon) => {
         lagreArbeidssituasjon(formValues);
         navigator.goToNextStep(PlanleggerRoutes.PERIODE);
@@ -123,7 +126,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                             },
                                         )}
                                     >
-                                        <FormattedMessage id={intl.formatMessage({ id: 'arbeid.jobber' })} />
+                                        <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER_IKKE}
@@ -226,7 +229,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                             },
                                         )}
                                     >
-                                        <FormattedMessage id={intl.formatMessage({ id: 'arbeid.jobber' })} />
+                                        <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
                                         value={ArbeidssituasjonEnum.JOBBER_IKKE}
