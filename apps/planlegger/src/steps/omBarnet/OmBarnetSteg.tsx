@@ -45,7 +45,16 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             <Heading size="small">
                                 <FormattedMessage id="barnet.hvaGjelder" />
                             </Heading>
-                            <RadioGroup name="barnet">
+                            <RadioGroup
+                                name="barnet"
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.fødselPanel.fødselEllerAdopsjon.duMåOppgi',
+                                        }),
+                                    ),
+                                ]}
+                            >
                                 <Radio value={BarnetEnum.FØDSEL}>
                                     <FormattedMessage id="barnet.fødsel" />
                                 </Radio>
@@ -60,7 +69,14 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             <Heading size="small">
                                 <FormattedMessage id="barnet.erFødt" />
                             </Heading>
-                            <RadioGroup name="erFødt">
+                            <RadioGroup
+                                name="erFødt"
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi' }),
+                                    ),
+                                ]}
+                            >
                                 <Radio value={true}>
                                     <FormattedMessage id="ja" />
                                 </Radio>
@@ -83,15 +99,17 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     isRequired(
                                         intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.duMåOppgi' }),
                                     ),
-                                    isValidDate(intl.formatMessage({ id: 'TODO.FødselPanel.Fødselsdato.Gyldig' })),
+                                    isValidDate(
+                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.gyldig' }),
+                                    ),
                                     isBeforeTodayOrToday(
                                         intl.formatMessage({
-                                            id: 'TODO.FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere',
+                                            id: 'feilmelding.fødselPanel.fødselsdato.måVæreIdagEllerTidligere',
                                         }),
                                     ),
                                     isAfterOrSameAsSixMonthsAgo(
                                         intl.formatMessage({
-                                            id: 'TODO.FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake',
+                                            id: 'feilmelding.fødselPanel.fødselsdato.ikkeMerEnn6MånederTilbake',
                                         }),
                                     ),
                                 ]}
@@ -111,14 +129,16 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     isRequired(
                                         intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.duMåOppgi' }),
                                     ),
-                                    isValidDate(intl.formatMessage({ id: 'TODO.FødselPanel.Termindato.Gyldig' })),
+                                    isValidDate(
+                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' }),
+                                    ),
                                     isLessThanThreeWeeksAgo(
                                         intl.formatMessage({
-                                            id: 'TODO.FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag',
+                                            id: 'feilmelding.fødselPanel.termindato.termindatoKanIkkeVære3UkerFraIdag',
                                         }),
                                     ),
                                     erI22SvangerskapsukeEllerSenere(
-                                        intl.formatMessage({ id: 'TODO.FødselPanel.Termindato.DuMåVæreIUke22' }),
+                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.duMåVæreIUke22' }),
                                     ),
                                 ]}
                             />
