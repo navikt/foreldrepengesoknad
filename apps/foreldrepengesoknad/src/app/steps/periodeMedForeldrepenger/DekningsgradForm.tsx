@@ -28,13 +28,13 @@ import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import './dekningsgradForm.less';
 
-const finnSisteDagMedForeldrepenger = (dager: number, termindato?: Date) => {
-    if (!termindato) {
+const finnSisteDagMedForeldrepenger = (dagerSomSkalLeggesTil: number, dato?: Date) => {
+    if (!dato) {
         return undefined;
     }
-    const dager49 = Uttaksdagen(termindato).denneEllerNeste();
-    const dag = Uttaksdagen(dager49).leggTil(dager);
-    return dayjs(dag).format('dddd DD. MMMM YYYY');
+    const dag = Uttaksdagen(dato).denneEllerNeste();
+    const sisteDagMedForeldrepenger = Uttaksdagen(dag).leggTil(dagerSomSkalLeggesTil);
+    return dayjs(sisteDagMedForeldrepenger).format('dddd DD. MMMM YYYY');
 };
 
 const getSøkerAntallTekst = (intl: IntlShape, erDeltUttak: boolean) => {
@@ -95,8 +95,8 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
             : undefined;
 
     const dato = isAdoptertBarn(barn) ? barn.adopsjonsdato : fødselsdato || termindato;
-    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(getAntallUker(stønadskonto100) * 7, dato);
-    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(getAntallUker(stønadskonto80) * 7, dato);
+    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(getAntallUker(stønadskonto100) * 5, dato);
+    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(getAntallUker(stønadskonto80) * 5, dato);
 
     const søkerAntallTekst = getSøkerAntallTekst(intl, erDeltUttak);
 

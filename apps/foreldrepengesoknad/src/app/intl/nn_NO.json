@@ -1000,7 +1000,7 @@
     "DekningsgradForm.InformasjonFlereEnnToBarn": "{sokerStorBokstav} får lenger periode med foreldrepengar sidan {soker} skal ha fleire barn",
     "DekningsgradForm.InformasjonFlerbarnUker": "Perioden blir forlenga med {uker100} veker om {soker} vel 100% foreldrepengar eller {uker80} veker om {soker} vel 80% foreldrepengar.",
 
-    "DekningsgradValgtAvAnnenPartPanel.Heading": "Dykk har valgt {uker} veker med {dekningsgrad}% foreldrepengar",
+    "DekningsgradValgtAvAnnenPartPanel.Heading": "Dykk har valgt {uker} med {dekningsgrad}% foreldrepengar",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette vart valgt av {navn} i søknaden hennar, og det kan ikkje endras av deg.",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHans": "Dette vart valgt av {navn} i søknaden hans, og det kan ikkje endras av deg."
 }

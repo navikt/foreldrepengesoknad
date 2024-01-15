@@ -34,12 +34,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være fredag 23. juni 2023 hvis du tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være tirsdag 07. februar 2023 hvis du tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være fredag 29. september 2023 hvis du tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være tirsdag 18. april 2023 hvis du tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
@@ -90,12 +90,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være fredag 23. juni 2023 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være tirsdag 07. februar 2023 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være fredag 29. september 2023 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være tirsdag 18. april 2023 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
@@ -136,12 +136,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være torsdag 07. juli 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
+                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være mandag 21. februar 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være torsdag 13. oktober 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
+                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være mandag 02. mai 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
@@ -182,12 +182,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være torsdag 07. juli 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være mandag 21. februar 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være torsdag 13. oktober 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være mandag 02. mai 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
@@ -225,15 +225,14 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
-
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være torsdag 05. mai 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 20. desember 2021 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være torsdag 11. august 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 28. februar 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
@@ -283,12 +282,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være onsdag 21. desember 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 20. juni 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være mandag 08. mai 2023 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 26. september 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
@@ -338,12 +337,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være onsdag 21. desember 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 20. juni 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Siste dag med foreldrepenger vil være mandag 08. mai 2023 hvis du tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 26. september 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
@@ -392,7 +391,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(screen.queryByText('Hvor lang periode med foreldrepenger vil du ha?')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Dere har valgt 49 uker uker med 100% foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Dere har valgt 49 uker med 100% foreldrepenger')).toBeInTheDocument();
         expect(
             screen.getByText('Dette ble valgt av Helga i søknaden hennes, og det kan ikke endres av deg.'),
         ).toBeInTheDocument();
