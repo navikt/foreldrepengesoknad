@@ -13,10 +13,6 @@ interface Props {
 const PeriodeDokumentasjon: FunctionComponent<Props> = ({ vedlegg }) => {
     const intl = useIntl();
 
-    if (vedlegg.length === 0) {
-        return null;
-    }
-
     return (
         <div>
             <Block padBottom="l">

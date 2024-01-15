@@ -27,15 +27,21 @@ const BarnDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg }) =>
 
     return (
         <>
-            <DokumentasjonContainer>
-                <BarnDokumentasjon vedlegg={omsorgsovertakelseVedlegg} />
-            </DokumentasjonContainer>
-            <DokumentasjonContainer>
-                <BarnDokumentasjon vedlegg={aleneOmOmsorgVedlegg} />
-            </DokumentasjonContainer>
-            <DokumentasjonContainer>
-                <BarnDokumentasjon vedlegg={terminbekreftelseVedlegg} />
-            </DokumentasjonContainer>
+            {omsorgsovertakelseVedlegg.length > 0 && (
+                <DokumentasjonContainer>
+                    <BarnDokumentasjon vedlegg={omsorgsovertakelseVedlegg} />
+                </DokumentasjonContainer>
+            )}
+            {aleneOmOmsorgVedlegg.length > 0 && (
+                <DokumentasjonContainer>
+                    <BarnDokumentasjon vedlegg={aleneOmOmsorgVedlegg} />
+                </DokumentasjonContainer>
+            )}
+            {terminbekreftelseVedlegg.length > 0 && (
+                <DokumentasjonContainer>
+                    <BarnDokumentasjon vedlegg={terminbekreftelseVedlegg} />
+                </DokumentasjonContainer>
+            )}
         </>
     );
 };

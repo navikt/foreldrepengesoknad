@@ -27,15 +27,21 @@ const PeriodeDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg })
 
     return (
         <>
-            <DokumentasjonContainer>
-                <PeriodeDokumentasjon vedlegg={fellesperiodeVedlegg} />
-            </DokumentasjonContainer>
-            <DokumentasjonContainer>
-                <PeriodeDokumentasjon vedlegg={overføringsVedlegg} />
-            </DokumentasjonContainer>
-            <DokumentasjonContainer>
-                <PeriodeDokumentasjon vedlegg={fedrekvoteMorForSykVedlegg} />
-            </DokumentasjonContainer>
+            {fellesperiodeVedlegg.length > 0 && (
+                <DokumentasjonContainer>
+                    <PeriodeDokumentasjon vedlegg={fellesperiodeVedlegg} />
+                </DokumentasjonContainer>
+            )}
+            {overføringsVedlegg.length > 0 && (
+                <DokumentasjonContainer>
+                    <PeriodeDokumentasjon vedlegg={overføringsVedlegg} />
+                </DokumentasjonContainer>
+            )}
+            {fedrekvoteMorForSykVedlegg.length > 0 && (
+                <DokumentasjonContainer>
+                    <PeriodeDokumentasjon vedlegg={fedrekvoteMorForSykVedlegg} />
+                </DokumentasjonContainer>
+            )}
         </>
     );
 };
