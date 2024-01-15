@@ -28,34 +28,36 @@ const OmPlanleggerenSteg = () => {
                 <BodyShort size="large">
                     <FormattedMessage id="om.ingress" />
                 </BodyShort>
+                <VStack gap="20">
+                    <VStack gap="5">
+                        <Heading level="2" size="xsmall">
+                            <FormattedMessage id="om.underoverskrift" />
+                        </Heading>
 
-                <Heading level="2" size="xsmall">
-                    <FormattedMessage id="om.underoverskrift" />
-                </Heading>
+                        <HStack gap="4" align="center">
+                            <Spørsmålstegn />
+                            <BodyShort>
+                                <FormattedMessage id="om.trinn1" />
+                            </BodyShort>
+                        </HStack>
 
-                <VStack gap="5">
-                    <HStack gap="4" align="center">
-                        <Spørsmålstegn />
-                        <BodyShort>
-                            <FormattedMessage id="om.trinn1" />
-                        </BodyShort>
-                    </HStack>
-                    <HStack gap="4" align="center">
-                        <Kalender />
-                        <BodyShort>
-                            <FormattedMessage id="om.trinn2" />
-                        </BodyShort>
-                    </HStack>
-                </VStack>
+                        <HStack gap="4" align="center">
+                            <Kalender />
+                            <BodyShort>
+                                <FormattedMessage id="om.trinn2" />
+                            </BodyShort>
+                        </HStack>
+                    </VStack>
 
-                <VStack gap="10" className="content-wrapper button-wrapper">
-                    <Button
-                        variant="secondary"
-                        className="planleggerKnapp"
-                        onClick={() => navigate(PlanleggerRoutes.HVEM_PLANLEGGER)}
-                    >
-                        <FormattedMessage id="om.start.planlegger" />
-                    </Button>
+                    <VStack gap="10" className="content-wrapper button-wrapper">
+                        <Button
+                            variant="secondary"
+                            className="planleggerKnapp"
+                            onClick={() => navigate(PlanleggerRoutes.HVEM_PLANLEGGER)}
+                        >
+                            <FormattedMessage id="om.start.planlegger" />
+                        </Button>
+                    </VStack>
                 </VStack>
             </VStack>
         </ContentWrapper>

@@ -77,11 +77,11 @@ const OversiktSteg = () => {
                         <Heading size="small" spacing>
                             <FormattedMessage id="oversikt.2024" />
                         </Heading>
-                        {/* TODO: Add a panel/box component*/}
                         <Box padding="4" borderRadius="large" background="surface-alt-3-subtle">
                             <BodyShort>Kalenderoversikt</BodyShort>
                         </Box>
                     </VStack>
+
                     <VStack gap="2">
                         <Heading size="small" spacing>
                             <FormattedMessage id="oversikt.2025" />

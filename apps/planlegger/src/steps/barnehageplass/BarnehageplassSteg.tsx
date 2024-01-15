@@ -24,7 +24,9 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
 
                         <HStack gap="5" align="center">
                             <Kalender />
-                            <FormattedMessage id="barnehageplass.dato" />
+                            <BodyLong>
+                                <FormattedMessage id="barnehageplass.dato" />
+                            </BodyLong>
                         </HStack>
                         <BodyLong>
                             <FormattedMessage id="barnehageplass.datoTekst" />

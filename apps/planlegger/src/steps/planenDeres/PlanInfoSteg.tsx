@@ -26,19 +26,19 @@ const PlanInfoSteg = () => {
                     <FormattedMessage id="planInfo.ingress.del2" />
                 </BodyLong>
 
-                <Heading level="2" size="small">
-                    <FormattedMessage id="planInfo.underoverskrift" />
-                </Heading>
-
                 <VStack gap="5">
-                    <HStack gap="4" align="center">
+                    <Heading level="2" size="small">
+                        <FormattedMessage id="planInfo.underoverskrift" />
+                    </Heading>
+
+                    <HStack gap="4" wrap={false}>
                         <Kalender />
                         <BodyShort>
                             <FormattedMessage id="planInfo.trinn1" />
                         </BodyShort>
                     </HStack>
 
-                    <HStack gap="4" align="center">
+                    <HStack gap="4" wrap={false}>
                         <Penn />
                         <BodyShort>
                             <FormattedMessage id="planInfo.trinn2" />
