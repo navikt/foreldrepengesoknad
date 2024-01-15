@@ -1,11 +1,14 @@
 import { Tidsperiode, formatDate, intlUtils } from '@navikt/fp-common';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import {
+    isAleneOmOmsorgVedlegg,
     isArbeidUtdanningEllerSykdomVedlegg,
     isFedrekvoteMorForSykVedlegg,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
+    isOmsorgsovertakelseVedlegg,
     isOverføringsVedlegg,
+    isTerminbekreftelseVedlegg,
     isUtsettelseVedlegg,
 } from 'app/steps/manglende-vedlegg/util';
 import { IntlShape } from 'react-intl';
@@ -34,7 +37,29 @@ const getTidsperiodeString = (tidsperioder: Tidsperiode[]) => {
     return periodeString;
 };
 
-export const getDokumentasjonString = (attachments: Attachment[], intl: IntlShape) => {
+export const getDokumentasjonStringAndreInntekter = (_intl: IntlShape) => {
+    return 'Dokumentasjon av andre inntekter';
+};
+
+export const getDokumentasjonStringBarn = (attachments: Attachment[], _intl: IntlShape) => {
+    const singleAttachment = attachments[0];
+
+    if (isOmsorgsovertakelseVedlegg(singleAttachment)) {
+        return 'Dokumentasjon av overtakelse av omsorg';
+    }
+
+    if (isAleneOmOmsorgVedlegg(singleAttachment)) {
+        return 'Dokumentasjon av alene om omsorg';
+    }
+
+    if (isTerminbekreftelseVedlegg(singleAttachment)) {
+        return 'Dokumentasjon av terminbekreftelse';
+    }
+
+    return '';
+};
+
+export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: IntlShape) => {
     const tidsperioder = attachments[0].dokumenterer!.perioder!;
     const singleAttachment = attachments[0];
 
@@ -110,5 +135,5 @@ export const getDokumentasjonString = (attachments: Attachment[], intl: IntlShap
         });
     }
 
-    return ``;
+    return '';
 };

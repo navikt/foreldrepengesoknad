@@ -4,7 +4,7 @@ import {
     getOverføringsVedlegg,
 } from 'app/steps/manglende-vedlegg/util';
 import { FunctionComponent } from 'react';
-import DokumentasjonContainer from './DokumentasjonContainer';
+import DokumentasjonContainer from '../DokumentasjonContainer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import PeriodeDokumentasjon from './PeriodeDokumentasjon';
 
@@ -16,6 +16,14 @@ const PeriodeDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg })
     const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
     const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
     const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
+
+    if (
+        fellesperiodeVedlegg.length === 0 &&
+        overføringsVedlegg.length === 0 &&
+        fedrekvoteMorForSykVedlegg.length === 0
+    ) {
+        return null;
+    }
 
     return (
         <>

@@ -43,6 +43,46 @@ export const getOverføringsVedlegg = (vedlegg: VedleggDataType) => {
     return overføringsVedlegg;
 };
 
+export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.OMSORGSOVERTAKELSE;
+};
+
+export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {
+    const overføringsVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] ? vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] : [];
+
+    return overføringsVedlegg;
+};
+
+export const isAleneOmOmsorgVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_AV_ALENEOMSORG;
+};
+
+export const getAleneOmOmsorgVedlegg = (vedlegg: VedleggDataType) => {
+    const overføringsVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] ? vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] : [];
+
+    return overføringsVedlegg;
+};
+
+export const isTerminbekreftelseVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.TERMINBEKREFTELSE;
+};
+
+export const getTerminbekreftelseVedlegg = (vedlegg: VedleggDataType) => {
+    const overføringsVedlegg = vedlegg[Skjemanummer.TERMINBEKREFTELSE] ? vedlegg[Skjemanummer.TERMINBEKREFTELSE] : [];
+
+    return overføringsVedlegg;
+};
+
+export const isAndreInntekterVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.ANNET;
+};
+
+export const getAndreInntekterVedlegg = (vedlegg: VedleggDataType) => {
+    const overføringsVedlegg = vedlegg[Skjemanummer.ANNET] ? vedlegg[Skjemanummer.ANNET] : [];
+
+    return overføringsVedlegg;
+};
+
 export const isFedrekvoteMorForSykVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE;
 };
