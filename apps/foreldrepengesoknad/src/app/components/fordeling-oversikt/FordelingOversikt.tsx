@@ -58,14 +58,19 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({ kontoer, scenario }
                     sumUker={49}
                     fordelingList={[
                         { tekst: '', uker: 3, farge: MØDREKVOTE_FARGE, konto: StønadskontoType.Mødrekvote },
-                        { tekst: 'Adopsjon', uker: 0, farge: '' },
+                        { tekst: 'Termin', uker: 0, farge: '' },
                         {
-                            tekst: 'Heidis kvote',
+                            tekst: 'Din kvote',
                             uker: 16,
                             farge: MØDREKVOTE_FARGE,
                             konto: StønadskontoType.Mødrekvote,
                         },
-                        { tekst: 'Din kvote', uker: 16, farge: FEDREKVOTE_FARGE, konto: StønadskontoType.Fedrekvote },
+                        {
+                            tekst: 'Petters kvote',
+                            uker: 16,
+                            farge: FEDREKVOTE_FARGE,
+                            konto: StønadskontoType.Fedrekvote,
+                        },
                         {
                             tekst: 'Fellesperiode',
                             uker: 15,

@@ -25,7 +25,7 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
         tekst: getFormattedMessage('fordeling.info.mor.første6Uker'),
     };
 
-    const restAntallUkerMor = antallUkerMor - MORS_UKER_FØR_FØDSEL - MORS_UKER_ETTER_FØDSEL;
+    const restAntallUkerMor = antallUkerMor - MORS_UKER_ETTER_FØDSEL;
     const restUkerMor: KvoteFordeling = {
         uker: restAntallUkerMor,
         tekst: getFormattedMessage('fordeling.info.mor.resterendeUker', { antallUker: restAntallUkerMor }),
@@ -51,8 +51,8 @@ export const getFordelingFarMedmorFødselBeggeHarRett = (kontoer: TilgjengeligSt
     };
 
     const kvoteInformasjonFarsKvote = {
-        antallUker: 19,
-        kvoteTittel: '19 uker til Petter',
+        antallUker: 15,
+        kvoteTittel: '15 uker til Petter',
         kvoteNavn: 'PETTER SIN KVOTE',
         kvoteFarge: FEDREKVOTE_FARGE,
         fordeling: [far],
