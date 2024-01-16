@@ -28,13 +28,32 @@ import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import './dekningsgradForm.less';
 
-const finnSisteDagMedForeldrepenger = (dagerSomSkalLeggesTil: number, dato?: Date) => {
-    if (!dato) {
-        return undefined;
+const finnSisteDagMedForeldrepenger = (stønadskonto: TilgjengeligStønadskonto[], barn: Barn) => {
+    const dagerSomSkalLeggesTil = getAntallUker(stønadskonto) * 5;
+
+    const erAdopsjon = isAdoptertBarn(barn);
+    const fødselsdato = getFødselsdato(barn);
+    const termindato = getTermindato(barn);
+
+    //FIXME Dette er ikkje korrekt
+
+    if (erAdopsjon) {
+        const førsteDag = Uttaksdagen(barn.adopsjonsdato).denneEllerNeste();
+        const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil);
+        return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
     }
-    const dag = Uttaksdagen(dato).denneEllerNeste();
-    const sisteDagMedForeldrepenger = Uttaksdagen(dag).leggTil(dagerSomSkalLeggesTil);
-    return dayjs(sisteDagMedForeldrepenger).format('dddd DD. MMMM YYYY');
+    if (fødselsdato) {
+        const førsteDag = Uttaksdagen(fødselsdato).denneEllerNeste();
+        const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil);
+        return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
+    }
+    if (termindato) {
+        const førsteDag = Uttaksdagen(termindato).denneEllerNeste();
+        const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil);
+        return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
+    }
+
+    return undefined;
 };
 
 const getSøkerAntallTekst = (intl: IntlShape, erDeltUttak: boolean) => {
@@ -86,6 +105,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
         isAnnenForelderOppgitt(annenForelder) &&
         (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
 
+    const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
@@ -94,9 +114,8 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
             ? Tidsperioden({ fom: fødselsdato, tom: termindato }).getAntallUttaksdager() - 1
             : undefined;
 
-    const dato = isAdoptertBarn(barn) ? barn.adopsjonsdato : fødselsdato || termindato;
-    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(getAntallUker(stønadskonto100) * 5, dato);
-    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(getAntallUker(stønadskonto80) * 5, dato);
+    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(stønadskonto100, barn);
+    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(stønadskonto80, barn);
 
     const søkerAntallTekst = getSøkerAntallTekst(intl, erDeltUttak);
 
@@ -123,16 +142,19 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         }
                         validate={[
                             isRequired(
-                                intl.formatMessage({ id: 'søkersituasjon.validering.oppgiFodselEllerAdopsjon' }),
+                                intl.formatMessage(
+                                    { id: 'DekningsgradForm.MåOppgiDekningsgrad' },
+                                    { soker: søkerAntallTekst },
+                                ),
                             ),
                         ]}
                     >
                         <Radio
                             value={Dekningsgrad.HUNDRE_PROSENT}
                             description={
-                                fødselsdato
+                                erAdopsjon || fødselsdato
                                     ? intl.formatMessage(
-                                          { id: 'uttaksplaninfo.Uker.beskrivelseErFodt' },
+                                          { id: 'uttaksplaninfo.Uker.beskrivelseErFodtEllerAdopsjon' },
                                           { dato: sisteDag100Prosent, soker: søkerAntallTekst },
                                       )
                                     : intl.formatMessage(
@@ -151,9 +173,9 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         <Radio
                             value={Dekningsgrad.ÅTTI_PROSENT}
                             description={
-                                fødselsdato
+                                erAdopsjon || fødselsdato
                                     ? intl.formatMessage(
-                                          { id: 'uttaksplaninfo.Uker.beskrivelseErFodt' },
+                                          { id: 'uttaksplaninfo.Uker.beskrivelseErFodtEllerAdopsjon' },
                                           { dato: sisteDag80Prosent, soker: søkerAntallTekst },
                                       )
                                     : intl.formatMessage(

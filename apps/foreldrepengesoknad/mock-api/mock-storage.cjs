@@ -49,8 +49,8 @@ const getSokerInfo = function () {
     }
 };
 
-const getStønadskontoer = function () {
-    const fileName = getFilePath('stønadskontoer.json');
+const getStønadskontoer = function (erDekningsgrad100) {
+    const fileName = erDekningsgrad100 ? getFilePath('stønadskontoer100.json') : getFilePath('stønadskontoer80.json');
     if (!fs.existsSync(fileName)) {
         return {};
     } else {

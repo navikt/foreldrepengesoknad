@@ -256,7 +256,7 @@
     "uttaksplaninfo.49Uker": "{antallUker} veker med 100 prosent foreldrepengar",
     "uttaksplaninfo.59Uker": "{antallUker} veker med 80 prosent foreldrepengar",
     "uttaksplaninfo.Uker.beskrivelse": "Om barnet blir født på termin vil siste dag med foreldrepengar vera { dato } om { soker } tek foreldrepengar i eitt strekk utan ferie.",
-    "uttaksplaninfo.Uker.beskrivelseErFodt": "Siste dag med foreldrepengar vil vera { dato } om { soker } tek foreldrepengar i eitt strekk utan ferie.",
+    "uttaksplaninfo.Uker.beskrivelseErFodtEllerAdopsjon": "Siste dag med foreldrepengar vil vera { dato } om { soker } tek foreldrepengar i eitt strekk utan ferie.",
     "uttaksplaninfo.Uker.soker.du": "du",
     "uttaksplaninfo.Uker.soker.deg": "deg",
     "uttaksplaninfo.Uker.soker.dere": "dykk",
@@ -999,6 +999,7 @@
     "DekningsgradForm.InformasjonToBarn": "{sokerStorBokstav} får lenger periode med foreldrepengar sidan {soker} skal ha tvillingar",
     "DekningsgradForm.InformasjonFlereEnnToBarn": "{sokerStorBokstav} får lenger periode med foreldrepengar sidan {soker} skal ha fleire barn",
     "DekningsgradForm.InformasjonFlerbarnUker": "Perioden blir forlenga med {uker100} veker om {soker} vel 100% foreldrepengar eller {uker80} veker om {soker} vel 80% foreldrepengar.",
+    "DekningsgradForm.MåOppgiDekningsgrad": "Du må oppgje kor lang periode {soker} vil ha",
 
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dykk har valgt {uker} med {dekningsgrad}% foreldrepengar",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette vart valgt av {navn} i søknaden hennar, og det kan ikkje endras av deg.",
