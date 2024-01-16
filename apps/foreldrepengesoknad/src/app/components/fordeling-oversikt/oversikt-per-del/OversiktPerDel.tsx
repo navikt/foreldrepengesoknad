@@ -2,39 +2,41 @@ import { BodyLong, HStack, VStack } from '@navikt/ds-react';
 import './oversikt-per-del.css';
 import { bemUtils, guid } from '@navikt/fp-common';
 import DelGraf from '../grafer/del-graf/DelGraf';
-import { FordelingType, KvoteFordeling, KvoteInformasjon } from '../FordelingOversikt';
+import { FordelingType, DelInformasjon } from '../FordelingOversikt';
 import { Dispatch, SetStateAction } from 'react';
-import { getErAnnenForeldersDel, getFordelingBoxColorClass, getFordelingType } from '../fordelingOversiktUtils';
+import { getErAnnenForeldersDel, getFordelingBoxColorClass, getFordelingDelTittel } from '../fordelingOversiktUtils';
 import classNames from 'classnames';
+import { useIntl } from 'react-intl';
 
 interface Props {
-    kvoteInformasjon: KvoteInformasjon;
+    delInformasjon: DelInformasjon;
     currentUthevet: FordelingType | undefined;
     erFarEllerMedmor: boolean;
+    navnMor: string;
+    navnFarMedmor: string;
     setCurrentUthevet: Dispatch<SetStateAction<FordelingType | undefined>>;
 }
 
 const OversiktPerDel: React.FunctionComponent<Props> = ({
-    kvoteInformasjon,
+    delInformasjon,
     currentUthevet,
     erFarEllerMedmor,
+    navnMor,
+    navnFarMedmor,
     setCurrentUthevet,
 }) => {
+    const intl = useIntl();
     const bem = bemUtils('oversiktPerDel');
-    const hoverClass = currentUthevet === kvoteInformasjon.type ? 'hover' : 'no-hover';
-    const sumUker = kvoteInformasjon.fordeling.reduce((sum, f) => {
-        return sum + f.uker;
-    }, 0);
+    const hoverClass = currentUthevet === delInformasjon.type ? 'hover' : 'no-hover';
     const handleOnMouseEnter = () => {
-        setCurrentUthevet(kvoteInformasjon.type);
+        setCurrentUthevet(delInformasjon.type);
     };
     const handleOnMouseLeave = () => {
         setCurrentUthevet(undefined);
     };
-    const type = getFordelingType(kvoteInformasjon.konto, erFarEllerMedmor);
-    const erAnnenForeldersDel = getErAnnenForeldersDel(erFarEllerMedmor, type);
-    const colorClass = getFordelingBoxColorClass(type, erAnnenForeldersDel);
-
+    const erAnnenForeldersDel = getErAnnenForeldersDel(erFarEllerMedmor, delInformasjon.type);
+    const colorClass = getFordelingBoxColorClass(delInformasjon.type, erAnnenForeldersDel);
+    const tittel = getFordelingDelTittel(delInformasjon, erFarEllerMedmor, intl, navnMor, navnFarMedmor);
     return (
         <VStack
             className={classNames(bem.block, bem.modifier(`${hoverClass}`))}
@@ -43,14 +45,14 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
             onMouseLeave={handleOnMouseLeave}
         >
             <div>
-                <BodyLong className={bem.element('uker')}>{kvoteInformasjon.kvoteTittel}</BodyLong>
+                <BodyLong className={bem.element('uker')}>{tittel}</BodyLong>
             </div>
-            <DelGraf fordelingList={kvoteInformasjon.fordeling} sumUker={sumUker} colorClass={colorClass} />
+            <DelGraf uker={delInformasjon.fordelingUker} sumUker={delInformasjon.sumUker} colorClass={colorClass} />
             <HStack gap="4">
-                {kvoteInformasjon.fordeling.map((fordeling: KvoteFordeling) => {
+                {delInformasjon.fordelingInfo.map((infoTekst) => {
                     return (
                         <BodyLong size="small" key={guid()}>
-                            {fordeling.tekst}
+                            {infoTekst}
                         </BodyLong>
                     );
                 })}

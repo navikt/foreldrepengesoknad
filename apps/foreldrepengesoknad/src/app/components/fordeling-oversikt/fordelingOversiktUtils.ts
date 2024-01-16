@@ -1,4 +1,4 @@
-import { FordelingType, KvoteFordeling, KvoteInformasjon, getFormattedMessage } from './FordelingOversikt';
+import { FordelingType, DelInformasjon, getFormattedMessage } from './FordelingOversikt';
 import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -36,6 +36,37 @@ export const getFordelingType = (konto: StønadskontoType, erFarEllerMedmor: boo
     }
 };
 
+export const getFordelingDelTittel = (
+    delInfo: DelInformasjon,
+    erFarEllerMedmor: boolean,
+    intl: IntlShape,
+    navnMor: string,
+    navnFarMedmor: string,
+): string => {
+    switch (delInfo.type) {
+        case FordelingType.Mor:
+            return !erFarEllerMedmor
+                ? intlUtils(intl, 'fordeling.antallUkerTilDeg', {
+                      antallUker: delInfo.sumUker,
+                  })
+                : intlUtils(intl, 'fordeling.antallUkerTilAnnenForelder', {
+                      antallUker: delInfo.sumUker,
+                      navn: navnMor,
+                  });
+        case FordelingType.FarMedmor:
+            return erFarEllerMedmor
+                ? intlUtils(intl, 'fordeling.antallUkerTilDeg', {
+                      antallUker: delInfo.sumUker,
+                  })
+                : intlUtils(intl, 'fordeling.antallUkerTilAnnenForelder', {
+                      antallUker: delInfo.sumUker,
+                      navn: navnFarMedmor,
+                  });
+        case FordelingType.Felles:
+            return intlUtils(intl, 'fordeling.antallUkerFelles', { antallUker: delInfo.sumUker });
+    }
+};
+
 export const getFordelingBoxColorClass = (fordelingType: FordelingType, erAnnenForeldersDel?: boolean): string => {
     switch (fordelingType) {
         case FordelingType.Mor:
@@ -69,98 +100,98 @@ export const getFordelingTekst = (
     }
 };
 
-export const getFordelingFødselBeggeHarRett = (
-    kontoer: TilgjengeligStønadskonto[],
-    intl: IntlShape,
-    navnMor: string,
-    navnFarMedmor: string,
-    erFarEllerMedmor: boolean,
-): KvoteInformasjon[] => {
+export const getMorsFordelingBeggeHarRett = (kontoer: TilgjengeligStønadskonto[]): DelInformasjon => {
     const antallUkerMødrekvote = getAntallUkerMødrekvote(kontoer);
-    const antallUkerFar = getAntallUkerFedrekvote(kontoer);
-    const antallUkerFelles = getAntallUkerFellesperiode(kontoer);
-    const førFødsel: KvoteFordeling = {
-        uker: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
-        tekst: getFormattedMessage('fordeling.info.mor.førFødsel'),
-    };
-
-    const seksUkerEtterFødsel: KvoteFordeling = {
-        uker: uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL,
-        tekst: getFormattedMessage('fordeling.info.mor.første6Uker'),
-    };
-
-    const restAntallUkerMor = antallUkerMødrekvote - uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL;
     const antallUkerMor = antallUkerMødrekvote + uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL;
-    const restUkerMor: KvoteFordeling = {
-        uker: restAntallUkerMor,
-        tekst: getFormattedMessage('fordeling.info.mor.resterendeUker', { antallUker: restAntallUkerMor }),
-    };
+    const restAntallUkerMor = antallUkerMødrekvote - uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL;
 
-    const far: KvoteFordeling = {
-        uker: antallUkerFar,
-        tekst: getFormattedMessage('fordeling.info.farMedmor', { antallUker: antallUkerFar }),
+    return {
+        type: FordelingType.Mor,
+        sumUker: antallUkerMor,
+        fordelingUker: [
+            uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
+            uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL,
+            restAntallUkerMor,
+        ],
+        fordelingInfo: [
+            getFormattedMessage('fordeling.info.mor.førFødsel'),
+            getFormattedMessage('fordeling.info.mor.første6Uker'),
+            getFormattedMessage('fordeling.info.mor.resterendeUker', { antallUker: restAntallUkerMor }),
+        ],
     };
+};
 
-    const felles: KvoteFordeling = {
-        uker: antallUkerFelles,
-        tekst: getFormattedMessage('fordeling.info.felles', { antallUker: antallUkerFelles }),
-    };
-
-    const kvoteInformasjonMorsKvote = {
-        antallUker: antallUkerMødrekvote,
-        kvoteTittel: erFarEllerMedmor //TODO: Remove  this and figure out when displaying?
-            ? intlUtils(intl, 'fordeling.antallUkerTilAnnenForelder', {
-                  antallUker: antallUkerMor,
-                  navn: navnMor,
-              })
-            : intlUtils(intl, 'fordeling.antallUkerTilDeg', {
-                  antallUker: antallUkerFar,
-              }),
-        colorClass: getFordelingBoxColorClass(FordelingType.Mor, false), //TODO: Remove  this and figure out when displaying?
-        fordeling: [førFødsel, seksUkerEtterFødsel, restUkerMor], //TODO: Må splittes i fordelingUker og fordelingTekster
-        konto: StønadskontoType.Mødrekvote, //TODO: skal man heller beholde type? Dette er boks per hva en person skal ha.
-        type: FordelingType.Mor, //TODO: Type kan man finne senere ved display hvis konto beholdes? men heller beholde denne.
-    };
-
-    const kvoteInformasjonFarsKvote = {
-        antallUker: 15,
-        kvoteTittel: erFarEllerMedmor
-            ? intlUtils(intl, 'fordeling.antallUkerTilDeg', {
-                  antallUker: antallUkerFar,
-              })
-            : intlUtils(intl, 'fordeling.antallUkerTilAnnenForelder', {
-                  antallUker: antallUkerFar,
-                  navn: navnFarMedmor,
-              }),
-        colorClass: getFordelingBoxColorClass(FordelingType.FarMedmor, true),
-        fordeling: [far],
-        konto: StønadskontoType.Fedrekvote,
+export const getFarsFordelingBeggeHarRett = (kontoer: TilgjengeligStønadskonto[]): DelInformasjon => {
+    const antallUkerFar = getAntallUkerFedrekvote(kontoer);
+    return {
         type: FordelingType.FarMedmor,
+        sumUker: antallUkerFar,
+        fordelingUker: [antallUkerFar],
+        fordelingInfo: [
+            getFormattedMessage('fordeling.info.farMedmor', { antallUker: antallUkerFar }),
+            getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', { antallUker: antallUkerFar }),
+        ],
     };
+};
 
-    const kvoteInformasjonFellesKvote = {
-        antallUker: 16,
-        kvoteTittel: intlUtils(intl, 'fordeling.antallUkerFelles', { antallUker: antallUkerFelles }),
-        colorClass: getFordelingBoxColorClass(FordelingType.Felles),
-        fordeling: [felles],
-        konto: StønadskontoType.Fellesperiode,
+export const getFellesFordelingBeggeHarRett = (
+    kontoer: TilgjengeligStønadskonto[],
+    ukerBruktAvAnnenPart?: number,
+    annenPartNavn?: string,
+): DelInformasjon => {
+    const antallUkerFelles = getAntallUkerFellesperiode(kontoer);
+    const fordelingUker: number[] = [];
+    const fordelingInfo = [getFormattedMessage('fordeling.info.felles', { antallUker: antallUkerFelles })];
+    if (ukerBruktAvAnnenPart && ukerBruktAvAnnenPart > 0) {
+        const gjenståendeUker = antallUkerFelles - ukerBruktAvAnnenPart;
+        fordelingUker.push(gjenståendeUker);
+        fordelingUker.push(ukerBruktAvAnnenPart);
+        fordelingInfo.push(
+            getFormattedMessage('fordeling.info.felles.annenForelder.del1', {
+                ukerBruktAvAnnenPart,
+                annenPartNavn,
+                gjenståendeUker,
+            }),
+        );
+        fordelingInfo.push(getFormattedMessage('fordeling.info.felles.annenForelder.del2', { annenPartNavn }));
+    } else {
+        fordelingUker.push(antallUkerFelles);
+    }
+    return {
         type: FordelingType.Felles,
+        sumUker: antallUkerFelles,
+        fordelingUker,
+        fordelingInfo,
     };
-    return [kvoteInformasjonMorsKvote, kvoteInformasjonFellesKvote, kvoteInformasjonFarsKvote];
+};
+
+export const getFordelingMorFødsel = (kontoer: TilgjengeligStønadskonto[]): DelInformasjon[] => {
+    const morsDel = getMorsFordelingBeggeHarRett(kontoer);
+    const farsDel = getFarsFordelingBeggeHarRett(kontoer);
+    const fellesDel = getFellesFordelingBeggeHarRett(kontoer);
+    return [morsDel, fellesDel, farsDel];
+};
+
+export const getFordelingFarMedmorFørstegangssøknadMedAnnenPart = (
+    kontoer: TilgjengeligStønadskonto[],
+): DelInformasjon[] => {
+    const morsDel = getMorsFordelingBeggeHarRett(kontoer);
+    const farsDel = getFarsFordelingBeggeHarRett(kontoer);
+    const fellesDel = getFellesFordelingBeggeHarRett(kontoer);
+    return [morsDel, fellesDel, farsDel];
 };
 
 export const getFordelingForScenario = (
     scenario: UttaksplanInfoScenario,
     kontoer: TilgjengeligStønadskonto[],
-    intl: IntlShape,
-    navnMor: string,
-    navnFarMedmor: string,
-): KvoteInformasjon[] => {
+): DelInformasjon[] => {
     switch (scenario) {
         case 'morFødsel':
-            return getFordelingFødselBeggeHarRett(kontoer, intl, navnMor, navnFarMedmor, false);
+            return getFordelingMorFødsel(kontoer);
+        case 'farMedmorFørstegangssøknadMedAnnenPart':
+            return getFordelingFarMedmorFørstegangssøknadMedAnnenPart(kontoer);
         default:
-            return getFordelingFødselBeggeHarRett(kontoer, intl, navnMor, navnFarMedmor, true);
+            return getFordelingMorFødsel(kontoer);
         // case 'farMedmorAleneomsorgFødselAdopsjon':
         //     return getFordelingFarMedmorFødselBeggeHarRett();
         // case 'farMedmorFødselMorHarIkkeRett':

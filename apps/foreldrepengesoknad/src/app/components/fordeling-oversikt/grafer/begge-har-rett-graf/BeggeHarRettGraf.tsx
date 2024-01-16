@@ -1,4 +1,4 @@
-import { StønadskontoType, TilgjengeligStønadskonto, bemUtils, guid } from '@navikt/fp-common';
+import { StønadskontoType, TilgjengeligStønadskonto, bemUtils, guid, uttaksConstants } from '@navikt/fp-common';
 import { BodyShort } from '@navikt/ds-react';
 import './../graf.css';
 import { Dispatch, SetStateAction } from 'react';
@@ -46,7 +46,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
 }) => {
     const fordelingList = [
         {
-            uker: 3,
+            uker: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
         },
         {
@@ -83,7 +83,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                 const handleOnMouseEnter = () => {
                     setCurrentUthevet(type);
                 };
-                const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
+                const indexForFamiliehendelse = erAdopsjon ? 0 : 1; //TODO: GR: For prematur fødsel eller fødsel før termin kommer også fellesperioden inn her og index blir 2.
 
                 return (
                     <>

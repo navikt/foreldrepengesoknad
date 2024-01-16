@@ -42,6 +42,7 @@ import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { UttaksplanInfoScenario } from '../scenarios';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingForScenario } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -110,7 +111,9 @@ const MorFødsel: FunctionComponent<Props> = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
-
+    const annenForeldrerHarRettiNorgeEllerEØS =
+        isAnnenForelderOppgitt(annenForelder) &&
+        !!(annenForelder.harRettPåForeldrepengerINorge || annenForelder.harRettPåForeldrepengerIEØS);
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO,
@@ -199,16 +202,17 @@ const MorFødsel: FunctionComponent<Props> = ({
                 } as MorFødselQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-
+                const fordelingScenario = getFordelingForScenario(scenario, valgtStønadskonto);
                 return (
                     <VStack gap="5">
                         <FordelingOversikt
                             kontoer={valgtStønadskonto}
-                            scenario={scenario}
                             erFarEllerMedmor={false}
                             navnFarMedmor={navnFarMedmor}
                             navnMor={navnMor}
                             erAdopsjon={erAdopsjon}
+                            annenForeldrerHarRett={annenForeldrerHarRettiNorgeEllerEØS}
+                            fordelingScenario={fordelingScenario}
                         ></FordelingOversikt>
                         <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {/* <Block padBottom="xl">

@@ -1,15 +1,14 @@
 import { bemUtils, guid } from '@navikt/fp-common';
-import { KvoteFordeling } from '../../FordelingOversikt';
 import './../graf.css';
 import classNames from 'classnames';
 
 interface Props {
-    fordelingList: KvoteFordeling[];
+    uker: number[];
     sumUker: number;
     colorClass: string;
 }
 
-const DelGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker, colorClass }) => {
+const DelGraf: React.FunctionComponent<Props> = ({ uker, sumUker, colorClass }) => {
     const rowHeightRem = 0.75;
     const bem = bemUtils('graf');
 
@@ -20,8 +19,8 @@ const DelGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker, color
                 flexDirection: 'row',
             }}
         >
-            {fordelingList.map((fordeling: KvoteFordeling) => {
-                const width = (fordeling.uker / sumUker) * 100;
+            {uker.map((uke) => {
+                const width = (uke / sumUker) * 100;
                 return (
                     <div
                         key={guid()}
