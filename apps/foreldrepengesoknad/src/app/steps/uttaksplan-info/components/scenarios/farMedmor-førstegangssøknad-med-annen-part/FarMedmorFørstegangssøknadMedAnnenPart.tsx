@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button } from '@navikt/ds-react';
+import { Button, VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -11,6 +11,7 @@ import {
     ISOStringToDate,
     StepButtonWrapper,
     Uttaksdagen,
+    formaterNavn,
     getErMorUfør,
     getMorHarRettPåForeldrepengerINorgeEllerEØS,
     intlUtils,
@@ -41,7 +42,9 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import Person from '@navikt/fp-common/src/common/types/Person';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { UttaksplanInfoScenario } from '../scenarios';
+import { getFordelingFarMedmorFørstegangssøknadMedAnnenPart } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getBrukteDager } from '@navikt/uttaksplan/src/utils/brukteDagerUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -49,7 +52,6 @@ interface Props {
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
     person: Person;
-    scenario: UttaksplanInfoScenario;
     mellomlagreSøknadOgNaviger: () => void;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
@@ -179,8 +181,10 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     }
 
     const navnMor = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
+    const navnFarMedmor = formaterNavn(person.fornavn, person.etternavn, false, person.mellomnavn);
     const { grunnlag, uttaksplan } = eksisterendeSakAnnenPart;
     const morsPerioder = uttaksplan.filter((p) => isInfoPeriode(p) && p.forelder === Forelder.mor);
+
     const morsSisteDag = morsPerioder.reverse()[0].tidsperiode.tom;
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
@@ -197,47 +201,68 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                     formValues as FarMedmorFørstegangssøknadMedAnnenPartFormData,
                 );
                 const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
-
+                const morBrukteDagerFellesperiode = getBrukteDager(
+                    valgtMengdeStønadskonto,
+                    morsPerioder,
+                    familiehendelsedatoDate!,
+                ).mor.dagerFellesperiode;
+                const fordelingScenario = getFordelingFarMedmorFørstegangssøknadMedAnnenPart(
+                    valgtMengdeStønadskonto,
+                    morBrukteDagerFellesperiode,
+                    navnMor,
+                    intl,
+                );
                 return (
-                    <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form
-                        includeButtons={false}
-                        includeValidationSummary={true}
-                    >
-                        <Block padBottom="xl">
-                            <InfoOmSøknaden
-                                eksisterendeSak={eksisterendeSakAnnenPart}
-                                erIUttaksplanenSteg={false}
-                                tilgjengeligeStønadskontoer={valgtMengdeStønadskonto}
-                                person={person}
-                            />
-                        </Block>
-                        <Block padBottom="xl">
-                            <FarMedmorsFørsteDag
-                                FormComponents={FarMedmorFørstegangssøknadMedAnnenPartFormComponents}
-                                fieldName={FarMedmorFørstegangssøknadMedAnnenPartFormField.permisjonStartdato}
-                                familiehendelsesdato={familiehendelsedatoDate!}
-                                setFieldValue={setFieldValue}
-                                morsSisteDag={morsSisteDag}
-                                navnMor={navnMor}
-                                termindato={termindato}
-                                situasjon={søkersituasjon.situasjon}
-                                morHarRettTilForeldrepengerIEØS={false}
-                            />
-                        </Block>
-                        <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
+                    <VStack gap="5">
+                        <FordelingOversikt
+                            kontoer={valgtMengdeStønadskonto}
+                            erFarEllerMedmor={false}
+                            navnFarMedmor={navnFarMedmor}
+                            navnMor={navnMor}
+                            erAdopsjon={erAdopsjon}
+                            annenForeldrerHarRett={true}
+                            fordelingScenario={fordelingScenario}
+                        ></FordelingOversikt>
+                        <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
+                        >
+                            <Block padBottom="xl">
+                                <InfoOmSøknaden
+                                    eksisterendeSak={eksisterendeSakAnnenPart}
+                                    erIUttaksplanenSteg={false}
+                                    tilgjengeligeStønadskontoer={valgtMengdeStønadskonto}
+                                    person={person}
                                 />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
-                        </Block>
-                    </FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form>
+                            </Block>
+                            <Block padBottom="xl">
+                                <FarMedmorsFørsteDag
+                                    FormComponents={FarMedmorFørstegangssøknadMedAnnenPartFormComponents}
+                                    fieldName={FarMedmorFørstegangssøknadMedAnnenPartFormField.permisjonStartdato}
+                                    familiehendelsesdato={familiehendelsedatoDate!}
+                                    setFieldValue={setFieldValue}
+                                    morsSisteDag={morsSisteDag}
+                                    navnMor={navnMor}
+                                    termindato={termindato}
+                                    situasjon={søkersituasjon.situasjon}
+                                    morHarRettTilForeldrepengerIEØS={false}
+                                />
+                            </Block>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousStepHref('uttaksplanInfo')}
+                                    />
+                                    {visibility.areAllQuestionsAnswered() && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
+                            </Block>
+                        </FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form>
+                    </VStack>
                 );
             }}
         />

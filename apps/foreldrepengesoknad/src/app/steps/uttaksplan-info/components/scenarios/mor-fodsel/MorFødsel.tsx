@@ -7,7 +7,6 @@ import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
     EksisterendeSak,
-    // Forelder,
     ISOStringToDate,
     StepButtonWrapper,
     Tidsperioden,
@@ -23,8 +22,6 @@ import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/util
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { MorFødselFormComponents, MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
-// import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
-// import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getInitialMorFødselValues, mapMorFødselFormToState } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
@@ -40,9 +37,8 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import SøknadRoutes from 'app/routes/routes';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { UttaksplanInfoScenario } from '../scenarios';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingForScenario } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingMorFødsel } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -50,7 +46,6 @@ interface Props {
     eksisterendeSakFar: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
     person: Person;
-    scenario: UttaksplanInfoScenario;
     mellomlagreSøknadOgNaviger: () => void;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
@@ -61,7 +56,6 @@ const MorFødsel: FunctionComponent<Props> = ({
     eksisterendeSakFar,
     erEndringssøknad,
     person,
-    scenario,
     mellomlagreSøknadOgNaviger,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
@@ -202,7 +196,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                 } as MorFødselQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-                const fordelingScenario = getFordelingForScenario(scenario, valgtStønadskonto);
+                const fordelingScenario = getFordelingMorFødsel(valgtStønadskonto, intl);
                 return (
                     <VStack gap="5">
                         <FordelingOversikt

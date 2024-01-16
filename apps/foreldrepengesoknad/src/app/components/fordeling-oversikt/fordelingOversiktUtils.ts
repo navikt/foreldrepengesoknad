@@ -4,9 +4,15 @@ import {
     getAntallUkerFellesperiode,
     getAntallUkerMødrekvote,
 } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { StønadskontoType, TilgjengeligStønadskonto, intlUtils, uttaksConstants } from '@navikt/fp-common';
-import { UttaksplanInfoScenario } from 'app/steps/uttaksplan-info/components/scenarios/scenarios';
+import {
+    StønadskontoType,
+    TilgjengeligStønadskonto,
+    getVarighetString,
+    intlUtils,
+    uttaksConstants,
+} from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
+import { links } from '@navikt/fp-constants';
 
 export const getErAnnenForeldersDel = (erFarEllerMedmor: boolean, type: FordelingType): boolean | undefined => {
     if (type === FordelingType.Felles) {
@@ -136,73 +142,92 @@ export const getFarsFordelingBeggeHarRett = (kontoer: TilgjengeligStønadskonto[
 
 export const getFellesFordelingBeggeHarRett = (
     kontoer: TilgjengeligStønadskonto[],
-    ukerBruktAvAnnenPart?: number,
-    annenPartNavn?: string,
+    intl: IntlShape,
 ): DelInformasjon => {
     const antallUkerFelles = getAntallUkerFellesperiode(kontoer);
-    const fordelingUker: number[] = [];
-    const fordelingInfo = [getFormattedMessage('fordeling.info.felles', { antallUker: antallUkerFelles })];
-    if (ukerBruktAvAnnenPart && ukerBruktAvAnnenPart > 0) {
-        const gjenståendeUker = antallUkerFelles - ukerBruktAvAnnenPart;
-        fordelingUker.push(gjenståendeUker);
-        fordelingUker.push(ukerBruktAvAnnenPart);
-        fordelingInfo.push(
-            getFormattedMessage('fordeling.info.felles.annenForelder.del1', {
-                ukerBruktAvAnnenPart,
-                annenPartNavn,
-                gjenståendeUker,
-            }),
-        );
-        fordelingInfo.push(getFormattedMessage('fordeling.info.felles.annenForelder.del2', { annenPartNavn }));
-    } else {
-        fordelingUker.push(antallUkerFelles);
-    }
+    const varighetFelles = getVarighetString(antallUkerFelles * 5, intl);
     return {
         type: FordelingType.Felles,
         sumUker: antallUkerFelles,
-        fordelingUker,
-        fordelingInfo,
+        fordelingUker: [antallUkerFelles],
+        fordelingInfo: [getFormattedMessage('fordeling.info.felles', { varighet: varighetFelles }, links.farMedmor)],
     };
 };
 
-export const getFordelingMorFødsel = (kontoer: TilgjengeligStønadskonto[]): DelInformasjon[] => {
+export const getFellesFordelingMedAnnenPart = (
+    kontoer: TilgjengeligStønadskonto[],
+    dagerBruktAvAnnenPart: number,
+    annenPartNavn: string,
+    intl: IntlShape,
+): DelInformasjon => {
+    const antallUkerFelles = getAntallUkerFellesperiode(kontoer);
+    const varighetFelles = getVarighetString(antallUkerFelles * 5, intl);
+    const gjenståendeUker = antallUkerFelles - dagerBruktAvAnnenPart;
+    const varighetBruktAvAnnenPart = getVarighetString(dagerBruktAvAnnenPart, intl);
+    return {
+        type: FordelingType.Felles,
+        sumUker: antallUkerFelles,
+        fordelingUker: [gjenståendeUker, dagerBruktAvAnnenPart],
+        fordelingInfo: [
+            getFormattedMessage('fordeling.info.felles', { varighet: varighetFelles }, links.farMedmor),
+            getFormattedMessage('fordeling.info.felles.annenForelder.del1', {
+                varighet: varighetBruktAvAnnenPart,
+                annenPartNavn,
+                gjenståendeUker,
+            }),
+            getFormattedMessage('fordeling.info.felles.annenForelder.del2', { annenPartNavn }),
+        ],
+        ukerBruktAvAnnenForelder: dagerBruktAvAnnenPart / 5,
+    };
+};
+
+export const getFordelingMorFødsel = (kontoer: TilgjengeligStønadskonto[], intl: IntlShape): DelInformasjon[] => {
     const morsDel = getMorsFordelingBeggeHarRett(kontoer);
     const farsDel = getFarsFordelingBeggeHarRett(kontoer);
-    const fellesDel = getFellesFordelingBeggeHarRett(kontoer);
+    const fellesDel = getFellesFordelingBeggeHarRett(kontoer, intl);
     return [morsDel, fellesDel, farsDel];
 };
 
+//TODO: GR: Hvordan utvide med visning fellesperiode brukt av annen part? Sende med  fordelingUker: [ {number[], bruktAvAnnenPart? boolean}];
+//Eller kan jeg sette FordelingType.til Mor på den ene uken? [ {number[], bruktAvAnnenPart? boolean}]
 export const getFordelingFarMedmorFørstegangssøknadMedAnnenPart = (
     kontoer: TilgjengeligStønadskonto[],
+    dagerFellesperiodeBruktAvAnnenPart: number,
+    navnMor: string,
+    intl: IntlShape,
 ): DelInformasjon[] => {
     const morsDel = getMorsFordelingBeggeHarRett(kontoer);
     const farsDel = getFarsFordelingBeggeHarRett(kontoer);
-    const fellesDel = getFellesFordelingBeggeHarRett(kontoer);
+    const fellesDel =
+        dagerFellesperiodeBruktAvAnnenPart > 0
+            ? getFellesFordelingMedAnnenPart(kontoer, dagerFellesperiodeBruktAvAnnenPart, navnMor, intl)
+            : getFellesFordelingBeggeHarRett(kontoer, intl);
     return [morsDel, fellesDel, farsDel];
 };
 
-export const getFordelingForScenario = (
-    scenario: UttaksplanInfoScenario,
-    kontoer: TilgjengeligStønadskonto[],
-): DelInformasjon[] => {
-    switch (scenario) {
-        case 'morFødsel':
-            return getFordelingMorFødsel(kontoer);
-        case 'farMedmorFørstegangssøknadMedAnnenPart':
-            return getFordelingFarMedmorFørstegangssøknadMedAnnenPart(kontoer);
-        default:
-            return getFordelingMorFødsel(kontoer);
-        // case 'farMedmorAleneomsorgFødselAdopsjon':
-        //     return getFordelingFarMedmorFødselBeggeHarRett();
-        // case 'farMedmorFødselMorHarIkkeRett':
-        //     return getFordelingFarMedmorFødselBeggeHarRett();
-        // case 'farMedmorFørstegangssøknadMedAnnenPart':
-        //     return getFordelingFarMedmorFødselBeggeHarRett();
-        // case 'morFarAdopsjon':
-        //     return getFordelingFarMedmorFødselBeggeHarRett();
-        // case 'morFarFødselAnnenForelderHarRettIEØS':
-        //     return getFordelingFarMedmorFødselBeggeHarRett();
-        // case 'morFarAdopsjonAnnenForelderHarRettIEØS':
-        //     return getFordelingFarMedmorFødselBeggeHarRett();
-    }
-};
+//TODO: GR: delete this - no longer used
+// export const getFordelingForScenario = (
+//     scenario: UttaksplanInfoScenario,
+//     kontoer: TilgjengeligStønadskonto[],
+//     dagerBruktAvAnnenPart?: number,
+//     navnMor?: string,
+// ): DelInformasjon[] => {
+//     switch (scenario) {
+//         case 'morFødsel': OK
+//             return;
+//         case 'farMedmorFørstegangssøknadMedAnnenPart': OK
+//             return;
+// case 'farMedmorAleneomsorgFødselAdopsjon':
+//     return getFordelingFarMedmorFødselBeggeHarRett();
+// case 'farMedmorFødselMorHarIkkeRett':
+//     return getFordelingFarMedmorFødselBeggeHarRett();
+// case 'farMedmorFørstegangssøknadMedAnnenPart':
+//     return getFordelingFarMedmorFødselBeggeHarRett();
+// case 'morFarAdopsjon':
+//     return getFordelingFarMedmorFødselBeggeHarRett();
+// case 'morFarFødselAnnenForelderHarRettIEØS':
+//     return getFordelingFarMedmorFødselBeggeHarRett();
+// case 'morFarAdopsjonAnnenForelderHarRettIEØS':
+//     return getFordelingFarMedmorFødselBeggeHarRett();
+// }
+// };

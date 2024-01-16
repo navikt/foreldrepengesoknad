@@ -9,11 +9,13 @@ export enum FordelingType {
     FarMedmor = 'FARMEDMOR',
     Felles = 'FELLES',
 }
+
 export interface DelInformasjon {
     type: FordelingType;
     sumUker: number;
     fordelingUker: number[];
     fordelingInfo: React.ReactNode[];
+    ukerBruktAvAnnenForelder?: number;
 }
 
 export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
