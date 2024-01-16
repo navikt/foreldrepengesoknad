@@ -4,12 +4,9 @@ import {
     getAntallUkerFellesperiode,
     getAntallUkerMødrekvote,
 } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { StønadskontoType, TilgjengeligStønadskonto, intlUtils } from '@navikt/fp-common';
+import { StønadskontoType, TilgjengeligStønadskonto, intlUtils, uttaksConstants } from '@navikt/fp-common';
 import { UttaksplanInfoScenario } from 'app/steps/uttaksplan-info/components/scenarios/scenarios';
 import { IntlShape } from 'react-intl';
-
-const MORS_UKER_FØR_FØDSEL = 3;
-const MORS_UKER_ETTER_FØDSEL = 6;
 
 export const getErAnnenForeldersDel = (erFarEllerMedmor: boolean, type: FordelingType): boolean | undefined => {
     if (type === FordelingType.Felles) {
@@ -83,17 +80,17 @@ export const getFordelingFødselBeggeHarRett = (
     const antallUkerFar = getAntallUkerFedrekvote(kontoer);
     const antallUkerFelles = getAntallUkerFellesperiode(kontoer);
     const førFødsel: KvoteFordeling = {
-        uker: MORS_UKER_FØR_FØDSEL,
+        uker: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
         tekst: getFormattedMessage('fordeling.info.mor.førFødsel'),
     };
 
     const seksUkerEtterFødsel: KvoteFordeling = {
-        uker: MORS_UKER_ETTER_FØDSEL,
+        uker: uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL,
         tekst: getFormattedMessage('fordeling.info.mor.første6Uker'),
     };
 
-    const restAntallUkerMor = antallUkerMødrekvote - MORS_UKER_ETTER_FØDSEL;
-    const antallUkerMor = antallUkerMødrekvote + MORS_UKER_FØR_FØDSEL;
+    const restAntallUkerMor = antallUkerMødrekvote - uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL;
+    const antallUkerMor = antallUkerMødrekvote + uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL;
     const restUkerMor: KvoteFordeling = {
         uker: restAntallUkerMor,
         tekst: getFormattedMessage('fordeling.info.mor.resterendeUker', { antallUker: restAntallUkerMor }),
@@ -120,9 +117,9 @@ export const getFordelingFødselBeggeHarRett = (
                   antallUker: antallUkerFar,
               }),
         colorClass: getFordelingBoxColorClass(FordelingType.Mor, false), //TODO: Remove  this and figure out when displaying?
-        fordeling: [førFødsel, seksUkerEtterFødsel, restUkerMor],
-        konto: StønadskontoType.Mødrekvote,
-        type: FordelingType.Mor,
+        fordeling: [førFødsel, seksUkerEtterFødsel, restUkerMor], //TODO: Må splittes i fordelingUker og fordelingTekster
+        konto: StønadskontoType.Mødrekvote, //TODO: skal man heller beholde type? Dette er boks per hva en person skal ha.
+        type: FordelingType.Mor, //TODO: Type kan man finne senere ved display hvis konto beholdes? men heller beholde denne.
     };
 
     const kvoteInformasjonFarsKvote = {

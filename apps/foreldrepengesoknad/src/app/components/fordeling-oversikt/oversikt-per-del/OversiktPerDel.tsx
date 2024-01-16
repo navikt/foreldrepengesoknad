@@ -1,7 +1,7 @@
 import { BodyLong, HStack, VStack } from '@navikt/ds-react';
-import './del-oversikt.css';
+import './oversikt-per-del.css';
 import { bemUtils, guid } from '@navikt/fp-common';
-import DelGraf from '../del-graf/DelGraf';
+import DelGraf from '../grafer/del-graf/DelGraf';
 import { FordelingType, KvoteFordeling, KvoteInformasjon } from '../FordelingOversikt';
 import { Dispatch, SetStateAction } from 'react';
 import { getErAnnenForeldersDel, getFordelingBoxColorClass, getFordelingType } from '../fordelingOversiktUtils';
@@ -14,13 +14,13 @@ interface Props {
     setCurrentUthevet: Dispatch<SetStateAction<FordelingType | undefined>>;
 }
 
-const DelOversikt: React.FunctionComponent<Props> = ({
+const OversiktPerDel: React.FunctionComponent<Props> = ({
     kvoteInformasjon,
     currentUthevet,
     erFarEllerMedmor,
     setCurrentUthevet,
 }) => {
-    const bem = bemUtils('delOversikt');
+    const bem = bemUtils('oversiktPerDel');
     const hoverClass = currentUthevet === kvoteInformasjon.type ? 'hover' : 'no-hover';
     const sumUker = kvoteInformasjon.fordeling.reduce((sum, f) => {
         return sum + f.uker;
@@ -59,4 +59,4 @@ const DelOversikt: React.FunctionComponent<Props> = ({
     );
 };
 
-export default DelOversikt;
+export default OversiktPerDel;

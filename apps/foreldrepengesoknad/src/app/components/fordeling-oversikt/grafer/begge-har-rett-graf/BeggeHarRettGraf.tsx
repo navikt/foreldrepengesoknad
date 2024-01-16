@@ -1,6 +1,6 @@
 import { StønadskontoType, TilgjengeligStønadskonto, bemUtils, guid } from '@navikt/fp-common';
 import { BodyShort } from '@navikt/ds-react';
-import './begge-har-rett-graf.css';
+import './../graf.css';
 import { Dispatch, SetStateAction } from 'react';
 import {
     getShadowClass,
@@ -8,8 +8,8 @@ import {
     getFordelingBoxColorClass,
     getFordelingTekst,
     getFordelingType,
-} from '../fordelingOversiktUtils';
-import { FordelingType } from '../FordelingOversikt';
+} from '../../fordelingOversiktUtils';
+import { FordelingType } from '../../FordelingOversikt';
 import FamiliehendelseVisning from './FamiliehendelseVisning';
 import {
     getAntallUkerFedrekvote,
@@ -62,7 +62,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
             konto: StønadskontoType.Fedrekvote,
         },
     ];
-    const bem = bemUtils('begge-har-rett-graf');
+    const bem = bemUtils('graf');
 
     const rowHeight = 16;
 

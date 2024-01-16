@@ -1,9 +1,9 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import DelOversikt from './del-oversikt/DelOversikt';
+import OversiktPerDel from './oversikt-per-del/OversiktPerDel';
 import { UttaksplanInfoScenario } from 'app/steps/uttaksplan-info/components/scenarios/scenarios';
 import { Block, StønadskontoType, TilgjengeligStønadskonto, guid } from '@navikt/fp-common';
 import { getFordelingForScenario } from './fordelingOversiktUtils';
-import BeggeHarRettGraf from './begge-har-rett-graf/BeggeHarRettGraf';
+import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 import { useState } from 'react';
 
 export enum FordelingType {
@@ -64,24 +64,35 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const kvoteListe = getFordelingForScenario(scenario, kontoer, intl, navnMor, navnFarMedmor);
     const [currentUthevet, setCurrentUthevet] = useState<FordelingType | undefined>(undefined);
+    const beggeHarRett = [
+        'farMedmorFødselBeggeHarRett',
+        'farMedmorFørstegangssøknadMedAnnenPart',
+        'morFarAdopsjon',
+        'morFarFødselAnnenForelderHarRettIEØS',
+        'morFarAdopsjonAnnenForelderHarRettIEØS',
+        'morFødsel',
+    ].includes(scenario);
+
     return (
         <>
-            <Block padBottom="l">
-                <BeggeHarRettGraf
-                    kontoer={kontoer}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    erAdopsjon={erAdopsjon}
-                    sumUker={49}
-                    currentUthevet={currentUthevet}
-                    navnMor={navnMor}
-                    navnFarMedmor={navnFarMedmor}
-                    setCurrentUthevet={setCurrentUthevet}
-                ></BeggeHarRettGraf>
-            </Block>
+            {beggeHarRett && (
+                <Block padBottom="l">
+                    <BeggeHarRettGraf
+                        kontoer={kontoer}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        erAdopsjon={erAdopsjon}
+                        sumUker={49}
+                        currentUthevet={currentUthevet}
+                        navnMor={navnMor}
+                        navnFarMedmor={navnFarMedmor}
+                        setCurrentUthevet={setCurrentUthevet}
+                    ></BeggeHarRettGraf>
+                </Block>
+            )}
             <Block padBottom="xl">
                 {kvoteListe.map((kvoteInfo) => {
                     return (
-                        <DelOversikt
+                        <OversiktPerDel
                             key={guid()}
                             kvoteInformasjon={kvoteInfo}
                             currentUthevet={currentUthevet}

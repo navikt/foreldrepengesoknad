@@ -1,6 +1,6 @@
 import { bemUtils, guid } from '@navikt/fp-common';
-import { KvoteFordeling } from '../FordelingOversikt';
-import './../begge-har-rett-graf/begge-har-rett-graf.css';
+import { KvoteFordeling } from '../../FordelingOversikt';
+import './../graf.css';
 import classNames from 'classnames';
 
 interface Props {
@@ -11,9 +11,7 @@ interface Props {
 
 const DelGraf: React.FunctionComponent<Props> = ({ fordelingList, sumUker, colorClass }) => {
     const rowHeightRem = 0.75;
-
-    //TODO: flytt alt fra begge-har-rett-graf.css til fordeling-oversikt.css?
-    const bem = bemUtils('begge-har-rett-graf');
+    const bem = bemUtils('graf');
 
     return (
         <div
