@@ -217,7 +217,14 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_INNLEGGELSE]: [],
         };
 
+        oppdaterUttaksplanMetadata({
+            ...uttaksplanMetadata,
+            perioderSomSkalSendesInn: [],
+            endringstidspunkt: undefined,
+        });
+        oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
+        oppdaterManglerDokumentasjon(false);
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
         mellomlagreSøknadOgNaviger();
     };
