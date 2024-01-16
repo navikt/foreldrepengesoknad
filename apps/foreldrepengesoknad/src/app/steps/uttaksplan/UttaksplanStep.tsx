@@ -221,6 +221,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             ...uttaksplanMetadata,
             perioderSomSkalSendesInn: [],
             endringstidspunkt: undefined,
+            ønskerJustertUttakVedFødsel: undefined,
         });
         oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
