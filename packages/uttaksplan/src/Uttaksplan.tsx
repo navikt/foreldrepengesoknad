@@ -285,7 +285,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleResetUttaksplan();
     };
 
-    const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
+    const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, true);
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 
     const utsettelserIPlan = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];

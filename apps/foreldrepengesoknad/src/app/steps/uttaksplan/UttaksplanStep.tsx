@@ -69,6 +69,8 @@ import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJuste
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
+import { VedleggDataType } from 'app/types/VedleggDataType';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
@@ -104,6 +106,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterBarnFraNesteSak = useContextSaveData(ContextDataType.BARN_FRA_NESTE_SAK);
@@ -112,6 +115,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterManglerDokumentasjon = useContextSaveData(ContextDataType.MANGLER_DOKUMENTASJON);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(
@@ -205,6 +209,15 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const goToPreviousStep = () => {
         setGåTilbakeIsOpen(false);
 
+        const nullstiltePeriodeVedlegg: VedleggDataType = {
+            [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]: [],
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
+            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
+            [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: [],
+            [Skjemanummer.DOK_INNLEGGELSE]: [],
+        };
+
+        oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
         mellomlagreSøknadOgNaviger();
     };

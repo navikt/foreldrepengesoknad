@@ -1,24 +1,25 @@
-import {
-    getFedrekvoteMorForSykVedlegg,
-    getFellesperiodeVedlegg,
-    getOverføringsVedlegg,
-} from 'app/steps/manglende-vedlegg/util';
+import { getFedrekvoteMorForSykVedlegg, getOverføringsVedlegg } from 'app/steps/manglende-vedlegg/util';
 import { FunctionComponent } from 'react';
 import DokumentasjonContainer from '../DokumentasjonContainer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import PeriodeDokumentasjon from './PeriodeDokumentasjon';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 interface Props {
     vedlegg: VedleggDataType;
 }
 
 const PeriodeDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg }) => {
-    const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
+    const aktivitetskravArbUtdSyk = vedlegg[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM] || [];
+    const aktivitetskravIntro = vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET] || [];
+    const aktivitetskravKval = vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM] || [];
     const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
     const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
 
     if (
-        fellesperiodeVedlegg.length === 0 &&
+        aktivitetskravArbUtdSyk.length === 0 &&
+        aktivitetskravIntro.length === 0 &&
+        aktivitetskravKval.length === 0 &&
         overføringsVedlegg.length === 0 &&
         fedrekvoteMorForSykVedlegg.length === 0
     ) {
@@ -27,9 +28,19 @@ const PeriodeDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg })
 
     return (
         <>
-            {fellesperiodeVedlegg.length > 0 && (
+            {aktivitetskravArbUtdSyk.length > 0 && (
                 <DokumentasjonContainer>
-                    <PeriodeDokumentasjon vedlegg={fellesperiodeVedlegg} />
+                    <PeriodeDokumentasjon vedlegg={aktivitetskravArbUtdSyk} />
+                </DokumentasjonContainer>
+            )}
+            {aktivitetskravIntro.length > 0 && (
+                <DokumentasjonContainer>
+                    <PeriodeDokumentasjon vedlegg={aktivitetskravIntro} />
+                </DokumentasjonContainer>
+            )}
+            {aktivitetskravKval.length > 0 && (
+                <DokumentasjonContainer>
+                    <PeriodeDokumentasjon vedlegg={aktivitetskravKval} />
                 </DokumentasjonContainer>
             )}
             {overføringsVedlegg.length > 0 && (
