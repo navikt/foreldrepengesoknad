@@ -165,8 +165,7 @@ FarEllerMedmorFødselBeggeHarRett.args = {
         rolle: 'far',
     },
     barnet: {
-        type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-03-01').toDate()],
+        type: BarnType.UFØDT,
         antallBarn: 1,
         termindato: dayjs('2022-03-24').toDate(),
     },

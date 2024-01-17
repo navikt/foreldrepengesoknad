@@ -14,6 +14,7 @@ import {
     capitalizeFirstLetter,
     getFlerbarnsuker,
     isAdoptertBarn,
+    StønadskontoType,
 } from '@navikt/fp-common';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { links } from '@navikt/fp-constants';
@@ -28,31 +29,37 @@ import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import './dekningsgradForm.less';
 
-const finnSisteDagMedForeldrepenger = (stønadskonto: TilgjengeligStønadskonto[], barn: Barn) => {
-    const dagerSomSkalLeggesTil = getAntallUker(stønadskonto) * 5;
-
+const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskonto[], barn: Barn): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
 
-    //FIXME Dette er ikkje korrekt
+    const dato = erAdopsjon ? barn.adopsjonsdato : termindato;
 
+    if ((!erAdopsjon && !!fødselsdato) || !dato) {
+        return undefined;
+    }
+
+    const dagerSomSkalLeggesTil =
+        getAntallUker(stønadskontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel)) * 5;
+
+    const førsteDag = Uttaksdagen(dato).denneEllerNeste();
+    const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil);
+    return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
+};
+
+const getRadioBeskrivelse = (
+    intl: IntlShape,
+    erAdopsjon: boolean,
+    erFødsel: boolean,
+    sisteDag?: string,
+): string | undefined => {
     if (erAdopsjon) {
-        const førsteDag = Uttaksdagen(barn.adopsjonsdato).denneEllerNeste();
-        const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil);
-        return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
+        return intl.formatMessage({ id: 'uttaksplaninfo.Uker.beskrivelseOmsorgsovertakelse' }, { dato: sisteDag });
     }
-    if (fødselsdato) {
-        const førsteDag = Uttaksdagen(fødselsdato).denneEllerNeste();
-        const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil);
-        return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
+    if (!erFødsel) {
+        return intl.formatMessage({ id: 'uttaksplaninfo.Uker.beskrivelseTermin' }, { dato: sisteDag });
     }
-    if (termindato) {
-        const førsteDag = Uttaksdagen(termindato).denneEllerNeste();
-        const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil);
-        return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
-    }
-
     return undefined;
 };
 
@@ -151,17 +158,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     >
                         <Radio
                             value={Dekningsgrad.HUNDRE_PROSENT}
-                            description={
-                                erAdopsjon || fødselsdato
-                                    ? intl.formatMessage(
-                                          { id: 'uttaksplaninfo.Uker.beskrivelseErFodtEllerAdopsjon' },
-                                          { dato: sisteDag100Prosent, soker: søkerAntallTekst },
-                                      )
-                                    : intl.formatMessage(
-                                          { id: 'uttaksplaninfo.Uker.beskrivelse' },
-                                          { dato: sisteDag100Prosent, soker: søkerAntallTekst },
-                                      )
-                            }
+                            description={getRadioBeskrivelse(intl, erAdopsjon, !!fødselsdato, sisteDag100Prosent)}
                         >
                             <FormattedMessage
                                 id="uttaksplaninfo.49Uker"
@@ -172,17 +169,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         </Radio>
                         <Radio
                             value={Dekningsgrad.ÅTTI_PROSENT}
-                            description={
-                                erAdopsjon || fødselsdato
-                                    ? intl.formatMessage(
-                                          { id: 'uttaksplaninfo.Uker.beskrivelseErFodtEllerAdopsjon' },
-                                          { dato: sisteDag80Prosent, soker: søkerAntallTekst },
-                                      )
-                                    : intl.formatMessage(
-                                          { id: 'uttaksplaninfo.Uker.beskrivelse' },
-                                          { dato: sisteDag80Prosent, soker: søkerAntallTekst },
-                                      )
-                            }
+                            description={getRadioBeskrivelse(intl, erAdopsjon, !!fødselsdato, sisteDag80Prosent)}
                         >
                             <FormattedMessage
                                 id="uttaksplaninfo.59Uker"
@@ -203,7 +190,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     >
                         <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad" />
                         <Link href={links.søknadsfrister} target="_blank">
-                            nav.no/foreldrepenger
+                            <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.link" />
                             <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
                         </Link>
                     </ReadMore>
