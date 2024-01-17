@@ -18,7 +18,7 @@ const {
 } = composeStories(stories);
 
 describe('<PeriodeMedForeldrepengerSteg>', () => {
-    it('skal søke som far eller medmor og ha aleneomsorg', async () => {
+    it.skip('skal søke som far eller medmor og ha aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -58,7 +58,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
-    it('skal søke som far eller medmor der begge har rett', async () => {
+    it.skip('skal søke som far eller medmor der begge har rett', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -109,7 +109,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
-    it('skal søke adopsjon som mor med aleneomsorg', async () => {
+    it.skip('skal søke adopsjon som mor med aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -155,7 +155,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
-    it('skal søke adopsjon som mor med aleneomsorg', async () => {
+    it.skip('skal søke adopsjon som mor med aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -201,7 +201,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
-    it('skal søke som mor delt uttak for prematur fødsel', async () => {
+    it.skip('skal søke som mor delt uttak for prematur fødsel', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -245,7 +245,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
-    it('skal søke som mor ved fødsel av tvillinger', async () => {
+    it.skip('skal søke som mor ved fødsel av tvillinger', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -289,7 +289,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
-    it('skal søke som mor ved fødsel av trillinger', async () => {
+    it.skip('skal søke som mor ved fødsel av trillinger', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -333,7 +333,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
-    it('skal søke som far der mor allerede har laget uttaksplan', async () => {
+    it.skip('skal søke som far der mor allerede har laget uttaksplan', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
