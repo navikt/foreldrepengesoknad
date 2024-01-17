@@ -3,14 +3,14 @@ import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Action, PlanleggerDataContext, ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import ArbeidssituasjonSteg from './ArbeidssituasjonSteg';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { initAmplitude } from '@navikt/fp-metrics';
+import BarnehageplassSteg from './BarnehageplassSteg';
 
 export default {
-    title: 'ArbeidssituasjonSteg',
-    component: ArbeidssituasjonSteg,
+    title: 'BarnehageplassSteg',
+    component: BarnehageplassSteg,
 };
 
 const Template: StoryFn<{
@@ -26,14 +26,14 @@ const Template: StoryFn<{
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <ArbeidssituasjonSteg />
+                <BarnehageplassSteg />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
 };
 
-export const ArbeidssituasjonFarOgMor = Template.bind({});
-ArbeidssituasjonFarOgMor.args = {
+export const BarnehageplassFlere = Template.bind({});
+BarnehageplassFlere.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
@@ -42,40 +42,11 @@ ArbeidssituasjonFarOgMor.args = {
     },
 };
 
-export const ArbeidssituasjonKunMor = Template.bind({});
-ArbeidssituasjonKunMor.args = {
+export const BarnehageplassAlene = Template.bind({});
+BarnehageplassAlene.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
         hvem: SøkersituasjonEnum.ALENE,
-    },
-};
-
-export const ArbeidssituasjonKunFar = Template.bind({});
-ArbeidssituasjonKunFar.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        type: SøkersituasjonEnum.FAR,
-        hvem: SøkersituasjonEnum.ALENE,
-    },
-};
-
-export const ArbeidssituasjonMorOgMedmor = Template.bind({});
-ArbeidssituasjonMorOgMedmor.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Esther Utvikler',
-        navnPåMedmor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_MEDMOR,
-        hvem: SøkersituasjonEnum.FLERE,
-    },
-};
-
-export const ArbeidssituasjonFarOgFar = Template.bind({});
-ArbeidssituasjonFarOgFar.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMedfar: 'Klaus Utvikler',
-        type: SøkersituasjonEnum.FAR_OG_FAR,
-        hvem: SøkersituasjonEnum.FLERE,
     },
 };
