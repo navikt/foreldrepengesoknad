@@ -14,9 +14,11 @@ import {
     isLessThanThreeWeeksAgo,
     isRequired,
     isValidDate,
+    notEmpty,
 } from '@navikt/fp-validation';
 import { PlanleggerRoutes } from 'appData/routes';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
 const OmBarnetSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -27,6 +29,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const barnet = formMethods.watch('barnet');
     const erFødt = formMethods.watch('erFødt');
 
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const lagreOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const lagre = (formValues: any) => {
         lagreOmBarnet(formValues);
@@ -42,9 +45,31 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             <FormattedMessage id="barnet.tittel" />
                         </Heading>
                         <VStack gap="1">
-                            <Heading size="small">
-                                <FormattedMessage id="barnet.hvaGjelder" />
-                            </Heading>
+                            {hvemPlanlegger.type === SøkersituasjonEnum.MOR && (
+                                <Heading size="small">
+                                    <FormattedMessage id="barnet.hvaGjelderDeg" />
+                                </Heading>
+                            )}
+                            {hvemPlanlegger.type === SøkersituasjonEnum.FAR && (
+                                <Heading size="small">
+                                    <FormattedMessage id="barnet.hvaGjelderDeg" />
+                                </Heading>
+                            )}
+                            {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR && (
+                                <Heading size="small">
+                                    <FormattedMessage id="barnet.hvaGjelder" />
+                                </Heading>
+                            )}
+                            {hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR && (
+                                <Heading size="small">
+                                    <FormattedMessage id="barnet.hvaGjelder" />
+                                </Heading>
+                            )}
+                            {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR && (
+                                <Heading size="small">
+                                    <FormattedMessage id="barnet.hvaGjelder" />
+                                </Heading>
+                            )}
                             <RadioGroup
                                 name="barnet"
                                 validate={[

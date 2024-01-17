@@ -4,6 +4,8 @@ export enum SøkersituasjonEnum {
     FAR_OG_FAR = 'farOgFar',
     MOR = 'mor',
     FAR = 'far',
+    ALENE = 'alene',
+    FLERE = 'flere',
 }
 
 export type Søkersituasjon = {
