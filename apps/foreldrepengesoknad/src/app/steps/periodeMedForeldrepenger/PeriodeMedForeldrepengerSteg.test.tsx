@@ -46,7 +46,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi hva som gjelder for deg')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi hvor lang periode du vil ha')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
 
@@ -136,12 +136,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være mandag 21. februar 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 21. februar 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være mandag 02. mai 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 02. mai 2022 hvis du tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
@@ -182,12 +182,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være mandag 21. februar 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 21. februar 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Hvis barnet blir født på termin vil siste dag med foreldrepenger være mandag 02. mai 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
+                'Siste dag med foreldrepenger vil være mandag 02. mai 2022 hvis dere tar foreldrepenger i ett strekk uten ferie.',
             ),
         ).toBeInTheDocument();
 
