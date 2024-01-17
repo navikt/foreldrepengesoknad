@@ -78,7 +78,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <Modal open={visible} onClose={onAvbryt} aria-label="Endre tidsperiode">
+            <Modal open={visible} onClose={onAvbryt} aria-label="Endre tidsperiode" portal>
                 <Modal.Body>
                     <TidsperiodeForm
                         familiehendelsesdato={familiehendelsesdato}

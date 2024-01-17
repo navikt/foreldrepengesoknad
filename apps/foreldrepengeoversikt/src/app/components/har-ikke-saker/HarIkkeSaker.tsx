@@ -34,7 +34,7 @@ const HarIkkeSaker: FunctionComponent<Props> = ({ oppdatertData }) => {
                 </BodyShort>
                 <div className={bem.element('link')}>
                     <Link href="https://www.nav.no/foreldrepenger">
-                        Les mer om foreldrepenger <ExternalLink />
+                        Les mer om foreldrepenger <ExternalLink aria-hidden={true} />
                     </Link>
                 </div>
                 <Button as="a" href="https://foreldrepengesoknad.nav.no">

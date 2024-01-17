@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import MinidialogSkjema from 'app/components/minidialog-skjema/MinidialogSkjema';
 import { SakOppslag } from 'app/types/SakOppslag';
@@ -23,6 +23,10 @@ interface Props {
 const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, saker }) => {
     const params = useParams();
     const navigate = useNavigate();
+    const intl = useIntl();
+    useDocumentTitle(
+        `${intlUtils(intl, 'oppgaver.tittel.tilbakebetaling')} - ${intlUtils(intl, 'dineForeldrepenger')}`,
+    );
     useSetSelectedRoute(OversiktRoutes.OPPGAVER);
     const alleSaker = getAlleYtelser(saker);
     const sak = alleSaker.find((s) => s.saksnummer === params.saksnummer);
@@ -31,7 +35,6 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
     const [ettersendelseErSendt, setEttersendelseErSendt] = useState(false);
     const [ettersendelseError, setEttersendelseError] = useState<string | undefined>(undefined);
     useSetBackgroundColor('blue');
-    const intl = useIntl();
 
     const sendEttersendelse = (ettersendelse: EttersendingDto) => {
         setIsSendingEttersendelse(true);

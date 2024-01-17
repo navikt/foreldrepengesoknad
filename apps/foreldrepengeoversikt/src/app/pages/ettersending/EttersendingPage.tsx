@@ -5,7 +5,7 @@ import { Add } from '@navikt/ds-icons';
 import { Attachment } from '@navikt/fp-types';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Alert, BodyLong, BodyShort, Button, Link as NAVLink, Select, VStack, HStack } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { FileUploader } from '@navikt/fp-ui';
 import Api from 'app/api/api';
@@ -84,7 +84,7 @@ export interface Props {
 
 const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const intl = useIntl();
-
+    useDocumentTitle(`${intlUtils(intl, 'lastOppDokumenter')} - ${intlUtils(intl, 'dineForeldrepenger')}`);
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
 
@@ -96,9 +96,15 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
 
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
+    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((sak) => sak.saksnummer === params.saksnummer);
+
+    const updateAttachments = (vedlegg: Attachment[], hasPendingUploads: boolean) => {
+        setVedlegg(vedlegg);
+        setAvventerVedlegg(hasPendingUploads);
+    };
 
     const onSubmit = (e: FormEvent<any>) => {
         e.preventDefault();
@@ -139,8 +145,6 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
         );
     }
 
-    const finnesPendingVedlegg = vedlegg ? !!vedlegg.find((file) => file.pending) : false;
-
     return (
         <form onSubmit={onSubmit}>
             <VStack gap="4">
@@ -161,7 +165,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                 </Select>
                 {type !== DEFAULT_OPTION && (
                     <FileUploader
-                        updateAttachments={setVedlegg}
+                        updateAttachments={updateAttachments}
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
@@ -172,9 +176,9 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                     <HStack>
                         <Button
                             type="submit"
-                            icon={<Add />}
-                            loading={isEttersending || finnesPendingVedlegg}
-                            disabled={isEttersending || finnesPendingVedlegg}
+                            icon={<Add aria-hidden={true} />}
+                            loading={isEttersending || avventerVedlegg}
+                            disabled={isEttersending || avventerVedlegg}
                         >
                             Legg ved sak
                         </Button>

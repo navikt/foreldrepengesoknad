@@ -33,7 +33,6 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
         [ContextDataType.UTTAKSPLAN]: søknad?.uttaksplan,
         [ContextDataType.UTTAKSPLAN_METADATA]: {
             dekningsgrad: søknad?.dekningsgrad,
-            tilleggsopplysninger: søknad?.tilleggsopplysninger,
             ønskerJustertUttakVedFødsel: søknad?.ønskerJustertUttakVedFødsel,
             perioderSomSkalSendesInn: mellomlagretState.perioderSomSkalSendesInn,
             antallUkerIUttaksplan: mellomlagretState.antallUkerIUttaksplan,

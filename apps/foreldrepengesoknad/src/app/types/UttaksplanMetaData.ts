@@ -1,4 +1,4 @@
-import { Dekningsgrad, Periode, Tilleggsopplysninger } from '@navikt/fp-common';
+import { Dekningsgrad, Periode } from '@navikt/fp-common';
 
 export type UttaksplanMetaData = {
     annenPartsUttakErLagtTilIPlan?: boolean;
@@ -7,6 +7,5 @@ export type UttaksplanMetaData = {
     perioderSomSkalSendesInn?: Periode[];
     antallUkerIUttaksplan?: number;
     endringstidspunkt?: Date;
-    tilleggsopplysninger?: Tilleggsopplysninger;
     ønskerJustertUttakVedFødsel?: boolean;
 };

@@ -13,7 +13,18 @@ updates:
       - ft-frontend-saksbehandling
     schedule:
       interval: daily
-    open-pull-requests-limit: 20
+    open-pull-requests-limit: 10
+    groups:
+      prod-minor-deps:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      dev-minor-deps:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

@@ -48,7 +48,7 @@ const ContentSection: FunctionComponent<Props> = ({
     return (
         <section>
             {heading && (
-                <Heading size="medium" level="2" className={bem.element('heading')}>
+                <Heading size="medium" level="4" className={bem.element('heading')}>
                     {heading}
                 </Heading>
             )}

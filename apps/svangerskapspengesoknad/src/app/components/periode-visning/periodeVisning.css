@@ -12,6 +12,10 @@
     padding: 0;
 }
 
+.periodeVisningInfoBox__label {
+    font-weight: bold;
+}
+
 .periodeVisningInfoBox__topRow {
     display: flex;
     flex-direction: row;

@@ -111,7 +111,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                     ugyldigeTidsperioder={undefined}
                                     utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(values) => {
-                                        toggleVisTidsperiode();
+                                        setTidsperiodeIsOpen(false);
                                         setFieldValue(PeriodeFørFødselFormField.fom, values.fom);
                                         setFieldValue(PeriodeFørFødselFormField.tom, values.tom);
                                     }}
@@ -120,7 +120,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                         setFieldValue(PeriodeFørFødselFormField.tom, values.tom);
                                     }}
                                     tidsperiode={tidsperiode}
-                                    onAvbryt={() => toggleVisTidsperiode()}
+                                    onAvbryt={() => setTidsperiodeIsOpen(false)}
                                     visible={tidsperiodeIsOpen}
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     morHarRett={morHarRett}

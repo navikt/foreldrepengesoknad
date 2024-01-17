@@ -8,8 +8,8 @@ export enum AttachmentType {
     MORS_AKTIVITET_DOKUMENTASJON = 'morsaktivitetdokumentasjon',
     OVERFØRING_KVOTE = 'dokumentasjonOverføringAvKvote',
     ALENEOMSORG = 'dokumentasjonAvAleneomsorg',
-    SEN_ENDRING = 'senEndring',
     HV_ØVELSE = 'hvØvelse',
     NAV_TILTAK = 'navTiltak',
     TILBAKEBETALING = 'tilbakebetaling',
+    TILRETTELEGGING = 'tilrettelegging',
 }

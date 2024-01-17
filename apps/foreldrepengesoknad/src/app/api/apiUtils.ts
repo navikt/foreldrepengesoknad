@@ -17,7 +17,6 @@ import {
     StønadskontoType,
     Søkerrolle,
     Søkersituasjon,
-    Tilleggsopplysninger,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksdagen,
@@ -95,7 +94,6 @@ export interface SøknadForInnsending
     uttaksplan: PeriodeForInnsending[];
     søker: SøkerForInnsending;
     situasjon: Situasjon;
-    tilleggsopplysninger?: string;
     vedlegg: Attachment[];
 }
 
@@ -110,7 +108,6 @@ export type EndringssøknadForInnsending = Pick<
     | 'barn'
     | 'dekningsgrad'
     | 'situasjon'
-    | 'tilleggsopplysninger'
     | 'ønskerJustertUttakVedFødsel'
     | 'vedlegg'
 >;
@@ -403,7 +400,6 @@ export const cleanSøknad = (
         termindato,
         annenForelder,
     );
-    const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger));
     const cleanedSøknad: SøknadForInnsending = {
         type: 'foreldrepenger',
         harGodkjentVilkår: true,
@@ -414,7 +410,6 @@ export const cleanSøknad = (
         situasjon: søkersituasjon.situasjon,
         annenForelder: annenForelderInnsending,
         uttaksplan: uttaksplanInnsending,
-        tilleggsopplysninger: tilleggsopplysningerInnsending,
         informasjonOmUtenlandsopphold: {
             ...utenlandsopphold,
             ...(senereUtenlandsopphold || { senereOpphold: [] }),
@@ -487,20 +482,11 @@ export const cleanEndringssøknad = (
         barn: barn,
         dekningsgrad: uttaksplanMetadata.dekningsgrad!,
         situasjon: søkersituasjon.situasjon,
-        tilleggsopplysninger: cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger)),
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 
     return cleanedSøknad;
-};
-
-const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
-    const tilleggsopplysningerTilSaksbehandler = tilleggsopplysninger.begrunnelseForSenEndring?.tekst;
-    if (tilleggsopplysningerTilSaksbehandler !== undefined && tilleggsopplysningerTilSaksbehandler.length > 0) {
-        return tilleggsopplysningerTilSaksbehandler;
-    }
-    return undefined;
 };
 
 export const sendErrorMessageToSentry = (error: AxiosError<any>) => {

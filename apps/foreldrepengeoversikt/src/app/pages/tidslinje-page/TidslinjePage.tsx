@@ -4,12 +4,13 @@ import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
 import './tidslinje-page.css';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { SakOppslag } from 'app/types/SakOppslag';
 import Api from 'app/api/api';
 import { useParams } from 'react-router-dom';
 import { Loader } from '@navikt/ds-react';
+import { useIntl } from 'react-intl';
 interface Props {
     søkersBarn: SøkerinfoDTOBarn[] | undefined;
     saker: SakOppslag;
@@ -17,6 +18,8 @@ interface Props {
 
 const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) => {
     const bem = bemUtils('tidslinje-page');
+    const intl = useIntl();
+    useDocumentTitle(`${intlUtils(intl, 'heleProsessen')} -${intlUtils(intl, 'dineForeldrepenger')}`);
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.TIDSLINJEN);
     const params = useParams();

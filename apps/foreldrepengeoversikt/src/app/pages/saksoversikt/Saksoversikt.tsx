@@ -1,4 +1,4 @@
-import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
+import { Block, bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
 import SeDokumenter from 'app/components/se-dokumenter/SeDokumenter';
@@ -33,6 +33,7 @@ import React from 'react';
 import { RedirectSource } from 'app/types/RedirectSource';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
 import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
+import { getSaksoversiktHeading } from 'app/components/header/Header';
 
 const EMPTY_ARRAY = [] as Skjemanummer[];
 
@@ -65,6 +66,8 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const alleSaker = getAlleYtelser(saker);
     const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
     useSetSelectedSak(gjeldendeSak);
+
+    useDocumentTitle(`${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intlUtils(intl, 'dineForeldrepenger')}`);
 
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
@@ -136,9 +139,10 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     const navnPåSøker = søkerinfo.søker.fornavn;
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
-    const aktiveMinidialogerForSaken = minidialogerData
-        ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
-        : undefined;
+    const aktiveMinidialogerForSaken =
+        minidialogerData && minidialogerData instanceof Array
+            ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
+            : undefined;
 
     return (
         <div className={bem.block}>

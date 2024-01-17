@@ -9,10 +9,11 @@ import { BrowserRouter } from 'react-router-dom';
 import Api from './api/api';
 import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import './styles/app.css';
-import { erMyndig, erKvinne } from '@navikt/fp-common';
+import { erMyndig, erKvinne, useDocumentTitle } from '@navikt/fp-common';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
 import { LocaleNo } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
+import { useIntl } from 'react-intl';
 
 interface Props {
     locale: LocaleNo;
@@ -26,6 +27,9 @@ const renderSpinner = () => (
 );
 
 const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+    const intl = useIntl();
+    useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
+
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
     const { dispatch, state } = useSvangerskapspengerContext();
 

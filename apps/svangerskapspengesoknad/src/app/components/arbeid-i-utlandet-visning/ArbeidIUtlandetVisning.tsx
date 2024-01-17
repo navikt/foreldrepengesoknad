@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
 import './arbeid-i-utlandet-visning.css';
-import { BodyShort, Button, Label } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { PencilWritingIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 
@@ -29,7 +29,7 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
         <div>
             <Block padBottom="l">
                 <div className={bem.block}>
-                    <Label className={bem.element('tittel')}>{arbeidIUtlandet.arbeidsgiverNavn}</Label>
+                    <BodyShort className={bem.element('tittel')}>{arbeidIUtlandet.arbeidsgiverNavn}</BodyShort>
 
                     <BodyShort className={bem.element('land')}>
                         {getCountryName(arbeidIUtlandet.land, intl.locale)}

@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
-import { BodyLong, Label, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { I18nFn, FileUploader, useCustomIntl } from '@navikt/fp-ui';
@@ -26,7 +26,7 @@ const isUtstedtDatoIUke22 = (termindato: string, i18n: I18nFn) => (terminBekreft
 
 interface Props {
     attachments?: Attachment[];
-    updateAttachments: (attachments: Attachment[]) => void;
+    updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
     omBarnet: BarnetErIkkeFødt;
 }
 
@@ -51,9 +51,9 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
             />
             <VStack gap="4">
                 <div>
-                    <Label>
+                    <BodyShort style={{ fontWeight: 'bold' }}>
                         <FormattedMessage id="TerminDokPanel.Vedlegg.Terminbekreftelse" />
-                    </Label>
+                    </BodyShort>
                     <BodyLong>
                         <FormattedMessage id="TerminDokPanel.Vedlegg.Terminbekreftelse.Info" />
                     </BodyLong>

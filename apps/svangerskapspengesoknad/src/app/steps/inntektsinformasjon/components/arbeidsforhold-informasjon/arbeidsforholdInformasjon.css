@@ -7,6 +7,10 @@
     border-radius: 0.25rem;
 }
 
+.arbeidsforholdInfoBox__name {
+    font-weight: bold;
+}
+
 .arbeidsforholdInfoBox__arbeidsforholdList {
     list-style: none;
     padding: 0;

@@ -62,7 +62,7 @@ const Step: React.FunctionComponent<StepProps> = ({
             {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
             {showStepIndicator && (
                 <Block padBottom="xxl">
-                    <div role="presentation" aria-hidden={true}>
+                    <div role="presentation">
                         <ProgressStepper
                             steps={steps}
                             currentStepIndex={currentStepIndex}

@@ -106,7 +106,7 @@ describe('<ArbeidIUtlandet>', () => {
 
         expect(await screen.findByText('Når startet du i jobben?')).toBeInTheDocument();
         const startdatoInput = screen.getByLabelText('Når startet du i jobben?');
-        await userEvent.type(startdatoInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
+        await userEvent.type(startdatoInput, dayjs('2053-12-30').format('DD.MM.YYYY'));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -161,8 +161,8 @@ describe('<ArbeidIUtlandet>', () => {
 
         expect(screen.getByDisplayValue('Arbeidsgivernavn')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Slett perioden', { exact: false })[0]).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Slett perioden')[0]);
+        expect(screen.getAllByText('Fjern perioden', { exact: false })[0]).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Fjern perioden')[0]);
 
         expect(screen.queryByDisplayValue('Arbeidsgivernavn')).not.toBeInTheDocument();
     });

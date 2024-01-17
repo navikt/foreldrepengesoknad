@@ -1,5 +1,5 @@
 import { Button } from '@navikt/ds-react';
-import { Block, Step, StepButtonWrapper, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
+import { Block, Step, StepButtonWrapper, bemUtils, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import actionCreator from 'app/context/action/actionCreator';
 import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
@@ -25,7 +25,7 @@ import {
 } from './arbeidIUtlandetFormUtils';
 import dayjs from 'dayjs';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
-import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
+import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import {
     validateArbeidIUtlandetFom,
     validateArbeidIUtlandetLand,
@@ -35,8 +35,10 @@ import {
 } from './arbeidIUtlandetValidation';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
+import './arbeidIUtlandet.css';
 
 const ArbeidIUtlandetStep: React.FunctionComponent = () => {
+    const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
     const { arbeidsforhold } = useSøkerinfo();
     const søknad = useSøknad();
@@ -81,7 +83,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                     formValues.arbeidIUtlandet.length > 0 &&
                                     formValues.arbeidIUtlandet.map((_a, index) => (
                                         <div key={index}>
-                                            <Block padBottom="xxl">
+                                            <Block padBottom="xxl" className={bem.element('countrySelect')}>
                                                 <ArbeidIUtlandetFormComponents.CountrySelect
                                                     name={`arbeidIUtlandet.${index}.land`}
                                                     style={{ width: 'var(--app-text-input-width)' }}
@@ -89,6 +91,17 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                     useAlpha3Code={false}
                                                     validate={validateArbeidIUtlandetLand(intl)}
                                                 />
+                                                {index !== 0 && (
+                                                    <Button
+                                                        className={bem.element('delete')}
+                                                        icon={<XMarkIcon aria-hidden />}
+                                                        type="button"
+                                                        variant="tertiary"
+                                                        onClick={() => arrayHelpers.remove(index)}
+                                                    >
+                                                        {intlUtils(intl, 'perioder.varierende.slett')}
+                                                    </Button>
+                                                )}
                                             </Block>
                                             <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.TextField
@@ -106,7 +119,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                 <ArbeidIUtlandetFormComponents.DatePicker
                                                     name={`arbeidIUtlandet.${index}.fom`}
                                                     label={intlUtils(intl, 'arbeidIUtlandet.fom')}
-                                                    placeholder="dd.mm.åååå"
+                                                    placeholder={'dd.mm.åååå'}
                                                     fullscreenOverlay={true}
                                                     showYearSelector={true}
                                                     validate={validateArbeidIUtlandetFom(
@@ -132,7 +145,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                     name={`arbeidIUtlandet.${index}.tom`}
                                                     label={intlUtils(intl, 'arbeidIUtlandet.tom')}
                                                     description={intlUtils(intl, 'egenNæring.arbeid.tom.description')}
-                                                    placeholder="dd.mm.åååå"
+                                                    placeholder={'dd.mm.åååå'}
                                                     fullscreenOverlay={true}
                                                     showYearSelector={true}
                                                     validate={validateArbeidIUtlandetTom(
@@ -146,18 +159,6 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                     )}
                                                 />
                                             </Block>
-                                            {index !== 0 && (
-                                                <Block>
-                                                    <Button
-                                                        icon={<TrashIcon />}
-                                                        type="button"
-                                                        variant="tertiary"
-                                                        onClick={() => arrayHelpers.remove(index)}
-                                                    >
-                                                        {intlUtils(intl, 'perioder.varierende.slett')}
-                                                    </Button>
-                                                </Block>
-                                            )}
                                             {formValues.arbeidIUtlandet && formValues.arbeidIUtlandet.length > 1 && (
                                                 <HorizontalLine />
                                             )}
@@ -165,7 +166,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                 index === formValues.arbeidIUtlandet.length - 1 && (
                                                     <Block padBottom="xl">
                                                         <Button
-                                                            icon={<PlusIcon />}
+                                                            icon={<PlusIcon aria-hidden />}
                                                             type="button"
                                                             variant="secondary"
                                                             onClick={() =>

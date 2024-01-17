@@ -14,8 +14,10 @@
     "UtenlandsoppholdSteg.Info.Del4": "Du er ikke lenger medlem i folketrygden når du regnes som bosatt i utlandet.",
     "UtenlandsoppholdSteg.Info.Undertittel": "Ferie og midlertidig opphold i utlandet",
     "UtenlandsoppholdSteg.Info.Del5": "Når du er på ferie i utlandet regnes du som turist og beholder medlemskapet i folketrygden, dersom du ikke har arbeidsinntekt under oppholdet og oppholdet ikke varer lenger enn 12 måneder. Så lenge du er medlem i folketrygden beholder du som hovedregel ytelsen.",
-    "UtenlandsoppholdSteg.Info.Del6": "Du kan lese mer om utenlandsopphold på",
-
+    "UtenlandsoppholdSteg.Info.Del6": "Du kan lesa meir om ",
+    "UtenlandsoppholdSteg.Info.Del7.fp": "foreldrepengar og utanlandsopphald.",
+    "UtenlandsoppholdSteg.Info.Del7.es": "eingongsstønad og utanlandsopphald.",
+    "UtenlandsoppholdSteg.Info.Del7.svp": "svangerskapspengar og utanlandsopphald.",
     "TidligereUtenlandsoppholdSteg.Knapp.LeggTilLand": "Legg til flere opphold i utlandet",
     "TidligereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp": "Det kan ikkje vere fleire utenlandsopphold i same periode",
     "TidligereUtenlandsoppholdSteg.Spørsmål.HvilketLandHarDuBoddI": "Kva land budde du i?",

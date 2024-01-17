@@ -11,7 +11,7 @@ import {
     Link,
     VStack,
 } from '@navikt/ds-react';
-import { LanguageToggle, useDocumentTitle } from '@navikt/fp-common';
+import { LanguageToggle } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { LocaleAll } from '@navikt/fp-types';
 import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
@@ -34,8 +34,6 @@ const Velkommen: FunctionComponent<Props> = ({
     mellomlagreOgNaviger,
 }) => {
     const { i18n } = useCustomIntl();
-
-    useDocumentTitle(i18n('Velkommen.Dokumenttittel'));
 
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
@@ -70,7 +68,7 @@ const Velkommen: FunctionComponent<Props> = ({
                         </BodyShort>
                         <BodyShort>
                             <FormattedMessage id="Velkommen.Ingress.Del2" />
-                            <Link href={links.farMedmor} target="_blank">
+                            <Link href={links.farMedmor}>
                                 <FormattedMessage id="Velkommen.Bobletekst.Del2.link" />
                             </Link>
                         </BodyShort>
@@ -87,7 +85,7 @@ const Velkommen: FunctionComponent<Props> = ({
                         <BodyShort>
                             <FormattedMessage id="Velkommen.Ingress.Del3" />
                         </BodyShort>
-                        <Link href={links.engangsstonad} target="_blank">
+                        <Link href={links.engangsstonad}>
                             <BodyShort>
                                 <FormattedMessage id="Velkommen.Ingress.Link" />
                             </BodyShort>
@@ -119,12 +117,12 @@ const Velkommen: FunctionComponent<Props> = ({
                                     <FormattedMessage id="Velkommen.Info.Del5" />
                                 </BodyShort>
                                 <BodyShort>
-                                    <Link href={links.barn} target="_blank">
+                                    <Link href={links.barn}>
                                         <FormattedMessage id="Velkommen.Info.Del5.Link" />
                                     </Link>
                                 </BodyShort>
                             </HStack>
-                            <Link href={links.veiviser} target="_blank">
+                            <Link href={links.veiviser}>
                                 <FormattedMessage id="Velkommen.Info.Veiviser.Link" />
                             </Link>
                         </VStack>
@@ -142,7 +140,7 @@ const Velkommen: FunctionComponent<Props> = ({
                                 <FormattedMessage id="Velkommen.Plikter.ApneLabel" />
                             </BodyShort>
                             <BodyShort>
-                                <Link href={links.plikter} target="_blank" style={{ color: 'var(--a-text-action)' }}>
+                                <Link href={links.plikter} style={{ color: 'var(--a-text-action)' }}>
                                     <FormattedMessage id="Velkommen.LestOgForstått.Link" />
                                 </Link>
                             </BodyShort>

@@ -18,7 +18,12 @@ interface Props {
 const ErrorSummaryFp: FunctionComponent<Props> = ({ errorRef, errors }) => {
     return (
         <UiIntlProvider>
-            <ErrorSummary size="small" ref={errorRef} heading={<FormattedMessage id={'ErrorSummaryFp.Tittel'} />}>
+            <ErrorSummary
+                size="small"
+                ref={errorRef}
+                headingTag="h3"
+                heading={<FormattedMessage id={'ErrorSummaryFp.Tittel'} />}
+            >
                 {Object.values(errors).map((error) => (
                     <ErrorSummary.Item
                         key={error.message}

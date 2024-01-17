@@ -38,7 +38,6 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.UTTAKSPLAN, søknad.uttaksplan);
         oppdaterData(ContextDataType.UTTAKSPLAN_METADATA, {
             dekningsgrad: søknad.dekningsgrad,
-            tilleggsopplysninger: søknad.tilleggsopplysninger,
             ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
         });
 

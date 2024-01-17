@@ -1,15 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import MockAdapter from 'axios-mock-adapter/types';
-import {
-    AnnenForelder,
-    Barn,
-    BarnType,
-    Dekningsgrad,
-    ISOStringToDate,
-    Periode,
-    Tilleggsopplysninger,
-} from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import withRouter from 'storybook/decorators/withRouter';
@@ -109,7 +101,6 @@ interface Props {
     søker?: Søker;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
-    tilleggsopplysninger: Tilleggsopplysninger;
     utenlandsopphold?: Opphold;
     utenlandsoppholdSenere?: SenereOpphold;
     utenlandsoppholdTidligere?: TidligereOpphold;
@@ -126,7 +117,6 @@ const Template: StoryFn<Props> = ({
     søkersituasjon = defaultSøkersituasjon,
     søker = defaultSøker,
     annenForelder = defaultAnnenForelder,
-    tilleggsopplysninger,
     barn = defaultBarn,
     utenlandsopphold = defaultUtenlandsopphold,
     utenlandsoppholdSenere,
@@ -149,7 +139,6 @@ const Template: StoryFn<Props> = ({
                     [ContextDataType.ANNEN_FORELDER]: annenForelder,
                     [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                     [ContextDataType.UTTAKSPLAN_METADATA]: {
-                        tilleggsopplysninger,
                         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
                         ønskerJustertUttakVedFødsel: false,
                         harUttaksplanBlittSlettet: false,
@@ -236,11 +225,7 @@ FarMedUførMor.args = {
         kanIkkeOppgis: false,
         erUfør: true,
     },
-    tilleggsopplysninger: {
-        begrunnelseForSenEndring: {
-            tekst: 'Utsettelsesgrunn',
-        },
-    },
+
     søkerinfo,
 };
 

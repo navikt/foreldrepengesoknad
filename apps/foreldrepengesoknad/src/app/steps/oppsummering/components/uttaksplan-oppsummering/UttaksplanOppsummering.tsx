@@ -5,7 +5,6 @@ import {
     NavnPåForeldre,
     Periode,
     Situasjon,
-    Tilleggsopplysning,
     intlUtils,
 } from '@navikt/fp-common';
 
@@ -29,7 +28,6 @@ interface Props {
     erAleneOmOmsorg: boolean;
     antallBarn: number;
     ønskerJustertUttakVedFødsel: boolean | undefined;
-    begrunnelseForSenEndring?: Tilleggsopplysning;
     eksisterendeUttaksplan?: Periode[];
 }
 

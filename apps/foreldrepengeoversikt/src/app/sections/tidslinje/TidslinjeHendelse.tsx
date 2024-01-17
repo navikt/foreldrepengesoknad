@@ -99,8 +99,10 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
             )}
         >
             <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>
-                {dayjs(date).isSameOrBefore(dayjs(), 'd') && <RecordFillIcon width="20" height="20" />}
-                {dayjs(date).isAfter(dayjs(), 'd') && <RecordIcon width="20" height="20" />}
+                {dayjs(date).isSameOrBefore(dayjs(), 'd') && (
+                    <RecordFillIcon width="20" height="20" aria-hidden={true} />
+                )}
+                {dayjs(date).isAfter(dayjs(), 'd') && <RecordIcon width="20" height="20" aria-hidden={true} />}
             </div>
 
             <div className={bem.element('tekst')}>

@@ -64,16 +64,16 @@ export const validateEgenNæringTom =
     };
 
 export const validateEgenNæringOrgnr =
-    (intl: IntlShape) =>
+    (intl: IntlShape, erValgfri: boolean) =>
     (orgnr: string): SkjemaelementFeil => {
         const trimmedOrgNr = orgnr.trim();
-        if (!hasValue(trimmedOrgNr)) {
+        if (!erValgfri && !hasValue(trimmedOrgNr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.påkrevd');
         }
-        if (containsWhiteSpace(trimmedOrgNr)) {
+        if (trimmedOrgNr.length > 0 && containsWhiteSpace(trimmedOrgNr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.inneholderMellomrom');
         }
-        if (!erGyldigNorskOrgnummer(trimmedOrgNr)) {
+        if (trimmedOrgNr.length > 0 && !erGyldigNorskOrgnummer(trimmedOrgNr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.ugyldigFormat');
         }
 
@@ -175,8 +175,8 @@ export const validateEgenNæringVarigEndringBeskrivelse = (intl: IntlShape, labe
     return validateTextInputField(value, label, intl);
 };
 
-export const validateEgenNæringNavn = (intl: IntlShape, label: string) => (value: string) => {
-    if (!hasValue(value)) {
+export const validateEgenNæringNavn = (intl: IntlShape, label: string, erValgfri: boolean) => (value: string) => {
+    if (!erValgfri && !hasValue(value)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringNavn.påkrevd');
     }
     if (value.length > 100) {
@@ -188,6 +188,9 @@ export const validateEgenNæringNavn = (intl: IntlShape, label: string) => (valu
 export const validateEgenNæringLand = (intl: IntlShape) => (value: string) => {
     if (!hasValue(value)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringLand.påkrevd');
+    }
+    if (hasValue(value) && value === 'NO') {
+        return intlUtils(intl, 'valideringsfeil.egenNæringLand.ikkeNorge');
     }
     return undefined;
 };

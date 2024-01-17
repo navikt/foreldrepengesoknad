@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
 import './egen-næring-visning.css';
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 
 interface Props {
@@ -23,7 +23,7 @@ const EgenNæringVisning: FunctionComponent<Props> = ({ næring }) => {
             <Block padBottom="l">
                 <div className={bem.block}>
                     <div className={bem.element('data')}>
-                        <Label className={bem.element('tittel')}>{næring.navnPåNæringen}</Label>
+                        <BodyShort className={bem.element('tittel')}>{næring.navnPåNæringen}</BodyShort>
                         {næring.registrertINorge && (
                             <BodyShort className={bem.element('orgnr')}>
                                 {intlUtils(intl, 'egenNæring.visning.orgnr', {

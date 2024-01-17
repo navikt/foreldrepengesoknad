@@ -58,7 +58,9 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }
                     <div key={`${p.displayName}-content`} className={bem.element('flex-align')}>
                         {p.isExternalLink ? (
                             <DSLink key={p.displayName} className={bem.element('link-wrapper')} href={p.route}>
-                                {erNavHomeLink && <Home width="24" height="24" style={{ marginRight: '0.5rem' }} />}
+                                {erNavHomeLink && (
+                                    <Home width="24" height="24" style={{ marginRight: '0.5rem' }} aria-hidden={true} />
+                                )}
                                 <BodyShort>{p.displayName}</BodyShort>
                             </DSLink>
                         ) : (
@@ -70,7 +72,7 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }
                                 <BodyShort>{p.displayName}</BodyShort>
                             </Link>
                         )}
-                        {!lastBreadcrumb && <ChevronRightIcon className={bem.element('chevron')} />}
+                        {!lastBreadcrumb && <ChevronRightIcon className={bem.element('chevron')} aria-hidden={true} />}
                     </div>
                 );
             })}

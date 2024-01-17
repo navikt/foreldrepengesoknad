@@ -33,7 +33,7 @@ import {
     validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
 } from './egenNæringValidation';
-import OrgnummerEllerLand from '../../components/egen-næring-visning/OrgnummerEllerLand';
+import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
@@ -70,13 +70,17 @@ const EgenNæringStep: React.FunctionComponent = () => {
 
     const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
     const onAvbrytSøknad = useAvbrytSøknad();
-    const navnPåNæringLabel = intlUtils(intl, 'egenNæring.navnPåNæring');
+    const navnPåNæringSpm = intlUtils(intl, 'egenNæring.navnPåNæring');
     return (
         <EgenNæringFormComponents.FormikWrapper
             initialValues={getInitialEgenNæringFormValues(søker.selvstendigNæringsdrivendeInformasjon)}
             onSubmit={handleSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = egenNæringFormQuestionsConfig.getVisbility(formValues as EgenNæringFormData);
+                const navnPåNæringLabel =
+                    formValues.egenNæringType === Næringstype.FISKER
+                        ? `${navnPåNæringSpm} ${intlUtils(intl, 'valgfritt')}`
+                        : navnPåNæringSpm;
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
@@ -91,6 +95,11 @@ const EgenNæringStep: React.FunctionComponent = () => {
                             includeValidationSummary={true}
                             cleanup={(values) => cleanupEgenNæringFormData(values, visibility)}
                         >
+                            <Block padBottom="xl">
+                                <BodyShort>
+                                    <FormattedMessage id="harValgfrieFelt" />
+                                </BodyShort>
+                            </Block>
                             <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringType)}>
                                 <EgenNæringFormComponents.RadioGroup
                                     name={EgenNæringFormField.egenNæringType}
@@ -127,7 +136,11 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     label={navnPåNæringLabel}
                                     style={{ width: 'var(--app-text-input-width)' }}
                                     maxLength={100}
-                                    validate={validateEgenNæringNavn(intl, navnPåNæringLabel)}
+                                    validate={validateEgenNæringNavn(
+                                        intl,
+                                        navnPåNæringLabel,
+                                        formValues.egenNæringType === Næringstype.FISKER,
+                                    )}
                                 />
                             </Block>
                             <Block
@@ -147,14 +160,17 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                     }
                                 />
                             </Block>
-                            <OrgnummerEllerLand visibility={visibility} />
+                            <OrgnummerEllerLand
+                                visibility={visibility}
+                                orgNummerErValgfritt={formValues.egenNæringType === Næringstype.FISKER}
+                            />
                             <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringFom)}>
                                 <EgenNæringFormComponents.DatePicker
                                     name={EgenNæringFormField.egenNæringFom}
                                     label={intlUtils(intl, 'egenNæring.næring.fom', {
                                         navnPåNæringen: formValues.egenNæringNavn,
                                     })}
-                                    placeholder="dd.mm.åååå"
+                                    placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringFom(intl, formValues.egenNæringTom!)}
@@ -186,7 +202,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                         navnPåNæringen: formValues.egenNæringNavn,
                                     })}
                                     description={intlUtils(intl, 'egenNæring.næring.tom.description')}
-                                    placeholder="dd.mm.åååå"
+                                    placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringTom(intl, formValues.egenNæringFom!)}
@@ -243,7 +259,7 @@ const EgenNæringStep: React.FunctionComponent = () => {
                                 <EgenNæringFormComponents.DatePicker
                                     name={EgenNæringFormField.egenNæringYrkesAktivDato}
                                     label={intlUtils(intl, 'egenNæring.yrkesaktivDato')}
-                                    placeholder="dd.mm.åååå"
+                                    placeholder={'dd.mm.åååå'}
                                     fullscreenOverlay={true}
                                     showYearSelector={true}
                                     validate={validateEgenNæringYrkesAktivDatoDato(intl)}

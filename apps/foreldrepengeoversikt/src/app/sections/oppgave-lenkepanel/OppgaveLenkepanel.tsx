@@ -23,7 +23,7 @@ const OppgaveLenkepanel: React.FunctionComponent<Props> = ({ tittel, minidialogI
                 className={bem.element('linkPanel')}
             >
                 <div className={bem.element('content')}>
-                    <DialogReport className={bem.element('icon')}></DialogReport>
+                    <DialogReport className={bem.element('icon')} aria-hidden={true}></DialogReport>
                     <div>
                         <LinkPanel.Title as="h3" className={bem.element('title')}>
                             {tittel}

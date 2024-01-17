@@ -84,7 +84,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
     const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const termindatoDate = ISOStringToDate(termindato);
-    const navnArbeidsgiver = currentTilrettelegging!.arbeidsforhold.navn;
+    const navnArbeidsgiver =
+        currentTilrettelegging!.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
+        currentTilrettelegging!.arbeidsforhold.navn.trim().length === 0
+            ? intlUtils(intl, 'egenNæring').toLowerCase()
+            : currentTilrettelegging!.arbeidsforhold.navn;
     const onValidSubmitHandler = (values: Partial<TilretteleggingFormData>) => {
         const mappedTilrettelegging = mapOmTilretteleggingFormDataToState(
             id,
@@ -344,6 +348,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
                                     dayPickerProps={{ defaultMonth: defaultMonthPeriodeFom }}
+                                    placeholder={'dd.mm.åååå'}
                                 />
                             </Block>
 
@@ -390,12 +395,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({ navn, id, typeArbeid })
                                         kanHaSVPFremTilTreUkerFørTermin,
                                     )}
                                     dayPickerProps={{ defaultMonth: defaultMonthTilbakeIJobb }}
+                                    placeholder={'dd.mm.åååå'}
                                 />
                             </Block>
                             <Block padBottom="xxl">
                                 <ExpansionCard size="small" aria-label="">
                                     <ExpansionCard.Header>
-                                        <ExpansionCard.Title size="small" as="h2">
+                                        <ExpansionCard.Title size="small" as="h3">
                                             <FormattedMessage id="tilrettelegging.expansion.tittel" />
                                         </ExpansionCard.Title>
                                     </ExpansionCard.Header>

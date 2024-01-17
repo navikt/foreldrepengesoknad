@@ -63,7 +63,7 @@ const EgenNæringModal: FunctionComponent<Props> = ({
     );
 
     return (
-        <Modal width="medium" open={isOpen} aria-label={title} onClose={onRequestClose}>
+        <Modal portal width="medium" open={isOpen} aria-label={title} onClose={onRequestClose}>
             <Modal.Header>
                 <Heading size="small">
                     <FormattedMessage id="inntektsinformasjon.egenNæringModal.tittel" />

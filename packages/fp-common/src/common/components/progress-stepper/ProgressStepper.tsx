@@ -128,6 +128,7 @@ const ProgressStepper: React.FunctionComponent<ProgressStepperProps> = ({
                         className="navds-read-more__button navds-body-short"
                         aria-controls={contentContainerID}
                         aria-expanded={allStepsVisible}
+                        aria-label={allStepsVisible ? 'Skjul stegene' : 'Se alle steg'}
                         onClick={() => {
                             setAllStepsVisible(!allStepsVisible);
                         }}

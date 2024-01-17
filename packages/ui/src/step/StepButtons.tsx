@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useState } from 'react';
+import { FunctionComponent } from 'react';
 import { StepButtonWrapper } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
 import { Button } from '@navikt/ds-react';
@@ -7,24 +7,16 @@ import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 interface Props {
     goToPreviousStep: () => void;
     nextButtonText?: string;
-    nextButtonOnClick?: (setButtonsDisabled: (isDisabled: boolean) => void) => void;
-    isSubmitting: boolean;
+    nextButtonOnClick?: () => void;
+    isDisabledAndLoading: boolean;
 }
 
 const StepButtons: FunctionComponent<Props> = ({
     goToPreviousStep,
     nextButtonText,
     nextButtonOnClick,
-    isSubmitting,
+    isDisabledAndLoading,
 }) => {
-    const [disabled, setDisabled] = useState(false);
-
-    const onClickNextButton = useCallback(() => {
-        if (nextButtonOnClick) {
-            nextButtonOnClick((d: boolean) => setDisabled(d));
-        }
-    }, [nextButtonOnClick]);
-
     return (
         <UiIntlProvider>
             <StepButtonWrapper>
@@ -33,9 +25,9 @@ const StepButtons: FunctionComponent<Props> = ({
                 </Button>
                 <Button
                     type={nextButtonOnClick ? 'button' : 'submit'}
-                    onClick={onClickNextButton}
-                    disabled={disabled}
-                    loading={isSubmitting}
+                    onClick={nextButtonOnClick}
+                    disabled={isDisabledAndLoading}
+                    loading={isDisabledAndLoading}
                 >
                     {nextButtonText !== undefined && nextButtonText}
                     {!nextButtonText && <FormattedMessage id={'StepButtons.Neste'} />}

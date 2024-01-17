@@ -1,13 +1,13 @@
 {
+    "Søknad.Pagetitle": "Søknad om eingongsstønad",
     "Søknad.Pageheading": "Søknad om eingongsstønad",
 
-    "Velkommen.Dokumenttittel": "NAV eingongsstønad",
     "Velkommen.Ingress.Del1": "Eingongsstønad kan du få om du ventar barn og ikkje har hatt inntekt som gjev rett til foreldrepengar i 6 av dei siste 10 månadene. Med eingongsstønad får du heile beløpet utbetalt med ein gong. Om du har foreldrepenger får du penger ein gong i månaden.",
     "Velkommen.Ingress.Del2": "Det er fyrst og fremst mødre som kan søkje om eingongsstønad, men far/medmor kan få eingongsstønad i nokre tilfeller, desse er skildra ",
     "Velkommen.Ingress.Del3": "Du kan søkja på foreldrepenger i staden for eingongsstønad dersom du har hatt inntekt, vore i militæret eller har motteke nokon av desse ytelsane frå nav: arbeidsavklaringspenger, dagpenger, sjukepenger, pleie- eller omsorgspenger. Foreldrepenger er ein skattepliktig ytelse som vil seie at det gir deg opptjening til pensjon og kan gje deg rett på andre ytelser som til dømes sjukepenger og pleiepenger.",
     "Velkommen.Bobletekst.Del1": "Huks at om barnet ikkje er født enno må du leggja ved terminbekreftelse",
     "Velkommen.Bobletekst.Del2": "Om du adopterer eit barn må du leggja ved ei stadfesting på adopsjon",
-    "Velkommen.Bobletekst.Del2.link": "her",
+    "Velkommen.Bobletekst.Del2.link": "her.",
     "Velkommen.Ingress.Link": "Meir om eingongsstønad",
     "Velkommen.Info.Header": "Velje eingongsstønad eller foreldrepenger?",
     "Velkommen.Info.Del1": "Du kan velje å søkja om eingongsstønad sjølv om du har rett til foreldrepenger. Vær merksam på at når du har fått vedtaket ditt om innvilgelse av eingongsstønad, kan du ikkje gjera om på dette valget.",
@@ -19,8 +19,8 @@
     "Velkommen.Info.Veiviser.Link": "Bruk veiviseren for å sjå kva du kan ha rett på",
     "Velkommen.Samtykke": "Ja, eg forstått mine plikter.",
     "Velkommen.Validering.BekreftLestOgForståttRettigheter": "Du må stadfeste at du har lese og forstått",
-    "Velkommen.Plikter.ApneLabel": "Pliktene dine for å motta engangsstønad kan du lesa om",
-    "Velkommen.LestOgForstått.Link": "her",
+    "Velkommen.Plikter.ApneLabel": "Du har plikt til å",
+    "Velkommen.LestOgForstått.Link": "gi NAV rette opplysningar og melda frå om endringar.",
     "Velkommen.KunEnStønad": "Vel du å søkja om eingongsstønad kan du ikkje ombestemme deg seinare og heller søkja om foreldrepenger.",
     "Velkommen.StartSøknad": "Start søknaden",
 

@@ -96,7 +96,7 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                                         </BodyLong>
                                     </VStack>
                                     <VStack gap="5">
-                                        <Heading size="small">
+                                        <Heading size="small" level="4">
                                             <FormattedMessage id="UtenlandsoppholdSteg.Info.Undertittel" />
                                         </Heading>
                                         <BodyLong>
@@ -108,13 +108,18 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                                             </BodyShort>
                                             <BodyShort>
                                                 {stønadstype === 'Engangsstønad' && (
-                                                    <Link href={links.engangsstonadHvem}>
-                                                        nav.no/engangsstonad#hvem
+                                                    <Link href={links.engangsstonadHvem} target="_blank">
+                                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del7.es" />
                                                     </Link>
                                                 )}
                                                 {stønadstype === 'Foreldrepenger' && (
-                                                    <Link href={links.foreldrepengerUtland}>
-                                                        nav.no/foreldrepenger#utland
+                                                    <Link href={links.foreldrepengerUtland} target="_blank">
+                                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del7.fp" />
+                                                    </Link>
+                                                )}
+                                                {stønadstype === 'Svangerskapspenger' && (
+                                                    <Link href={links.svangerskapspengerUtland} target="_blank">
+                                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del7.svp" />
                                                     </Link>
                                                 )}
                                             </BodyShort>

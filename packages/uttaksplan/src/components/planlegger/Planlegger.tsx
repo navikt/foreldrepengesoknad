@@ -101,7 +101,9 @@ const Planlegger: FunctionComponent<Props> = ({
                         <section>
                             <div className={bem.element('tittel')}>
                                 <div className={bem.element('tittelLinkWrapper')}>
-                                    <Heading size="medium">{intlUtils(intl, 'uttaksplan.dinPlan')}</Heading>
+                                    <Heading size="medium" level="3">
+                                        {intlUtils(intl, 'uttaksplan.dinPlan')}
+                                    </Heading>
                                     {erEndringssøknad && (
                                         <ActionLink
                                             onClick={() => setResetUttaksplanModalOpen(true)}

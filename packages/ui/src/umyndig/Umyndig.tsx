@@ -39,12 +39,12 @@ const Umyndig: React.FunctionComponent<Props> = ({ appnavn }) => {
         <UiIntlProvider>
             <ContentWrapper>
                 <VStack gap="10">
-                    <Heading level="1" size="xlarge">
+                    <Heading level="2" size="xlarge">
                         {titleText}
                     </Heading>
                     <GuidePanel poster>
                         <VStack gap="8">
-                            <Heading level="2" size="small">
+                            <Heading level="3" size="small">
                                 <FormattedMessage id="Umyndig.Tittel" />
                             </Heading>
                             <FormattedMessage id="Umyndig.Tekst" />

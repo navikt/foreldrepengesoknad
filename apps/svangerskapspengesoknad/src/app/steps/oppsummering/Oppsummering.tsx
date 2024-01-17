@@ -38,6 +38,7 @@ import AccordionContent from 'app/components/accordion/AccordionContent';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
 import { useAbortSignal } from '@navikt/fp-api';
 import './oppsummering.css';
+import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
 
 const Oppsummering = () => {
     useUpdateCurrentTilretteleggingId(undefined);
@@ -202,6 +203,11 @@ const Oppsummering = () => {
                                                 </Block>
                                             </AccordionContent>
                                         </AccordionItem>
+                                        <AccordionItem title={intlUtils(intl, 'oppsummering.skjema')}>
+                                            <AccordionContent>
+                                                <VedleggOppsummering tilrettelegging={søknad.tilrettelegging} />
+                                            </AccordionContent>
+                                        </AccordionItem>
                                         <AccordionItem
                                             title={intlUtils(intl, 'oppsummering.periodeMedSvangerskapspenger')}
                                         >
@@ -270,7 +276,7 @@ const Oppsummering = () => {
                                                 <FormattedMessage id="backlink.label" />
                                             </Button>
                                             <Button
-                                                icon={<PaperplaneIcon />}
+                                                icon={<PaperplaneIcon aria-hidden />}
                                                 iconPosition="right"
                                                 type="submit"
                                                 disabled={formSubmitted}

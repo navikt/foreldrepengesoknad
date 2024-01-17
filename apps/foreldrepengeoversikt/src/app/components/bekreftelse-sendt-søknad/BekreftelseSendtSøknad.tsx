@@ -50,10 +50,10 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
                 `${bem.block} ${oppdatertData ? bem.modifier('bigMargin') : bem.modifier('smallMargin')}`,
             )}
         >
-            <VStack gap={'7'}>
+            <VStack gap={'4'}>
                 <HStack>
                     <div className={bem.element('ikon-box')}>
-                        <CheckmarkIcon className={bem.element('ikon')}></CheckmarkIcon>
+                        <CheckmarkIcon className={bem.element('ikon')} aria-hidden={true}></CheckmarkIcon>
                     </div>
                     <VStack>
                         <BodyShort
@@ -70,13 +70,13 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
                     </VStack>
                 </HStack>
                 {relevantDokument && (
-                    <div className={bem.element('dokument')}>
+                    <ul className={bem.element('dokument')}>
                         <DokumentHendelse
                             dokument={relevantDokument}
                             key={relevantDokument.url}
                             visesITidslinjen={false}
                         />
-                    </div>
+                    </ul>
                 )}
                 <KontonummerInfo ytelse={ytelse} bankkonto={bankkonto} />
             </VStack>

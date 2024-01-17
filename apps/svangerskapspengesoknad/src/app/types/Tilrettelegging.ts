@@ -1,6 +1,6 @@
 import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
 import { ArbeidsforholdDTO } from './Arbeidsforhold';
-import { Attachment } from './Attachment';
+import { Attachment } from '@navikt/fp-types';
 
 export enum TilretteleggingstypeOptions {
     'INGEN' = 'ingen',
@@ -47,7 +47,6 @@ export interface TilretteleggingPeriode {
     tom: string;
     stillingsprosent: number;
     arbeidsforhold: ArbeidsforholdForTilrettelegging;
-    vedlegg: string[];
     risikofaktorer?: string;
     tilretteleggingstiltak?: string;
 }
@@ -80,7 +79,6 @@ interface TilretteleggingDTOBase {
     type: Tilretteleggingstype;
     behovForTilretteleggingFom: Date;
     arbeidsforhold: ArbeidsforholdDTO;
-    vedlegg: string[];
 }
 export interface DelvisTilretteleggingDTO extends TilretteleggingDTOBase {
     type: Tilretteleggingstype.DELVIS;

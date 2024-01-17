@@ -16,7 +16,7 @@ import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRo
 import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
 import { validatePeriodeFom, validatePeriodeTom, validatePeriodeTomType } from './perioderValidation';
 import { FieldArray } from 'formik';
-import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
+import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import {
     getDescriptionTekst,
@@ -155,7 +155,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         </Tag>
                                                         {index !== 0 && (
                                                             <Button
-                                                                icon={<TrashIcon />}
+                                                                icon={<XMarkIcon aria-hidden />}
                                                                 type="button"
                                                                 variant="tertiary"
                                                                 onClick={() => arrayHelpers.remove(index)}
@@ -181,6 +181,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
                                                         dayPickerProps={{ defaultMonth: defaultMonthFom }}
+                                                        placeholder={'dd.mm.åååå'}
                                                     />
                                                 </Block>
                                                 <Block padBottom="xxl">
@@ -224,6 +225,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         minDate={minDatoTom}
                                                         maxDate={maxDato}
                                                         dayPickerProps={{ defaultMonth: defaultMonthTom }}
+                                                        placeholder={'dd.mm.åååå'}
                                                     />
                                                 </Block>
                                                 <Block padBottom="xxl">
@@ -289,7 +291,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                     index === formValues.varierendePerioder.length - 1 && (
                                                         <Block padBottom="xl">
                                                             <Button
-                                                                icon={<PlusIcon />}
+                                                                icon={<PlusIcon aria-hidden />}
                                                                 type="button"
                                                                 variant="secondary"
                                                                 onClick={() =>

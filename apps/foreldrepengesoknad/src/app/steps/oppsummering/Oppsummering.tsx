@@ -33,7 +33,6 @@ import { validateHarGodkjentOppsummering } from './validation/oppsummeringValida
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -76,13 +75,8 @@ const Oppsummering: FunctionComponent<Props> = ({
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
-    const tilleggsopplysninger = uttaksplanMetadata.tilleggsopplysninger;
-
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, søkerErFarEllerMedmor, intl);
-    const begrunnelseForSenEndring = tilleggsopplysninger?.begrunnelseForSenEndring
-        ? beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring)
-        : undefined;
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -170,7 +164,6 @@ const Oppsummering: FunctionComponent<Props> = ({
                                             registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
                                             dekningsgrad={uttaksplanMetadata.dekningsgrad!}
                                             antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
-                                            begrunnelseForSenEndring={begrunnelseForSenEndring}
                                             eksisterendeUttaksplan={
                                                 eksisterendeSak ? eksisterendeSak.uttaksplan : undefined
                                             }
@@ -207,7 +200,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                                         }
                                     />
                                     <Button
-                                        icon={<PaperplaneIcon />}
+                                        icon={<PaperplaneIcon aria-hidden />}
                                         iconPosition="right"
                                         type="submit"
                                         disabled={isSubmitting}

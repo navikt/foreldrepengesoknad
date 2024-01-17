@@ -17,7 +17,7 @@ export interface EndringAvNæringsinntektInformasjonDTO {
 }
 
 export interface EgenNæring {
-    næringstyper: Næringstype[];
+    næringstype: Næringstype;
     tidsperiode: Tidsperiode;
     næringsinntekt?: string;
     pågående: boolean;
@@ -43,8 +43,12 @@ export interface EgenNæringDTO
         | 'varigEndringInntektEtterEndring'
         | 'varigEndringBeskrivelse'
         | 'næringsinntekt'
+        | 'næringstype'
+        | 'navnPåNæringen'
     > {
     tidsperiode: Partial<TidsperiodeDTOMedValgfriSluttdato>;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonDTO;
     næringsinntekt?: number;
+    næringstyper: Næringstype[];
+    navnPåNæringen: string | undefined;
 }

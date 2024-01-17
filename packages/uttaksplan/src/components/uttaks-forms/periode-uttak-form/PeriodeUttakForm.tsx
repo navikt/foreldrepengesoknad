@@ -341,7 +341,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     ugyldigeTidsperioder={undefined}
                                     utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(values) => {
-                                        toggleVisTidsperiode();
+                                        setTidsperiodeIsOpen(false);
                                         setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
                                         setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
                                     }}
@@ -352,7 +352,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                         }, 0);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
-                                    onAvbryt={() => toggleVisTidsperiode()}
+                                    onAvbryt={() => setTidsperiodeIsOpen(false)}
                                     visible={tidsperiodeIsOpen}
                                     termindato={termindato}
                                     erFarEllerMedmor={erFarEllerMedmor}

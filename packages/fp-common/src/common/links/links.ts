@@ -1,6 +1,6 @@
 export default {
     adoptere: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#adoptere',
-    rettOgPlikt: 'https://nav.no/rettOgPlikt',
+    rettOgPlikt: 'https://nav.no/endringer',
     fleksibeltuttak: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#samtidig',
     papirsøknad: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     viktigeFrister: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#soknadsfrister',

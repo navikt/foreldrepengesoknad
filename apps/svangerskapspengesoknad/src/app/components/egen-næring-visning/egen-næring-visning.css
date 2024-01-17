@@ -16,6 +16,7 @@
     grid-column: 1;
     grid-row: 1;
     margin-bottom: 0.5rem;
+    font-weight: bold;
 }
 
 .egen-næring-visning__orgnr {

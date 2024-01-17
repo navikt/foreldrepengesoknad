@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import * as countries from 'i18n-iso-countries';
-import { BodyLong, Label, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
 import { useCustomIntl, I18nFn } from '@navikt/fp-ui';
 import { formatDate, isBeforeToday, isToday } from '@navikt/fp-utils';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
@@ -32,7 +32,7 @@ const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdList
                     style={{ backgroundColor: 'var(--a-blue-100)', padding: '16px', borderRadius: '2px' }}
                 >
                     <VStack gap="1">
-                        <Label>
+                        <BodyShort style={{ fontWeight: 'bold' }}>
                             {isBeforeToday(opphold.fom) && (
                                 <FormattedMessage
                                     id="LandOppsummering.HarBodd"
@@ -45,7 +45,7 @@ const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdList
                                     values={{ country: countries.getName(opphold.landkode, 'nb') }}
                                 />
                             )}
-                        </Label>
+                        </BodyShort>
                         <BodyLong>
                             {formaterDato(opphold.fom, i18n)} - {formaterDato(opphold.tom, i18n)}
                         </BodyLong>

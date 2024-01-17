@@ -14,13 +14,13 @@ import SøknadRoutes from 'app/routes/routes';
 import {
     cleanupOmValgArbeidFormData,
     getInitialVelgArbeidFormValues,
+    getOptionNavn,
     mapArbeidsforholdToVelgArbeidOptions,
     validateVelgArbeidIsAnswered,
 } from './velgArbeidFormUtils';
 import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
 import { useMemo, useState } from 'react';
-import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+import Tilrettelegging from 'app/types/Tilrettelegging';
 import FlereArbeidsforholdGuidePanel from './components/guidepanel/FlereArbeidsforholdGuidePanel';
 
 const VelgArbeid: React.FunctionComponent = () => {
@@ -69,10 +69,11 @@ const VelgArbeid: React.FunctionComponent = () => {
                                     name={VelgArbeidFormField.arbeidMedTilrettelegging}
                                     legend={intlUtils(intl, 'velgArbeid.hvor')}
                                     checkboxes={tilretteleggingOptions.map((option) => ({
-                                        label:
-                                            option.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER
-                                                ? capitalizeFirstLetter(option.arbeidsforhold.navn)
-                                                : option.arbeidsforhold.navn,
+                                        label: getOptionNavn(
+                                            option.arbeidsforhold.type,
+                                            option.arbeidsforhold.navn,
+                                            intl,
+                                        ),
                                         value: option.id,
                                     }))}
                                     validate={(value) => validateVelgArbeidIsAnswered(value, intl)}

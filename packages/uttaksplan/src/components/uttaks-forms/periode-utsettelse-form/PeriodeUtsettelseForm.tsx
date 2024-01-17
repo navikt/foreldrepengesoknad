@@ -171,7 +171,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     ugyldigeTidsperioder={undefined}
                                     utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(values) => {
-                                        toggleVisTidsperiode();
+                                        setTidsperiodeIsOpen(false);
                                         setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(values.fom));
                                         setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
                                     }}
@@ -182,7 +182,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         }, 0);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
-                                    onAvbryt={() => toggleVisTidsperiode()}
+                                    onAvbryt={() => setTidsperiodeIsOpen(false)}
                                     visible={tidsperiodeIsOpen}
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     morHarRett={!søkerErFarEllerMedmorOgKunDeHarRett}

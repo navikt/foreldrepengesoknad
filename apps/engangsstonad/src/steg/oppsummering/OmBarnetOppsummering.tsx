@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { BodyLong, BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
 import { AttachmentList, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { formatDate } from '@navikt/fp-utils';
@@ -61,9 +61,9 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                                 .join(', ')}
                         </BodyLong>
                     </HStack>
-                    <Label>
+                    <BodyShort style={{ fontWeight: 'bold' }}>
                         <FormattedMessage id={'OmBarnetOppsummering.VedlagtOmsorgsovertakelseBekreftelse'} />
-                    </Label>
+                    </BodyShort>
                     <AttachmentList attachments={notEmpty(dokumentasjon).vedlegg} />
                 </>
             )}
@@ -89,9 +89,9 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                         </BodyShort>
                         <BodyShort>{formatDate(dokumentasjon.terminbekreftelsedato)}</BodyShort>
                     </HStack>
-                    <Label>
+                    <BodyShort style={{ fontWeight: 'bold' }}>
                         <FormattedMessage id={'OmBarnetOppsummering.VedlagtTerminbekreftelse'} />
-                    </Label>
+                    </BodyShort>
                     <AttachmentList attachments={dokumentasjon.vedlegg} />
                 </>
             )}

@@ -13,21 +13,21 @@ const DinePlikter = () => {
         <div className="velkommenDinePlikter">
             <ul className={bem.block}>
                 <li>
-                    <BodyLong>{intlUtils(intl, 'velkommen.dinePlikter.listeElement.1')}</BodyLong>
-                </li>
-                <li>
                     <BodyLong>
                         <FormattedMessage
-                            id="velkommen.dinePlikter.listeElement.2"
+                            id="velkommen.dinePlikter.listeElement.1"
                             values={{
                                 link: (
                                     <Link href={links.rettOgPlikt} target="_blank">
-                                        <FormattedMessage id="velkommen.dinePlikter.listeElement.2.link" />
+                                        <FormattedMessage id="velkommen.dinePlikter.listeElement.1.link" />
                                     </Link>
                                 ),
                             }}
                         />
                     </BodyLong>
+                </li>
+                <li>
+                    <BodyLong>{intlUtils(intl, 'velkommen.dinePlikter.listeElement.2')}</BodyLong>
                 </li>
             </ul>
         </div>

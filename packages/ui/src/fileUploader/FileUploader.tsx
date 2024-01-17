@@ -71,7 +71,7 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
 const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
 export interface Props {
-    updateAttachments: (attachments: Attachment[]) => void;
+    updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
     attachmentType: AttachmentType;
     skjemanummer: Skjemanummer;
     existingAttachments?: Attachment[];
@@ -90,7 +90,9 @@ const FileUploader: React.FunctionComponent<Props> = ({
     const [attachments, setAttachments] = useState(existingAttachments);
 
     useEffect(() => {
-        updateAttachments(attachments.filter((a) => !a.error && a.pending === false));
+        const successAttachments = attachments.filter((a) => !a.error && a.pending === false);
+        const hasPendingUploads = attachments.some((a) => !a.error && a.pending === true);
+        updateAttachments(successAttachments, hasPendingUploads);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [attachments]);
 

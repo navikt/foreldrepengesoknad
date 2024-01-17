@@ -2,8 +2,9 @@ import { ISOStringToDate } from '@navikt/fp-common';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
+import { AttachmentDTO, DokumentererType } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
-import { EgenNæring, EgenNæringDTO } from 'app/types/EgenNæring';
+import { EgenNæring, EgenNæringDTO, Næringstype } from 'app/types/EgenNæring';
 import { Frilans, FrilansDTO } from 'app/types/Frilans';
 import InformasjonOmUtenlandsopphold, {
     InformasjonOmUtenlandsoppholdDTO,
@@ -12,7 +13,7 @@ import InformasjonOmUtenlandsopphold, {
 } from 'app/types/InformasjonOmUtenlandsopphold';
 import { Søker, SøkerDTO } from 'app/types/Søker';
 import { Søknad, SøknadDTO, Søknadstype } from 'app/types/Søknad';
-import {
+import Tilrettelegging, {
     Arbeidsforholdstype,
     DelvisTilretteleggingDTO,
     HelTilretteleggingDTO,
@@ -22,20 +23,20 @@ import {
     Tilretteleggingstype,
 } from 'app/types/Tilrettelegging';
 
-const getArbeidsforholdForInnsending = (periode: TilretteleggingPeriode): ArbeidsforholdDTO => {
+const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegging): ArbeidsforholdDTO => {
     if (
-        periode.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER ||
-        periode.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG
+        t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER ||
+        t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG
     ) {
         return {
-            type: periode.arbeidsforhold.type,
-            risikoFaktorer: periode.risikofaktorer!,
-            tilretteleggingstiltak: periode.tilretteleggingstiltak!,
+            type: t.arbeidsforhold.type,
+            risikoFaktorer: t.risikofaktorer!,
+            tilretteleggingstiltak: t.tilretteleggingstiltak!,
         };
     }
     return {
-        id: periode.arbeidsforhold.arbeidsgiverId!,
-        type: periode.arbeidsforhold.type,
+        id: t.arbeidsforhold.arbeidsgiverId!,
+        type: t.arbeidsforhold.type,
     };
 };
 
@@ -82,7 +83,6 @@ const mapHelTilretteleggingForInnsending = (
         type: Tilretteleggingstype.HEL,
         tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
         arbeidsforhold,
-        vedlegg: periode.vedlegg,
         behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
     };
 };
@@ -95,7 +95,6 @@ const mapDelvisTilretteleggingForInnsending = (
         type: Tilretteleggingstype.DELVIS,
         tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
         arbeidsforhold,
-        vedlegg: periode.vedlegg,
         behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
         stillingsprosent: periode.stillingsprosent,
     };
@@ -109,7 +108,6 @@ const mapIngenTilretteleggingForInnsending = (
         type: Tilretteleggingstype.INGEN,
         slutteArbeidFom: ISOStringToDate(periode.fom)!,
         arbeidsforhold,
-        vedlegg: periode.vedlegg,
         behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
     };
 };
@@ -135,16 +133,20 @@ const mapTilretteleggingerForInnsending = (
 
 const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {
     if (næring) {
+        const navn =
+            næring.næringstype === Næringstype.FISKER && næring.navnPåNæringen.trim().length === 0
+                ? undefined
+                : næring.navnPåNæringen;
         const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næring.tidsperiode.fom));
 
         const mappedNæring = {
-            næringstyper: næring.næringstyper,
+            næringstyper: [næring.næringstype],
             tidsperiode: {
                 fom: ISOStringToDate(næring.tidsperiode.fom),
                 tom: ISOStringToDate(næring.tidsperiode.tom),
             },
             næringsinntekt: næring.næringsinntekt ? parseInt(næring.næringsinntekt!, 10) : undefined,
-            navnPåNæringen: næring.navnPåNæringen,
+            navnPåNæringen: navn,
             organisasjonsnummer: næring.organisasjonsnummer ? næring.organisasjonsnummer : undefined,
             registrertINorge: næring.registrertINorge,
             registrertILand: næring.registrertILand ? næring.registrertILand : undefined,
@@ -216,6 +218,21 @@ const mapSøkerForInnsending = (søker: Søker): SøkerDTO => {
     return mappedSøker;
 };
 
+const mapVedleggForInnsending = (tilrettelegginger: Tilrettelegging[]): AttachmentDTO[] => {
+    const mappedVedlegg = tilrettelegginger.map((t) => {
+        const mappedArbeid = getArbeidsforholdForInnsending(t);
+        const vedleggForInnsending = t.vedlegg.map((v) => ({
+            ...v,
+            dokumenterer: {
+                type: DokumentererType.TILRETTELEGGING,
+                arbeidsforhold: mappedArbeid,
+            },
+        }));
+        return vedleggForInnsending;
+    });
+    return mappedVedlegg.flat(1);
+};
+
 export const getSøknadForInnsending = (
     søknad: Søknad,
     tilretteleggingsPerioder: TilretteleggingPeriode[],
@@ -224,12 +241,13 @@ export const getSøknadForInnsending = (
     const barnForInnsending = mapBarnForInnsending(søknad.barn);
     const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilretteleggingsPerioder);
     const søkerForInnsending = mapSøkerForInnsending(søknad.søker);
+    const vedleggForInnsending = mapVedleggForInnsending(søknad.tilrettelegging);
     return {
         type: Søknadstype.SVANGERSKAPSPENGER,
         erEndringssøknad: false,
         informasjonOmUtenlandsopphold: utenlandsoppholdForInnsending,
         barn: barnForInnsending,
-        vedlegg: søknad.tilrettelegging.map((t) => t.vedlegg).flat(1),
+        vedlegg: vedleggForInnsending,
         tilrettelegging: tilretteleggingForInnsending,
         søker: søkerForInnsending,
     };

@@ -1,11 +1,10 @@
 import { FunctionComponent, useState } from 'react';
 import dayjs from 'dayjs';
-import { IntlProvider } from '@navikt/fp-ui';
+import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
 
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
-import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import SvangerskapspengerContextProvider from './context/SvangerskapspengerContext';
 import { shouldChangeBrowser } from './utils/browserUtils';
 import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
@@ -26,7 +25,7 @@ const AppContainer: FunctionComponent = () => {
 
     return (
         <SvangerskapspengerContextProvider>
-            <ErrorBoundary>
+            <ErrorBoundary appName="Svangerskapspenger" retryCallback={() => location.reload()}>
                 <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
                     <Svangerskapspengesøknad
@@ -34,6 +33,7 @@ const AppContainer: FunctionComponent = () => {
                         onChangeLocale={(activeLocale: LocaleNo) => {
                             setLocaleInSessionStorage(activeLocale);
                             setLocale(activeLocale);
+                            document.documentElement.setAttribute('lang', activeLocale);
                         }}
                     />
                 </IntlProvider>

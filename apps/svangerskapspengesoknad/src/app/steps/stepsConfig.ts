@@ -20,7 +20,6 @@ import { egenNæringId } from 'app/types/EgenNæring';
 import { Søknad } from 'app/types/Søknad';
 import { getPeriodeSideTittel } from './perioder/perioderStepUtils';
 import { getTilretteleggingSideTittel } from './tilrettelegging/tilretteleggingStepUtils';
-import { getSkjemaSideTittel } from './skjema/skjemaFormUtils';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -145,7 +144,9 @@ const stepConfigFørstegangssøknad = (
             steps.push({
                 id: `skjema-${tilrettelegging.id}`,
                 index: steps.length,
-                label: getSkjemaSideTittel(erFlereTilrettelegginger, intl, navn),
+                label: erFlereTilrettelegginger
+                    ? intlUtils(intl, 'steps.label.skjema.flere', { navn })
+                    : intlUtils(intl, 'steps.label.skjema.en'),
             });
             steps.push({
                 id: `tilrettelegging-${tilrettelegging.id}`,

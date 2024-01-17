@@ -1,4 +1,4 @@
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { Block, bemUtils, formatDate } from '@navikt/fp-common';
 import { Frilans } from 'app/types/Frilans';
 import { FunctionComponent } from 'react';
@@ -15,7 +15,7 @@ const FrilansVisning: FunctionComponent<Props> = ({ frilans }) => {
     return (
         <Block padBottom="l">
             <div className={bem.block}>
-                <Label className={bem.element('tittel')}>{frilansTekst}</Label>
+                <BodyShort className={bem.element('tittel')}>{frilansTekst}</BodyShort>
                 <BodyShort className={bem.element('dato')}>
                     {`Startet: ${formatDate(frilans.oppstart)} ${tilTekst}`}
                 </BodyShort>

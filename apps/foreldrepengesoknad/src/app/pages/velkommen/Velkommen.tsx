@@ -173,7 +173,6 @@ const Velkommen: React.FunctionComponent<Props> = ({
                                                         className="lenke"
                                                         rel="noopener noreferrer"
                                                         href={links.foreldrepenger}
-                                                        target="_blank"
                                                     >
                                                         {msg}
                                                     </a>

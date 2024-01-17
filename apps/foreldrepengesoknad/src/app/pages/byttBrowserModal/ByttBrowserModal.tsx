@@ -13,7 +13,7 @@ export const ByttBrowserModal: FunctionComponent<Props> = ({ skalEndreNettleser 
     return (
         <Modal aria-label={intlUtils(intl, 'sesjonUtløpt.tittel')} open={isOpen} onClose={() => undefined}>
             <Modal.Body>
-                <Heading size="medium" className="blokk-m">
+                <Heading size="medium" level="2" className="blokk-m">
                     <FormattedMessage id="byttBrowser.tittel" />
                 </Heading>
                 <BodyShort className="blokk-m">

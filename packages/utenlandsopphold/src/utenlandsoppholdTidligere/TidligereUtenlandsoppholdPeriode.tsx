@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
-import { TrashIcon } from '@navikt/aksel-icons';
+import { XMarkIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { createCountryOptions, formatDate, isDateAAfterDateB } from '@navikt/fp-utils';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
@@ -118,7 +118,7 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
                     type="button"
                     variant="tertiary"
                     size="small"
-                    icon={<TrashIcon aria-hidden />}
+                    icon={<XMarkIcon aria-hidden />}
                     onClick={() => fjernOpphold(index)}
                 >
                     <FormattedMessage id="TidligereUtenlandsoppholdSteg.Knapp.SlettOpphold" />

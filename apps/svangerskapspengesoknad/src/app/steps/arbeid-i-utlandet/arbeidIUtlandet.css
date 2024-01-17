@@ -1,0 +1,20 @@
+.arbeidIUtlandet__countrySelect {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.arbeidIUtlandet__delete {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .arbeidIUtlandet__countrySelect {
+        display: block;
+    }
+
+    .arbeidIUtlandet__delete {
+        margin-top: 1rem;
+    }
+}

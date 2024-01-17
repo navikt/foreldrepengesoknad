@@ -20,7 +20,7 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
     return (
         <div className={bem.block}>
             <div className={bem.element('content')}>
-                <FileContent className={bem.element('ikon')} />
+                <FileContent className={bem.element('ikon')} aria-hidden={true} />
                 <div className={bem.element('link-icon')}>
                     <Link href={url} target="_blank">
                         {tittel}

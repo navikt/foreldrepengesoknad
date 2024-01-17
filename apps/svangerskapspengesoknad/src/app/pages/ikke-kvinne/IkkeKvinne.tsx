@@ -1,6 +1,6 @@
-import { Block, bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
+import { Block, bemUtils } from '@navikt/fp-common';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { PageKeys } from 'app/types/PageKeys';
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
 
@@ -10,8 +10,6 @@ import links from 'app/links/links';
 
 const IkkeKvinne: React.FunctionComponent = () => {
     const bem = bemUtils('ikke-kvinne');
-    const intl = useIntl();
-    useDocumentTitle(intlUtils(intl, 'søknad.pageheading'));
 
     logAmplitudeEvent('sidevisning', {
         app: 'svangerskapspengerny',
@@ -38,7 +36,7 @@ const IkkeKvinne: React.FunctionComponent = () => {
 
                 <div style={{ textAlign: 'center' }} className={bem.element('papirsøknadKnapp')}>
                     <Block padBottom="xxxl">
-                        <Button as="a" icon={<ArrowRightIcon />} iconPosition="right" href={links.nav}>
+                        <Button as="a" icon={<ArrowRightIcon aria-hidden />} iconPosition="right" href={links.nav}>
                             <FormattedMessage id="ikkeKvinne.knappetekst" />
                         </Button>
                     </Block>
