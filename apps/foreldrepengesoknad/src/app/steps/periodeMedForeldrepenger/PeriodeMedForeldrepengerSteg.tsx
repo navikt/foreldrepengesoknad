@@ -8,7 +8,6 @@ import {
     Step,
     getKjønnFromFnr,
     isAnnenForelderOppgitt,
-    isFarEllerMedmor,
     isFødtBarn,
 } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
@@ -96,8 +95,7 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
             ? getValgtStønadskontoFor80Og100Prosent(tilgjengeligeStønadskontoer80, tilgjengeligeStønadskontoer100)
             : undefined;
 
-    const visAnnenPartsValg =
-        isFarEllerMedmor(søkersituasjon.rolle) && annenPartsVedtak && annenPartsVedtak.perioder.length > 0;
+    const visAnnenPartsValg = annenPartsVedtak && annenPartsVedtak.perioder.length > 0;
 
     return (
         <Step
