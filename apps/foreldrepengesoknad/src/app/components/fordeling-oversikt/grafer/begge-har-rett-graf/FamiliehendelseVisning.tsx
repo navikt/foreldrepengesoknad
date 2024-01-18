@@ -2,9 +2,10 @@ import { HeartFillIcon } from '@navikt/aksel-icons';
 import { BodyShort } from '@navikt/ds-react';
 interface Props {
     rowHeight: number;
+    familiehendelseNavn: string;
 }
 
-const FamiliehendelseVisning: React.FunctionComponent<Props> = ({ rowHeight }) => {
+const FamiliehendelseVisning: React.FunctionComponent<Props> = ({ rowHeight, familiehendelseNavn }) => {
     const iconSize = 24;
     const iconFieldWidth = 12;
     return (
@@ -25,7 +26,7 @@ const FamiliehendelseVisning: React.FunctionComponent<Props> = ({ rowHeight }) =
                     height: `${rowHeight}px`,
                 }}
             >
-                {'Termin'}
+                {familiehendelseNavn}
             </BodyShort>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <HeartFillIcon

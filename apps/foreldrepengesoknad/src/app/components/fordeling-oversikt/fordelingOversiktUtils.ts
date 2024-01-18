@@ -43,7 +43,7 @@ export const getShadowClass = (isUthevet: boolean): string => {
     return isUthevet ? 'shadow' : 'no-shadow';
 };
 
-export const getMorsFordelingBeggeHarRett = (
+export const getMorsFordelingBeggeHarRettFødsel = (
     kontoer: TilgjengeligStønadskonto[],
     erFarEllerMedmor: boolean,
 ): DelInformasjon => {
@@ -70,7 +70,41 @@ export const getMorsFordelingBeggeHarRett = (
     };
 };
 
-export const getFarsFordelingBeggeHarRett = (
+export const getMorsFordelingBeggeHarRettAdopsjon = (
+    kontoer: TilgjengeligStønadskonto[],
+    erFarEllerMedmor: boolean,
+): DelInformasjon => {
+    const antallUker = getAntallUkerMødrekvote(kontoer);
+    const fargekode = erFarEllerMedmor ? FordeligFargekode.ANNEN_PART_MOR : FordeligFargekode.SØKER_MOR;
+    return {
+        eier: FordelingEier.Mor,
+        sumUker: antallUker,
+        fordelingUker: [{ antallUker, fargekode }],
+        fordelingInfo: [getFormattedMessage('fordeling.info.mor.adopsjon', { antallUker })],
+    };
+};
+
+export const getFarsFordelingBeggeHarRettFødsel = (
+    kontoer: TilgjengeligStønadskonto[],
+    erFarEllerMedmor: boolean,
+    erBarnetFødt: boolean,
+    intl: IntlShape,
+): DelInformasjon => {
+    const antallUkerFar = getAntallUkerFedrekvote(kontoer);
+    const fargekode = erFarEllerMedmor ? FordeligFargekode.SØKER_FAR : FordeligFargekode.ANNEN_PART_FAR;
+    const terminEllerFødsel = erBarnetFødt ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
+    return {
+        eier: FordelingEier.FarMedmor,
+        sumUker: antallUkerFar,
+        fordelingUker: [{ antallUker: antallUkerFar, fargekode }],
+        fordelingInfo: [
+            getFormattedMessage('fordeling.info.farMedmor.fødsel', { antallUker: antallUkerFar }),
+            getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', { terminEllerFødsel }),
+        ],
+    };
+};
+
+export const getFarsFordelingBeggeHarRettAdopsjon = (
     kontoer: TilgjengeligStønadskonto[],
     erFarEllerMedmor: boolean,
 ): DelInformasjon => {
@@ -80,24 +114,27 @@ export const getFarsFordelingBeggeHarRett = (
         eier: FordelingEier.FarMedmor,
         sumUker: antallUkerFar,
         fordelingUker: [{ antallUker: antallUkerFar, fargekode }],
-        fordelingInfo: [
-            getFormattedMessage('fordeling.info.farMedmor', { antallUker: antallUkerFar }),
-            getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', { antallUker: antallUkerFar }),
-        ],
+        fordelingInfo: [getFormattedMessage('fordeling.info.farMedmor.adopsjon', { antallUker: antallUkerFar })],
     };
 };
 
 export const getFellesFordelingBeggeHarRett = (
     kontoer: TilgjengeligStønadskonto[],
+    erAdopsjon: boolean,
     intl: IntlShape,
 ): DelInformasjon => {
     const antallUkerFelles = getAntallUkerFellesperiode(kontoer);
     const varighetFelles = getVarighetString(antallUkerFelles * 5, intl);
+    const innen3ÅrTekst = erAdopsjon
+        ? intlUtils(intl, 'innen3ÅrSidenAdopsjon')
+        : intlUtils(intl, 'innenBarnetFyller3År');
     return {
         eier: FordelingEier.Felles,
         sumUker: antallUkerFelles,
         fordelingUker: [{ antallUker: antallUkerFelles, fargekode: FordeligFargekode.IKKE_TILDELT }],
-        fordelingInfo: [getFormattedMessage('fordeling.info.felles', { varighet: varighetFelles }, links.farMedmor)],
+        fordelingInfo: [
+            getFormattedMessage('fordeling.info.felles', { varighet: varighetFelles, innen3ÅrTekst }, links.farMedmor),
+        ],
     };
 };
 
@@ -106,12 +143,16 @@ export const getFellesFordelingMedAnnenPart = (
     dagerBruktAvAnnenPart: number,
     annenPartNavn: string,
     erFarEllerMedmor: boolean,
+    erAdopsjon: boolean,
     intl: IntlShape,
 ): DelInformasjon => {
     const antallUkerFelles = getAntallUkerFellesperiode(kontoer);
     const varighetStringFellesperiode = getVarighetString(antallUkerFelles * 5, intl);
     const gjenståendeUker = antallUkerFelles - dagerBruktAvAnnenPart / 5;
     const varighetStringAnnenPart = getVarighetString(dagerBruktAvAnnenPart, intl);
+    const innen3ÅrTekst = erAdopsjon
+        ? intlUtils(intl, 'innen3ÅrSidenAdopsjon')
+        : intlUtils(intl, 'innenBarnetFyller3År');
     return {
         eier: FordelingEier.Felles,
         sumUker: antallUkerFelles,
@@ -123,7 +164,11 @@ export const getFellesFordelingMedAnnenPart = (
             { antallUker: gjenståendeUker, fargekode: FordeligFargekode.IKKE_TILDELT },
         ],
         fordelingInfo: [
-            getFormattedMessage('fordeling.info.felles', { varighet: varighetStringFellesperiode }, links.farMedmor),
+            getFormattedMessage(
+                'fordeling.info.felles',
+                { varighet: varighetStringFellesperiode, innen3ÅrTekst },
+                links.farMedmor,
+            ),
             getFormattedMessage('fordeling.info.felles.annenForelder.del1', {
                 varighet: varighetStringAnnenPart,
                 annenPartNavn,
@@ -137,11 +182,12 @@ export const getFellesFordelingMedAnnenPart = (
 export const getFordelingMorFødsel = (
     kontoer: TilgjengeligStønadskonto[],
     erFarEllerMedmor: boolean,
+    erBarnetFødt: boolean,
     intl: IntlShape,
 ): DelInformasjon[] => {
-    const morsDel = getMorsFordelingBeggeHarRett(kontoer, erFarEllerMedmor);
-    const farsDel = getFarsFordelingBeggeHarRett(kontoer, erFarEllerMedmor);
-    const fellesDel = getFellesFordelingBeggeHarRett(kontoer, intl);
+    const morsDel = getMorsFordelingBeggeHarRettFødsel(kontoer, erFarEllerMedmor);
+    const farsDel = getFarsFordelingBeggeHarRettFødsel(kontoer, erFarEllerMedmor, erBarnetFødt, intl);
+    const fellesDel = getFellesFordelingBeggeHarRett(kontoer, false, intl);
     return [morsDel, fellesDel, farsDel];
 };
 
@@ -150,13 +196,37 @@ export const getFordelingFarMedmorFørstegangssøknadMedAnnenPart = (
     dagerFellesperiodeBruktAvAnnenPart: number,
     navnMor: string,
     erFarEllerMedmor: boolean,
+    erAdopsjon: boolean,
+    erBarnetFødt: boolean,
     intl: IntlShape,
 ): DelInformasjon[] => {
-    const morsDel = getMorsFordelingBeggeHarRett(kontoer, erFarEllerMedmor);
-    const farsDel = getFarsFordelingBeggeHarRett(kontoer, erFarEllerMedmor);
+    const morsDel = erAdopsjon
+        ? getMorsFordelingBeggeHarRettAdopsjon(kontoer, erFarEllerMedmor)
+        : getMorsFordelingBeggeHarRettFødsel(kontoer, erFarEllerMedmor);
+    const farsDel = erAdopsjon
+        ? getFarsFordelingBeggeHarRettAdopsjon(kontoer, erFarEllerMedmor)
+        : getFarsFordelingBeggeHarRettFødsel(kontoer, erFarEllerMedmor, erBarnetFødt, intl);
     const fellesDel =
         dagerFellesperiodeBruktAvAnnenPart > 0
-            ? getFellesFordelingMedAnnenPart(kontoer, dagerFellesperiodeBruktAvAnnenPart, navnMor, true, intl)
-            : getFellesFordelingBeggeHarRett(kontoer, intl);
+            ? getFellesFordelingMedAnnenPart(
+                  kontoer,
+                  dagerFellesperiodeBruktAvAnnenPart,
+                  navnMor,
+                  true,
+                  erAdopsjon,
+                  intl,
+              )
+            : getFellesFordelingBeggeHarRett(kontoer, erAdopsjon, intl);
+    return [morsDel, fellesDel, farsDel];
+};
+
+export const getFordelingMorFarAdopsjon = (
+    kontoer: TilgjengeligStønadskonto[],
+    erFarEllerMedmor: boolean,
+    intl: IntlShape,
+) => {
+    const morsDel = getMorsFordelingBeggeHarRettAdopsjon(kontoer, erFarEllerMedmor);
+    const farsDel = getFarsFordelingBeggeHarRettAdopsjon(kontoer, erFarEllerMedmor);
+    const fellesDel = getFellesFordelingBeggeHarRett(kontoer, true, intl);
     return [morsDel, fellesDel, farsDel];
 };

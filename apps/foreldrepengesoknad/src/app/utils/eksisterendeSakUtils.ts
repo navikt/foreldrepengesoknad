@@ -1,4 +1,4 @@
-import { getFamiliehendelseType } from './getFamiliehendelseType';
+import { getFamiliehendelseType } from './familiehendelseUtils';
 import { getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { Søknad } from 'app/context/types/Søknad';

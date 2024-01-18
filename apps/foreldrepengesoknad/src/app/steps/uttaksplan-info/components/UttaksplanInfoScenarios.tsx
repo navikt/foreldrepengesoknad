@@ -128,7 +128,6 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
-                    scenario={scenario}
                 />
             );
         case 'morFødsel':

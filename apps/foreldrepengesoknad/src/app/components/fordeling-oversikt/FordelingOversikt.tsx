@@ -54,6 +54,7 @@ interface Props {
     navnFarMedmor: string;
     navnMor: string;
     erAdopsjon: boolean;
+    erBarnetFødt: boolean;
     annenForeldrerHarRett: boolean;
     fordelingScenario: DelInformasjon[];
 }
@@ -64,6 +65,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     navnFarMedmor,
     navnMor,
     erAdopsjon,
+    erBarnetFødt,
     annenForeldrerHarRett,
     fordelingScenario,
 }) => {
@@ -77,6 +79,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                         kontoer={kontoer}
                         erFarEllerMedmor={erFarEllerMedmor}
                         erAdopsjon={erAdopsjon}
+                        erBarnetFødt={erBarnetFødt}
                         sumUker={49}
                         currentUthevet={currentUthevet}
                         navnMor={navnMor}

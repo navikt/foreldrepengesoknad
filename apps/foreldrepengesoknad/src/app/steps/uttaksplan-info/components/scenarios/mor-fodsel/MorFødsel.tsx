@@ -16,6 +16,7 @@ import {
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
+    isFødtBarn,
     uttaksConstants,
 } from '@navikt/fp-common';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
@@ -102,6 +103,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     );
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erBarnetFødt = isFødtBarn(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
@@ -196,7 +198,12 @@ const MorFødsel: FunctionComponent<Props> = ({
                 } as MorFødselQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-                const fordelingScenario = getFordelingMorFødsel(valgtStønadskonto, erFarEllerMedmor, intl);
+                const fordelingScenario = getFordelingMorFødsel(
+                    valgtStønadskonto,
+                    erFarEllerMedmor,
+                    erBarnetFødt,
+                    intl,
+                );
                 return (
                     <VStack gap="5">
                         <FordelingOversikt
@@ -205,6 +212,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                             navnFarMedmor={navnFarMedmor}
                             navnMor={navnMor}
                             erAdopsjon={erAdopsjon}
+                            erBarnetFødt={erBarnetFødt}
                             annenForeldrerHarRett={annenForeldrerHarRettiNorgeEllerEØS}
                             fordelingScenario={fordelingScenario}
                         ></FordelingOversikt>

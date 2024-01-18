@@ -17,6 +17,7 @@ import {
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
+    isFødtBarn,
     isInfoPeriode,
 } from '@navikt/fp-common';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
@@ -87,6 +88,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const familiehendelsedatoDate = ISOStringToDate(familiehendelsedato);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erBarnetFødt = isFødtBarn(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const bareFarHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
         søkersituasjon.rolle,
@@ -211,6 +213,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                     morBrukteDagerFellesperiode,
                     navnMor,
                     erFarEllerMedmor,
+                    erAdopsjon,
+                    erBarnetFødt,
                     intl,
                 );
                 return (
@@ -221,6 +225,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                             navnFarMedmor={navnFarMedmor}
                             navnMor={navnMor}
                             erAdopsjon={erAdopsjon}
+                            erBarnetFødt={erBarnetFødt}
                             annenForeldrerHarRett={true}
                             fordelingScenario={fordelingScenario}
                         ></FordelingOversikt>

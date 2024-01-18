@@ -1,4 +1,11 @@
-import { StønadskontoType, TilgjengeligStønadskonto, bemUtils, guid, uttaksConstants } from '@navikt/fp-common';
+import {
+    StønadskontoType,
+    TilgjengeligStønadskonto,
+    bemUtils,
+    capitalizeFirstLetter,
+    guid,
+    uttaksConstants,
+} from '@navikt/fp-common';
 import { BodyShort } from '@navikt/ds-react';
 import './../graf.css';
 import { Dispatch, SetStateAction } from 'react';
@@ -11,6 +18,8 @@ import {
     getAntallUkerMødrekvote,
 } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import classNames from 'classnames';
+import { useIntl } from 'react-intl';
+import { getFamiliehendelseNavn } from 'app/utils/familiehendelseUtils';
 
 interface FordelingGrafInfo {
     antallUker: number;
@@ -24,6 +33,7 @@ interface Props {
     kontoer: TilgjengeligStønadskonto[];
     erFarEllerMedmor: boolean;
     erAdopsjon: boolean;
+    erBarnetFødt: boolean;
     sumUker: number;
     navnFarMedmor: string;
     navnMor: string;
@@ -35,20 +45,22 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
     kontoer,
     erFarEllerMedmor,
     erAdopsjon,
+    erBarnetFødt,
     sumUker,
     navnMor,
     navnFarMedmor,
     currentUthevet,
     setCurrentUthevet,
 }) => {
-    const fordelingList = [
-        {
-            antallUker: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
-            konto: StønadskontoType.ForeldrepengerFørFødsel,
-            eier: FordelingEier.Mor,
-            fargekode: erFarEllerMedmor ? FordeligFargekode.ANNEN_PART_MOR : FordeligFargekode.SØKER_MOR,
-            beskrivelse: '',
-        },
+    const intl = useIntl();
+    const fordelingFørFødsel = {
+        antallUker: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
+        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        eier: FordelingEier.Mor,
+        fargekode: erFarEllerMedmor ? FordeligFargekode.ANNEN_PART_MOR : FordeligFargekode.SØKER_MOR,
+        beskrivelse: '',
+    };
+    const fordelingEtterFødselAdopsjon = [
         {
             antallUker: getAntallUkerMødrekvote(kontoer),
             konto: StønadskontoType.Mødrekvote,
@@ -68,9 +80,13 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
             konto: StønadskontoType.Fedrekvote,
             eier: FordelingEier.FarMedmor,
             fargekode: erFarEllerMedmor ? FordeligFargekode.SØKER_FAR : FordeligFargekode.ANNEN_PART_FAR,
-            beskrivelse: erFarEllerMedmor ? `${navnFarMedmor}s del` : 'Din del',
+            beskrivelse: erFarEllerMedmor ? 'Din del' : `${navnFarMedmor}s del`,
         },
     ];
+
+    const fordelingList = erAdopsjon
+        ? fordelingEtterFødselAdopsjon
+        : [fordelingFørFødsel, ...fordelingEtterFødselAdopsjon];
     const bem = bemUtils('graf');
 
     const rowHeight = 16;
@@ -78,6 +94,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
     const handleOnMouseLeave = () => {
         setCurrentUthevet(undefined);
     };
+    const familiehendelseNavn = capitalizeFirstLetter(getFamiliehendelseNavn(erAdopsjon, erBarnetFødt, intl));
 
     return (
         <div className={bem.block}>
@@ -92,7 +109,9 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
 
                 return (
                     <>
-                        {index === indexForFamiliehendelse && <FamiliehendelseVisning rowHeight={rowHeight} />}
+                        {index === indexForFamiliehendelse && (
+                            <FamiliehendelseVisning rowHeight={rowHeight} familiehendelseNavn={familiehendelseNavn} />
+                        )}
                         <div
                             className={bem.element('søyle')}
                             key={fordeling.eier}

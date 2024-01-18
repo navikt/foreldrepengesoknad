@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { notEmpty } from '@navikt/fp-validation';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { Button, GuidePanel } from '@navikt/ds-react';
+import { Button, GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
     Forelder,
@@ -31,7 +31,6 @@ import {
 } from './morFarAdopsjonFormConfig';
 import { MorFarAdopsjonQuestionsPayload, morFarAdopsjonQuestionsConfig } from './morFarAdopsjonQuestionsConfig';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
-import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import StartdatoAdopsjon, { finnStartdatoAdopsjon } from './StartdatoAdopsjon';
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
@@ -49,14 +48,14 @@ import Person from '@navikt/fp-common/src/common/types/Person';
 import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { UttaksplanInfoScenario } from '../scenarios';
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingMorFarAdopsjon } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    scenario: UttaksplanInfoScenario;
     mellomlagreSøknadOgNaviger: () => void;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
@@ -177,10 +176,12 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const harAnnenForelderRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
+    const harAnnenForelderRett =
+        !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge || !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
     const fornavnAnnenForeldre = oppgittAnnenForelder?.fornavn;
     const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
     const navnAnnenPart = oppgittAnnenForelder
-        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
+        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, false)
         : '';
 
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
@@ -206,178 +207,189 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer100DTO,
     );
 
+    const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
+    const fordelingScenario = getFordelingMorFarAdopsjon(valgtStønadskonto, erFarEllerMedmor, intl);
     return (
-        <MorFarAdopsjonFormComponents.FormikWrapper
-            initialValues={getInitialMorFarAdopsjonValues(uttaksplanInfo)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
-                    ...formValues,
-                    harAnnenForelderRettPåForeldrepengerINorge,
-                    erAleneOmOmsorg: søker.erAleneOmOmsorg,
-                } as MorFarAdopsjonQuestionsPayload);
+        <VStack gap="5">
+            <FordelingOversikt
+                kontoer={valgtStønadskonto}
+                erFarEllerMedmor={erFarEllerMedmor}
+                navnFarMedmor={navnFarMedmor}
+                navnMor={navnMor}
+                erAdopsjon={erAdopsjon}
+                erBarnetFødt={false}
+                annenForeldrerHarRett={harAnnenForelderRett}
+                fordelingScenario={fordelingScenario}
+            ></FordelingOversikt>
+            <MorFarAdopsjonFormComponents.FormikWrapper
+                initialValues={getInitialMorFarAdopsjonValues(uttaksplanInfo)}
+                onSubmit={onSubmit}
+                renderForm={({ values: formValues, setFieldValue }) => {
+                    const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
+                        ...formValues,
+                        harAnnenForelderRettPåForeldrepengerINorge,
+                        erAleneOmOmsorg: søker.erAleneOmOmsorg,
+                    } as MorFarAdopsjonQuestionsPayload);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
+                    const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
 
-                const tilgjengeligeDager = valgtStønadskonto
-                    ? getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor)
-                    : undefined;
+                    const tilgjengeligeDager = valgtStønadskonto
+                        ? getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor)
+                        : undefined;
 
-                return (
-                    <MorFarAdopsjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isIncluded(MorFarAdopsjonFormField.harAnnenForelderSøktFP)}
-                        >
-                            <MorFarAdopsjonFormComponents.YesOrNoQuestion
-                                name={MorFarAdopsjonFormField.harAnnenForelderSøktFP}
-                                legend={intlUtils(intl, 'uttaksplaninfo.spørsmål.harAnnenForelderSøktFP.label', {
-                                    navnAnnenForelder: fornavnAnnenForeldre,
-                                })}
-                            />
-                        </Block>
-                        <Block padBottom="xl">
-                            {tilgjengeligeDager && (
-                                <TilgjengeligeDagerGraf
-                                    erDeltUttak={erDeltUttak}
-                                    erFarEllerMedmor={!erSøkerMor}
-                                    navnFarMedmor={navnFarMedmor}
-                                    navnMor={navnMor}
-                                    tilgjengeligeDager={tilgjengeligeDager}
+                    return (
+                        <MorFarAdopsjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isIncluded(MorFarAdopsjonFormField.harAnnenForelderSøktFP)}
+                            >
+                                <MorFarAdopsjonFormComponents.YesOrNoQuestion
+                                    name={MorFarAdopsjonFormField.harAnnenForelderSøktFP}
+                                    legend={intlUtils(intl, 'uttaksplaninfo.spørsmål.harAnnenForelderSøktFP.label', {
+                                        navnAnnenForelder: fornavnAnnenForeldre,
+                                    })}
                                 />
-                            )}
-                        </Block>
-                        <Block visible={visibility.isIncluded(MorFarAdopsjonFormField.startdatoAdopsjonValg)}>
-                            <StartdatoAdopsjon valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg} barn={barn} />
-                        </Block>
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isIncluded(MorFarAdopsjonFormField.annenForeldersSisteDag)}
-                        >
-                            <MorsSisteDagSpørsmål
-                                FormComponents={MorFarAdopsjonFormComponents}
-                                fieldName={MorFarAdopsjonFormField.annenForeldersSisteDag}
-                                navnMor={navnAnnenPart}
-                                familiehendelsesdato={familiehendelsesdato}
-                            />
-                        </Block>
-                        <Block padBottom="xl" visible={visibility.isIncluded(MorFarAdopsjonFormField.søkersFørsteDag)}>
-                            <FarMedmorsFørsteDag
-                                FormComponents={MorFarAdopsjonFormComponents}
-                                fieldName={MorFarAdopsjonFormField.søkersFørsteDag}
-                                familiehendelsesdato={familiehendelsesdatoDate!}
-                                setFieldValue={setFieldValue}
-                                morsSisteDag={ISOStringToDate(formValues.annenForeldersSisteDag)}
-                                navnMor={navnMor}
-                                termindato={undefined}
-                                situasjon={søkersituasjon.situasjon}
-                                morHarRettTilForeldrepengerIEØS={false}
-                            />
-                        </Block>
-                        <Block
-                            padBottom="xl"
-                            visible={
-                                visibility.isAnswered(MorFarAdopsjonFormField.søkersFørsteDag) &&
-                                !dateIsSameOrAfter(
-                                    ISOStringToDate(formValues.annenForeldersSisteDag),
-                                    ISOStringToDate(formValues.søkersFørsteDag),
-                                ) &&
-                                formValues.harAnnenForelderSøktFP === YesOrNo.YES
-                            }
-                        >
-                            {tilgjengeligeDager && (
-                                <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
+                            </Block>
+                            <Block visible={visibility.isIncluded(MorFarAdopsjonFormField.startdatoAdopsjonValg)}>
+                                <StartdatoAdopsjon
+                                    valgtStartdatoAdopsjon={formValues.startdatoAdopsjonValg}
+                                    barn={barn}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isIncluded(MorFarAdopsjonFormField.annenForeldersSisteDag)}
+                            >
+                                <MorsSisteDagSpørsmål
                                     FormComponents={MorFarAdopsjonFormComponents}
-                                    ukerFieldName={MorFarAdopsjonFormField.antallUkerFellesperiode}
-                                    dagerFieldName={MorFarAdopsjonFormField.antallDagerFellesperiode}
-                                    antallDager={formValues.antallDagerFellesperiode!}
-                                    antallUker={formValues.antallUkerFellesperiode!}
+                                    fieldName={MorFarAdopsjonFormField.annenForeldersSisteDag}
+                                    navnMor={navnAnnenPart}
+                                    familiehendelsesdato={familiehendelsesdato}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isIncluded(MorFarAdopsjonFormField.søkersFørsteDag)}
+                            >
+                                <FarMedmorsFørsteDag
+                                    FormComponents={MorFarAdopsjonFormComponents}
+                                    fieldName={MorFarAdopsjonFormField.søkersFørsteDag}
+                                    familiehendelsesdato={familiehendelsesdatoDate!}
                                     setFieldValue={setFieldValue}
-                                    ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
+                                    morsSisteDag={ISOStringToDate(formValues.annenForeldersSisteDag)}
+                                    navnMor={navnMor}
+                                    termindato={undefined}
+                                    situasjon={søkersituasjon.situasjon}
+                                    morHarRettTilForeldrepengerIEØS={false}
                                 />
-                            )}
-                        </Block>
-                        <Block
-                            padBottom="xl"
-                            visible={
-                                formValues.startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
-                                dayjs(latestDate).isBefore(
-                                    dayjs(
-                                        finnStartdatoAdopsjon(
-                                            formValues.startdatoAdopsjonValg,
-                                            formValues.annenStartdatoAdopsjon,
-                                            dateToISOString(barn.adopsjonsdato),
-                                            dateToISOString(ankomstdato),
-                                            formValues.søkersFørsteDag,
-                                        ),
-                                    ),
-                                    'day',
-                                ) &&
-                                !isAdoptertStebarn(barn) &&
-                                !erDeltUttak
-                            }
-                        >
-                            <GuidePanel>
-                                <FormattedMessage
-                                    id={
-                                        erAdoptertIUtlandet === false
-                                            ? 'uttaksplaninfo.info.ikkeAdoptertIUtlandet'
-                                            : 'uttaksplaninfo.info.adoptertIUtlandet'
-                                    }
-                                />
-                            </GuidePanel>
-                        </Block>
-                        <Block visible={søker.erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}>
+                            </Block>
                             <Block
                                 padBottom="xl"
                                 visible={
-                                    antallBarn > 1 &&
-                                    formValues.startdatoAdopsjonValg !== undefined &&
-                                    formValues.harAnnenForelderSøktFP !== YesOrNo.YES
+                                    visibility.isAnswered(MorFarAdopsjonFormField.søkersFørsteDag) &&
+                                    !dateIsSameOrAfter(
+                                        ISOStringToDate(formValues.annenForeldersSisteDag),
+                                        ISOStringToDate(formValues.søkersFørsteDag),
+                                    ) &&
+                                    formValues.harAnnenForelderSøktFP === YesOrNo.YES
+                                }
+                            >
+                                {tilgjengeligeDager && (
+                                    <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
+                                        FormComponents={MorFarAdopsjonFormComponents}
+                                        ukerFieldName={MorFarAdopsjonFormField.antallUkerFellesperiode}
+                                        dagerFieldName={MorFarAdopsjonFormField.antallDagerFellesperiode}
+                                        antallDager={formValues.antallDagerFellesperiode!}
+                                        antallUker={formValues.antallUkerFellesperiode!}
+                                        setFieldValue={setFieldValue}
+                                        ukerMedFellesperiode={tilgjengeligeDager.dagerFelles / 5}
+                                    />
+                                )}
+                            </Block>
+                            <Block
+                                padBottom="xl"
+                                visible={
+                                    formValues.startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
+                                    dayjs(latestDate).isBefore(
+                                        dayjs(
+                                            finnStartdatoAdopsjon(
+                                                formValues.startdatoAdopsjonValg,
+                                                formValues.annenStartdatoAdopsjon,
+                                                dateToISOString(barn.adopsjonsdato),
+                                                dateToISOString(ankomstdato),
+                                                formValues.søkersFørsteDag,
+                                            ),
+                                        ),
+                                        'day',
+                                    ) &&
+                                    !isAdoptertStebarn(barn) &&
+                                    !erDeltUttak
                                 }
                             >
                                 <GuidePanel>
                                     <FormattedMessage
-                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon"
-                                        values={{
-                                            uker: getFlerbarnsuker(dekningsgrad, antallBarn),
-                                            navnFar: navnFarMedmor,
-                                            navnMor: navnMor,
-                                        }}
+                                        id={
+                                            erAdoptertIUtlandet === false
+                                                ? 'uttaksplaninfo.info.ikkeAdoptertIUtlandet'
+                                                : 'uttaksplaninfo.info.adoptertIUtlandet'
+                                        }
                                     />
                                 </GuidePanel>
                             </Block>
                             <Block
-                                padBottom="xl"
-                                visible={visibility.isIncluded(MorFarAdopsjonFormField.fellesperiodeukerMor)}
+                                visible={søker.erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}
                             >
-                                <FordelingFellesperiodeSpørsmål
-                                    setFieldValue={setFieldValue}
-                                    valgtStønadskonto={valgtStønadskonto}
-                                    valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
-                                    mor={navnMor}
-                                    farMedmor={navnFarMedmor}
-                                    annenForelderErFarEllerMedmor={!erSøkerMor}
-                                />
+                                <Block
+                                    padBottom="xl"
+                                    visible={
+                                        antallBarn > 1 &&
+                                        formValues.startdatoAdopsjonValg !== undefined &&
+                                        formValues.harAnnenForelderSøktFP !== YesOrNo.YES
+                                    }
+                                >
+                                    <GuidePanel>
+                                        <FormattedMessage
+                                            id="uttaksplaninfo.veileder.flerbarnsInformasjon"
+                                            values={{
+                                                uker: getFlerbarnsuker(dekningsgrad, antallBarn),
+                                                navnFar: navnFarMedmor,
+                                                navnMor: navnMor,
+                                            }}
+                                        />
+                                    </GuidePanel>
+                                </Block>
+                                <Block
+                                    padBottom="xl"
+                                    visible={visibility.isIncluded(MorFarAdopsjonFormField.fellesperiodeukerMor)}
+                                >
+                                    <FordelingFellesperiodeSpørsmål
+                                        setFieldValue={setFieldValue}
+                                        valgtStønadskonto={valgtStønadskonto}
+                                        valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
+                                        mor={navnMor}
+                                        farMedmor={navnFarMedmor}
+                                        annenForelderErFarEllerMedmor={!erSøkerMor}
+                                    />
+                                </Block>
                             </Block>
-                        </Block>
-                        <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
-                                />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
-                        </Block>
-                    </MorFarAdopsjonFormComponents.Form>
-                );
-            }}
-        />
+                            <Block>
+                                <StepButtonWrapper>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousStepHref('uttaksplanInfo')}
+                                    />
+                                    {visibility.areAllQuestionsAnswered() && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
+                            </Block>
+                        </MorFarAdopsjonFormComponents.Form>
+                    );
+                }}
+            />
+        </VStack>
     );
 };
 
