@@ -87,12 +87,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 <FarMedmorFødselFørsteganggsøknadBeggeHarRett
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
-                    eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
-                    scenario={scenario}
                 />
             );
         case 'farMedmorFødselMorHarIkkeRett':

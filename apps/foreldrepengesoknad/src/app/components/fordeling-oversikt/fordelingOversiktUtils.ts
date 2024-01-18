@@ -187,7 +187,7 @@ export const getFellesFordelingMedAnnenPart = (
     };
 };
 
-export const getFordelingMorFødsel = (
+export const getFordelingBeggeHarRett = (
     kontoer: TilgjengeligStønadskonto[],
     erFarEllerMedmor: boolean,
     erBarnetFødt: boolean,
