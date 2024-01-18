@@ -44,7 +44,7 @@ const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskont
         getAntallUker(stønadskontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel)) * 5;
 
     const førsteDag = Uttaksdagen(dato).denneEllerNeste();
-    const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil);
+    const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil - 1);
     return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
 };
 

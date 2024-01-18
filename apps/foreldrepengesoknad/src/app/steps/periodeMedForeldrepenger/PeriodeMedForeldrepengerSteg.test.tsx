@@ -114,12 +114,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Hvis man tar foreldrepenger sammenhengende fra omsorgsovertakelse vil den siste dagen med foreldrepenger bli mandag 31. januar 2022.',
+                'Hvis man tar foreldrepenger sammenhengende fra omsorgsovertakelse vil den siste dagen med foreldrepenger bli fredag 28. januar 2022.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Hvis man tar foreldrepenger sammenhengende fra omsorgsovertakelse vil den siste dagen med foreldrepenger bli mandag 11. april 2022.',
+                'Hvis man tar foreldrepenger sammenhengende fra omsorgsovertakelse vil den siste dagen med foreldrepenger bli fredag 08. april 2022.',
             ),
         ).toBeInTheDocument();
 
@@ -160,12 +160,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(
             screen.getByText(
-                'Hvis man tar foreldrepenger sammenhengende fra omsorgsovertakelse vil den siste dagen med foreldrepenger bli mandag 31. januar 2022.',
+                'Hvis man tar foreldrepenger sammenhengende fra omsorgsovertakelse vil den siste dagen med foreldrepenger bli fredag 28. januar 2022.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Hvis man tar foreldrepenger sammenhengende fra omsorgsovertakelse vil den siste dagen med foreldrepenger bli mandag 11. april 2022.',
+                'Hvis man tar foreldrepenger sammenhengende fra omsorgsovertakelse vil den siste dagen med foreldrepenger bli fredag 08. april 2022.',
             ),
         ).toBeInTheDocument();
 
