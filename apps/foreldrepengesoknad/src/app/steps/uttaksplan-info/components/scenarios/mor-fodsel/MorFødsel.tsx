@@ -196,7 +196,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                 } as MorFødselQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-                const fordelingScenario = getFordelingMorFødsel(valgtStønadskonto, intl);
+                const fordelingScenario = getFordelingMorFødsel(valgtStønadskonto, erFarEllerMedmor, intl);
                 return (
                     <VStack gap="5">
                         <FordelingOversikt
@@ -209,21 +209,6 @@ const MorFødsel: FunctionComponent<Props> = ({
                             fordelingScenario={fordelingScenario}
                         ></FordelingOversikt>
                         <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                            {/* <Block padBottom="xl">
-                                {valgtStønadskonto && (
-                                    <TilgjengeligeDagerGraf
-                                        erDeltUttak={erDeltUttak}
-                                        erFarEllerMedmor={false}
-                                        navnFarMedmor={navnFarMedmor}
-                                        navnMor={navnMor}
-                                        tilgjengeligeDager={getTilgjengeligeDager(
-                                            valgtStønadskonto,
-                                            false,
-                                            Forelder.farMedmor,
-                                        )}
-                                    />
-                                )}
-                            </Block> */}
                             <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                                 <GuidePanel>
                                     <FormattedMessage

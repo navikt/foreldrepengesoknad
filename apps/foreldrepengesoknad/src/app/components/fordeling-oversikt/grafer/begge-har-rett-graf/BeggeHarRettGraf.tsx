@@ -2,14 +2,8 @@ import { StønadskontoType, TilgjengeligStønadskonto, bemUtils, guid, uttaksCon
 import { BodyShort } from '@navikt/ds-react';
 import './../graf.css';
 import { Dispatch, SetStateAction } from 'react';
-import {
-    getShadowClass,
-    getErAnnenForeldersDel,
-    getFordelingBoxColorClass,
-    getFordelingTekst,
-    getFordelingType,
-} from '../../fordelingOversiktUtils';
-import { FordelingType } from '../../FordelingOversikt';
+import { getShadowClass } from '../../fordelingOversiktUtils';
+import { FordeligFargekode, FordelingEier } from '../../FordelingOversikt';
 import FamiliehendelseVisning from './FamiliehendelseVisning';
 import {
     getAntallUkerFedrekvote,
@@ -19,8 +13,11 @@ import {
 import classNames from 'classnames';
 
 interface FordelingGrafInfo {
-    uker: number;
+    antallUker: number;
     konto: StønadskontoType;
+    eier: FordelingEier;
+    fargekode: FordeligFargekode;
+    beskrivelse: string;
 }
 
 interface Props {
@@ -30,8 +27,8 @@ interface Props {
     sumUker: number;
     navnFarMedmor: string;
     navnMor: string;
-    currentUthevet: FordelingType | undefined;
-    setCurrentUthevet: Dispatch<SetStateAction<FordelingType | undefined>>;
+    currentUthevet: FordelingEier | undefined;
+    setCurrentUthevet: Dispatch<SetStateAction<FordelingEier | undefined>>;
 }
 
 const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
@@ -46,20 +43,32 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
 }) => {
     const fordelingList = [
         {
-            uker: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
+            antallUker: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
+            eier: FordelingEier.Mor,
+            fargekode: erFarEllerMedmor ? FordeligFargekode.ANNEN_PART_MOR : FordeligFargekode.SØKER_MOR,
+            beskrivelse: '',
         },
         {
-            uker: getAntallUkerMødrekvote(kontoer),
+            antallUker: getAntallUkerMødrekvote(kontoer),
             konto: StønadskontoType.Mødrekvote,
+            eier: FordelingEier.Mor,
+            fargekode: erFarEllerMedmor ? FordeligFargekode.ANNEN_PART_MOR : FordeligFargekode.SØKER_MOR,
+            beskrivelse: erFarEllerMedmor ? `${navnMor}s del` : 'Din del',
         },
         {
-            uker: getAntallUkerFellesperiode(kontoer),
+            antallUker: getAntallUkerFellesperiode(kontoer),
             konto: StønadskontoType.Fellesperiode,
+            eier: FordelingEier.Felles,
+            fargekode: FordeligFargekode.IKKE_TILDELT,
+            beskrivelse: 'Fellesperiode',
         },
         {
-            uker: getAntallUkerFedrekvote(kontoer),
+            antallUker: getAntallUkerFedrekvote(kontoer),
             konto: StønadskontoType.Fedrekvote,
+            eier: FordelingEier.FarMedmor,
+            fargekode: erFarEllerMedmor ? FordeligFargekode.SØKER_FAR : FordeligFargekode.ANNEN_PART_FAR,
+            beskrivelse: erFarEllerMedmor ? `${navnFarMedmor}s del` : 'Din del',
         },
     ];
     const bem = bemUtils('graf');
@@ -72,16 +81,12 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
 
     return (
         <div className={bem.block}>
-            {fordelingList.map((fordeling: FordelingGrafInfo, index: number) => {
-                const type = getFordelingType(fordeling.konto, erFarEllerMedmor);
-                const erAnnenForeldersDel = getErAnnenForeldersDel(erFarEllerMedmor, type);
-                const width = (fordeling.uker / sumUker) * 100;
-                const colorClass = getFordelingBoxColorClass(type, erAnnenForeldersDel);
-                const tekst = getFordelingTekst(fordeling.konto, navnMor, navnFarMedmor, erAnnenForeldersDel);
-                const isUthevet = currentUthevet === type;
+            {fordelingList.map((fordeling: FordelingGrafInfo, index) => {
+                const width = (fordeling.antallUker / sumUker) * 100;
+                const isUthevet = currentUthevet === fordeling.eier;
                 const shadowClass = getShadowClass(isUthevet);
                 const handleOnMouseEnter = () => {
-                    setCurrentUthevet(type);
+                    setCurrentUthevet(fordeling.eier);
                 };
                 const indexForFamiliehendelse = erAdopsjon ? 0 : 1; //TODO: GR: For prematur fødsel eller fødsel før termin kommer også fellesperioden inn her og index blir 2.
 
@@ -90,7 +95,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                         {index === indexForFamiliehendelse && <FamiliehendelseVisning rowHeight={rowHeight} />}
                         <div
                             className={bem.element('søyle')}
-                            key={fordeling.konto}
+                            key={fordeling.eier}
                             style={{
                                 width: `${width}%`,
                             }}
@@ -99,7 +104,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                                 <div
                                     className={classNames(
                                         bem.element('del-box'),
-                                        bem.modifier(`${colorClass}`),
+                                        bem.modifier(`${fordeling.fargekode}`),
                                         bem.modifier(`${shadowClass}`),
                                     )}
                                     key={guid()}
@@ -117,7 +122,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                                     height: `${rowHeight}px`,
                                 }}
                             >
-                                {tekst}
+                                {fordeling.beskrivelse}
                             </BodyShort>
                         </div>
                     </>

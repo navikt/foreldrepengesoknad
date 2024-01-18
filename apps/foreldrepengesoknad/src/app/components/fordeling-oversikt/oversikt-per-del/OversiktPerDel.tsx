@@ -2,19 +2,19 @@ import { BodyLong, HStack, VStack } from '@navikt/ds-react';
 import './oversikt-per-del.css';
 import { bemUtils, guid } from '@navikt/fp-common';
 import DelGraf from '../grafer/del-graf/DelGraf';
-import { FordelingType, DelInformasjon } from '../FordelingOversikt';
+import { FordelingEier, DelInformasjon } from '../FordelingOversikt';
 import { Dispatch, SetStateAction } from 'react';
-import { getErAnnenForeldersDel, getFordelingBoxColorClass, getFordelingDelTittel } from '../fordelingOversiktUtils';
+import { getFordelingDelTittel } from '../fordelingOversiktUtils';
 import classNames from 'classnames';
 import { useIntl } from 'react-intl';
 
 interface Props {
     delInformasjon: DelInformasjon;
-    currentUthevet: FordelingType | undefined;
+    currentUthevet: FordelingEier | undefined;
     erFarEllerMedmor: boolean;
     navnMor: string;
     navnFarMedmor: string;
-    setCurrentUthevet: Dispatch<SetStateAction<FordelingType | undefined>>;
+    setCurrentUthevet: Dispatch<SetStateAction<FordelingEier | undefined>>;
 }
 
 const OversiktPerDel: React.FunctionComponent<Props> = ({
@@ -27,15 +27,14 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const bem = bemUtils('oversiktPerDel');
-    const hoverClass = currentUthevet === delInformasjon.type ? 'hover' : 'no-hover';
+    const hoverClass = currentUthevet === delInformasjon.eier ? 'hover' : 'no-hover';
     const handleOnMouseEnter = () => {
-        setCurrentUthevet(delInformasjon.type);
+        setCurrentUthevet(delInformasjon.eier);
     };
     const handleOnMouseLeave = () => {
         setCurrentUthevet(undefined);
     };
-    const erAnnenForeldersDel = getErAnnenForeldersDel(erFarEllerMedmor, delInformasjon.type);
-    const colorClass = getFordelingBoxColorClass(delInformasjon.type, erAnnenForeldersDel);
+
     const tittel = getFordelingDelTittel(delInformasjon, erFarEllerMedmor, intl, navnMor, navnFarMedmor);
     return (
         <VStack
@@ -47,7 +46,7 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
             <div>
                 <BodyLong className={bem.element('uker')}>{tittel}</BodyLong>
             </div>
-            <DelGraf uker={delInformasjon.fordelingUker} sumUker={delInformasjon.sumUker} colorClass={colorClass} />
+            <DelGraf fordelingsuker={delInformasjon.fordelingUker} sumUker={delInformasjon.sumUker} />
             <HStack gap="4">
                 {delInformasjon.fordelingInfo.map((infoTekst) => {
                     return (

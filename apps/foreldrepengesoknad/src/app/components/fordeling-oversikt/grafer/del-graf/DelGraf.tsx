@@ -1,14 +1,14 @@
 import { bemUtils, guid } from '@navikt/fp-common';
 import './../graf.css';
 import classNames from 'classnames';
+import { FordelingsUke } from '../../FordelingOversikt';
 
 interface Props {
-    uker: number[];
+    fordelingsuker: FordelingsUke[];
     sumUker: number;
-    colorClass: string;
 }
 
-const DelGraf: React.FunctionComponent<Props> = ({ uker, sumUker, colorClass }) => {
+const DelGraf: React.FunctionComponent<Props> = ({ fordelingsuker, sumUker }) => {
     const rowHeightRem = 0.75;
     const bem = bemUtils('graf');
 
@@ -19,12 +19,12 @@ const DelGraf: React.FunctionComponent<Props> = ({ uker, sumUker, colorClass }) 
                 flexDirection: 'row',
             }}
         >
-            {uker.map((uke) => {
-                const width = (uke / sumUker) * 100;
+            {fordelingsuker.map((uke) => {
+                const width = (uke.antallUker / sumUker) * 100;
                 return (
                     <div
                         key={guid()}
-                        className={classNames(bem.element('del-graf-box'), bem.modifier(`${colorClass}`))}
+                        className={classNames(bem.element('del-graf-box'), bem.modifier(`${uke.fargekode}`))}
                         style={{
                             width: `${width}%`,
                             height: `${rowHeightRem}rem`,

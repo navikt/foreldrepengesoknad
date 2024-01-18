@@ -210,13 +210,14 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                     valgtMengdeStønadskonto,
                     morBrukteDagerFellesperiode,
                     navnMor,
+                    erFarEllerMedmor,
                     intl,
                 );
                 return (
                     <VStack gap="5">
                         <FordelingOversikt
                             kontoer={valgtMengdeStønadskonto}
-                            erFarEllerMedmor={false}
+                            erFarEllerMedmor={true}
                             navnFarMedmor={navnFarMedmor}
                             navnMor={navnMor}
                             erAdopsjon={erAdopsjon}

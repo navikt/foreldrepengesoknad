@@ -4,18 +4,30 @@ import { Block, TilgjengeligStønadskonto, guid } from '@navikt/fp-common';
 import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 import { useState } from 'react';
 
-export enum FordelingType {
+export enum FordelingEier {
     Mor = 'MOR',
     FarMedmor = 'FARMEDMOR',
     Felles = 'FELLES',
 }
 
+export enum FordeligFargekode {
+    SØKER_MOR = 'søker-mor',
+    SØKER_FAR = 'søker-far',
+    ANNEN_PART_MOR = 'annen-part-mor',
+    ANNEN_PART_FAR = 'annen-part-far',
+    IKKE_TILDELT = 'ikke-tildelt',
+}
+
+export interface FordelingsUke {
+    antallUker: number;
+    fargekode: FordeligFargekode;
+}
+
 export interface DelInformasjon {
-    type: FordelingType;
+    eier: FordelingEier;
     sumUker: number;
-    fordelingUker: number[];
+    fordelingUker: FordelingsUke[];
     fordelingInfo: React.ReactNode[];
-    ukerBruktAvAnnenForelder?: number;
 }
 
 export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
@@ -55,7 +67,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     annenForeldrerHarRett,
     fordelingScenario,
 }) => {
-    const [currentUthevet, setCurrentUthevet] = useState<FordelingType | undefined>(undefined);
+    const [currentUthevet, setCurrentUthevet] = useState<FordelingEier | undefined>(undefined);
 
     return (
         <>
