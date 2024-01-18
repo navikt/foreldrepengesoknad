@@ -9,10 +9,8 @@ import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUtt
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
-import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
-import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
@@ -51,8 +49,6 @@ export enum UttaksplanRegelKey {
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     'perioderManglerVedlegg' = 'manglendeVedlegg',
-    'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
-    'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'inneholderForMyeFerie' = 'inneholderForMyeFerie',
@@ -146,18 +142,6 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.perioderManglerVedlegg,
         alvorlighet: RegelAlvorlighet.ADVARSEL,
         test: harPerioderManglendeVedleggTest,
-        slåsSammenVedOppsummering: true,
-    },
-    {
-        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
-        alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaFerieTest,
-        slåsSammenVedOppsummering: true,
-    },
-    {
-        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaArbeid,
-        alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaArbeidTest,
         slåsSammenVedOppsummering: true,
     },
     {
