@@ -77,17 +77,6 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             ),
         ).toBeInTheDocument();
 
-        expect(
-            screen.getByText(
-                'Hvis man tar foreldrepenger sammenhengende fra termin vil den siste dagen med foreldrepenger bli torsdag 09. februar 2023.',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Hvis man tar foreldrepenger sammenhengende fra termin vil den siste dagen med foreldrepenger bli torsdag 20. april 2023.',
-            ),
-        ).toBeInTheDocument();
-
         await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         await userEvent.click(screen.getByText('Neste steg'));

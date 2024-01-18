@@ -51,13 +51,14 @@ const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskont
 const getRadioBeskrivelse = (
     intl: IntlShape,
     erAdopsjon: boolean,
+    erFar: boolean,
     erFødsel: boolean,
     sisteDag?: string,
 ): string | undefined => {
-    if (erAdopsjon) {
+    if (!erFar && erAdopsjon) {
         return intl.formatMessage({ id: 'uttaksplaninfo.Uker.beskrivelseOmsorgsovertakelse' }, { dato: sisteDag });
     }
-    if (!erFødsel) {
+    if (!erFar && !erFødsel) {
         return intl.formatMessage({ id: 'uttaksplaninfo.Uker.beskrivelseTermin' }, { dato: sisteDag });
     }
     return undefined;
@@ -158,7 +159,13 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     >
                         <Radio
                             value={Dekningsgrad.HUNDRE_PROSENT}
-                            description={getRadioBeskrivelse(intl, erAdopsjon, !!fødselsdato, sisteDag100Prosent)}
+                            description={getRadioBeskrivelse(
+                                intl,
+                                erAdopsjon,
+                                søkersituasjon.rolle === 'far',
+                                !!fødselsdato,
+                                sisteDag100Prosent,
+                            )}
                         >
                             <FormattedMessage
                                 id="uttaksplaninfo.49Uker"
@@ -169,7 +176,13 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         </Radio>
                         <Radio
                             value={Dekningsgrad.ÅTTI_PROSENT}
-                            description={getRadioBeskrivelse(intl, erAdopsjon, !!fødselsdato, sisteDag80Prosent)}
+                            description={getRadioBeskrivelse(
+                                intl,
+                                erAdopsjon,
+                                søkersituasjon.rolle === 'far',
+                                !!fødselsdato,
+                                sisteDag80Prosent,
+                            )}
                         >
                             <FormattedMessage
                                 id="uttaksplaninfo.59Uker"
