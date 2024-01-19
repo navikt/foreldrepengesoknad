@@ -39,7 +39,7 @@ import SøknadRoutes from 'app/routes/routes';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingBeggeHarRett } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingMorSøkerFørstFødsel as getFordelingMorFødsel } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -185,37 +185,37 @@ const MorFødsel: FunctionComponent<Props> = ({
 
         mellomlagreSøknadOgNaviger();
     };
-
+    const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
+    const fordelingScenario = getFordelingMorFødsel(
+        valgtStønadskonto,
+        erFarEllerMedmor,
+        erBarnetFødt,
+        søker.erAleneOmOmsorg,
+        intl,
+    );
     return (
-        <MorFødselFormComponents.FormikWrapper
-            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, uttaksplanInfo)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = morFødselQuestionsConfig.getVisbility({
-                    ...formValues,
-                    harRettPåForeldrepengerINorge,
-                    erAleneOmOmsorg: søker.erAleneOmOmsorg,
-                } as MorFødselQuestionsPayload);
+        <VStack gap="5">
+            <FordelingOversikt
+                kontoer={valgtStønadskonto}
+                erFarEllerMedmor={false}
+                navnFarMedmor={navnFarMedmor}
+                navnMor={navnMor}
+                erAdopsjon={erAdopsjon}
+                erBarnetFødt={erBarnetFødt}
+                annenForeldrerHarRett={annenForeldrerHarRettiNorgeEllerEØS}
+                fordelingScenario={fordelingScenario}
+            ></FordelingOversikt>
+            <MorFødselFormComponents.FormikWrapper
+                initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, uttaksplanInfo)}
+                onSubmit={onSubmit}
+                renderForm={({ values: formValues, setFieldValue }) => {
+                    const visibility = morFødselQuestionsConfig.getVisbility({
+                        ...formValues,
+                        harRettPåForeldrepengerINorge,
+                        erAleneOmOmsorg: søker.erAleneOmOmsorg,
+                    } as MorFødselQuestionsPayload);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-                const fordelingScenario = getFordelingBeggeHarRett(
-                    valgtStønadskonto,
-                    erFarEllerMedmor,
-                    erBarnetFødt,
-                    intl,
-                );
-                return (
-                    <VStack gap="5">
-                        <FordelingOversikt
-                            kontoer={valgtStønadskonto}
-                            erFarEllerMedmor={false}
-                            navnFarMedmor={navnFarMedmor}
-                            navnMor={navnMor}
-                            erAdopsjon={erAdopsjon}
-                            erBarnetFødt={erBarnetFødt}
-                            annenForeldrerHarRett={annenForeldrerHarRettiNorgeEllerEØS}
-                            fordelingScenario={fordelingScenario}
-                        ></FordelingOversikt>
+                    return (
                         <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                                 <GuidePanel>
@@ -284,10 +284,10 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 </StepButtonWrapper>
                             </Block>
                         </MorFødselFormComponents.Form>
-                    </VStack>
-                );
-            }}
-        />
+                    );
+                }}
+            />
+        </VStack>
     );
 };
 

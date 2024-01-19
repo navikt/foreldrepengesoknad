@@ -193,42 +193,40 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO,
     );
+    const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
+    const morBrukteDagerFellesperiode = getBrukteDager(valgtMengdeStønadskonto, morsPerioder, familiehendelsedatoDate!)
+        .mor.dagerFellesperiode;
+    const fordelingScenario = getFordelingFarMedmorFørstegangssøknadMedAnnenPart(
+        valgtMengdeStønadskonto,
+        morBrukteDagerFellesperiode,
+        navnMor,
+        erFarEllerMedmor,
+        erAdopsjon,
+        erBarnetFødt,
+        intl,
+    );
 
     return (
-        <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper
-            initialValues={getFarMedmorFørstegangssøknadMedAnnenPartInitialValues(uttaksplanInfo)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig.getVisbility(
-                    formValues as FarMedmorFørstegangssøknadMedAnnenPartFormData,
-                );
-                const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
-                const morBrukteDagerFellesperiode = getBrukteDager(
-                    valgtMengdeStønadskonto,
-                    morsPerioder,
-                    familiehendelsedatoDate!,
-                ).mor.dagerFellesperiode;
-                const fordelingScenario = getFordelingFarMedmorFørstegangssøknadMedAnnenPart(
-                    valgtMengdeStønadskonto,
-                    morBrukteDagerFellesperiode,
-                    navnMor,
-                    erFarEllerMedmor,
-                    erAdopsjon,
-                    erBarnetFødt,
-                    intl,
-                );
-                return (
-                    <VStack gap="5">
-                        <FordelingOversikt
-                            kontoer={valgtMengdeStønadskonto}
-                            erFarEllerMedmor={true}
-                            navnFarMedmor={navnFarMedmor}
-                            navnMor={navnMor}
-                            erAdopsjon={erAdopsjon}
-                            erBarnetFødt={erBarnetFødt}
-                            annenForeldrerHarRett={true}
-                            fordelingScenario={fordelingScenario}
-                        ></FordelingOversikt>
+        <VStack gap="5">
+            <FordelingOversikt
+                kontoer={valgtMengdeStønadskonto}
+                erFarEllerMedmor={true}
+                navnFarMedmor={navnFarMedmor}
+                navnMor={navnMor}
+                erAdopsjon={erAdopsjon}
+                erBarnetFødt={erBarnetFødt}
+                annenForeldrerHarRett={true}
+                fordelingScenario={fordelingScenario}
+            ></FordelingOversikt>
+            <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper
+                initialValues={getFarMedmorFørstegangssøknadMedAnnenPartInitialValues(uttaksplanInfo)}
+                onSubmit={onSubmit}
+                renderForm={({ values: formValues, setFieldValue }) => {
+                    const visibility = farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig.getVisbility(
+                        formValues as FarMedmorFørstegangssøknadMedAnnenPartFormData,
+                    );
+
+                    return (
                         <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form
                             includeButtons={false}
                             includeValidationSummary={true}
@@ -268,10 +266,10 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                                 </StepButtonWrapper>
                             </Block>
                         </FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form>
-                    </VStack>
-                );
-            }}
-        />
+                    );
+                }}
+            />
+        </VStack>
     );
 };
 

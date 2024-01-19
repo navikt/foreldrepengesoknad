@@ -1028,12 +1028,13 @@
     "fordeling.info.felles": "<b> {varighet} </b> kan deles slik man ønsker mellom foreldrene, og brukes når som helst {innen3ÅrTekst}. Når far/medmor skal ha dager fra denne perioden, må mor være i aktivitet. <a>Les om aktivitetskravet til mor.</a>",
     "fordeling.info.felles.annenForelder.del1": "<b> {varighet} </b> er allerede brukt av {annenPartNavn}. Det vil si at det gjenstår {gjenståendeUker} uker som kan brukes av deg eller {annenPartNavn}.",
     "fordeling.info.felles.annenForelder.del2": "Hvis du vil ha ukene som er satt av til {annenPartNavn}, må {annenPartNavn} sende inn en søknad for å frigjøre disse ukene. Etter dette kan du søke om å bruke disse ukene. Det er den siste søknaden som er gjeldende.",
-    "fordeling.info.felles.annenForelder.eøs": "Hvis du {navn} bruker mer enn  {antall} uker med foreldrepenger i et annet EØS land, skal perioden utover trekkes fra fellesperioden. Les mer om dette <a>her</a>.",
+    "fordeling.info.felles.annenForelder.eøs": "Hvis du {navn} bruker mer enn  {varighetAnnenPart} med foreldrepenger i et annet EØS land, skal perioden utover trekkes fra fellesperioden. Les mer om dette <a>her</a>.",
     "fordeling.info.farMedmor.adopsjon": "<b>{varighetTekst}</b> kan brukes når som helst innen tre år fra adopsjonsdatoen.",
     "fordeling.info.farMedmor.fødsel": "<b>{varighetTekst}</b> kan brukes når som helst før barnet fyller 3 år.",
     "fordeling.info.farMedmor.rundtFødsel": "<b>2 av disse ukene</b> kan brukes i perioden rundt fødsel, samtidig med mor. Far kan bruke disse 2 ukene fra to uker før {terminEllerFødsel} til seks uker etter {terminEllerFødsel}. Ofte får fedre permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette, kan far søke om foreldrepenger fra NAV i disse to ukene og bruke av denne kvoten.",
-    "fordeling.info.far.aleneomsorg": "Disse ukene kan brukes når som helst før barnet er 3 år.",
-    "fordeling.info.far.utenAktivitetskrav": "<b>{varighetTekst}</b> kan brukes av deg uten krav til mors aktivitet",
-    "fordeling.info.far.medAktivitetskrav": "<b>{varighetTekst}</b> kan brukes av deg hvis mor er i aktivitet. Les mer om hva som er godkjent aktivitet <a>her</a>.",
-    "fordeling.info.far.opphold": "<b>Periode uten foreldrepenger/opphold</b> vil gjøre at du mister dager med foreldrepenger hvis ikke mor er i aktivitet. Hvis mor er i aktivitet når du har opphold i foreldrepengene, mister du ikke dager."
+    "fordeling.info.far.aleneomsorg.fødsel": "Disse ukene kan brukes når som helst før barnet er 3 år.",
+    "fordeling.info.far.aleneomsorg.adopsjon": "Disse ukene kan brukes når som helst frem til 3 år etter adopsjonsdato.",
+    "fordeling.info.far.utenAktivitetskrav": "<b>{varighetTekst}</b> kan brukes av deg uten krav til mors aktivitet.",
+    "fordeling.info.far.medAktivitetskrav": "<b>{varighetTekst}</b> kan brukes av deg hvis mor er i aktivitet. <a>Les mer om hva som er godkjent aktivitet her</a>.",
+    "fordeling.info.far.opphold": "<b>Periode uten foreldrepenger/opphold</b> vil vises som <b>tapte dager</b> i planen din. Disse vil gjøre at du mister dager med foreldrepenger hvis ikke mor er i aktivitet. Hvis mor er i aktivitet når du har opphold i foreldrepengene, mister du ikke dager. Du kan legge til en utsettelse i planen der du oppgir mors aktivitet."
 }

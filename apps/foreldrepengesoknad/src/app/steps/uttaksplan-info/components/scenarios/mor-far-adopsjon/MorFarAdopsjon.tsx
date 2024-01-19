@@ -49,7 +49,7 @@ import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingMorFarAdopsjon } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingBeggeHarRettAdopsjon } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -208,7 +208,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     );
 
     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-    const fordelingScenario = getFordelingMorFarAdopsjon(valgtStønadskonto, erFarEllerMedmor, intl);
+    const fordelingScenario = getFordelingBeggeHarRettAdopsjon(valgtStønadskonto, erFarEllerMedmor, intl);
     return (
         <VStack gap="5">
             <FordelingOversikt

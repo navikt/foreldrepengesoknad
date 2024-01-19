@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { DatepickerDateRange } from '@navikt/ds-datepicker';
 import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { Button, GuidePanel } from '@navikt/ds-react';
+import { Button, GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
     Forelder,
@@ -16,6 +16,7 @@ import {
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
+    isFødtBarn,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
@@ -49,6 +50,8 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { UttaksplanInfoScenario } from '../scenarios';
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingBareFarMedmorHarRett } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {
     if (!invalidDateRanges) {
@@ -104,6 +107,8 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erBarnetFødt = isFødtBarn(barn);
     const annenForelderHarIkkeRett = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge === false && annenForelder.harRettPåForeldrepengerIEØS === false
         : false;
@@ -184,86 +189,100 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer100DTO,
     );
 
+    const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
+    const fordelingScenario = getFordelingBareFarMedmorHarRett(valgtStønadskonto, erAdopsjon, erBarnetFødt, intl);
     return (
-        <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper
-            initialValues={getInitialFarMedmorFødselOgMorHarIkkeRettValues(uttaksplanInfo)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues }) => {
-                const visibility = farMedmorFødselOgMorHarIkkeRettQuestionsConfig.getVisbility({
-                    ...formValues,
-                    erMorUfør,
-                    familiehendelsesdato: familiehendelsesdatoDate!,
-                } as FarMedmorFødselOgMorHarIkkeRettQuestionsPayload);
+        <VStack gap="5">
+            <FordelingOversikt
+                kontoer={valgtStønadskonto}
+                erFarEllerMedmor={false}
+                navnFarMedmor={navnFarMedmor}
+                navnMor={navnMor}
+                erAdopsjon={erAdopsjon}
+                erBarnetFødt={erBarnetFødt}
+                annenForeldrerHarRett={false}
+                fordelingScenario={fordelingScenario}
+            />
+            <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper
+                initialValues={getInitialFarMedmorFødselOgMorHarIkkeRettValues(uttaksplanInfo)}
+                onSubmit={onSubmit}
+                renderForm={({ values: formValues }) => {
+                    const visibility = farMedmorFødselOgMorHarIkkeRettQuestionsConfig.getVisbility({
+                        ...formValues,
+                        erMorUfør,
+                        familiehendelsesdato: familiehendelsesdatoDate!,
+                    } as FarMedmorFødselOgMorHarIkkeRettQuestionsPayload);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-
-                return (
-                    <FarMedmorFødselOgMorHarIkkeRettFormComponents.Form
-                        includeButtons={false}
-                        includeValidationSummary={true}
-                    >
-                        <Block padBottom="xl">
-                            {valgtStønadskonto && (
-                                <TilgjengeligeDagerGraf
-                                    erDeltUttak={erDeltUttak}
-                                    erFarEllerMedmor
-                                    navnFarMedmor={navnFarMedmor}
-                                    navnMor={navnMor}
-                                    tilgjengeligeDager={getTilgjengeligeDager(
-                                        valgtStønadskonto,
-                                        erDeltUttak,
-                                        Forelder.farMedmor,
-                                    )}
-                                />
-                            )}
-                        </Block>
-                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
-                            <GuidePanel>
-                                <FormattedMessage
-                                    id="uttaksplaninfo.veileder.informasjonPrematuruker"
-                                    values={{
-                                        antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
-                                        antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
-                                    }}
-                                />
-                            </GuidePanel>
-                        </Block>
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isIncluded(FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato)}
+                    return (
+                        <FarMedmorFødselOgMorHarIkkeRettFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
                         >
-                            <FarMedmorFødselOgMorHarIkkeRettFormComponents.DatePicker
-                                name={FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato}
-                                label={intlUtils(intl, 'uttaksplaninfo.spørsmål.startdatoPermisjonFarMedmor.label')}
-                                minDate={ISOStringToDate(datoAvgrensinger.minDate)}
-                                maxDate={ISOStringToDate(datoAvgrensinger.maxDate)}
-                                disabledDateRanges={konverterStringTilDate(datoAvgrensinger.invalidDateRanges)}
-                                disableWeekend={datoAvgrensinger.weekendsNotSelectable}
-                                validate={validateStartdatoFarMedmor(
-                                    intl,
-                                    ISOStringToDate(datoAvgrensinger.minDate)!,
-                                    ISOStringToDate(datoAvgrensinger.maxDate)!,
+                            <Block padBottom="xl">
+                                {valgtStønadskonto && (
+                                    <TilgjengeligeDagerGraf
+                                        erDeltUttak={erDeltUttak}
+                                        erFarEllerMedmor
+                                        navnFarMedmor={navnFarMedmor}
+                                        navnMor={navnMor}
+                                        tilgjengeligeDager={getTilgjengeligeDager(
+                                            valgtStønadskonto,
+                                            erDeltUttak,
+                                            Forelder.farMedmor,
+                                        )}
+                                    />
                                 )}
-                                placeholder={'dd.mm.åååå'}
-                            />
-                        </Block>
-                        <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
+                            </Block>
+                            <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
+                                <GuidePanel>
+                                    <FormattedMessage
+                                        id="uttaksplaninfo.veileder.informasjonPrematuruker"
+                                        values={{
+                                            antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
+                                            antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
+                                        }}
+                                    />
+                                </GuidePanel>
+                            </Block>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isIncluded(
+                                    FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato,
+                                )}
+                            >
+                                <FarMedmorFødselOgMorHarIkkeRettFormComponents.DatePicker
+                                    name={FarMedmorFødselOgMorHarIkkeRettFormField.permisjonStartdato}
+                                    label={intlUtils(intl, 'uttaksplaninfo.spørsmål.startdatoPermisjonFarMedmor.label')}
+                                    minDate={ISOStringToDate(datoAvgrensinger.minDate)}
+                                    maxDate={ISOStringToDate(datoAvgrensinger.maxDate)}
+                                    disabledDateRanges={konverterStringTilDate(datoAvgrensinger.invalidDateRanges)}
+                                    disableWeekend={datoAvgrensinger.weekendsNotSelectable}
+                                    validate={validateStartdatoFarMedmor(
+                                        intl,
+                                        ISOStringToDate(datoAvgrensinger.minDate)!,
+                                        ISOStringToDate(datoAvgrensinger.maxDate)!,
+                                    )}
+                                    placeholder={'dd.mm.åååå'}
                                 />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
-                        </Block>
-                    </FarMedmorFødselOgMorHarIkkeRettFormComponents.Form>
-                );
-            }}
-        />
+                            </Block>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousStepHref('uttaksplanInfo')}
+                                    />
+                                    {visibility.areAllQuestionsAnswered() && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
+                            </Block>
+                        </FarMedmorFødselOgMorHarIkkeRettFormComponents.Form>
+                    );
+                }}
+            />
+        </VStack>
     );
 };
 

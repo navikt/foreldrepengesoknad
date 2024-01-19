@@ -9,7 +9,7 @@ import {
 import { BodyShort } from '@navikt/ds-react';
 import './../graf.css';
 import { Dispatch, SetStateAction } from 'react';
-import { getShadowClass } from '../../fordelingOversiktUtils';
+import { getFordelingShadowClass } from '../../fordelingOversiktUtils';
 import { FordeligFargekode, FordelingEier } from '../../FordelingOversikt';
 import FamiliehendelseVisning from './FamiliehendelseVisning';
 import {
@@ -100,8 +100,8 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
         <div className={bem.block}>
             {fordelingList.map((fordeling: FordelingGrafInfo, index) => {
                 const width = (fordeling.antallUker / sumUker) * 100;
-                const isUthevet = currentUthevet === fordeling.eier;
-                const shadowClass = getShadowClass(isUthevet);
+                const erUthevet = currentUthevet === fordeling.eier;
+                const shadowClass = getFordelingShadowClass(erUthevet);
                 const handleOnMouseEnter = () => {
                     setCurrentUthevet(fordeling.eier);
                 };

@@ -45,7 +45,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingBeggeHarRett } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingBeggeHarRettFødsel } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -107,7 +107,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const valgtStønadskonto = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
-    const fordelingScenario = getFordelingBeggeHarRett(valgtStønadskonto, true, erBarnetFødt, intl);
+    const fordelingScenario = getFordelingBeggeHarRettFødsel(valgtStønadskonto, true, erBarnetFødt, intl);
 
     const onSubmit = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
         setIsSubmitting(true);

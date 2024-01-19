@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button } from '@navikt/ds-react';
+import { Button, VStack } from '@navikt/ds-react';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -17,6 +17,7 @@ import {
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
+    isFødtBarn,
 } from '@navikt/fp-common';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
@@ -43,6 +44,8 @@ import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { UttaksplanInfoScenario } from '../scenarios';
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingFarMedmorAleneomsorg } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -89,6 +92,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erBarnetFødt = isFødtBarn(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
@@ -97,6 +102,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const termindato = getTermindato(barn);
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const navnMor = erFarEllerMedmor && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : person.fornavn;
 
     const onSubmit = (values: Partial<FarMedmorAleneomsorgFødselFormData>) => {
         setIsSubmitting(true);
@@ -158,92 +164,106 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         : isAnnenForelderOppgitt(annenForelder)
           ? annenForelder.fornavn
           : '';
-
+    const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
+    const fordelingScenario = getFordelingFarMedmorAleneomsorg(valgtStønadskonto, erAdopsjon);
     return (
-        <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
-            initialValues={getInitialFarMedmorAleneomsorgFødselValues(
-                uttaksplanInfo,
-                dateToISOString(datoForAleneomsorg),
-                dekningsgrad,
-            )}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues }) => {
-                const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(
-                    formValues as FarMedmorAleneomsorgFødselFormData,
-                );
+        <VStack gap="5">
+            <FordelingOversikt
+                kontoer={valgtStønadskonto}
+                erFarEllerMedmor={false}
+                navnFarMedmor={navnFar}
+                navnMor={navnMor}
+                erAdopsjon={erAdopsjon}
+                erBarnetFødt={erBarnetFødt}
+                annenForeldrerHarRett={false}
+                fordelingScenario={fordelingScenario}
+            ></FordelingOversikt>
+            <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
+                initialValues={getInitialFarMedmorAleneomsorgFødselValues(
+                    uttaksplanInfo,
+                    dateToISOString(datoForAleneomsorg),
+                    dekningsgrad,
+                )}
+                onSubmit={onSubmit}
+                renderForm={({ values: formValues }) => {
+                    const visibility = farMedmorAleneomsorgFødselAdopsjonQuestionsConfig.getVisbility(
+                        formValues as FarMedmorAleneomsorgFødselFormData,
+                    );
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-
-                return (
-                    <FarMedmorAleneomsorgFødselFormComponents.Form
-                        includeButtons={false}
-                        includeValidationSummary={true}
-                    >
-                        <Block>
-                            {valgtStønadskonto && (
-                                <TilgjengeligeDagerGraf
-                                    erDeltUttak={false}
-                                    erFarEllerMedmor={true}
-                                    navnFarMedmor={navnFar}
-                                    navnMor=""
-                                    tilgjengeligeDager={getTilgjengeligeDager(
-                                        valgtStønadskonto,
-                                        false,
-                                        Forelder.farMedmor,
-                                    )}
-                                />
-                            )}
-                        </Block>
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isVisible(
-                                FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse,
-                            )}
+                    return (
+                        <FarMedmorAleneomsorgFødselFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
                         >
-                            <FarMedmorAleneomsorgFødselFormComponents.YesOrNoQuestion
-                                name={FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse}
-                                legend={intlUtils(intl, 'uttaksplaninfo.startdatoAleneomsorgFarMedmor.spørsmål')}
-                                labels={{
-                                    yes: intlUtils(
-                                        intl,
-                                        'uttaksplaninfo.startdatoAdopsjon.alternativ.omsorgsovertakelse',
-                                        {
-                                            dato: formaterDatoUtenDag(datoForAleneomsorg!),
-                                        },
-                                    ),
-                                    no: intlUtils(intl, 'uttaksplaninfo.startdatoAleneomsorgFarMedmor.annenDato'),
-                                }}
-                            />
-                        </Block>
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.startdatoUttak)}
-                        >
-                            <FarMedmorAleneomsorgFødselFormComponents.DatePicker
-                                name={FarMedmorAleneomsorgFødselFormField.startdatoUttak}
-                                label="Startdato"
-                                validate={validateStartdatoUttakFarMedmorAleneomsorgFødsel(intl, familiehendelsesdato)}
-                                minDate={ISOStringToDate(familiehendelsesdato)}
-                                placeholder={'dd.mm.åååå'}
-                            />
-                        </Block>
-                        <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
-                                />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
+                            <Block>
+                                {valgtStønadskonto && (
+                                    <TilgjengeligeDagerGraf
+                                        erDeltUttak={false}
+                                        erFarEllerMedmor={true}
+                                        navnFarMedmor={navnFar}
+                                        navnMor=""
+                                        tilgjengeligeDager={getTilgjengeligeDager(
+                                            valgtStønadskonto,
+                                            false,
+                                            Forelder.farMedmor,
+                                        )}
+                                    />
                                 )}
-                            </StepButtonWrapper>
-                        </Block>
-                    </FarMedmorAleneomsorgFødselFormComponents.Form>
-                );
-            }}
-        />
+                            </Block>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isVisible(
+                                    FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse,
+                                )}
+                            >
+                                <FarMedmorAleneomsorgFødselFormComponents.YesOrNoQuestion
+                                    name={FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse}
+                                    legend={intlUtils(intl, 'uttaksplaninfo.startdatoAleneomsorgFarMedmor.spørsmål')}
+                                    labels={{
+                                        yes: intlUtils(
+                                            intl,
+                                            'uttaksplaninfo.startdatoAdopsjon.alternativ.omsorgsovertakelse',
+                                            {
+                                                dato: formaterDatoUtenDag(datoForAleneomsorg!),
+                                            },
+                                        ),
+                                        no: intlUtils(intl, 'uttaksplaninfo.startdatoAleneomsorgFarMedmor.annenDato'),
+                                    }}
+                                />
+                            </Block>
+                            <Block
+                                padBottom="xl"
+                                visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.startdatoUttak)}
+                            >
+                                <FarMedmorAleneomsorgFødselFormComponents.DatePicker
+                                    name={FarMedmorAleneomsorgFødselFormField.startdatoUttak}
+                                    label="Startdato"
+                                    validate={validateStartdatoUttakFarMedmorAleneomsorgFødsel(
+                                        intl,
+                                        familiehendelsesdato,
+                                    )}
+                                    minDate={ISOStringToDate(familiehendelsesdato)}
+                                    placeholder={'dd.mm.åååå'}
+                                />
+                            </Block>
+                            <Block>
+                                <StepButtonWrapper>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousStepHref('uttaksplanInfo')}
+                                    />
+                                    {visibility.areAllQuestionsAnswered() && (
+                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                            {intlUtils(intl, 'søknad.gåVidere')}
+                                        </Button>
+                                    )}
+                                </StepButtonWrapper>
+                            </Block>
+                        </FarMedmorAleneomsorgFødselFormComponents.Form>
+                    );
+                }}
+            />
+        </VStack>
     );
 };
 
