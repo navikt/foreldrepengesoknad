@@ -11,6 +11,7 @@ import {
     Step,
     StepButtonWrapper,
     Søkerinfo,
+    TidsperiodeMedValgfriSluttdato,
 } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import stepConfig from '../stepsConfig';
@@ -33,6 +34,7 @@ import BackButton from '../BackButton';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 
 const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
     if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
@@ -43,7 +45,26 @@ const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
     return SøknadRoutes.UTENLANDSOPPHOLD;
 };
 
-const leggTilMetadataPåAndreInntekter = (vedlegg: Attachment[] | undefined) => {
+const getPerioderSomDokumenteres = (andreInntekterInformasjon: AnnenInntekt[], type: AnnenInntektType) => {
+    return andreInntekterInformasjon.reduce((res, info) => {
+        if (info.type === type) {
+            const tidsperiode: TidsperiodeMedValgfriSluttdato = {
+                fom: info.tidsperiode.fom,
+                tom: info.tidsperiode.tom,
+            };
+
+            res.push(tidsperiode);
+        }
+
+        return res;
+    }, [] as TidsperiodeMedValgfriSluttdato[]);
+};
+
+const leggTilMetadataPåAndreInntekter = (
+    vedlegg: Attachment[] | undefined,
+    andreInntekterInformasjon: AnnenInntekt[],
+    type: AnnenInntektType,
+) => {
     if (!vedlegg || vedlegg.length === 0) {
         return vedlegg;
     }
@@ -53,6 +74,7 @@ const leggTilMetadataPåAndreInntekter = (vedlegg: Attachment[] | undefined) => 
             ...v,
             dokumenterer: {
                 type: AttachmentMetadataType.OPPTJENING,
+                perioder: getPerioderSomDokumenteres(andreInntekterInformasjon, type),
             },
         } as Attachment;
     });
@@ -116,15 +138,31 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
         if (vedlegg) {
             oppdaterVedlegg({
                 ...vedlegg,
-                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: leggTilMetadataPåAndreInntekter(etterlønnVedlegg),
-                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: leggTilMetadataPåAndreInntekter(militærVedlegg),
+                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: leggTilMetadataPåAndreInntekter(
+                    etterlønnVedlegg,
+                    andreInntekterInformasjon,
+                    AnnenInntektType.SLUTTPAKKE,
+                ),
+                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: leggTilMetadataPåAndreInntekter(
+                    militærVedlegg,
+                    andreInntekterInformasjon,
+                    AnnenInntektType.MILITÆRTJENESTE,
+                ),
             });
         }
 
         if (!vedlegg) {
             oppdaterVedlegg({
-                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: leggTilMetadataPåAndreInntekter(etterlønnVedlegg),
-                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: leggTilMetadataPåAndreInntekter(militærVedlegg),
+                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: leggTilMetadataPåAndreInntekter(
+                    etterlønnVedlegg,
+                    andreInntekterInformasjon,
+                    AnnenInntektType.SLUTTPAKKE,
+                ),
+                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: leggTilMetadataPåAndreInntekter(
+                    militærVedlegg,
+                    andreInntekterInformasjon,
+                    AnnenInntektType.MILITÆRTJENESTE,
+                ),
             });
         }
 
