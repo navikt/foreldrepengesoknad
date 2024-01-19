@@ -29,7 +29,8 @@ interface Props {
     addAnnenInntekt: (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => void;
     editAnnenInntekt: (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => void;
     selectedAnnenInntekt: AnnenInntekt | undefined;
-    andreInntekterVedlegg: Attachment[];
+    etterlønnVedlegg: Attachment[];
+    militærVedlegg: Attachment[];
 }
 
 const AndreInntekterModal: FunctionComponent<Props> = ({
@@ -39,7 +40,8 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
     selectedAnnenInntekt,
     addAnnenInntekt,
     editAnnenInntekt,
-    andreInntekterVedlegg,
+    etterlønnVedlegg,
+    militærVedlegg,
 }) => {
     const intl = useIntl();
 
@@ -69,7 +71,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
 
     return (
         <AndreInntekterModalFormComponents.FormikWrapper
-            initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt, andreInntekterVedlegg)}
+            initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt, etterlønnVedlegg, militærVedlegg)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = andreInntekterModalQuestionsConfig.getVisbility(

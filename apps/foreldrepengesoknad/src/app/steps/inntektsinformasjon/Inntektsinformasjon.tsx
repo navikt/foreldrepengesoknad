@@ -92,7 +92,14 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
     );
-    const [andreInntekterVedlegg, setAndreInntekerVedlegg] = useState(vedlegg ? vedlegg[Skjemanummer.ANNET] : []);
+
+    const [etterlønnVedlegg, setEtterlønnVedlegg] = useState(
+        vedlegg ? vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG] : [],
+    );
+
+    const [militærVedlegg, setMilitærVedlegg] = useState(
+        vedlegg ? vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE] : [],
+    );
 
     const onSubmit = (values: Partial<InntektsinformasjonFormData>) => {
         setIsSubmitting(true);
@@ -109,13 +116,15 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
         if (vedlegg) {
             oppdaterVedlegg({
                 ...vedlegg,
-                [Skjemanummer.ANNET]: leggTilMetadataPåAndreInntekter(andreInntekterVedlegg),
+                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: leggTilMetadataPåAndreInntekter(etterlønnVedlegg),
+                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: leggTilMetadataPåAndreInntekter(militærVedlegg),
             });
         }
 
         if (!vedlegg) {
             oppdaterVedlegg({
-                [Skjemanummer.ANNET]: leggTilMetadataPåAndreInntekter(andreInntekterVedlegg),
+                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: leggTilMetadataPåAndreInntekter(etterlønnVedlegg),
+                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: leggTilMetadataPåAndreInntekter(militærVedlegg),
             });
         }
 
@@ -178,8 +187,10 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                                 <AndreInntekter
                                     andreInntekterInformasjon={andreInntekterInformasjon}
                                     setAndreInntekterInformasjon={setAndreInntekterInformasjon}
-                                    setAndreInntekerVedlegg={setAndreInntekerVedlegg}
-                                    andreInntekterVedlegg={andreInntekterVedlegg || []}
+                                    setEtterlønnVedlegg={setEtterlønnVedlegg}
+                                    setMilitærVedlegg={setMilitærVedlegg}
+                                    etterlønnVedlegg={etterlønnVedlegg || []}
+                                    militærVedlegg={militærVedlegg || []}
                                     visibility={visibility}
                                     formValues={formValues as InntektsinformasjonFormData}
                                 />

@@ -48,9 +48,11 @@ export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
 };
 
 export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {
-    const overføringsVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] ? vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] : [];
+    const omsorgsovertakelseVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE]
+        ? vedlegg[Skjemanummer.OMSORGSOVERTAKELSE]
+        : [];
 
-    return overføringsVedlegg;
+    return omsorgsovertakelseVedlegg;
 };
 
 export const isAleneOmOmsorgVedlegg = (attachment: Attachment) => {
@@ -58,9 +60,11 @@ export const isAleneOmOmsorgVedlegg = (attachment: Attachment) => {
 };
 
 export const getAleneOmOmsorgVedlegg = (vedlegg: VedleggDataType) => {
-    const overføringsVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] ? vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] : [];
+    const aleneOmOmsorgVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG]
+        ? vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG]
+        : [];
 
-    return overføringsVedlegg;
+    return aleneOmOmsorgVedlegg;
 };
 
 export const isTerminbekreftelseVedlegg = (attachment: Attachment) => {
@@ -68,19 +72,35 @@ export const isTerminbekreftelseVedlegg = (attachment: Attachment) => {
 };
 
 export const getTerminbekreftelseVedlegg = (vedlegg: VedleggDataType) => {
-    const overføringsVedlegg = vedlegg[Skjemanummer.TERMINBEKREFTELSE] ? vedlegg[Skjemanummer.TERMINBEKREFTELSE] : [];
+    const terminbekreftelseVedlegg = vedlegg[Skjemanummer.TERMINBEKREFTELSE]
+        ? vedlegg[Skjemanummer.TERMINBEKREFTELSE]
+        : [];
 
-    return overføringsVedlegg;
+    return terminbekreftelseVedlegg;
 };
 
 export const isAndreInntekterVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.ANNET;
+    return (
+        attachment.skjemanummer === Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE ||
+        attachment.skjemanummer === Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+    );
 };
 
 export const getAndreInntekterVedlegg = (vedlegg: VedleggDataType) => {
-    const overføringsVedlegg = vedlegg[Skjemanummer.ANNET] ? vedlegg[Skjemanummer.ANNET] : [];
+    const andreInntekterVedlegg = [];
 
-    return overføringsVedlegg;
+    const militær = vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE];
+    const etterlønn = vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG];
+
+    if (militær) {
+        andreInntekterVedlegg.push(...militær);
+    }
+
+    if (etterlønn) {
+        andreInntekterVedlegg.push(...etterlønn);
+    }
+
+    return andreInntekterVedlegg;
 };
 
 export const isFedrekvoteMorForSykVedlegg = (attachment: Attachment) => {

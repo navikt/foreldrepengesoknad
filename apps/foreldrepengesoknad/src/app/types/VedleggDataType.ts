@@ -10,5 +10,6 @@ export type VedleggDataType = {
     [Skjemanummer.OMSORGSOVERTAKELSE]?: Attachment[];
     [Skjemanummer.DOK_AV_ALENEOMSORG]?: Attachment[];
     [Skjemanummer.TERMINBEKREFTELSE]?: Attachment[];
-    [Skjemanummer.ANNET]?: Attachment[];
+    [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]?: Attachment[];
+    [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]?: Attachment[];
 };

@@ -59,15 +59,14 @@ export const cleanupAndreInntekterForm = (
 
 export const getInitialAndreInntekterFormValues = (
     annenInntekt: AnnenInntekt | undefined,
-    andreInntekterVedlegg: Attachment[],
+    etterlønnVedlegg: Attachment[],
+    militærVedlegg: Attachment[],
 ): AndreInntekterFormData => {
     if (!annenInntekt) {
         return {
             ...initialAndreInntekterFormValues,
         };
     }
-
-    console.log(andreInntekterVedlegg);
 
     if (annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET) {
         return {
@@ -81,11 +80,22 @@ export const getInitialAndreInntekterFormValues = (
         };
     }
 
+    if (annenInntekt.type === AnnenInntektType.MILITÆRTJENESTE) {
+        return {
+            ...initialAndreInntekterFormValues,
+            fom: annenInntekt.tidsperiode.fom,
+            tom: annenInntekt.tidsperiode.tom || '',
+            dokumentasjon: militærVedlegg ? militærVedlegg : [],
+            pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
+            type: annenInntekt.type,
+        };
+    }
+
     return {
         ...initialAndreInntekterFormValues,
         fom: annenInntekt.tidsperiode.fom,
         tom: annenInntekt.tidsperiode.tom || '',
-        dokumentasjon: andreInntekterVedlegg ? andreInntekterVedlegg : [],
+        dokumentasjon: etterlønnVedlegg ? etterlønnVedlegg : [],
         pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
         type: annenInntekt.type,
     };
