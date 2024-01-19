@@ -5,7 +5,6 @@ import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Button, GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
-    Forelder,
     ISOStringToDate,
     StepButtonWrapper,
     Tidsperioden,
@@ -39,8 +38,6 @@ import {
     farMedmorFødselOgMorHarIkkeRettQuestionsConfig,
 } from './farMedmorFødselOgMorHarIkkeRettQuestionsConfig';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
@@ -167,7 +164,6 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         return null;
     }
 
-    const erDeltUttak = !annenForelderHarIkkeRett;
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
     const navnMor = isAnnenForelderOppgitt(annenForelder)
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn, true)
@@ -218,21 +214,6 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                             includeButtons={false}
                             includeValidationSummary={true}
                         >
-                            <Block padBottom="xl">
-                                {valgtStønadskonto && (
-                                    <TilgjengeligeDagerGraf
-                                        erDeltUttak={erDeltUttak}
-                                        erFarEllerMedmor
-                                        navnFarMedmor={navnFarMedmor}
-                                        navnMor={navnMor}
-                                        tilgjengeligeDager={getTilgjengeligeDager(
-                                            valgtStønadskonto,
-                                            erDeltUttak,
-                                            Forelder.farMedmor,
-                                        )}
-                                    />
-                                )}
-                            </Block>
                             <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                                 <GuidePanel>
                                     <FormattedMessage

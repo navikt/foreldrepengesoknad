@@ -6,8 +6,9 @@ import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-aleneomsorg/søkerinfo.json';
-import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
-import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80AleneomsorgFar.json';
+import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFar.json';
+import stønadskonto80Tvillinger from 'storybook/storyData/stonadskontoer/stønadskonto80AleneomsorgFarTvillinger.json';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import UttaksplanInfo from './UttaksplanInfo';
@@ -41,7 +42,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
                     [ContextDataType.OM_BARNET]: {
                         type: BarnType.FØDT,
                         fødselsdatoer: [dayjs('2022-03-01').toDate()],
-                        antallBarn: 1,
+                        antallBarn: args.antallBarn,
                         datoForAleneomsorg: dayjs('2022-03-24').toDate(),
                         dokumentasjonAvAleneomsorg: [],
                     },
@@ -78,16 +79,27 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
 
 export const UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100 = Template.bind({});
 UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100.args = {
-    stønadskonto100: stønadskontoDeltUttak100,
-    stønadskonto80: stønadskontoDeltUttak80,
+    stønadskonto100,
+    stønadskonto80,
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    antallBarn: 1,
 };
 
 export const UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad80 = Template.bind({});
 UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad80.args = {
-    stønadskonto100: stønadskontoDeltUttak100,
-    stønadskonto80: stønadskontoDeltUttak80,
+    stønadskonto100,
+    stønadskonto80,
     søkerinfo,
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    antallBarn: 1,
+};
+
+export const FarMedmorFødselAleneomsorgFlereBarn = Template.bind({});
+FarMedmorFødselAleneomsorgFlereBarn.args = {
+    stønadskonto100,
+    stønadskonto80: stønadskonto80Tvillinger,
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    antallBarn: 2,
 };

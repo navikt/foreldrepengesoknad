@@ -8,7 +8,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
-    Forelder,
     ISOStringToDate,
     StepButtonWrapper,
     Uttaksdagen,
@@ -27,8 +26,6 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import {
     FarMedmorAleneomsorgFødselFormComponents,
     FarMedmorAleneomsorgFødselFormData,
@@ -195,21 +192,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             includeButtons={false}
                             includeValidationSummary={true}
                         >
-                            <Block>
-                                {valgtStønadskonto && (
-                                    <TilgjengeligeDagerGraf
-                                        erDeltUttak={false}
-                                        erFarEllerMedmor={true}
-                                        navnFarMedmor={navnFar}
-                                        navnMor=""
-                                        tilgjengeligeDager={getTilgjengeligeDager(
-                                            valgtStønadskonto,
-                                            false,
-                                            Forelder.farMedmor,
-                                        )}
-                                    />
-                                )}
-                            </Block>
                             <Block
                                 padBottom="xl"
                                 visible={visibility.isVisible(

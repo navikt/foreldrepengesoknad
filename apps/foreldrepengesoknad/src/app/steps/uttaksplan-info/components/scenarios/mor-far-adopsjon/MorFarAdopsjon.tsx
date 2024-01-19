@@ -30,7 +30,7 @@ import {
     MorFarAdopsjonFormField,
 } from './morFarAdopsjonFormConfig';
 import { MorFarAdopsjonQuestionsPayload, morFarAdopsjonQuestionsConfig } from './morFarAdopsjonQuestionsConfig';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
+import { getTilgjengeligeDager } from '../../../../../utils/tilgjengeligeDagerUtils';
 import StartdatoAdopsjon, { finnStartdatoAdopsjon } from './StartdatoAdopsjon';
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';

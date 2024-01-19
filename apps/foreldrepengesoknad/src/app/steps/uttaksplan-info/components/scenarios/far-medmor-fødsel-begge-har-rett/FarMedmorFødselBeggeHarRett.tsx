@@ -25,7 +25,6 @@ import {
     getInitialFarMedmorFødselBeggeHarRettValues,
     mapFarMedmorFødselBeggeHarRettToState,
 } from './farMedmorFødselBeggeHarRettUtils';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -46,6 +45,7 @@ import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getFordelingBeggeHarRettFødsel } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getTilgjengeligeDager } from '../../../../../utils/tilgjengeligeDagerUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
