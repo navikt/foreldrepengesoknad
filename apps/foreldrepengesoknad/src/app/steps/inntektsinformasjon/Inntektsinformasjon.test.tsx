@@ -61,7 +61,8 @@ describe('<Inntektsinformasjon>', () => {
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: {
-                [Skjemanummer.ANNET]: [],
+                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: [],
+                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [],
             },
             key: ContextDataType.VEDLEGG,
             type: 'update',
