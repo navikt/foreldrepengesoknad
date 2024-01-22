@@ -39,7 +39,7 @@ import SøknadRoutes from 'app/routes/routes';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingMorSøkerFørstFødsel as getFordelingMorFødsel } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingBeggeHarRettFødsel } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -82,6 +82,7 @@ const MorFødsel: FunctionComponent<Props> = ({
 
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
+    const erBarnetFødt = isFødtBarn(barn);
     const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
     const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
         ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
@@ -91,6 +92,8 @@ const MorFødsel: FunctionComponent<Props> = ({
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erMorUfør = !!oppgittAnnenForelder?.erUfør;
     const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
+    const annenForeldrerHarRettiNorgeEllerEØS =
+        !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge || !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
     const navnFarMedmor = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, false)
         : '';
@@ -103,19 +106,22 @@ const MorFødsel: FunctionComponent<Props> = ({
     );
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const erBarnetFødt = isFødtBarn(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
     const erDeltUttak = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.harRettPåForeldrepengerINorge : false;
-    const annenForeldrerHarRettiNorgeEllerEØS =
-        isAnnenForelderOppgitt(annenForelder) &&
-        !!(annenForelder.harRettPåForeldrepengerINorge || annenForelder.harRettPåForeldrepengerIEØS);
+
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO,
     );
-
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const valgtStønadskonto = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
+    const fordelingScenario = getFordelingBeggeHarRettFødsel(
+        valgtStønadskonto,
+        erFarEllerMedmor,
+        søker.erAleneOmOmsorg,
+        intl,
+    );
 
     const onSubmit = (values: Partial<MorFødselFormData>) => {
         setIsSubmitting(true);
@@ -134,7 +140,7 @@ const MorFødsel: FunctionComponent<Props> = ({
             situasjon: erFødsel ? 'fødsel' : 'adopsjon',
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
+            tilgjengeligeStønadskontoer: valgtStønadskonto,
             uttaksplanSkjema: {
                 fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
                 startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin
@@ -178,21 +184,14 @@ const MorFødsel: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
+            antallUkerIUttaksplan: getAntallUker(valgtStønadskonto),
         });
 
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
 
         mellomlagreSøknadOgNaviger();
     };
-    const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-    const fordelingScenario = getFordelingMorFødsel(
-        valgtStønadskonto,
-        erFarEllerMedmor,
-        erBarnetFødt,
-        søker.erAleneOmOmsorg,
-        intl,
-    );
+
     return (
         <VStack gap="5">
             <FordelingOversikt

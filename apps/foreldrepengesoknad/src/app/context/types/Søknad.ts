@@ -1,7 +1,7 @@
 import Barn from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
 import Søker from './Søker';
-import { AnnenForelder, Dekningsgrad, Periode, Søkersituasjon, Tilleggsopplysninger } from '@navikt/fp-common';
+import { AnnenForelder, Dekningsgrad, Periode, Søkersituasjon } from '@navikt/fp-common';
 
 export interface Søknad {
     type: 'foreldrepenger';
@@ -14,7 +14,6 @@ export interface Søknad {
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];
-    tilleggsopplysninger: Tilleggsopplysninger;
     saksnummer?: string;
     ønskerJustertUttakVedFødsel: boolean | undefined;
 }

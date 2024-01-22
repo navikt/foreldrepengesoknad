@@ -77,8 +77,8 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
     );
 };
 
-export const UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100 = Template.bind({});
-UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100.args = {
+export const FarMedmorFødselAleneomsorgDekningsgrad100 = Template.bind({});
+FarMedmorFødselAleneomsorgDekningsgrad100.args = {
     stønadskonto100,
     stønadskonto80,
     søkerinfo,
@@ -86,8 +86,8 @@ UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100.args = {
     antallBarn: 1,
 };
 
-export const UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad80 = Template.bind({});
-UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad80.args = {
+export const FarMedmorFødselAleneomsorgDekningsgrad80 = Template.bind({});
+FarMedmorFødselAleneomsorgDekningsgrad80.args = {
     stønadskonto100,
     stønadskonto80,
     søkerinfo,

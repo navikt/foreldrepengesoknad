@@ -42,6 +42,7 @@ export const useApiGetData = <DATA_TYPE extends FpApiDataType, PARAMS extends ob
     const hashedParams = hashCode(JSON.stringify(sortObject(params)));
 
     const apiData = useApiContextGetData<DATA_TYPE>(type, hashedParams);
+    const hasHashedData = !!apiData;
     const updateApiData = useApiContextSaveData(type, hashedParams);
 
     const { data, requestStatus, error } = useGetRequest<typeof apiData>(TYPE_URL_MAP[type], {
@@ -50,7 +51,7 @@ export const useApiGetData = <DATA_TYPE extends FpApiDataType, PARAMS extends ob
             params,
             withCredentials: false,
         },
-        isSuspended: !!apiData || suspendRequest,
+        isSuspended: hasHashedData || suspendRequest,
     });
 
     useEffect(() => {
@@ -61,8 +62,8 @@ export const useApiGetData = <DATA_TYPE extends FpApiDataType, PARAMS extends ob
     }, [data]);
 
     return {
-        data: data || apiData,
-        requestStatus,
+        data: hasHashedData ? apiData : data,
+        requestStatus: hasHashedData ? RequestStatus.FINISHED : requestStatus,
         error,
     };
 };
@@ -79,13 +80,14 @@ export const useApiPostData = <DATA_TYPE extends FpApiDataType, PARAMS extends o
     const hashedParams = hashCode(JSON.stringify(sortObject(params)));
 
     const apiData = useApiContextGetData<DATA_TYPE>(type, hashedParams);
+    const hasHashedData = !!apiData;
     const updateApiData = useApiContextSaveData(type, hashedParams);
 
     const { data, requestStatus, error } = usePostRequest<typeof apiData>(TYPE_URL_MAP[type], params, {
         config: {
             withCredentials: true,
         },
-        isSuspended: !!apiData || suspendRequest,
+        isSuspended: hasHashedData || suspendRequest,
     });
 
     useEffect(() => {
@@ -104,8 +106,8 @@ export const useApiPostData = <DATA_TYPE extends FpApiDataType, PARAMS extends o
     }
 
     return {
-        data: data || apiData,
-        requestStatus,
+        data: hasHashedData ? apiData : data,
+        requestStatus: hasHashedData ? RequestStatus.FINISHED : requestStatus,
         error,
     };
 };

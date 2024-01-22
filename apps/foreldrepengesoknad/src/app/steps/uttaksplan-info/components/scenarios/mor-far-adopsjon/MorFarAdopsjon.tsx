@@ -190,7 +190,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const erMorUfør = erSøkerMor ? false : erAnnenPartUfør;
 
-    const navnSøker = formaterNavn(fornavn, etternavn, true, mellomnavn);
+    const navnSøker = formaterNavn(fornavn, etternavn, false, mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
 

@@ -21,7 +21,6 @@ import {
     isUttaksperiode,
     Periode,
     Periodene,
-    SenEndringÅrsak,
     Step,
     StepButtonWrapper,
     Søkerinfo,
@@ -39,7 +38,6 @@ import useDebounce from 'app/utils/hooks/useDebounce';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
-import { cleanupInvisibleCharsFromTilleggsopplysninger } from 'app/utils/tilleggsopplysningerUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
@@ -60,8 +58,8 @@ import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttak
 import AttachmentApi from '../../api/attachmentApi';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import {
-    getKanJustereAutomatiskVedFødsel,
-    getVisAutomatiskJusteringForm,
+    getKanPerioderRundtFødselAutomatiskJusteres,
+    getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
@@ -344,23 +342,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         oppdaterUttaksplanMetadata,
     ]);
 
-    const handleBegrunnelseChange = (årsak: SenEndringÅrsak, begrunnelse: string) => {
-        const ekstraInformasjon = årsak !== SenEndringÅrsak.Ingen ? årsak : undefined;
-        const opplysninger = {
-            ...(uttaksplanMetadata.tilleggsopplysninger || {}),
-            begrunnelseForSenEndring: {
-                ...(uttaksplanMetadata.tilleggsopplysninger || {}).begrunnelseForSenEndring,
-                tekst: begrunnelse,
-                ekstraInformasjon: ekstraInformasjon,
-            },
-        };
-
-        oppdaterUttaksplanMetadata({
-            ...uttaksplanMetadata,
-            tilleggsopplysninger: opplysninger,
-        });
-    };
-
     useEffect(() => {
         const periodeAngittAvAnnenPart = opprinneligPlan?.find((p) => isUttaksperiode(p) && p.angittAvAnnenPart);
 
@@ -396,15 +377,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         setIsSubmitting(true);
         setSubmitIsClicked(true);
 
-        const cleanedTilleggsopplysninger = cleanupInvisibleCharsFromTilleggsopplysninger(
-            uttaksplanMetadata.tilleggsopplysninger,
-        );
-
         oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
             endringstidspunkt,
             perioderSomSkalSendesInn,
-            tilleggsopplysninger: cleanedTilleggsopplysninger,
         });
 
         oppdaterAppRoute(nextRoute);
@@ -418,7 +394,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         termindato,
     );
 
-    const visAutomatiskJusteringForm = getVisAutomatiskJusteringForm(
+    const visAutomatiskJusteringForm = getKanSøkersituasjonAutomatiskJustereRundtFødsel(
         erFarEllerMedmor,
         familiehendelsesdatoDate!,
         situasjon,
@@ -428,15 +404,14 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         bareFarMedmorHarRett,
     );
 
-    const kanJustereAutomatiskVedFødsel = getKanJustereAutomatiskVedFødsel(
+    const periodeRundtFødselKanAutomatiskJusteres = getKanPerioderRundtFødselAutomatiskJusteres(
+        visAutomatiskJusteringForm,
         perioderMedUttakRundtFødsel,
         termindato,
-        erFarEllerMedmor,
-        barn,
     );
 
     const setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig = () => {
-        if ((visAutomatiskJusteringForm || erEndringssøknad) && !kanJustereAutomatiskVedFødsel) {
+        if (!periodeRundtFødselKanAutomatiskJusteres) {
             oppdaterUttaksplanMetadata({
                 ...uttaksplanMetadata,
                 ønskerJustertUttakVedFødsel: undefined,
@@ -445,9 +420,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     };
 
     const ønskerJustertUttakVedFødselErBesvart = (ønskerAutomatiskJusteringSvar: boolean | undefined) => {
-        return (
-            visAutomatiskJusteringForm && kanJustereAutomatiskVedFødsel && ønskerAutomatiskJusteringSvar !== undefined
-        );
+        return periodeRundtFødselKanAutomatiskJusteres && ønskerAutomatiskJusteringSvar !== undefined;
     };
 
     const ref = useRef<FormikValues>(null);
@@ -597,14 +570,16 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     return (
         <UttaksplanFormComponents.FormikWrapper
-            initialValues={getUttaksplanFormInitialValues(uttaksplanMetadata.ønskerJustertUttakVedFødsel)}
+            initialValues={getUttaksplanFormInitialValues(
+                uttaksplanMetadata.ønskerJustertUttakVedFødsel,
+                periodeRundtFødselKanAutomatiskJusteres,
+            )}
             onSubmit={onSubmit}
             innerRef={ref}
             renderForm={({ values }) => {
                 const visibility = uttaksplanQuestionsConfig.getVisbility({
                     ønskerAutomatiskJustering: values[UttaksplanFormField.ønskerAutomatiskJustering] ?? YesOrNo.NO,
-                    termindato,
-                    perioderMedUttakRundtFødsel,
+                    periodeRundtFødselKanAutomatiskJusteres,
                 });
 
                 return (
@@ -652,9 +627,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             søkersituasjon={søkersituasjon}
                             dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
                             antallBarn={antallBarn}
-                            tilleggsopplysninger={uttaksplanMetadata.tilleggsopplysninger || {}}
                             setUttaksplanErGyldig={setUttaksplanErGyldig}
-                            handleBegrunnelseChange={handleBegrunnelseChange}
                             eksisterendeSak={eksisterendeSak}
                             perioderSomSkalSendesInn={perioderSomSkalSendesInn}
                             morsSisteDag={morsSisteDag}

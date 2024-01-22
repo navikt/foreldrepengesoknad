@@ -163,6 +163,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
           : '';
     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
     const fordelingScenario = getFordelingFarMedmorAleneomsorg(valgtStønadskonto, erAdopsjon);
+
     return (
         <VStack gap="5">
             <FordelingOversikt

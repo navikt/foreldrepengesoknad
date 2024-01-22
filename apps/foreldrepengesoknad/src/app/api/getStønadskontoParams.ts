@@ -8,9 +8,11 @@ import {
     EksisterendeSak,
     ISOStringToDate,
     andreAugust2022ReglerGjelder,
+    formaterDato,
     getErMorUfør,
     getFarMedmorErAleneOmOmsorg,
     getMorErAleneOmOmsorg,
+    hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
@@ -86,6 +88,10 @@ export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     return antallBarnSaksgrunnlag;
 };
 
+const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
+    return hasValue(dato) ? formaterDato(dato, datoformat) : undefined;
+};
+
 const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
@@ -132,22 +138,36 @@ const getStønadskontoParams = (
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
+    const fpUttakServiceDateFormat = 'YYYYMMDD';
+
     const params = {
-        antallBarn: saksgrunnlagsAntallBarn,
-        startdatoUttak: getFamiliehendelsedato(barn),
-        farHarRettINorge: getFarHarRettINorge(erFarMedmor, annenForelder),
-        morHarRettINorge: getMorHarRettINorge(erFarMedmor, annenForelder),
+        farHarRett: getFarHarRettINorge(erFarMedmor, annenForelder),
+        morHarRett: getMorHarRettINorge(erFarMedmor, annenForelder),
         harAnnenForelderTilsvarendeRettEØS: getAnnenForelderHarRettIEØS(annenForelder),
-        morHarAleneomsorg: morErAleneOmOmsorg,
-        farHarAleneomsorg: farMedmorErAleneOmOmsorg,
-        fødselsdato: isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
-        omsorgsovertakelsesdato:
+        morHarAleneomsorg: morErAleneOmOmsorg || false,
+        farHarAleneomsorg: farMedmorErAleneOmOmsorg || false,
+        antallBarn: saksgrunnlagsAntallBarn,
+        fødselsdato: formaterStønadskontoParamsDatoer(
+            isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
+            fpUttakServiceDateFormat,
+        ),
+        termindato: formaterStønadskontoParamsDatoer(
+            getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
+            fpUttakServiceDateFormat,
+        ),
+        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(
             isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,
-        termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
+            fpUttakServiceDateFormat,
+        ),
+        startdatoUttak: formaterStønadskontoParamsDatoer(getFamiliehendelsedato(barn), fpUttakServiceDateFormat),
         minsterett: andreAugust2022ReglerGjelder(familiehendelsesdato!),
         erMor: !søkerErFarEllerMedmor,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
-        familieHendelseDatoNesteSak: dateToISOString(familieHendelseDatoNesteSak),
+
+        familieHendelseDatoNesteSak: formaterStønadskontoParamsDatoer(
+            dateToISOString(familieHendelseDatoNesteSak),
+            fpUttakServiceDateFormat,
+        ),
     };
 
     return {

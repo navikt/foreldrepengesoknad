@@ -6,15 +6,11 @@ import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTes
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
-import { erTilleggsopplysningerGyldigTest } from './tester/erTilleggsopplysningerGyldigTest';
-import { harTilleggsopplysningerGyldigeCharsTest } from './tester/harTilleggsopplysningerGyldigeCharsTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
 import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
-import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
-import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
@@ -50,13 +46,9 @@ export enum UttaksplanRegelKey {
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
     'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
-    'begrunnelseVedForSenEndringErUgyldig' = 'begrunnelseVedForSenEndringErUgyldig',
-    'begrunnelseVedForSenEndringHarUgyldigeChars' = 'begrunnelseVedForSenEndringHarUgyldigeChars',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
     'perioderManglerVedlegg' = 'manglendeVedlegg',
-    'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
-    'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'inneholderForMyeFerie' = 'inneholderForMyeFerie',
@@ -137,19 +129,9 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         test: erUttaksplanGraderingStørreEnnSamtidigUttakTest,
     },
     {
-        key: UttaksplanRegelKey.begrunnelseVedForSenEndringErUgyldig,
-        alvorlighet: RegelAlvorlighet.FEIL,
-        test: erTilleggsopplysningerGyldigTest,
-    },
-    {
         key: UttaksplanRegelKey.uttaksplanHarForMangeFlerbarnsdager,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: harUttaksplanForMangeFlerbarnsdagerTest,
-    },
-    {
-        key: UttaksplanRegelKey.begrunnelseVedForSenEndringHarUgyldigeChars,
-        alvorlighet: RegelAlvorlighet.FEIL,
-        test: harTilleggsopplysningerGyldigeCharsTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
@@ -160,18 +142,6 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.perioderManglerVedlegg,
         alvorlighet: RegelAlvorlighet.ADVARSEL,
         test: harPerioderManglendeVedleggTest,
-        slåsSammenVedOppsummering: true,
-    },
-    {
-        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
-        alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaFerieTest,
-        slåsSammenVedOppsummering: true,
-    },
-    {
-        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaArbeid,
-        alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaArbeidTest,
         slåsSammenVedOppsummering: true,
     },
     {

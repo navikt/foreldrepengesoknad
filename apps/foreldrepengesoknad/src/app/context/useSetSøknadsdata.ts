@@ -38,7 +38,6 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.PERIODE_MED_FORELDREPENGER, { dekningsgrad: søknad.dekningsgrad });
         oppdaterData(ContextDataType.UTTAKSPLAN, søknad.uttaksplan);
         oppdaterData(ContextDataType.UTTAKSPLAN_METADATA, {
-            tilleggsopplysninger: søknad.tilleggsopplysninger,
             ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
         });
 

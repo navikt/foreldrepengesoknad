@@ -34,7 +34,6 @@ import { validateHarGodkjentOppsummering } from './validation/oppsummeringValida
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
 import SøknadRoutes from 'app/routes/routes';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { beskrivTilleggsopplysning } from 'app/utils/tilleggsopplysningerUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -75,14 +74,9 @@ const Oppsummering: FunctionComponent<Props> = ({
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
-
-    const tilleggsopplysninger = uttaksplanMetadata.tilleggsopplysninger;
-
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, søkerErFarEllerMedmor, intl);
-    const begrunnelseForSenEndring = tilleggsopplysninger?.begrunnelseForSenEndring
-        ? beskrivTilleggsopplysning(tilleggsopplysninger.begrunnelseForSenEndring)
-        : undefined;
+
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
         søkerErFarEllerMedmor,
         søker.erAleneOmOmsorg,
@@ -177,7 +171,6 @@ const Oppsummering: FunctionComponent<Props> = ({
                                             registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
                                             dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
                                             antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
-                                            begrunnelseForSenEndring={begrunnelseForSenEndring}
                                             eksisterendeUttaksplan={
                                                 eksisterendeSak ? eksisterendeSak.uttaksplan : undefined
                                             }

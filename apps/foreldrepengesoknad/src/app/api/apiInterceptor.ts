@@ -5,6 +5,10 @@ const apiBaseUrl = Environment.REST_API_URL;
 
 export const AxiosInstance = axios.create({ baseURL: apiBaseUrl });
 
+export const setAxiosLocale = (nextLocale: string) => {
+    AxiosInstance.defaults.headers.common['Accept-Language'] = nextLocale;
+};
+
 const getAxiosInstance = (fnr?: string) => {
     AxiosInstance.interceptors.request.use((config) => {
         config.timeout = 60 * 1000;

@@ -18,7 +18,6 @@ import {
     StønadskontoType,
     Søkerrolle,
     Søkersituasjon,
-    Tilleggsopplysninger,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksdagen,
@@ -82,16 +81,12 @@ export interface SøkerForInnsending extends Omit<Søker, 'andreInntekterSiste10
 }
 
 export interface SøknadForInnsending
-    extends Omit<
-        Søknad,
-        'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon' | 'tilleggsopplysninger'
-    > {
+    extends Omit<Søknad, 'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon'> {
     barn: BarnForInnsending;
     annenForelder: AnnenForelderForInnsending;
     uttaksplan: PeriodeForInnsending[];
     søker: SøkerForInnsending;
     situasjon: Situasjon;
-    tilleggsopplysninger?: string;
     vedlegg: Attachment[];
 }
 
@@ -106,7 +101,6 @@ export type EndringssøknadForInnsending = Pick<
     | 'barn'
     | 'dekningsgrad'
     | 'situasjon'
-    | 'tilleggsopplysninger'
     | 'ønskerJustertUttakVedFødsel'
     | 'vedlegg'
 >;
@@ -381,7 +375,6 @@ export const cleanSøknad = (
         termindato,
         annenForelder,
     );
-    const tilleggsopplysningerInnsending = cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger));
     const cleanedSøknad: SøknadForInnsending = {
         type: 'foreldrepenger',
         harGodkjentVilkår: true,
@@ -392,7 +385,6 @@ export const cleanSøknad = (
         situasjon: søkersituasjon.situasjon,
         annenForelder: annenForelderInnsending,
         uttaksplan: uttaksplanInnsending,
-        tilleggsopplysninger: tilleggsopplysningerInnsending,
         informasjonOmUtenlandsopphold: {
             ...utenlandsopphold,
             ...(senereUtenlandsopphold || { senereOpphold: [] }),
@@ -405,7 +397,7 @@ export const cleanSøknad = (
 
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
 
-    return mapAttachmentsToSøknadForInnsending(cleanedSøknad) as SøknadForInnsending; //TODO vedleggForSenEndring
+    return mapAttachmentsToSøknadForInnsending(cleanedSøknad) as SøknadForInnsending;
 };
 
 const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
@@ -489,7 +481,6 @@ export const cleanEndringssøknad = (
         barn: barn,
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         situasjon: søkersituasjon.situasjon,
-        tilleggsopplysninger: cleanTilleggsopplysninger(notEmpty(uttaksplanMetadata.tilleggsopplysninger)),
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: [], //Vedlegga blir lagt til i funksjonen under
     };
@@ -497,14 +488,6 @@ export const cleanEndringssøknad = (
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
 
     return mapAttachmentsToSøknadForInnsending(cleanedSøknad);
-};
-
-const cleanTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
-    const tilleggsopplysningerTilSaksbehandler = tilleggsopplysninger.begrunnelseForSenEndring?.tekst;
-    if (tilleggsopplysningerTilSaksbehandler !== undefined && tilleggsopplysningerTilSaksbehandler.length > 0) {
-        return tilleggsopplysningerTilSaksbehandler;
-    }
-    return undefined;
 };
 
 export const sendErrorMessageToSentry = (error: AxiosError<any>) => {

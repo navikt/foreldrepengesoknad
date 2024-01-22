@@ -24,10 +24,13 @@ export const mapUttaksplanFormValueToState = (value: YesOrNo): boolean | undefin
     return convertYesOrNoOrUndefinedToBoolean(value);
 };
 
-export const getUttaksplanFormInitialValues = (ønskerAutomatiskJustering: boolean | undefined): UttaksplanFormData => {
+export const getUttaksplanFormInitialValues = (
+    ønskerAutomatiskJustering: boolean | undefined,
+    periodeKanJusteresAutomatiskVedFødsel: boolean,
+): UttaksplanFormData => {
     return {
         ønskerAutomatiskJustering:
-            ønskerAutomatiskJustering !== undefined
+            ønskerAutomatiskJustering !== undefined && periodeKanJusteresAutomatiskVedFødsel
                 ? convertBooleanOrUndefinedToYesOrNo(ønskerAutomatiskJustering)
                 : YesOrNo.UNANSWERED,
     };

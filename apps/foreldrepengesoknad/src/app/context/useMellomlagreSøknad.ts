@@ -57,7 +57,6 @@ const mellomlagre = (
             dekningsgrad: periodeMedForeldrepenger?.dekningsgrad,
             uttaksplan,
             vedlegg: [],
-            tilleggsopplysninger: uttaksplanMetadata?.tilleggsopplysninger,
             ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
         },
         eksisterendeSak,

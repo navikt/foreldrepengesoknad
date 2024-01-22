@@ -836,6 +836,9 @@ importers:
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../../packages/fp-common
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks

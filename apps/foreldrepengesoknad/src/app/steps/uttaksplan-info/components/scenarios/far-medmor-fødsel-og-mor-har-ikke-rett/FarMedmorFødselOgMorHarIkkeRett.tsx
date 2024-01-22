@@ -166,9 +166,9 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
 
     const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
     const navnMor = isAnnenForelderOppgitt(annenForelder)
-        ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn, true)
+        ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn, false)
         : '';
-    const navnFarMedmor = formaterNavn(fornavn, etternavn, true, mellomnavn);
+    const navnFarMedmor = formaterNavn(fornavn, etternavn, false, mellomnavn);
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
         familiehendelsesdatoDate!,
         termindato,
@@ -187,6 +187,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
 
     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
     const fordelingScenario = getFordelingBareFarMedmorHarRett(valgtStønadskonto, erAdopsjon, erBarnetFødt, intl);
+
     return (
         <VStack gap="5">
             <FordelingOversikt

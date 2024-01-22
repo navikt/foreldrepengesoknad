@@ -66,7 +66,8 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const alleSaker = getAlleYtelser(saker);
     const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
     useSetSelectedSak(gjeldendeSak);
-    useDocumentTitle(`${getSaksoversiktHeading(gjeldendeSak.ytelse)} - ${intlUtils(intl, 'dineForeldrepenger')}`);
+
+    useDocumentTitle(`${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intlUtils(intl, 'dineForeldrepenger')}`);
 
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
@@ -138,9 +139,10 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     const navnPåSøker = søkerinfo.søker.fornavn;
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
-    const aktiveMinidialogerForSaken = minidialogerData
-        ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
-        : undefined;
+    const aktiveMinidialogerForSaken =
+        minidialogerData && minidialogerData instanceof Array
+            ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
+            : undefined;
 
     return (
         <div className={bem.block}>

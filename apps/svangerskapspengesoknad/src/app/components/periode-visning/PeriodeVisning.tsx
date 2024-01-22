@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { TilretteleggingPeriode, Tilretteleggingstype } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, TilretteleggingPeriode, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import { BodyShort } from '@navikt/ds-react';
 
@@ -59,13 +59,17 @@ const PeriodeVisning: FunctionComponent<Props> = ({
 
     const stillingsprosentText = getStillingsprosentTekst(periode, intl);
     const bem = bemUtils('periodeVisningInfoBox');
-
+    const navnArbeidsgiver =
+        periode.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
+        periode.arbeidsforhold.navn.trim().length === 0
+            ? intlUtils(intl, 'egenNæring')
+            : periode.arbeidsforhold.navn;
     return (
         <div className={bem.block}>
             <div className={bem.element('topRow')}>
                 <BodyShort className={bem.element('label')}>{labelText}</BodyShort>
                 <div className={bem.element('arbeidsgiverNavn')}>
-                    <BodyShort>{periode.arbeidsforhold.navn.toUpperCase()}</BodyShort>
+                    <BodyShort>{navnArbeidsgiver.toUpperCase()}</BodyShort>
                 </div>
             </div>
             <Block padBottom="m">

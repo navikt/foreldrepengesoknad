@@ -9,6 +9,7 @@ import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import { shouldChangeBrowser } from './utils/browserUtils';
 import nnMessages from './intl/nn_NO.json';
 import nbMessages from './intl/nb_NO.json';
+import { setAxiosLocale } from './api/apiInterceptor';
 import { FpApiDataContext } from './api/context/FpApiDataContext';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
@@ -33,6 +34,7 @@ const AppContainer = () => {
                         onChangeLocale={(activeLocale: LocaleNo) => {
                             setLocaleInSessionStorage(activeLocale);
                             setLocale(activeLocale);
+                            setAxiosLocale(activeLocale);
                             document.documentElement.setAttribute('lang', activeLocale);
                         }}
                     />

@@ -5,6 +5,7 @@ import Person from '@navikt/fp-common/src/common/types/Person';
 import { Button, GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
+    Dekningsgrad,
     Forelder,
     ISOStringToDate,
     StepButtonWrapper,
@@ -172,6 +173,8 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                         familiehendelsesdato: familiehendelsesdatoDate!,
                     } as FarMedmorFødselBeggeHarRettFormPayload);
 
+                    const valgtStønadskonto =
+                        tilgjengeligeStønadskontoer[dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 100 : 80];
                     const tilgjengeligeDager = valgtStønadskonto
                         ? getTilgjengeligeDager(valgtStønadskonto, false, Forelder.farMedmor)
                         : undefined;
