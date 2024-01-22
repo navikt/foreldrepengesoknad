@@ -82,7 +82,7 @@ describe('<AnnenForelder>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

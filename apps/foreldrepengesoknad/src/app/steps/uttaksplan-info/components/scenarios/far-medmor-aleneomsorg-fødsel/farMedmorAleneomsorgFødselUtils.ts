@@ -8,7 +8,6 @@ import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorAleneomsorgFødselValues: FarMedmorAleneomsorgFødselFormData = {
-    [FarMedmorAleneomsorgFødselFormField.dekningsgrad]: '',
     [FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse]: YesOrNo.UNANSWERED,
     [FarMedmorAleneomsorgFødselFormField.startdatoUttak]: '',
 };
@@ -35,7 +34,6 @@ export const getInitialFarMedmorAleneomsorgFødselValues = (
         );
 
         return {
-            dekningsgrad,
             startPåOmsorgsovertakelse: startetPåOmsorgsovertakelse ? YesOrNo.YES : YesOrNo.NO,
             startdatoUttak: startetPåOmsorgsovertakelse ? '' : lagretUttaksplanInfo.startdatoUttak,
         };

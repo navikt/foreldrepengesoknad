@@ -13,13 +13,9 @@ const MorFarFødselAnnenForelderHarRettIEØSFormConfig: QuestionConfig<
     MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
     MorFarFødselAnnenForelderHarRettIEØSFormField
 > = {
-    [MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad]: {
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-        isIncluded: () => true,
-    },
     [MorFarFødselAnnenForelderHarRettIEØSFormField.permisjonStartdato]: {
         isAnswered: ({ permisjonStartdato }) => hasValue(permisjonStartdato),
-        isIncluded: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        isIncluded: () => true,
     },
 };
 

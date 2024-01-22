@@ -67,6 +67,7 @@ const Oppsummering: FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
     const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
@@ -168,7 +169,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                                             annenForelder={annenForelder}
                                             erFarEllerMedmor={søkerErFarEllerMedmor}
                                             registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
-                                            dekningsgrad={uttaksplanMetadata.dekningsgrad!}
+                                            dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
                                             antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
                                             eksisterendeUttaksplan={
                                                 eksisterendeSak ? eksisterendeSak.uttaksplan : undefined

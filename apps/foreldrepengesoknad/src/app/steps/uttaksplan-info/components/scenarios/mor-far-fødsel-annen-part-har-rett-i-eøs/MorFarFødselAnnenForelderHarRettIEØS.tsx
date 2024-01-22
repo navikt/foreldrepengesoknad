@@ -24,7 +24,6 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import SøknadRoutes from 'app/routes/routes';
 import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
@@ -71,6 +70,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -91,6 +91,8 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+
+    const { dekningsgrad } = periodeMedForeldrepenger;
 
     const shouldRender = erFødsel;
 
@@ -114,7 +116,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             situasjon: søkersituasjon.situasjon,
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
             uttaksplanSkjema: {
                 startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin ? undefined : startdato,
                 farSinFørsteUttaksdag: erFarEllerMedmor ? startdato : undefined,
@@ -134,10 +136,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
-            antallUkerIUttaksplan: getAntallUker(
-                tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80],
-            ),
+            antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
         });
 
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
@@ -155,8 +154,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const navnAnnenPart = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
         : '';
-
-    const erDeltUttakINorge = false;
 
     const navnSøker = formaterNavn(person.fornavn, person.etternavn, true, person.mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
@@ -182,7 +179,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             initialValues={getInitialMorFarFødselAnnenForelderHarRettIEØSValues(
                 defaultPermisjonStartdato,
                 uttaksplanInfo,
-                uttaksplanMetadata?.dekningsgrad,
             )}
             onSubmit={onSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
@@ -196,17 +192,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isIncluded(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad)}
-                        >
-                            <DekningsgradSpørsmål
-                                FormKomponent={MorFarFødselAnnenForelderHarRettIEØSFormComponents}
-                                dekningsgradFeltNavn={MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad}
-                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                erDeltUttak={erDeltUttakINorge}
-                            />
-                        </Block>
                         <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                             <GuidePanel>
                                 <FormattedMessage
@@ -253,7 +238,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         <Block
                             padBottom="xl"
                             visible={
-                                visibility.isAnswered(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad) &&
                                 antallBarn > 1 &&
                                 (formValues.permisjonStartdato !== undefined ||
                                     formValues.skalIkkeHaUttakFørTermin === true)
@@ -263,7 +247,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.flerbarnsInformasjon.annenForelderHarRettIEØS"
                                     values={{
-                                        uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                        uker: getFlerbarnsuker(dekningsgrad, antallBarn),
                                         navnFar: navnFarMedmor,
                                         navnMor: navnMor,
                                     }}

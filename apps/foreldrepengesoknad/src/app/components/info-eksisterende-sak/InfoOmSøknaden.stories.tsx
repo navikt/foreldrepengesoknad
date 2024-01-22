@@ -78,7 +78,7 @@ const Template: StoryFn<Props> = ({
                 [ContextDataType.ANNEN_FORELDER]: annenForelder,
                 [ContextDataType.SØKER]: søker,
                 [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                [ContextDataType.UTTAKSPLAN_METADATA]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+                [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
             }}
         >
             <InfoOmSøknaden

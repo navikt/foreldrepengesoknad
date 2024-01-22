@@ -14,27 +14,18 @@ const MorFarAdopsjonFormConfig: QuestionConfig<MorFarAdopsjonQuestionsPayload, M
         isAnswered: ({ harAnnenForelderSøktFP }) => harAnnenForelderSøktFP !== YesOrNo.UNANSWERED,
         isIncluded: ({ harAnnenForelderRettPåForeldrepengerINorge }) => !!harAnnenForelderRettPåForeldrepengerINorge,
     },
-    [MorFarAdopsjonFormField.dekningsgrad]: {
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-        isIncluded: ({ harAnnenForelderSøktFP, harAnnenForelderRettPåForeldrepengerINorge }) =>
-            harAnnenForelderSøktFP !== YesOrNo.UNANSWERED || !harAnnenForelderRettPåForeldrepengerINorge,
-    },
     [MorFarAdopsjonFormField.startdatoAdopsjonValg]: {
         isAnswered: ({ startdatoAdopsjonValg }) => hasValue(startdatoAdopsjonValg),
-        isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP }) =>
-            hasValue(dekningsgrad) && harAnnenForelderSøktFP !== YesOrNo.YES,
+        isIncluded: ({ harAnnenForelderSøktFP }) => harAnnenForelderSøktFP !== YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.annenStartdatoAdopsjon]: {
         isAnswered: ({ annenStartdatoAdopsjon }) => hasValue(annenStartdatoAdopsjon),
-        isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP, startdatoAdopsjonValg }) =>
-            startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN &&
-            hasValue(dekningsgrad) &&
-            harAnnenForelderSøktFP !== YesOrNo.YES,
+        isIncluded: ({ harAnnenForelderSøktFP, startdatoAdopsjonValg }) =>
+            startdatoAdopsjonValg === AdopsjonStartdatoValg.ANNEN && harAnnenForelderSøktFP !== YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.annenForeldersSisteDag]: {
         isAnswered: ({ annenForeldersSisteDag }) => hasValue(annenForeldersSisteDag),
-        isIncluded: ({ dekningsgrad, harAnnenForelderSøktFP }) =>
-            hasValue(dekningsgrad) && harAnnenForelderSøktFP === YesOrNo.YES,
+        isIncluded: ({ harAnnenForelderSøktFP }) => harAnnenForelderSøktFP === YesOrNo.YES,
     },
     [MorFarAdopsjonFormField.søkersFørsteDag]: {
         isAnswered: ({ søkersFørsteDag }) => hasValue(søkersFørsteDag),

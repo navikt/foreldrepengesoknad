@@ -42,10 +42,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
     it('Skal fungere for fødsel der far søker, mor har rett i EØS og det er tvillinger', async () => {
         render(<UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger />);
 
-        expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Når er din første dag med foreldrepenger?')).toBeInTheDocument();
 
@@ -60,11 +57,8 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
     it('Skal fungere for fødsel der mor søker, far har rett i EØS og det er prematur fødsel', async () => {
         render(<UttaksplanFødselMorSøkerFarHarRettIEOSPrematur />);
 
-        expect(await screen.findByText('Hvor lang periode med foreldrepenger ønsker du?')).toBeInTheDocument();
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Stønadsperioden din er forlenget med', { exact: false }));
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
 
         expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
         expect(screen.getByText('Jeg tok ikke ut foreldrepenger før termin')).toBeInTheDocument();

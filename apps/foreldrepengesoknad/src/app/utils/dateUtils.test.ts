@@ -90,7 +90,7 @@ describe('dateUtils', () => {
             });
 
             expect(dato).toBe(
-                'Til og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. May 2021 til 07. May 2021',
+                'Til og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. mai 2021 til 07. mai 2021',
             );
         });
 
@@ -190,7 +190,7 @@ describe('dateUtils', () => {
             });
 
             expect(dato).toBe(
-                'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. May 2021 til 07. May 2021',
+                'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. mai 2021 til 07. mai 2021',
             );
         });
 
@@ -364,13 +364,13 @@ describe('dateUtils', () => {
     it('skal formatere dato', () => {
         const formatertDato = formaterDato('2021-01-01');
         //TODO Engelsk?
-        expect(formatertDato).toBe('Friday 1. January 2021');
+        expect(formatertDato).toBe('fredag 1. januar 2021');
     });
 
     it('skal formatere dato uten dag', () => {
         const formatertDato = formaterDatoUtenDag('2021-01-01');
         //TODO Engelsk?
-        expect(formatertDato).toBe('1. January 2021');
+        expect(formatertDato).toBe('1. januar 2021');
     });
 
     it('skal returnere true når dato er før annen dato', () => {

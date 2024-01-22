@@ -1,21 +1,20 @@
+import dayjs from 'dayjs';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
+import { BarnType, Dekningsgrad } from '@navikt/fp-common';
 import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-aleneomsorg/søkerinfo.json';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
-import UttaksplanInfo from './UttaksplanInfo';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { BarnType } from '@navikt/fp-common';
-import dayjs from 'dayjs';
+import UttaksplanInfo from './UttaksplanInfo';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = '/konto';
+const STØNADSKONTO_URL = 'test/konto';
 
 const søkerinfo = _søkerinfo as any;
 
@@ -25,11 +24,11 @@ export default {
     decorators: [withRouter],
 };
 
-const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
-    const restMock = async (apiMock: MockAdapter) => {
+const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }> = (args) => {
+    const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
-        await apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
-        await apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
     };
     return (
         <AxiosMock mock={restMock}>
@@ -51,6 +50,9 @@ const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
                         harJobbetSomFrilansSiste10Mnd: false,
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                         harHattAnnenInntektSiste10Mnd: false,
+                    },
+                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                        dekningsgrad: args.dekningsgrad,
                     },
                     [ContextDataType.ANNEN_FORELDER]: {
                         etternavn: 'dfg',
@@ -74,9 +76,18 @@ const Template: StoryFn<UttaksplanInfoTestData> = (args) => {
     );
 };
 
-export const UttaksplanInfoFarMedmorFødselAleneomsorg = Template.bind({});
-UttaksplanInfoFarMedmorFødselAleneomsorg.args = {
+export const UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100 = Template.bind({});
+UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad80 = Template.bind({});
+UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad80.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };

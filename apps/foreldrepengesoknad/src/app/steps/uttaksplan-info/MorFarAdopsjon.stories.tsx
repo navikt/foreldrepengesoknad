@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
-import { AnnenForelder, BarnType } from '@navikt/fp-common';
+import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
 
 import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
@@ -30,9 +30,9 @@ export default {
     decorators: [withRouter],
 };
 
-const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder; erMor: boolean; søker: Søker }> = (
-    args,
-) => {
+const Template: StoryFn<
+    UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; annenForelder: AnnenForelder; erMor: boolean; søker: Søker }
+> = (args) => {
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
@@ -55,6 +55,9 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder;
                         fødselsdatoer: [],
                         omsorgsovertakelse: [],
                     },
+                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                        dekningsgrad: args.dekningsgrad,
+                    },
                     [ContextDataType.SØKER]: args.søker,
                     [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                 }}
@@ -70,8 +73,8 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder;
     );
 };
 
-export const UttaksplanMedAleneomsorg = Template.bind({});
-UttaksplanMedAleneomsorg.args = {
+export const UttaksplanMedAleneomsorgDekningsgrad100 = Template.bind({});
+UttaksplanMedAleneomsorgDekningsgrad100.args = {
     stønadskonto100,
     stønadskonto80,
     søkerinfo: søkerinfoMorSøker,
@@ -85,6 +88,25 @@ UttaksplanMedAleneomsorg.args = {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const UttaksplanMedAleneomsorgDekningsgrad80 = Template.bind({});
+UttaksplanMedAleneomsorgDekningsgrad80.args = {
+    stønadskonto100,
+    stønadskonto80,
+    søkerinfo: søkerinfoMorSøker,
+    erMor: true,
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    søker: {
+        erAleneOmOmsorg: true,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
 export const UttaksplanMedDeltUttakDerMorSøker = Template.bind({});
@@ -106,10 +128,11 @@ UttaksplanMedDeltUttakDerMorSøker.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoMorSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanMedDeltUttakDerFarSøker = Template.bind({});
-UttaksplanMedDeltUttakDerFarSøker.args = {
+export const UttaksplanMedDeltUttakDerFarSøker100 = Template.bind({});
+UttaksplanMedDeltUttakDerFarSøker100.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     erMor: false,
@@ -127,4 +150,27 @@ UttaksplanMedDeltUttakDerFarSøker.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const UttaksplanMedDeltUttakDerFarSøker80 = Template.bind({});
+UttaksplanMedDeltUttakDerFarSøker80.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
+    erMor: false,
+    annenForelder: {
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+        fnr: '19047815714',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };

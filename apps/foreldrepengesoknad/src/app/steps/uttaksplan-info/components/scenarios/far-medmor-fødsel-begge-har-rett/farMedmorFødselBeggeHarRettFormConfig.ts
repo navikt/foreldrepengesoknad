@@ -1,7 +1,6 @@
 import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 
 export enum FarMedmorFødselBeggeHarRettFormField {
-    dekningsgrad = 'dekningsgrad',
     morsSisteDag = 'morsSisteDag',
     farMedmorsFørsteDag = 'farMedmorsFørsteDag',
     antallUkerFellesperiode = 'antallUkerFellesperiode',
@@ -9,7 +8,6 @@ export enum FarMedmorFødselBeggeHarRettFormField {
 }
 
 export interface FarMedmorFødselBeggeHarRettFormData {
-    [FarMedmorFødselBeggeHarRettFormField.dekningsgrad]: string;
     [FarMedmorFødselBeggeHarRettFormField.morsSisteDag]: string;
     [FarMedmorFødselBeggeHarRettFormField.farMedmorsFørsteDag]: string;
     [FarMedmorFødselBeggeHarRettFormField.antallUkerFellesperiode]: string;

@@ -30,10 +30,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import Api from 'app/api/api';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
-    getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
@@ -68,6 +66,8 @@ import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJuste
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
+import { FpApiDataType } from 'app/api/context/FpApiDataContext';
+import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
@@ -98,6 +98,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
@@ -180,13 +181,19 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         initialRender.current = false;
     }, [debouncedState, mellomlagreSøknadOgNaviger]);
 
-    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
-        Api.useGetAnnenPartsVedtak(
-            annenForelderFnr,
-            barnFnr,
-            familiehendelsesdato,
-            eksisterendeSakAnnenPartRequestIsSuspended,
-        );
+    const {
+        data: eksisterendeSakAnnenPartData,
+        requestStatus: eksisterendeSakAnnenPartRequestStatus,
+        error: eksisterendeSakAnnenPartError,
+    } = useApiPostData(
+        FpApiDataType.ANNEN_PART_VEDTAK,
+        {
+            annenPartFødselsnummer: annenForelderFnr,
+            barnFødselsnummer: barnFnr,
+            familiehendelse: familiehendelsesdato,
+        },
+        eksisterendeSakAnnenPartRequestIsSuspended,
+    );
 
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
@@ -207,10 +214,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         mellomlagreSøknadOgNaviger();
     };
 
-    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
-        eksisterendeSak?.grunnlag.termindato,
-        eksisterendeVedtakAnnenPart?.grunnlag.termindato,
-    );
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
         erFarEllerMedmor,
         barn.antallBarn,
@@ -231,13 +234,16 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             : true;
 
     const {
-        eksisterendeSakAnnenPartData: nesteSakAnnenPartData,
-        eksisterendeSakAnnenPartError: nesteSakAnnenPartError,
-        eksisterendeSakAnnenPartRequestStatus: nesteSakAnnenPartRequestStatus,
-    } = Api.useGetAnnenPartsVedtak(
-        annenForelderFnrNesteSak,
-        førsteBarnFraNesteSakFnr,
-        dateToISOString(familieHendelseDatoNesteSak),
+        data: nesteSakAnnenPartData,
+        requestStatus: nesteSakAnnenPartRequestStatus,
+        error: nesteSakAnnenPartError,
+    } = useApiPostData(
+        FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK,
+        {
+            annenPartFødselsnummer: annenForelderFnrNesteSak,
+            barnFødselsnummer: førsteBarnFraNesteSakFnr,
+            familiehendelse: dateToISOString(familieHendelseDatoNesteSak),
+        },
         nesteBarnsSakAnnenPartRequestIsSuspended,
     );
 
@@ -448,33 +454,24 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED) ||
         (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
 
-    const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
-        Api.useGetUttakskontoer(
-            getStønadskontoParams(
-                Dekningsgrad.HUNDRE_PROSENT,
-                barn,
-                annenForelder,
-                søkersituasjon,
-                farMedmorErAleneOmOmsorg,
-                morErAleneOmOmsorg,
-                dateToISOString(familieHendelseDatoNesteSak),
-                saksgrunnlagsAntallBarn,
-                saksgrunnlagsTermindato,
-            ),
-            kontoRequestIsSuspended,
-        );
-    const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(
-            Dekningsgrad.ÅTTI_PROSENT,
-            barn,
-            annenForelder,
-            søkersituasjon,
-            farMedmorErAleneOmOmsorg,
-            morErAleneOmOmsorg,
-            dateToISOString(familieHendelseDatoNesteSak),
-            saksgrunnlagsAntallBarn,
-            saksgrunnlagsTermindato,
-        ),
+    const { stønadskontoParams100, stønadskontoParams80 } = getStønadskontoParams(
+        barn,
+        annenForelder,
+        søkersituasjon,
+        søker,
+        barnFraNesteSak,
+        eksisterendeSakAnnenPartData,
+        eksisterendeSak,
+    );
+
+    const { data: stønadskontoer80 } = useApiGetData(
+        FpApiDataType.STØNADSKONTOER_80,
+        stønadskontoParams80,
+        kontoRequestIsSuspended,
+    );
+    const { data: stønadskontoer100, error: tilgjengeligeStønadskontoerError } = useApiGetData(
+        FpApiDataType.STØNADSKONTOER_100,
+        stønadskontoParams100,
         kontoRequestIsSuspended,
     );
 
@@ -543,7 +540,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const minsterettUkerToTette = getAntallUkerMinsterett(stønadskontoer100.minsteretter.toTette);
 
     const valgteStønadskontoer =
-        uttaksplanMetadata.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
+        periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? stønadskontoer[100]
+            : stønadskontoer[80];
 
     const erTomEndringssøknad =
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);
@@ -626,7 +625,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             erMorUfør={erMorUfør}
                             morHarRett={morHarRett}
                             søkersituasjon={søkersituasjon}
-                            dekningsgrad={uttaksplanMetadata.dekningsgrad!}
+                            dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
                             antallBarn={antallBarn}
                             setUttaksplanErGyldig={setUttaksplanErGyldig}
                             eksisterendeSak={eksisterendeSak}

@@ -50,8 +50,8 @@ router.get('/rest/innsyn/uttaksplanannen', (_req, res) => {
     res.send(MockStorage.getUttaksplanannen());
 });
 
-router.get('/rest/konto', (_req, res) => {
-    res.send(MockStorage.getStønadskontoer());
+router.get('/rest/konto', (req, res) => {
+    res.send(MockStorage.getStønadskontoer(req.query.dekningsgrad === '100'));
 });
 
 router.post('/rest/storage/foreldrepenger', (req, res) => {

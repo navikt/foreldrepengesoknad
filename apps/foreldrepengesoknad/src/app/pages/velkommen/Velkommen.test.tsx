@@ -80,8 +80,8 @@ describe('<Velkommen>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(12);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(12, {
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(13);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(13, {
             data: SøknadRoutes.UTTAKSPLAN,
             key: ContextDataType.APP_ROUTE,
             type: 'update',

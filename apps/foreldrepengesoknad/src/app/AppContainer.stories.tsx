@@ -1,6 +1,8 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
+import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
+import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
 import søkerinfo from 'storybook/storyData/sokerinfo/sokerinfoMannMedArbeidsforhold.json';
 import annenPartVedtak from 'storybook/storyData/annenPartVedtak/annenPartVedtak.json';
 import saker from 'storybook/storyData/saker/saker.json';
@@ -12,6 +14,7 @@ import { AxiosInstance } from './api/apiInterceptor';
 
 import '@navikt/ds-css';
 import './styles/app.less';
+import { RequestStatus } from './types/RequestState';
 
 export default {
     title: 'AppContainer',
@@ -31,7 +34,10 @@ const Template: StoryFn = ({
     apiMock.onGet('/innsyn/v2/annenPartVedtak').reply(200, annenPartVedtakData);
     apiMock.onGet('/konto').reply(200, stønadskontoerData);
     apiMock.onGet('/storage/kvittering/foreldrepenger').reply(200, storageKvitteringData);
+    apiMock.onGet('test/konto').replyOnce(200, stønadskontoDeltUttak80);
+    apiMock.onGet('test/konto').replyOnce(200, stønadskontoDeltUttak100);
 
+    apiMock.onPost('/innsyn/v2/annenPartVedtak').replyOnce(200, undefined, RequestStatus.FINISHED);
     apiMock.onPost('/storage/foreldrepenger').reply(200, {});
     apiMock.onPost('/soknad').reply(200, {});
     apiMock.onPost('/sendSøknadUrl').reply(200, {});

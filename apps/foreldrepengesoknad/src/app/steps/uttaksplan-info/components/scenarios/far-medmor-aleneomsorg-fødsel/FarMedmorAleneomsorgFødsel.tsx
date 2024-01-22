@@ -28,7 +28,6 @@ import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoU
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
-import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import {
     FarMedmorAleneomsorgFødselFormComponents,
     FarMedmorAleneomsorgFødselFormData,
@@ -67,6 +66,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
@@ -83,6 +83,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const datoForAleneomsorg = annenForelder.kanIkkeOppgis ? familiehendelsesdatoDate : barn.datoForAleneomsorg;
+
+    const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
@@ -115,7 +117,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             situasjon: erFødsel ? 'fødsel' : 'adopsjon',
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
             uttaksplanSkjema: {
                 startdatoPermisjon: uttaksplanInfo.startdatoUttak,
             },
@@ -129,13 +131,12 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             førsteUttaksdagNesteBarnsSak,
         });
 
-        const kontoerForValgtDekningsgrad = tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)];
+        const kontoerForValgtDekningsgrad = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
 
         oppdaterUttaksplan(uttaksplan);
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
             antallUkerIUttaksplan: getAntallUker(kontoerForValgtDekningsgrad),
         });
 
@@ -153,15 +154,15 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const navnFar = erFarEllerMedmor
         ? person.fornavn
         : isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.fornavn
-        : '';
+          ? annenForelder.fornavn
+          : '';
 
     return (
         <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
             initialValues={getInitialFarMedmorAleneomsorgFødselValues(
                 uttaksplanInfo,
                 dateToISOString(datoForAleneomsorg),
-                uttaksplanMetadata?.dekningsgrad,
+                dekningsgrad,
             )}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
@@ -169,25 +170,14 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                     formValues as FarMedmorAleneomsorgFødselFormData,
                 );
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
 
                 return (
                     <FarMedmorAleneomsorgFødselFormComponents.Form
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.dekningsgrad)}
-                        >
-                            <DekningsgradSpørsmål
-                                FormKomponent={FarMedmorAleneomsorgFødselFormComponents}
-                                dekningsgradFeltNavn={FarMedmorAleneomsorgFødselFormField.dekningsgrad}
-                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                erDeltUttak={false}
-                            />
-                        </Block>
-                        <Block visible={formValues.dekningsgrad !== ''}>
+                        <Block>
                             {valgtStønadskonto && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={false}

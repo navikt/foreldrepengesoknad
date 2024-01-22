@@ -8,26 +8,22 @@ export interface MorFødselQuestionsPayload extends MorFødselFormData {
 }
 
 const MorFødselFormConfig: QuestionConfig<MorFødselQuestionsPayload, MorFødselFormField> = {
-    [MorFødselFormField.dekningsgrad]: {
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-        isIncluded: () => true,
-    },
     [MorFødselFormField.permisjonStartdato]: {
         isAnswered: ({ permisjonStartdato }) => hasValue(permisjonStartdato),
         isIncluded: () => true,
-        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        visibilityFilter: () => true,
     },
     [MorFødselFormField.skalIkkeHaUttakFørTermin]: {
         isAnswered: ({ skalIkkeHaUttakFørTermin }) => hasValue(skalIkkeHaUttakFørTermin),
         isIncluded: () => true,
-        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        visibilityFilter: () => true,
     },
     [MorFødselFormField.fellesperiodeukerMor]: {
         isAnswered: ({ fellesperiodeukerMor }) => hasValue(fellesperiodeukerMor),
         isIncluded: ({ harRettPåForeldrepengerINorge, erAleneOmOmsorg }) =>
             !!harRettPåForeldrepengerINorge && erAleneOmOmsorg === false,
-        visibilityFilter: ({ dekningsgrad, permisjonStartdato, skalIkkeHaUttakFørTermin }) =>
-            hasValue(dekningsgrad) && (hasValue(permisjonStartdato) || skalIkkeHaUttakFørTermin === true),
+        visibilityFilter: ({ permisjonStartdato, skalIkkeHaUttakFørTermin }) =>
+            hasValue(permisjonStartdato) || skalIkkeHaUttakFørTermin === true,
     },
 };
 

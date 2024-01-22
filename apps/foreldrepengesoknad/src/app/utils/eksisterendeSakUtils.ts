@@ -157,17 +157,13 @@ export const getStartdatoFørstePeriodeAnnenPart = (
 };
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
-    eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined | '',
+    eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined | null,
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
-    if (
-        eksisterendeSakAnnenPart === undefined ||
-        eksisterendeSakAnnenPart === '' ||
-        Object.keys(eksisterendeSakAnnenPart).length === 0
-    ) {
+    if (eksisterendeSakAnnenPart === undefined || eksisterendeSakAnnenPart === null) {
         return undefined;
     }
     const erAnnenPartsSak = true;
@@ -225,10 +221,10 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 };
 
 export const mapSøkerensEksisterendeSakFromDTO = (
-    eksisterendeSak: Sak | undefined | '',
+    eksisterendeSak: Sak | undefined | null,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
-    if (eksisterendeSak === undefined || eksisterendeSak === '' || Object.keys(eksisterendeSak).length === 0) {
+    if (eksisterendeSak === undefined || eksisterendeSak === null) {
         return undefined;
     }
     const erAnnenPartsSak = false;
