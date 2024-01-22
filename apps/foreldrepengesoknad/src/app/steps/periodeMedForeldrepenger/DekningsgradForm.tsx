@@ -234,7 +234,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 </BodyShort>
                             </VStack>
                             <div className={bem.block}>
-                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
+                                <FeedingBottleIcon height={24} width={24} color="#3386E0" />
                             </div>
                         </HStack>
                     </Box>
@@ -275,7 +275,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 </BodyShort>
                             </VStack>
                             <div className={bem.block}>
-                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
+                                <FeedingBottleIcon height={24} width={24} color="#3386E0" />
                             </div>
                         </HStack>
                     </Box>
