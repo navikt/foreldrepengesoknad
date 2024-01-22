@@ -288,7 +288,7 @@
     "uttaksplaninfo.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger vil dere ha?",
     "uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger vil du ha?",
     "uttaksplaninfo.dekningsgrad.beskrivelse": "Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.",
-    "uttaksplaninfo.dekningsgrad.beskrivelse.alene": "Dette valget kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.",
+    "uttaksplaninfo.dekningsgrad.beskrivelse.alene": "Dette valget kan ikke endres senere.",
     "uttaksplaninfo.spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepenger?",
     "uttaksplaninfo.informasjon.tilAnnenForelder": "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} søknad.",
     "uttaksplaninfo.startdatoAdopsjon.spørsmål": "Når ønsker du å starte perioden?",
