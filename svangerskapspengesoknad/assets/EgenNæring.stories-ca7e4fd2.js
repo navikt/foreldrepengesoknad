@@ -1,7 +1,0 @@
-import{j as e}from"./fridagerUtils-bef2f4a1.js";import{w as a}from"./withSvangerskapspengerContext-b8ac72a9.js";import{w as m}from"./withRouter-90534240.js";import{E as i}from"./SvangerskapspengesøknadRoutes-cc856c4d.js";import{S as c}from"./SvangerskapspengerStateMock-8b429209.js";import{_ as g}from"./soknad-056e750f.js";import"./index-f1f2c4b1.js";import"./index-b580f7e8.js";import"./index-da441cba.js";import"./v4-4a60fe23.js";import"./links-7cca9495.js";import"./index-3a2de3aa.js";import"./Forside-2239b636.js";import"./_baseToString-375081cd.js";import"./_createSet-53ab95fd.js";import"./useSvangerskapspengerContext-74520724.js";import"./_baseIteratee-859b5d8a.js";import"./_baseUniq-7268ef2e.js";import"./amplitude-98a81243.js";import"./provider-76641232.js";import"./ArrowRight-e8d57486.js";const T={title:"steps/EgenNæringStep",component:i,decorators:[a,m]},r=g,x={...r,søknad:{...r.søknad,søker:{...r.søknad.søker,harJobbetSomSelvstendigNæringsdrivende:!0}}},d=({contextWithEgenNæring:p})=>e.jsx(c,{context:p,children:e.jsx(i,{})}),t=d.bind({});t.args={contextWithEgenNæring:x};var o,n,s;t.parameters={...t.parameters,docs:{...(o=t.parameters)==null?void 0:o.docs,source:{originalSource:`({
-  contextWithEgenNæring
-}) => {
-  return <SvangerskapspengerStateMock context={contextWithEgenNæring}>
-            <EgenNæringStep />
-        </SvangerskapspengerStateMock>;
-}`,...(s=(n=t.parameters)==null?void 0:n.docs)==null?void 0:s.source}}};const q=["Default"];export{t as Default,q as __namedExportsOrder,T as default};
