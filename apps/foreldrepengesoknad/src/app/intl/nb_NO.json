@@ -990,6 +990,7 @@
     "uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad": "Husk at du må legge inn alle perioder med foreldrepenger etter {sisteDag} på nytt, da endringssøknaden erstatter den  opprinnelige planen din.",
     "uttaksplan.veileder.fritekst.kanIkkeVæreLengreEnn": "Begrunnelse for søking tilbake i tid kan maks være {maxLength} tegn.",
     "vedlagtdokumentasjon": "Vedlagt dokumentasjon",
+    "Oppsummering.Forrige": "Forrige steg",
 
     "DekningsgradForm.InformasjonPrematurukerHeader": "{soker} får lenger periode med foreldrepenger siden barnet er født før uke 33",
     "DekningsgradForm.InformasjonPrematuruker": "Perioden blir forlenget med like mange uker og dager som barnet er født før termin. For {soker} blir det {uker} uker og {dager} dager.",

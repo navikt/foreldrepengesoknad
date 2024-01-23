@@ -10,10 +10,37 @@ enum SøknadRoutes {
     TIDLIGERE_UTENLANDSOPPHOLD = '/soknad/tidligere-utenlandsopphold',
     SENERE_UTENLANDSOPPHOLD = '/soknad/senere-utenlandsopphold',
     INNTEKTSINFORMASJON = '/soknad/inntektsinformasjon',
-    MANGLENDE_VEDLEGG = '/soknad/manglende-vedlegg',
     OPPSUMMERING = '/soknad/oppsummering',
-    SØKNAD_SENDT = '/soknad/soknad-sendt',
     IKKE_MYNDIG = 'ikke-myndig',
 }
+
+export const ROUTES_ORDER = [
+    SøknadRoutes.VELKOMMEN,
+    SøknadRoutes.SØKERSITUASJON,
+    SøknadRoutes.OM_BARNET,
+    SøknadRoutes.ANNEN_FORELDER,
+    SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+    SøknadRoutes.UTTAKSPLAN_INFO,
+    SøknadRoutes.UTTAKSPLAN,
+    SøknadRoutes.UTENLANDSOPPHOLD,
+    SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
+    SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
+    SøknadRoutes.INNTEKTSINFORMASJON,
+    SøknadRoutes.OPPSUMMERING,
+];
+
+export const REQUIRED_APP_STEPS = [
+    SøknadRoutes.SØKERSITUASJON,
+    SøknadRoutes.OM_BARNET,
+    SøknadRoutes.ANNEN_FORELDER,
+    SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+    SøknadRoutes.UTTAKSPLAN_INFO,
+    SøknadRoutes.UTTAKSPLAN,
+    SøknadRoutes.UTENLANDSOPPHOLD,
+    SøknadRoutes.INNTEKTSINFORMASJON,
+    SøknadRoutes.OPPSUMMERING,
+];
+
+export const REQUIRED_APP_STEPS_ENDRINGSSØKNAD = [SøknadRoutes.UTTAKSPLAN, SøknadRoutes.OPPSUMMERING];
 
 export default SøknadRoutes;

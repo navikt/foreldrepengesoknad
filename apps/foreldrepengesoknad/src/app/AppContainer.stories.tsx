@@ -15,6 +15,7 @@ import { AxiosInstance } from './api/apiInterceptor';
 import '@navikt/ds-css';
 import './styles/app.less';
 import { RequestStatus } from './types/RequestState';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 export default {
     title: 'AppContainer',
@@ -28,6 +29,7 @@ const Template: StoryFn = ({
     stønadskontoerData,
     storageKvitteringData,
 }) => {
+    initAmplitude();
     const apiMock = new MockAdapter(AxiosInstance);
     apiMock.onGet('/sokerinfo').reply(200, søkerinfoData);
     apiMock.onGet('/innsyn/v2/saker').reply(200, sakerData);

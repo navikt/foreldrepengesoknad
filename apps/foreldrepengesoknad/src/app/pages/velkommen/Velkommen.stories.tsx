@@ -7,6 +7,7 @@ import { SøkerinfoDTO, SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { Action, FpDataContext } from 'app/context/FpDataContext';
 import Velkommen from './Velkommen';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const promiseAction =
     () =>
@@ -47,6 +48,7 @@ const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide,
 }) => {
+    initAmplitude();
     return (
         <FpDataContext onDispatch={gåTilNesteSide}>
             <Velkommen

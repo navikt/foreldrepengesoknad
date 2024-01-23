@@ -11,6 +11,9 @@ import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import Environment from 'app/Environment';
+import { MemoryRouter } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = `${Environment.REST_API_URL}/konto`;
@@ -105,36 +108,39 @@ const Template: StoryFn<Props> = ({
     erAleneOmOmsorg = false,
     annenPartVedtak,
 }) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, annenPartVedtak);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto80);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto100);
     };
     return (
-        <AxiosMock mock={restMock}>
-            <FpApiDataContext>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.OM_BARNET]: barnet,
-                        [ContextDataType.SØKER]: {
-                            erAleneOmOmsorg,
-                            språkkode: 'nb',
-                            harJobbetSomFrilansSiste10Mnd: false,
-                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-                            harHattAnnenInntektSiste10Mnd: false,
-                        },
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                    }}
-                >
-                    <PeriodeMedForeldrepengerSteg
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
-                </FpDataContext>
-            </FpApiDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.PERIODE_MED_FORELDREPENGER]}>
+            <AxiosMock mock={restMock}>
+                <FpApiDataContext>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                            [ContextDataType.OM_BARNET]: barnet,
+                            [ContextDataType.SØKER]: {
+                                erAleneOmOmsorg,
+                                språkkode: 'nb',
+                                harJobbetSomFrilansSiste10Mnd: false,
+                                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+                                harHattAnnenInntektSiste10Mnd: false,
+                            },
+                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        }}
+                    >
+                        <PeriodeMedForeldrepengerSteg
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    </FpDataContext>
+                </FpApiDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 

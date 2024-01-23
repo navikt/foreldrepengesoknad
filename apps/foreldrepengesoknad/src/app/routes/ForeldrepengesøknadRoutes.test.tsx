@@ -7,6 +7,7 @@ import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from './routes';
 import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
 import nbMessages from '../intl/nb_NO.json';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
@@ -18,6 +19,7 @@ vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
 
 describe('<ForeldrepengesøknadRoutes>', () => {
     it('skal vise velkommen-side når denne ruten er valgt', async () => {
+        initAmplitude();
         render(
             <BrowserRouter>
                 <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
@@ -47,6 +49,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
     });
 
     it('skal vise om-barnet-side når denne ruten er valgt', async () => {
+        initAmplitude();
         render(
             <BrowserRouter>
                 <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>

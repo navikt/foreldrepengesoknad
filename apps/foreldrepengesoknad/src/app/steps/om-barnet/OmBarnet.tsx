@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
 import {
     andreAugust2022ReglerGjelder,
     Block,
@@ -10,13 +12,15 @@ import {
     isUfødtBarn,
     RegistrertBarn,
     Step,
-    StepButtonWrapper,
     Søkerinfo,
 } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-
-import { useIntl } from 'react-intl';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import useStepConfig from 'app/appData/useStepConfig';
+import useFpNavigator from 'app/appData/useFpNavigator';
 import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
 import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
 import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
@@ -25,15 +29,7 @@ import Termin from './components/Termin';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig, { OmBarnetQuestionPayload } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
-import { Button } from '@navikt/ds-react';
-import { useState } from 'react';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { notEmpty } from '@navikt/fp-validation';
-import BackButton from '../BackButton';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -49,14 +45,16 @@ const OmBarnet: React.FunctionComponent<Props> = ({
     avbrytSøknad,
 }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
+    const stepConfig = useStepConfig();
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const { arbeidsforhold, registrerteBarn } = søkerInfo;
 
@@ -99,9 +97,8 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         );
 
         oppdaterOmBarnet(oppdatertBarn);
-        oppdaterAppRoute(SøknadRoutes.ANNEN_FORELDER);
 
-        mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     return (
@@ -128,11 +125,9 @@ const OmBarnet: React.FunctionComponent<Props> = ({
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="omBarnet"
-                        pageTitle={intlUtils(intl, 'søknad.omBarnet')}
                         onCancel={avbrytSøknad}
-                        onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl, false)}
+                        onContinueLater={navigator.fortsettSøknadSenere}
+                        steps={stepConfig}
                     >
                         <OmBarnetFormComponents.Form
                             includeButtons={false}
@@ -170,21 +165,12 @@ const OmBarnet: React.FunctionComponent<Props> = ({
                                 barnSøktOmFørMenIkkeRegistrert={barnSøktOmFørMenIkkeRegistrert}
                             />
                             <Block margin="l">
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getPreviousStepHref('omBarnet')}
-                                    />
-                                    {visGåVidereKnapp && (
-                                        <Button
-                                            type="submit"
-                                            disabled={isSubmitting || erForTidligTilÅSøkePåTermin}
-                                            loading={isSubmitting}
-                                        >
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
-                                </StepButtonWrapper>
+                                <StepButtons
+                                    isNexButtonVisible={visGåVidereKnapp}
+                                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                                    isDisabled={isSubmitting || erForTidligTilÅSøkePåTermin}
+                                    isLoading={isSubmitting}
+                                />
                             </Block>
                         </OmBarnetFormComponents.Form>
                     </Step>

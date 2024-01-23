@@ -6,13 +6,13 @@ import { Dekningsgrad, TilgjengeligStønadskonto, bemUtils, getVarighetString } 
 import { StepButtons } from '@navikt/fp-ui';
 import { Kjønn } from '@navikt/fp-types';
 import { ContextDataType, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from '../uttaksplan-info/utils/stønadskontoer';
 
 import './dekningsgradValgtAvAnnenPartPanel.less';
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
+    goToNextDefaultStep: () => Promise<void>;
     fornavnAnnenForelder: string;
     kjønnAnnenForelder?: Kjønn;
     dekningsgrad: Dekningsgrad;
@@ -20,7 +20,8 @@ type Props = {
 };
 
 const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
+    goToPreviousDefaultStep,
+    goToNextDefaultStep,
     fornavnAnnenForelder,
     kjønnAnnenForelder,
     dekningsgrad,
@@ -30,7 +31,6 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
     const bem = bemUtils('circle');
 
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -40,14 +40,8 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
         oppdaterPeriodeMedForeldrepenger({
             dekningsgrad,
         });
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
 
-        return mellomlagreSøknadOgNaviger();
-    };
-
-    const goToPreviousStep = () => {
-        oppdaterAppRoute(SøknadRoutes.ANNEN_FORELDER);
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     const uker = getAntallUker(valgtStønadskonto);
@@ -92,7 +86,7 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
             <StepButtons
                 isDisabledAndLoading={isSubmitting}
                 nextButtonOnClick={lagre}
-                goToPreviousStep={goToPreviousStep}
+                goToPreviousStep={goToPreviousDefaultStep}
             />
         </VStack>
     );

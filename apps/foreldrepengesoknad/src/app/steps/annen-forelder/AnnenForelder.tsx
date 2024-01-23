@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Alert, BodyLong, BodyShort, Button, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, ReadMore } from '@navikt/ds-react';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { notEmpty } from '@navikt/fp-validation';
 import {
@@ -22,16 +22,15 @@ import {
     SivilstandType,
     Skjemanummer,
     Step,
-    StepButtonWrapper,
     Søkerinfo,
 } from '@navikt/fp-common';
+import { StepButtons } from '@navikt/fp-ui';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import Søker from 'app/context/types/Søker';
-import SøknadRoutes from 'app/routes/routes';
+import useStepConfig from 'app/appData/useStepConfig';
+import useFpNavigator from 'app/appData/useFpNavigator';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
 import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import {
     cleanAnnenForelderFormData,
@@ -45,7 +44,6 @@ import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenFor
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
-import BackButton from '../BackButton';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -55,7 +53,10 @@ type Props = {
 
 const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
+    const stepConfig = useStepConfig();
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { rolle } = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -65,7 +66,6 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
     };
     const søker = useContextGetData(ContextDataType.SØKER);
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
@@ -120,9 +120,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
         oppdaterSøker(newSøker);
         oppdaterAnnenForeldre(mapAnnenForelderFormToState(values));
 
-        oppdaterAppRoute(SøknadRoutes.PERIODE_MED_FORELDREPENGER);
-
-        mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     return (
@@ -166,11 +164,9 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="annenForelder"
-                        pageTitle={intlUtils(intl, 'søknad.annenForelder')}
                         onCancel={avbrytSøknad}
-                        onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl, false)}
+                        onContinueLater={navigator.fortsettSøknadSenere}
+                        steps={stepConfig}
                     >
                         <AnnenForelderFormComponents.Form
                             includeButtons={false}
@@ -411,17 +407,11 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                                 </ReadMore>
                             </Block>
                             <Block margin="l">
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getPreviousStepHref('annenForelder')}
-                                    />
-                                    {kanGåVidereMedSøknaden && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
-                                </StepButtonWrapper>
+                                <StepButtons
+                                    isNexButtonVisible={kanGåVidereMedSøknaden}
+                                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                                    isDisabledAndLoading={isSubmitting}
+                                />
                             </Block>
                         </AnnenForelderFormComponents.Form>
                     </Step>
