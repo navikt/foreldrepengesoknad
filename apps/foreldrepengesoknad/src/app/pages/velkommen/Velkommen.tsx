@@ -28,6 +28,7 @@ import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnV
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
 
 import './velkommen.less';
+import useFpNavigator from 'app/appData/useFpNavigator';
 
 export interface Props {
     fornavn: string;
@@ -56,6 +57,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
 }) => {
     const bem = bemUtils('velkommen');
     const intl = useIntl();
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const oppdaterDataIState = useContextSaveAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
@@ -129,9 +131,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
         setErEndringssøknad(vilSøkeOmEndring);
         setSøknadGjelderNyttBarn(søknadGjelderNyttBarn);
 
-        oppdaterDataIState(ContextDataType.APP_ROUTE, nextRoute);
-
-        mellomlagreSøknadOgNaviger();
+        navigator.goToNextStep(nextRoute);
     };
 
     return (

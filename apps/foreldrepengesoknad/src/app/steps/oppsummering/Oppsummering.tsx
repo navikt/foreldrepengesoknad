@@ -1,45 +1,42 @@
-import { FormattedMessage, useIntl } from 'react-intl';
-import { FunctionComponent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@navikt/ds-react';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
-import { notEmpty } from '@navikt/fp-validation';
+import { Button } from '@navikt/ds-react';
 import { useAbortSignal } from '@navikt/fp-api';
 import {
-    bemUtils,
     Block,
+    ISOStringToDate,
+    Step,
+    StepButtonWrapper,
+    Søkerinfo,
+    bemUtils,
     getErSøkerFarEllerMedmor,
     getFarMedmorErAleneOmOmsorg,
     getNavnPåForeldre,
     intlUtils,
     isAnnenForelderOppgitt,
-    ISOStringToDate,
-    Step,
-    StepButtonWrapper,
-    Søkerinfo,
 } from '@navikt/fp-common';
-import stepConfig, { getPreviousStepHref, getPreviousStepHrefEndringssøknad } from '../stepsConfig';
-import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
-import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
+import { notEmpty } from '@navikt/fp-validation';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { FunctionComponent, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPanel from './components/OppsummeringsPanel';
 import Personalia from './components/Personalia';
+import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
+import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
+import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
 import UtenlandsoppholdOppsummering from './components/utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
+import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 import {
-    getInitialOppsummeringValues,
     OppsummeringFormComponents,
     OppsummeringFormData,
     OppsummeringFormField,
+    getInitialOppsummeringValues,
 } from './oppsummeringFormConfig';
 import { validateHarGodkjentOppsummering } from './validation/oppsummeringValidation';
-import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
-import SøknadRoutes from 'app/routes/routes';
-import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
 import './oppsummering.less';
-import BackButton from '../BackButton';
 
 export interface Props {
     søkerInfo: Søkerinfo;
@@ -58,8 +55,10 @@ const Oppsummering: FunctionComponent<Props> = ({
 }) => {
     const bem = bemUtils('oppsummering');
     const intl = useIntl();
-    const navigate = useNavigate();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
+    const stepConfig = useStepConfig(erEndringssøknad);
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const abortSignal = useAbortSignal();
 
@@ -99,7 +98,6 @@ const Oppsummering: FunctionComponent<Props> = ({
         if (values.harGodkjentOppsummering) {
             setIsSubmitting(true);
             await sendSøknad(abortSignal);
-            navigate(SøknadRoutes.SØKNAD_SENDT);
         }
     };
 
@@ -112,11 +110,9 @@ const Oppsummering: FunctionComponent<Props> = ({
                     <OppsummeringFormComponents.Form includeButtons={false}>
                         <Step
                             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                            activeStepId="oppsummering"
-                            pageTitle={intlUtils(intl, 'søknad.oppsummering')}
                             onCancel={avbrytSøknad}
-                            onContinueLater={onFortsettSøknadSenere}
-                            steps={stepConfig(intl, erEndringssøknad)}
+                            onContinueLater={navigator.fortsettSøknadSenere}
+                            steps={stepConfig}
                         >
                             <Block padBottom="l">
                                 <div className={bem.block}>
@@ -193,14 +189,13 @@ const Oppsummering: FunctionComponent<Props> = ({
                             </Block>
                             <Block margin="l" padBottom="l">
                                 <StepButtonWrapper lastStep={true}>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={
-                                            erEndringssøknad
-                                                ? getPreviousStepHrefEndringssøknad('oppsummering')
-                                                : getPreviousStepHref('oppsummering')
-                                        }
-                                    />
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        onClick={navigator.goToPreviousDefaultStep}
+                                    >
+                                        <FormattedMessage id="Oppsummering.Forrige" />
+                                    </Button>
                                     <Button
                                         icon={<PaperplaneIcon aria-hidden />}
                                         iconPosition="right"

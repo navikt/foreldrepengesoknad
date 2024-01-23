@@ -1,22 +1,24 @@
+import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
-import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
 
-import withRouter from 'storybook/decorators/withRouter';
-import AxiosMock from 'storybook/utils/AxiosMock';
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import Søker from 'app/context/types/Søker';
+import SøknadRoutes from 'app/routes/routes';
 import { RequestStatus } from 'app/types/RequestState';
-import _søkerinfoMorSøker from 'storybook/storyData/sokerinfo/søkerinfoMorSøker.json';
+import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { MemoryRouter } from 'react-router-dom';
 import _søkerinfoFarSøker from 'storybook/storyData/sokerinfo/søkerinfoFarSøker.json';
+import _søkerinfoMorSøker from 'storybook/storyData/sokerinfo/søkerinfoMorSøker.json';
 import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
 import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
-import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
+import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
 import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import Søker from 'app/context/types/Søker';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -27,49 +29,51 @@ const søkerinfoMorSøker = _søkerinfoMorSøker as any;
 export default {
     title: 'steps/uttaksplan-info/MorFarAdopsjon',
     component: UttaksplanInfo,
-    decorators: [withRouter],
 };
 
 const Template: StoryFn<
     UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; annenForelder: AnnenForelder; erMor: boolean; søker: Søker }
 > = (args) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
     };
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: {
-                        situasjon: 'adopsjon',
-                        rolle: args.erMor ? 'mor' : 'far',
-                    },
-                    [ContextDataType.OM_BARNET]: {
-                        type: BarnType.ADOPTERT_ANNET_BARN,
-                        antallBarn: 1,
-                        adopsjonsdato: dayjs('2021-03-15').toDate(),
-                        adoptertIUtlandet: false,
-                        dokumentasjonAvAleneomsorg: [],
-                        fødselsdatoer: [],
-                        omsorgsovertakelse: [],
-                    },
-                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
-                        dekningsgrad: args.dekningsgrad,
-                    },
-                    [ContextDataType.SØKER]: args.søker,
-                    [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
-                }}
-            >
-                <UttaksplanInfo
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
-                    erEndringssøknad={false}
-                    mellomlagreSøknadOgNaviger={() => Promise.resolve()}
-                    avbrytSøknad={() => undefined}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            situasjon: 'adopsjon',
+                            rolle: args.erMor ? 'mor' : 'far',
+                        },
+                        [ContextDataType.OM_BARNET]: {
+                            type: BarnType.ADOPTERT_ANNET_BARN,
+                            antallBarn: 1,
+                            adopsjonsdato: dayjs('2021-03-15').toDate(),
+                            adoptertIUtlandet: false,
+                            dokumentasjonAvAleneomsorg: [],
+                            fødselsdatoer: [],
+                            omsorgsovertakelse: [],
+                        },
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                            dekningsgrad: args.dekningsgrad,
+                        },
+                        [ContextDataType.SØKER]: args.søker,
+                        [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
+                    }}
+                >
+                    <UttaksplanInfo
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        erEndringssøknad={false}
+                        mellomlagreSøknadOgNaviger={() => Promise.resolve()}
+                        avbrytSøknad={() => undefined}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 

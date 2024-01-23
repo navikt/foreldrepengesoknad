@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, GuidePanel } from '@navikt/ds-react';
+import { FormattedMessage } from 'react-intl';
+import { GuidePanel } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
@@ -9,12 +9,10 @@ import {
     EksisterendeSak,
     Forelder,
     ISOStringToDate,
-    StepButtonWrapper,
     Tidsperioden,
     Uttaksdagen,
     formaterNavn,
     getFlerbarnsuker,
-    intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     uttaksConstants,
@@ -35,11 +33,9 @@ import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
-import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
-import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { StepButtons } from '@navikt/fp-ui';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -47,7 +43,8 @@ interface Props {
     eksisterendeSakFar: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => void;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -57,10 +54,10 @@ const MorFødsel: FunctionComponent<Props> = ({
     eksisterendeSakFar,
     erEndringssøknad,
     person,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
-    const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -73,7 +70,6 @@ const MorFødsel: FunctionComponent<Props> = ({
     // TODO (TOR) fjern as
     const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO) as MorFødselUttaksplanInfo;
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -177,9 +173,7 @@ const MorFødsel: FunctionComponent<Props> = ({
             antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
         });
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     return (
@@ -266,17 +260,11 @@ const MorFødsel: FunctionComponent<Props> = ({
                             </Block>
                         </Block>
                         <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
-                                />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
+                            <StepButtons
+                                isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                goToPreviousStep={goToPreviousDefaultStep}
+                                isDisabledAndLoading={isSubmitting}
+                            />
                         </Block>
                     </MorFødselFormComponents.Form>
                 );

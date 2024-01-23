@@ -8,6 +8,7 @@ import { AxiosInstance } from './api/apiInterceptor';
 import { IntlProvider } from '@navikt/fp-ui';
 import nbMessages from './intl/nb_NO.json';
 import { RequestStatus } from './types/RequestState';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
@@ -19,6 +20,7 @@ describe('<Foreldrepengesøknad>', () => {
     });
 
     it('skal returnere spinner når data blir hentet', () => {
+        initAmplitude();
         vi.spyOn(Api, 'useSøkerinfo').mockImplementationOnce(() => ({
             søkerinfoData: undefined,
             søkerinfoError: null,
@@ -43,6 +45,7 @@ describe('<Foreldrepengesøknad>', () => {
     });
 
     it('skal returnere første rute i app når en har ferdighentet data', () => {
+        initAmplitude();
         const søkerinfoData = {
             søkerinfoData: {
                 søker: {

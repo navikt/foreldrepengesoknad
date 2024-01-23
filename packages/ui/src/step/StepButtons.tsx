@@ -8,14 +8,20 @@ interface Props {
     goToPreviousStep: () => void;
     nextButtonText?: string;
     nextButtonOnClick?: () => void;
-    isDisabledAndLoading: boolean;
+    isDisabledAndLoading?: boolean;
+    isDisabled?: boolean;
+    isLoading?: boolean;
+    isNexButtonVisible?: boolean;
 }
 
 const StepButtons: FunctionComponent<Props> = ({
     goToPreviousStep,
     nextButtonText,
     nextButtonOnClick,
-    isDisabledAndLoading,
+    isDisabledAndLoading = false,
+    isDisabled = false,
+    isLoading = false,
+    isNexButtonVisible = true,
 }) => {
     return (
         <UiIntlProvider>
@@ -23,15 +29,17 @@ const StepButtons: FunctionComponent<Props> = ({
                 <Button type="button" variant="secondary" onClick={goToPreviousStep}>
                     <FormattedMessage id="StepButtons.Forrige" />
                 </Button>
-                <Button
-                    type={nextButtonOnClick ? 'button' : 'submit'}
-                    onClick={nextButtonOnClick}
-                    disabled={isDisabledAndLoading}
-                    loading={isDisabledAndLoading}
-                >
-                    {nextButtonText !== undefined && nextButtonText}
-                    {!nextButtonText && <FormattedMessage id={'StepButtons.Neste'} />}
-                </Button>
+                {isNexButtonVisible && (
+                    <Button
+                        type={nextButtonOnClick ? 'button' : 'submit'}
+                        onClick={nextButtonOnClick}
+                        disabled={isDisabled || isDisabledAndLoading}
+                        loading={isLoading || isDisabledAndLoading}
+                    >
+                        {nextButtonText !== undefined && nextButtonText}
+                        {!nextButtonText && <FormattedMessage id={'StepButtons.Neste'} />}
+                    </Button>
+                )}
             </StepButtonWrapper>
         </UiIntlProvider>
     );

@@ -6,10 +6,9 @@ import { Step } from '@navikt/fp-common';
 import { isRequired } from '@navikt/fp-validation';
 import { Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
 import { RadioGroup, Form, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
-import SøknadRoutes from 'app/routes/routes';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import stepConfig from '../stepsConfig';
+import useStepConfig from 'app/appData/useStepConfig';
+import useFpNavigator from 'app/appData/useFpNavigator';
 
 type Props = {
     kjønn: Kjønn;
@@ -19,12 +18,14 @@ type Props = {
 
 const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
+    const stepConfig = useStepConfig();
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon
@@ -41,19 +42,16 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlag
             situasjon: values.situasjon,
             rolle: values.rolle || 'far',
         });
-        oppdaterAppRoute(SøknadRoutes.OM_BARNET);
 
-        mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="søkersituasjon"
-            pageTitle={intl.formatMessage({ id: 'søknad.søkersituasjon' })}
             onCancel={avbrytSøknad}
-            onContinueLater={onFortsettSøknadSenere}
-            steps={stepConfig(intl, false)}
+            onContinueLater={navigator.fortsettSøknadSenere}
+            steps={stepConfig}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">

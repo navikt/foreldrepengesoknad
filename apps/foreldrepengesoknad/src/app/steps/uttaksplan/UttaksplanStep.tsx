@@ -1,3 +1,4 @@
+import { Alert, Button, Loader } from '@navikt/ds-react';
 import {
     Block,
     Dekningsgrad,
@@ -25,49 +26,46 @@ import {
     StepButtonWrapper,
     Søkerinfo,
 } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import stepConfig, { getPreviousStepHref } from '../stepsConfig';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { notEmpty } from '@navikt/fp-validation';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttaksplan';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import { FpApiDataType } from 'app/api/context/FpApiDataContext';
+import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
-import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import useDebounce from 'app/utils/hooks/useDebounce';
-import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
-import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
+import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
+import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
-import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
-import { FormikValues } from 'formik';
+import { RequestStatus } from 'app/types/RequestState';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
 import {
     getStartdatoFørstePeriodeAnnenPart,
     mapAnnenPartsEksisterendeSakFromDTO,
 } from 'app/utils/eksisterendeSakUtils';
-import { RequestStatus } from 'app/types/RequestState';
+import useDebounce from 'app/utils/hooks/useDebounce';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 import dayjs from 'dayjs';
-import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
-import { sendErrorMessageToSentry } from 'app/api/apiUtils';
-import { Alert, Button, Loader } from '@navikt/ds-react';
-import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { Link } from 'react-router-dom';
-import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
-import { getHarAktivitetskravIPeriodeUtenUttak, Uttaksplan } from '@navikt/uttaksplan';
+import { FormikValues } from 'formik';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import AttachmentApi from '../../api/attachmentApi';
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
+import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
+import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
 import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
-import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
-import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
+import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
+import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
-import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { notEmpty } from '@navikt/fp-validation';
-import { FpApiDataType } from 'app/api/context/FpApiDataContext';
-import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
@@ -85,7 +83,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     avbrytSøknad,
 }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
+    const stepConfig = useStepConfig(erEndringssøknad);
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
@@ -109,14 +109,12 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(
         uttaksplanMetadata.perioderSomSkalSendesInn || [],
     );
 
-    const nextRoute = erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD;
     const { person, arbeidsforhold } = søkerInfo;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
@@ -209,9 +207,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const goToPreviousStep = () => {
         setGåTilbakeIsOpen(false);
-
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
-        mellomlagreSøknadOgNaviger();
+        navigator.goToPreviousDefaultStep();
     };
 
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
@@ -383,9 +379,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             perioderSomSkalSendesInn,
         });
 
-        oppdaterAppRoute(nextRoute);
-
-        mellomlagreSøknadOgNaviger();
+        navigator.goToNextDefaultStep();
     };
 
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
@@ -585,11 +579,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="uttaksplan"
-                        pageTitle={intlUtils(intl, 'søknad.uttaksplan')}
                         onCancel={avbrytSøknad}
-                        onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl, erEndringssøknad)}
+                        onContinueLater={navigator.fortsettSøknadSenere}
+                        steps={stepConfig}
                     >
                         <Block padBottom="l">
                             <InfoOmSøknaden
@@ -679,12 +671,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                 {!erEndringssøknad && (
                                     <Button
                                         variant="secondary"
-                                        as={Link}
                                         onClick={(event) => {
                                             event.preventDefault();
                                             setGåTilbakeIsOpen(true);
                                         }}
-                                        to={getPreviousStepHref('uttaksplan')}
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

@@ -535,6 +535,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
+      '@navikt/fp-metrics':
+        specifier: workspace:*
+        version: link:../../packages/metrics
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types

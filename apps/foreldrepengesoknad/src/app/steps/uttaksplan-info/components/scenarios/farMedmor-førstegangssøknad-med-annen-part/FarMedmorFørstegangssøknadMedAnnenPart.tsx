@@ -1,6 +1,4 @@
 import { FunctionComponent, useState } from 'react';
-import { useIntl } from 'react-intl';
-import { Button } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -9,18 +7,15 @@ import {
     EksisterendeSak,
     Forelder,
     ISOStringToDate,
-    StepButtonWrapper,
     Uttaksdagen,
     getErMorUfør,
     getMorHarRettPåForeldrepengerINorgeEllerEØS,
-    intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isInfoPeriode,
 } from '@navikt/fp-common';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -36,18 +31,18 @@ import {
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
-import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import Person from '@navikt/fp-common/src/common/types/Person';
-import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { StepButtons } from '@navikt/fp-ui';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
-    mellomlagreSøknadOgNaviger: () => void;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     person: Person;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
@@ -57,11 +52,11 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     eksisterendeSakAnnenPart,
     erEndringssøknad,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     person,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
-    const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -74,7 +69,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         ContextDataType.UTTAKSPLAN_INFO,
     ) as FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo;
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -167,9 +161,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
             antallUkerIUttaksplan: antallUker,
         });
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     if (!eksisterendeSakAnnenPart || !erFarEllerMedmor) {
@@ -223,17 +215,11 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
-                                />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
+                            <StepButtons
+                                isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                goToPreviousStep={goToPreviousDefaultStep}
+                                isDisabledAndLoading={isSubmitting}
+                            />
                         </Block>
                     </FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form>
                 );
