@@ -21,17 +21,26 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'steps.label.oppsummering' }),
     }) as Record<string, string>;
 
+const isAfterStep = (previousStepPath: SøknadRoutes, currentStepPath: SøknadRoutes): boolean => {
+    return ROUTES_ORDER.indexOf(currentStepPath) > ROUTES_ORDER.indexOf(previousStepPath);
+};
+
 const showUtenlandsoppholdStep = (
     path: SøknadRoutes,
+    currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD) {
-        const utenlandsopphold = getData(ContextDataType.UTENLANDSOPPHOLD);
-        return !utenlandsopphold?.iNorgeSiste12Mnd;
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.UTENLANDSOPPHOLD)?.iNorgeSiste12Mnd === false &&
+            isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     }
     if (path === SøknadRoutes.SENERE_UTENLANDSOPPHOLD) {
-        const utenlandsopphold = getData(ContextDataType.UTENLANDSOPPHOLD);
-        return !utenlandsopphold?.iNorgeNeste12Mnd;
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.UTENLANDSOPPHOLD)?.iNorgeNeste12Mnd === false &&
+            isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     }
     return false;
 };
@@ -52,9 +61,9 @@ const useStepConfig = (erEndringssøknad = false) => {
     const appPathList = useMemo(
         () =>
             ROUTES_ORDER.flatMap((path) =>
-                requiredSteps.includes(path) || showUtenlandsoppholdStep(path, getStateData) ? [path] : [],
+                requiredSteps.includes(path) || showUtenlandsoppholdStep(path, currentPath, getStateData) ? [path] : [],
             ),
-        [requiredSteps, getStateData],
+        [requiredSteps, currentPath, getStateData],
     );
 
     return useMemo(
