@@ -38,11 +38,6 @@ const useFpNavigator = (mellomlagreOgNaviger: () => Promise<void>, erEndringssø
         return mellomlagreOgNaviger();
     };
 
-    const avbrytSøknad = () => {
-        oppdaterPath(undefined);
-        return mellomlagreOgNaviger();
-    };
-
     const fortsettSøknadSenere = () => {
         logAmplitudeEvent('applikasjon-hendelse', {
             app: 'foreldrepengesoknad',
@@ -56,7 +51,6 @@ const useFpNavigator = (mellomlagreOgNaviger: () => Promise<void>, erEndringssø
         goToPreviousDefaultStep,
         goToNextStep,
         goToNextDefaultStep,
-        avbrytSøknad,
         fortsettSøknadSenere,
     };
 };
