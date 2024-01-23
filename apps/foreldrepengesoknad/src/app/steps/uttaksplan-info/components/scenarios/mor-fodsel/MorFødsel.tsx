@@ -120,6 +120,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         valgtStønadskonto,
         erFarEllerMedmor,
         søker.erAleneOmOmsorg,
+        familiehendelsesdatoDate!,
         intl,
     );
 

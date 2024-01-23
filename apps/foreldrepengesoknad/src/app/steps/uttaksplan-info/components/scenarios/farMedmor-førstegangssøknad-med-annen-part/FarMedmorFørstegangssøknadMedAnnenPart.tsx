@@ -203,6 +203,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         erFarEllerMedmor,
         erAdopsjon,
         erBarnetFødt,
+        familiehendelsedatoDate!,
         intl,
     );
 

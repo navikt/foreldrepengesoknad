@@ -208,7 +208,12 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     );
 
     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-    const fordelingScenario = getFordelingBeggeHarRettAdopsjon(valgtStønadskonto, erFarEllerMedmor, intl);
+    const fordelingScenario = getFordelingBeggeHarRettAdopsjon(
+        valgtStønadskonto,
+        erFarEllerMedmor,
+        familiehendelsesdatoDate!,
+        intl,
+    );
     return (
         <VStack gap="5">
             <FordelingOversikt

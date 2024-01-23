@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
-import { Button, GuidePanel, VStack } from '@navikt/ds-react';
+import { Alert, Button, GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
     Dekningsgrad,
@@ -12,6 +12,8 @@ import {
     Uttaksdagen,
     andreAugust2022ReglerGjelder,
     getErMorUfør,
+    getFlerbarnsuker,
+    getVarighetString,
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
@@ -108,7 +110,15 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const valgtStønadskonto = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
-    const fordelingScenario = getFordelingBeggeHarRettFødsel(valgtStønadskonto, true, erBarnetFødt, intl);
+    const fordelingScenario = getFordelingBeggeHarRettFødsel(
+        valgtStønadskonto,
+        true,
+        erBarnetFødt,
+        familiehendelsesdatoDate!,
+        intl,
+    );
+    const antallFlerbarnsuker = barn.antallBarn > 1 ? getFlerbarnsuker(dekningsgrad, barn.antallBarn) : undefined;
+    const flerbarnsukerVarighet = antallFlerbarnsuker ? getVarighetString(antallFlerbarnsuker * 5, intl) : undefined;
 
     const onSubmit = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
         setIsSubmitting(true);
@@ -164,6 +174,21 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                 annenForeldrerHarRett={true}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
+            {flerbarnsukerVarighet && (
+                <Block padBottom="xl">
+                    <Alert variant="info">
+                        <Block padBottom="l">
+                            <FormattedMessage
+                                id="fordeling.flerbarnsuker.info.del1"
+                                values={{
+                                    varighetTekst: flerbarnsukerVarighet,
+                                }}
+                            />
+                        </Block>
+                        <FormattedMessage id="fordeling.flerbarnsuker.info.del2" />
+                    </Alert>
+                </Block>
+            )}
             <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper
                 initialValues={getInitialFarMedmorFødselBeggeHarRettValues(uttaksplanInfo)}
                 onSubmit={onSubmit}

@@ -186,6 +186,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         erBarnetFødt,
         navnMor,
         navnFarMedmor,
+        familiehendelsesdatoDate!,
         intl,
     );
     return (

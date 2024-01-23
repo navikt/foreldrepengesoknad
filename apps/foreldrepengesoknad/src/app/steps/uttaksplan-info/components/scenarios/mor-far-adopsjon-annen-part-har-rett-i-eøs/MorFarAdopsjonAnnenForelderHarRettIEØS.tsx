@@ -180,6 +180,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         false,
         navnMor,
         navnFarMedmor,
+        familiehendelsesdatoDate!,
         intl,
     );
 

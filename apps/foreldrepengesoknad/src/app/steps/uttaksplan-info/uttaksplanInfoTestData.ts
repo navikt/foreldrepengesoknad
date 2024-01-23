@@ -8,6 +8,7 @@ interface UttaksplanInfoTestData {
     søkerinfo: SøkerinfoDTO;
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
+    fødselsdatoer: Date[];
 }
 
 export default UttaksplanInfoTestData;

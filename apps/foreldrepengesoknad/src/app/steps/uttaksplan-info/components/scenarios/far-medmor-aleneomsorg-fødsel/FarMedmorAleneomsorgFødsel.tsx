@@ -162,13 +162,17 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
           ? annenForelder.fornavn
           : '';
     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-    const fordelingScenario = getFordelingFarMedmorAleneomsorg(valgtStønadskonto, erAdopsjon);
+    const fordelingScenario = getFordelingFarMedmorAleneomsorg(
+        valgtStønadskonto,
+        erAdopsjon,
+        familiehendelsesdatoDate!,
+    );
 
     return (
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={false}
+                erFarEllerMedmor={true}
                 navnFarMedmor={navnFar}
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
