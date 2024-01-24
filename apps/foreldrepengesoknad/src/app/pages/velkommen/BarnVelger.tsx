@@ -1,38 +1,14 @@
-import { RegistrertAnnenForelder, Sak, formatDate } from '@navikt/fp-common';
-import { FunctionComponent } from 'react';
+import { formatDate } from '@navikt/fp-common';
+import { FunctionComponent, ReactElement } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Label, Radio } from '@navikt/ds-react';
 import { isRequired } from '@navikt/fp-validation';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
-
-export enum SelectableBarnType {
-    FØDT = 'født',
-    UFØDT = 'ufødt',
-    ADOPTERT = 'adoptert',
-    IKKE_UTFYLT = 'ikkeUtfylt',
-}
+import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
 
 export enum SelectableBarnOptions {
     SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',
-}
-
-export interface SelectableBarn {
-    id: string;
-    type: SelectableBarnType;
-    antallBarn: number;
-    sortableDato: Date;
-    fnr?: string[];
-    termindato?: Date;
-    fødselsdatoer?: Date[];
-    omsorgsovertagelse?: Date;
-    fornavn?: string[];
-    kanSøkeOmEndring?: boolean;
-    sak?: Sak;
-    annenForelder?: RegistrertAnnenForelder;
-    familiehendelsesdato?: Date;
-    startdatoFørsteStønadsperiode?: Date;
-    alleBarnaLever: boolean;
 }
 
 const getTittelForUfødtBarn = (antallBarn: number, termindato: Date, intl: IntlShape): string => {
@@ -45,7 +21,7 @@ const getTittelForUfødtBarn = (antallBarn: number, termindato: Date, intl: Intl
     );
 };
 
-const getRadioForUfødtBarn = (barna: SelectableBarn[], intl: IntlShape) => {
+const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
     return barna.map((barn) => {
         const saksStatus =
             barn.sak !== undefined ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
@@ -72,7 +48,7 @@ const getStatusTekst = (åpenBehandling: boolean, intl: IntlShape) => {
         : intl.formatMessage({ id: 'velkommen.sak.status.underBehandling' });
 };
 
-const getRadioForFødtEllerAdoptertBarn = (barna: SelectableBarn[], intl: IntlShape) => {
+const getRadioForFødtEllerAdoptertBarn = (barna: ValgtBarn[], intl: IntlShape) => {
     return barna.map((barn) => {
         const navnTekstEllerBarnMedUkjentNavnTekst = formaterNavnPåBarn(
             barn.fornavn,
@@ -84,11 +60,11 @@ const getRadioForFødtEllerAdoptertBarn = (barna: SelectableBarn[], intl: IntlSh
         );
         const fødselsdatoerTekst = formaterFødselsdatoerPåBarn(barn.fødselsdatoer);
         const fødtAdoptertDatoTekst =
-            barn.type === SelectableBarnType.FØDT || barn.type === SelectableBarnType.IKKE_UTFYLT
+            barn.type === ValgtBarnType.FØDT || barn.type === ValgtBarnType.IKKE_UTFYLT
                 ? fødselsdatoerTekst
                 : formatDate(barn.omsorgsovertagelse!);
         const situasjonTekst =
-            barn.type === SelectableBarnType.FØDT || barn.type === SelectableBarnType.IKKE_UTFYLT
+            barn.type === ValgtBarnType.FØDT || barn.type === ValgtBarnType.IKKE_UTFYLT
                 ? intl.formatMessage({ id: 'velkommen.barnVelger.født' })
                 : intl.formatMessage({ id: 'velkommen.barnVelger.adopsjon' });
 
@@ -116,7 +92,7 @@ const getRadioForFødtEllerAdoptertBarn = (barna: SelectableBarn[], intl: IntlSh
 };
 
 interface Props {
-    selectableBarn: SelectableBarn[];
+    selectableBarn: ValgtBarn[];
 }
 
 const BarnVelger: FunctionComponent<Props> = ({ selectableBarn }) => {
@@ -126,8 +102,16 @@ const BarnVelger: FunctionComponent<Props> = ({ selectableBarn }) => {
         return null;
     }
 
-    const ufødteBarn = selectableBarn.filter((b) => b.type === SelectableBarnType.UFØDT);
-    const fødteOgAdopterteBarn = selectableBarn.filter((b) => b.type !== SelectableBarnType.UFØDT);
+    const ufødteBarn = selectableBarn.filter((b) => b.type === ValgtBarnType.UFØDT);
+    const fødteOgAdopterteBarn = selectableBarn.filter((b) => b.type !== ValgtBarnType.UFØDT);
+
+    let radios = [] as ReactElement[];
+    if (fødteOgAdopterteBarn.length > 0) {
+        radios = radios.concat(getRadioForFødtEllerAdoptertBarn(fødteOgAdopterteBarn, intl));
+    }
+    if (ufødteBarn.length > 0) {
+        radios = radios.concat(getRadioForUfødtBarn(ufødteBarn, intl));
+    }
 
     return (
         <RadioGroup
@@ -135,17 +119,17 @@ const BarnVelger: FunctionComponent<Props> = ({ selectableBarn }) => {
             label={<FormattedMessage id="velkommen.intro.harSaker.barnVelger.label" />}
             validate={[isRequired(intl.formatMessage({ id: 'steg.footer.spørsmålMåBesvares' }))]}
         >
-            {fødteOgAdopterteBarn.length > 0 && getRadioForFødtEllerAdoptertBarn(fødteOgAdopterteBarn, intl)}
-            {ufødteBarn.length > 0 && getRadioForUfødtBarn(ufødteBarn, intl)}
-            <Radio
-                key={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
-                value={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
-                description={intl.formatMessage({ id: 'velkommen.intro.harSaker.barnVelger.info' })}
-            >
-                <Label>
-                    <FormattedMessage id="omBarnet.gjelderAnnetBarn" />
-                </Label>
-            </Radio>
+            {radios.concat(
+                <Radio
+                    key={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
+                    value={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
+                    description={intl.formatMessage({ id: 'velkommen.intro.harSaker.barnVelger.info' })}
+                >
+                    <Label>
+                        <FormattedMessage id="omBarnet.gjelderAnnetBarn" />
+                    </Label>
+                </Radio>,
+            )}
         </RadioGroup>
     );
 };

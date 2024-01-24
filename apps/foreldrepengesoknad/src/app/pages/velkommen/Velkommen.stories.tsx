@@ -27,7 +27,7 @@ interface Props {
     saker: Sak[];
     søkerinfo: SøkerinfoDTO;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    gåTilNesteSide?: (action: Action) => void;
+    onDispatch?: (action: Action) => void;
 }
 
 const søkerInfo = {
@@ -46,12 +46,12 @@ const Template: StoryFn<Props> = ({
     saker,
     søkerinfo,
     mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
+    onDispatch,
 }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.VELKOMMEN]}>
-            <FpDataContext onDispatch={gåTilNesteSide}>
+            <FpDataContext onDispatch={onDispatch}>
                 <Velkommen
                     fornavn="Espen"
                     onChangeLocale={() => undefined}

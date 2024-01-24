@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -59,7 +59,12 @@ const Velkommen: React.FunctionComponent<Props> = ({
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
-    const selectableBarn = getSelectableBarnOptions(saker, søkerInfo.registrerteBarn);
+
+    // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
+    const selectableBarn = useMemo(
+        () => getSelectableBarnOptions(saker, søkerInfo.registrerteBarn),
+        [saker, søkerInfo.registrerteBarn],
+    );
     const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
     const onSubmit = (values: VelkommenFormData) => {
@@ -127,7 +132,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
         setErEndringssøknad(vilSøkeOmEndring);
         setSøknadGjelderNyttBarn(søknadGjelderNyttBarn);
 
-        navigator.goToNextStep(nextRoute);
+        return navigator.goToNextStep(nextRoute);
     };
 
     const formMethods = useForm<VelkommenFormData>({
@@ -153,7 +158,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
             <VStack gap="10">
                 <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggle={onChangeLocale} />
                 <ContentWrapper>
-                    <VStack gap="6">
+                    <VStack gap="8">
                         <HStack justify="center">
                             <Heading size="xlarge">
                                 <FormattedMessage id="velkommen.tittel" />

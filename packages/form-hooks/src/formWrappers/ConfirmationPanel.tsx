@@ -27,7 +27,7 @@ const ConfirmationPanel: FunctionComponent<Props> = ({ name, label, validate = [
             ref={field.ref}
             label={label}
             onChange={(evt) => field.onChange(evt)}
-            checked={field.value}
+            checked={field.value ? field.value : ''}
             error={getError(errors, name)}
         >
             {children}
