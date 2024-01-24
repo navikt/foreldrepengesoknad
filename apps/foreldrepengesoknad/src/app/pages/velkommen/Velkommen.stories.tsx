@@ -1,4 +1,3 @@
-import withRouter from 'storybook/decorators/withRouter';
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
@@ -8,6 +7,8 @@ import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { Action, FpDataContext } from 'app/context/FpDataContext';
 import Velkommen from './Velkommen';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { MemoryRouter } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
 
 const promiseAction =
     () =>
@@ -19,7 +20,6 @@ const promiseAction =
 export default {
     title: 'pages/Velkommen',
     component: Velkommen,
-    decorators: [withRouter],
 };
 
 interface Props {
@@ -50,21 +50,23 @@ const Template: StoryFn<Props> = ({
 }) => {
     initAmplitude();
     return (
-        <FpDataContext onDispatch={gåTilNesteSide}>
-            <Velkommen
-                fornavn="Espen"
-                onChangeLocale={() => undefined}
-                locale="nb"
-                saker={saker}
-                fnr={'123'}
-                harGodkjentVilkår={harGodkjentVilkår}
-                søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
-                setErEndringssøknad={action('button-click')}
-                setHarGodkjentVilkår={action('button-click')}
-                setSøknadGjelderNyttBarn={action('button-click')}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />
-        </FpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.VELKOMMEN]}>
+            <FpDataContext onDispatch={gåTilNesteSide}>
+                <Velkommen
+                    fornavn="Espen"
+                    onChangeLocale={() => undefined}
+                    locale="nb"
+                    saker={saker}
+                    fnr={'123'}
+                    harGodkjentVilkår={harGodkjentVilkår}
+                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                    setErEndringssøknad={action('button-click')}
+                    setHarGodkjentVilkår={action('button-click')}
+                    setSøknadGjelderNyttBarn={action('button-click')}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />
+            </FpDataContext>
+        </MemoryRouter>
     );
 };
 

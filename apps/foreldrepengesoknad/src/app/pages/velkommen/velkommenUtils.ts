@@ -1,4 +1,4 @@
-import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
+import { SelectableBarn, SelectableBarnType } from './BarnVelger';
 import dayjs from 'dayjs';
 import {
     getAndreBarnFødtSammenMedBarnet,
@@ -287,7 +287,7 @@ export const getBarnFraNesteSak = (
     };
 };
 
-export function sorterRegistrerteBarnEtterEldstOgNavn(b1: RegistrertBarn, b2: RegistrertBarn) {
+export const sorterRegistrerteBarnEtterEldstOgNavn = (b1: RegistrertBarn, b2: RegistrertBarn) => {
     if (dayjs(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')) {
@@ -295,12 +295,12 @@ export function sorterRegistrerteBarnEtterEldstOgNavn(b1: RegistrertBarn, b2: Re
     } else {
         return b1.fornavn < b2.fornavn ? -1 : 1;
     }
-}
+};
 
-export function sorterSelectableBarnEtterYngst(b1: SelectableBarn, b2: SelectableBarn) {
+export const sorterSelectableBarnEtterYngst = (b1: SelectableBarn, b2: SelectableBarn) => {
     return dayjs(b1.sortableDato).isBefore(b2.sortableDato, 'd')
         ? 1
         : dayjs(b1.sortableDato).isAfter(b2.sortableDato, 'd')
-        ? -1
-        : 0;
-}
+          ? -1
+          : 0;
+};

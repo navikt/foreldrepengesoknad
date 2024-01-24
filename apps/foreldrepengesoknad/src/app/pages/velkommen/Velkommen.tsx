@@ -1,20 +1,15 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Alert, BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
-import { bemUtils, Block, intlUtils, LanguageToggle, links, Sak, Søkerinfo } from '@navikt/fp-common';
+import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
+import { LanguageToggle, Sak, Søkerinfo, links } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
-import {
-    getInitialVelkommenValues,
-    VelkommenFormComponents,
-    VelkommenFormData,
-    VelkommenFormField,
-    velkommenFormQuestions,
-    VelkommenQuestionsPayload,
-} from './velkommenFormConfig';
-import { ContextDataType, useContextSaveAnyData } from 'app/context/FpDataContext';
+import { Form, ConfirmationPanel } from '@navikt/fp-form-hooks';
+import { ContentWrapper } from '@navikt/fp-ui';
 import DinePlikter from 'app/components/dine-plikter/DinePlikter';
-import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
-import { validateHarForståttRettigheterOgPlikter } from './validation/velkommenValidation';
+import { ContextDataType, useContextSaveAnyData } from 'app/context/FpDataContext';
+import { Søknad } from 'app/context/types/Søknad';
+import { useSetSøknadsdata } from 'app/context/useSetSøknadsdata';
 import SøknadRoutes from 'app/routes/routes';
 import {
     mapSøkerensEksisterendeSakFromDTO,
@@ -22,13 +17,15 @@ import {
     opprettSøknadFraValgteBarn,
     opprettSøknadFraValgteBarnMedSak,
 } from 'app/utils/eksisterendeSakUtils';
-import { useSetSøknadsdata } from 'app/context/useSetSøknadsdata';
-import { Søknad } from 'app/context/types/Søknad';
-import BarnVelger, { SelectableBarnOptions } from './components/barnVelger/BarnVelger';
+import useFpNavigator from 'app/appData/useFpNavigator';
+import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
+import BarnVelger, { SelectableBarnOptions } from './BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
 
-import './velkommen.less';
-import useFpNavigator from 'app/appData/useFpNavigator';
+type VelkommenFormData = {
+    harForståttRettigheterOgPlikter: boolean;
+    valgteBarn: string | undefined;
+};
 
 export interface Props {
     fornavn: string;
@@ -55,7 +52,6 @@ const Velkommen: React.FunctionComponent<Props> = ({
     setSøknadGjelderNyttBarn,
     mellomlagreSøknadOgNaviger,
 }) => {
-    const bem = bemUtils('velkommen');
     const intl = useIntl();
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,7 +62,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
     const selectableBarn = getSelectableBarnOptions(saker, søkerInfo.registrerteBarn);
     const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
-    const onSubmit = (values: Partial<VelkommenFormData>) => {
+    const onSubmit = (values: VelkommenFormData) => {
         if (values.harForståttRettigheterOgPlikter !== true) {
             return;
         }
@@ -134,100 +130,82 @@ const Velkommen: React.FunctionComponent<Props> = ({
         navigator.goToNextStep(nextRoute);
     };
 
+    const formMethods = useForm<VelkommenFormData>({
+        defaultValues: {
+            harForståttRettigheterOgPlikter: harGodkjentVilkår,
+        },
+    });
+
+    const valgtBarnId = formMethods.watch('valgteBarn');
+
+    const valgtBarn =
+        valgtBarnId === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
+            ? undefined
+            : selectableBarn.find((barn) => barn.id === valgtBarnId);
+
+    const knapptekst =
+        valgtBarn !== undefined && valgtBarn.kanSøkeOmEndring === true
+            ? intl.formatMessage({ id: 'velkommen.endreSøknad' })
+            : intl.formatMessage({ id: 'velkommen.begynnMedSøknad' });
+
     return (
-        <VelkommenFormComponents.FormikWrapper
-            initialValues={getInitialVelkommenValues(harGodkjentVilkår)}
-            onSubmit={onSubmit}
-            renderForm={({ values, setFieldValue }) => {
-                const visibility = velkommenFormQuestions.getVisbility({
-                    ...values,
-                    selectableBarn,
-                } as VelkommenQuestionsPayload);
-                const valgtBarnId = values.valgteBarn;
-                const valgtBarn =
-                    valgtBarnId === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
-                        ? undefined
-                        : selectableBarn.find((barn) => barn.id === valgtBarnId);
-                const knapptekst =
-                    valgtBarn !== undefined && valgtBarn.kanSøkeOmEndring === true
-                        ? intlUtils(intl, 'velkommen.endreSøknad')
-                        : intlUtils(intl, 'velkommen.begynnMedSøknad');
-                return (
-                    <VelkommenFormComponents.Form includeButtons={false}>
-                        <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggle={onChangeLocale} />
-                        <div className={bem.block}>
-                            <Block>
-                                <Heading size="xlarge" className={`${bem.element('tittel')}`}>
-                                    {intlUtils(intl, 'velkommen.tittel')}
-                                </Heading>
-                            </Block>
-                            <Block padBottom="l">
-                                <GuidePanel poster>
-                                    <Block padBottom="m">{intlUtils(intl, 'velkommen.guidepanel.del1')}</Block>{' '}
-                                    <Block>
-                                        <FormattedMessage
-                                            id="velkommen.guidepanel.del2"
-                                            values={{
-                                                a: (msg: any) => (
-                                                    <a
-                                                        className="lenke"
-                                                        rel="noopener noreferrer"
-                                                        href={links.foreldrepenger}
-                                                    >
-                                                        {msg}
-                                                    </a>
-                                                ),
-                                            }}
-                                        />
-                                    </Block>
-                                </GuidePanel>
-                            </Block>
-                            <Block padBottom="l" visible={visibility.isVisible(VelkommenFormField.valgteBarn)}>
-                                <BarnVelger
-                                    selectableBarn={sortedSelectableBarn}
-                                    visibility={visibility}
-                                    formValues={values as VelkommenFormData}
-                                    setFieldValue={setFieldValue}
+        <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <VStack gap="10">
+                <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggle={onChangeLocale} />
+                <ContentWrapper>
+                    <VStack gap="6">
+                        <HStack justify="center">
+                            <Heading size="xlarge">
+                                <FormattedMessage id="velkommen.tittel" />
+                            </Heading>
+                        </HStack>
+                        <GuidePanel poster>
+                            <VStack gap="2">
+                                <FormattedMessage id="velkommen.guidepanel.del1" />
+                                <FormattedMessage
+                                    id="velkommen.guidepanel.del2"
+                                    values={{
+                                        a: (msg: any) => (
+                                            <a className="lenke" rel="noopener noreferrer" href={links.foreldrepenger}>
+                                                {msg}
+                                            </a>
+                                        ),
+                                    }}
                                 />
-                            </Block>
-                            <Block
-                                padBottom="l"
-                                visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
-                            >
-                                <Alert variant="info">{intlUtils(intl, 'velkommen.lagring.info')}</Alert>
-                            </Block>
-                            <Block
-                                padBottom="l"
-                                visible={visibility.isVisible(VelkommenFormField.harForståttRettigheterOgPlikter)}
-                            >
-                                <VelkommenFormComponents.ConfirmationCheckbox
-                                    name={VelkommenFormField.harForståttRettigheterOgPlikter}
-                                    label={intlUtils(intl, 'velkommen.samtykke')}
-                                    validate={validateHarForståttRettigheterOgPlikter(intl)}
-                                >
-                                    <>
-                                        <Block padBottom="l">
-                                            <FormattedMessage id="velkommen.samtykkeIntro.del1" />
-                                        </Block>
-                                        <Block padBottom="m">
-                                            <DinePlikter />
-                                        </Block>
-                                    </>
-                                </VelkommenFormComponents.ConfirmationCheckbox>
-                            </Block>
-                            <Block padBottom="l">
-                                <div style={{ textAlign: 'center' }}>
-                                    <Button
-                                        type="submit"
-                                        variant="primary"
-                                        disabled={isSubmitting}
-                                        loading={isSubmitting}
-                                    >
-                                        {knapptekst}
-                                    </Button>
-                                </div>
-                            </Block>
-                            <BodyShort className={bem.element('personopplysningerLink')}>
+                            </VStack>
+                        </GuidePanel>
+                        <BarnVelger selectableBarn={sortedSelectableBarn} />
+                        <Alert variant="info">
+                            <FormattedMessage id="velkommen.lagring.info" />
+                        </Alert>
+                        <ConfirmationPanel
+                            name="harForståttRettigheterOgPlikter"
+                            label={intl.formatMessage({ id: 'velkommen.samtykke' })}
+                            validate={[
+                                (value: boolean) =>
+                                    value !== true
+                                        ? intl.formatMessage({
+                                              id: 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd',
+                                          })
+                                        : null,
+                            ]}
+                        >
+                            <VStack gap="5">
+                                <HStack gap="1">
+                                    <BodyShort>
+                                        <FormattedMessage id="velkommen.samtykkeIntro.del1" />
+                                    </BodyShort>
+                                    <DinePlikter />
+                                </HStack>
+                            </VStack>
+                        </ConfirmationPanel>
+                        <HStack justify="center">
+                            <Button type="submit" variant="primary" disabled={isSubmitting} loading={isSubmitting}>
+                                {knapptekst}
+                            </Button>
+                        </HStack>
+                        <HStack justify="center">
+                            <BodyShort>
                                 <a
                                     className="lenke"
                                     href="#"
@@ -239,15 +217,15 @@ const Velkommen: React.FunctionComponent<Props> = ({
                                     <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
                                 </a>
                             </BodyShort>
-                            <DinePersonopplysningerModal
-                                isOpen={isDinePersonopplysningerModalOpen}
-                                onRequestClose={() => setDinePersonopplysningerModalOpen(false)}
-                            />
-                        </div>
-                    </VelkommenFormComponents.Form>
-                );
-            }}
-        />
+                        </HStack>
+                        <DinePersonopplysningerModal
+                            isOpen={isDinePersonopplysningerModalOpen}
+                            onRequestClose={() => setDinePersonopplysningerModalOpen(false)}
+                        />
+                    </VStack>
+                </ContentWrapper>
+            </VStack>
+        </Form>
     );
 };
 

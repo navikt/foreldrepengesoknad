@@ -1,5 +1,5 @@
 import { DekningsgradDTO, RegistrertBarn, Sak } from '@navikt/fp-common';
-import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
+import { SelectableBarn, SelectableBarnType } from './BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 
