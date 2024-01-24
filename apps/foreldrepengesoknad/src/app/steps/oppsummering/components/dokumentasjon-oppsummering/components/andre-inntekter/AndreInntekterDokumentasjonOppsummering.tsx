@@ -3,6 +3,7 @@ import { VedleggDataType } from 'app/types/VedleggDataType';
 import { FunctionComponent } from 'react';
 import AndreInntekterDokumentasjon from './AndreInntekterDokumentasjon';
 import DokumentasjonContainer from '../DokumentasjonContainer';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 interface Props {
     vedlegg: VedleggDataType;
@@ -11,15 +12,29 @@ interface Props {
 const AndreInntekterDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg }) => {
     const andreInntekerVedlegg = getAndreInntekterVedlegg(vedlegg);
 
+    const militærVedlegg = andreInntekerVedlegg.filter(
+        (v) => v.skjemanummer === Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE,
+    );
+    const etterlønnVedlegg = andreInntekerVedlegg.filter(
+        (v) => v.skjemanummer === Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
+    );
+
     if (andreInntekerVedlegg.length === 0) {
         return null;
     }
 
     return (
         <>
-            <DokumentasjonContainer>
-                <AndreInntekterDokumentasjon vedlegg={andreInntekerVedlegg} />
-            </DokumentasjonContainer>
+            {militærVedlegg && (
+                <DokumentasjonContainer>
+                    <AndreInntekterDokumentasjon vedlegg={militærVedlegg} />
+                </DokumentasjonContainer>
+            )}
+            {etterlønnVedlegg && (
+                <DokumentasjonContainer>
+                    <AndreInntekterDokumentasjon vedlegg={etterlønnVedlegg} />
+                </DokumentasjonContainer>
+            )}
         </>
     );
 };

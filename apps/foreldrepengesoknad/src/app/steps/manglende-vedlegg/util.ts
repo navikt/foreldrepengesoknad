@@ -103,6 +103,14 @@ export const getAndreInntekterVedlegg = (vedlegg: VedleggDataType) => {
     return andreInntekterVedlegg;
 };
 
+export const isMilitærVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE;
+};
+
+export const isEtterlønnVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
+};
+
 export const isFedrekvoteMorForSykVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE;
 };

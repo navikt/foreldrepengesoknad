@@ -3,9 +3,11 @@ import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import {
     isAleneOmOmsorgVedlegg,
     isArbeidUtdanningEllerSykdomVedlegg,
+    isEtterlønnVedlegg,
     isFedrekvoteMorForSykVedlegg,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
+    isMilitærVedlegg,
     isOmsorgsovertakelseVedlegg,
     isOverføringsVedlegg,
     isTerminbekreftelseVedlegg,
@@ -37,7 +39,25 @@ const getTidsperiodeString = (tidsperioder: Tidsperiode[]) => {
     return periodeString;
 };
 
-export const getDokumentasjonStringAndreInntekter = (_intl: IntlShape) => {
+export const getDokumentasjonStringAndreInntekter = (attachments: Attachment[], _intl: IntlShape) => {
+    const singleAttachment = attachments[0];
+
+    if (isEtterlønnVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på etterlønn må sendes inn senere';
+        }
+
+        return 'Dokumentasjon av etterlønn';
+    }
+
+    if (isMilitærVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på militær må sendes inn senere';
+        }
+
+        return 'Dokumentasjon av militær';
+    }
+
     return 'Dokumentasjon av andre inntekter';
 };
 

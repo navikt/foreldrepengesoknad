@@ -20,7 +20,7 @@ const AndreInntekterDokumentasjon: FunctionComponent<Props> = ({ vedlegg }) => {
     return (
         <div>
             <Block padBottom="l">
-                <BodyLong>{getDokumentasjonStringAndreInntekter(intl)}</BodyLong>
+                <BodyLong>{getDokumentasjonStringAndreInntekter(vedlegg, intl)}</BodyLong>
             </Block>
             <VedleggListe vedlegg={vedlegg} />
         </div>
