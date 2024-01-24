@@ -1,0 +1,1 @@
+import{Y as e}from"./Tidsperioden-17ce50bb.js";import"./jsx-runtime-1caa8f64.js";import"./index-1cdf6ce0.js";const i=r=>r===!0?e.YES:r===!1?e.NO:e.UNANSWERED,s=r=>{if(r===e.YES)return!0;if(r!==e.UNANSWERED)return!1};export{s as a,i as c};
