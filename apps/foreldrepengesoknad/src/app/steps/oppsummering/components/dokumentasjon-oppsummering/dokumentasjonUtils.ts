@@ -45,14 +45,26 @@ export const getDokumentasjonStringBarn = (attachments: Attachment[], _intl: Int
     const singleAttachment = attachments[0];
 
     if (isOmsorgsovertakelseVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på overtakelse av omsorg må sendes inn senere';
+        }
+
         return 'Dokumentasjon av overtakelse av omsorg';
     }
 
     if (isAleneOmOmsorgVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på at du er alene om omsorgen må sendes inn senere';
+        }
+
         return 'Dokumentasjon av alene om omsorg';
     }
 
     if (isTerminbekreftelseVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på terminbekreftelse må sendes inn senere';
+        }
+
         return 'Dokumentasjon av terminbekreftelse';
     }
 

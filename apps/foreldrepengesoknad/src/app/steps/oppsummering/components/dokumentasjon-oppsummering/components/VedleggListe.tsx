@@ -1,7 +1,7 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import { BodyShort, Link } from '@navikt/ds-react';
 import { Block } from '@navikt/fp-common';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import { FunctionComponent } from 'react';
 
 interface Props {
@@ -9,9 +9,15 @@ interface Props {
 }
 
 const VedleggListe: FunctionComponent<Props> = ({ vedlegg }) => {
+    const vedleggUtenSendSenere = vedlegg.filter((v) => v.innsendingsType !== InnsendingsType.SEND_SENERE);
+
+    if (vedleggUtenSendSenere.length === 0) {
+        return null;
+    }
+
     return (
         <>
-            {vedlegg.map((attachment) => {
+            {vedleggUtenSendSenere.map((attachment) => {
                 return (
                     <Block padBottom="l" key={attachment.id}>
                         <BodyShort>
