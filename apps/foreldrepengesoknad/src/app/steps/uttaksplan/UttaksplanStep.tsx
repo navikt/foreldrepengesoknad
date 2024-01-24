@@ -85,7 +85,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const intl = useIntl();
 
     const stepConfig = useStepConfig(erEndringssøknad);
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
