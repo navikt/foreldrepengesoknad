@@ -25,12 +25,12 @@ const AndreInntekterDokumentasjonOppsummering: FunctionComponent<Props> = ({ ved
 
     return (
         <>
-            {militærVedlegg && (
+            {militærVedlegg.length > 0 && (
                 <DokumentasjonContainer>
                     <AndreInntekterDokumentasjon vedlegg={militærVedlegg} />
                 </DokumentasjonContainer>
             )}
-            {etterlønnVedlegg && (
+            {etterlønnVedlegg.length > 0 && (
                 <DokumentasjonContainer>
                     <AndreInntekterDokumentasjon vedlegg={etterlønnVedlegg} />
                 </DokumentasjonContainer>
