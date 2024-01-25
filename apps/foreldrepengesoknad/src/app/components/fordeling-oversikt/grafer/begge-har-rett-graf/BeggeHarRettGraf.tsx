@@ -102,10 +102,11 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                 const width = (fordeling.antallUker / sumUker) * 100;
                 const erUthevet = currentUthevet === fordeling.eier;
                 const shadowClass = getFordelingShadowClass(erUthevet);
+                const rowClass = index % 2 === 0 ? 'up' : 'down';
                 const handleOnMouseEnter = () => {
                     setCurrentUthevet(fordeling.eier);
                 };
-                const indexForFamiliehendelse = erAdopsjon ? 0 : 1; //TODO: GR: For prematur fødsel eller fødsel før termin kommer også fellesperioden inn her og index blir 2.
+                const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
 
                 return (
                     <>
@@ -136,7 +137,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                                 ></div>
                             </div>
                             <BodyShort
-                                className={bem.element('del-tekst')}
+                                className={classNames(bem.element('del-tekst'), bem.modifier(`${rowClass}`))}
                                 style={{
                                     height: `${rowHeight}px`,
                                 }}

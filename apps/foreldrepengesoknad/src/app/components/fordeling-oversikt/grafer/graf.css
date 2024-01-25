@@ -27,7 +27,6 @@
 }
 
 .graf__del-tekst {
-    grid-row: 3;
     grid-column: 1;
     display: flex;
     justify-content: center;
@@ -74,4 +73,22 @@
     border-width: 2px;
     border-style: solid;
     margin: 0px 2px;
+}
+
+.graf--up {
+    grid-row: 3;
+}
+
+.graf--down {
+    grid-row: 3;
+}
+
+@media (max-width: 768px) {
+    .graf--up {
+        grid-row: 1;
+    }
+
+    .graf--down {
+        grid-row: 3;
+    }
 }
