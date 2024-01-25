@@ -202,6 +202,10 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         ? getBrukteDager(valgtMengdeStønadskonto, eksisterendeSakAnnenPart.uttaksplan, familiehendelsedatoDate!).mor
               .dagerFellesperiode
         : 0;
+    const morBrukteDagerFarsKvote = eksisterendeSakAnnenPart?.uttaksplan
+        ? getBrukteDager(valgtMengdeStønadskonto, eksisterendeSakAnnenPart.uttaksplan, familiehendelsedatoDate!).mor
+              .dagerAnnenForeldersKvote
+        : 0;
 
     const minsterett =
         grunnlag.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
@@ -224,6 +228,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         intl,
         false,
         morBrukteDagerFellesperiode,
+        morBrukteDagerFarsKvote,
     );
 
     return (

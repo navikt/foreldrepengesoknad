@@ -21,7 +21,19 @@ const STØNADSKONTO_URL = '/konto';
 
 const søkerinfo = _søkerinfo as any;
 
-const uttaksperiode = {
+const uttaksperiodeFedrekvote = {
+    fom: '2022-12-07',
+    tom: '2022-12-27',
+    kontoType: 'FEDREKVOTE',
+    resultat: {
+        innvilget: true,
+        trekkerMinsterett: false,
+        trekkerDager: true,
+        årsak: 'ANNET',
+    },
+} as SaksperiodeDTO;
+
+const uttaksperiodeFellesperiode = {
     fom: '2022-12-07',
     tom: '2023-01-07',
     kontoType: 'FELLESPERIODE',
@@ -56,7 +68,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(
             200,
             {
-                perioder: [uttaksperiode],
+                perioder: args.uttaksplanAnnenPart,
                 dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
             } as AnnenPartVedtakDTO,
             RequestStatus.FINISHED,
@@ -116,6 +128,7 @@ FarSøkerEtterMorFør1Okt2021.args = {
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    uttaksplanAnnenPart: [uttaksperiodeFellesperiode],
 };
 
 export const FarSøkerEtterMorEtter1Okt2021 = Template.bind({});
@@ -130,6 +143,7 @@ FarSøkerEtterMorEtter1Okt2021.args = {
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    uttaksplanAnnenPart: [uttaksperiodeFellesperiode],
 };
 
 export const FarSøkerEtterMorTrillinger = Template.bind({});
@@ -144,4 +158,20 @@ FarSøkerEtterMorTrillinger.args = {
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    uttaksplanAnnenPart: [uttaksperiodeFellesperiode],
+};
+
+export const FarSøkerEtterMorDerMorHarTattUtFarsKvote = Template.bind({});
+FarSøkerEtterMorDerMorHarTattUtFarsKvote.args = {
+    stønadskonto100: stønadskontoDeltUttak100Tvillinger,
+    stønadskonto80: stønadskontoDeltUttak100Tvillinger,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2022-09-14').toDate()],
+        antallBarn: 3,
+        dokumentasjonAvAleneomsorg: [],
+    },
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    uttaksplanAnnenPart: [uttaksperiodeFedrekvote],
 };

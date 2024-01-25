@@ -1023,6 +1023,7 @@
     "fordeling.info.farMedmor.fødsel": "<b>{varighetTekst}</b> kan brukes når som helst før {barnTekst} fyller 3 år eller før ny periode med foreldrepenger starter for nytt barn.",
     "fordeling.info.farMedmor.før1okt2021": "<b>{varighetTekst}</b> med foreldrepenger.",
     "fordeling.info.farMedmor.rundtFødsel": "<b>2 av disse ukene</b> kan brukes i perioden rundt fødsel, samtidig med mor. Far kan bruke disse 2 ukene fra to uker før {terminEllerFødsel} til seks uker etter {terminEllerFødsel}. Ofte får fedre permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette, kan far søke om foreldrepenger fra NAV i disse to ukene og bruke av denne kvoten.",
+    "fordeling.info.farMedmor.morBrukteDager": "<b>{varighetTekst}</b> er allerede brukt av {navnMor} fordi du er enten syk eller innlagt i helseinstitusjon.",
     "fordeling.info.ekstraDagerPrematur.fellesperiode": "<b>{varighetTekst}</b> er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33.",
     "fordeling.info.ekstraDagerPrematur.foreldrepenger": "<b>{varighetTekst}</b> er lagt til fordi barnet ble født før svangerskapsuke 33.",
     "fordeling.hvorLengeAntallUkerKanBrukes.før1okt2021": "<b>{varighetTekst}</b> med foreldrepenger.",
