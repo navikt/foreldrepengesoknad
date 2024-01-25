@@ -5,7 +5,6 @@ import {
     PeriodeUtenUttakUtsettelse,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    intlUtils,
 } from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
@@ -31,12 +30,13 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
 }) => {
     const { årsak, morsAktivitetIPerioden, vedlegg, bekrefterArbeidIPerioden } = periode;
     const intl = useIntl();
-    const bekreftErIArbeidSvar = bekrefterArbeidIPerioden === true ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei');
+    const bekreftErIArbeidSvar =
+        bekrefterArbeidIPerioden === true ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' });
 
     return (
         <>
             <Feltoppsummering
-                feltnavn={intlUtils(intl, 'oppsummering.uttak.årsak')}
+                feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
                 verdi={getÅrsakTekst(intl, periode)}
             />
             {shouldPeriodeHaveAttachment(periode, søkerErFarEllerMedmor, annenForelder) &&
@@ -50,7 +50,7 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
                 )}
             {årsak === UtsettelseÅrsakType.Arbeid && (
                 <Feltoppsummering
-                    feltnavn={intlUtils(intl, 'oppsummering.uttak.bekreft100ProsentIArbeid.label')}
+                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.bekreft100ProsentIArbeid.label' })}
                     verdi={bekreftErIArbeidSvar}
                 />
             )}

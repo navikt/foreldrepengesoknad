@@ -1,4 +1,4 @@
-import { formatDate, intlUtils } from '@navikt/fp-common';
+import { formatDate } from '@navikt/fp-common';
 import { Næring } from 'app/context/types/Næring';
 import * as countries from 'i18n-iso-countries';
 import { FunctionComponent } from 'react';
@@ -25,54 +25,63 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
 
     return (
         <>
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.næringstype')}>
-                <BodyShort>{intlUtils(intl, `næringstype.${næringstyper[0].toLowerCase()}`)}</BodyShort>
+            <OppsummeringsPunkt
+                title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.næringstype' })}
+            >
+                <BodyShort>{intl.formatMessage({ id: `næringstype.${næringstyper[0].toLowerCase()}` })}</BodyShort>
             </OppsummeringsPunkt>
             {organisasjonsnummer && (
-                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}>
+                <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.orgnr' })}>
                     <BodyShort>{organisasjonsnummer}</BodyShort>
                 </OppsummeringsPunkt>
             )}
             {næringsinntekt && (
-                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}>
+                <OppsummeringsPunkt
+                    title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.næringsinntekt' })}
+                >
                     <BodyShort>{næringsinntekt}</BodyShort>
                 </OppsummeringsPunkt>
             )}
             {registrertINorge ||
                 (registrertILand && (
                     <OppsummeringsPunkt
-                        title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}
+                        title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.registrertLand' })}
                     >
                         <BodyShort>{registrertINorge ? 'Norge' : countries.getName(registrertILand, 'nb')}</BodyShort>
                     </OppsummeringsPunkt>
                 ))}
             {harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene && (
                 <OppsummeringsPunkt
-                    title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År')}
+                    title={intl.formatMessage({
+                        id: 'oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År',
+                    })}
                 >
                     <BodyShort>
                         {harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
-                            ? intlUtils(intl, 'ja')
-                            : intlUtils(intl, 'nei')}
+                            ? intl.formatMessage({ id: 'ja' })
+                            : intl.formatMessage({ id: 'nei' })}
                     </BodyShort>
                 </OppsummeringsPunkt>
             )}
             {hattVarigEndringAvNæringsinntektSiste4Kalenderår === true && (
                 <>
                     <OppsummeringsPunkt
-                        title={intlUtils(
-                            intl,
-                            'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt',
-                        )}
+                        title={intl.formatMessage({
+                            id: 'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt',
+                        })}
                     >
                         <BodyShort>{formatDate(endringAvNæringsinntektInformasjon!.dato)}</BodyShort>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
-                        title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring')}
+                        title={intl.formatMessage({
+                            id: 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring',
+                        })}
                     >
                         <BodyShort>{endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}</BodyShort>
                     </OppsummeringsPunkt>
-                    <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}>
+                    <OppsummeringsPunkt
+                        title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.forklaring' })}
+                    >
                         <BodyShort>{endringAvNæringsinntektInformasjon!.forklaring}</BodyShort>
                     </OppsummeringsPunkt>
                 </>

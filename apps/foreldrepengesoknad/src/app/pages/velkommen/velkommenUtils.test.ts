@@ -1,7 +1,7 @@
 import { DekningsgradDTO, RegistrertBarn, Sak } from '@navikt/fp-common';
-import { SelectableBarn, SelectableBarnType } from './components/barnVelger/BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
+import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
 
 const fødselsdato = '2022-01-01';
 const fødselsdatoDate = new Date(fødselsdato);
@@ -120,7 +120,7 @@ describe('velkommenUtils - getSelectableBarnOptions', () => {
 describe('velkommenUtils - getBarnFraNesteSak', () => {
     const selectedBarn = {
         id: '1',
-        type: SelectableBarnType.FØDT,
+        type: ValgtBarnType.FØDT,
         antallBarn: 1,
         sortableDato: new Date('2022-06-01'),
         sak: { saksnummer: '1' } as Sak,
@@ -133,7 +133,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
             selectedBarn,
             {
                 id: '2',
-                type: SelectableBarnType.FØDT,
+                type: ValgtBarnType.FØDT,
                 antallBarn: 2,
                 sortableDato: new Date('2021-05-01'),
                 sak: { saksnummer: '2' } as Sak,
@@ -143,7 +143,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
             },
             {
                 id: '3',
-                type: SelectableBarnType.UFØDT,
+                type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2023-04-01'),
                 sak: { saksnummer: '3' } as Sak,
@@ -152,14 +152,14 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
             },
             {
                 id: '3',
-                type: SelectableBarnType.UFØDT,
+                type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2024-04-01'),
                 sak: { saksnummer: '3' } as Sak,
                 familiehendelsesdato: new Date('2024-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2024-03-15'),
             },
-        ] as SelectableBarn[];
+        ] as ValgtBarn[];
         const res = getBarnFraNesteSak(selectedBarn, alleBarna);
         expect(res?.fnr).toEqual(undefined);
         expect(res?.familiehendelsesdato).toEqual(new Date('2023-04-01'));
@@ -170,7 +170,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
             selectedBarn,
             {
                 id: '2',
-                type: SelectableBarnType.FØDT,
+                type: ValgtBarnType.FØDT,
                 antallBarn: 2,
                 sortableDato: new Date('2021-05-01'),
                 sak: { saksnummer: '2' } as Sak,
@@ -181,7 +181,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
             },
             {
                 id: '3',
-                type: SelectableBarnType.UFØDT,
+                type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2021-04-01'),
                 sak: { saksnummer: '3' } as Sak,

@@ -1,18 +1,8 @@
-import {
-    AnnenForelder,
-    Arbeidsforhold,
-    Dekningsgrad,
-    NavnPåForeldre,
-    Periode,
-    Situasjon,
-    intlUtils,
-} from '@navikt/fp-common';
-
+import { AnnenForelder, Arbeidsforhold, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
-
+import { BodyShort } from '@navikt/ds-react';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UttaksplanOppsummeringsliste from './UttaksplanOppsummeringsliste';
-import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     perioder: Periode[];
@@ -42,11 +32,17 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
 
     const dekningsgradTekst =
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? intlUtils(intl, 'oppsummering.uttak.dekningsgrad.verdi100', { antallUker: antallUkerUttaksplan })
-            : intlUtils(intl, 'oppsummering.uttak.dekningsgrad.verdi80', { antallUker: antallUkerUttaksplan });
+            ? intl.formatMessage(
+                  { id: 'oppsummering.uttak.dekningsgrad.verdi100' },
+                  { antallUker: antallUkerUttaksplan },
+              )
+            : intl.formatMessage(
+                  { id: 'oppsummering.uttak.dekningsgrad.verdi80' },
+                  { antallUker: antallUkerUttaksplan },
+              );
     return (
         <>
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.uttak.dekningsgrad.label')}>
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.uttak.dekningsgrad.label' })}>
                 <BodyShort>{dekningsgradTekst}</BodyShort>
             </OppsummeringsPunkt>
             <UttaksplanOppsummeringsliste
@@ -55,9 +51,12 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
             ></UttaksplanOppsummeringsliste>
             {ønskerJustertUttakVedFødsel !== undefined && (
                 <OppsummeringsPunkt
-                    title={intlUtils(intl, 'oppsummering.uttak.ønskerAutomatiskJustering.label', {
-                        antallBarn,
-                    })}
+                    title={intl.formatMessage(
+                        { id: 'oppsummering.uttak.ønskerAutomatiskJustering.label' },
+                        {
+                            antallBarn,
+                        },
+                    )}
                 >
                     <BodyShort>
                         <FormattedMessage id={ønskerJustertUttakVedFødsel ? 'ja' : 'nei'} />

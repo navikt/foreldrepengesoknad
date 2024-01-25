@@ -254,8 +254,8 @@ FarMedMorSomHarRettIEØS.args = {
     søkerinfo,
 };
 
-export const FarMedMorSomHaroppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
-FarMedMorSomHarRettIEØS.args = {
+export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
+FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søker: {
         erAleneOmOmsorg: false,

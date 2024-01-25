@@ -1,11 +1,4 @@
-import {
-    AdoptertAnnetBarn,
-    AdoptertStebarn,
-    formatDate,
-    hasValue,
-    intlUtils,
-    isAdoptertStebarn,
-} from '@navikt/fp-common';
+import { AdoptertAnnetBarn, AdoptertStebarn, formatDate, hasValue, isAdoptertStebarn } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
@@ -26,17 +19,16 @@ const BarnAdoptertIUtlandetDetaljer: FunctionComponent<Props> = ({ barn, familie
 
     return (
         <>
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.barn.adoptertIUtlandet')}>
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.barn.adoptertIUtlandet' })}>
                 <BodyShort>
                     <FormattedMessage id={barn.adoptertIUtlandet ? 'ja' : 'nei'} />
                 </BodyShort>
             </OppsummeringsPunkt>
-            <OppsummeringsPunkt
-                title={intlUtils(intl, 'oppsummering.barn.ankomstdato')}
-                visible={hasValue(barn.ankomstdato)}
-            >
-                <BodyShort>{formatDate(barn.ankomstdato!)}</BodyShort>
-            </OppsummeringsPunkt>
+            {hasValue(barn.ankomstdato) && (
+                <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.barn.ankomstdato' })}>
+                    <BodyShort>{formatDate(barn.ankomstdato!)}</BodyShort>
+                </OppsummeringsPunkt>
+            )}
         </>
     );
 };
