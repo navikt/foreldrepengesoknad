@@ -3,7 +3,7 @@ import * as countries from 'i18n-iso-countries';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/context/types/AnnenInntekt';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import { useIntl } from 'react-intl';
-import { Attachment, intlUtils, isAttachmentWithError } from '@navikt/fp-common';
+import { Attachment, isAttachmentWithError } from '@navikt/fp-common';
 import { BodyShort, Link, Tag } from '@navikt/ds-react';
 
 interface Props {
@@ -17,10 +17,10 @@ const AnnenInntektDetaljer: FunctionComponent<Props> = ({ annenInntekt }) => {
         const jobbIUtlandetInntekt = annenInntekt as JobbIUtlandetInntekt;
         return (
             <>
-                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.arbeidsgiverNavn')}>
+                <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.arbeidsgiverNavn' })}>
                     <BodyShort>{jobbIUtlandetInntekt.arbeidsgiverNavn}</BodyShort>
                 </OppsummeringsPunkt>
-                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.arbeidsgiverLand')}>
+                <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.arbeidsgiverLand' })}>
                     <BodyShort>{countries.getName(jobbIUtlandetInntekt.land, 'nb')}</BodyShort>
                 </OppsummeringsPunkt>
             </>
@@ -37,11 +37,13 @@ const AnnenInntektDetaljer: FunctionComponent<Props> = ({ annenInntekt }) => {
                 ));
         };
         return (
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.vedlagtdokumentasjon')}>
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.vedlagtdokumentasjon' })}>
                 {(vedlegg || []).filter((a: Attachment) => !isAttachmentWithError(a)).length > 0 ? (
                     renderListOfAttachmentPreviewLinks()
                 ) : (
-                    <Tag variant="warning">{intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}</Tag>
+                    <Tag variant="warning">
+                        {intl.formatMessage({ id: 'oppsummering.andreInntekter.dokumentasjon.mangler' })}
+                    </Tag>
                 )}
             </OppsummeringsPunkt>
         );

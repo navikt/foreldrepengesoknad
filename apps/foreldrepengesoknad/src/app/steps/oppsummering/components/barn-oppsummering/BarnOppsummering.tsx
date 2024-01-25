@@ -1,17 +1,9 @@
-import {
-    Barn,
-    BarnType,
-    formatDate,
-    intlUtils,
-    isAdoptertAnnetBarn,
-    isAdoptertStebarn,
-    isUfødtBarn,
-} from '@navikt/fp-common';
+import { Barn, BarnType, formatDate, isAdoptertAnnetBarn, isAdoptertStebarn, isUfødtBarn } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import BarnAdoptertIUtlandetDetaljer from './BarnAdoptertIUtlandetDetaljer';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
 
 interface Props {
     barn: Barn;
@@ -20,14 +12,14 @@ interface Props {
 
 const getAntallBarnTekst = (antallBarn: number, intl: IntlShape): string => {
     if (antallBarn === 1) {
-        return intlUtils(intl, 'oppsummering.barn.antallBarn.ettBarn');
+        return intl.formatMessage({ id: 'oppsummering.barn.antallBarn.ettBarn' });
     }
 
     if (antallBarn === 2) {
-        return intlUtils(intl, 'oppsummering.barn.antallBarn.toBarn');
+        return intl.formatMessage({ id: 'oppsummering.barn.antallBarn.toBarn' });
     }
 
-    return intlUtils(intl, 'oppsummering.barn.antallBarn.flere', { antallBarn });
+    return intl.formatMessage({ id: 'oppsummering.barn.antallBarn.flere' }, { antallBarn });
 };
 
 const getTerminEllerFødselTittel = (type: BarnType) => {
@@ -50,8 +42,8 @@ const BarnOppsummering: FunctionComponent<Props> = ({ barn, familiehendelsesdato
     const intl = useIntl();
 
     return (
-        <>
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.barn.søknadenGjelder')}>
+        <VStack gap="4">
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.barn.søknadenGjelder' })}>
                 <BodyShort>{getAntallBarnTekst(barn.antallBarn, intl)}</BodyShort>
             </OppsummeringsPunkt>
             <OppsummeringsPunkt title={getTerminEllerFødselTittel(barn.type)}>
@@ -59,18 +51,20 @@ const BarnOppsummering: FunctionComponent<Props> = ({ barn, familiehendelsesdato
             </OppsummeringsPunkt>
             {(isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn)) && (
                 <>
-                    <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.barn.gjelderSøknadenStebarnsadopsjon')}>
+                    <OppsummeringsPunkt
+                        title={intl.formatMessage({ id: 'oppsummering.barn.gjelderSøknadenStebarnsadopsjon' })}
+                    >
                         <BodyShort>
                             <FormattedMessage id={barn.type === BarnType.ADOPTERT_STEBARN ? 'ja' : 'nei'} />
                         </BodyShort>
                     </OppsummeringsPunkt>
-                    <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.barn.adopsjonsdato')}>
+                    <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.barn.adopsjonsdato' })}>
                         <BodyShort>{formatDate(barn.adopsjonsdato)}</BodyShort>
                     </OppsummeringsPunkt>
                     <BarnAdoptertIUtlandetDetaljer barn={barn} familiehendelsesdato={familiehendelsesdato} />
                 </>
             )}
-        </>
+        </VStack>
     );
 };
 

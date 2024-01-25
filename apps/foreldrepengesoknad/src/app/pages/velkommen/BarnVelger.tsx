@@ -1,7 +1,7 @@
 import { formatDate } from '@navikt/fp-common';
 import { FunctionComponent, ReactElement } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { Label, Radio } from '@navikt/ds-react';
+import { Radio } from '@navikt/ds-react';
 import { isRequired } from '@navikt/fp-validation';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
@@ -10,16 +10,6 @@ import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
 export enum SelectableBarnOptions {
     SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',
 }
-
-const getTittelForUfødtBarn = (antallBarn: number, termindato: Date, intl: IntlShape): string => {
-    return intl.formatMessage(
-        { id: 'velkommen.barnVelger.ufødtBarn' },
-        {
-            antallBarnTekst: getTekstForAntallBarn(antallBarn, intl),
-            termin: formatDate(termindato),
-        },
-    );
-};
 
 const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
     return barna.map((barn) => {
@@ -36,7 +26,14 @@ const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
                 value={barn.id}
                 description={barn.sak !== undefined ? `${saksnummerTekst}, ${saksStatus}` : saksnummerTekst}
             >
-                <Label>{getTittelForUfødtBarn(barn.antallBarn, barn.termindato!, intl)}</Label>
+                <FormattedMessage
+                    id="velkommen.barnVelger.ufødtBarn"
+                    values={{
+                        antallBarnTekst: getTekstForAntallBarn(barn.antallBarn, intl),
+                        termin: formatDate(barn.termindato!),
+                        b: (chunks: any) => <b>{chunks}</b>,
+                    }}
+                />
             </Radio>
         );
     });
@@ -81,11 +78,11 @@ const getRadioForFødtEllerAdoptertBarn = (barna: ValgtBarn[], intl: IntlShape) 
                 value={barn.id}
                 description={saksStatus ? `${saksnummerTekst}, ${saksStatus}` : saksnummerTekst}
             >
-                <Label>
+                <b>
                     {barn.alleBarnaLever
                         ? `${navnTekstEllerBarnMedUkjentNavnTekst} ${situasjonTekst} ${fødtAdoptertDatoTekst}`
                         : navnTekstEllerBarnMedUkjentNavnTekst}
-                </Label>
+                </b>
             </Radio>
         );
     });
@@ -125,9 +122,12 @@ const BarnVelger: FunctionComponent<Props> = ({ selectableBarn }) => {
                     value={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
                     description={intl.formatMessage({ id: 'velkommen.intro.harSaker.barnVelger.info' })}
                 >
-                    <Label>
-                        <FormattedMessage id="omBarnet.gjelderAnnetBarn" />
-                    </Label>
+                    <FormattedMessage
+                        id="omBarnet.gjelderAnnetBarn"
+                        values={{
+                            b: (chunks: any) => <b>{chunks}</b>,
+                        }}
+                    />
                 </Radio>,
             )}
         </RadioGroup>

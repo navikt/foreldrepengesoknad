@@ -1,11 +1,4 @@
-import {
-    Arbeidsforhold,
-    Barn,
-    ISOStringToDate,
-    getAktiveArbeidsforhold,
-    intlUtils,
-    isFarEllerMedmor,
-} from '@navikt/fp-common';
+import { Arbeidsforhold, Barn, ISOStringToDate, getAktiveArbeidsforhold, isFarEllerMedmor } from '@navikt/fp-common';
 import HarArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarArbeidsforhold';
 import HarIkkeArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';
 import { FunctionComponent } from 'react';
@@ -17,6 +10,7 @@ import SelvstendigNæringsdrivendeOppsummering from './SelvstendigNæringsdriven
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import Søker from 'app/context/types/Søker';
+import { VStack } from '@navikt/ds-react';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -45,13 +39,15 @@ const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent<Props> = ({
 
     return (
         <>
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.inntekt.registrerteArbeidsforhold')}>
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.inntekt.registrerteArbeidsforhold' })}>
                 <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
                 <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={aktiveArbeidsForhold} />
             </OppsummeringsPunkt>
-            <FrilansOppsummering søker={søker} />
-            <SelvstendigNæringsdrivendeOppsummering søker={søker} />
-            <AndreInntekterOppsummering søker={søker} />
+            <VStack gap="4">
+                <FrilansOppsummering søker={søker} />
+                <SelvstendigNæringsdrivendeOppsummering søker={søker} />
+                <AndreInntekterOppsummering søker={søker} />
+            </VStack>
         </>
     );
 };

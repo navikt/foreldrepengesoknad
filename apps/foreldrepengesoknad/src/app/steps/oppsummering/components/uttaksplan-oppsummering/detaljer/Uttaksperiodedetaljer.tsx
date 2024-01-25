@@ -3,7 +3,6 @@ import {
     Arbeidsforhold,
     StønadskontoType,
     UttaksperiodeBase,
-    intlUtils,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import * as React from 'react';
@@ -54,33 +53,33 @@ const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
         <>
             {ønskerFlerbarnsdager !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
-                    feltnavn={intlUtils(intl, 'oppsummering.uttak.ønskerFlerbarnsdager')}
-                    verdi={ønskerFlerbarnsdager ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
+                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.ønskerFlerbarnsdager' })}
+                    verdi={ønskerFlerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
             {ønskerSamtidigUttak !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
-                    feltnavn={intlUtils(intl, 'oppsummering.uttak.samtidigUttak')}
-                    verdi={ønskerSamtidigUttak ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
+                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.samtidigUttak' })}
+                    verdi={ønskerSamtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
             {konto !== StønadskontoType.ForeldrepengerFørFødsel && ønskerSamtidigUttak !== true && (
                 <Feltoppsummering
-                    feltnavn={intlUtils(intl, 'oppsummering.uttak.kombineresMedarbeid')}
-                    verdi={gradert ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}
+                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.kombineresMedarbeid' })}
+                    verdi={gradert ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
 
             {gradert === true && stillingsprosent && (
                 <Feltoppsummering
-                    feltnavn={intlUtils(intl, 'oppsummering.uttak.stillingsprosent')}
+                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.stillingsprosent' })}
                     verdi={stillingsprosent}
                 />
             )}
 
             {arbeidsformer && (
                 <Feltoppsummering
-                    feltnavn={intlUtils(intl, 'oppsummering.uttak.arbeidstaker.label')}
+                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.arbeidstaker.label' })}
                     verdi={arbeidsformTekst}
                 />
             )}
