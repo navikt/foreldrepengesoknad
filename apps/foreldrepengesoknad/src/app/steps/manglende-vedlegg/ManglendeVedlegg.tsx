@@ -1,4 +1,11 @@
-import { ISOStringToDate, Step, getErSøkerFarEllerMedmor, getNavnPåForeldre, intlUtils } from '@navikt/fp-common';
+import {
+    Block,
+    ISOStringToDate,
+    Step,
+    getErSøkerFarEllerMedmor,
+    getNavnPåForeldre,
+    intlUtils,
+} from '@navikt/fp-common';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import SøknadRoutes from 'app/routes/routes';
 import { useForm } from 'react-hook-form';
@@ -26,6 +33,7 @@ import FedrekvoteMorForSykDok from './dokumentasjon/FedrekvoteMorForSykDok';
 import UtsettelseDok from './dokumentasjon/UtsettelseDok';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+import { GuidePanel } from '@navikt/ds-react';
 
 type Props = {
     person: Person;
@@ -143,6 +151,12 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     termindato={termindato}
                     updateAttachments={updateAttachments}
                 />
+                <Block padBottom="xl">
+                    <GuidePanel>
+                        Du kan gå videre uten å laste opp dokumentasjonen nå og heller sende inn i etterkant. Husk at
+                        all dokumentasjon må sendes inn i løpet av 3 uker.
+                    </GuidePanel>
+                </Block>
                 <StepButtonsHookForm<ManglendeVedleggFormData>
                     goToPreviousStep={() => navigate(SøknadRoutes.UTTAKSPLAN)}
                 />

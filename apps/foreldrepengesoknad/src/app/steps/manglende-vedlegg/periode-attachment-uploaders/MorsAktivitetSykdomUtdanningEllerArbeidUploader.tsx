@@ -60,8 +60,11 @@ const MorsAktivitetSykdomUtdanningEllerArbeidUploader: FunctionComponent<Props> 
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon av mors aktivitet</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at mor er i aktivitet i de følgende periodene</BodyLong>
+                <Label>Dokumentasjon på at mor er i arbeid, for syk eller i utdanning</Label>
+                <BodyLong>
+                    Du må laste opp dokumentasjon på at mor er i arbeid, for syk eller i utdanning i de følgende
+                    periodene
+                </BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>
