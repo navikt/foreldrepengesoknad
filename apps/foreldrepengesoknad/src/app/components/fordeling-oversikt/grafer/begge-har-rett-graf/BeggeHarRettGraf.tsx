@@ -21,6 +21,13 @@ import classNames from 'classnames';
 import { useIntl } from 'react-intl';
 import { getFamiliehendelseNavn } from 'app/utils/familiehendelseUtils';
 
+const getRowClass = (antallPerioder: number, periodeIndex: number) => {
+    if (antallPerioder % 2 === 0) {
+        return periodeIndex % 2 === 0 ? 'up' : 'down';
+    }
+    return periodeIndex % 2 === 0 ? 'down' : 'up';
+};
+
 interface FordelingGrafInfo {
     antallUker: number;
     konto: StønadskontoType;
@@ -102,7 +109,8 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                 const width = (fordeling.antallUker / sumUker) * 100;
                 const erUthevet = currentUthevet === fordeling.eier;
                 const shadowClass = getFordelingShadowClass(erUthevet);
-                const rowClass = index % 2 === 0 ? 'up' : 'down';
+                const rowClass = getRowClass(fordelingList.length, index);
+
                 const handleOnMouseEnter = () => {
                     setCurrentUthevet(fordeling.eier);
                 };

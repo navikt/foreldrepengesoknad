@@ -91,4 +91,10 @@
     .graf--down {
         grid-row: 3;
     }
+
+    .graf {
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 2rem;
+    }
 }
