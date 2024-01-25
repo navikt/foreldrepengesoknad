@@ -89,7 +89,7 @@ AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021.args = {
         omsorgsovertakelse: [],
     },
     annenForelder: {
-        fornavn: 'Far',
+        fornavn: 'Eksotisk',
         etternavn: 'EØS',
         fnr: '1111UUUUU',
         harRettPåForeldrepengerINorge: false,
@@ -124,7 +124,7 @@ AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021.args = {
         omsorgsovertakelse: [],
     },
     annenForelder: {
-        fornavn: 'Mor',
+        fornavn: 'Palme',
         etternavn: 'EØS',
         fnr: '2222UUUUU',
         harRettPåForeldrepengerINorge: false,
@@ -159,7 +159,7 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
         adoptertIUtlandet: undefined,
     },
     annenForelder: {
-        fornavn: 'Mor',
+        fornavn: 'Palme',
         etternavn: 'EØS',
         fnr: '2222UUUUU',
         harRettPåForeldrepengerINorge: false,

@@ -181,6 +181,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? tilgjengeligeStønadskontoer100DTO.minsteretter
             : tilgjengeligeStønadskontoer80DTO.minsteretter;
+
     const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
         minsterett,
@@ -202,7 +203,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={false}
+                erFarEllerMedmor={erFarEllerMedmor}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}

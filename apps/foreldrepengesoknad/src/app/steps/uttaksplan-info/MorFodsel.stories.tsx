@@ -110,7 +110,7 @@ MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
         kanIkkeOppgis: true,
     },
     søker: {
-        erAleneOmOmsorg: false,
+        erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -118,31 +118,32 @@ MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
-export const MorSøkerAleneomsorgPrematurFødsel = Template.bind({});
-MorSøkerAleneomsorgPrematurFødsel.args = {
+export const MorAleneomsorgPrematurFødsel = Template.bind({});
+MorAleneomsorgPrematurFødsel.args = {
     stønadskonto100,
     stønadskonto80,
+    søkerinfo,
     barn: {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2023-01-25').toDate()],
         termindato: dayjs('2023-04-01').toDate(),
-        antallBarn: 2,
+        antallBarn: 1,
         datoForAleneomsorg: new Date(),
         dokumentasjonAvAleneomsorg: [],
     },
-    annenForelder: undefined,
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
     søker: {
         erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
-
-export const MorSøkerPrematurFødselDekningsgrad100 = Template.bind({});
-MorSøkerPrematurFødselDekningsgrad100.args = {
+export const MorDeltUttakPrematurFødselDekningsgrad100 = Template.bind({});
+MorDeltUttakPrematurFødselDekningsgrad100.args = {
     stønadskonto100: stønadskontoPrematurUker100,
     stønadskonto80: stønadskontoPrematurUker80,
     barn: {
@@ -166,8 +167,8 @@ MorSøkerPrematurFødselDekningsgrad100.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const MorSøkerDeltUttakDekningsgrad100EtterWLB = Template.bind({});
-MorSøkerDeltUttakDekningsgrad100EtterWLB.args = {
+export const MorDeltUttakDekningsgrad100EtterWLB = Template.bind({});
+MorDeltUttakDekningsgrad100EtterWLB.args = {
     stønadskonto100: stønadskontoDeltUttak100WLB,
     stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
@@ -194,8 +195,8 @@ MorSøkerDeltUttakDekningsgrad100EtterWLB.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const MorSøkerTvillingerDekningsgrad100FørWLB = Template.bind({});
-MorSøkerTvillingerDekningsgrad100FørWLB.args = {
+export const MorDeltUttakTvillingerDekningsgrad100FørWLB = Template.bind({});
+MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
     stønadskonto100: stønadskontoFlerbarnsuker100,
     stønadskonto80: stønadskontoFlerbarnsuker80,
     barn: {

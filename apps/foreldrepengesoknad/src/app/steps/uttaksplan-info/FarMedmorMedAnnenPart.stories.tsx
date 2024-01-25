@@ -168,7 +168,7 @@ FarSøkerEtterMorDerMorHarTattUtFarsKvote.args = {
     barn: {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-09-14').toDate()],
-        antallBarn: 3,
+        antallBarn: 1,
         dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,

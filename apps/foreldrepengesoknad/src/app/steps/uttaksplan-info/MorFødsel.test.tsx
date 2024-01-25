@@ -5,9 +5,9 @@ import * as stories from './MorFodsel.stories';
 
 const {
     MorAleneomsorgDekningsgrad100Før1Okt2021,
-    MorSøkerPrematurFødselDekningsgrad100,
-    MorSøkerDeltUttakDekningsgrad100EtterWLB,
-    MorSøkerTvillingerDekningsgrad100FørWLB,
+    MorDeltUttakPrematurFødselDekningsgrad100,
+    MorDeltUttakDekningsgrad100EtterWLB,
+    MorDeltUttakTvillingerDekningsgrad100FørWLB,
 } = composeStories(stories);
 
 describe('<UttaksplanInfo_MorFødsel>', () => {
@@ -29,7 +29,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om at stønadsperioden er forlenget når en har prematur fødsel', async () => {
-        render(<MorSøkerPrematurFødselDekningsgrad100 />);
+        render(<MorDeltUttakPrematurFødselDekningsgrad100 />);
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(
@@ -49,7 +49,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om delt uttak ved valg av 100 prosent foreldrepenger', async () => {
-        render(<MorSøkerDeltUttakDekningsgrad100EtterWLB />);
+        render(<MorDeltUttakDekningsgrad100EtterWLB />);
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('TALENTFULL MYGGs del')).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise veileder info om mor velger å ikke ta foreldrepenger før fødsel', async () => {
-        render(<MorSøkerDeltUttakDekningsgrad100EtterWLB />);
+        render(<MorDeltUttakDekningsgrad100EtterWLB />);
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Jeg tok ikke ut foreldrepenger før termin'));
@@ -81,7 +81,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om delt uttak ved valg av 100 prosent foreldrepenger', async () => {
-        render(<MorSøkerDeltUttakDekningsgrad100EtterWLB />);
+        render(<MorDeltUttakDekningsgrad100EtterWLB />);
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
@@ -90,7 +90,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     });
 
     it('skal vise info om tvillingsfødsel ved valg av 100 prosent foreldrepenger', async () => {
-        render(<MorSøkerTvillingerDekningsgrad100FørWLB />);
+        render(<MorDeltUttakTvillingerDekningsgrad100FørWLB />);
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
