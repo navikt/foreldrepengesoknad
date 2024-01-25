@@ -27,6 +27,12 @@ export const getAntallUker = (kontoer: TilgjengeligStønadskonto[]): number => {
     return kontoer.reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
 };
 
+export const getAntallUkerForeldrepengerFørFødsel = (kontoer: TilgjengeligStønadskonto[]): number => {
+    return kontoer
+        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel)
+        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
 export const getAntallUkerMødrekvote = (kontoer: TilgjengeligStønadskonto[]): number => {
     return kontoer
         .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Mødrekvote)

@@ -6,6 +6,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import {
     Block,
+    Dekningsgrad,
     EksisterendeSak,
     Forelder,
     ISOStringToDate,
@@ -43,7 +44,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import Person from '@navikt/fp-common/src/common/types/Person';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { getFordelingFarMedmorFørstegangssøknadMedAnnenPart } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getBrukteDager } from '@navikt/uttaksplan/src/utils/brukteDagerUtils';
 
@@ -74,6 +75,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     // TODO (TOR) fjern as
     const uttaksplanInfo = useContextGetData(
         ContextDataType.UTTAKSPLAN_INFO,
@@ -83,6 +85,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
+    const { dekningsgrad } = periodeMedForeldrepenger;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const familiehendelsedatoDate = ISOStringToDate(familiehendelsedato);
@@ -194,17 +197,30 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer100DTO,
     );
     const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
-    const morBrukteDagerFellesperiode = getBrukteDager(valgtMengdeStønadskonto, morsPerioder, familiehendelsedatoDate!)
-        .mor.dagerFellesperiode;
-    const fordelingScenario = getFordelingFarMedmorFørstegangssøknadMedAnnenPart(
+    const morBrukteDagerFellesperiode = eksisterendeSakAnnenPart?.uttaksplan
+        ? getBrukteDager(valgtMengdeStønadskonto, eksisterendeSakAnnenPart.uttaksplan, familiehendelsedatoDate!).mor
+              .dagerFellesperiode
+        : 0;
+
+    const minsterett =
+        grunnlag.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
+
+    const fordelingScenario = getFordelingFraKontoer(
         valgtMengdeStønadskonto,
-        morBrukteDagerFellesperiode,
-        navnMor,
+        minsterett,
         erFarEllerMedmor,
-        erAdopsjon,
         erBarnetFødt,
         familiehendelsedatoDate!,
+        erAdopsjon,
+        false,
+        navnMor,
+        navnFarMedmor,
+        barn.antallBarn,
         intl,
+        false,
+        morBrukteDagerFellesperiode,
     );
 
     return (
@@ -217,6 +233,9 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
                 annenForeldrerHarRett={true}
+                antallBarn={barn.antallBarn}
+                dekningsgrad={dekningsgrad}
+                familiehendelsesdato={familiehendelsedatoDate!}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper

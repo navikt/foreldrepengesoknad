@@ -8,6 +8,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
+    Dekningsgrad,
     ISOStringToDate,
     StepButtonWrapper,
     Uttaksdagen,
@@ -42,7 +43,7 @@ import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { UttaksplanInfoScenario } from '../scenarios';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingFarMedmorAleneomsorg } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -162,12 +163,24 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
           ? annenForelder.fornavn
           : '';
     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-    const fordelingScenario = getFordelingFarMedmorAleneomsorg(
-        valgtStønadskonto,
-        erAdopsjon,
-        familiehendelsesdatoDate!,
-    );
+    const minsterett =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
 
+    const fordelingScenario = getFordelingFraKontoer(
+        valgtStønadskonto,
+        minsterett,
+        erFarEllerMedmor,
+        erBarnetFødt,
+        familiehendelsesdatoDate!,
+        erAdopsjon,
+        true,
+        navnMor,
+        navnFar,
+        barn.antallBarn,
+        intl,
+    );
     return (
         <VStack gap="5">
             <FordelingOversikt
@@ -178,6 +191,9 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
                 annenForeldrerHarRett={false}
+                antallBarn={barn.antallBarn}
+                dekningsgrad={dekningsgrad}
+                familiehendelsesdato={familiehendelsesdatoDate!}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper

@@ -6,6 +6,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
+    Dekningsgrad,
     EksisterendeSak,
     ISOStringToDate,
     StepButtonWrapper,
@@ -39,7 +40,7 @@ import SøknadRoutes from 'app/routes/routes';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingBeggeHarRettFødsel } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -94,6 +95,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const annenForeldrerHarRettiNorgeEllerEØS =
         !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge || !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
+    const annenForeldrerHarKunRettiEØS = !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
     const navnFarMedmor = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, false)
         : '';
@@ -114,14 +116,27 @@ const MorFødsel: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO,
     );
+    const minsterett =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const valgtStønadskonto = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
-    const fordelingScenario = getFordelingBeggeHarRettFødsel(
+    const ukerFellesperiodeBruktAvAnnenPart = 0; //TODO GR: er dette riktig? far kan nå søke før mor.
+    const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
+        minsterett,
         erFarEllerMedmor,
-        søker.erAleneOmOmsorg,
+        erBarnetFødt,
         familiehendelsesdatoDate!,
+        erAdopsjon,
+        søker.erAleneOmOmsorg,
+        navnMor,
+        navnFarMedmor,
+        antallBarn,
         intl,
+        annenForeldrerHarKunRettiEØS,
+        ukerFellesperiodeBruktAvAnnenPart,
     );
 
     const onSubmit = (values: Partial<MorFødselFormData>) => {
@@ -203,6 +218,9 @@ const MorFødsel: FunctionComponent<Props> = ({
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
                 annenForeldrerHarRett={annenForeldrerHarRettiNorgeEllerEØS}
+                antallBarn={barn.antallBarn}
+                dekningsgrad={dekningsgrad}
+                familiehendelsesdato={familiehendelsesdatoDate!}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFødselFormComponents.FormikWrapper

@@ -7,6 +7,7 @@ import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-begge-har-rett/søkerinfo.json';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak100Tvillinger from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Tvillinger.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
@@ -22,15 +23,14 @@ const søkerinfo = _søkerinfo as any;
 
 const uttaksperiode = {
     fom: '2022-12-07',
-    tom: '2022-12-07',
-    kontoType: 'MØDREKVOTE',
+    tom: '2023-01-07',
+    kontoType: 'FELLESPERIODE',
     resultat: {
         innvilget: true,
         trekkerMinsterett: false,
         trekkerDager: true,
         årsak: 'ANNET',
     },
-    morsAktivitet: 'ARBEID',
     gradering: {
         arbeidstidprosent: 55,
         aktivitet: {
@@ -104,14 +104,42 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
     );
 };
 
-export const UttaksplanInfoAnnenPart = Template.bind({});
-UttaksplanInfoAnnenPart.args = {
+export const FarSøkerEtterMorFør1Okt2021 = Template.bind({});
+FarSøkerEtterMorFør1Okt2021.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-06-14').toDate()],
         antallBarn: 1,
+        dokumentasjonAvAleneomsorg: [],
+    },
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const FarSøkerEtterMorEtter1Okt2021 = Template.bind({});
+FarSøkerEtterMorEtter1Okt2021.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2022-09-14').toDate()],
+        antallBarn: 1,
+        dokumentasjonAvAleneomsorg: [],
+    },
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const FarSøkerEtterMorTrillinger = Template.bind({});
+FarSøkerEtterMorTrillinger.args = {
+    stønadskonto100: stønadskontoDeltUttak100Tvillinger,
+    stønadskonto80: stønadskontoDeltUttak100Tvillinger,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2022-09-14').toDate()],
+        antallBarn: 3,
         dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,

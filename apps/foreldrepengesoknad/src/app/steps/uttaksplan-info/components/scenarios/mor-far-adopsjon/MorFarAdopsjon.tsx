@@ -6,6 +6,7 @@ import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Button, GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
+    Dekningsgrad,
     Forelder,
     ISOStringToDate,
     StepButtonWrapper,
@@ -18,6 +19,7 @@ import {
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
+    isFødtBarn,
 } from '@navikt/fp-common';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
@@ -49,7 +51,7 @@ import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingBeggeHarRettAdopsjon } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -89,6 +91,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erBarnetFødt = isFødtBarn(barn);
     const søkerErAleneOmOmsorg = !!søker.erAleneOmOmsorg;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined ||
@@ -208,10 +211,21 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     );
 
     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-    const fordelingScenario = getFordelingBeggeHarRettAdopsjon(
+    const minsterett =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
+    const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
+        minsterett,
         erFarEllerMedmor,
+        erBarnetFødt,
         familiehendelsesdatoDate!,
+        erAdopsjon,
+        søker.erAleneOmOmsorg,
+        navnMor,
+        navnFarMedmor,
+        antallBarn,
         intl,
     );
     return (
@@ -224,6 +238,9 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={false}
                 annenForeldrerHarRett={harAnnenForelderRett}
+                antallBarn={barn.antallBarn}
+                dekningsgrad={dekningsgrad}
+                familiehendelsesdato={familiehendelsesdatoDate!}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFarAdopsjonFormComponents.FormikWrapper

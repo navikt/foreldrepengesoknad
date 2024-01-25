@@ -1,4 +1,4 @@
-import { BodyLong, HStack, VStack } from '@navikt/ds-react';
+import { BodyLong, VStack } from '@navikt/ds-react';
 import './oversikt-per-del.css';
 import { bemUtils, guid } from '@navikt/fp-common';
 import DelGraf from '../grafer/del-graf/DelGraf';
@@ -47,7 +47,7 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
                 <BodyLong className={bem.element('uker')}>{tittel}</BodyLong>
             </div>
             <DelGraf fordelingsuker={delInformasjon.fordelingUker} sumUker={delInformasjon.sumUker} />
-            <HStack gap="4">
+            <VStack gap="4">
                 {delInformasjon.fordelingInfo.map((infoTekst) => {
                     return (
                         <BodyLong size="small" key={guid()}>
@@ -55,7 +55,7 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
                         </BodyLong>
                     );
                 })}
-            </HStack>
+            </VStack>
         </VStack>
     );
 };

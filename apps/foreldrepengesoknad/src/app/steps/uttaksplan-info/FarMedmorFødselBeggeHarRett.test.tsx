@@ -10,7 +10,7 @@ const {
     FarMedmorFødselBeggeHarRettDekningsgrad100EtterWLB,
     FarMedmorFødselBeggeHarRettDekningsgrad80EtterWLBTermin,
     FarMedmorFødselBeggeHarRettFødselFør1Okt2021,
-    FarMedmorFødselBeggeHarRettFlereBarn,
+    FarMedmorFødselBeggeHarRettTvillinger,
 } = composeStories(stories);
 
 describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
@@ -143,7 +143,7 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
         MockDate.reset();
     });
     it('Hvis flere barn, skal infoboks om flerbarnsuker vises', async () => {
-        render(<FarMedmorFødselBeggeHarRettFlereBarn />);
+        render(<FarMedmorFødselBeggeHarRettTvillinger />);
         expect(await screen.findByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Hannes del')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();

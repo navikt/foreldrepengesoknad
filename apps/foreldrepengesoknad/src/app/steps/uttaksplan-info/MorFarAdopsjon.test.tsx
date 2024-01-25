@@ -5,16 +5,16 @@ import * as stories from './MorFarAdopsjon.stories';
 import dayjs from 'dayjs';
 
 const {
-    UttaksplanMedAleneomsorgDekningsgrad100,
-    UttaksplanMedAleneomsorgDekningsgrad80,
-    UttaksplanMedDeltUttakDerFarSøker80,
-    UttaksplanMedDeltUttakDerMorSøker,
+    AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021,
+    AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021,
+    AdopsjonMedDeltUttakDerFarSøker80,
+    AdopsjonDeltUttakDerMorSøker,
 } = composeStories(stories);
 
 describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     // TODO Noko tull med locale og datoar
     it.skip('skal fylle ut dekningsgrad med 80 prosent og velge omsorgovertakelsedato før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorgDekningsgrad80 />);
+        render(<AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021 />);
 
         expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
 
@@ -35,7 +35,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
     // TODO Noko tull med locale og datoar
     it.skip('skal fylle ut dekningsgrad med 100 prosent og velge omsorgovertakelsedato før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorgDekningsgrad100 />);
+        render(<AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021 />);
 
         expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
 
@@ -55,7 +55,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal fylle ut dekningsgrad og velge annen dato før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorgDekningsgrad100 />);
+        render(<AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021 />);
 
         expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
 
@@ -82,7 +82,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal fylle ut dekningsgrad og velge annen dato før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorgDekningsgrad80 />);
+        render(<AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021 />);
 
         expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
 
@@ -109,7 +109,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 80', async () => {
-        render(<UttaksplanMedDeltUttakDerFarSøker80 />);
+        render(<AdopsjonMedDeltUttakDerFarSøker80 />);
 
         expect(await screen.findByText('Har TALENTFULL foreldrepenger?')).toBeInTheDocument();
 
@@ -135,7 +135,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 100', async () => {
-        render(<UttaksplanMedDeltUttakDerFarSøker80 />);
+        render(<AdopsjonMedDeltUttakDerFarSøker80 />);
 
         expect(await screen.findByText('Har TALENTFULL foreldrepenger?')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
@@ -162,7 +162,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal ved delt uttak der mor søker velge at far har foreldrepenger med dekningsgrad 80', async () => {
-        render(<UttaksplanMedDeltUttakDerMorSøker />);
+        render(<AdopsjonDeltUttakDerMorSøker />);
 
         expect(await screen.findByText('Har Espen foreldrepenger?')).toBeInTheDocument();
 

@@ -1,0 +1,43 @@
+import { Alert } from '@navikt/ds-react';
+import { Block, getVarighetString, intlUtils } from '@navikt/fp-common';
+import { getTekstForAntallBarn } from 'app/utils/barnUtils';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+interface Props {
+    flerbarnsUker: number;
+    antallBarn: number;
+    erAdopsjon: boolean;
+}
+
+const getBarnTekst = (antallBarn: number, erAdopsjon: boolean, intl: IntlShape) => {
+    if (erAdopsjon) {
+        return antallBarn === 2
+            ? intlUtils(intl, 'oppsummering.barn.antallBarn.toBarn')
+            : intlUtils(intl, 'oppsummering.barn.antallBarn.flere', { antallBarn });
+    }
+    return getTekstForAntallBarn(antallBarn, intl).toLowerCase();
+};
+
+const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({ flerbarnsUker, antallBarn, erAdopsjon }) => {
+    const intl = useIntl();
+    const varighetTekst = getVarighetString(flerbarnsUker * 5, intl);
+    const barnTekst = getBarnTekst(antallBarn, erAdopsjon, intl);
+    return (
+        <Block padBottom="xl">
+            <Alert variant="info">
+                <Block padBottom="l">
+                    <FormattedMessage
+                        id="fordeling.flerbarnsuker.info.del1"
+                        values={{
+                            varighetTekst,
+                            barnTekst,
+                        }}
+                    />
+                </Block>
+                <FormattedMessage id="fordeling.flerbarnsuker.info.del2" />
+            </Alert>
+        </Block>
+    );
+};
+
+export default FlerbarnsdagerInformasjon;

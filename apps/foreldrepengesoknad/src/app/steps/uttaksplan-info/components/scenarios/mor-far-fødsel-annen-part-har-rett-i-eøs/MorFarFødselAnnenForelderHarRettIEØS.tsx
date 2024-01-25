@@ -6,6 +6,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
+    Dekningsgrad,
     ISOStringToDate,
     StepButtonWrapper,
     Tidsperioden,
@@ -48,7 +49,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingAnnenPartIEØS } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -70,6 +71,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -179,26 +181,37 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const defaultPermisjonStartdato = erFarEllerMedmor
         ? førsteUttaksdag
         : Uttaksdagen(førsteUttaksdag).trekkFra(uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5);
-    const fordelingScenario = getFordelingAnnenPartIEØS(
+    const minsterett =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
+    const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
+        minsterett,
         erFarEllerMedmor,
-        erAdopsjon,
         erBarnetFødt,
+        familiehendelsesdatoDate!,
+        erAdopsjon,
+        søker.erAleneOmOmsorg,
         navnMor,
         navnFarMedmor,
-        familiehendelsesdatoDate!,
+        antallBarn,
         intl,
+        true,
     );
     return (
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={false}
+                erFarEllerMedmor={erFarEllerMedmor}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
                 annenForeldrerHarRett={true}
+                antallBarn={barn.antallBarn}
+                dekningsgrad={dekningsgrad}
+                familiehendelsesdato={familiehendelsesdatoDate!}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFarFødselAnnenForelderHarRettIEØSFormComponents.FormikWrapper

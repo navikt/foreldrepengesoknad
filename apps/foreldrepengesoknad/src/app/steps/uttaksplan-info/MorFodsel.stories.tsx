@@ -10,8 +10,8 @@ import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto10
 import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
 import stønadskontoPrematurUker100 from 'storybook/storyData/stonadskontoer/stønadskontoPrematurUker100.json';
 import stønadskontoPrematurUker80 from 'storybook/storyData/stonadskontoer/stønadskontoPrematurUker80.json';
-import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
-import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
+import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100WLB.json';
 import stønadskontoFlerbarnsuker80 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker80.json';
 import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker100.json';
 
@@ -70,8 +70,8 @@ const Template: StoryFn<
     );
 };
 
-export const UttaksplanMedAleneomsorgDekningsgrad100 = Template.bind({});
-UttaksplanMedAleneomsorgDekningsgrad100.args = {
+export const MorAleneomsorgDekningsgrad100Før1Okt2021 = Template.bind({});
+MorAleneomsorgDekningsgrad100Før1Okt2021.args = {
     stønadskonto100,
     stønadskonto80,
     søkerinfo,
@@ -94,8 +94,8 @@ UttaksplanMedAleneomsorgDekningsgrad100.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanMedAleneomsorgDekningsgrad80 = Template.bind({});
-UttaksplanMedAleneomsorgDekningsgrad80.args = {
+export const MorAleneomsorgDekningsgrad80Før1Okt2021 = Template.bind({});
+MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
     stønadskonto100,
     stønadskonto80,
     søkerinfo,
@@ -118,8 +118,8 @@ UttaksplanMedAleneomsorgDekningsgrad80.args = {
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
-export const UttaksplanMedPrematurFødselDekningsgrad100 = Template.bind({});
-UttaksplanMedPrematurFødselDekningsgrad100.args = {
+export const MorSøkerPrematurFødselDekningsgrad100 = Template.bind({});
+MorSøkerPrematurFødselDekningsgrad100.args = {
     stønadskonto100: stønadskontoPrematurUker100,
     stønadskonto80: stønadskontoPrematurUker80,
     barn: {
@@ -143,13 +143,13 @@ UttaksplanMedPrematurFødselDekningsgrad100.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanMedDeltUttakDekningsgrad100 = Template.bind({});
-UttaksplanMedDeltUttakDekningsgrad100.args = {
-    stønadskonto100: stønadskontoDeltUttak100,
-    stønadskonto80: stønadskontoDeltUttak80,
+export const MorSøkerDeltUttakDekningsgrad100EtterWLB = Template.bind({});
+MorSøkerDeltUttakDekningsgrad100EtterWLB.args = {
+    stønadskonto100: stønadskontoDeltUttak100WLB,
+    stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: [dayjs('2022-12-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
         dokumentasjonAvAleneomsorg: [],
@@ -171,13 +171,13 @@ UttaksplanMedDeltUttakDekningsgrad100.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanMedFlerbarnsukerTvillingerDekningsgrad100 = Template.bind({});
-UttaksplanMedFlerbarnsukerTvillingerDekningsgrad100.args = {
+export const MorSøkerTvillingerDekningsgrad100FørWLB = Template.bind({});
+MorSøkerTvillingerDekningsgrad100FørWLB.args = {
     stønadskonto100: stønadskontoFlerbarnsuker100,
     stønadskonto80: stønadskontoFlerbarnsuker80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: [dayjs('2022-07-15').toDate()],
         antallBarn: 2,
         datoForAleneomsorg: new Date(),
         dokumentasjonAvAleneomsorg: [],

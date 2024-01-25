@@ -5,6 +5,7 @@ import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Button, GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
+    Dekningsgrad,
     ISOStringToDate,
     StepButtonWrapper,
     Tidsperioden,
@@ -48,7 +49,7 @@ import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { UttaksplanInfoScenario } from '../scenarios';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingBareFarMedmorHarRett } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {
     if (!invalidDateRanges) {
@@ -186,18 +187,37 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     );
 
     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-    const fordelingScenario = getFordelingBareFarMedmorHarRett(valgtStønadskonto, erAdopsjon, erBarnetFødt, intl);
+    const minsterett =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
 
+    const fordelingScenario = getFordelingFraKontoer(
+        valgtStønadskonto,
+        minsterett,
+        erFarEllerMedmor,
+        erBarnetFødt,
+        familiehendelsesdatoDate!,
+        erAdopsjon,
+        false,
+        navnMor,
+        navnFarMedmor,
+        barn.antallBarn,
+        intl,
+    );
     return (
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={false}
+                erFarEllerMedmor={true}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
                 annenForeldrerHarRett={false}
+                antallBarn={barn.antallBarn}
+                dekningsgrad={dekningsgrad}
+                familiehendelsesdato={familiehendelsesdatoDate!}
                 fordelingScenario={fordelingScenario}
             />
             <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper

@@ -19,7 +19,7 @@
 
 .graf__del-box {
     width: 100%;
-    border-width: 1px;
+    border-width: 2px;
     border-style: solid;
     margin-left: 2px;
     margin-right: 2px;
@@ -71,7 +71,7 @@
 }
 
 .graf__del-graf-box {
-    border-width: 1px;
+    border-width: 2px;
     border-style: solid;
     margin: 0px 2px;
 }

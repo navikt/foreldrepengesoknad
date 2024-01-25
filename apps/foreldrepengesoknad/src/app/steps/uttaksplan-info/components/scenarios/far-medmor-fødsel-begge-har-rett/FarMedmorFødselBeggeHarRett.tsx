@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
-import { Alert, Button, GuidePanel, VStack } from '@navikt/ds-react';
+import { Button, GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
     Dekningsgrad,
@@ -12,8 +12,6 @@ import {
     Uttaksdagen,
     andreAugust2022ReglerGjelder,
     getErMorUfør,
-    getFlerbarnsuker,
-    getVarighetString,
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
@@ -47,7 +45,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingBeggeHarRettFødsel } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { getTilgjengeligeDager } from '../../../../../utils/tilgjengeligeDagerUtils';
 
 interface Props {
@@ -110,15 +108,24 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const valgtStønadskonto = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
-    const fordelingScenario = getFordelingBeggeHarRettFødsel(
+    const minsterett =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
+
+    const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
-        true,
+        minsterett,
+        erFarEllerMedmor,
         erBarnetFødt,
         familiehendelsesdatoDate!,
+        erAdopsjon,
+        false,
+        navnMor,
+        navnFarMedmor,
+        barn.antallBarn,
         intl,
     );
-    const antallFlerbarnsuker = barn.antallBarn > 1 ? getFlerbarnsuker(dekningsgrad, barn.antallBarn) : undefined;
-    const flerbarnsukerVarighet = antallFlerbarnsuker ? getVarighetString(antallFlerbarnsuker * 5, intl) : undefined;
 
     const onSubmit = (values: Partial<FarMedmorFødselBeggeHarRettFormData>) => {
         setIsSubmitting(true);
@@ -172,23 +179,11 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
                 annenForeldrerHarRett={true}
+                antallBarn={barn.antallBarn}
+                dekningsgrad={dekningsgrad}
+                familiehendelsesdato={familiehendelsesdatoDate!}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
-            {flerbarnsukerVarighet && (
-                <Block padBottom="xl">
-                    <Alert variant="info">
-                        <Block padBottom="l">
-                            <FormattedMessage
-                                id="fordeling.flerbarnsuker.info.del1"
-                                values={{
-                                    varighetTekst: flerbarnsukerVarighet,
-                                }}
-                            />
-                        </Block>
-                        <FormattedMessage id="fordeling.flerbarnsuker.info.del2" />
-                    </Alert>
-                </Block>
-            )}
             <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper
                 initialValues={getInitialFarMedmorFødselBeggeHarRettValues(uttaksplanInfo)}
                 onSubmit={onSubmit}

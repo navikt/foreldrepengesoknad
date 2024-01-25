@@ -7,6 +7,8 @@ import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-begge-har-rett/søkerinfo.json';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
+import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100WLB.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
@@ -87,11 +89,11 @@ FarMedmorFødselBeggeHarRettDekningsgrad100FørWLB.args = {
 
 export const FarMedmorFødselBeggeHarRettDekningsgrad100EtterWLB = Template.bind({});
 FarMedmorFødselBeggeHarRettDekningsgrad100EtterWLB.args = {
-    stønadskonto100: stønadskontoDeltUttak100,
-    stønadskonto80: stønadskontoDeltUttak80,
+    stønadskonto100: stønadskontoDeltUttak100WLB,
+    stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-08-02').toDate()],
+        fødselsdatoer: [dayjs('2022-08-03').toDate()],
         antallBarn: 1,
         dokumentasjonAvAleneomsorg: [],
     },
@@ -101,8 +103,8 @@ FarMedmorFødselBeggeHarRettDekningsgrad100EtterWLB.args = {
 
 export const FarMedmorFødselBeggeHarRettDekningsgrad80EtterWLBTermin = Template.bind({});
 FarMedmorFødselBeggeHarRettDekningsgrad80EtterWLBTermin.args = {
-    stønadskonto100: stønadskontoDeltUttak100,
-    stønadskonto80: stønadskontoDeltUttak80,
+    stønadskonto100: stønadskontoDeltUttak100WLB,
+    stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.UFØDT,
         termindato: new Date('2022-08-31'),
@@ -127,8 +129,8 @@ FarMedmorFødselBeggeHarRettFødselFør1Okt2021.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const FarMedmorFødselBeggeHarRettFlereBarn = Template.bind({});
-FarMedmorFødselBeggeHarRettFlereBarn.args = {
+export const FarMedmorFødselBeggeHarRettTvillinger = Template.bind({});
+FarMedmorFødselBeggeHarRettTvillinger.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {

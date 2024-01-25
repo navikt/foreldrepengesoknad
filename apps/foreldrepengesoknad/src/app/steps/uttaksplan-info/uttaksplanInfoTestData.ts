@@ -9,6 +9,7 @@ interface UttaksplanInfoTestData {
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
     fødselsdatoer: Date[];
+    adopsjonsdato: Date;
 }
 
 export default UttaksplanInfoTestData;

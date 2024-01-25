@@ -5,15 +5,15 @@ import * as stories from './MorFarAnnenForelderHarRettIEOS.stories';
 import dayjs from 'dayjs';
 
 const {
-    UttaksplanAdopsjonFarSøkerMorHarRettIEOS,
-    UttaksplanAdopsjonMorSøkerFarHarRettIEOS,
-    UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger,
-    UttaksplanFødselMorSøkerFarHarRettIEOSPrematur,
+    AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021,
+    AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021,
+    FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021,
+    FødselMorSøkerFarHarRettIEOSPrematurEtterWLB,
 } = composeStories(stories);
 
 const farEllerMedMorSøkerAdopsjon = [
-    UttaksplanAdopsjonFarSøkerMorHarRettIEOS,
-    UttaksplanAdopsjonMorSøkerFarHarRettIEOS,
+    AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021,
+    AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021,
 ];
 
 describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
@@ -40,7 +40,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         },
     );
     it('Skal fungere for fødsel der far søker, mor har rett i EØS og det er tvillinger', async () => {
-        render(<UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger />);
+        render(<FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021 />);
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
@@ -55,7 +55,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         expect(screen.queryByText('Fellesperiode', { exact: false })).not.toBeInTheDocument();
     });
     it('Skal fungere for fødsel der mor søker, far har rett i EØS og det er prematur fødsel', async () => {
-        render(<UttaksplanFødselMorSøkerFarHarRettIEOSPrematur />);
+        render(<FødselMorSøkerFarHarRettIEOSPrematurEtterWLB />);
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Stønadsperioden din er forlenget med', { exact: false }));

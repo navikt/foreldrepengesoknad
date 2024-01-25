@@ -7,8 +7,10 @@ import { RequestStatus } from 'app/types/RequestState';
 
 import _søkerinfoMorSøker from 'storybook/storyData/sokerinfo/søkerinfoMorSøker.json';
 import _søkerinfoFarSøker from 'storybook/storyData/sokerinfo/søkerinfoFarSøker.json';
-import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
-import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
+import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Adopsjon.json';
+import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
+import stønadskontoDeltUttak80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80Adopsjon.json';
 
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
@@ -69,10 +71,10 @@ const Template: StoryFn<
     );
 };
 
-export const UttaksplanAdopsjonMorSøkerFarHarRettIEOS = Template.bind({});
-UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021 = Template.bind({});
+AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021.args = {
+    stønadskonto100: stønadskontoDeltUttak100Adopsjon,
+    stønadskonto80: stønadskontoDeltUttak80Adopsjon,
     søkersituasjon: {
         situasjon: 'adopsjon',
         rolle: 'mor',
@@ -104,10 +106,10 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanAdopsjonFarSøkerMorHarRettIEOS = Template.bind({});
-UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021 = Template.bind({});
+AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021.args = {
+    stønadskonto100: stønadskontoDeltUttak100Adopsjon,
+    stønadskonto80: stønadskontoDeltUttak80Adopsjon,
     søkersituasjon: {
         situasjon: 'adopsjon',
         rolle: 'far',
@@ -139,10 +141,10 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger = Template.bind({});
-UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021 = Template.bind({});
+FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
     søkersituasjon: {
         situasjon: 'fødsel',
         rolle: 'far',
@@ -174,17 +176,17 @@ UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanFødselMorSøkerFarHarRettIEOSPrematur = Template.bind({});
-UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const FødselMorSøkerFarHarRettIEOSPrematurEtterWLB = Template.bind({});
+FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
     søkersituasjon: {
         situasjon: 'fødsel',
         rolle: 'mor',
     },
     barn: {
         dokumentasjonAvAleneomsorg: [],
-        fødselsdatoer: [dayjs('2022-06-14').toDate()],
+        fødselsdatoer: [dayjs('2022-08-14').toDate()],
         termindato: dayjs('2022-08-14').toDate(),
         antallBarn: 1,
         // @ts-ignore FIX

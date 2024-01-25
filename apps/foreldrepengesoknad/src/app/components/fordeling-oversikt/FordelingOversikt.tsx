@@ -1,8 +1,17 @@
 import { FormattedMessage } from 'react-intl';
 import OversiktPerDel from './oversikt-per-del/OversiktPerDel';
-import { Block, TilgjengeligStønadskonto, guid } from '@navikt/fp-common';
+import {
+    Block,
+    Dekningsgrad,
+    TilgjengeligStønadskonto,
+    førsteOktober2021ReglerGjelder,
+    getFlerbarnsuker,
+    guid,
+} from '@navikt/fp-common';
 import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 import { useState } from 'react';
+import FlerbarnsdagerInformasjon from 'app/steps/uttaksplan-info/components/flerbarnsdagerInformasjon/FlerbarnsdagerInformasjon';
+import SammenhengendeUttakInformasjon from 'app/steps/uttaksplan-info/components/sammenhengendeUttakInformasjon/SammenhengendeUttakInformasjon';
 
 export enum FordelingEier {
     Mor = 'MOR',
@@ -56,6 +65,9 @@ interface Props {
     erAdopsjon: boolean;
     erBarnetFødt: boolean;
     annenForeldrerHarRett: boolean;
+    antallBarn: number;
+    dekningsgrad: Dekningsgrad;
+    familiehendelsesdato: Date;
     fordelingScenario: DelInformasjon[];
 }
 
@@ -67,9 +79,13 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     erAdopsjon,
     erBarnetFødt,
     annenForeldrerHarRett,
+    antallBarn,
+    dekningsgrad,
+    familiehendelsesdato,
     fordelingScenario,
 }) => {
     const [currentUthevet, setCurrentUthevet] = useState<FordelingEier | undefined>(undefined);
+    const antallFlerbarnsuker = antallBarn > 1 ? getFlerbarnsuker(dekningsgrad, antallBarn) : undefined;
 
     return (
         <>
@@ -103,6 +119,16 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                     );
                 })}
             </Block>
+            {annenForeldrerHarRett && antallFlerbarnsuker && antallFlerbarnsuker > 0 && (
+                <FlerbarnsdagerInformasjon
+                    flerbarnsUker={antallFlerbarnsuker}
+                    antallBarn={antallBarn}
+                    erAdopsjon={erAdopsjon}
+                />
+            )}
+            {!førsteOktober2021ReglerGjelder(familiehendelsesdato) && (
+                <SammenhengendeUttakInformasjon annenForeldrerHarRett={annenForeldrerHarRett} />
+            )}
         </>
     );
 };

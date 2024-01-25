@@ -5,14 +5,14 @@ import dayjs from 'dayjs';
 import * as stories from './FarMedmorFodselOgMorHarIkkeRett.stories';
 
 const {
-    UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80,
-    UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad100,
-    UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør,
+    BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB,
+    BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB,
+    BareFarHarRettOgMorErUførEtterWLB,
 } = composeStories(stories);
 
 describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     it('skal fylle ut dekningsgrad med 80 prosent', async () => {
-        render(<UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad100 />);
+        render(<BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB />);
 
         expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
 
@@ -23,7 +23,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal fylle ut dekningsgrad med 100 prosent', async () => {
-        render(<UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80 />);
+        render(<BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB />);
 
         expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
 
@@ -33,7 +33,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
     it('Hvis mor ufør, skal kunne sette ønsket dato for start', async () => {
-        render(<UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør />);
+        render(<BareFarHarRettOgMorErUførEtterWLB />);
 
         expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
 

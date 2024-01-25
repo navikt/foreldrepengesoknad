@@ -1,13 +1,13 @@
 {
     "kontoer": {
-        "MØDREKVOTE": 75,
-        "FEDREKVOTE": 75,
-        "FELLESPERIODE": 80,
+        "MØDREKVOTE": 95,
+        "FEDREKVOTE": 95,
+        "FELLESPERIODE": 90,
         "FORELDREPENGER_FØR_FØDSEL": 15
     },
     "minsteretter": {
-        "generellMinsterett": 0,
         "farRundtFødsel": 10,
+        "generellMinsterett": 0,
         "toTette": 0
     }
 }

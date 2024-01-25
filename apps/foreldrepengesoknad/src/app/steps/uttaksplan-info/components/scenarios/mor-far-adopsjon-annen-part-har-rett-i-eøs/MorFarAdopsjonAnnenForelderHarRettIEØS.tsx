@@ -8,6 +8,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
+    Dekningsgrad,
     ISOStringToDate,
     StepButtonWrapper,
     Uttaksdagen,
@@ -19,6 +20,7 @@ import {
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
+    isFødtBarn,
 } from '@navikt/fp-common';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
@@ -49,7 +51,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingAnnenPartIEØS } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -71,6 +73,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -87,6 +90,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const erDeltUttak = true;
+    const erBarnetFødt = isFødtBarn(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -173,15 +177,23 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         ankomstdato !== undefined && barn.adopsjonsdato !== undefined
             ? dateToISOString(findEldsteDato([ankomstdato, barn.adopsjonsdato]))
             : barn.adopsjonsdato;
-    const fordelingScenario = getFordelingAnnenPartIEØS(
+    const minsterett =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
+    const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
+        minsterett,
         erFarEllerMedmor,
+        erBarnetFødt,
+        familiehendelsesdatoDate!,
         erAdopsjon,
-        false,
+        søker.erAleneOmOmsorg,
         navnMor,
         navnFarMedmor,
-        familiehendelsesdatoDate!,
+        antallBarn,
         intl,
+        true,
     );
 
     return (
@@ -194,6 +206,9 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={false}
                 annenForeldrerHarRett={true}
+                antallBarn={barn.antallBarn}
+                dekningsgrad={dekningsgrad}
+                familiehendelsesdato={familiehendelsesdatoDate!}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.FormikWrapper

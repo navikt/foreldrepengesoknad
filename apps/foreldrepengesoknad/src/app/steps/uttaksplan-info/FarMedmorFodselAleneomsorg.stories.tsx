@@ -30,6 +30,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
     };
+
     return (
         <AxiosMock mock={restMock}>
             <FpDataContext
@@ -104,4 +105,14 @@ FarMedmorFødselAleneomsorgFør1Okt2021.args = {
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
     antallBarn: 1,
     fødselsdatoer: [dayjs('2021-09-30').toDate()],
+};
+
+export const FarMedmorFødselAleneomsorgFør1Okt2021Trillinger = Template.bind({});
+FarMedmorFødselAleneomsorgFør1Okt2021Trillinger.args = {
+    stønadskonto100: stønadskonto100AleneomsorgFar,
+    stønadskonto80: stønadskonto80AleneomsorgFar,
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    antallBarn: 3,
+    fødselsdatoer: [dayjs('2023-01-04').toDate()],
 };

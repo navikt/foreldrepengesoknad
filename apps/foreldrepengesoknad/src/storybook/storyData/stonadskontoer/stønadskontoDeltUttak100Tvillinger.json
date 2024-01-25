@@ -1,6 +1,9 @@
 {
     "kontoer": {
-        "FORELDREPENGER": 230
+        "MØDREKVOTE": 75,
+        "FEDREKVOTE": 75,
+        "FELLESPERIODE": 165,
+        "FORELDREPENGER_FØR_FØDSEL": 15
     },
     "minsteretter": {
         "farRundtFødsel": 0,
