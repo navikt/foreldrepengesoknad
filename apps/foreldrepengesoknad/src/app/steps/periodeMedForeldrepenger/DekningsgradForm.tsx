@@ -6,7 +6,6 @@ import { Radio, VStack, ReadMore, Link, Box, BodyShort, Heading, HStack } from '
 import {
     Barn,
     Dekningsgrad,
-    Tidsperioden,
     TilgjengeligStønadskonto,
     Uttaksdagen,
     bemUtils,
@@ -25,7 +24,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
-import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
+import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import './dekningsgradForm.less';
 
@@ -119,7 +118,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
     const ekstraDagerGrunnetPrematurFødsel =
         visInfoOmPrematuruker && fødselsdato && termindato
-            ? Tidsperioden({ fom: fødselsdato, tom: termindato }).getAntallUttaksdager() - 1
+            ? getAntallPrematurdager(fødselsdato, termindato)
             : undefined;
 
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(stønadskonto100, barn);

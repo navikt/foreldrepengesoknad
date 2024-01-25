@@ -17,6 +17,7 @@ import {
 import { IntlShape } from 'react-intl';
 import { links } from '@navikt/fp-constants';
 import { TilgjengeligeMinsterettskontoer } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 const getBarnetTekst = (antallBarn: number, intl: IntlShape) => {
     return antallBarn === 1 ? intlUtils(intl, 'barnet') : intlUtils(intl, 'barna');
@@ -121,6 +122,8 @@ const getFordelingFelles = (
     intl: IntlShape,
     antallBarn: number,
     annenPartNavn: string,
+    fødselsdato: Date | undefined,
+    termindato: Date | undefined,
     annenPartHarKunRettIEØS?: boolean,
     annenPartsKvoteUker?: number,
     ukerBruktAvAnnenPart?: number,
@@ -161,8 +164,24 @@ const getFordelingFelles = (
             ),
         );
     }
-
-    //TODO Prematursjekk og legg til info
+    const situasjon = erAdopsjon ? 'adopsjon' : 'fødsel';
+    const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, situasjon);
+    const ekstraDagerGrunnetPrematurFødsel =
+        visInfoOmPrematuruker && fødselsdato && termindato
+            ? getAntallPrematurdager(fødselsdato, termindato)
+            : undefined;
+    if (ekstraDagerGrunnetPrematurFødsel && ekstraDagerGrunnetPrematurFødsel > 0) {
+        const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
+        fordelingInfo.push(
+            getFormattedMessage(
+                'fordeling.info.ekstraDagerPrematur.fellesperiode',
+                {
+                    varighetTekst,
+                },
+                links.hvorLenge,
+            ),
+        );
+    }
     return {
         eier: FordelingEier.Felles,
         sumUker: ukerFelles,
@@ -221,6 +240,7 @@ const getFordelingMor = (
     familiehendelsesdato: Date,
     erAdopsjon: boolean,
     antallBarn: number,
+    ekstraDagerGrunnetPrematurFødsel: number | undefined,
     intl: IntlShape,
 ): DelInformasjon => {
     const fordelingUker = [];
@@ -261,9 +281,52 @@ const getFordelingMor = (
         fordelingInfo.push(resterendeUkerTekst);
     }
 
+    if (ekstraDagerGrunnetPrematurFødsel && ekstraDagerGrunnetPrematurFødsel > 0) {
+        const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
+        fordelingInfo.push(
+            getFormattedMessage(
+                'fordeling.info.ekstraDagerPrematur.foreldrepenger',
+                {
+                    varighetTekst,
+                },
+                links.hvorLenge,
+            ),
+        );
+    }
     return {
         eier: FordelingEier.Mor,
         sumUker: antallUkerMor,
+        fordelingUker,
+        fordelingInfo,
+    };
+};
+
+const getFordelingForeldrepengerFarAleneomsorg = (
+    antallUker: number,
+    familiehendelsesdato: Date,
+    erAdopsjon: boolean,
+    antallBarn: number,
+    ekstraDagerGrunnetPrematurFødsel: number | undefined,
+    intl: IntlShape,
+) => {
+    const fordelingUker = [];
+    const fordelingInfo = [];
+    const fargekode = FordeligFargekode.SØKER_FAR;
+    fordelingUker.push({ antallUker, fargekode });
+    fordelingInfo.push(
+        getHvorLengeDisseUkeneKanBrukesTekst(familiehendelsesdato, erAdopsjon, antallUker, antallBarn, intl),
+    );
+    if (ekstraDagerGrunnetPrematurFødsel) {
+        const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
+        fordelingInfo.push(
+            getFormattedMessage('fordeling.info.ekstraDagerPrematur.foreldrepenger', {
+                varighetTekst,
+            }),
+        );
+    }
+    return {
+        eier: FordelingEier.FarMedmor,
+        sumUker: antallUker,
         fordelingUker,
         fordelingInfo,
     };
@@ -278,28 +341,22 @@ const getFordelingForeldrepengerFar = (
     familiehendelsesdato: Date,
     erBarnetFødt: boolean,
     antallBarn: number,
+    ekstraDagerGrunnetPrematurFødsel: number | undefined,
     intl: IntlShape,
 ): DelInformasjon => {
     const fordelingUker = [];
     const fordelingInfo = [];
     const fargekode = FordeligFargekode.SØKER_FAR;
+
     if (erAleneOmsorg) {
-        fordelingUker.push({ antallUker: ukerForeldrepenger, fargekode });
-        fordelingInfo.push(
-            getHvorLengeDisseUkeneKanBrukesTekst(
-                familiehendelsesdato,
-                erAdopsjon,
-                ukerForeldrepenger,
-                antallBarn,
-                intl,
-            ),
+        return getFordelingForeldrepengerFarAleneomsorg(
+            ukerForeldrepenger,
+            familiehendelsesdato,
+            erAdopsjon,
+            antallBarn,
+            ekstraDagerGrunnetPrematurFødsel,
+            intl,
         );
-        return {
-            eier: FordelingEier.FarMedmor,
-            sumUker: ukerForeldrepenger,
-            fordelingUker,
-            fordelingInfo,
-        };
     }
 
     const ukerMedAktivitetskrav = ukerForeldrepenger - ukerUtenAktivitetskrav;
@@ -317,6 +374,15 @@ const getFordelingForeldrepengerFar = (
         fordelingUker.push({ antallUker: ukerMedAktivitetskrav, fargekode });
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.far.medAktivitetskrav', { varighetTekst }, links.hvorLenge),
+        );
+    }
+
+    if (ekstraDagerGrunnetPrematurFødsel && ekstraDagerGrunnetPrematurFødsel > 0) {
+        const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
+        fordelingInfo.push(
+            getFormattedMessage('fordeling.info.ekstraDagerPrematur.foreldrepenger', {
+                varighetTekst,
+            }),
         );
     }
 
@@ -340,6 +406,8 @@ export const getFordelingFraKontoer = (
     navnMor: string,
     navnFar: string,
     antallBarn: number,
+    fødselsdato: Date | undefined,
+    termindato: Date | undefined,
     intl: IntlShape,
     annenPartHarKunRettIEØS?: boolean,
     ukerFellesperiodeBruktAvAnnenPart?: number,
@@ -359,6 +427,7 @@ export const getFordelingFraKontoer = (
             familiehendelsesdato,
             erAdopsjon,
             antallBarn,
+            undefined,
             intl,
         );
         fordelingsinformasjon.push(fordelingMor);
@@ -375,6 +444,8 @@ export const getFordelingFraKontoer = (
             intl,
             antallBarn,
             annenPartNavn,
+            fødselsdato,
+            termindato,
             annenPartHarKunRettIEØS,
             annenPartsKvoteUker,
             ukerFellesperiodeBruktAvAnnenPart,
@@ -395,6 +466,12 @@ export const getFordelingFraKontoer = (
         );
         fordelingsinformasjon.push(fordelingFar);
     }
+    const situasjon = erAdopsjon ? 'adopsjon' : 'fødsel';
+    const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, situasjon);
+    const ekstraDagerGrunnetPrematurFødsel =
+        visInfoOmPrematuruker && fødselsdato && termindato
+            ? getAntallPrematurdager(fødselsdato, termindato)
+            : undefined;
 
     if (ukerForeldrepenger > 0) {
         const ukerUtenAktivitetskrav = getAntallUkerAktivitetsfriKvote(kontoer);
@@ -408,6 +485,7 @@ export const getFordelingFraKontoer = (
                   familiehendelsesdato,
                   erBarnetFødt,
                   antallBarn,
+                  ekstraDagerGrunnetPrematurFødsel,
                   intl,
               )
             : getFordelingMor(
@@ -417,10 +495,10 @@ export const getFordelingFraKontoer = (
                   familiehendelsesdato,
                   erAdopsjon,
                   antallBarn,
+                  ekstraDagerGrunnetPrematurFødsel,
                   intl,
               );
         fordelingsinformasjon.push(fordeling);
     }
-    //TODO: Sjekk og legg til prematuruker
     return fordelingsinformasjon;
 };

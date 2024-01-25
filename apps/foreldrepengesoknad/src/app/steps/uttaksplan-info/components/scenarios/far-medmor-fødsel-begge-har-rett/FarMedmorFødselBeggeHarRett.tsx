@@ -28,7 +28,7 @@ import {
 } from './farMedmorFødselBeggeHarRettUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import farMedmorFødselBeggeHarRettQuestionsConfig, {
     FarMedmorFødselBeggeHarRettFormPayload,
 } from './farMedmorFødselBeggeHarRettQuestionsConfig';
@@ -104,6 +104,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const { dekningsgrad } = perioderMedForeldrepenger;
 
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
@@ -124,6 +125,8 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
         navnMor,
         navnFarMedmor,
         barn.antallBarn,
+        fødselsdato,
+        termindato,
         intl,
     );
 

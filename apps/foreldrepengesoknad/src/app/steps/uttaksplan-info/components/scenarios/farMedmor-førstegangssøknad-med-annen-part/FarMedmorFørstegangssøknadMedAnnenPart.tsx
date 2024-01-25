@@ -26,7 +26,7 @@ import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/cont
 import SøknadRoutes from 'app/routes/routes';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
@@ -101,6 +101,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const erDeltUttak = true;
+    const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
         erDeltUttak,
@@ -218,6 +219,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         navnMor,
         navnFarMedmor,
         barn.antallBarn,
+        fødselsdato,
+        termindato,
         intl,
         false,
         morBrukteDagerFellesperiode,

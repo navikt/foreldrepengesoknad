@@ -7,6 +7,7 @@ import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-begge-har-rett/søkerinfo.json';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak100PrematurWLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100PrematurWLB.json';
 import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
 import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100WLB.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
@@ -137,6 +138,21 @@ FarMedmorFødselBeggeHarRettTvillinger.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-09-02').toDate()],
         antallBarn: 2,
+        dokumentasjonAvAleneomsorg: [],
+    },
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const FarMedmorPrematurFødselBeggeHarRettPrematur = Template.bind({});
+FarMedmorPrematurFødselBeggeHarRettPrematur.args = {
+    stønadskonto100: stønadskontoDeltUttak100PrematurWLB,
+    stønadskonto80: stønadskontoDeltUttak100PrematurWLB,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2023-01-25').toDate()],
+        termindato: dayjs('2023-04-01').toDate(),
+        antallBarn: 1,
         dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,

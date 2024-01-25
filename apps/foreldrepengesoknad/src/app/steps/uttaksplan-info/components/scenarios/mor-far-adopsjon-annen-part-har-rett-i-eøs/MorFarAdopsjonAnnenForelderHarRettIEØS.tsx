@@ -192,6 +192,8 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         navnMor,
         navnFarMedmor,
         antallBarn,
+        undefined,
+        undefined,
         intl,
         true,
     );

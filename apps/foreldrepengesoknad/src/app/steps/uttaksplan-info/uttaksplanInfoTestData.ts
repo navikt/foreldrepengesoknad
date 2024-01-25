@@ -9,6 +9,7 @@ interface UttaksplanInfoTestData {
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
     fødselsdatoer: Date[];
+    termindato: Date;
     adopsjonsdato: Date;
 }
 

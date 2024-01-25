@@ -134,6 +134,8 @@ const MorFødsel: FunctionComponent<Props> = ({
         navnMor,
         navnFarMedmor,
         antallBarn,
+        fødselsdato,
+        termindato,
         intl,
         annenForeldrerHarKunRettiEØS,
         ukerFellesperiodeBruktAvAnnenPart,

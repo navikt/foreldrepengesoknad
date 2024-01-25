@@ -118,6 +118,29 @@ MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
+export const MorSøkerAleneomsorgPrematurFødsel = Template.bind({});
+MorSøkerAleneomsorgPrematurFødsel.args = {
+    stønadskonto100,
+    stønadskonto80,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2023-01-25').toDate()],
+        termindato: dayjs('2023-04-01').toDate(),
+        antallBarn: 2,
+        datoForAleneomsorg: new Date(),
+        dokumentasjonAvAleneomsorg: [],
+    },
+    annenForelder: undefined,
+    søker: {
+        erAleneOmOmsorg: true,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
 export const MorSøkerPrematurFødselDekningsgrad100 = Template.bind({});
 MorSøkerPrematurFødselDekningsgrad100.args = {
     stønadskonto100: stønadskontoPrematurUker100,

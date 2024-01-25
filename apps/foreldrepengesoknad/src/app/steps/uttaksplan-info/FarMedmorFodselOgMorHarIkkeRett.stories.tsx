@@ -8,6 +8,7 @@ import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfoFarSøker from 'storybook/storyData/uttaksplan/far-medmor-fødsel-mor-har-ikke-rett/søkerinfoFarSøker.json';
 import stønadskonto80MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto80MorHarIkkeRett.json';
 import stønadskonto100MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRett.json';
+import stønadskonto100MorHarIkkeRettPrematur from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettPrematur.json';
 import stønadskonto100MorHarIkkeRettErUfør from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettErUfør.json';
 import stønadskonto100MorHarIkkeRettErUførFør1okt2021 from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettErUførFør1okt2021.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
@@ -47,7 +48,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
                         type: BarnType.FØDT,
                         fødselsdatoer: args.fødselsdatoer,
                         antallBarn: 1,
-                        termindato: args.fødselsdatoer[0],
+                        termindato: args.termindato,
                     },
                     [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                         dekningsgrad: args.dekningsgrad,
@@ -89,6 +90,7 @@ BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB.args = {
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     fødselsdatoer: [new Date('2022-08-03')],
+    termindato: new Date('2022-08-03'),
 };
 
 export const BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB = Template.bind({});
@@ -108,6 +110,7 @@ BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB.args = {
     },
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
     fødselsdatoer: [new Date('2022-08-03')],
+    termindato: new Date('2022-08-03'),
 };
 
 export const BareFarHarRettOgMorErUførEtterWLB = Template.bind({});
@@ -127,6 +130,7 @@ BareFarHarRettOgMorErUførEtterWLB.args = {
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     fødselsdatoer: [new Date('2022-08-03')],
+    termindato: new Date('2022-08-03'),
 };
 
 export const BareFarHarRettOgMorErUførFør1Okt2021 = Template.bind({});
@@ -146,4 +150,25 @@ BareFarHarRettOgMorErUførFør1Okt2021.args = {
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     fødselsdatoer: [new Date('2021-09-29')],
+    termindato: new Date('2021-01-29'),
+};
+
+export const BareFarHarRettOgPrematurFødsel = Template.bind({});
+BareFarHarRettOgPrematurFødsel.args = {
+    stønadskonto100: stønadskonto100MorHarIkkeRettPrematur,
+    stønadskonto80: stønadskonto100MorHarIkkeRettPrematur,
+    søkerinfo: søkerinfoFarSøker,
+    annenForelder: {
+        etternavn: 'Hanne',
+        fornavn: 'dsgdfg',
+        fnr: '123123123',
+        utenlandskFnr: false,
+        erUfør: true,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: false,
+    },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    fødselsdatoer: [new Date('2023-01-25')],
+    termindato: new Date('2023-04-01'),
 };

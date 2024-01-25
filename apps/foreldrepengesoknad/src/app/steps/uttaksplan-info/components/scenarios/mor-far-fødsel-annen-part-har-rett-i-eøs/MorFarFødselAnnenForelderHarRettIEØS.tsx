@@ -196,6 +196,8 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         navnMor,
         navnFarMedmor,
         antallBarn,
+        fødselsdato,
+        termindato,
         intl,
         true,
     );

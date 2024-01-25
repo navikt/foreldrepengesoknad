@@ -203,6 +203,8 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         navnMor,
         navnFarMedmor,
         barn.antallBarn,
+        fødselsdato,
+        termindato,
         intl,
     );
     return (

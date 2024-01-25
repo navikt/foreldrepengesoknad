@@ -226,6 +226,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
         navnMor,
         navnFarMedmor,
         antallBarn,
+        undefined,
+        undefined,
         intl,
     );
     return (
