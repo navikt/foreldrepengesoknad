@@ -35,9 +35,9 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
         return [200, mellomlagretData];
     });
 
-    apiMock.onPost('rest-api/soknad/svangerskapspenger').reply(() => {
+    apiMock.onPost('rest-api/soknad').reply(() => {
         if (doLogging) {
-            console.log('network request: post rest-api/soknad/svangerskapspenger');
+            console.log('network request: post rest-api/soknad');
         }
         return [200, {}];
     });

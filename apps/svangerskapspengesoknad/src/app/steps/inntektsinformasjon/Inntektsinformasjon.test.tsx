@@ -66,6 +66,16 @@ describe('<Inntektsinformasjon>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.FRILANS,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: undefined,
+            key: ContextDataType.EGEN_NÆRING,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
             data: SøknadRoutes.ARBEID_I_UTLANDET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
