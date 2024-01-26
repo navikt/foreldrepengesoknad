@@ -31,6 +31,11 @@ export const isBeforeOrSame =
     (startDate: string): FormValidationResult =>
         endDate && dayjs(startDate).isAfter(endDate, 'day') ? i18nText : null;
 
+export const isBefore =
+    (i18nText: string, date1: string) =>
+    (date2: string): FormValidationResult =>
+        date1 && dayjs(date2).isBefore(date1) ? i18nText : null;
+
 export const isAfterOrSameAsSixMonthsAgo =
     (i18nText: string) =>
     (date: string): FormValidationResult =>

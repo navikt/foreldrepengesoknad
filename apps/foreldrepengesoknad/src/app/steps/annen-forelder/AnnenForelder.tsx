@@ -1,53 +1,54 @@
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Alert, BodyLong, BodyShort, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, GuidePanel, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import {
     Barn,
-    Block,
     ISOStringToDate,
     SivilstandType,
     Step,
-    convertYesOrNoOrUndefinedToBoolean,
     getKjønnFromFnrString,
     hasValue,
-    intlUtils,
-    isAdoptertStebarn,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
-    lagSendSenereDokumentNårIngenAndreFinnes,
     links,
 } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { AttachmentMetadataType, Søker } from '@navikt/fp-types';
-import { StepButtons } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
+import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Søker, Søkerrolle } from '@navikt/fp-types';
+import { isBefore, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
-import {
-    cleanAnnenForelderFormData,
-    getAnnenForelderFormInitialValues,
-    mapAnnenForelderFormToState,
-} from './annenForelderFormUtils';
-import { AnnenForelderQuestionsPayload, annenForelderQuestionsConfig } from './annenForelderQuestionsConfig';
-import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
-import AvtaleAtFarTarUtForeldrepengerVeileder from './components/AvtaleAtFarTarUtForeldrepengerVeileder';
-import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAleneomsorgVeileder';
-import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
-import OppgiPersonalia from './components/OppgiPersonalia';
-import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
+import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
+import OppgiPersonalia from './OppgiPersonalia';
+import { getAnnenForelderFormInitialValues, mapAnnenForelderFormToState } from './annenForelderFormUtils';
+
+const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker: Søker) => {
+    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
+    const registrertBarnMedAnnenForelder =
+        registrerteBarn === undefined || registrerteBarn.length === 0
+            ? undefined
+            : registrerteBarn.find((barn) => barn.annenForelder !== undefined);
+    return registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
+};
+
+const getTekstOmFarskapsportal = (rolle: Søkerrolle, barnetErIkkeFødt: boolean) => {
+    if (rolle === 'far' && barnetErIkkeFødt) {
+        return 'annenForelder.tekstOmFarskapsportal.far.del1';
+    }
+    if (rolle === 'mor' && barnetErIkkeFødt) {
+        return 'annenForelder.tekstOmFarskapsportal.mor.del1';
+    }
+    return '';
+};
 
 type Props = {
     søker: Søker;
@@ -61,382 +62,364 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const stepConfig = useStepConfig();
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
     const { rolle } = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER) || {
-        kanIkkeOppgis: false,
-    };
-    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
+    const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
-    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
-    const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
 
-    const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
-    const funnetRegistrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
-    const registrertBarnMedAnnenForelder =
-        funnetRegistrerteBarn === undefined || funnetRegistrerteBarn.length === 0
-            ? undefined
-            : funnetRegistrerteBarn.find((barn) => barn.annenForelder !== undefined);
-    const annenForelderFraRegistrertBarn =
-        registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
+    const familiehendelsedato = getFamiliehendelsedato(barn);
+    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søker);
 
     const skalOppgiPersonalia =
         annenForelderFraRegistrertBarn === undefined ||
-        (annenForelder !== undefined &&
-            isAnnenForelderOppgitt(annenForelder) &&
-            annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
-    const søkerErFar = rolle === 'far';
-    const søkerErMor = rolle === 'mor';
+        annenForelder === undefined ||
+        (isAnnenForelderOppgitt(annenForelder) && annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
     const søkerErIkkeGift = søker.sivilstand === undefined || søker.sivilstand.type !== SivilstandType.GIFT;
     const barnetErIkkeFødt = isUfødtBarn(barn);
-    let tekstOmFarskapsportalId = '';
-    if (søkerErFar && barnetErIkkeFødt) {
-        tekstOmFarskapsportalId = 'annenForelder.tekstOmFarskapsportal.far.del1';
-    }
-    if (søkerErMor && barnetErIkkeFødt) {
-        tekstOmFarskapsportalId = 'annenForelder.tekstOmFarskapsportal.mor.del1';
-    }
+    const tekstOmFarskapsportalId = getTekstOmFarskapsportal(rolle, barnetErIkkeFødt);
 
-    const onSubmit = (values: Partial<AnnenForelderFormData>) => {
-        setIsSubmitting(true);
+    const onSubmit = (values: AnnenForelderFormData) => {
+        const erOppgitt = erAnnenForelderOppgitt(values);
 
         // @ts-ignore TODO (TOR) Søker er dårleg typa. Her skal den kunne innehalda kun erAleneOmsorg, og så blir den utvida seinare
         const newSøker: SøkerData = {
             ...(søkerData || {}),
-            erAleneOmOmsorg: values.kanIkkeOppgis ? true : !!convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
+            erAleneOmOmsorg: erOppgitt ? !!values.aleneOmOmsorg : true,
         };
 
-        const newBarn: Barn = {
-            ...barn,
-            datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
-                ? ISOStringToDate(values.datoForAleneomsorg)
-                : undefined,
-        };
-        const dokumentasjonAvAleneomsorg =
-            values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
-                ? lagSendSenereDokumentNårIngenAndreFinnes(
-                      values.dokumentasjonAvAleneomsorg,
-                      AttachmentType.ALENEOMSORG,
-                      Skjemanummer.DOK_AV_ALENEOMSORG,
-                      {
-                          type: AttachmentMetadataType.BARN,
-                      },
-                  )
-                : [];
+        if (erOppgitt) {
+            const newBarn: Barn = {
+                ...barn,
+                datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
+                    ? ISOStringToDate(values.datoForAleneomsorg)
+                    : undefined,
+                dokumentasjonAvAleneomsorg:
+                    values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
+                        ? values.dokumentasjonAvAleneomsorg
+                        : undefined,
+            };
+            oppdaterOmBarnet(newBarn);
+        }
 
-        const nyeVedlegg = {
-            ...vedlegg,
-            [Skjemanummer.DOK_AV_ALENEOMSORG]: dokumentasjonAvAleneomsorg,
-        };
-
-        oppdaterOmBarnet(newBarn);
-        oppdaterAnnenForeldre(mapAnnenForelderFormToState(values));
-        oppdaterVedlegg(nyeVedlegg);
         oppdaterSøker(newSøker);
+        oppdaterAnnenForeldre(mapAnnenForelderFormToState(values, skalOppgiPersonalia, annenForelderFraRegistrertBarn));
 
         return navigator.goToNextDefaultStep();
     };
 
+    const formMethods = useForm<AnnenForelderFormData>({
+        shouldUnregister: true,
+        defaultValues: getAnnenForelderFormInitialValues(barn, intl, annenForelder, søkerData),
+    });
+
+    const harRettPåForeldrepengerINorge = formMethods.watch('harRettPåForeldrepengerINorge');
+    const fnr = formMethods.watch('fnr');
+    const utenlandskFnr = formMethods.watch('utenlandskFnr');
+    const aleneOmOmsorg = formMethods.watch('aleneOmOmsorg');
+
+    const erInformertOmSøknaden = formMethods.watch('erInformertOmSøknaden');
+    const fornavn = formMethods.watch('fornavn');
+    const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
+    const bostedsland = formMethods.watch('bostedsland');
+    const harOppholdtSegIEØS = formMethods.watch('harOppholdtSegIEØS');
+    const harRettPåForeldrepengerIEØS = formMethods.watch('harRettPåForeldrepengerIEØS');
+
+    const annenForelderHarRett = harRettPåForeldrepengerINorge === true;
+    const fnrFraAnnenForelder = annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const annenForelderFnr = fnrFraAnnenForelder || fnr;
+    const annenForelderErFarEllerUtenlandsk =
+        (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') || utenlandskFnr;
+    const annenForelderHarRettErBesvart = harRettPåForeldrepengerINorge !== undefined;
+    /*const farErInformert =
+        convertYesOrNoOrUndefinedToBoolean(aleneOmOmsorg) ||
+        !convertYesOrNoOrUndefinedToBoolean(harRettPåForeldrepengerINorge) ||
+        (convertYesOrNoOrUndefinedToBoolean(harRettPåForeldrepengerINorge) &&
+            convertYesOrNoOrUndefinedToBoolean(erInformertOmSøknaden));
+
+    const kanGåVidereMedSøknaden = visibility.areAllQuestionsAnswered() && farErInformert;*/
+    const visInfoboksOmFarskapsportal =
+        ((rolle === 'far' && annenForelderHarRettErBesvart) ||
+            (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
+        barnetErIkkeFødt &&
+        søkerErIkkeGift;
+
     return (
-        <AnnenForelderFormComponents.FormikWrapper
-            initialValues={getAnnenForelderFormInitialValues(
-                annenForelder,
-                barn,
-                annenForelderFraRegistrertBarn,
-                intl,
-                søkerData,
-            )}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues }) => {
-                const visibility = annenForelderQuestionsConfig.getVisbility({
-                    ...formValues,
-                    skalOppgiPersonalia,
-                    søkerRolle: rolle,
-                    gjelderStebarnsadopsjon: isAdoptertStebarn(barn) ? true : false,
-                } as AnnenForelderQuestionsPayload);
-
-                const annenForelderHarRett = formValues.harRettPåForeldrepengerINorge === YesOrNo.YES;
-                const fnrFraAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-                const oppgittFnr = formValues.fnr;
-                const annenForelderFnr = fnrFraAnnenForelder || oppgittFnr;
-                const annenForelderErFarEllerUtenlandsk =
-                    (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') ||
-                    formValues.utenlandskFnr;
-                const annenForelderHarRettErBesvart = formValues.harRettPåForeldrepengerINorge !== YesOrNo.UNANSWERED;
-                const farErInformert =
-                    convertYesOrNoOrUndefinedToBoolean(formValues.aleneOmOmsorg) ||
-                    !convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepengerINorge) ||
-                    (convertYesOrNoOrUndefinedToBoolean(formValues.harRettPåForeldrepengerINorge) &&
-                        convertYesOrNoOrUndefinedToBoolean(formValues.erInformertOmSøknaden));
-
-                const kanGåVidereMedSøknaden = visibility.areAllQuestionsAnswered() && farErInformert;
-                const visInfoboksOmFarskapsportal =
-                    ((søkerErFar && annenForelderHarRettErBesvart) ||
-                        (søkerErMor && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
-                    barnetErIkkeFødt &&
-                    søkerErIkkeGift;
-                return (
-                    <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        onCancel={avbrytSøknad}
-                        onContinueLater={navigator.fortsettSøknadSenere}
-                        steps={stepConfig}
-                    >
-                        <AnnenForelderFormComponents.Form
-                            includeButtons={false}
-                            cleanup={(values) =>
-                                cleanAnnenForelderFormData(values, visibility, annenForelderFraRegistrertBarn)
-                            }
-                            includeValidationSummary={true}
-                        >
-                            {skalOppgiPersonalia && (
-                                <Block padBottom="xl">
-                                    <OppgiPersonalia
-                                        fornavn={formValues.fornavn}
-                                        erUtenlandskFnr={formValues.utenlandskFnr}
-                                        kanIkkeOppgis={formValues.kanIkkeOppgis}
-                                        visibility={visibility}
-                                        gjelderAdopsjon={false}
-                                        søkersFødselsnummer={søker.fnr}
-                                    />
-                                </Block>
-                            )}
-                            {!skalOppgiPersonalia && (
-                                <Block padBottom="xl">
-                                    <RegistrertePersonalia
-                                        person={annenForelderFraRegistrertBarn}
-                                        fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
-                                        visEtternavn={true}
-                                    />
-                                </Block>
-                            )}
-                            <Block
-                                visible={
-                                    visibility.isVisible(AnnenForelderFormField.aleneOmOmsorg) || !skalOppgiPersonalia
-                                }
-                                padBottom="xl"
+        <Step
+            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
+            onCancel={avbrytSøknad}
+            onContinueLater={navigator.fortsettSøknadSenere}
+            steps={stepConfig}
+        >
+            <Form formMethods={formMethods} onSubmit={onSubmit}>
+                <VStack gap="10">
+                    <ErrorSummaryHookForm />
+                    {skalOppgiPersonalia && (
+                        <OppgiPersonalia
+                            erUtenlandskFnr={utenlandskFnr}
+                            kanIkkeOppgis={kanIkkeOppgis}
+                            rolle={rolle}
+                            barn={barn}
+                            søkersFødselsnummer={søker.fnr}
+                        />
+                    )}
+                    {!skalOppgiPersonalia && (
+                        <RegistrertePersonalia
+                            person={annenForelderFraRegistrertBarn}
+                            fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
+                            visEtternavn={true}
+                        />
+                    )}
+                    {(!skalOppgiPersonalia ||
+                        (hasValue(fnr) && utenlandskFnr === false) ||
+                        (skalOppgiPersonalia && hasValue(bostedsland) && utenlandskFnr === true)) && (
+                        <div>
+                            <RadioGroup
+                                name="aleneOmOmsorg"
+                                label={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg' })}
                             >
-                                <AnnenForelderFormComponents.RadioGroup
-                                    name={AnnenForelderFormField.aleneOmOmsorg}
-                                    legend={intlUtils(intl, 'annenForelder.aleneOmOmsorg')}
-                                    radios={[
-                                        { label: 'Ja', value: YesOrNo.NO },
-                                        { label: 'Nei, jeg har aleneomsorg', value: YesOrNo.YES },
-                                    ]}
-                                />
-                                <ReadMore header={intlUtils(intl, 'annenForelder.aleneOmOmsorg.apneLabel')}>
-                                    <Block padBottom="xl">
-                                        <BodyLong>{intlUtils(intl, 'annenForelder.aleneOmOmsorg.del1')}</BodyLong>
-                                    </Block>
-                                    <BodyShort>{intlUtils(intl, 'annenForelder.aleneOmOmsorg.del2')}</BodyShort>
-                                </ReadMore>
-                                <AvtaleAtFarTarUtForeldrepengerVeileder
-                                    visible={!isFarEllerMedmor(rolle) && formValues.aleneOmOmsorg === YesOrNo.YES}
-                                    annenForelderNavn={formValues.fornavn!}
-                                />
-                            </Block>
-
-                            {!formValues.kanIkkeOppgis && (
-                                <Block
-                                    padBottom="xl"
-                                    visible={visibility.isVisible(AnnenForelderFormField.datoForAleneomsorg)}
-                                >
-                                    <Block padBottom="xl">
-                                        <AnnenForelderFormComponents.DatePicker
-                                            name={AnnenForelderFormField.datoForAleneomsorg}
-                                            label={intlUtils(intl, 'annenForelder.datoForAleneomsorg')}
-                                            minDate={familiehendelsedato.toDate()}
-                                            validate={validateDatoForAleneomsorg(intl, familiehendelsedato)}
-                                            placeholder={'dd.mm.åååå'}
+                                <Radio value={false}>Ja</Radio>
+                                <Radio value={true}>Nei, jeg har aleneomsorg</Radio>
+                            </RadioGroup>
+                            <ReadMore header={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.apneLabel' })}>
+                                <BodyLong>{intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.del1' })}</BodyLong>
+                                <BodyShort>{intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.del2' })}</BodyShort>
+                            </ReadMore>
+                            {!isFarEllerMedmor(rolle) && aleneOmOmsorg === true && (
+                                <div className="annenForelderVeileder">
+                                    <GuidePanel>
+                                        <FormattedMessage
+                                            id="annenForelder.veileder.aleneOmsorg.forBarnet"
+                                            values={{ navn: fornavn! }}
                                         />
-                                    </Block>
-
-                                    <FarDokumentasjonAleneomsorgVeileder />
-                                    <Block padBottom="xl">
-                                        <FormikFileUploader
-                                            legend="Dokumentasjon for aleneomsorg"
-                                            label={intlUtils(
-                                                intl,
-                                                'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp',
-                                            )}
-                                            name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
-                                            attachments={formValues.dokumentasjonAvAleneomsorg || []}
-                                            attachmentType={AttachmentType.ALENEOMSORG}
-                                            skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
-                                        />{' '}
-                                    </Block>
-                                </Block>
+                                    </GuidePanel>
+                                </div>
                             )}
-                            <Block
-                                padBottom="xl"
-                                visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerINorge)}
+                        </div>
+                    )}
+                    {!kanIkkeOppgis && aleneOmOmsorg === true && isFarEllerMedmor(rolle) && (
+                        <div>
+                            <Datepicker
+                                name="datoForAleneomsorg"
+                                label={intl.formatMessage({ id: 'annenForelder.datoForAleneomsorg' })}
+                                minDate={dayjs(familiehendelsedato).toDate()}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'valideringsfeil.annenForelder.datoForAleneomsorg.duMåOppgi',
+                                        }),
+                                    ),
+                                    isValidDate(
+                                        intl.formatMessage({
+                                            id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
+                                        }),
+                                    ),
+                                    isBefore(
+                                        intl.formatMessage({
+                                            id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
+                                        }),
+                                        familiehendelsedato,
+                                    ),
+                                ]}
+                            />
+
+                            <BodyShort>
+                                <FormattedMessage id="annenForelder.farMedmor.dokumentasjonAvAleneomsorg.veileder" />
+                            </BodyShort>
+                            {/* <Block padBottom="xl">
+                            <FormikFileUploader
+                                legend="Dokumentasjon for aleneomsorg"
+                                label={intl.formatMessage({id: 'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp')}
+                                name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
+                                attachments={dokumentasjonAvAleneomsorg || []}
+                                attachmentType={AttachmentType.ALENEOMSORG}
+                                skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
+                            />{' '}
+                        </Block> */}
+                        </div>
+                    )}
+                    {aleneOmOmsorg === false && (
+                        <div>
+                            <RadioGroup
+                                name="harRettPåForeldrepengerINorge"
+                                label={intl.formatMessage(
+                                    { id: 'annenForelder.harRettPåForeldrepengerINorge' },
+                                    {
+                                        navn: fornavn,
+                                    },
+                                )}
                             >
-                                <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFormField.harRettPåForeldrepengerINorge}
-                                    legend={intlUtils(intl, 'annenForelder.harRettPåForeldrepengerINorge', {
-                                        navn: formValues.fornavn,
-                                    })}
-                                />
-                                <ReadMore
-                                    header={intlUtils(
-                                        intl,
-                                        'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel',
+                                <Radio value={true}>Ja</Radio>
+                                <Radio value={false}>Nei</Radio>
+                            </RadioGroup>
+                            <ReadMore
+                                header={intl.formatMessage({
+                                    id: 'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel',
+                                })}
+                            >
+                                <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder"></FormattedMessage>
+                                <ul style={{ margin: '0', padding: '1rem 2rem 0' }}>
+                                    <li>
+                                        <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt1" />
+                                    </li>
+                                    <li>
+                                        <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt2" />
+                                    </li>
+                                    <li>
+                                        <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt3" />
+                                    </li>
+                                </ul>
+                            </ReadMore>
+                        </div>
+                    )}
+                    {aleneOmOmsorg === false && visInfoboksOmFarskapsportal && (
+                        <Alert variant="info">
+                            <FormattedMessage
+                                id={tekstOmFarskapsportalId}
+                                values={{
+                                    a: (msg: any) => (
+                                        <a
+                                            href={links.farskapsportal}
+                                            className="lenke"
+                                            rel="noreferrer"
+                                            target="_blank"
+                                        >
+                                            {msg}
+                                        </a>
+                                    ),
+                                }}
+                            />
+                            <FormattedMessage id="annenForelder.tekstOmFarskapsportal.mor.far.del2" />
+                        </Alert>
+                    )}
+                    {aleneOmOmsorg === false && harRettPåForeldrepengerINorge === false && (
+                        <div>
+                            <RadioGroup
+                                name="harOppholdtSegIEØS"
+                                label={intl.formatMessage(
+                                    { id: 'annenForelder.harOppholdtSegIEØS' },
+                                    {
+                                        navn: fornavn,
+                                    },
+                                )}
+                            >
+                                <Radio value={true}>Ja</Radio>
+                                <Radio value={false}>Nei</Radio>
+                            </RadioGroup>
+                            <ReadMore
+                                header={intl.formatMessage({
+                                    id: 'annenForelder.harOppholdtSegIEØS.veileder.apneLabel',
+                                })}
+                            >
+                                <FormattedMessage
+                                    id="annenForelder.harOppholdtSegIEØS.veileder"
+                                    values={{ navn: fornavn }}
+                                ></FormattedMessage>
+                            </ReadMore>
+                        </div>
+                    )}
+                    {aleneOmOmsorg === false && harOppholdtSegIEØS === true && (
+                        <div>
+                            <RadioGroup
+                                name="harRettPåForeldrepengerIEØS"
+                                label={intl.formatMessage(
+                                    { id: 'annenForelder.harRettPåForeldrepengerIEØS' },
+                                    {
+                                        navn: fornavn,
+                                    },
+                                )}
+                            >
+                                <Radio value={true}>Ja</Radio>
+                                <Radio value={false}>Nei</Radio>
+                            </RadioGroup>
+
+                            <ReadMore
+                                header={intl.formatMessage({
+                                    id: 'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel',
+                                })}
+                            >
+                                <VStack gap="2">
+                                    <FormattedMessage
+                                        id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"
+                                        values={{ navn: fornavn }}
+                                    ></FormattedMessage>
+
+                                    <FormattedMessage
+                                        id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del2"
+                                        values={{ navn: fornavn }}
+                                    ></FormattedMessage>
+
+                                    <Link to="https://www.nav.no/foreldrepenger#utland" target="_blank">
+                                        <FormattedMessage
+                                            id="annenForelder.harRettPåForeldrepengerIEØS.veileder.link"
+                                            values={{ navn: fornavn }}
+                                        />
+                                    </Link>
+                                </VStack>
+                            </ReadMore>
+                        </div>
+                    )}
+                    {aleneOmOmsorg === false && harRettPåForeldrepengerINorge === true && (
+                        <div>
+                            <RadioGroup
+                                name="erInformertOmSøknaden"
+                                label={intl.formatMessage(
+                                    { id: 'annenForelder.spørsmål.erAnnenForelderInformert' },
+                                    {
+                                        navn: fornavn,
+                                    },
+                                )}
+                            >
+                                <Radio value={true}>Ja</Radio>
+                                <Radio value={false}>Nei</Radio>
+                            </RadioGroup>
+                            {erInformertOmSøknaden === false && (
+                                <div className="annenForelderVeileder">
+                                    <Alert variant="warning">
+                                        <FormattedMessage
+                                            id="annenForelder.erAnnenForelderInformert.veileder"
+                                            values={{ navn: fornavn! }}
+                                        />
+                                    </Alert>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {aleneOmOmsorg === false &&
+                        harRettPåForeldrepengerINorge === false &&
+                        (harOppholdtSegIEØS === false || harRettPåForeldrepengerIEØS === false) &&
+                        isFarEllerMedmor(rolle) && (
+                            <div>
+                                <RadioGroup
+                                    name="erMorUfør"
+                                    label={intl.formatMessage(
+                                        { id: 'annenForelder.erMorUfør' },
+                                        {
+                                            navn: fornavn,
+                                        },
                                     )}
                                 >
-                                    <Block padBottom="m">
-                                        <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder"></FormattedMessage>
-                                    </Block>
-                                    <ul style={{ margin: '0', padding: '1rem 2rem 0' }}>
-                                        <li>
-                                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt1" />
-                                        </li>
-                                        <li>
-                                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt2" />
-                                        </li>
-                                        <li>
-                                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt3" />
-                                        </li>
-                                    </ul>
-                                </ReadMore>
-                            </Block>
-                            <Block
-                                padBottom="l"
-                                visible={
-                                    visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerINorge) &&
-                                    visInfoboksOmFarskapsportal
-                                }
-                            >
-                                <Alert variant="info">
-                                    <Block padBottom="l">
-                                        <FormattedMessage
-                                            id={tekstOmFarskapsportalId}
-                                            values={{
-                                                a: (msg: any) => (
-                                                    <a
-                                                        href={links.farskapsportal}
-                                                        className="lenke"
-                                                        rel="noreferrer"
-                                                        target="_blank"
-                                                    >
-                                                        {msg}
-                                                    </a>
-                                                ),
-                                            }}
-                                        />
-                                    </Block>
-                                    <Block>
-                                        <FormattedMessage id="annenForelder.tekstOmFarskapsportal.mor.far.del2" />
-                                    </Block>
-                                </Alert>
-                            </Block>
-                            <Block
-                                padBottom="l"
-                                visible={visibility.isVisible(AnnenForelderFormField.harOppholdtSegIEØS)}
-                            >
-                                <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFormField.harOppholdtSegIEØS}
-                                    legend={intlUtils(intl, 'annenForelder.harOppholdtSegIEØS', {
-                                        navn: formValues.fornavn,
-                                    })}
-                                />
+                                    <Radio value={true}>Ja</Radio>
+                                    <Radio value={false}>Nei</Radio>
+                                </RadioGroup>
                                 <ReadMore
-                                    header={intlUtils(intl, 'annenForelder.harOppholdtSegIEØS.veileder.apneLabel')}
+                                    header={intl.formatMessage({ id: 'annenForelder.erMorUfør.veileder.apneLabel' })}
                                 >
                                     <FormattedMessage
-                                        id="annenForelder.harOppholdtSegIEØS.veileder"
-                                        values={{ navn: formValues.fornavn }}
-                                    ></FormattedMessage>
+                                        id="annenForelder.erMorUfør.veileder"
+                                        values={{ navnAnnenForelder: fornavn }}
+                                    />
                                 </ReadMore>
-                            </Block>
-                            <Block
-                                padBottom="xl"
-                                visible={visibility.isVisible(AnnenForelderFormField.harRettPåForeldrepengerIEØS)}
-                            >
-                                <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFormField.harRettPåForeldrepengerIEØS}
-                                    legend={intlUtils(intl, 'annenForelder.harRettPåForeldrepengerIEØS', {
-                                        navn: formValues.fornavn,
-                                    })}
-                                />
-                                <ReadMore
-                                    header={intlUtils(
-                                        intl,
-                                        'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel',
-                                    )}
-                                >
-                                    <Block padBottom="l">
-                                        <FormattedMessage
-                                            id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"
-                                            values={{ navn: formValues.fornavn }}
-                                        ></FormattedMessage>
-                                    </Block>
-
-                                    <Block padBottom="l">
-                                        <FormattedMessage
-                                            id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del2"
-                                            values={{ navn: formValues.fornavn }}
-                                        ></FormattedMessage>
-                                    </Block>
-
-                                    <Block>
-                                        <Link to="https://www.nav.no/foreldrepenger#utland" target="_blank">
-                                            <FormattedMessage
-                                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder.link"
-                                                values={{ navn: formValues.fornavn }}
-                                            />
-                                        </Link>
-                                    </Block>
-                                </ReadMore>
-                            </Block>
-                            <Block
-                                padBottom="xl"
-                                visible={visibility.isVisible(AnnenForelderFormField.erInformertOmSøknaden)}
-                            >
-                                <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFormField.erInformertOmSøknaden}
-                                    legend={intlUtils(intl, 'annenForelder.spørsmål.erAnnenForelderInformert', {
-                                        navn: formValues.fornavn,
-                                    })}
-                                />
-                                <MåOrientereAnnenForelderVeileder
-                                    visible={formValues.erInformertOmSøknaden === YesOrNo.NO}
-                                    annenForelderNavn={formValues.fornavn!}
-                                />
-                            </Block>
-
-                            <Block padBottom="xl" visible={visibility.isVisible(AnnenForelderFormField.erMorUfør)}>
-                                <AnnenForelderFormComponents.YesOrNoQuestion
-                                    name={AnnenForelderFormField.erMorUfør}
-                                    legend={intlUtils(intl, 'annenForelder.erMorUfør', {
-                                        navn: formValues.fornavn,
-                                    })}
-                                />
-                                <ReadMore header={intlUtils(intl, 'annenForelder.erMorUfør.veileder.apneLabel')}>
-                                    <Block>
-                                        <FormattedMessage
-                                            id="annenForelder.erMorUfør.veileder"
-                                            values={{ navnAnnenForelder: formValues.fornavn }}
-                                        />
-                                    </Block>
-                                </ReadMore>
-                            </Block>
-                            <Block margin="l">
-                                <StepButtons
-                                    isNexButtonVisible={kanGåVidereMedSøknaden}
-                                    goToPreviousStep={navigator.goToPreviousDefaultStep}
-                                    isDisabledAndLoading={isSubmitting}
-                                />
-                            </Block>
-                        </AnnenForelderFormComponents.Form>
-                    </Step>
-                );
-            }}
-        />
+                            </div>
+                        )}
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                </VStack>
+            </Form>
+        </Step>
     );
 };
 

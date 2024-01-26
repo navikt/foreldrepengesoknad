@@ -10,6 +10,7 @@ export {
     isValidDate,
     isDateWithinRange,
     isBeforeOrSame,
+    isBefore,
     isAfterOrSame,
     isPeriodNotOverlappingOthers,
     isLessThanOneAndHalfYearsAgo,
