@@ -13,7 +13,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "7.49.3",
-        "react-intl": "^6.6.1"
+        "react-intl": "^6.6.2"
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",

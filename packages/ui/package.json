@@ -20,12 +20,12 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
-        "@sentry/browser": "^7.95.0",
+        "@sentry/browser": "^7.98.0",
         "bytes": "^3.1.2",
-        "intl-messageformat": "^10.5.10",
+        "intl-messageformat": "^10.5.11",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-intl": "^6.6.1"
+        "react-intl": "^6.6.2"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.3.5",
