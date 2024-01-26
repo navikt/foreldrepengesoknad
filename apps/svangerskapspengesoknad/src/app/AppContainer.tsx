@@ -34,8 +34,8 @@ const AppContainer: FunctionComponent = () => {
     const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
 
     return (
-        <ErrorBoundary appName="Svangerskapspenger" retryCallback={retryCallback}>
-            <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+        <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+            <ErrorBoundary appName="Svangerskapspenger" retryCallback={retryCallback}>
                 <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
                 <Svangerskapspengesøknad
                     locale={locale}
@@ -45,8 +45,8 @@ const AppContainer: FunctionComponent = () => {
                         document.documentElement.setAttribute('lang', activeLocale);
                     }}
                 />
-            </IntlProvider>
-        </ErrorBoundary>
+            </ErrorBoundary>
+        </IntlProvider>
     );
 };
 
