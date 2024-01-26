@@ -8,10 +8,9 @@ import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/mor-fødsel/søkerinfo.json';
 import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
 import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
-import stønadskontoPrematurUker100 from 'storybook/storyData/stonadskontoer/stønadskontoPrematurUker100.json';
-import stønadskontoPrematurUker80 from 'storybook/storyData/stonadskontoer/stønadskontoPrematurUker80.json';
 import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
 import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100WLB.json';
+import stønadskontoDeltUttak100PrematurWLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100PrematurWLB.json';
 import stønadskontoFlerbarnsuker80 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker80.json';
 import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker100.json';
 
@@ -144,18 +143,22 @@ MorAleneomsorgPrematurFødsel.args = {
 };
 export const MorDeltUttakPrematurFødselDekningsgrad100 = Template.bind({});
 MorDeltUttakPrematurFødselDekningsgrad100.args = {
-    stønadskonto100: stønadskontoPrematurUker100,
-    stønadskonto80: stønadskontoPrematurUker80,
+    stønadskonto100: stønadskontoDeltUttak100PrematurWLB,
+    stønadskonto80: stønadskontoDeltUttak100PrematurWLB,
     barn: {
         type: BarnType.FØDT,
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
         dokumentasjonAvAleneomsorg: [],
-        fødselsdatoer: [dayjs('2021-01-11').toDate()],
-        termindato: dayjs('2021-03-11').toDate(),
+        fødselsdatoer: [dayjs('2023-01-11').toDate()],
+        termindato: dayjs('2023-03-11').toDate(),
     },
     annenForelder: {
-        kanIkkeOppgis: true,
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
     },
     søker: {
         erAleneOmOmsorg: false,

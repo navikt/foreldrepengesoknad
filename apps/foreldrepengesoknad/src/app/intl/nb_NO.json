@@ -1005,7 +1005,7 @@
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette ble valgt av {navn} i søknaden hennes, og det kan ikke endres av deg.",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHans": "Dette ble valgt av {navn} i søknaden hans, og det kan ikke endres av deg.",
     "fordeling.antallUkerTilDeg": "{varighetTekst} til deg",
-    "fordeling.antallUkerFelles": "{varighetTekst} skal deles, fellesperiode",
+    "fordeling.antallUkerFelles": "{varighetTekst} kan deles, fellesperiode",
     "fordeling.antallUkerTilAnnenForelder": "{varighetTekst} til {navn}",
     "fordeling.info.mor.adopsjon": "<b>{varighetTekst}</b> kan brukes når som helst innen tre år fra adopsjonsdatoen eller før ny periode med foreldrepenger starter for nytt barn.",
     "fordeling.info.mor.førFødsel": "<b>{varighetTekst}</b> kan kun brukes før fødsel. Hvis man føder før termin, slettes det som er igjen av disse ukene, og tiden fram mot opprinnelig termindato tas fra mors kvote. Hvis man føder etter termin, vil man starte å bruke av fellesperioden frem til fødselen.",

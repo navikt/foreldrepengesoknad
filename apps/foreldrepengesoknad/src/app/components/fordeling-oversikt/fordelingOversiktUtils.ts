@@ -222,8 +222,10 @@ const getFordelingFedrekvote = (
 ): DelInformasjon => {
     const fordelingUker = [];
     const fargekodeFar = erFarEllerMedmor ? FordeligFargekode.SØKER_FAR : FordeligFargekode.ANNEN_PART_FAR;
-    const fordelingInfo = [getFordelingTekstFedrekvote(ukerFar, erAdopsjon, familiehendelsesdato, antallBarn, intl)];
     const gjenståendeUkerTilFar = dagerFarsKvoteBruktAvMor ? ukerFar - dagerFarsKvoteBruktAvMor / 5 : ukerFar;
+    const fordelingInfo = [
+        getFordelingTekstFedrekvote(gjenståendeUkerTilFar, erAdopsjon, familiehendelsesdato, antallBarn, intl),
+    ];
 
     if (ukerRundtFødsel > 0) {
         const terminEllerFødsel = erBarnetFødt ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
