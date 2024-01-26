@@ -489,9 +489,10 @@ export const getFordelingFraKontoer = (
 
     if (ukerForeldrepenger > 0) {
         const ukerUtenAktivitetskrav = getAntallUkerAktivitetsfriKvote(kontoer);
+        const ukerTotalt = ukerForeldrepenger + ukerUtenAktivitetskrav;
         const fordeling = erFarEllerMedmor
             ? getFordelingForeldrepengerFar(
-                  ukerForeldrepenger,
+                  ukerTotalt,
                   minsteretter.farRundtFødsel,
                   ukerUtenAktivitetskrav,
                   erAleneomsorg,
