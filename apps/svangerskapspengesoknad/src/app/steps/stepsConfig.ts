@@ -7,7 +7,7 @@ import { IntlShape } from 'react-intl';
 import { InntektsinformasjonFormData } from './inntektsinformasjon/inntektsinformasjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
+import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { UtenlandsoppholdFormData } from './utenlandsopphold/utenlandsoppholdFormTypes';
 import InformasjonOmUtenlandsopphold from 'app/types/InformasjonOmUtenlandsopphold';
 import {
@@ -387,14 +387,15 @@ export const getNextRouteValgAvArbeidEllerSkjema = (
     arbeidsforhold: Arbeidsforhold[],
     søker: Søker,
 ) => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
         termindato,
-        arbeidsforhold,
+        aktiveArbeidsforhold,
         søker.harJobbetSomFrilans,
         søker.harJobbetSomSelvstendigNæringsdrivende,
     );
     if (harKunEtArbeid) {
-        if (arbeidsforhold.length === 0) {
+        if (aktiveArbeidsforhold.length === 0) {
             const frilansEllerNæringId = søker.harJobbetSomFrilans ? frilansId : egenNæringId;
             return `${SøknadRoutes.SKJEMA}/${frilansEllerNæringId}`;
         } else {
