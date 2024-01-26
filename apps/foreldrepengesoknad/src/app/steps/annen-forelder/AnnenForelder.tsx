@@ -1,9 +1,8 @@
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 
-import { Alert, BodyLong, BodyShort, GuidePanel, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import {
     Barn,
@@ -65,11 +64,9 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const { rolle } = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
-    const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
-    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søker);
@@ -85,12 +82,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const onSubmit = (values: AnnenForelderFormData) => {
         const erOppgitt = erAnnenForelderOppgitt(values);
 
-        // @ts-ignore TODO (TOR) Søker er dårleg typa. Her skal den kunne innehalda kun erAleneOmsorg, og så blir den utvida seinare
-        const newSøker: SøkerData = {
-            ...(søkerData || {}),
-            erAleneOmOmsorg: erOppgitt ? !!values.aleneOmOmsorg : true,
-        };
-
+        // TODO (TOR) Burde vel ikkje oppdatera Barn i dette steget?
         if (erOppgitt) {
             const newBarn: Barn = {
                 ...barn,
@@ -105,7 +97,6 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
             oppdaterOmBarnet(newBarn);
         }
 
-        oppdaterSøker(newSøker);
         oppdaterAnnenForeldre(mapAnnenForelderFormToState(values, skalOppgiPersonalia, annenForelderFraRegistrertBarn));
 
         return navigator.goToNextDefaultStep();
@@ -113,18 +104,17 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
 
     const formMethods = useForm<AnnenForelderFormData>({
         shouldUnregister: true,
-        defaultValues: getAnnenForelderFormInitialValues(barn, intl, annenForelder, søkerData),
+        defaultValues: getAnnenForelderFormInitialValues(barn, intl, annenForelder),
     });
 
     const harRettPåForeldrepengerINorge = formMethods.watch('harRettPåForeldrepengerINorge');
     const fnr = formMethods.watch('fnr');
     const utenlandskFnr = formMethods.watch('utenlandskFnr');
-    const aleneOmOmsorg = formMethods.watch('aleneOmOmsorg');
+    const aleneOmOmsorg = formMethods.watch('erAleneOmOmsorg');
 
     const erInformertOmSøknaden = formMethods.watch('erInformertOmSøknaden');
     const fornavn = formMethods.watch('fornavn');
     const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
-    const bostedsland = formMethods.watch('bostedsland');
     const harOppholdtSegIEØS = formMethods.watch('harOppholdtSegIEØS');
     const harRettPåForeldrepengerIEØS = formMethods.watch('harRettPåForeldrepengerIEØS');
 
@@ -158,13 +148,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {skalOppgiPersonalia && (
-                        <OppgiPersonalia
-                            erUtenlandskFnr={utenlandskFnr}
-                            kanIkkeOppgis={kanIkkeOppgis}
-                            rolle={rolle}
-                            barn={barn}
-                            søkersFødselsnummer={søker.fnr}
-                        />
+                        <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søker.fnr} />
                     )}
                     {!skalOppgiPersonalia && (
                         <RegistrertePersonalia
@@ -173,32 +157,28 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                             visEtternavn={true}
                         />
                     )}
-                    {(!skalOppgiPersonalia ||
-                        (hasValue(fnr) && utenlandskFnr === false) ||
-                        (skalOppgiPersonalia && hasValue(bostedsland) && utenlandskFnr === true)) && (
-                        <div>
-                            <RadioGroup
-                                name="aleneOmOmsorg"
-                                label={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg' })}
-                            >
-                                <Radio value={false}>Ja</Radio>
-                                <Radio value={true}>Nei, jeg har aleneomsorg</Radio>
-                            </RadioGroup>
-                            <ReadMore header={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.apneLabel' })}>
-                                <BodyLong>{intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.del1' })}</BodyLong>
-                                <BodyShort>{intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.del2' })}</BodyShort>
-                            </ReadMore>
-                            {!isFarEllerMedmor(rolle) && aleneOmOmsorg === true && (
-                                <div className="annenForelderVeileder">
-                                    <GuidePanel>
-                                        <FormattedMessage
-                                            id="annenForelder.veileder.aleneOmsorg.forBarnet"
-                                            values={{ navn: fornavn! }}
-                                        />
-                                    </GuidePanel>
-                                </div>
-                            )}
-                        </div>
+                    <div>
+                        <RadioGroup
+                            name="erAleneOmOmsorg"
+                            label={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg' })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({ id: 'valideringsfeil.annenForelder.harAleneOmsorgPåkrevd' }),
+                                ),
+                            ]}
+                        >
+                            <Radio value={false}>Ja</Radio>
+                            <Radio value={true}>Nei, jeg har aleneomsorg</Radio>
+                        </RadioGroup>
+                        <ReadMore header={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.apneLabel' })}>
+                            <BodyLong>{intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.del1' })}</BodyLong>
+                            <BodyShort>{intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.del2' })}</BodyShort>
+                        </ReadMore>
+                    </div>
+                    {!isFarEllerMedmor(rolle) && aleneOmOmsorg === true && (
+                        <Alert variant="info">
+                            <FormattedMessage id="annenForelder.veileder.aleneOmsorg.forBarnet" />
+                        </Alert>
                     )}
                     {!kanIkkeOppgis && aleneOmOmsorg === true && isFarEllerMedmor(rolle) && (
                         <div>
@@ -241,16 +221,18 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                         </Block> */}
                         </div>
                     )}
-                    {aleneOmOmsorg === false && (
+                    {aleneOmOmsorg !== true && (
                         <div>
                             <RadioGroup
                                 name="harRettPåForeldrepengerINorge"
-                                label={intl.formatMessage(
-                                    { id: 'annenForelder.harRettPåForeldrepengerINorge' },
-                                    {
-                                        navn: fornavn,
-                                    },
-                                )}
+                                label={intl.formatMessage({ id: 'annenForelder.harRettPåForeldrepengerINorge' })}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'valideringsfeil.annenForelder.harRettTilForeldrepengerPåkrevd',
+                                        }),
+                                    ),
+                                ]}
                             >
                                 <Radio value={true}>Ja</Radio>
                                 <Radio value={false}>Nei</Radio>
@@ -362,31 +344,28 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                             </ReadMore>
                         </div>
                     )}
-                    {aleneOmOmsorg === false && harRettPåForeldrepengerINorge === true && (
-                        <div>
+                    {aleneOmOmsorg !== true && harRettPåForeldrepengerINorge !== false && (
+                        <>
                             <RadioGroup
                                 name="erInformertOmSøknaden"
-                                label={intl.formatMessage(
-                                    { id: 'annenForelder.spørsmål.erAnnenForelderInformert' },
-                                    {
-                                        navn: fornavn,
-                                    },
-                                )}
+                                label={intl.formatMessage({ id: 'annenForelder.spørsmål.erAnnenForelderInformert' })}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'valideringsfeil.annenForelder.informertAnnenForelderPåkrevd',
+                                        }),
+                                    ),
+                                ]}
                             >
                                 <Radio value={true}>Ja</Radio>
                                 <Radio value={false}>Nei</Radio>
                             </RadioGroup>
                             {erInformertOmSøknaden === false && (
-                                <div className="annenForelderVeileder">
-                                    <Alert variant="warning">
-                                        <FormattedMessage
-                                            id="annenForelder.erAnnenForelderInformert.veileder"
-                                            values={{ navn: fornavn! }}
-                                        />
-                                    </Alert>
-                                </div>
+                                <Alert variant="warning">
+                                    <FormattedMessage id="annenForelder.erAnnenForelderInformert.veileder" />
+                                </Alert>
                             )}
-                        </div>
+                        </>
                     )}
 
                     {aleneOmOmsorg === false &&

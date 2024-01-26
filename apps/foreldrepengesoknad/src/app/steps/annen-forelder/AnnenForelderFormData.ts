@@ -6,7 +6,7 @@ export type AnnenForelderIkkeOppgitt = {
 
 type AnnenForelderErOppgitt = {
     kanIkkeOppgis: false;
-    aleneOmOmsorg?: boolean;
+    erAleneOmOmsorg: boolean;
     fornavn: string;
     etternavn: string;
     fnr: string;

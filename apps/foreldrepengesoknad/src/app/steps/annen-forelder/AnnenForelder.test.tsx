@@ -9,7 +9,7 @@ import SøknadRoutes from 'app/routes/routes';
 import * as stories from './AnnenForelder.stories';
 
 const {
-    Default,
+    AnnenForelderFraOppgittBarn,
     SkalOppgiPersonalia,
     ForFar,
     SkalOppgiPersonaliaNavnMangler,
@@ -27,7 +27,12 @@ describe('<AnnenForelder>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        render(
+            <AnnenForelderFraOppgittBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -103,7 +108,12 @@ describe('<AnnenForelder>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        render(
+            <AnnenForelderFraOppgittBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
@@ -119,7 +129,7 @@ describe('<AnnenForelder>', () => {
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og ikke rett til foreldrepenger i Norge og ikke hatt opphold i EØS', async () => {
-        render(<Default />);
+        render(<AnnenForelderFraOppgittBarn />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -147,7 +157,7 @@ describe('<AnnenForelder>', () => {
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet, ikke rett til foreldrepenger i Norge, opphold men ikke optjening i EØS', async () => {
-        render(<Default />);
+        render(<AnnenForelderFraOppgittBarn />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -181,7 +191,7 @@ describe('<AnnenForelder>', () => {
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og at en har rett til foreldrepenger og har ikke orientert annen part', async () => {
-        render(<Default />);
+        render(<AnnenForelderFraOppgittBarn />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -206,7 +216,7 @@ describe('<AnnenForelder>', () => {
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og at en har rett til foreldrepenger og har orientert annen part', async () => {
-        render(<Default />);
+        render(<AnnenForelderFraOppgittBarn />);
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();

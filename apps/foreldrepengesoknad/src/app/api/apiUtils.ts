@@ -76,6 +76,7 @@ interface BarnPropsForAPI {
 export type BarnForInnsending = Omit<Barn, 'datoForAleneomsorg' | 'type'> & BarnPropsForAPI;
 
 export interface SøkerForInnsending extends Omit<SøkerData, 'andreInntekterSiste10Mnd' | 'språkkode'> {
+    erAleneOmOmsorg: boolean;
     språkkode: LocaleForInnsending;
     rolle: SøkerrolleInnsending;
 }
@@ -392,7 +393,7 @@ export const cleanSøknad = (
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
-    const søkerInnsending = cleanSøker(søker, søkersituasjon, locale);
+    const søkerInnsending = cleanSøker(søker, søkersituasjon, locale, annenForelder);
     const barnInnsending = cleanBarn(barn);
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const termindato = getTermindato(barn);
@@ -427,12 +428,19 @@ export const cleanSøknad = (
     return cleanedSøknad;
 };
 
-const cleanSøker = (søkerData: SøkerData, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
+const cleanSøker = (
+    søkerData: SøkerData,
+    søkersituasjon: Søkersituasjon,
+    locale: LocaleNo,
+    annenForelder: AnnenForelder,
+): SøkerForInnsending => {
     const rolle = konverterRolle(søkersituasjon.rolle);
+    const erOppgitt = isAnnenForelderOppgitt(annenForelder);
     return {
         ...søkerData,
         rolle: rolle,
         språkkode: locale,
+        erAleneOmOmsorg: erOppgitt ? annenForelder.erAleneOmOmsorg : true,
     };
 };
 
@@ -482,7 +490,7 @@ export const cleanEndringssøknad = (
             annenForelder,
             endringstidspunkt,
         ),
-        søker: cleanSøker(søker, søkersituasjon, locale),
+        søker: cleanSøker(søker, søkersituasjon, locale, annenForelder),
         annenForelder: cleanAnnenForelder(annenForelder, true),
         barn: barn,
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,

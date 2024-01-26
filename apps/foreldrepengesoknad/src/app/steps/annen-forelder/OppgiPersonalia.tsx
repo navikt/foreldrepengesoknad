@@ -1,5 +1,5 @@
 import { HStack, Label } from '@navikt/ds-react';
-import { Barn, hasValue, isAdoptertStebarn, validateTextInputField } from '@navikt/fp-common';
+import { Barn, bemUtils, isAdoptertStebarn, validateTextInputField } from '@navikt/fp-common';
 import { useFormContext } from 'react-hook-form';
 import { IntlShape, useIntl } from 'react-intl';
 
@@ -10,6 +10,8 @@ import { validateFødselsnummer } from 'app/utils/validationUtil';
 import { AnnenForelderFormData } from './AnnenForelderFormData';
 import { Søkerrolle } from '@navikt/fp-types';
 
+import './oppgiPersonalia.less';
+
 const isValidText = (intl: IntlShape, label: string) => (fornavn: string) => {
     return validateTextInputField(fornavn, label, intl);
 };
@@ -18,99 +20,99 @@ const isAnnenForelderKanIkkeOppgisIncluded = (søkerRolle: Søkerrolle, gjelderS
     if (gjelderStebarnsadopsjon) {
         return false;
     }
-
-    if (søkerRolle === 'medmor') {
-        return false;
-    }
-
-    return true;
+    return søkerRolle === 'medmor' ? false : true;
 };
 
 interface Props {
-    kanIkkeOppgis: boolean | undefined;
-    erUtenlandskFnr: boolean | undefined;
     søkersFødselsnummer: string;
     rolle: Søkerrolle;
     barn: Barn;
 }
 
-const OppgiPersonalia: React.FunctionComponent<Props> = ({
-    erUtenlandskFnr,
-    kanIkkeOppgis,
-    søkersFødselsnummer,
-    rolle,
-    barn,
-}) => {
+const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer, rolle, barn }) => {
     const intl = useIntl();
+    const bem = bemUtils('width');
 
     const formMethods = useFormContext<AnnenForelderFormData>();
     const fornavn = formMethods.watch('fornavn');
-    const etternavn = formMethods.watch('etternavn');
     const utenlandskFnr = formMethods.watch('utenlandskFnr');
-    const fnr = formMethods.watch('fnr');
+    const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
 
     const fornavnLabel = intl.formatMessage({ id: 'annenForelder.spørsmål.fornavn' });
     const etternavnLabel = intl.formatMessage({ id: 'annenForelder.spørsmål.etternavn' });
 
     return (
         <>
-            <legend>
-                <Label>{intl.formatMessage({ id: 'annenForelder.spørsmål.navn' })}</Label>
-            </legend>
-            <HStack gap="4">
-                <TextField
-                    name="fornavn"
-                    label={fornavnLabel}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fornavnPåkrevd' })),
-                        isValidText(intl, fornavnLabel),
-                    ]}
-                    disabled={kanIkkeOppgis}
-                />
-                <TextField
-                    name="etternavn"
-                    label={etternavnLabel}
-                    disabled={kanIkkeOppgis}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.etternavnPåkrevd' })),
-                        isValidText(intl, etternavnLabel),
-                    ]}
-                />
-            </HStack>
-            {isAnnenForelderKanIkkeOppgisIncluded(rolle, isAdoptertStebarn(barn)) && (
-                <Checkbox name="kanIkkeOppgis" label={intl.formatMessage({ id: 'annenForelder.spørsmål.kanOppgis' })} />
-            )}
-            {hasValue(fornavn) && hasValue(etternavn) && (
-                <TextField
-                    name="fnr"
-                    label={intl.formatMessage({ id: 'annenForelder.spørsmål.fnr' }, { navn: fornavn })}
-                    validate={[
-                        validateFødselsnummer(
-                            intl,
-                            søkersFødselsnummer,
-                            intl.formatMessage({ id: 'annenForelder.spørsmål.fnr' }, { navn: fornavn }),
-                            erUtenlandskFnr,
-                        ),
-                    ]}
-                />
-            )}
-            {kanIkkeOppgis !== true && hasValue(fornavn) && hasValue(etternavn) && (
-                <Checkbox
-                    name="utenlandskFnr"
-                    label={intl.formatMessage({ id: 'annenForelder.spørsmål.utenlandskFnr' }, { navn: fornavn })}
-                />
-            )}
-            {utenlandskFnr === true && hasValue(fnr) && (
-                <Select
-                    name="bostedsland"
-                    label={intl.formatMessage({ id: 'annenForelder.bostedsland' }, { navn: fornavn })}
-                >
-                    {createCountryOptions().map((o: Record<string, any>) => (
-                        <option key={o[0]} value={o[0]}>
-                            {o[1]}
-                        </option>
-                    ))}
-                </Select>
+            <div>
+                <legend>
+                    <Label>{intl.formatMessage({ id: 'annenForelder.spørsmål.navn' })}</Label>
+                </legend>
+                <HStack gap="2">
+                    <TextField
+                        name="fornavn"
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fornavnPåkrevd' })),
+                            isValidText(intl, fornavnLabel),
+                        ]}
+                        disabled={kanIkkeOppgis}
+                        className={bem.block}
+                    />
+                    <TextField
+                        name="etternavn"
+                        disabled={kanIkkeOppgis}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.etternavnPåkrevd' })),
+                            isValidText(intl, etternavnLabel),
+                        ]}
+                        className={bem.block}
+                    />
+                </HStack>
+                {isAnnenForelderKanIkkeOppgisIncluded(rolle, isAdoptertStebarn(barn)) && (
+                    <Checkbox
+                        name="kanIkkeOppgis"
+                        label={intl.formatMessage({ id: 'annenForelder.spørsmål.kanOppgis' })}
+                    />
+                )}
+            </div>
+            {!kanIkkeOppgis && (
+                <>
+                    <div>
+                        <TextField
+                            name="fnr"
+                            label={intl.formatMessage({ id: 'annenForelder.spørsmål.fnr' }, { navn: fornavn })}
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fnrPåkrevd' })),
+                                validateFødselsnummer(
+                                    intl,
+                                    søkersFødselsnummer,
+                                    intl.formatMessage({ id: 'annenForelder.spørsmål.fnr' }, { navn: fornavn }),
+                                    utenlandskFnr,
+                                ),
+                            ]}
+                        />
+                        <Checkbox
+                            name="utenlandskFnr"
+                            label={intl.formatMessage({ id: 'annenForelder.spørsmål.utenlandskFnr' })}
+                        />
+                    </div>
+                    {utenlandskFnr && (
+                        <Select
+                            name="bostedsland"
+                            label={intl.formatMessage({ id: 'annenForelder.bostedsland' }, { navn: fornavn })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({ id: 'valideringsfeil.annenForelder.bostedslandPåkrevd' }),
+                                ),
+                            ]}
+                        >
+                            {createCountryOptions().map((o: Record<string, any>) => (
+                                <option key={o[0]} value={o[0]}>
+                                    {o[1]}
+                                </option>
+                            ))}
+                        </Select>
+                    )}
+                </>
             )}
         </>
     );

@@ -11,8 +11,6 @@ import {
 } from '@navikt/fp-common';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
-import SøkerData from 'app/context/types/SøkerData';
-
 import { AnnenForelderFormData } from './AnnenForelderFormData';
 
 export const mapAnnenForelderFormToState = (
@@ -35,6 +33,7 @@ export const mapAnnenForelderFormToState = (
             fornavn: hasValue(fornavn) ? replaceInvisibleCharsWithSpace(fornavn) : undefined,
             etternavn: hasValue(etternavn) ? replaceInvisibleCharsWithSpace(etternavn) : undefined,
             fnr: hasValue(fnr) && fnr !== undefined ? replaceInvisibleCharsWithSpace(fnr.trim()) : undefined,
+            erAleneOmOmsorg: values.erAleneOmOmsorg,
             bostedsland: values.bostedsland,
             utenlandskFnr: values.utenlandskFnr,
             erUfør: values.erMorUfør,
@@ -55,7 +54,6 @@ export const getAnnenForelderFormInitialValues = (
     barn: Barn,
     intl: IntlShape,
     annenForelder?: AnnenForelder,
-    søkerData?: SøkerData,
 ): AnnenForelderFormData | undefined => {
     if (!annenForelder) {
         return undefined;
@@ -74,7 +72,7 @@ export const getAnnenForelderFormInitialValues = (
             harRettPåForeldrepengerINorge: annenForelder.harRettPåForeldrepengerINorge,
             erMorUfør: annenForelder.erUfør,
             dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg || [],
-            aleneOmOmsorg: !!søkerData?.erAleneOmOmsorg,
+            erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
             datoForAleneomsorg: dateToISOString(barn.datoForAleneomsorg) || '',
             utenlandskFnr: annenForelder.utenlandskFnr || false,
         };

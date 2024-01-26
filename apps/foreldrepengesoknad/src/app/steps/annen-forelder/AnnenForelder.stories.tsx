@@ -98,16 +98,6 @@ const Template: StoryFn<Props> = ({
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.SØKER_DATA]: {
-                            // @ts-ignore TODO (TOR) Fiks Søker-typen
-                            harHattAnnenInntektSiste10Mnd: undefined,
-                            // @ts-ignore TODO (TOR) Fiks Søker-typen
-                            harJobbetSomFrilansSiste10Mnd: undefined,
-                            // @ts-ignore TODO (TOR) Fiks Søker-typen
-                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
-                            // @ts-ignore TODO (TOR) Fiks Søker-typen
-                            erAleneOmOmsorg: undefined,
-                        },
                     }}
                 >
                     <AnnenForelder
@@ -121,8 +111,8 @@ const Template: StoryFn<Props> = ({
     );
 };
 
-export const Default = Template.bind({});
-Default.args = {
+export const AnnenForelderFraOppgittBarn = Template.bind({});
+AnnenForelderFraOppgittBarn.args = {
     barn: {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-03-15').toDate()],

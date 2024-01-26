@@ -6,7 +6,7 @@ import { getError, getValidationRules } from './formUtils';
 
 export interface Props {
     name: string;
-    label: string | ReactNode;
+    label?: string | ReactNode;
     validate?: Array<(value: string) => any> | Array<(value: number) => any>;
     description?: string;
     onChange?: (value: any) => void;
@@ -35,6 +35,7 @@ const TextField: FunctionComponent<Props> = ({
 
     const { field } = useController({
         name,
+        disabled,
         rules: {
             validate: useMemo(() => getValidationRules(validate), [validate]),
         },

@@ -14,6 +14,7 @@ export interface AnnenForelderOppgitt extends Common {
     erInformertOmSøknaden?: boolean;
     erForSyk?: boolean;
     erUfør?: boolean;
+    erAleneOmOmsorg: boolean;
 }
 
 export type AnnenForelderIkkeOppgitt = Common;
