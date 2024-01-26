@@ -17,6 +17,7 @@ import {
 import barnetQuestionsConfig from './barnetQuestionsConfig';
 import { useStepConfig } from '../stepsConfig';
 import { validateFødselsdato, validateTermindato } from './barnetValidering';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -28,6 +29,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     const intl = useIntl();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const barnet = useContextGetData(ContextDataType.OM_BARNET);
 
@@ -61,6 +63,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                         pageTitle={intl.formatMessage({ id: 'steps.label.barnet' })}
                         onCancel={avbrytSøknad}
                         steps={stepConfig}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <BarnetFormComponents.Form
                             includeButtons={false}

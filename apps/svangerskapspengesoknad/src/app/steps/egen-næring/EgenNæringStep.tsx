@@ -53,8 +53,8 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
@@ -74,7 +74,9 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                 inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
             )
         ) {
-            const automatiskValgtTilrettelegging = [getNæringTilretteleggingOption(tilrettelegginger, næringsdata)];
+            const automatiskValgtTilrettelegging = [
+                getNæringTilretteleggingOption(tilrettelegginger || [], næringsdata),
+            ];
             oppdaterTilrettelegginger(automatiskValgtTilrettelegging);
         }
 

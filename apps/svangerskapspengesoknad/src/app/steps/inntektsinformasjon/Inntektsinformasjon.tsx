@@ -60,6 +60,9 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const oppdaterInntektsinformasjon = useContextSaveData(ContextDataType.INNTEKTSINFORMASJON);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
+    const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
+    const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, termindato);
 
@@ -85,6 +88,16 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                 values.hattInntektSomNæringsdrivende,
             )!,
         });
+
+        if (values.hattArbeidIUtlandet === YesOrNo.NO) {
+            oppdaterArbeidIUtlandet(undefined);
+        }
+        if (values.hattInntektSomFrilans === YesOrNo.NO) {
+            oppdaterFrilans(undefined);
+        }
+        if (values.hattInntektSomNæringsdrivende === YesOrNo.NO) {
+            oppdaterEgenNæring(undefined);
+        }
 
         const neste = getNextRouteForInntektsinformasjon(automatiskValgtTilrettelegging, values);
         if (neste === SøknadRoutes.SKJEMA && automatiskValgtTilrettelegging) {
