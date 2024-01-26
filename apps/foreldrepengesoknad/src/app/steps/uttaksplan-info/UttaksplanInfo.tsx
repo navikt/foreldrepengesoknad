@@ -40,7 +40,6 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
@@ -125,7 +124,6 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
         barn,
         annenForelder,
         søkersituasjon,
-        søkerData,
         barnFraNesteSak,
         eksisterendeSakAnnenPartData,
         eksisterendeSak,
@@ -186,7 +184,6 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
                 tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
                 eksisterendeSakAnnenPart={eksisterendeVedtakAnnenPart}
                 søkersituasjon={søkersituasjon}
-                søkerData={søkerData}
                 annenForelder={annenForelder}
                 erEndringssøknad={erEndringssøknad}
                 søker={søker}

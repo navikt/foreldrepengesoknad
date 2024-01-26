@@ -69,7 +69,6 @@ const Template: StoryFn<Props> = ({
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
-        datoForAleneomsorg: undefined,
     },
     annenForelder = {
         kanIkkeOppgis: true,
@@ -117,7 +116,6 @@ AnnenForelderFraOppgittBarn.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
-        datoForAleneomsorg: dayjs('2021-03-15').toDate(),
         fnr: ['21091981146'],
     },
     søker,
@@ -176,7 +174,6 @@ ForFar.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
-        datoForAleneomsorg: dayjs('2021-03-15').toDate(),
         fnr: ['21091981146'],
     },
     søkersituasjon: {

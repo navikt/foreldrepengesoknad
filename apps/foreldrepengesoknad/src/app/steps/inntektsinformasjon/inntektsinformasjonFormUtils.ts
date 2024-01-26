@@ -59,7 +59,6 @@ export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInn
 
 export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
-    søkerData: SøkerData,
     andreInntekter?: AnnenInntekt[],
     næringer?: Næring[],
 ): SøkerData => {
@@ -73,7 +72,6 @@ export const mapInntektsinformasjonFormDataToState = (
     }
 
     return {
-        erAleneOmOmsorg: søkerData.erAleneOmOmsorg,
         harHattAnnenInntektSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattAndreInntekter)!,
         harJobbetSomFrilansSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans)!,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(

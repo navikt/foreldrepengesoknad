@@ -1,5 +1,3 @@
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import {
     AnnenForelder,
     Barn,
@@ -21,8 +19,9 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import SøkerData from 'app/context/types/SøkerData';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
@@ -96,19 +95,23 @@ const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
-    søkerData: SøkerData,
     barnFraNesteSak?: BarnFraNesteSak,
     annenPartsVedtak?: AnnenPartVedtakDTO,
     eksisterendeSak?: EksisterendeSak,
 ) => {
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
         erFarEllerMedmor,
-        søkerData.erAleneOmOmsorg,
+        oppgittAnnenForelder?.erAleneOmOmsorg || false,
         annenForelder,
     );
 
-    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, søkerData.erAleneOmOmsorg, annenForelder);
+    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(
+        !erFarEllerMedmor,
+        oppgittAnnenForelder?.erAleneOmOmsorg || false,
+        annenForelder,
+    );
 
     const familieHendelseDatoNesteSak = barnFraNesteSak?.familiehendelsesdato;
 

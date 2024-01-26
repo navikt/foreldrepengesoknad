@@ -78,7 +78,6 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -91,7 +90,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const søkerErAleneOmOmsorg = !!søkerData.erAleneOmOmsorg;
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const søkerErAleneOmOmsorg = !!oppgittAnnenForelder?.erAleneOmOmsorg;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined ||
           annenForelder.harRettPåForeldrepengerIEØS !== undefined
@@ -174,12 +174,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const erSøkerMor = !erFarEllerMedmor;
 
-    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const harAnnenForelderRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const harAnnenForelderRett =
         !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge || !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
     const fornavnAnnenForeldre = oppgittAnnenForelder?.fornavn;
-    const erAnnenPartUfør = !!oppgittAnnenForelder?.erUfør;
+    const erAnnenPartUfør = !!oppgittAnnenForelder?.erMorUfør;
     const navnAnnenPart = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, false)
         : '';
@@ -237,7 +236,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                     const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                         ...formValues,
                         harAnnenForelderRettPåForeldrepengerINorge,
-                        erAleneOmOmsorg: søkerErAleneOmOmsorg,
+                        erAleneOmOmsorg: oppgittAnnenForelder?.erAleneOmOmsorg,
                     } as MorFarAdopsjonQuestionsPayload);
 
                     const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];

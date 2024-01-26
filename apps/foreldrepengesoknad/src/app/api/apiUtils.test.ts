@@ -20,6 +20,7 @@ import { ContextDataType } from 'app/context/FpDataContext';
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
     erForSykInput: boolean | undefined,
+    datoForAleneomsorgInput: string | undefined,
 ): AnnenForelder => {
     return {
         fornavn: 'Mor',
@@ -27,6 +28,7 @@ const getAnnenForelderUførMock = (
         erUfør: urUførInput,
         erForSyk: erForSykInput,
         kanIkkeOppgis: false,
+        datoForAleneomsorg: datoForAleneomsorgInput,
     } as AnnenForelder;
 };
 
@@ -44,10 +46,9 @@ const getAnnenForelderIkkeOppgittMock = (): AnnenForelder => {
     } as AnnenForelder;
 };
 
-const getBarnMock = (datoForAleneomsorgInput: string | undefined) => {
+const getBarnMock = () => {
     return {
         type: BarnType.FØDT,
-        datoForAleneomsorg: datoForAleneomsorgInput,
         fødselsdatoer: [new Date('01-01-2022')],
         termindato: new Date('01-02-2022'),
         fnr: ['01010111111'],
@@ -85,9 +86,9 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
 };
 
 describe('cleanUpSøknadsdataForInnsending', () => {
-    const barnMock = getBarnMock('2021-01-01');
+    const barnMock = getBarnMock();
     const fødselsdato = barnMock.fødselsdatoer[0];
-    const annenForelderMock = getAnnenForelderUførMock(true, false);
+    const annenForelderMock = getAnnenForelderUførMock(true, false, '2021-01-01');
     const hentData = getStateMock(annenForelderMock, barnMock, []);
     const cleanedSøknad = cleanSøknad(hentData, fødselsdato, 'nb');
 

@@ -103,7 +103,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
@@ -126,7 +125,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         uttaksplanMetadata.perioderSomSkalSendesInn || [],
     );
 
-    const { erAleneOmOmsorg } = søker;
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const erAleneOmOmsorg = oppgittAnnenForelder?.erAleneOmOmsorg || false;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
@@ -498,7 +498,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         barn,
         annenForelder,
         søkersituasjon,
-        søker,
         barnFraNesteSak,
         eksisterendeSakAnnenPartData,
         eksisterendeSak,

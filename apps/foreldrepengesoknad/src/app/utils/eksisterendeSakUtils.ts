@@ -35,7 +35,6 @@ import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 
-import SøkerData from 'app/context/types/SøkerData';
 import { Søknad } from 'app/context/types/Søknad';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
@@ -289,12 +288,6 @@ const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: Familiehendelse
     return 'adopsjon';
 };
 
-const getSøkerFromSaksgrunnlag = (grunnlag: Saksgrunnlag, erFarEllerMedmor: boolean): Partial<SøkerData> => {
-    return {
-        erAleneOmOmsorg: erFarEllerMedmor ? grunnlag.farMedmorErAleneOmOmsorg : grunnlag.morErAleneOmOmsorg,
-    };
-};
-
 const getSøkerrolleFromSaksgrunnlag = (
     søker: Søker,
     situasjon: Situasjon,
@@ -375,7 +368,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                             ? annenPart.fornavn
                             : intlUtils(intl, 'annen.forelder'),
                     etternavn: annenPart.etternavn,
-                    erUfør: grunnlag.morErUfør,
+                    erMorUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge:
                         !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     fnr: annenPart.fnr,
@@ -575,7 +568,6 @@ export const opprettSøknadFraEksisterendeSak = (
         return undefined;
     }
 
-    const søkerData = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
 
     const rolle = getSøkerrolleFromSaksgrunnlag(søker, situasjon, grunnlag);
@@ -594,13 +586,15 @@ export const opprettSøknadFraEksisterendeSak = (
     );
 
     const søknad: Partial<Søknad> = {
-        søker: søkerData as SøkerData,
         søkersituasjon: {
             situasjon,
             rolle,
         },
         barn,
-        annenForelder,
+        annenForelder: {
+            ...annenForelder,
+            erAleneOmOmsorg: søkerErFarEllerMedmor ? grunnlag.farMedmorErAleneOmOmsorg : grunnlag.morErAleneOmOmsorg,
+        },
         erEndringssøknad: true,
         dekningsgrad,
         uttaksplan,

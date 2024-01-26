@@ -137,7 +137,6 @@ AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021.args = {
         kanIkkeOppgis: true,
     },
     søkerData: {
-        erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -177,7 +176,6 @@ AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021.args = {
         kanIkkeOppgis: true,
     },
     søkerData: {
-        erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -218,9 +216,9 @@ AdopsjonDeltUttakDerMorSøker.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -241,9 +239,9 @@ AdopsjonDeltUttakDerFarSøker100.args = {
         fnr: '19047815714',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -264,9 +262,9 @@ AdopsjonMedDeltUttakDerFarSøker80.args = {
         fnr: '19047815714',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,

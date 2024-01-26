@@ -119,7 +119,6 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 
         const updatedSøker = mapInntektsinformasjonFormDataToState(
             values,
-            søker,
             andreInntekterInformasjon,
             egenNæringInformasjon,
         );

@@ -12,6 +12,7 @@ import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/st
 import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
@@ -141,13 +142,11 @@ MorAleneomsorgDekningsgrad100Før1Okt2021.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         kanIkkeOppgis: true,
     },
     søkerData: {
-        erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -163,13 +162,11 @@ MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         kanIkkeOppgis: true,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -186,13 +183,13 @@ MorAleneomsorgPrematurFødsel.args = {
         fødselsdatoer: [dayjs('2023-01-25').toDate()],
         termindato: dayjs('2023-04-01').toDate(),
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
+        fødselsdatoer: [dayjs('2021-01-11').toDate()],
+        termindato: dayjs('2021-03-11').toDate(),
     },
     annenForelder: {
         kanIkkeOppgis: true,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -206,9 +203,6 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
     barn: {
         type: BarnType.FØDT,
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
-        fødselsdatoer: [dayjs('2023-01-11').toDate()],
-        termindato: dayjs('2023-03-11').toDate(),
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -216,9 +210,10 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        datoForAleneomsorg: dayjs().format(ISO_DATE_FORMAT),
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -259,7 +254,6 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-07-15').toDate()],
         antallBarn: 2,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -267,9 +261,10 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        datoForAleneomsorg: dayjs().format(ISO_DATE_FORMAT),
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,

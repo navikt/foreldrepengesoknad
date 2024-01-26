@@ -158,7 +158,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         return null;
     }
 
-    const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
+    const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erMorUfør : false;
     const navnMor = isAnnenForelderOppgitt(annenForelder)
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn, false)
         : '';

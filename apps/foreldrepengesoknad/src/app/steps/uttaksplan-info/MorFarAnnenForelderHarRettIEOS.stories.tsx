@@ -116,9 +116,9 @@ AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -173,9 +173,9 @@ AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -193,7 +193,7 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
         rolle: 'far',
     },
     barn: {
-        type: BarnType.FØDT,
+        type: BarnType.ADOPTERT_ANNET_BARN,
         fødselsdatoer: [dayjs('2022-06-14').toDate(), dayjs('2022-06-14').toDate()],
         antallBarn: 2,
         // @ts-ignore FIX
@@ -207,9 +207,9 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -227,8 +227,8 @@ FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
         rolle: 'mor',
     },
     barn: {
-        fødselsdatoer: [dayjs('2022-08-14').toDate()],
-        termindato: dayjs('2022-10-14').toDate(),
+        fødselsdatoer: [dayjs('2022-06-14').toDate()],
+        termindato: dayjs('2022-08-14').toDate(),
         antallBarn: 1,
         // @ts-ignore FIX
         adopsjonsdato: undefined,
@@ -242,9 +242,9 @@ FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,

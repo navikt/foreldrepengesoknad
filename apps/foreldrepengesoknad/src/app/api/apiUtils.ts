@@ -169,7 +169,7 @@ const skalPeriodeSendesInn = (periode: Periode) => {
 const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = false): AnnenForelderForInnsending => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         const {
-            erUfør,
+            erMorUfør,
             erForSyk,
             harRettPåForeldrepengerINorge,
             harRettPåForeldrepengerIEØS,
@@ -177,7 +177,7 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
             ...annenForelderRest
         } = annenForelder;
         const cleanedAnnenForelder = {
-            harMorUføretrygd: erUfør,
+            harMorUføretrygd: erMorUfør,
             harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
             ...annenForelderRest,
         };
@@ -201,19 +201,19 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
 
 const cleanBarn = (barn: Barn): BarnForInnsending => {
     if (isFødtBarn(barn)) {
-        const { datoForAleneomsorg, type, fnr, ...barnRest } = barn;
+        const { type, fnr, ...barnRest } = barn;
 
         return barnRest;
     }
 
     if (isAdoptertBarn(barn)) {
-        const { datoForAleneomsorg, type, fnr, ...barnRest } = barn;
+        const { type, fnr, ...barnRest } = barn;
         return {
             adopsjonAvEktefellesBarn: isAdoptertStebarn(barn),
             ...barnRest,
         };
     }
-    const { datoForAleneomsorg, type, ...barnRest } = barn;
+    const { type, ...barnRest } = barn;
     return barnRest;
 };
 
@@ -299,7 +299,7 @@ const cleanUttaksplan = (
                 ? changeClientonlyKontotype(
                       periode,
                       !!annenForelder.harRettPåForeldrepengerINorge,
-                      !!annenForelder.erUfør,
+                      !!annenForelder.erMorUfør,
                       søkerErFarEllerMedmor,
                       familiehendelsesdato,
                   )

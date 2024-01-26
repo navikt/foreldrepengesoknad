@@ -60,7 +60,6 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                                 rolle: 'mor',
                             },
                             [ContextDataType.SØKER_DATA]: {
-                                erAleneOmOmsorg: false,
                                 harHattAnnenInntektSiste10Mnd: false,
                                 harJobbetSomFrilansSiste10Mnd: false,
                                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

@@ -74,14 +74,14 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                             dekningsgrad: args.dekningsgrad,
                         },
                         [ContextDataType.SØKER_DATA]: {
-                            erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                             harHattAnnenInntektSiste10Mnd: false,
                         },
                         [ContextDataType.ANNEN_FORELDER]: {
-                            etternavn: 'Hanson',
-                            fornavn: 'Hanne',
+                            erAleneOmOmsorg: false,
+                            etternavn: 'dfg',
+                            fornavn: 'dfg',
                             fnr: '02068629902',
                             utenlandskFnr: false,
                             kanIkkeOppgis: false,

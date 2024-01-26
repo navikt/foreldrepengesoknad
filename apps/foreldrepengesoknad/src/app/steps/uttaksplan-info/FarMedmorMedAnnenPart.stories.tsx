@@ -117,12 +117,12 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                             dekningsgrad: args.dekningsgrad,
                         },
                         [ContextDataType.SØKER_DATA]: {
-                            erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                             harHattAnnenInntektSiste10Mnd: false,
                         },
                         [ContextDataType.ANNEN_FORELDER]: {
+                            erAleneOmOmsorg: false,
                             etternavn: 'Pettersen',
                             fornavn: 'Helga',
                             fnr: '02068629902',

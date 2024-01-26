@@ -1,14 +1,4 @@
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { IntlShape } from 'react-intl';
-
-import {
-    AnnenForelder,
-    Barn,
-    RegistrertAnnenForelder,
-    hasValue,
-    intlUtils,
-    isAnnenForelderOppgitt,
-} from '@navikt/fp-common';
+import { AnnenForelder, RegistrertAnnenForelder } from '@navikt/fp-common';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 import { AnnenForelderFormData } from './AnnenForelderFormData';
@@ -30,51 +20,19 @@ export const mapAnnenForelderFormToState = (
         const fnr =
             skalOppgiPersonalia && annenForelderFraRegistrertBarn ? annenForelderFraRegistrertBarn.fnr : values.fnr;
         return {
-            fornavn: hasValue(fornavn) ? replaceInvisibleCharsWithSpace(fornavn) : undefined,
-            etternavn: hasValue(etternavn) ? replaceInvisibleCharsWithSpace(etternavn) : undefined,
-            fnr: hasValue(fnr) && fnr !== undefined ? replaceInvisibleCharsWithSpace(fnr.trim()) : undefined,
+            fornavn: replaceInvisibleCharsWithSpace(fornavn),
+            etternavn: replaceInvisibleCharsWithSpace(etternavn),
+            fnr: replaceInvisibleCharsWithSpace(fnr.trim()),
             erAleneOmOmsorg: values.erAleneOmOmsorg,
             bostedsland: values.bostedsland,
             utenlandskFnr: values.utenlandskFnr,
-            erUfør: values.erMorUfør,
+            erMorUfør: values.erMorUfør,
             kanIkkeOppgis: values.kanIkkeOppgis,
             harRettPåForeldrepengerINorge: values.harRettPåForeldrepengerINorge,
             harOppholdtSegIEØS: values.harOppholdtSegIEØS,
             harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
             erInformertOmSøknaden: values.erInformertOmSøknaden,
-        };
-    }
-
-    return {
-        kanIkkeOppgis: true,
-    };
-};
-
-export const getAnnenForelderFormInitialValues = (
-    barn: Barn,
-    intl: IntlShape,
-    annenForelder?: AnnenForelder,
-): AnnenForelderFormData | undefined => {
-    if (!annenForelder) {
-        return undefined;
-    }
-
-    if (isAnnenForelderOppgitt(annenForelder)) {
-        return {
-            kanIkkeOppgis: false,
-            fornavn: annenForelder.fornavn === intlUtils(intl, 'annen.forelder') ? '' : annenForelder.fornavn,
-            etternavn: annenForelder.etternavn,
-            fnr: annenForelder.fnr,
-            bostedsland: annenForelder.bostedsland,
-            erInformertOmSøknaden: annenForelder.erInformertOmSøknaden,
-            harOppholdtSegIEØS: annenForelder.harOppholdtSegIEØS,
-            harRettPåForeldrepengerIEØS: annenForelder.harRettPåForeldrepengerIEØS,
-            harRettPåForeldrepengerINorge: annenForelder.harRettPåForeldrepengerINorge,
-            erMorUfør: annenForelder.erUfør,
-            dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg || [],
-            erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
-            datoForAleneomsorg: dateToISOString(barn.datoForAleneomsorg) || '',
-            utenlandskFnr: annenForelder.utenlandskFnr || false,
+            datoForAleneomsorg: values.datoForAleneomsorg,
         };
     }
 

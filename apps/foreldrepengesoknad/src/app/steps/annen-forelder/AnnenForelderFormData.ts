@@ -1,5 +1,3 @@
-import { Attachment } from '@navikt/fp-common';
-
 export type AnnenForelderIkkeOppgitt = {
     kanIkkeOppgis: true;
 };
@@ -12,7 +10,6 @@ type AnnenForelderErOppgitt = {
     fnr: string;
     utenlandskFnr?: boolean;
     bostedsland?: string;
-    dokumentasjonAvAleneomsorg: Attachment[];
     datoForAleneomsorg?: string;
     harRettPåForeldrepengerINorge?: boolean;
     harOppholdtSegIEØS?: boolean;

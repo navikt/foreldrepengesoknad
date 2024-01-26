@@ -58,13 +58,10 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
                         },
                         [ContextDataType.OM_BARNET]: {
                             type: BarnType.FØDT,
-                            fødselsdatoer: args.fødselsdatoer,
-                            termindato: args.termindato,
-                            antallBarn: args.antallBarn,
-                            datoForAleneomsorg: dayjs('2022-03-24').toDate(),
+                            fødselsdatoer: [dayjs('2022-03-01').toDate()],
+                            antallBarn: 1,
                         },
                         [ContextDataType.SØKER_DATA]: {
-                            erAleneOmOmsorg: true,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                             harHattAnnenInntektSiste10Mnd: false,
@@ -73,8 +70,10 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
                             dekningsgrad: args.dekningsgrad,
                         },
                         [ContextDataType.ANNEN_FORELDER]: {
-                            etternavn: 'Hanne',
-                            fornavn: 'Hanson',
+                            datoForAleneomsorg: '2022-03-24',
+                            erAleneOmOmsorg: true,
+                            etternavn: 'dfg',
+                            fornavn: 'dfg',
                             fnr: '02068629902',
                             utenlandskFnr: false,
                             kanIkkeOppgis: false,

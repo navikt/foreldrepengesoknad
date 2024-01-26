@@ -9,7 +9,6 @@ export enum BarnType {
 interface Common {
     type: BarnType;
     antallBarn: number;
-    datoForAleneomsorg?: Date;
 }
 
 export interface IkkeUtfyltTypeBarn extends Common {

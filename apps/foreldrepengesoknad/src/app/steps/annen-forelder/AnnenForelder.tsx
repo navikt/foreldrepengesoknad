@@ -6,11 +6,9 @@ import { Alert, BodyLong, BodyShort, Link, Radio, ReadMore, VStack } from '@navi
 
 import {
     Barn,
-    ISOStringToDate,
     SivilstandType,
     Step,
     getKjønnFromFnrString,
-    hasValue,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
@@ -26,9 +24,9 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
-import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
+import { AnnenForelderFormData } from './AnnenForelderFormData';
 import OppgiPersonalia from './OppgiPersonalia';
-import { getAnnenForelderFormInitialValues, mapAnnenForelderFormToState } from './annenForelderFormUtils';
+import { mapAnnenForelderFormToState } from './annenForelderFormUtils';
 
 const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker: Søker) => {
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
@@ -65,7 +63,6 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
 
-    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
@@ -80,31 +77,13 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const tekstOmFarskapsportalId = getTekstOmFarskapsportal(rolle, barnetErIkkeFødt);
 
     const onSubmit = (values: AnnenForelderFormData) => {
-        const erOppgitt = erAnnenForelderOppgitt(values);
-
-        // TODO (TOR) Burde vel ikkje oppdatera Barn i dette steget?
-        if (erOppgitt) {
-            const newBarn: Barn = {
-                ...barn,
-                datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
-                    ? ISOStringToDate(values.datoForAleneomsorg)
-                    : undefined,
-                dokumentasjonAvAleneomsorg:
-                    values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
-                        ? values.dokumentasjonAvAleneomsorg
-                        : undefined,
-            };
-            oppdaterOmBarnet(newBarn);
-        }
-
         oppdaterAnnenForeldre(mapAnnenForelderFormToState(values, skalOppgiPersonalia, annenForelderFraRegistrertBarn));
-
         return navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<AnnenForelderFormData>({
         shouldUnregister: true,
-        defaultValues: getAnnenForelderFormInitialValues(barn, intl, annenForelder),
+        defaultValues: annenForelder,
     });
 
     const harRettPåForeldrepengerINorge = formMethods.watch('harRettPåForeldrepengerINorge');
