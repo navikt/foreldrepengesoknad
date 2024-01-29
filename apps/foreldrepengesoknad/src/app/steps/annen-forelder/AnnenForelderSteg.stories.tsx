@@ -71,7 +71,7 @@ const Template: StoryFn<Props> = ({
         antallBarn: 1,
     },
     annenForelder = {
-        kanIkkeOppgis: true,
+        kanIkkeOppgis: undefined,
     },
     gåTilNesteSide,
     mellomlagreSøknadOgNaviger = promiseAction(),
