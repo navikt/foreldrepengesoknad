@@ -18,7 +18,9 @@ describe('<Oppsummering>', () => {
         expect(screen.getAllByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')[0]).toBeInTheDocument();
     });
     it('skal ikke vise feilmelding, vilkår er godkjent', async () => {
-        render(<Default />);
+        const sendSøknad = vi.fn();
+
+        render(<Default sendSøknad={sendSøknad} />);
 
         expect(
             await screen.findByText(
@@ -36,5 +38,10 @@ describe('<Oppsummering>', () => {
         await userEvent.click(screen.getByText('Send søknaden'));
 
         expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
+
+        const abortController = new AbortController();
+
+        expect(sendSøknad).toHaveBeenCalledTimes(1);
+        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 });

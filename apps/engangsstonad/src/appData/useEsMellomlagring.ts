@@ -44,7 +44,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
 
                     navigate(currentPath);
                 } else {
-                    // Ved avbryt så set ein Path = undefined og må så rydda opp i data
+                    // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
                     await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING);
 
                     setVelkommen(false);

@@ -1,7 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import IkkeKvinne from './IkkeKvinne';
 import { withRouter } from 'storybook-addon-react-router-v6';
-import SvangerskapspengerContextProvider from 'app/context/SvangerskapspengerContext';
 
 import '@navikt/ds-css';
 
@@ -12,11 +11,7 @@ export default {
 };
 
 const Template: StoryFn<any> = () => {
-    return (
-        <SvangerskapspengerContextProvider>
-            <IkkeKvinne />;
-        </SvangerskapspengerContextProvider>
-    );
+    return <IkkeKvinne />;
 };
 
 export const Default = Template.bind({});

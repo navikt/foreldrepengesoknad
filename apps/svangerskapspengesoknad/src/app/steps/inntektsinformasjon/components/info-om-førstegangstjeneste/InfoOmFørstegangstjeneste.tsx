@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import { Block } from '@navikt/fp-common';
-import links from 'app/links/links';
 import { BodyLong, ExpansionCard } from '@navikt/ds-react';
+import { links } from '@navikt/fp-constants';
 
 const InfoOmFørstegangstjeneste = () => {
     return (
@@ -23,7 +23,7 @@ const InfoOmFørstegangstjeneste = () => {
                             id="inntektsinformasjon.infoOmFørstegangstjeneste.content.del2"
                             values={{
                                 a: (msg: any) => (
-                                    <a href={links.papirsøknad} target="_blank" rel="noreferrer" className="lenke">
+                                    <a href={links.papirsøknadSvp} target="_blank" rel="noreferrer" className="lenke">
                                         {msg}
                                     </a>
                                 ),

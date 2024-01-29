@@ -3,6 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './Barnet.stories';
 import dayjs from 'dayjs';
+import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const { Default } = composeStories(stories);
 
@@ -21,6 +24,44 @@ describe('<Barnet>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.queryByText('Du må oppgi fødselsdato.')).not.toBeInTheDocument();
+    });
+
+    it('skal gå til neste og ha korrekt data', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Ja'));
+
+        const fødselsdatoInput = screen.getByLabelText('Fødselsdato');
+        await userEvent.type(fødselsdatoInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        const termindatoInput = screen.getByLabelText('Termindato');
+        await userEvent.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                erBarnetFødt: true,
+                fødselsdato: dayjs().format(ISO_DATE_FORMAT),
+                termindato: dayjs().format(ISO_DATE_FORMAT),
+            },
+            key: ContextDataType.OM_BARNET,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal måtte oppgi fødselsdato om barnet er født', async () => {

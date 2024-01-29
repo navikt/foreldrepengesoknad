@@ -2,6 +2,8 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './Inntektsinformasjon.stories';
 import { render, screen } from '@testing-library/react';
+import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 const { Default } = composeStories(stories);
 
@@ -28,7 +30,10 @@ describe('<Inntektsinformasjon>', () => {
     });
 
     it('skal ikke vise feilmelding', async () => {
-        render(<Default />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
 
@@ -50,5 +55,32 @@ describe('<Inntektsinformasjon>', () => {
         expect(
             screen.queryByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.'),
         ).not.toBeInTheDocument();
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                harHattAnnenInntekt: true,
+                harJobbetSomFrilans: false,
+                harJobbetSomSelvstendigNæringsdrivende: false,
+            },
+            key: ContextDataType.INNTEKTSINFORMASJON,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.FRILANS,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: undefined,
+            key: ContextDataType.EGEN_NÆRING,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
+            data: SøknadRoutes.ARBEID_I_UTLANDET,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 });

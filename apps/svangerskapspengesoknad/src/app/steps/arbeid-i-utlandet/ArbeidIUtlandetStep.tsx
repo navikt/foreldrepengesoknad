@@ -1,16 +1,11 @@
 import { Button } from '@navikt/ds-react';
-import { Block, Step, StepButtonWrapper, bemUtils, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
-import { FormattedMessage, useIntl } from 'react-intl';
-import actionCreator from 'app/context/action/actionCreator';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import stepConfig, {
+import { Block, Step, StepButtonWrapper, bemUtils, date20YearsAgo, date5MonthsAgo } from '@navikt/fp-common';
+import { useIntl } from 'react-intl';
+import {
     getBackLinkForArbeidIUtlandetSteg,
     getNextRouteValgAvArbeidEllerSkjema,
+    useStepConfig,
 } from 'app/steps/stepsConfig';
-import { Link } from 'react-router-dom';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import {
     ArbeidIUtlandetFormComponents,
     ArbeidIUtlandetFormData,
@@ -36,39 +31,70 @@ import {
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import './arbeidIUtlandet.css';
+import { Søkerinfo } from 'app/types/Søkerinfo';
+import { useState } from 'react';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
-const ArbeidIUtlandetStep: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
+};
+
+const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+}) => {
     const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
-    const { arbeidsforhold } = useSøkerinfo();
-    const søknad = useSøknad();
-    const { søker, barn } = søknad;
-    const arbeidIUtlandet = søker.andreInntekter;
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const onValidSubmitHandler = (values: Partial<ArbeidIUtlandetFormData>) => {
+    const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+
+    const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const onSubmit = (values: Partial<ArbeidIUtlandetFormData>) => {
+        setIsSubmitting(true);
+
         const arbeidIUtlandet = mapArbeidIUtlandetTilState(values);
-        const søkerMedArbeidIUtlandet = { ...søker, andreInntekter: arbeidIUtlandet };
-        return [actionCreator.setSøker(søkerMedArbeidIUtlandet)];
+        oppdaterArbeidIUtlandet(arbeidIUtlandet);
+
+        const { nextRoute, nextTilretteleggingId } = getNextRouteValgAvArbeidEllerSkjema(
+            barnet.termindato,
+            søkerInfo.arbeidsforhold,
+            inntektsinformasjon,
+        );
+        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
+        oppdaterAppRoute(nextRoute);
+
+        mellomlagreSøknadOgNaviger();
     };
-    const nextRoute = getNextRouteValgAvArbeidEllerSkjema(barn.termindato, arbeidsforhold, søker);
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-    const onAvbrytSøknad = useAvbrytSøknad();
 
     return (
         <ArbeidIUtlandetFormComponents.FormikWrapper
             enableReinitialize={true}
             initialValues={getInitialArbeidIUtlandetFormData(arbeidIUtlandet)}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
-                const navnPåArbeidsgiverLabel = intlUtils(intl, 'arbeidIUtlandet.navn');
+                const navnPåArbeidsgiverLabel = intl.formatMessage({ id: 'arbeidIUtlandet.navn' });
                 return (
                     <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
                         activeStepId="arbeidIUtlandet"
-                        pageTitle={intlUtils(intl, 'steps.label.arbeidIUtlandet')}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        supportsTempSaving={false}
+                        pageTitle={intl.formatMessage({ id: 'steps.label.arbeidIUtlandet' })}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <ArbeidIUtlandetFormComponents.Form
                             includeButtons={false}
@@ -87,7 +113,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                 <ArbeidIUtlandetFormComponents.CountrySelect
                                                     name={`arbeidIUtlandet.${index}.land`}
                                                     style={{ width: 'var(--app-text-input-width)' }}
-                                                    label={intlUtils(intl, 'arbeidIUtlandet.land')}
+                                                    label={intl.formatMessage({ id: 'arbeidIUtlandet.land' })}
                                                     useAlpha3Code={false}
                                                     validate={validateArbeidIUtlandetLand(intl)}
                                                 />
@@ -99,7 +125,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                         variant="tertiary"
                                                         onClick={() => arrayHelpers.remove(index)}
                                                     >
-                                                        {intlUtils(intl, 'perioder.varierende.slett')}
+                                                        {intl.formatMessage({ id: 'perioder.varierende.slett' })}
                                                     </Button>
                                                 )}
                                             </Block>
@@ -118,7 +144,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                             <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.DatePicker
                                                     name={`arbeidIUtlandet.${index}.fom`}
-                                                    label={intlUtils(intl, 'arbeidIUtlandet.fom')}
+                                                    label={intl.formatMessage({ id: 'arbeidIUtlandet.fom' })}
                                                     placeholder={'dd.mm.åååå'}
                                                     fullscreenOverlay={true}
                                                     showYearSelector={true}
@@ -133,7 +159,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                             <Block padBottom="xxl">
                                                 <ArbeidIUtlandetFormComponents.YesOrNoQuestion
                                                     name={`arbeidIUtlandet.${index}.pågående`}
-                                                    legend={intlUtils(intl, 'egenNæring.næring.pågående')}
+                                                    legend={intl.formatMessage({ id: 'egenNæring.næring.pågående' })}
                                                     validate={validateArbeidIUtlandetPågående(intl)}
                                                 />
                                             </Block>
@@ -143,8 +169,10 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                             >
                                                 <ArbeidIUtlandetFormComponents.DatePicker
                                                     name={`arbeidIUtlandet.${index}.tom`}
-                                                    label={intlUtils(intl, 'arbeidIUtlandet.tom')}
-                                                    description={intlUtils(intl, 'egenNæring.arbeid.tom.description')}
+                                                    label={intl.formatMessage({ id: 'arbeidIUtlandet.tom' })}
+                                                    description={intl.formatMessage({
+                                                        id: 'egenNæring.arbeid.tom.description',
+                                                    })}
                                                     placeholder={'dd.mm.åååå'}
                                                     fullscreenOverlay={true}
                                                     showYearSelector={true}
@@ -173,7 +201,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                                                                 arrayHelpers.push(getUferdigArbeidIUtlandetInput())
                                                             }
                                                         >
-                                                            {intlUtils(intl, 'arbeidIUtlandet.tittel.ny')}
+                                                            {intl.formatMessage({ id: 'arbeidIUtlandet.tittel.ny' })}
                                                         </Button>
                                                     </Block>
                                                 )}
@@ -183,11 +211,12 @@ const ArbeidIUtlandetStep: React.FunctionComponent = () => {
                             />
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getBackLinkForArbeidIUtlandetSteg(søker)}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getBackLinkForArbeidIUtlandetSteg(inntektsinformasjon)}
+                                    />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                        {intl.formatMessage({ id: 'søknad.gåVidere' })}
                                     </Button>
                                 </StepButtonWrapper>
                             </Block>

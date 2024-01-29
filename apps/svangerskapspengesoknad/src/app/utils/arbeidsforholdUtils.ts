@@ -1,16 +1,15 @@
-import { intlUtils } from '@navikt/fp-common';
-import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
-import { Søker } from 'app/types/Søker';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
-import { hasValue } from './validationUtils';
-import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
-import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
-import Tilrettelegging, { Stilling } from 'app/types/Tilrettelegging';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { isISODateString } from '@navikt/ds-datepicker';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
+import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
+import Tilrettelegging, { Stilling } from 'app/types/Tilrettelegging';
+import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
+import { hasValue } from './validationUtils';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
@@ -161,27 +160,30 @@ export const getAutomatiskValgtTilretteleggingHvisKunEtArbeid = (
     return automatiskValgtTilrettelegging;
 };
 
-export const getTekstOmManglendeArbeidsforhold = (søker: Søker, intl: IntlShape): string => {
-    const erFrilanser = søker.harJobbetSomFrilans;
-    const harNæring = søker.harJobbetSomSelvstendigNæringsdrivende;
-    const harJobbetIUtlandet = søker.harHattAnnenInntekt;
+export const getTekstOmManglendeArbeidsforhold = (
+    inntektsinformasjon: Inntektsinformasjon,
+    intl: IntlShape,
+): string => {
+    const erFrilanser = inntektsinformasjon.harJobbetSomFrilans;
+    const harNæring = inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende;
+    const harJobbetIUtlandet = inntektsinformasjon.harHattAnnenInntekt;
     if (erFrilanser && !harNæring && !harJobbetIUtlandet) {
-        return intlUtils(intl, 'oppsummering.harIkkeNæringEllerJobbIUtlandet');
+        return intl.formatMessage({ id: 'oppsummering.harIkkeNæringEllerJobbIUtlandet' });
     }
     if (!erFrilanser && harNæring && !harJobbetIUtlandet) {
-        return intlUtils(intl, 'oppsummering.erIkkeFrilanserEllerJobbIUtlandet');
+        return intl.formatMessage({ id: 'oppsummering.erIkkeFrilanserEllerJobbIUtlandet' });
     }
     if (!erFrilanser && !harNæring && harJobbetIUtlandet) {
-        return intlUtils(intl, 'oppsummering.erIkkeFrilanserEllerNæringsdrivende');
+        return intl.formatMessage({ id: 'oppsummering.erIkkeFrilanserEllerNæringsdrivende' });
     }
     if (erFrilanser && harNæring && !harJobbetIUtlandet) {
-        return intlUtils(intl, 'oppsummering.harIkkeJobbIUtlandet');
+        return intl.formatMessage({ id: 'oppsummering.harIkkeJobbIUtlandet' });
     }
     if (erFrilanser && !harNæring && harJobbetIUtlandet) {
-        return intlUtils(intl, 'oppsummering.harIkkeNæring');
+        return intl.formatMessage({ id: 'oppsummering.harIkkeNæring' });
     }
     if (!erFrilanser && !harNæring && !harJobbetIUtlandet) {
-        return intlUtils(intl, 'oppsummering.erIkkeFrilanserHarIkkeNæringJobbetIkkeIUtlandet');
+        return intl.formatMessage({ id: 'oppsummering.erIkkeFrilanserHarIkkeNæringJobbetIkkeIUtlandet' });
     }
-    return intlUtils(intl, 'oppsummering.erIkkeFrilanser');
+    return intl.formatMessage({ id: 'oppsummering.erIkkeFrilanser' });
 };

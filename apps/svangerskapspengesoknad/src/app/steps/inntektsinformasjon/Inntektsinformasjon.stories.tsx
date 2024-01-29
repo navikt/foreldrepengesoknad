@@ -1,33 +1,51 @@
 import { StoryFn } from '@storybook/react';
-import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
-import withRouterProvider from 'storybook/decorators/withRouter';
+import { action } from '@storybook/addon-actions';
 import Inntektsinformasjon from './Inntektsinformasjon';
-import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
-import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
-import _context from 'storybook/storydata/soknad/soknad.json';
+import soknad from 'storybook/storydata/soknad/soknad.json';
+import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
 
 const defaultExport = {
     title: 'steps/Inntektsinformasjon',
     component: Inntektsinformasjon,
-    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;
 
-interface InntektsinformasjonStoryProps {
-    context: SvangerskapspengerContextState;
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
+interface Props {
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+    gåTilNesteSide?: (action: Action) => void;
 }
 
-const context = _context as any;
-
-const Template: StoryFn<InntektsinformasjonStoryProps> = ({ context }) => {
+const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
     return (
-        <SvangerskapspengerStateMock context={context}>
-            <Inntektsinformasjon />
-        </SvangerskapspengerStateMock>
+        <SvpDataContext
+            onDispatch={gåTilNesteSide}
+            initialState={{
+                [ContextDataType.UTENLANDSOPPHOLD]: {
+                    iNorgeNeste12Mnd: true,
+                    iNorgeSiste12Mnd: true,
+                },
+                [ContextDataType.OM_BARNET]: {
+                    erBarnetFødt: false,
+                    termindato: '2024-02-18',
+                    fødselsdato: '2024-02-18',
+                },
+            }}
+        >
+            <Inntektsinformasjon
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                avbrytSøknad={promiseAction()}
+                søkerInfo={soknad.søkerinfo as any}
+            />
+        </SvpDataContext>
     );
 };
+
 export const Default = Template.bind({});
-Default.args = {
-    context,
-};
