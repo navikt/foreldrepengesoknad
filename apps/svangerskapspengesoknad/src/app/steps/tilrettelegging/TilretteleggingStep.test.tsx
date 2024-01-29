@@ -112,10 +112,7 @@ describe('<Behov for tilrettelegging>', () => {
         const tilretteleggingsdatoInput = screen.getByLabelText(
             'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
         );
-        await user.type(
-            tilretteleggingsdatoInput,
-            dayjs('2024-02-18').subtract(2, 'weeks').subtract(6, 'days').format('DD.MM.YYYY'),
-        );
+        await user.type(tilretteleggingsdatoInput, dayjs().add(40, 'days').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
 
