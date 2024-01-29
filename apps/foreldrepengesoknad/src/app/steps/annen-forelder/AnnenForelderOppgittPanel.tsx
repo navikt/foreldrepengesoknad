@@ -241,6 +241,13 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                     <RadioGroup
                         name="harRettPåForeldrepengerIEØS"
                         label={intl.formatMessage({ id: 'annenForelder.harRettPåForeldrepengerIEØS' })}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'valideringsfeil.annenForelder.harRettPåForeldrepengerIEØS',
+                                }),
+                            ),
+                        ]}
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
@@ -298,7 +305,17 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                 (formValues.harOppholdtSegIEØS === false || formValues.harRettPåForeldrepengerIEØS === false) &&
                 isFarEllerMedmor(rolle) && (
                     <div>
-                        <RadioGroup name="erMorUfør" label={intl.formatMessage({ id: 'annenForelder.erMorUfør' })}>
+                        <RadioGroup
+                            name="erMorUfør"
+                            label={intl.formatMessage({ id: 'annenForelder.erMorUfør' })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'valideringsfeil.annenForelder.erMorUfør',
+                                    }),
+                                ),
+                            ]}
+                        >
                             <Radio value={true}>Ja</Radio>
                             <Radio value={false}>Nei</Radio>
                         </RadioGroup>

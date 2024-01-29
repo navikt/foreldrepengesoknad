@@ -636,6 +636,8 @@
     "valideringsfeil.annenForelder.harRettTilForeldrepengerPåkrevd": "Rett til foreldrepenger må fylles ut",
     "valideringsfeil.annenForelder.informertAnnenForelderPåkrevd": "Orientert den andre forelderen må fylles ut",
     "valideringsfeil.annenForelder.harOppholdtSegIEØS": "Fast opphold i anna EØS-land må fylles ut",
+    "valideringsfeil.annenForelder.harRettPåForeldrepengerIEØS": "Har den andre forelderen arbeida eller motteke pengestøtte i eit EØS-land må fylles ut",
+    "valideringsfeil.annenForelder.erMorUfør": "Mottek den andre forelderen uføretrygd må fylles ut",
     "valideringsfeil.omBarnet.termindato.duMåOppgi": "Du må oppgi termindatoen",
     "valideringsfeil.omBarnet.termindato.duMåVæreIUke22": "Du kan tidlegast søkje når du er i 22. svangerskapsveke",
     "valideringsfeil.omBarnet.termindato.forTidlig": "Termindatoen kan ikkje vere tidlegare enn 3 veker frå i dag",

@@ -38,9 +38,6 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
     const utenlandskFnr = formMethods.watch('utenlandskFnr');
     const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
 
-    const fornavnLabel = intl.formatMessage({ id: 'annenForelder.spørsmål.fornavn' });
-    const etternavnLabel = intl.formatMessage({ id: 'annenForelder.spørsmål.etternavn' });
-
     return (
         <>
             <div>
@@ -52,7 +49,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                         name="fornavn"
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fornavnPåkrevd' })),
-                            isValidText(intl, fornavnLabel),
+                            isValidText(intl, 'annenForelder.spørsmål.fornavn'),
                         ]}
                         disabled={kanIkkeOppgis}
                         className={bem.block}
@@ -62,7 +59,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                         disabled={kanIkkeOppgis}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.etternavnPåkrevd' })),
-                            isValidText(intl, etternavnLabel),
+                            isValidText(intl, 'annenForelder.spørsmål.etternavn'),
                         ]}
                         className={bem.block}
                     />
