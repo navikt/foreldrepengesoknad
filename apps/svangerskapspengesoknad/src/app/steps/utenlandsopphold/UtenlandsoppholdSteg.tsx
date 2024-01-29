@@ -39,6 +39,8 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
 
     const oppdaterUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD);
+    const oppdaterTidligereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: Utenlandsopphold) => {
@@ -46,6 +48,13 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
             iNorgeSiste12Mnd: !values.harBoddUtenforNorgeSiste12Mnd,
             iNorgeNeste12Mnd: !values.skalBoUtenforNorgeNeste12Mnd,
         });
+
+        if (!values.harBoddUtenforNorgeSiste12Mnd) {
+            oppdaterTidligereUtenlandsopphold(undefined);
+        }
+        if (!values.skalBoUtenforNorgeNeste12Mnd) {
+            oppdaterSenereUtenlandsopphold(undefined);
+        }
 
         oppdaterAppRoute(getNextRouteForUtenlandsopphold(values));
 
