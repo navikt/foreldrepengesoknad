@@ -11,7 +11,7 @@ import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
 import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
 import useSendSøknad from 'app/context/useSendSøknad';
 import Velkommen from 'app/pages/velkommen/Velkommen';
-import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
+import AnnenForelderSteg from 'app/steps/annen-forelder/AnnenForelderSteg';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 import ManglendeVedlegg from 'app/steps/manglende-vedlegg/ManglendeVedlegg';
 import OmBarnet from 'app/steps/om-barnet/OmBarnet';
@@ -112,8 +112,8 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.ANNEN_FORELDER}
                 element={
-                    <AnnenForelder
-                        søker={søkerInfo.søker}
+                    <AnnenForelderSteg
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

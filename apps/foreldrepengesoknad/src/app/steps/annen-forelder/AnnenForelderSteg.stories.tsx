@@ -12,7 +12,7 @@ import { SivilstandType, Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/f
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 
-import AnnenForelder from './AnnenForelder';
+import AnnenForelderSteg from './AnnenForelderSteg';
 
 const promiseAction =
     () =>
@@ -45,8 +45,8 @@ const søker = {
 } as Søker;
 
 export default {
-    title: 'steps/AnnenForelder',
-    component: AnnenForelder,
+    title: 'steps/AnnenForelderSteg',
+    component: AnnenForelderSteg,
 };
 
 interface Props {
@@ -99,7 +99,7 @@ const Template: StoryFn<Props> = ({
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                     }}
                 >
-                    <AnnenForelder
+                    <AnnenForelderSteg
                         søker={søker}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

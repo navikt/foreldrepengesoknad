@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 
-import * as stories from './AnnenForelder.stories';
+import * as stories from './AnnenForelderSteg.stories';
 
 const {
     AnnenForelderFraOppgittBarn,
@@ -22,7 +22,7 @@ const {
 
 //TODO (TOR) Testane her må i større grad testa output frå onSubmit-funksjonen. Kan testast gjennom 'gåTilNesteSide'
 
-describe('<AnnenForelder>', () => {
+describe('<AnnenForelderSteg>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

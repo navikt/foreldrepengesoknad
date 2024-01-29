@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyLong, BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import {
+    AnnenForelder,
     Barn,
     SivilstandType,
     Step,
@@ -15,7 +16,7 @@ import {
     links,
 } from '@navikt/fp-common';
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Søker, Søkerrolle } from '@navikt/fp-types';
+import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
 import { isBefore, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -37,6 +38,31 @@ const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker:
     return registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
 };
 
+const skalViseInfoOmFarskapsportal = (
+    søkerInfo: Søkerinfo,
+    rolle: Søkerrolle,
+    harRettPåForeldrepengerINorge?: boolean,
+    annenForelder?: AnnenForelder,
+    fnr?: string,
+    utenlandskFnr?: boolean,
+    barnetErIkkeFødt?: boolean,
+) => {
+    const annenForelderHarRett = harRettPåForeldrepengerINorge === true;
+    const fnrFraAnnenForelder = annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const annenForelderFnr = fnrFraAnnenForelder || fnr;
+    const annenForelderErFarEllerUtenlandsk =
+        (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') || utenlandskFnr;
+    const annenForelderHarRettErBesvart = harRettPåForeldrepengerINorge !== undefined;
+    const søkerErIkkeGift =
+        søkerInfo.søker.sivilstand === undefined || søkerInfo.søker.sivilstand.type !== SivilstandType.GIFT;
+    return (
+        ((rolle === 'far' && annenForelderHarRettErBesvart) ||
+            (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
+        barnetErIkkeFødt &&
+        søkerErIkkeGift
+    );
+};
+
 const getTekstOmFarskapsportal = (rolle: Søkerrolle, barnetErIkkeFødt: boolean) => {
     if (rolle === 'far' && barnetErIkkeFødt) {
         return 'annenForelder.tekstOmFarskapsportal.far.del1';
@@ -53,7 +79,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig();
@@ -72,7 +98,6 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
         annenForelderFraRegistrertBarn === undefined ||
         annenForelder === undefined ||
         (isAnnenForelderOppgitt(annenForelder) && annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
-    const søkerErIkkeGift = søker.sivilstand === undefined || søker.sivilstand.type !== SivilstandType.GIFT;
     const barnetErIkkeFødt = isUfødtBarn(barn);
     const tekstOmFarskapsportalId = getTekstOmFarskapsportal(rolle, barnetErIkkeFødt);
 
@@ -97,24 +122,15 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const harOppholdtSegIEØS = formMethods.watch('harOppholdtSegIEØS');
     const harRettPåForeldrepengerIEØS = formMethods.watch('harRettPåForeldrepengerIEØS');
 
-    const annenForelderHarRett = harRettPåForeldrepengerINorge === true;
-    const fnrFraAnnenForelder = annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-    const annenForelderFnr = fnrFraAnnenForelder || fnr;
-    const annenForelderErFarEllerUtenlandsk =
-        (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') || utenlandskFnr;
-    const annenForelderHarRettErBesvart = harRettPåForeldrepengerINorge !== undefined;
-    /*const farErInformert =
-        convertYesOrNoOrUndefinedToBoolean(aleneOmOmsorg) ||
-        !convertYesOrNoOrUndefinedToBoolean(harRettPåForeldrepengerINorge) ||
-        (convertYesOrNoOrUndefinedToBoolean(harRettPåForeldrepengerINorge) &&
-            convertYesOrNoOrUndefinedToBoolean(erInformertOmSøknaden));
-
-    const kanGåVidereMedSøknaden = visibility.areAllQuestionsAnswered() && farErInformert;*/
-    const visInfoboksOmFarskapsportal =
-        ((rolle === 'far' && annenForelderHarRettErBesvart) ||
-            (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
-        barnetErIkkeFødt &&
-        søkerErIkkeGift;
+    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
+        søkerInfo,
+        rolle,
+        harRettPåForeldrepengerINorge,
+        annenForelder,
+        fnr,
+        utenlandskFnr,
+        barnetErIkkeFødt,
+    );
 
     return (
         <Step
@@ -133,7 +149,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                         <RegistrertePersonalia
                             person={annenForelderFraRegistrertBarn}
                             fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
-                            visEtternavn={true}
+                            visEtternavn
                         />
                     )}
                     <div>
@@ -146,12 +162,20 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                                 ),
                             ]}
                         >
-                            <Radio value={false}>Ja</Radio>
-                            <Radio value={true}>Nei, jeg har aleneomsorg</Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="annenForelder.aleneOmOmsorg.ja" />
+                            </Radio>
+                            <Radio value={true}>
+                                <FormattedMessage id="annenForelder.aleneOmOmsorg.nei" />
+                            </Radio>
                         </RadioGroup>
                         <ReadMore header={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.apneLabel' })}>
-                            <BodyLong>{intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.del1' })}</BodyLong>
-                            <BodyShort>{intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.del2' })}</BodyShort>
+                            <BodyLong>
+                                <FormattedMessage id="annenForelder.aleneOmOmsorg.del1" />
+                            </BodyLong>
+                            <BodyShort>
+                                <FormattedMessage id="annenForelder.aleneOmOmsorg.del2" />
+                            </BodyShort>
                         </ReadMore>
                     </div>
                     {!isFarEllerMedmor(rolle) && aleneOmOmsorg === true && (
@@ -184,7 +208,6 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                                     ),
                                 ]}
                             />
-
                             <BodyShort>
                                 <FormattedMessage id="annenForelder.farMedmor.dokumentasjonAvAleneomsorg.veileder" />
                             </BodyShort>
@@ -381,4 +404,4 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     );
 };
 
-export default AnnenForelder;
+export default AnnenForelderSteg;

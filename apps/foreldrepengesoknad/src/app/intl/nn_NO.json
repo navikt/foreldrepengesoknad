@@ -205,6 +205,8 @@
     "annenForelder.aleneOmOmsorg": "Er dykk sammen om omsorga for barnet?",
     "annenForelder.aleneOmOmsorg.del1": "Far eller medmor som er aleine om omsorga får heile foreldrepengeperioden, unntatt de 3 vekene som er satt av til mor før fødselen.",
     "annenForelder.aleneOmOmsorg.del2": "Mor som er aleine om omsorga får heile foreldrepengeperioden, inkludert kvoten til den andre forelderen.",
+    "annenForelder.aleneOmOmsorg.ja": "Ja",
+    "annenForelder.aleneOmOmsorg.nei": "Nei, eg har åleineomsorg",
     "annenForelder.aleneOmOmsorg.apneLabel": "Korleis påverkar det å vere aleine om omsorga foreldrepengane?",
     "annenForelder.bostedsland": "Kvar bur { navn }?",
     "annenForelder.label.bostedsland": "og bur i",
