@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import * as Sentry from '@sentry/browser';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/fp-api';
@@ -19,8 +20,6 @@ const useMellomlagreSøknad = (
     const state = useContextComplete();
     const resetState = useContextReset();
 
-    const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
-
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
     const promiseRef = useRef<() => void>();
@@ -32,6 +31,8 @@ const useMellomlagreSøknad = (
 
                 const currentPath = state[ContextDataType.APP_ROUTE];
                 if (currentPath) {
+                    navigate(currentPath);
+
                     await postData<SvpDataMapAndMetaData, Kvittering>(
                         svpApi,
                         '/storage/svangerskapspenger',
@@ -42,15 +43,13 @@ const useMellomlagreSøknad = (
                         },
                         FEIL_VED_INNSENDING,
                     );
-
-                    navigate(currentPath);
                 } else {
-                    // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
-                    await deleteData(svpApi, '/storage/svangerskapspenger', FEIL_VED_INNSENDING);
-
                     setHarGodkjentVilkår(false);
                     resetState();
                     navigate('/');
+
+                    // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
+                    await deleteData(svpApi, '/storage/svangerskapspenger', FEIL_VED_INNSENDING);
                 }
 
                 if (promiseRef.current) {
@@ -59,7 +58,7 @@ const useMellomlagreSøknad = (
             };
 
             lagreEllerSlett().catch((error: ApiAccessError | ApiGeneralError) => {
-                setError(error);
+                Sentry.captureMessage(error.message);
 
                 if (promiseRef.current) {
                     promiseRef.current();
@@ -80,13 +79,7 @@ const useMellomlagreSøknad = (
         return promise;
     }, []);
 
-    return useMemo(
-        () => ({
-            mellomlagreOgNaviger,
-            errorMellomlagre: error,
-        }),
-        [mellomlagreOgNaviger, error],
-    );
+    return mellomlagreOgNaviger;
 };
 
 export default useMellomlagreSøknad;

@@ -4,7 +4,6 @@ import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
 import { Loader } from '@navikt/ds-react';
 import { redirect, redirectToLogin } from '@navikt/fp-utils';
 import { ErrorPage } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import Forside from 'app/pages/forside/Forside';
 import Barnet from 'app/steps/barnet/Barnet';
@@ -212,7 +211,7 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { sendSøknad, errorSendSøknad } = useSendSøknad(svpApi, setKvittering, locale);
-    const { mellomlagreOgNaviger, errorMellomlagre } = useMellomlagreSøknad(svpApi, locale, setHarGodkjentVilkår);
+    const mellomlagreOgNaviger = useMellomlagreSøknad(svpApi, locale, setHarGodkjentVilkår);
     const avbrytSøknad = useAvbrytSøknad(svpApi, setHarGodkjentVilkår);
 
     useEffect(() => {
@@ -238,8 +237,8 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
         return <div>Redirected to Innsyn</div>;
     }
 
-    if (errorSendSøknad || errorMellomlagre) {
-        return <ApiErrorHandler error={notEmpty(errorSendSøknad || errorMellomlagre)} />;
+    if (errorSendSøknad) {
+        return <ApiErrorHandler error={errorSendSøknad} />;
     }
 
     return (
