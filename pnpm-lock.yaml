@@ -1477,7 +1477,7 @@ importers:
         version: 8.16.5
       '@types/node':
         specifier: ^20.10.6
-        version: 20.10.6
+        version: 20.11.6
       '@types/react':
         specifier: ^18.2.48
         version: 18.2.48
@@ -6220,11 +6220,7 @@ packages:
   /@types/node-fetch@2.6.11:
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
     dependencies:
-<<<<<<< HEAD
       '@types/node': 20.11.6
-=======
-      '@types/node': 20.10.6
->>>>>>> 4b195e21c (div)
       form-data: 4.0.0
 
   /@types/node@17.0.45:
@@ -6856,12 +6852,6 @@ packages:
     resolution: {integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-
-  /acorn@8.11.2:
-    resolution: {integrity: sha512-nc0Axzp/0FILLEVsm4fNwLCwMttvhEI263QtVPQcbpfZZ3ts0hLsZGOpE6czNlid7CJ9MlyH8reXkpsf3YUY4w==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-    dev: true
 
   /acorn@8.11.3:
     resolution: {integrity: sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==}
@@ -14221,7 +14211,7 @@ packages:
       '@vitest/snapshot': 0.34.6
       '@vitest/spy': 0.34.6
       '@vitest/utils': 0.34.6
-      acorn: 8.11.2
+      acorn: 8.11.3
       acorn-walk: 8.3.1
       cac: 6.7.14
       chai: 4.3.10
