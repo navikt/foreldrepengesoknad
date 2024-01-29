@@ -7,5 +7,5 @@ export type FormValidationResult = string | null;
 
 export const isRequired =
     (i18nText: string) =>
-    (value?: string | number): FormValidationResult =>
+    (value?: string | number | boolean): FormValidationResult =>
         isEmpty(value) ? i18nText : null;

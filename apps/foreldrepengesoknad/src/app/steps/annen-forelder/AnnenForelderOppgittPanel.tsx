@@ -18,14 +18,14 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
+import { AnnenForelderErOppgitt, AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
 
 const skalViseInfoOmFarskapsportal = (
     søkerInfo: Søkerinfo,
     rolle: Søkerrolle,
+    formValues: AnnenForelderErOppgitt,
     annenForelder?: AnnenForelder,
     barnetErIkkeFødt?: boolean,
-    formValues: AnnenForelderFormData,
 ) => {
     const annenForelderHarRett = formValues.harRettPåForeldrepengerINorge === true;
     const fnrFraAnnenForelder = annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
@@ -78,9 +78,9 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
         søkerInfo,
         rolle,
+        formValues,
         annenForelder,
         barnetErIkkeFødt,
-        formValues,
     );
 
     return (
@@ -143,10 +143,10 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                             ),
                         ]}
                     />
-                    <BodyShort>
+                    {/*<BodyShort>
                         <FormattedMessage id="annenForelder.farMedmor.dokumentasjonAvAleneomsorg.veileder" />
                     </BodyShort>
-                    {/* <Block padBottom="xl">
+                     <Block padBottom="xl">
                             <FormikFileUploader
                                 legend="Dokumentasjon for aleneomsorg"
                                 label={intl.formatMessage({id: 'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp')}
@@ -215,12 +215,14 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                 <div>
                     <RadioGroup
                         name="harOppholdtSegIEØS"
-                        label={intl.formatMessage(
-                            { id: 'annenForelder.harOppholdtSegIEØS' },
-                            {
-                                navn: formValues.fornavn,
-                            },
-                        )}
+                        label={intl.formatMessage({ id: 'annenForelder.harOppholdtSegIEØS' })}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'valideringsfeil.annenForelder.harOppholdtSegIEØS',
+                                }),
+                            ),
+                        ]}
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
@@ -230,10 +232,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                             id: 'annenForelder.harOppholdtSegIEØS.veileder.apneLabel',
                         })}
                     >
-                        <FormattedMessage
-                            id="annenForelder.harOppholdtSegIEØS.veileder"
-                            values={{ navn: formValues.fornavn }}
-                        ></FormattedMessage>
+                        <FormattedMessage id="annenForelder.harOppholdtSegIEØS.veileder"></FormattedMessage>
                     </ReadMore>
                 </div>
             )}
@@ -241,12 +240,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                 <div>
                     <RadioGroup
                         name="harRettPåForeldrepengerIEØS"
-                        label={intl.formatMessage(
-                            { id: 'annenForelder.harRettPåForeldrepengerIEØS' },
-                            {
-                                navn: formValues.fornavn,
-                            },
-                        )}
+                        label={intl.formatMessage({ id: 'annenForelder.harRettPåForeldrepengerIEØS' })}
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
@@ -258,21 +252,10 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                         })}
                     >
                         <VStack gap="2">
-                            <FormattedMessage
-                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"
-                                values={{ navn: formValues.fornavn }}
-                            ></FormattedMessage>
-
-                            <FormattedMessage
-                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del2"
-                                values={{ navn: formValues.fornavn }}
-                            ></FormattedMessage>
-
+                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"></FormattedMessage>
+                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del2"></FormattedMessage>
                             <Link to="https://www.nav.no/foreldrepenger#utland" target="_blank">
-                                <FormattedMessage
-                                    id="annenForelder.harRettPåForeldrepengerIEØS.veileder.link"
-                                    values={{ navn: formValues.fornavn }}
-                                />
+                                <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.link" />
                             </Link>
                         </VStack>
                     </ReadMore>
@@ -291,6 +274,12 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                                     id: 'valideringsfeil.annenForelder.informertAnnenForelderPåkrevd',
                                 }),
                             ),
+                            (value) =>
+                                value === false
+                                    ? intl.formatMessage({
+                                          id: 'annenForelder.erAnnenForelderInformert.veileder',
+                                      })
+                                    : null,
                         ]}
                     >
                         <Radio value={true}>Ja</Radio>
@@ -309,15 +298,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                 (formValues.harOppholdtSegIEØS === false || formValues.harRettPåForeldrepengerIEØS === false) &&
                 isFarEllerMedmor(rolle) && (
                     <div>
-                        <RadioGroup
-                            name="erMorUfør"
-                            label={intl.formatMessage(
-                                { id: 'annenForelder.erMorUfør' },
-                                {
-                                    navn: formValues.fornavn,
-                                },
-                            )}
-                        >
+                        <RadioGroup name="erMorUfør" label={intl.formatMessage({ id: 'annenForelder.erMorUfør' })}>
                             <Radio value={true}>Ja</Radio>
                             <Radio value={false}>Nei</Radio>
                         </RadioGroup>
@@ -326,10 +307,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
                                 id: 'annenForelder.erMorUfør.veileder.apneLabel',
                             })}
                         >
-                            <FormattedMessage
-                                id="annenForelder.erMorUfør.veileder"
-                                values={{ navnAnnenForelder: formValues.fornavn }}
-                            />
+                            <FormattedMessage id="annenForelder.erMorUfør.veileder" />
                         </ReadMore>
                     </div>
                 )}

@@ -17,7 +17,7 @@ import RegistrertePersonalia from '../../components/registrerte-personalia/Regis
 import { AnnenForelderFormData } from './AnnenForelderFormData';
 import AnnenForelderOppgittPanel from './AnnenForelderOppgittPanel';
 import OppgiPersonalia from './OppgiPersonalia';
-import { mapAnnenForelderFormToState } from './annenForelderFormUtils';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker: Søker) => {
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
@@ -54,7 +54,30 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
         (isAnnenForelderOppgitt(annenForelder) && annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
 
     const onSubmit = (values: AnnenForelderFormData) => {
-        oppdaterAnnenForeldre(mapAnnenForelderFormToState(values, skalOppgiPersonalia, annenForelderFraRegistrertBarn));
+        if (values.kanIkkeOppgis === true) {
+            oppdaterAnnenForeldre({ kanIkkeOppgis: true });
+        } else {
+            const fornavn =
+                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
+                    ? annenForelderFraRegistrertBarn.fornavn
+                    : values.fornavn;
+            const etternavn =
+                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
+                    ? annenForelderFraRegistrertBarn.etternavn
+                    : values.etternavn;
+            const fnr =
+                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
+                    ? annenForelderFraRegistrertBarn.fnr
+                    : values.fnr;
+            oppdaterAnnenForeldre({
+                ...values,
+                fornavn: replaceInvisibleCharsWithSpace(fornavn),
+                etternavn: replaceInvisibleCharsWithSpace(etternavn),
+                fnr: replaceInvisibleCharsWithSpace(fnr.trim()),
+                harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
+            });
+        }
+
         return navigator.goToNextDefaultStep();
     };
 

@@ -2,7 +2,7 @@ export type AnnenForelderIkkeOppgitt = {
     kanIkkeOppgis: true;
 };
 
-type AnnenForelderErOppgitt = {
+export type AnnenForelderErOppgitt = {
     kanIkkeOppgis: false;
     erAleneOmOmsorg: boolean;
     fornavn: string;
