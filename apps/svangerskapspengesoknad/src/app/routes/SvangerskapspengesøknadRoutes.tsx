@@ -1,8 +1,8 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, redirect, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
 import { Loader } from '@navikt/ds-react';
-import { redirectToLogin } from '@navikt/fp-utils';
+import { redirect, redirectToLogin } from '@navikt/fp-utils';
 import { ErrorPage } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
