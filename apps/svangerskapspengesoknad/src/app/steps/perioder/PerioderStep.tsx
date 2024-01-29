@@ -54,7 +54,8 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
 
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const vti = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved neste
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
@@ -93,11 +94,6 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
         return mellomlagreSøknadOgNaviger();
     };
 
-    const activeStepId = `periode-${valgtTilretteleggingId}`;
-    if (!stepConfig.some((step) => step.id === activeStepId)) {
-        return null;
-    }
-
     return (
         <PerioderFormComponents.FormikWrapper
             enableReinitialize={true}
@@ -121,7 +117,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId={activeStepId}
+                        activeStepId={`periode-${valgtTilretteleggingId}`}
                         pageTitle={getPeriodeSideTittel(
                             erFlereTilrettelegginger,
                             valgtTilrettelegging.arbeidsforhold.navn,

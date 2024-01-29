@@ -45,7 +45,8 @@ const SkjemaSteg: FunctionComponent<Props> = ({
 
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-    const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const vti = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved forrige
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
