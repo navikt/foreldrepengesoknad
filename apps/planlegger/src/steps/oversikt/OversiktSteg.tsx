@@ -42,7 +42,7 @@ const OversiktSteg = () => {
                     </HStack>
                 </Box>
                 <VStack gap="2">
-                    <HStack justify="space-between">
+                    <HStack gap="32">
                         <HStack gap="5" align="center">
                             <BlåSirkel />
                             <BodyShort>

@@ -7,11 +7,29 @@ import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDett
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { date1YearAgo } from '@navikt/fp-common';
+import dayjs from 'dayjs';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { isAlene } from 'types/HvemPlanlegger';
+import { erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 
 const BarnehageplassSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const erFødt = erBarnetFødt(barnet);
+    const erIkkeFødt = erBarnetIkkeFødt(barnet);
+
+    const barnehageStartdato = () => {
+        if (erFødt && dayjs(barnet.fødselsdato).isAfter(date1YearAgo, 'day')) {
+            return dayjs(barnet.fødselsdato).add(1, 'year').add(4, 'days').format(DDMMYYYY_DATE_FORMAT);
+        }
+        if (erIkkeFødt && dayjs(barnet.termindato).isAfter(date1YearAgo, 'day')) {
+            return dayjs(barnet.termindato).add(1, 'year').add(4, 'days').format(DDMMYYYY_DATE_FORMAT);
+        }
+        return 'undefined';
+    };
 
     return (
         <ContentWrapper>
@@ -20,64 +38,92 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                     <FormattedMessage id="barnehageplass.tittel" />
                 </Heading>
                 <VStack gap="10">
-                    <VStack gap="10">
-                        <Box borderColor="border-alt-3" padding="4" borderWidth="2" borderRadius="xlarge">
-                            <VStack gap="1">
-                                <Heading size="small">
-                                    <FormattedMessage id="barnehageplass.datoTittel" />
-                                </Heading>
-                                <HStack gap="5" align="center">
-                                    <Kalender />
+                    {!isAlene(hvemPlanlegger) && (
+                        <VStack gap="10">
+                            <Box borderColor="border-alt-3" padding="4" borderWidth="2" borderRadius="xlarge">
+                                <VStack gap="2">
+                                    <Heading size="small">
+                                        <FormattedMessage id="barnehageplass.datoTittel" />
+                                    </Heading>
+
+                                    <HStack gap="5" align="center">
+                                        <Kalender />
+                                        <BodyLong>
+                                            {erFødt && (
+                                                <FormattedMessage
+                                                    id="barnehageplass.dato"
+                                                    values={{
+                                                        dato: barnehageStartdato(),
+                                                    }}
+                                                />
+                                            )}
+                                            {erIkkeFødt && (
+                                                <FormattedMessage
+                                                    id="barnehageplass.dato"
+                                                    values={{ dato: barnehageStartdato() }}
+                                                />
+                                            )}
+                                        </BodyLong>
+                                    </HStack>
                                     <BodyLong>
-                                        <FormattedMessage id="barnehageplass.dato" />
+                                        {erFødt && (
+                                            <FormattedMessage
+                                                id="barnehageplass.datoTekst"
+                                                values={{
+                                                    dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
+                                                }}
+                                            />
+                                        )}
+                                        {erIkkeFødt && (
+                                            <FormattedMessage
+                                                id="barnehageplass.datoTekstTermin"
+                                                values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
+                                            />
+                                        )}
                                     </BodyLong>
-                                </HStack>
-                                <BodyLong>
-                                    <FormattedMessage id="barnehageplass.datoTekst" />
-                                </BodyLong>
-                            </VStack>
-                        </Box>
+                                </VStack>
+                            </Box>
 
-                        <Box padding="4" borderRadius="large" background="bg-subtle">
-                            <VStack gap="2">
-                                <Heading size="small">
-                                    <FormattedMessage id="barnehageplass.barnehageTittel" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage id="barnehageplass.barnehageTekst" />
-                                </BodyLong>
-                            </VStack>
-                        </Box>
+                            <Box padding="4" borderRadius="large" background="bg-subtle">
+                                <VStack gap="2">
+                                    <Heading size="small">
+                                        <FormattedMessage id="barnehageplass.barnehageTittel" />
+                                    </Heading>
+                                    <BodyLong>
+                                        <FormattedMessage id="barnehageplass.barnehageTekst" />
+                                    </BodyLong>
+                                </VStack>
+                            </Box>
 
-                        <Box padding="4" borderRadius="large" background="bg-subtle">
-                            <VStack gap="2">
-                                <Heading size="small">
-                                    <FormattedMessage id="barnehageplass.kommuneTittel" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage id="barnehageplass.kommuneTekst" />
-                                </BodyLong>
-                            </VStack>
-                        </Box>
+                            <Box padding="4" borderRadius="large" background="bg-subtle">
+                                <VStack gap="2">
+                                    <Heading size="small">
+                                        <FormattedMessage id="barnehageplass.kommuneTittel" />
+                                    </Heading>
+                                    <BodyLong>
+                                        <FormattedMessage id="barnehageplass.kommuneTekst" />
+                                    </BodyLong>
+                                </VStack>
+                            </Box>
 
-                        <Box padding="4" borderRadius="large" background="bg-subtle">
-                            <VStack gap="2">
-                                <Heading size="small">
-                                    <FormattedMessage id="barnehageplass.alleredeTittel" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage id="barnehageplass.alleredeTekst" />
-                                </BodyLong>
-                                <HStack>
-                                    <Button variant="secondary" type="button">
-                                        <FormattedMessage id="barnehageplass.knapp" />
-                                    </Button>
-                                </HStack>
-                            </VStack>
-                        </Box>
-                    </VStack>
-                    {/*TODO funker ikke*/}
-                    {hvemPlanlegger.hvem === SøkersituasjonEnum.ALENE && (
+                            <Box padding="4" borderRadius="large" background="bg-subtle">
+                                <VStack gap="2">
+                                    <Heading size="small">
+                                        <FormattedMessage id="barnehageplass.alleredeTittel" />
+                                    </Heading>
+                                    <BodyLong>
+                                        <FormattedMessage id="barnehageplass.alleredeTekst" />
+                                    </BodyLong>
+                                    <HStack>
+                                        <Button variant="secondary" type="button">
+                                            <FormattedMessage id="barnehageplass.knapp" />
+                                        </Button>
+                                    </HStack>
+                                </VStack>
+                            </Box>
+                        </VStack>
+                    )}
+                    {isAlene(hvemPlanlegger) && (
                         <VStack gap="10">
                             <Box borderColor="border-alt-3" padding="4" borderWidth="2" borderRadius="xlarge">
                                 <VStack gap="2">
@@ -87,11 +133,37 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                     <HStack gap="5" align="center">
                                         <Kalender />
                                         <BodyLong>
-                                            <FormattedMessage id="barnehageplass.dato" />
+                                            {erFødt && (
+                                                <FormattedMessage
+                                                    id="barnehageplass.dato"
+                                                    values={{
+                                                        dato: barnehageStartdato(),
+                                                    }}
+                                                />
+                                            )}
+                                            {erIkkeFødt && (
+                                                <FormattedMessage
+                                                    id="barnehageplass.dato"
+                                                    values={{ dato: barnehageStartdato() }}
+                                                />
+                                            )}{' '}
                                         </BodyLong>
                                     </HStack>
                                     <BodyLong>
-                                        <FormattedMessage id="barnehageplass.datoTekstDeg" />
+                                        {erFødt && (
+                                            <FormattedMessage
+                                                id="barnehageplass.datoTekst"
+                                                values={{
+                                                    dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
+                                                }}
+                                            />
+                                        )}
+                                        {erIkkeFødt && (
+                                            <FormattedMessage
+                                                id="barnehageplass.datoTekstTermin"
+                                                values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
+                                            />
+                                        )}{' '}
                                     </BodyLong>
                                 </VStack>
                             </Box>

@@ -8,10 +8,10 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import { Periode } from 'types/Periode';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { notEmpty } from '@navikt/fp-validation';
 import FlereForsørgere from './situasjon/FlereForsørgere';
 import Aleneforsørger from './situasjon/Aleneforsørger';
+import { isAlene } from 'types/HvemPlanlegger';
 
 const PeriodeSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -31,12 +31,8 @@ const PeriodeSteg: FunctionComponent = () => {
         <ContentWrapper>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
-                    {hvemPlanlegger.type === SøkersituasjonEnum.MOR && <Aleneforsørger />}
-                    {hvemPlanlegger.type === SøkersituasjonEnum.FAR && <Aleneforsørger />}
-
-                    {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR && <FlereForsørgere />}
-                    {hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR && <FlereForsørgere />}
-                    {hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR && <FlereForsørgere />}
+                    {isAlene(hvemPlanlegger) && <Aleneforsørger />}
+                    {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
                     <VStack gap="20">
                         <HvorforSpørViOmDette text="TODO" />
                         <VStack gap="10" className="button-wrapper content-wrapper">

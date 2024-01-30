@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
@@ -50,13 +50,13 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 ]}
                             >
                                 <Radio
-                                    value={ArbeidssituasjonEnum.JOBBER}
+                                    value={true}
                                     description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}
                                 >
                                     <FormattedMessage id="arbeid.jobber" />
                                 </Radio>
                                 <Radio
-                                    value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                    value={false}
                                     description={intl.formatMessage({ id: 'arbeid.jobberIkke.beskrivelseDeg' })}
                                 >
                                     <FormattedMessage id="arbeid.jobberIkke" />
@@ -77,13 +77,13 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 ]}
                             >
                                 <Radio
-                                    value={ArbeidssituasjonEnum.JOBBER}
+                                    value={true}
                                     description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}
                                 >
                                     <FormattedMessage id="arbeid.jobber" />
                                 </Radio>
                                 <Radio
-                                    value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                    value={false}
                                     description={intl.formatMessage({ id: 'arbeid.jobberIkke.beskrivelseDeg' })}
                                 >
                                     <FormattedMessage id="arbeid.jobberIkke" />
@@ -111,7 +111,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     ]}
                                 >
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER}
+                                        value={true}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobber.beskrivelse' },
                                             {
@@ -123,7 +123,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     </Radio>
 
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                        value={false}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobberIkke.beskrivelse' },
                                             {
@@ -154,7 +154,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     ]}
                                 >
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER}
+                                        value={true}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobber.beskrivelse' },
                                             {
@@ -165,7 +165,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                        value={false}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobberIkke.beskrivelse' },
 
@@ -198,7 +198,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     ]}
                                 >
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER}
+                                        value={true}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobber.beskrivelse' },
                                             {
@@ -209,7 +209,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                        value={false}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobberIkke.beskrivelse' },
                                             {
@@ -239,7 +239,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     ]}
                                 >
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER}
+                                        value={true}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobber.beskrivelse' },
                                             {
@@ -250,7 +250,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                        value={false}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobberIkke.beskrivelse' },
                                             {
@@ -284,7 +284,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     ]}
                                 >
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER}
+                                        value={true}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobber.beskrivelse' },
                                             {
@@ -295,7 +295,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                        value={false}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobberIkke.beskrivelse' },
 
@@ -324,7 +324,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     ]}
                                 >
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER}
+                                        value={true}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobber.beskrivelse' },
                                             {
@@ -335,7 +335,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         <FormattedMessage id="arbeid.jobber" />
                                     </Radio>
                                     <Radio
-                                        value={ArbeidssituasjonEnum.JOBBER_IKKE}
+                                        value={false}
                                         description={intl.formatMessage(
                                             { id: 'arbeid.jobberIkke.beskrivelse' },
                                             {
