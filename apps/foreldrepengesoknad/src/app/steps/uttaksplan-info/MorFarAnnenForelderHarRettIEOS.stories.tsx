@@ -187,7 +187,7 @@ FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
     barn: {
         dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2022-08-14').toDate()],
-        termindato: dayjs('2022-08-14').toDate(),
+        termindato: dayjs('2022-10-14').toDate(),
         antallBarn: 1,
         // @ts-ignore FIX
         adopsjonsdato: undefined,

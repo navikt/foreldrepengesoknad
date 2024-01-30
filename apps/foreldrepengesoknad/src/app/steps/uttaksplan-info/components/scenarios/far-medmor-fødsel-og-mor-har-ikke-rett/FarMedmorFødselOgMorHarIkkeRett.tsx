@@ -1,14 +1,13 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { DatepickerDateRange } from '@navikt/ds-datepicker';
 import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { Button, GuidePanel, VStack } from '@navikt/ds-react';
+import { Button, VStack } from '@navikt/ds-react';
 import {
     Block,
     Dekningsgrad,
     ISOStringToDate,
     StepButtonWrapper,
-    Tidsperioden,
     Uttaksdagen,
     andreAugust2022ReglerGjelder,
     formaterNavn,
@@ -42,7 +41,6 @@ import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønads
 import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import BackButton from 'app/steps/BackButton';
@@ -176,10 +174,6 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         søkersituasjon.situasjon,
     );
     const fødselsdato = getFødselsdato(barn);
-    const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
-    const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
-        ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
-        : undefined;
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
@@ -237,17 +231,6 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                             includeButtons={false}
                             includeValidationSummary={true}
                         >
-                            <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
-                                <GuidePanel>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.veileder.informasjonPrematuruker"
-                                        values={{
-                                            antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
-                                            antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
-                                        }}
-                                    />
-                                </GuidePanel>
-                            </Block>
                             <Block
                                 padBottom="xl"
                                 visible={visibility.isIncluded(

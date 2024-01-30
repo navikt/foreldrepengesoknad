@@ -10,7 +10,6 @@ import {
     EksisterendeSak,
     ISOStringToDate,
     StepButtonWrapper,
-    Tidsperioden,
     Uttaksdagen,
     formaterNavn,
     getFlerbarnsuker,
@@ -32,7 +31,6 @@ import { MorFødselQuestionsPayload, morFødselQuestionsConfig } from './morFød
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
@@ -84,10 +82,6 @@ const MorFødsel: FunctionComponent<Props> = ({
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const erBarnetFødt = isFødtBarn(barn);
-    const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
-    const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
-        ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
-        : undefined;
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -237,17 +231,6 @@ const MorFødsel: FunctionComponent<Props> = ({
 
                     return (
                         <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                            <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
-                                <GuidePanel>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.veileder.informasjonPrematuruker"
-                                        values={{
-                                            antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
-                                            antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
-                                        }}
-                                    />
-                                </GuidePanel>
-                            </Block>
                             <Block>
                                 <StartdatoPermisjonMor
                                     permisjonStartdato={formValues.permisjonStartdato!}

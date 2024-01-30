@@ -9,7 +9,6 @@ import {
     Dekningsgrad,
     ISOStringToDate,
     StepButtonWrapper,
-    Tidsperioden,
     Uttaksdagen,
     formaterNavn,
     getFlerbarnsuker,
@@ -42,7 +41,6 @@ import {
     getInitialMorFarFødselAnnenForelderHarRettIEØSValues,
     mapMorFarFødselAnnenForelderHarRettIEØSFormToState,
 } from './morFarFødselAnnenForelderHarRettIEØSUtils';
-import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
 import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
@@ -172,11 +170,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
     const antallBarn = barn.antallBarn;
 
-    const visInfoOmPrematuruker =
-        !erFarEllerMedmor && skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
-    const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
-        ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
-        : undefined;
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = erFarEllerMedmor
         ? førsteUttaksdag
@@ -233,17 +226,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                             includeButtons={false}
                             includeValidationSummary={true}
                         >
-                            <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
-                                <GuidePanel>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.veileder.informasjonPrematuruker"
-                                        values={{
-                                            antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
-                                            antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
-                                        }}
-                                    />
-                                </GuidePanel>
-                            </Block>
                             <Block
                                 visible={
                                     !erFarEllerMedmor &&
