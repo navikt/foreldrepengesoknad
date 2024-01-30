@@ -7,6 +7,7 @@ import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { initAmplitude } from '@navikt/fp-metrics';
 import BarnehageplassSteg from './BarnehageplassSteg';
+import { OmBarnet } from 'types/Barnet';
 
 export default {
     title: 'BarnehageplassSteg',
@@ -15,14 +16,16 @@ export default {
 
 const Template: StoryFn<{
     hvemPlanlegger: HvemPlanlegger;
+    omBarnet: OmBarnet;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }) => {
+}> = ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click') }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
             <PlanleggerDataContext
                 initialState={{
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                    [ContextDataType.OM_BARNET]: omBarnet,
                 }}
                 onDispatch={gåTilNesteSide}
             >
@@ -32,21 +35,56 @@ const Template: StoryFn<{
     );
 };
 
-export const BarnehageplassFlere = Template.bind({});
-BarnehageplassFlere.args = {
+export const FlereForsørgereFødt = Template.bind({});
+FlereForsørgereFødt.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR_OG_FAR,
-        hvem: SøkersituasjonEnum.FLERE,
+    },
+    omBarnet: {
+        erBarnetFødt: true,
+        erFødsel: true,
+        fødselsdato: '2021-01-01',
     },
 };
 
-export const BarnehageplassAlene = Template.bind({});
-BarnehageplassAlene.args = {
+export const FlereForsørgereTermin = Template.bind({});
+FlereForsørgereTermin.args = {
+    hvemPlanlegger: {
+        navnPåMor: 'Klara Utvikler',
+        navnPåFar: 'Espen Utvikler',
+        type: SøkersituasjonEnum.MOR_OG_FAR,
+    },
+    omBarnet: {
+        erBarnetFødt: false,
+        erFødsel: true,
+        termindato: '2021-01-01',
+    },
+};
+
+export const AleneforsørgerFødt = Template.bind({});
+AleneforsørgerFødt.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
-        hvem: SøkersituasjonEnum.ALENE,
+    },
+    omBarnet: {
+        erBarnetFødt: true,
+        erFødsel: true,
+        fødselsdato: '2021-01-01',
+    },
+};
+
+export const AleneforsørgerTermin = Template.bind({});
+AleneforsørgerTermin.args = {
+    hvemPlanlegger: {
+        navnPåMor: 'Klara Utvikler',
+        type: SøkersituasjonEnum.MOR,
+    },
+    omBarnet: {
+        erBarnetFødt: false,
+        erFødsel: true,
+        termindato: '2021-01-01',
     },
 };
