@@ -4,22 +4,41 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { isMorOgFar } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 import { PeriodeEnum } from 'types/Periode';
+
+const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
+    if (isMorOgMedmor(hvemPlanlegger)) {
+        return [hvemPlanlegger.navnPåMor, hvemPlanlegger.navnPåMedmor];
+    }
+    if (isMorOgFar(hvemPlanlegger)) {
+        return [hvemPlanlegger.navnPåMor, hvemPlanlegger.navnPåFar];
+    }
+    if (!isFarOgFar(hvemPlanlegger)) {
+        throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
+    }
+    return [hvemPlanlegger.navnPåFar, hvemPlanlegger.navnPåMedfar];
+};
 
 const FlereForsørgere: FunctionComponent = () => {
     const intl = useIntl();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const navnMor = isMorOgFar(hvemPlanlegger) ? hvemPlanlegger.navnPåMor : undefined;
-    const navnFar = isMorOgFar(hvemPlanlegger) ? hvemPlanlegger.navnPåFar : undefined;
+
+    const navn = finnNavn(hvemPlanlegger);
+
+    const Nr1Penger100 = '34 000';
+    const Nr2Penger100 = '31 000';
+
+    const Nr1Penger80 = '27 000';
+    const Nr2Penger80 = '24 000';
 
     return (
         <VStack gap="10">
-            <Heading size="large">
+            <Heading size="large" spacing>
                 <FormattedMessage id="periode.tittel" />
             </Heading>
-            <VStack gap="1">
+            <VStack gap="2">
                 <Heading size="small">
                     <FormattedMessage id="periode.hvaGjelderBegge" />
                 </Heading>
@@ -38,10 +57,10 @@ const FlereForsørgere: FunctionComponent = () => {
                         description={intl.formatMessage(
                             { id: 'periode.hvaGjelder.beskrivelse' },
                             {
-                                navn1: navnMor,
-                                kr1: '10',
-                                navn2: navnFar,
-                                kr2: '12',
+                                navn1: navn[0],
+                                kr1: Nr1Penger100,
+                                navn2: navn[1],
+                                kr2: Nr2Penger100,
                             },
                         )}
                         className="margin-bottom-2 panel green"
@@ -53,10 +72,10 @@ const FlereForsørgere: FunctionComponent = () => {
                         description={intl.formatMessage(
                             { id: 'periode.hvaGjelder.beskrivelse' },
                             {
-                                navn1: navnMor,
-                                kr1: '10',
-                                navn2: navnFar,
-                                kr2: '12',
+                                navn1: navn[0],
+                                kr1: Nr1Penger80,
+                                navn2: navn[1],
+                                kr2: Nr2Penger80,
                             },
                         )}
                         className="margin-bottom-2 panel green"

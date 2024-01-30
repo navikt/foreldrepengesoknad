@@ -1,6 +1,6 @@
 import { createContext, useReducer, FunctionComponent, ReactNode, useContext, useCallback } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { Barnet } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Periode } from 'types/Periode';
 import { Søkersituasjon } from 'types/Søkersituasjon';
@@ -16,7 +16,7 @@ export enum ContextDataType {
 export type ContextDataMap = {
     [ContextDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
     [ContextDataType.SØKERSITUASJON]?: Søkersituasjon;
-    [ContextDataType.OM_BARNET]?: Barnet;
+    [ContextDataType.OM_BARNET]?: OmBarnet;
     [ContextDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
     [ContextDataType.PERIODE]?: Periode;
 };
