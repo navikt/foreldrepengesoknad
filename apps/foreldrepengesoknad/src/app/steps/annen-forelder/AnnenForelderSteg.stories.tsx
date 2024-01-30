@@ -70,9 +70,7 @@ const Template: StoryFn<Props> = ({
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
     },
-    annenForelder = {
-        kanIkkeOppgis: undefined,
-    },
+    annenForelder,
     gåTilNesteSide,
     mellomlagreSøknadOgNaviger = promiseAction(),
     avbrytSøknad = action('button-click'),
