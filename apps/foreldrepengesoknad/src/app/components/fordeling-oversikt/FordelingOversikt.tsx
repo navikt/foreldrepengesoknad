@@ -14,6 +14,7 @@ import FlerbarnsdagerInformasjon from 'app/steps/uttaksplan-info/components/fler
 import SammenhengendeUttakInformasjon from 'app/steps/uttaksplan-info/components/sammenhengendeUttakInformasjon/SammenhengendeUttakInformasjon';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
+import FordelingPåvirkninger from './fordeling-påvirkninger/FordelingPåvirkninger';
 
 export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
     return (
@@ -80,7 +81,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                     ></BeggeHarRettGraf>
                 </Block>
             )}
-            <Block padBottom="xl">
+            <Block padBottom="s">
                 {fordelingScenario.map((del) => {
                     return (
                         <OversiktPerDel
@@ -105,6 +106,9 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
             {!førsteOktober2021ReglerGjelder(familiehendelsesdato) && (
                 <SammenhengendeUttakInformasjon annenForeldrerHarRett={annenForeldrerHarRett} />
             )}
+            <Block padBottom="xl">
+                <FordelingPåvirkninger beggeHarRett={annenForeldrerHarRett} />
+            </Block>
         </>
     );
 };

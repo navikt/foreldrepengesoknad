@@ -45,27 +45,27 @@
 }
 
 .graf--søker-mor {
-    background-color: #3386e0;
+    background-color: var(--data-surface-data-1, #3386e0);
     border-color: #3386e0;
 }
 
 .graf--annen-part-mor {
-    background-color: #99c4dd;
+    background-color: var(--data-surface-data-2-subtle, #99c4dd);
     border-color: #99c4dd;
 }
 
 .graf--søker-far {
-    background-color: #33aa5f;
+    background-color: var(--data-surface-data-5, #33aa5f);
     border-color: #33aa5f;
 }
 
 .graf--annen-part-far {
-    background-color: #99dead;
+    background-color: var(--data-surface-data-5-subtle, #99dead);
     border-color: #99dead;
 }
 
 .graf--fellesperiode {
-    background-color: #eceef0;
+    background-color: var(--Bg-Subtle, #eceef0);
     border-color: black;
 }
 
