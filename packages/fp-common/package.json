@@ -47,7 +47,7 @@
         "@storybook/addon-links": "^7.6.10",
         "@storybook/builder-vite": "^7.6.10",
         "@storybook/react": "^7.6.10",
-        "@testing-library/jest-dom": "^6.2.1",
+        "@testing-library/jest-dom": "^6.4.0",
         "@testing-library/react": "^14.1.2",
         "@types/bytes": "^3.1.4",
         "@types/lodash": "^4.14.202",
