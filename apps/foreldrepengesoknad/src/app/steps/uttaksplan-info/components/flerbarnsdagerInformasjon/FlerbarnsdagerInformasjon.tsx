@@ -4,7 +4,7 @@ import { getTekstForAntallBarn } from 'app/utils/barnUtils';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 interface Props {
-    flerbarnsUker: number;
+    flerbarnsDager: number;
     antallBarn: number;
     erAdopsjon: boolean;
 }
@@ -18,9 +18,9 @@ const getBarnTekst = (antallBarn: number, erAdopsjon: boolean, intl: IntlShape) 
     return getTekstForAntallBarn(antallBarn, intl).toLowerCase();
 };
 
-const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({ flerbarnsUker, antallBarn, erAdopsjon }) => {
+const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({ flerbarnsDager, antallBarn, erAdopsjon }) => {
     const intl = useIntl();
-    const varighetTekst = getVarighetString(flerbarnsUker * 5, intl);
+    const varighetTekst = getVarighetString(flerbarnsDager, intl);
     const barnTekst = getBarnTekst(antallBarn, erAdopsjon, intl);
     return (
         <Block padBottom="xl">

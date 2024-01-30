@@ -2,11 +2,11 @@ import { BodyLong, VStack } from '@navikt/ds-react';
 import './oversikt-per-del.css';
 import { bemUtils, guid } from '@navikt/fp-common';
 import DelGraf from '../grafer/del-graf/DelGraf';
-import { FordelingEier, DelInformasjon } from '../FordelingOversikt';
 import { Dispatch, SetStateAction } from 'react';
 import { getFordelingDelTittel } from '../fordelingOversiktUtils';
 import classNames from 'classnames';
 import { useIntl } from 'react-intl';
+import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 
 interface Props {
     delInformasjon: DelInformasjon;
@@ -46,8 +46,8 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
             <div>
                 <BodyLong className={bem.element('uker')}>{tittel}</BodyLong>
             </div>
-            <DelGraf fordelingsuker={delInformasjon.fordelingUker} sumUker={delInformasjon.sumUker} />
-            <VStack gap="4">
+            <DelGraf fordelingsdager={delInformasjon.fordelingDager} sumDager={delInformasjon.sumDager} />
+            <VStack gap="2">
                 {delInformasjon.fordelingInfo.map((infoTekst) => {
                     return (
                         <BodyLong size="small" key={guid()}>
