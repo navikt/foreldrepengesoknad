@@ -38,7 +38,6 @@ ArbeidssituasjonFarOgMor.args = {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR_OG_FAR,
-        hvem: SøkersituasjonEnum.FLERE,
     },
 };
 
@@ -47,7 +46,6 @@ ArbeidssituasjonKunMor.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
-        hvem: SøkersituasjonEnum.ALENE,
     },
 };
 
@@ -56,7 +54,6 @@ ArbeidssituasjonKunFar.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         type: SøkersituasjonEnum.FAR,
-        hvem: SøkersituasjonEnum.ALENE,
     },
 };
 
@@ -66,7 +63,6 @@ ArbeidssituasjonMorOgMedmor.args = {
         navnPåMor: 'Esther Utvikler',
         navnPåMedmor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR_OG_MEDMOR,
-        hvem: SøkersituasjonEnum.FLERE,
     },
 };
 
@@ -76,6 +72,5 @@ ArbeidssituasjonFarOgFar.args = {
         navnPåFar: 'Espen Utvikler',
         navnPåMedfar: 'Klaus Utvikler',
         type: SøkersituasjonEnum.FAR_OG_FAR,
-        hvem: SøkersituasjonEnum.FLERE,
     },
 };
