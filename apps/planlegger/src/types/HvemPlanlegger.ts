@@ -7,47 +7,53 @@ export type MorOgFar = {
     type: SøkersituasjonEnum.MOR_OG_FAR;
     navnPåMor: string;
     navnPåFar: string;
-    hvem: SøkersituasjonEnum.FLERE;
 };
 
 export type MorOgMedmor = {
     type: SøkersituasjonEnum.MOR_OG_MEDMOR;
     navnPåMor: string;
     navnPåMedmor: string;
-    hvem: SøkersituasjonEnum.FLERE;
 };
 
 export type FarOgFar = {
     type: SøkersituasjonEnum.FAR_OG_FAR;
     navnPåFar: string;
     navnPåMedfar: string;
-    hvem: SøkersituasjonEnum.FLERE;
 };
 
 export type Mor = {
     type: SøkersituasjonEnum.MOR;
     navnPåMor: string;
-    hvem: SøkersituasjonEnum.ALENE;
 };
 
 export type Far = {
     type: SøkersituasjonEnum.FAR;
     navnPåFar: string;
-    hvem: SøkersituasjonEnum.ALENE;
 };
 
 export const isMorOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar => {
-    return hvemPlanlegger.type === 'morOgFar', hvemPlanlegger.hvem === 'flere';
+    return hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR;
 };
 export const isMorOgMedmor = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgMedmor => {
-    return hvemPlanlegger.type === 'morOgMedmor', hvemPlanlegger.hvem === 'flere';
+    return hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR;
 };
 export const isFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar => {
-    return hvemPlanlegger.type === 'farOgFar', hvemPlanlegger.hvem === 'flere';
+    return hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR;
 };
 export const isMor = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Mor => {
-    return hvemPlanlegger.type === 'mor', hvemPlanlegger.hvem === 'alene';
+    return hvemPlanlegger.type === SøkersituasjonEnum.MOR;
 };
 export const isFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Far => {
-    return hvemPlanlegger.type === 'far', hvemPlanlegger.hvem === 'alene';
+    return hvemPlanlegger.type === SøkersituasjonEnum.FAR;
+};
+
+export const isFlere = (hvemPlanlegger: HvemPlanlegger) => {
+    return (
+        hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR ||
+        hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR ||
+        hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR
+    );
+};
+export const isAlene = (hvemPlanlegger: HvemPlanlegger) => {
+    return isFlere(hvemPlanlegger) === false;
 };
