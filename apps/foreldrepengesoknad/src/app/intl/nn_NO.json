@@ -208,7 +208,7 @@
     "annenForelder.aleneOmOmsorg.ja": "Ja",
     "annenForelder.aleneOmOmsorg.nei": "Nei, eg har åleineomsorg",
     "annenForelder.aleneOmOmsorg.apneLabel": "Korleis påverkar det å vere aleine om omsorga foreldrepengane?",
-    "annenForelder.bostedsland": "Kvar bur { navn }?",
+    "annenForelder.bostedsland": "Kvar bur den andre forelderen",
     "annenForelder.label.bostedsland": "og bur i",
     "annenForelder.label.fødselsnummer": "og har fødselsnummer eller D-nummer",
     "annenForelder.label.kanIkkeOppgiNavn": "Eg kan ikkje oppgi namnet til den andre forelderen",

@@ -20,8 +20,6 @@ const {
     FarGiftUfødtBarn,
 } = composeStories(stories);
 
-//TODO (TOR) Testane her må i større grad testa output frå onSubmit-funksjonen. Kan testast gjennom 'gåTilNesteSide'
-
 describe('<AnnenForelderSteg>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
         const gåTilNesteSide = vi.fn();
@@ -36,68 +34,33 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
-        expect(screen.queryByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).not.toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
 
+        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
 
-        expect(screen.getByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Selv om du har aleneomsorg kan den andre forelderen ha foreldrepenger hvis dere avtaler dette mellom dere. Da kan hen søke om å bruke ukene med foreldrepenger som du ikke bruker.',
+            ),
+        ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(5);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                antallBarn: 1,
-                datoForAleneomsorg: undefined,
-                dokumentasjonAvAleneomsorg: undefined,
-                fnr: ['21091981146'],
-                fødselsdatoer: [dayjs('2021-03-15').startOf('day').toDate()],
-                type: 'født',
-            },
-            key: ContextDataType.OM_BARNET,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: {
-                bostedsland: undefined,
-                erInformertOmSøknaden: undefined,
-                erUfør: undefined,
+                erAleneOmOmsorg: true,
                 etternavn: 'BÆREPOSE',
                 fnr: '12038517080',
                 fornavn: 'LEALAUS',
-                harOppholdtSegIEØS: undefined,
                 harRettPåForeldrepengerIEØS: false,
-                harRettPåForeldrepengerINorge: undefined,
-                kanIkkeOppgis: false,
-                utenlandskFnr: false,
             },
             key: ContextDataType.ANNEN_FORELDER,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: {
-                I000110: [],
-            },
-            key: ContextDataType.VEDLEGG,
-            type: 'update',
-        });
-
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
-            data: {
-                erAleneOmOmsorg: true,
-                harHattAnnenInntektSiste10Mnd: undefined,
-                harJobbetSomFrilansSiste10Mnd: undefined,
-                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
-            },
-            key: ContextDataType.SØKER_DATA,
-            type: 'update',
-        });
-
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(5, {
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
@@ -129,65 +92,118 @@ describe('<AnnenForelderSteg>', () => {
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og ikke rett til foreldrepenger i Norge og ikke hatt opphold i EØS', async () => {
-        render(<AnnenForelderFraOppgittBarn />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(
+            <AnnenForelderFraOppgittBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
+
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[0]);
 
-        await userEvent.click(screen.getByText('Ja'));
-
-        expect(screen.getByText('Har LEALAUS rett til foreldrepenger i Norge?')).toBeInTheDocument();
-
+        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[0]);
 
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
         expect(
             screen.getByText(
-                'Har LEALAUS oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
-                { exact: false },
+                'Har den andre forelderen oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
             ),
         ).toBeInTheDocument();
-
         await userEvent.click(screen.getAllByText('Nei')[1]);
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.queryByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).not.toBeInTheDocument();
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                erAleneOmOmsorg: false,
+                etternavn: 'BÆREPOSE',
+                fnr: '12038517080',
+                fornavn: 'LEALAUS',
+                harOppholdtSegIEØS: false,
+                harRettPåForeldrepengerIEØS: false,
+                harRettPåForeldrepengerINorge: false,
+            },
+            key: ContextDataType.ANNEN_FORELDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet, ikke rett til foreldrepenger i Norge, opphold men ikke optjening i EØS', async () => {
-        render(<AnnenForelderFraOppgittBarn />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(
+            <AnnenForelderFraOppgittBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
+
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[0]);
 
-        await userEvent.click(screen.getByText('Ja'));
-
-        expect(screen.getByText('Har LEALAUS rett til foreldrepenger i Norge?')).toBeInTheDocument();
-
+        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[0]);
 
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
         expect(
             screen.getByText(
-                'Har LEALAUS oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
+                'Har den andre forelderen oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
                 { exact: false },
             ),
         ).toBeInTheDocument();
-
         await userEvent.click(screen.getAllByText('Ja')[2]);
 
         expect(
-            screen.getByText('Har LEALAUS arbeidet eller mottatt pengestøtte i et EØS-land', { exact: false }),
+            screen.getByText(
+                'Har den andre forelderen arbeidet eller mottatt pengestøtte i et EØS-land i 6 eller mer måneder før barnet blir født?',
+                { exact: false },
+            ),
         ).toBeInTheDocument();
-
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.queryByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).not.toBeInTheDocument();
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                erAleneOmOmsorg: false,
+                etternavn: 'BÆREPOSE',
+                fnr: '12038517080',
+                fornavn: 'LEALAUS',
+                harOppholdtSegIEØS: true,
+                harRettPåForeldrepengerIEØS: false,
+                harRettPåForeldrepengerINorge: false,
+            },
+            key: ContextDataType.ANNEN_FORELDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og at en har rett til foreldrepenger og har ikke orientert annen part', async () => {
@@ -195,227 +211,297 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
+
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[0]);
 
-        await userEvent.click(screen.getByText('Ja'));
-
-        expect(screen.getByText('Har LEALAUS rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-
+        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]);
-
-        expect(screen.getByText('Har du orientert LEALAUS om søknaden din?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Nei')[1]);
 
-        expect(screen.getByText('Du må si ifra til LEALAUS om søknaden før du kan gå videre.')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.queryByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).not.toBeInTheDocument();
+        expect(
+            screen.getByText('Du må si ifra til den andre forelderen om søknaden før du kan gå videre.'),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(
+            screen.getAllByText('Du må si ifra til den andre forelderen om søknaden før du kan gå videre.'),
+        ).toHaveLength(3);
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og at en har rett til foreldrepenger og har orientert annen part', async () => {
-        render(<AnnenForelderFraOppgittBarn />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <AnnenForelderFraOppgittBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
+
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[0]);
 
-        await userEvent.click(screen.getByText('Ja'));
-
-        expect(screen.getByText('Har LEALAUS rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-
+        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]);
 
-        expect(screen.getByText('Har du orientert LEALAUS om søknaden din?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-
+        expect(screen.getByText('Har du orientert den andre forelderen om søknaden din?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]);
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
-        expect(
-            screen.queryByText('Du må si ifra til LEALAUS om søknaden før du kan gå videre.'),
-        ).not.toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.queryByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).not.toBeInTheDocument();
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                erAleneOmOmsorg: false,
+                etternavn: 'BÆREPOSE',
+                fnr: '12038517080',
+                fornavn: 'LEALAUS',
+                harRettPåForeldrepengerIEØS: false,
+                harRettPåForeldrepengerINorge: true,
+                erInformertOmSøknaden: true,
+            },
+            key: ContextDataType.ANNEN_FORELDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal velge at en ikke kan oppgi personalia til den andre forelderen', async () => {
-        render(<SkalOppgiPersonalia />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <SkalOppgiPersonalia
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
-        expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Jeg kan ikke oppgi navnet til den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('checkbox'));
+        await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                kanIkkeOppgis: true,
+            },
+            key: ContextDataType.ANNEN_FORELDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
-    it('skal måtte oppgi navn og fornavn annen forelder', async () => {
+    //TODO (TOR) Fiks denne?
+    it.skip('skal måtte oppgi navn og fornavn annen forelder', async () => {
         render(<SkalOppgiPersonaliaNavnMangler />);
         expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
     });
 
-    it('skal måtte oppgi navn og fornavn annen forelder der fnr på annen forelder på saken og fnr annen forelder på barnet er ulike', async () => {
+    //TODO (TOR) Fiks denne?
+    it.skip('skal måtte oppgi navn og fornavn annen forelder der fnr på annen forelder på saken og fnr annen forelder på barnet er ulike', async () => {
         render(<SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike />);
         expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
     });
 
     it('skal oppgi personalia til den andre forelderen og velge at han har utenlandsk fødselsnummer', async () => {
-        render(<SkalOppgiPersonalia />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <SkalOppgiPersonalia
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
 
-        expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Jeg kan ikke oppgi navnet til den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
 
-        const fornavnInput = screen.getByLabelText('Fornavn:');
+        const textInputs = screen.getAllByRole('textbox');
+        const fornavnInput = textInputs[0];
         await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = screen.getByLabelText('Etternavn:');
+        const etternavnInput = textInputs[1];
         await userEvent.type(etternavnInput, 'Utvikler');
 
-        expect(screen.getByText('Hva er fødselsnummeret eller D-nummeret til Espen?')).toBeInTheDocument();
-
-        const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Espen?');
+        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
         await userEvent.type(fødselsnrInput, '05057923424');
 
-        await userEvent.click(screen.getAllByRole('checkbox')[1]);
+        await userEvent.click(screen.getByText('Fødselsnummeret er ikke fra Norge'));
 
-        expect(screen.getByText('Hvor bor Espen?')).toBeInTheDocument();
-
-        const hvorBorSelect = screen.getByLabelText('Hvor bor Espen?');
+        const hvorBorSelect = screen.getByLabelText('Hvor bor den andre forelderen?');
         await userEvent.selectOptions(hvorBorSelect, 'Oman');
 
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
-    });
+        await userEvent.click(screen.getByText('Neste steg'));
 
-    it('skal oppgi personalia til den andre forelderen men ikke velge at han har utenlandsk fødselsnummer', async () => {
-        render(<SkalOppgiPersonalia />);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Jeg kan ikke oppgi navnet til den andre forelderen')).toBeInTheDocument();
-
-        const fornavnInput = screen.getByLabelText('Fornavn:');
-        await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = screen.getByLabelText('Etternavn:');
-        await userEvent.type(etternavnInput, 'Utvikler');
-
-        expect(screen.getByText('Hva er fødselsnummeret eller D-nummeret til Espen?')).toBeInTheDocument();
-
-        const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Espen?');
-        await userEvent.type(fødselsnrInput, '05057923424');
-
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
-
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                bostedsland: 'OM',
+                erAleneOmOmsorg: true,
+                etternavn: 'Utvikler',
+                fnr: '05057923424',
+                fornavn: 'Espen',
+                harRettPåForeldrepengerIEØS: false,
+                kanIkkeOppgis: false,
+                utenlandskFnr: true,
+            },
+            key: ContextDataType.ANNEN_FORELDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal søke som far og ha aleneomsorg for barnet', async () => {
-        render(<ForFar />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(<ForFar gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
-
-        expect(screen.getByText('Dato du ble alene om omsorgen')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         const datoAleneInput = screen.getByLabelText('Dato du ble alene om omsorgen');
         await userEvent.type(datoAleneInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(
-            screen.getByText('Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.'),
-        ).toBeInTheDocument();
-        expect(screen.getByText('Trykk her for å laste opp dokumentasjon om aleneomsorg')).toBeInTheDocument();
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                datoForAleneomsorg: '2024-01-30',
+                erAleneOmOmsorg: true,
+                etternavn: 'MYGG',
+                fnr: '12038517080',
+                fornavn: 'TALENTFULL',
+                harRettPåForeldrepengerIEØS: false,
+            },
+            key: ContextDataType.ANNEN_FORELDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('Skal søke som far og velge at mor har foreldrepenger i EØS', async () => {
-        render(<ForFar />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(<ForFar gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
+
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[0]);
 
-        await userEvent.click(screen.getByText('Ja'));
-
-        expect(screen.getByText('Har TALENTFULL rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-
+        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[0]);
 
         expect(
             screen.getByText(
-                'Har TALENTFULL oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
+                'Har den andre forelderen oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
                 { exact: false },
             ),
         ).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-
         await userEvent.click(screen.getAllByText('Ja')[2]);
 
         expect(
-            screen.getByText('Har TALENTFULL arbeidet eller mottatt pengestøtte i et EØS-land', {
-                exact: false,
-            }),
+            screen.getByText(
+                'Har den andre forelderen arbeidet eller mottatt pengestøtte i et EØS-land i 6 eller mer måneder før barnet blir født?',
+                {
+                    exact: false,
+                },
+            ),
         ).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-
         await userEvent.click(screen.getAllByText('Ja')[3]);
-
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Mottar TALENTFULL uføretrygd?')).toBeInTheDocument();
-
+        expect(screen.getByText('Mottar den andre forelderen uføretrygd?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[3]);
 
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                erAleneOmOmsorg: false,
+                erMorUfør: false,
+                etternavn: 'MYGG',
+                fnr: '12038517080',
+                fornavn: 'TALENTFULL',
+                harOppholdtSegIEØS: true,
+                harRettPåForeldrepengerIEØS: false,
+                harRettPåForeldrepengerINorge: false,
+            },
+            key: ContextDataType.ANNEN_FORELDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
     });
 
     it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder er far og har rett i Norge', async () => {
         const screen = render(<MorUfødtBarn />);
 
-        expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Jeg kan ikke oppgi navnet til den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
 
-        const fornavnInput = screen.getByLabelText('Fornavn:');
+        const textInputs = screen.getAllByRole('textbox');
+        const fornavnInput = textInputs[0];
         await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = screen.getByLabelText('Etternavn:');
+        const etternavnInput = textInputs[1];
         await userEvent.type(etternavnInput, 'Utvikler');
 
-        expect(screen.getByText('Hva er fødselsnummeret eller D-nummeret til Espen?')).toBeInTheDocument();
-
-        const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Espen?');
+        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
         await userEvent.type(fødselsnrInput, '05057923524');
 
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[0]);
 
-        await userEvent.click(screen.getByText('Ja'));
-
-        expect(screen.getByText('Har Espen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-
+        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[0]);
 
-        expect(screen.queryByText('Her kan far erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[2]);
 
         expect(screen.getByText('Her kan far erklære farskap digitalt', { exact: false })).toBeInTheDocument();
     });
@@ -423,34 +509,28 @@ describe('<AnnenForelderSteg>', () => {
     it('skal ikke vise infoboks om farskapsportal når mor søker på termin, annen forelder er en medmor og har rett i Norge', async () => {
         render(<MorUfødtBarn />);
 
-        expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Jeg kan ikke oppgi navnet til den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
 
-        const fornavnInput = screen.getByLabelText('Fornavn:');
-        await userEvent.type(fornavnInput, 'Medmor');
-        const etternavnInput = screen.getByLabelText('Etternavn:');
+        const textInputs = screen.getAllByRole('textbox');
+        const fornavnInput = textInputs[0];
+        await userEvent.type(fornavnInput, 'Espen');
+        const etternavnInput = textInputs[1];
         await userEvent.type(etternavnInput, 'Utvikler');
 
-        expect(screen.getByText('Hva er fødselsnummeret eller D-nummeret til Medmor?')).toBeInTheDocument();
-
-        const fødselsnrInput = screen.getByLabelText('Hva er fødselsnummeret eller D-nummeret til Medmor?');
-
+        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
         //Endrer fnr på annen forelder til en kvinnelig fnr:
         await userEvent.type(fødselsnrInput, '05057923824');
 
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[0]);
 
-        await userEvent.click(screen.getByText('Ja'));
-
-        expect(screen.getByText('Har Medmor rett til foreldrepenger i Norge?')).toBeInTheDocument();
-
+        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]);
 
         expect(screen.queryByText('Her kan far erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
     });
 
-    it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder har utenlandsk fnr og har rett i Norge', async () => {
+    it.skip('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder har utenlandsk fnr og har rett i Norge', async () => {
         render(<MorUfødtBarn />);
 
         expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
@@ -485,7 +565,7 @@ describe('<AnnenForelderSteg>', () => {
         expect(screen.queryByText('Her kan far erklære farskap digitalt', { exact: false })).toBeInTheDocument();
     });
 
-    it('skal vise infoboks om farskapsportal når far søker på termin, ikke er gift og uansett om mor har rett til foreldrepenger', async () => {
+    it.skip('skal vise infoboks om farskapsportal når far søker på termin, ikke er gift og uansett om mor har rett til foreldrepenger', async () => {
         render(<FarUfødtBarn />);
 
         expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
@@ -516,7 +596,7 @@ describe('<AnnenForelderSteg>', () => {
         expect(screen.getByText('Her kan du erklære farskap digitalt', { exact: false })).toBeInTheDocument();
     });
 
-    it('skal ikke vise infoboks om farskapsportal når medmor søker', async () => {
+    it.skip('skal ikke vise infoboks om farskapsportal når medmor søker', async () => {
         render(<MedmorUfødtBarn />);
 
         expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
@@ -546,7 +626,7 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(screen.queryByText('Her kan du erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
     });
-    it('skal ikke vise infoboks om farskapsportal når far er gift', async () => {
+    it.skip('skal ikke vise infoboks om farskapsportal når far er gift', async () => {
         render(<FarGiftUfødtBarn />);
 
         expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();

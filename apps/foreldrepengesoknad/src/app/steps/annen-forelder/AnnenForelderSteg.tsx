@@ -81,6 +81,7 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
         return navigator.goToNextDefaultStep();
     };
 
+    // TODO (TOR) Typen AnnenForelderFormData bør erstattast av AnnenForelder.ts (som bør flyttast til denne appen)
     const formMethods = useForm<AnnenForelderFormData>({
         shouldUnregister: true,
         defaultValues: annenForelder,

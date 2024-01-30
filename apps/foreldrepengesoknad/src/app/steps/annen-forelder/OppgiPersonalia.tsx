@@ -95,7 +95,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                     {utenlandskFnr && (
                         <Select
                             name="bostedsland"
-                            label={intl.formatMessage({ id: 'annenForelder.bostedsland' }, { navn: fornavn })}
+                            label={intl.formatMessage({ id: 'annenForelder.bostedsland' })}
                             validate={[
                                 isRequired(
                                     intl.formatMessage({ id: 'valideringsfeil.annenForelder.bostedslandPåkrevd' }),
