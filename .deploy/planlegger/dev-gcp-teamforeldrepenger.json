@@ -1,5 +1,5 @@
 {
-    "app": "foreldrepengeplanlegger",
+    "app": "planlegger",
     "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
     "ingresses": ["https://foreldrepengeplanlegger.intern.dev.nav.no"],
     "env": {
