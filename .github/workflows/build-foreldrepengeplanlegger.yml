@@ -23,7 +23,7 @@ jobs:
     with:
       runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      bake-target: 'foreldrepengeplanlegger'
+      bake-target: 'planlegger'
     secrets: inherit
 
   deploy-dev:
