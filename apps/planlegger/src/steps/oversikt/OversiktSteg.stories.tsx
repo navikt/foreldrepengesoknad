@@ -6,6 +6,8 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
 import OversiktSteg from './OversiktSteg';
 import { Periode, PeriodeEnum } from 'types/Periode';
+import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 export default {
     title: 'OversiktSteg',
@@ -13,28 +15,41 @@ export default {
 };
 
 const Template: StoryFn<{
+    hvemPlanlegger: HvemPlanlegger;
     periode: Periode;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ gåTilNesteSide = action('button-click'), periode }) => {
+}> = ({ gåTilNesteSide = action('button-click'), hvemPlanlegger, periode }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.OVERSIKT]}>
-            <PlanleggerDataContext onDispatch={gåTilNesteSide} initialState={{ [ContextDataType.PERIODE]: periode }}>
+            <PlanleggerDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{ [ContextDataType.PERIODE]: periode, [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger }}
+            >
                 <OversiktSteg />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
 };
 
-export const PeriodeHundreProsent = Template.bind({});
-PeriodeHundreProsent.args = {
+export const PeriodeFlereForsørgereHundreProsent = Template.bind({});
+PeriodeFlereForsørgereHundreProsent.args = {
+    hvemPlanlegger: {
+        navnPåFar: 'Espen Utvikler',
+        navnPåMor: 'Klara Utvikler',
+        type: SøkersituasjonEnum.MOR_OG_FAR,
+    },
     periode: {
         periode: PeriodeEnum.HUNDRE,
     },
 };
 
-export const PeriodeÅttiProsent = Template.bind({});
-PeriodeÅttiProsent.args = {
+export const PeriodeAleneforsørgerÅttiProsent = Template.bind({});
+PeriodeAleneforsørgerÅttiProsent.args = {
+    hvemPlanlegger: {
+        navnPåMor: 'Klara Utvikler',
+        type: SøkersituasjonEnum.MOR,
+    },
     periode: {
         periode: PeriodeEnum.ÅTTI,
     },
