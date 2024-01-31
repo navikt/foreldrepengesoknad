@@ -129,10 +129,8 @@
     "feilmelding.fødselPanel.termindato.gyldig": "Termindato må være en gyldig dato på formatet dd.mm.åååå.",
     "feilmelding.fødselPanel.termindato.termindatoKanIkkeVære3UkerFraIdag": "Termindatoen kan ikke være tidligere enn 3 uker fra i dag.",
     "feilmelding.fødselPanel.termindato.duMåVæreIUke22": "Du kan tidligst søke når du er i 22. svangerskapsuke.",
-    "feilmelding.arbeidssituasjonMor.duMåOppgi": "Du må oppgi arbeidssituasjon for mor.",
-    "feilmelding.arbeidssituasjonFar.duMåOppgi": "Du må oppgi arbeidssituasjon for far.",
-    "feilmelding.arbeidssituasjonMedmor.duMåOppgi": "Du må oppgi arbeidssituasjon for medmor.",
-    "feilmelding.arbeidssituasjonMedfar.duMåOppgi": "Du må oppgi arbeidssituasjon for medfar.",
+    "feilmelding.arbeidssituasjonAlene.duMåOppgi": "Du må oppgi arbeidssituasjonen din.",
+    "feilmelding.arbeidssituasjonFlere.duMåOppgi": "Du må oppgi arbeidssituasjon for {hvem}.",
     "feilmelding.periode.hvorLangPeriodeAlene.duMåOppgi": "Du må oppgi hvor lang periode du ønsker.",
     "feilmelding.periode.hvorLangPeriode.duMåOppgi": "Dere må oppgi hvor lang periode dere ønsker."
 }
