@@ -32,8 +32,8 @@ const Template: StoryFn<{
     );
 };
 
-export const PeriodeStegFlere = Template.bind({});
-PeriodeStegFlere.args = {
+export const FlereForsørgere = Template.bind({});
+FlereForsørgere.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
@@ -41,8 +41,8 @@ PeriodeStegFlere.args = {
     },
 };
 
-export const PeriodeStegAlene = Template.bind({});
-PeriodeStegAlene.args = {
+export const Aleneforsørger = Template.bind({});
+Aleneforsørger.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,

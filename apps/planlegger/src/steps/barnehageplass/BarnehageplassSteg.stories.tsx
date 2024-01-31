@@ -35,8 +35,8 @@ const Template: StoryFn<{
     );
 };
 
-export const FlereForsørgereFødt = Template.bind({});
-FlereForsørgereFødt.args = {
+export const FlereForsørgereBarnErFødt = Template.bind({});
+FlereForsørgereBarnErFødt.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
@@ -63,8 +63,8 @@ FlereForsørgereTermin.args = {
     },
 };
 
-export const AleneforsørgerFødt = Template.bind({});
-AleneforsørgerFødt.args = {
+export const AleneforsørgerBarnErFødt = Template.bind({});
+AleneforsørgerBarnErFødt.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,

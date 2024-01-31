@@ -32,8 +32,8 @@ const Template: StoryFn<{
     );
 };
 
-export const ArbeidssituasjonFarOgMor = Template.bind({});
-ArbeidssituasjonFarOgMor.args = {
+export const ArbeidssituasjonMorOgFar = Template.bind({});
+ArbeidssituasjonMorOgFar.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
@@ -41,19 +41,11 @@ ArbeidssituasjonFarOgMor.args = {
     },
 };
 
-export const ArbeidssituasjonKunMor = Template.bind({});
-ArbeidssituasjonKunMor.args = {
+export const ArbeidssituasjonAleneforsørger = Template.bind({});
+ArbeidssituasjonAleneforsørger.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
-    },
-};
-
-export const ArbeidssituasjonKunFar = Template.bind({});
-ArbeidssituasjonKunFar.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        type: SøkersituasjonEnum.FAR,
     },
 };
 
@@ -63,14 +55,5 @@ ArbeidssituasjonMorOgMedmor.args = {
         navnPåMor: 'Esther Utvikler',
         navnPåMedmor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR_OG_MEDMOR,
-    },
-};
-
-export const ArbeidssituasjonFarOgFar = Template.bind({});
-ArbeidssituasjonFarOgFar.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMedfar: 'Klaus Utvikler',
-        type: SøkersituasjonEnum.FAR_OG_FAR,
     },
 };
