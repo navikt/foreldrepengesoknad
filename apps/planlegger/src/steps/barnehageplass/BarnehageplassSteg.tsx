@@ -146,13 +146,13 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                                     id="barnehageplass.dato"
                                                     values={{ dato: barnehageStartdato() }}
                                                 />
-                                            )}{' '}
+                                            )}
                                         </BodyLong>
                                     </HStack>
                                     <BodyLong>
                                         {erFødt && (
                                             <FormattedMessage
-                                                id="barnehageplass.datoTekst"
+                                                id="barnehageplass.datoTekstDeg"
                                                 values={{
                                                     dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
                                                 }}
@@ -160,7 +160,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                         )}
                                         {erIkkeFødt && (
                                             <FormattedMessage
-                                                id="barnehageplass.datoTekstTermin"
+                                                id="barnehageplass.datoTekstTerminDeg"
                                                 values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
                                             />
                                         )}{' '}
@@ -174,7 +174,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                         <FormattedMessage id="barnehageplass.barnehageTittel" />
                                     </Heading>
                                     <BodyLong>
-                                        <FormattedMessage id="barnehageplass.barnehageTekst" />
+                                        <FormattedMessage id="barnehageplass.barnehageTekstDeg" />
                                     </BodyLong>
                                 </VStack>
                             </Box>
@@ -185,7 +185,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                         <FormattedMessage id="barnehageplass.kommuneTittel" />
                                     </Heading>
                                     <BodyLong>
-                                        <FormattedMessage id="barnehageplass.kommuneTekst" />
+                                        <FormattedMessage id="barnehageplass.kommuneTekstDeg" />
                                     </BodyLong>
                                 </VStack>
                             </Box>
@@ -193,10 +193,10 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                             <Box padding="4" borderRadius="large" background="bg-subtle">
                                 <VStack gap="2">
                                     <Heading size="small">
-                                        <FormattedMessage id="barnehageplass.alleredeTittel" />
+                                        <FormattedMessage id="barnehageplass.alleredeTittelDeg" />
                                     </Heading>
                                     <BodyLong>
-                                        <FormattedMessage id="barnehageplass.alleredeTekst" />
+                                        <FormattedMessage id="barnehageplass.alleredeTekstDeg" />
                                     </BodyLong>
                                     <HStack>
                                         <Button variant="secondary" type="button">
