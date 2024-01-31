@@ -36,8 +36,6 @@ const OmBarnetSteg: React.FunctionComponent = () => {
         navigator.goToNextStep(PlanleggerRoutes.BARNEHAGEPLASS);
     };
 
-    const erAlene = isAlene(hvemPlanlegger);
-
     return (
         <ContentWrapper>
             <Form formMethods={formMethods} onSubmit={lagre}>
@@ -47,12 +45,12 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             <FormattedMessage id="barnet.tittel" />
                         </Heading>
                         <VStack gap="1">
-                            {erAlene && (
+                            {isAlene(hvemPlanlegger) && (
                                 <Heading size="small">
                                     <FormattedMessage id="barnet.hvaGjelderDeg" />
                                 </Heading>
                             )}
-                            {!erAlene && (
+                            {!isAlene(hvemPlanlegger) && (
                                 <Heading size="small">
                                     <FormattedMessage id="barnet.hvaGjelder" />
                                 </Heading>
