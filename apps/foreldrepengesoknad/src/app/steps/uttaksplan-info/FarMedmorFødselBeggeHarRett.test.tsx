@@ -13,7 +13,6 @@ const {
     FarMedmorFødselBeggeHarRettTvillinger,
 } = composeStories(stories);
 
-//TODO GR: Fix skipped testsp
 describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
     it.skip('Siden WLB ikke gjelder, skal spørre om mors siste dag med foreldrepenger, og vise riktig fordeling for dekningsgrad 100%.', async () => {
         render(<FarMedmorFødselBeggeHarRettDekningsgrad100FørWLB />);

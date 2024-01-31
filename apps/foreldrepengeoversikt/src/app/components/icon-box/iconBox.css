@@ -9,24 +9,29 @@
 }
 
 .iconBox--blue {
-    background-color: var(--a-blue-400);
+    background-color: #3386e0;
+}
+
+.iconBox--lightBlue {
+    background-color: #99c4dd;
 }
 
 .iconBox--green {
-    background-color: var(--a-green-400);
+    background-color: #33aa5f;
 }
 
-.iconBox--purpleBlue {
-    background: repeating-linear-gradient(
-        -45deg,
-        var(--a-blue-400),
-        var(--a-blue-400) 50%,
-        var(--a-purple-400) 50%,
-        var(--a-purple-400) 100%
-    );
+.iconBox--lightGreen {
+    background-color: #99dead;
 }
 
-.iconBox--gray {
+.iconBox--blueLightGreen {
+    background: repeating-linear-gradient(-45deg, #3386e0, #3386e0 50%, #99dead 50%, #99dead 100%);
+}
+
+.iconBox--greenLightBlue {
+    background: repeating-linear-gradient(-45deg, #33aa5f, #33aa5f 50%, #99c4dd 50%, #99c4dd 100%);
+}
+S .iconBox--gray {
     background-color: var(--a-gray-400);
 }
 

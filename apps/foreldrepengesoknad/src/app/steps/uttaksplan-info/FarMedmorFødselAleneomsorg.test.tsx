@@ -15,7 +15,8 @@ describe('<UttaksplanInfo_FarMedmorFødselAleneomsorg>', () => {
     // TODO Noko tull med locale og datoar
     it.skip('skal ved aleneomsorg der far/medmor søker 100% dekningsgrad vise riktig fordelingsinformasjon og riktig dato på omsorgsovertakelse', async () => {
         render(<FarMedmorFødselAleneomsorgDekningsgrad100 />);
-        expect(await screen.findByText('56 uker til deg')).toBeInTheDocument();
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('46 uker til deg')).toBeInTheDocument();
         expect(screen.getByText('Disse ukene kan brukes når som helst før barnet er 3 år.')).toBeInTheDocument();
         expect(screen.getByText('Når skal du starte foreldrepengene dine?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();
@@ -26,7 +27,7 @@ describe('<UttaksplanInfo_FarMedmorFødselAleneomsorg>', () => {
     });
     it.skip('skal ved aleneomsorg der far/medmor søker 80% dekningsgrad vise riktig fordelingsinformasjon', async () => {
         render(<FarMedmorFødselAleneomsorgDekningsgrad80 />);
-        expect(await screen.findByText('46 uker til deg')).toBeInTheDocument();
+        expect(await screen.findByText('56 uker til deg')).toBeInTheDocument();
         expect(screen.getByText('Disse ukene kan brukes når som helst før barnet er 3 år.')).toBeInTheDocument();
         expect(screen.getByText('Når skal du starte foreldrepengene dine?')).toBeInTheDocument();
         expect(screen.queryByText(GÅ_VIDERE_KNAPP)).not.toBeInTheDocument();

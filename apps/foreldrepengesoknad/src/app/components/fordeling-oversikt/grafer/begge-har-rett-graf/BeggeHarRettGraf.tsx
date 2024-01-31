@@ -48,7 +48,14 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
         setCurrentUthevet(undefined);
     };
     const familiehendelseNavn = capitalizeFirstLetter(getFamiliehendelseNavn(erAdopsjon, erBarnetFødt, intl));
-    const fordelingList = getBeggeHarRettGrafFordeling(kontoer, erAdopsjon, erFarEllerMedmor, navnMor, navnFarMedmor);
+    const fordelingList = getBeggeHarRettGrafFordeling(
+        kontoer,
+        erAdopsjon,
+        erFarEllerMedmor,
+        navnMor,
+        navnFarMedmor,
+        intl,
+    );
     const widthFamiliehendelse = 30;
     const sumBredde = sumDager + widthFamiliehendelse;
     const famiHendelseFieldWidth = (widthFamiliehendelse / sumBredde) * 100;

@@ -10,7 +10,7 @@ export interface Props {
     forelder?: Forelder;
     gradert?: boolean;
     navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor?: boolean;
+    erFarEllerMedmor: boolean;
     situasjon?: Situasjon;
     erAleneOmOmsorg?: boolean;
     harMidlertidigOmsorg?: boolean;
@@ -26,9 +26,11 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
     erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
-
     return (
-        <IconBox color={getStønadskontoFarge(konto, forelder, true, harMidlertidigOmsorg)} stripes={gradert}>
+        <IconBox
+            color={getStønadskontoFarge(konto, forelder, erFarEllerMedmor, harMidlertidigOmsorg)}
+            stripes={gradert}
+        >
             <UttaksplanIkon
                 ikon={UttaksplanIkonKeys.uttak}
                 title={getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg)}

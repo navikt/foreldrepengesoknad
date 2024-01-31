@@ -10,6 +10,7 @@ import {
     StønadskontoType,
     TilgjengeligStønadskonto,
     førsteOktober2021ReglerGjelder,
+    getNavnGenitivEierform,
     getVarighetString,
     intlUtils,
     uttaksConstants,
@@ -529,6 +530,7 @@ export const getBeggeHarRettGrafFordeling = (
     erFarEllerMedmor: boolean,
     navnMor: string,
     navnFar: string,
+    intl: IntlShape,
 ) => {
     const fordelingFørFødsel = {
         antallDager: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
@@ -543,7 +545,7 @@ export const getBeggeHarRettGrafFordeling = (
             konto: StønadskontoType.Mødrekvote,
             eier: FordelingEier.Mor,
             fargekode: erFarEllerMedmor ? FordelingFargekode.ANNEN_PART_MOR : FordelingFargekode.SØKER_MOR,
-            beskrivelse: erFarEllerMedmor ? `${navnMor}s del` : 'Din del',
+            beskrivelse: erFarEllerMedmor ? `${getNavnGenitivEierform(navnMor, intl.locale)} del` : 'Din del',
         },
         {
             antallDager: getAntallUkerFellesperiode(kontoer) * 5,

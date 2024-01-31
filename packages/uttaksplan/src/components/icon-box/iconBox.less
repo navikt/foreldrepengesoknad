@@ -13,40 +13,60 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    &--green {
-        background-color: @c-periodefarge-gronn;
+    &--orange {
+        background-color: #ffeccc;
         &--striped {
-            .striped(@c-periodefarge-gronn, @c-periodefarge-gronn--gradert);
+            .striped(#ffeccc, #ffeccc);
+        }
+    }
+
+    &--green {
+        background-color: #33aa5f;
+        &--striped {
+            .striped(#33aa5f, #99dead);
+        }
+    }
+
+    &--lightGreen {
+        background-color: #99dead;
+        &--striped {
+            .striped(#99dead, #99dead);
         }
     }
     &--blue {
-        background-color: @c-periodefarge-blaa;
+        background-color: #3386e0;
         &--striped {
-            .striped(@c-periodefarge-blaa, @c-periodefarge-blaa--gradert);
+            .striped(#3386, #99c4dd);
         }
     }
-    &--purple {
-        background-color: @c-periodefarge-lilla;
+
+    &--lightBlue {
+        background-color: #99c4dd;
         &--striped {
-            .striped(@c-periodefarge-lilla, @c-periodefarge-lilla--gradert);
+            .striped(#99c4dd,#99c4dd);
         }
     }
-    &--purpleBlue {
-        background: repeating-linear-gradient(
-            -45deg,
-            @c-periodefarge-blaa,
-            @c-periodefarge-blaa 50%,
-            @c-periodefarge-lilla 50%,
-            @c-periodefarge-lilla 100%
-        );
+
+    &--blueLightGreen {
+        background: repeating-linear-gradient(-45deg, #3386e0, #3386e0 50%, #99dead 50%, #99dead 100%);
         &--striped {
-            background: repeating-linear-gradient(
-                -45deg,
-                @c-periodefarge-blaa,
-                @c-periodefarge-blaa 50%,
-                @c-periodefarge-lilla 50%,
-                @c-periodefarge-lilla 100%
-            );
+            background: repeating-linear-gradient(-45deg, #3386e0, #3386e0 50%, #99dead 50%, #99dead 100%);
+            &:before {
+                position: absolute;
+                content: '';
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                .striped(transparent, rgba(255, 255, 255, 0.6));
+            }
+        }
+    }
+
+    &--greenLightBlue {
+        background: repeating-linear-gradient(-45deg, #33aa5f, #33aa5f 50%, #99c4dd 50%, #99c4dd 100%);
+        &--striped {
+            background: repeating-linear-gradient(-45deg, #33aa5f, #33aa5f 50%, #99c4dd 50%, #99c4dd 100%);
             &:before {
                 position: absolute;
                 content: '';

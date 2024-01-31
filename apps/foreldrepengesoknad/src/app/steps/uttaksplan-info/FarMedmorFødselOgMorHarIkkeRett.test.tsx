@@ -17,7 +17,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Fordeling av foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('40 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('50 uker til deg')).toBeInTheDocument();
         const startDagInput = screen.getByLabelText('Når ønsker du å starte perioden?');
         await userEvent.type(startDagInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
@@ -31,7 +31,7 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Fordeling av foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('50 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('40 uker til deg')).toBeInTheDocument();
         const startDagInput = screen.getByLabelText('Når ønsker du å starte perioden?');
         await userEvent.type(startDagInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();

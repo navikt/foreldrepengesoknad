@@ -47,14 +47,14 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('Din del')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('Espens del')).toBeInTheDocument();
-        expect(screen.getByText('22 uker til deg')).toBeInTheDocument();
-        expect(screen.getByText('18 uker kan deles, fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('19 uker til Espen')).toBeInTheDocument();
+        expect(screen.getByText('18 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('16 uker kan deles, fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('15 uker til Espen')).toBeInTheDocument();
 
         expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
         expect(screen.getAllByText('Hvor mange uker skal du ha av fellesperioden?')).toHaveLength(2);
 
-        expect(screen.getByText('9 av 18 uker med fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('8 av 16 uker med fellesperiode')).toBeInTheDocument();
 
         expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
         expect(screen.getAllByText('Hvor mange uker skal du ha av fellesperioden?')[0]).toBeInTheDocument();
@@ -87,9 +87,9 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('Din del')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('Espens del')).toBeInTheDocument();
-        expect(screen.getByText('22 uker til deg')).toBeInTheDocument();
-        expect(screen.getByText('39 uker kan deles, fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('19 uker til Espen')).toBeInTheDocument();
+        expect(screen.getByText('18 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('33 uker kan deles, fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('15 uker til Espen')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Av ukene deres har dere 17 uker hvor dere kan ta foreldrepenger samtidig fordi dere har fått tvillinger',
@@ -101,7 +101,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getAllByText('Hvor mange uker skal du ha av fellesperioden?')).toHaveLength(2);
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
 
-        expect(screen.getByText('20 av 39 uker med fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('17 av 33 uker med fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
         expect(screen.getAllByText('Hvor mange uker skal du ha av fellesperioden?')[0]).toBeInTheDocument();
         expect(screen.getByText('Neste steg')).toBeInTheDocument();

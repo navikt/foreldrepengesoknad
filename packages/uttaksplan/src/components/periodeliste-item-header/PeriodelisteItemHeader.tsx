@@ -50,8 +50,8 @@ const bem = bemUtils('periodelisteItemHeader');
 export const getPeriodeIkon = (
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
+    erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,
-    erFarEllerMedmor?: boolean,
     situasjon?: Situasjon,
     erAleneOmOmsorg?: boolean,
 ): React.ReactNode | undefined => {
@@ -71,7 +71,12 @@ export const getPeriodeIkon = (
             );
         case Periodetype.Overføring:
             return (
-                <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} navnPåForeldre={navnPåForeldre} />
+                <StønadskontoIkon
+                    konto={periode.konto}
+                    forelder={periode.forelder}
+                    navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                />
             );
         case Periodetype.Utsettelse:
             return <UtsettelseIkon årsak={periode.årsak} />;
@@ -81,6 +86,7 @@ export const getPeriodeIkon = (
                     konto={StønadskontoType.Foreldrepenger}
                     forelder={periode.forelder}
                     navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
             );
         case Periodetype.Info:
@@ -92,6 +98,7 @@ export const getPeriodeIkon = (
                         konto={StønadskontoType.Foreldrepenger}
                         forelder={periode.forelder}
                         navnPåForeldre={navnPåForeldre}
+                        erFarEllerMedmor={erFarEllerMedmor}
                     />
                 );
             }
@@ -182,7 +189,9 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
         <div>
             <div className={bem.block}>
                 <div className={bem.element('content')}>
-                    <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
+                    <div className={bem.element('ikon')}>
+                        {getPeriodeIkon(periode, navnPåForeldre, erFarEllerMedmor)}
+                    </div>
                     <div className={bem.element('tittel')}>
                         <Label as="h4">
                             {getPeriodeTittel(
