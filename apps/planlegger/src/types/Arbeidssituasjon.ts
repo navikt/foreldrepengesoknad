@@ -1,6 +1,5 @@
 export type Arbeidssituasjon = {
-    arbeidssituasjonMor?: boolean;
-    arbeidssituasjonFar?: boolean;
-    arbeidssituasjonMedmor?: boolean;
-    arbeidssituasjonMedfar?: boolean;
+    arbeidssituasjonAlene?: boolean;
+    arbeidssituasjonFørste?: boolean;
+    arbeidssituasjonAndre?: boolean;
 };
