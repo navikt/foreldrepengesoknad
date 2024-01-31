@@ -8,7 +8,7 @@ on:
       - 'server/**'
       - '.deploy/planlegger/**'
       - '.deploy/naiserator.yaml'
-      - '.github/workflows/build-foreldrepengeplanlegger.yml'
+      - '.github/workflows/build-planlegger.yml'
       - 'Dockerfile'
       - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
@@ -37,6 +37,6 @@ jobs:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: dev-gcp
-      image_suffix: '/foreldrepengeplanlegger'
-      deploy_context: '/foreldrepengeplanlegger'
+      image_suffix: '/planlegger'
+      deploy_context: '/planlegger'
     secrets: inherit

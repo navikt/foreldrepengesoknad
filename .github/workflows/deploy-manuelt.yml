@@ -22,7 +22,7 @@ on:
           - foreldrepengeoversikt
           - engangsstonad
           - svangerskapspengesoknad
-          - foreldrepengeplanlegger
+          - planlegger
 
 jobs:
   deploy:
