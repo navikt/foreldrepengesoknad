@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
 import { ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 
@@ -12,8 +14,6 @@ const {
     AnnenForelderFraOppgittBarn,
     SkalOppgiPersonalia,
     ForFar,
-    SkalOppgiPersonaliaNavnMangler,
-    SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike,
     MorUfødtBarn,
     MedmorUfødtBarn,
     FarUfødtBarn,
@@ -312,20 +312,6 @@ describe('<AnnenForelderSteg>', () => {
         });
     });
 
-    //TODO (TOR) Fiks denne?
-    it.skip('skal måtte oppgi navn og fornavn annen forelder', async () => {
-        render(<SkalOppgiPersonaliaNavnMangler />);
-        expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-    });
-
-    //TODO (TOR) Fiks denne?
-    it.skip('skal måtte oppgi navn og fornavn annen forelder der fnr på annen forelder på saken og fnr annen forelder på barnet er ulike', async () => {
-        render(<SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike />);
-        expect(await screen.findByText('Hva heter den andre forelderen?')).toBeInTheDocument();
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-    });
-
     it('skal oppgi personalia til den andre forelderen og velge at han har utenlandsk fødselsnummer', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
@@ -402,7 +388,7 @@ describe('<AnnenForelderSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                datoForAleneomsorg: '2024-01-30',
+                datoForAleneomsorg: dayjs().format(ISO_DATE_FORMAT),
                 erAleneOmOmsorg: true,
                 etternavn: 'MYGG',
                 fnr: '12038517080',

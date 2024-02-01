@@ -85,7 +85,15 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
     // TODO (TOR) Typen AnnenForelderFormData bør erstattast av AnnenForelder.ts (som bør flyttast til denne appen)
     const formMethods = useForm<AnnenForelderFormData>({
         shouldUnregister: true,
-        defaultValues: annenForelder,
+        defaultValues:
+            annenForelder &&
+            isAnnenForelderOppgitt(annenForelder) &&
+            annenForelder.fornavn === intl.formatMessage({ id: 'annen.forelder' })
+                ? {
+                      ...annenForelder,
+                      fornavn: '',
+                  }
+                : annenForelder,
     });
 
     const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
