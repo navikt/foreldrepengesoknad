@@ -5,14 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Radio } from '@navikt/ds-react';
 
-import {
-    Block,
-    ISOStringToDate,
-    Søkersituasjon,
-    førsteOktober2021ReglerGjelder,
-    hasValue,
-    intlUtils,
-} from '@navikt/fp-common';
+import { Block, ISOStringToDate, førsteOktober2021ReglerGjelder, hasValue, intlUtils } from '@navikt/fp-common';
 import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
 
 import { validateAdopsjonsdato } from '../validation/omBarnetValidering';
@@ -31,7 +24,7 @@ export const skalViseOmsorgsovertakelse = (
     adopsjonsdato: string,
     ankomstdato: string,
     søknadGjelderEtNyttBarn: boolean,
-    fødselsdatoer: string[] | undefined,
+    fødselsdatoer: Array<{ dato: string }> | undefined,
     adopsjonAvEktefellesBarn?: boolean,
     adoptertIUtlandet?: boolean,
 ) => {
@@ -40,7 +33,7 @@ export const skalViseOmsorgsovertakelse = (
             (includeAdoptertIUtlandet(adopsjonsdato, adopsjonAvEktefellesBarn) && adoptertIUtlandet !== undefined) ||
             (!includeAdoptertIUtlandet(adopsjonsdato, adopsjonAvEktefellesBarn) &&
                 fødselsdatoer !== undefined &&
-                hasValue(fødselsdatoer[0])) ||
+                hasValue(fødselsdatoer[0].dato)) ||
             (adopsjonAvEktefellesBarn === true && fødselsdatoer !== undefined && hasValue(fødselsdatoer[0]))
         );
     } else {
@@ -133,7 +126,8 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn 
                     />
                 </Block>
             )}
-            {((søknadGjelderEtNyttBarn && hasValue(formValues.fødselsdatoer[0])) || !søknadGjelderEtNyttBarn) && (
+            {((søknadGjelderEtNyttBarn && formValues.fødselsdatoer && formValues.fødselsdatoer[0].dato) ||
+                !søknadGjelderEtNyttBarn) && (
                 <Block padBottom="xl">
                     <RadioGroup
                         name="adoptertIUtlandet"
@@ -155,7 +149,9 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn 
                 <Block padBottom="xl">
                     <Datepicker
                         name="ankomstdato"
-                        minDate={dayjs(formValues.fødselsdatoer[0]).toDate()}
+                        minDate={
+                            formValues.fødselsdatoer ? dayjs(formValues.fødselsdatoer[0].dato).toDate() : undefined
+                        }
                         maxDate={dayjs().add(6, 'months').toDate()}
                         label={intl.formatMessage({ id: 'omBarnet.ankomstDato' })}
                         //validate={(value) => validateAnkomstdato(intl)(value, formValues.fødselsdatoer[0])}

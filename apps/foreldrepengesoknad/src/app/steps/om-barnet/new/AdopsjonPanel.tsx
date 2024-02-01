@@ -35,7 +35,7 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                 <Radio value={true}>Ja</Radio>
                 <Radio value={false}>Nei</Radio>
             </RadioGroup>
-            {adopsjonAvEktefellesBarn !== false && (
+            {adopsjonAvEktefellesBarn === false && (
                 <AdopsjonAnnetBarn søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn} />
             )}
             {adopsjonAvEktefellesBarn === true && (

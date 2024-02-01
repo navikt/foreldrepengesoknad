@@ -12,7 +12,8 @@ import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-
+import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 import { OmBarnetFormValues } from './components/OmBarnetFormValues';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import AdopsjonPanel from './new/AdopsjonPanel';
@@ -118,7 +119,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <ErrorSummaryHookForm />
-                {valgteRegistrerteBarn && <ValgteRegistrerteBarn valgteBarn={valgteRegistrerteBarn} />}
+                {valgteRegistrerteBarn && <ValgteRegistrerteBarn valgteRegistrerteBarn={valgteRegistrerteBarn} />}
                 {søkersituasjon.situasjon === 'fødsel' && (
                     <FødselPanel
                         erFarEllerMedmor={erFarEllerMedmor}

@@ -6,7 +6,7 @@ export type OmBarnetFormValues = {
     antallBarn: string;
     antallBarnSelect: string;
     adopsjonsdato: string;
-    fødselsdatoer: Array<{ dato?: string }>;
+    fødselsdatoer?: Array<{ dato: string }>;
     omsorgsovertakelse: Attachment[];
     termindato: string;
     terminbekreftelse: Attachment[];
