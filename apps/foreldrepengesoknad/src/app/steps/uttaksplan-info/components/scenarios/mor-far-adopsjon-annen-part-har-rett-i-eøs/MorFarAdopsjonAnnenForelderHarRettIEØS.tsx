@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { GuidePanel, VStack } from '@navikt/ds-react';
@@ -70,6 +70,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const intl = useIntl();
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

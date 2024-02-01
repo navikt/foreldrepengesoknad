@@ -52,7 +52,6 @@ interface Props {
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => void;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 

@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { GuidePanel, VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -58,7 +58,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    const intl = useIntl();
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));

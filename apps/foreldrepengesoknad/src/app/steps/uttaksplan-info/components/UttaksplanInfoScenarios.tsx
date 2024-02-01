@@ -82,7 +82,6 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
-                    scenario={scenario}
                 />
             );
         case 'farMedmorFødselBeggeHarRett':
@@ -107,7 +106,6 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
-                    scenario={scenario}
                 />
             );
         case 'farMedmorFørstegangssøknadMedAnnenPart':
