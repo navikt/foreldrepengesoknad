@@ -48,11 +48,11 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
 
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søker);
 
-    const skalOppgiPersonalia =
-        annenForelderFraRegistrertBarn === undefined ||
-        (annenForelder !== undefined &&
-            isAnnenForelderOppgitt(annenForelder) &&
-            annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
+    const oppgittFnrErUlikRegistrertBarn =
+        annenForelder !== undefined &&
+        isAnnenForelderOppgitt(annenForelder) &&
+        annenForelder.fnr !== annenForelderFraRegistrertBarn?.fnr;
+    const skalOppgiPersonalia = annenForelderFraRegistrertBarn === undefined || oppgittFnrErUlikRegistrertBarn;
 
     const onSubmit = (values: AnnenForelderFormData) => {
         if (values.kanIkkeOppgis === true) {

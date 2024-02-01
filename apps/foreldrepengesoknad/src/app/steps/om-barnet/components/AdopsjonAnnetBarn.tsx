@@ -61,20 +61,15 @@ export const skalViseOmsorgsovertakelse = (
 };
 
 interface Props {
-    søkersituasjon: Søkersituasjon;
     søknadGjelderEtNyttBarn: boolean;
 }
 
-const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, søknadGjelderEtNyttBarn }) => {
+const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
 
     const formValues = formMethods.watch();
-
-    if (søkersituasjon.situasjon === 'fødsel' || formValues.adopsjonAvEktefellesBarn !== false) {
-        return null;
-    }
 
     return (
         <>

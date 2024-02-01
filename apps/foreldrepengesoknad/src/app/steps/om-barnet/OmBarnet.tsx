@@ -1,5 +1,4 @@
 import { Form } from 'formik';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -14,13 +13,10 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
-import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
-import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
-import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
-import Fødsel from './components/Fødsel';
 import { OmBarnetFormValues } from './components/OmBarnetFormValues';
-import Termin from './components/Termin';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
+import AdopsjonPanel from './new/AdopsjonPanel';
+import FødselPanel from './new/FødselPanel';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 
 type Props = {
@@ -48,7 +44,6 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const { arbeidsforhold, søker } = søkerInfo;
 
-    const [erForTidligTilÅSøkePåTermin, setErForTidligTilÅSøkePåTermin] = useState(false);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const findBarnetIRegistrerteBarn = (regBarn: SøkerBarn) => {
         if (omBarnet && !isUfødtBarn(omBarnet) && omBarnet.fnr !== undefined && omBarnet.fnr.length > 0) {
@@ -123,31 +118,19 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <ErrorSummaryHookForm />
-                {valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0 && (
-                    <ValgteRegistrerteBarn valgteBarn={valgteRegistrerteBarn} />
+                {valgteRegistrerteBarn && <ValgteRegistrerteBarn valgteBarn={valgteRegistrerteBarn} />}
+                {søkersituasjon.situasjon === 'fødsel' && (
+                    <FødselPanel
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
+                        søkersituasjon={søkersituasjon}
+                        valgteRegistrerteBarn={valgteRegistrerteBarn}
+                        barnSøktOmFørMenIkkeRegistrert={barnSøktOmFørMenIkkeRegistrert}
+                    />
                 )}
-                <BarnFødtEllerAdoptert
-                    situasjon={søkersituasjon.situasjon}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
-                />
-                <AdopsjonAnnetBarn søkersituasjon={søkersituasjon} søknadGjelderEtNyttBarn={søknadGjelderNyttBarn} />
-                <AdopsjonEktefellesBarn
-                    søkersituasjon={søkersituasjon}
-                    søknadGjelderEtNyttBarn={søknadGjelderNyttBarn}
-                />
-                <Termin
-                    søkersituasjon={søkersituasjon}
-                    valgteBarn={valgteRegistrerteBarn}
-                    søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
-                    setErForTidligTilÅSøkePåTermin={setErForTidligTilÅSøkePåTermin}
-                />
-                <Fødsel
-                    søkersituasjon={søkersituasjon}
-                    valgteBarn={valgteRegistrerteBarn}
-                    søknadGjelderEtNyttBarn={søknadGjelderNyttBarn}
-                    barnSøktOmFørMenIkkeRegistrert={barnSøktOmFørMenIkkeRegistrert}
-                />
+                {søkersituasjon.situasjon === 'adopsjon' && (
+                    <AdopsjonPanel søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn} />
+                )}
                 <Block margin="l">
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </Block>

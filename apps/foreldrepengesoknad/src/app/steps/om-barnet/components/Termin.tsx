@@ -34,35 +34,22 @@ const kanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
 
 interface Props {
     søkersituasjon: Søkersituasjon;
-    søknadGjelderEtNyttBarn: boolean;
-    setErForTidligTilÅSøkePåTermin: (val: boolean) => void;
     valgteBarn?: RegistrertBarn[];
 }
 
-const Termin: FunctionComponent<Props> = ({
-    søkersituasjon,
-    søknadGjelderEtNyttBarn,
-    setErForTidligTilÅSøkePåTermin,
-    valgteBarn,
-}) => {
+const Termin: FunctionComponent<Props> = ({ søkersituasjon, valgteBarn }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
 
-    const formValues = formMethods.watch();
-
-    if (søkersituasjon.situasjon === 'adopsjon' || formValues.erBarnetFødt !== false || !søknadGjelderEtNyttBarn) {
-        return null;
-    }
+    const { termindato, erBarnetFødt, adopsjonAvEktefellesBarn, fødselsdatoer, antallBarn, adopsjonsdato } =
+        formMethods.watch();
 
     const erForTidligTilÅSøkePåTermin =
-        hasValue(formValues.termindato) && isISODateString(formValues.termindato)
-            ? !erIUke22Pluss3(formValues.termindato)
-            : false;
-    setErForTidligTilÅSøkePåTermin(erForTidligTilÅSøkePåTermin);
+        hasValue(termindato) && isISODateString(termindato) ? !erIUke22Pluss3(termindato) : false;
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const farMedMorSøkerPåTermin = søkerErFarMedmor && hasValue(formValues.termindato);
+    const farMedMorSøkerPåTermin = søkerErFarMedmor && hasValue(termindato);
 
     const intlTerminbekreftelseId = søkerErFarMedmor
         ? 'omBarnet.veileder.terminbekreftelse.far'
@@ -70,8 +57,7 @@ const Termin: FunctionComponent<Props> = ({
 
     return (
         <>
-            {(formValues.erBarnetFødt !== undefined ||
-                (formValues.adopsjonAvEktefellesBarn !== undefined && hasValue(formValues.adopsjonsdato))) && (
+            {(erBarnetFødt !== undefined || (adopsjonAvEktefellesBarn !== undefined && hasValue(adopsjonsdato))) && (
                 <Block padBottom="xl">
                     <RadioGroup
                         name="antallBarn"
@@ -100,10 +86,7 @@ const Termin: FunctionComponent<Props> = ({
                     </RadioGroup>
                 </Block>
             )}
-            <Block
-                padBottom="xl"
-                visible={formValues.antallBarn !== undefined && parseInt(formValues.antallBarn, 10) >= 3}
-            >
+            <Block padBottom="xl" visible={antallBarn !== undefined && parseInt(antallBarn, 10) >= 3}>
                 <Select name="antallBarnSelect" label="Antall barn">
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -114,8 +97,8 @@ const Termin: FunctionComponent<Props> = ({
                     <option value="9">9</option>
                 </Select>
             </Block>
-            {((formValues.fødselsdatoer && hasValue(formValues.fødselsdatoer[0].dato)) ||
-                (formValues.erBarnetFødt === false && hasValue(formValues.antallBarn)) ||
+            {((fødselsdatoer && hasValue(fødselsdatoer[0].dato)) ||
+                (erBarnetFødt === false && hasValue(antallBarn)) ||
                 (valgteBarn !== undefined && valgteBarn.length > 0)) && (
                 <>
                     <Block padBottom="s">
@@ -125,6 +108,7 @@ const Termin: FunctionComponent<Props> = ({
                             minDate={date21DaysAgo}
                             maxDate={attenUkerTreDager}
                             validate={[validateTermindato(intl)]}
+                            //valider erForTidligTilÅSøkePåTermin
                         />
                     </Block>
                     {!søkerErFarMedmor && (
@@ -139,7 +123,7 @@ const Termin: FunctionComponent<Props> = ({
                     )}
                 </>
             )}
-            {farMedMorSøkerPåTermin && !kanSøkePåTermin(søkersituasjon.rolle, formValues.termindato) && (
+            {farMedMorSøkerPåTermin && !kanSøkePåTermin(søkersituasjon.rolle, termindato) && (
                 <Block padBottom="xl">
                     <GuidePanel>
                         <FormattedMessage
@@ -155,7 +139,7 @@ const Termin: FunctionComponent<Props> = ({
                     </GuidePanel>
                 </Block>
             )}
-            {hasValue(formValues.termindato) && (
+            {hasValue(termindato) && (
                 <>
                     <Block padBottom="xl">
                         <GuidePanel>
@@ -174,7 +158,7 @@ const Termin: FunctionComponent<Props> = ({
             </Block> */}
                 </>
             )}
-            {hasValue(formValues.termindato) && (
+            {hasValue(termindato) && (
                 <Block padBottom="xl">
                     <Datepicker
                         name="terminbekreftelsedato"

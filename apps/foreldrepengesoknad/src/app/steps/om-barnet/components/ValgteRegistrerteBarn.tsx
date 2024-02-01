@@ -13,21 +13,20 @@ import { validateTermindatoFødsel } from '../validation/omBarnetValidering';
 import { OmBarnetFormValues } from './OmBarnetFormValues';
 
 interface Props {
-    valgteBarn: RegistrertBarn[];
+    valgteRegistrerteBarn: RegistrertBarn[];
 }
 
-const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn }) => {
+const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrerteBarn }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
-
     const formValues = formMethods.watch();
 
-    const antallBarn = valgteBarn.length;
-    const alleBarnaLever = valgteBarn.every((b) => getLeverBarnet(b));
-    valgteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
-    const fødselsdatoer = valgteBarn.map((b) => b.fødselsdato);
-    const fødselsdato = valgteBarn[0].fødselsdato;
+    const antallBarn = valgteRegistrerteBarn.length;
+    const alleBarnaLever = valgteRegistrerteBarn.every((b) => getLeverBarnet(b));
+    valgteRegistrerteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
+    const fødselsdatoer = valgteRegistrerteBarn.map((b) => b.fødselsdato);
+    const fødselsdato = valgteRegistrerteBarn[0].fødselsdato;
 
     return (
         <>
@@ -39,7 +38,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn }) =
                         </Label>
                     </Block>
                     {alleBarnaLever ? (
-                        valgteBarn.map((barn) => (
+                        valgteRegistrerteBarn.map((barn: RegistrertBarn) => (
                             <Block padBottom="s" key={barn.fnr}>
                                 <RegistrertePersonalia
                                     person={barn}
@@ -51,12 +50,12 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn }) =
                     ) : (
                         <Block padBottom="s">
                             <RegistrertePersonalia
-                                person={valgteBarn[0]}
+                                person={valgteRegistrerteBarn[0]}
                                 fødselsdatoForVisning={formaterFødselsdatoerPåBarn(fødselsdatoer)}
                                 altTekstHvisUkjentNavn={getTittelBarnNårNavnSkalIkkeVises(
                                     undefined,
                                     fødselsdatoer,
-                                    valgteBarn.length,
+                                    valgteRegistrerteBarn.length,
                                     intl,
                                 )}
                                 visEtternavn={false}
@@ -67,8 +66,8 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn }) =
             </Block>
             {((formValues.fødselsdatoer && hasValue(formValues.fødselsdatoer[0].dato)) ||
                 (formValues.erBarnetFødt === false && hasValue(antallBarn)) ||
-                (valgteBarn !== undefined && valgteBarn.length > 0)) &&
-                valgteBarn.length > 0 && (
+                (valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0)) &&
+                valgteRegistrerteBarn.length > 0 && (
                     <Block padBottom="l">
                         <Datepicker
                             name="termindato"

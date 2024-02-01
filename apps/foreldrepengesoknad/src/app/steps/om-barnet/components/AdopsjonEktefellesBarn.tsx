@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Datepicker } from '@navikt/ds-datepicker';
 import { BodyShort, Heading, Radio, RadioGroup, Select } from '@navikt/ds-react';
 
-import { Block, Søkersituasjon, hasValue, intlUtils } from '@navikt/fp-common';
+import { Block, hasValue, intlUtils } from '@navikt/fp-common';
 
 import { validateAdopsjonsdato } from '../validation/omBarnetValidering';
 import { skalViseOmsorgsovertakelse } from './AdopsjonAnnetBarn';
@@ -13,20 +13,15 @@ import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
 import { OmBarnetFormValues } from './OmBarnetFormValues';
 
 interface Props {
-    søkersituasjon: Søkersituasjon;
     søknadGjelderEtNyttBarn: boolean;
 }
 
-const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søkersituasjon, søknadGjelderEtNyttBarn }) => {
+const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
 
     const formValues = formMethods.watch();
-
-    if (søkersituasjon.situasjon === 'fødsel' || formValues.adopsjonAvEktefellesBarn !== true) {
-        return null;
-    }
 
     return (
         <>

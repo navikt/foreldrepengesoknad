@@ -1,5 +1,5 @@
 import { Radio } from '@navikt/ds-react';
-import { Block, RegistrertBarn, Søkersituasjon, hasValue, intlUtils } from '@navikt/fp-common';
+import { Block, RegistrertBarn, hasValue, intlUtils } from '@navikt/fp-common';
 import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -9,43 +9,24 @@ import { validateFødselsdato, validateTermindatoFødsel } from '../validation/o
 import { OmBarnetFormValues } from './OmBarnetFormValues';
 
 interface Props {
-    søkersituasjon: Søkersituasjon;
-    søknadGjelderEtNyttBarn: boolean;
-    barnSøktOmFørMenIkkeRegistrert: boolean;
+    søknadGjelderEtNyttBarn?: boolean;
     valgteBarn?: RegistrertBarn[];
 }
 
-const Fødsel: FunctionComponent<Props> = ({
-    søkersituasjon,
-    søknadGjelderEtNyttBarn,
-    barnSøktOmFørMenIkkeRegistrert,
-    valgteBarn,
-}) => {
+const Fødsel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn, valgteBarn }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
-
-    const formValues = formMethods.watch();
-
-    const { erBarnetFødt, antallBarn, fødselsdatoer } = formValues;
+    const { erBarnetFødt, adopsjonAvEktefellesBarn, antallBarn, fødselsdatoer, adopsjonsdato } = formMethods.watch();
 
     const intlIdFødsel =
         antallBarn !== undefined && parseInt(antallBarn, 10) > 1
             ? 'omBarnet.fødselsdato.flereBarn'
             : 'omBarnet.fødselsdato';
 
-    if (
-        søkersituasjon.situasjon === 'adopsjon' ||
-        erBarnetFødt !== true ||
-        (!søknadGjelderEtNyttBarn && !barnSøktOmFørMenIkkeRegistrert)
-    ) {
-        return null;
-    }
-
     return (
         <>
-            {(formValues.erBarnetFødt !== undefined ||
-                (formValues.adopsjonAvEktefellesBarn !== undefined && hasValue(formValues.adopsjonsdato))) && (
+            {(erBarnetFødt !== undefined || (adopsjonAvEktefellesBarn !== undefined && hasValue(adopsjonsdato))) && (
                 <Block padBottom="xl">
                     <RadioGroup
                         name="antallBarn"
@@ -97,7 +78,7 @@ const Fødsel: FunctionComponent<Props> = ({
             )}
             {fødselsdatoer &&
                 (hasValue(fødselsdatoer[0].dato) ||
-                    (formValues.erBarnetFødt === false && hasValue(antallBarn)) ||
+                    (erBarnetFødt === false && hasValue(antallBarn)) ||
                     (valgteBarn !== undefined && valgteBarn.length > 0)) && (
                     <Block padBottom="l">
                         <Datepicker
