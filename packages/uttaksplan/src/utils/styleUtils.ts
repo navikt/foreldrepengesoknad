@@ -27,7 +27,7 @@ export const getStønadskontoFarge = (
             case StønadskontoType.Mødrekvote:
                 return erFarEllerMedmor ? UttaksplanColor.lightBlue : UttaksplanColor.blue;
             case StønadskontoType.Foreldrepenger:
-                return erFarEllerMedmor ? UttaksplanColor.blue : UttaksplanColor.green;
+                return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.blue;
             case StønadskontoType.Fellesperiode:
                 return erFarEllerMedmor ? UttaksplanColor.greenLightBlue : UttaksplanColor.blueLightGreen;
             default:
