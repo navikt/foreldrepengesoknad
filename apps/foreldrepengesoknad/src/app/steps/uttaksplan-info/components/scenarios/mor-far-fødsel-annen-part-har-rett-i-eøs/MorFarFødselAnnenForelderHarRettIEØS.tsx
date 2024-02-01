@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, GuidePanel, VStack } from '@navikt/ds-react';
+import { FormattedMessage } from 'react-intl';
+import { GuidePanel, VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
@@ -8,26 +8,26 @@ import {
     Block,
     Dekningsgrad,
     ISOStringToDate,
-    StepButtonWrapper,
     Uttaksdagen,
     formaterNavn,
     getFlerbarnsuker,
     hasValue,
-    intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
     uttaksConstants,
 } from '@navikt/fp-common';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
-import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
-import SøknadRoutes from 'app/routes/routes';
+import { StepButtons } from '@navikt/fp-ui';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import {
     morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
     MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
@@ -42,10 +42,6 @@ import {
     mapMorFarFødselAnnenForelderHarRettIEØSFormToState,
 } from './morFarFødselAnnenForelderHarRettIEØSUtils';
 import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
-import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import BackButton from 'app/steps/BackButton';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
@@ -54,7 +50,8 @@ interface Props {
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => void;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -63,10 +60,10 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
-    const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
@@ -81,7 +78,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         ContextDataType.UTTAKSPLAN_INFO,
     ) as MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo;
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -149,9 +145,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
         });
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     if (!shouldRender) {
@@ -282,17 +276,11 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 </GuidePanel>
                             </Block>
                             <Block>
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getPreviousStepHref('uttaksplanInfo')}
-                                    />
-                                    {visibility.areAllQuestionsAnswered() && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
-                                </StepButtonWrapper>
+                                <StepButtons
+                                    isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                    goToPreviousStep={goToPreviousDefaultStep}
+                                    isDisabledAndLoading={isSubmitting}
+                                />
                             </Block>
                         </MorFarFødselAnnenForelderHarRettIEØSFormComponents.Form>
                     );

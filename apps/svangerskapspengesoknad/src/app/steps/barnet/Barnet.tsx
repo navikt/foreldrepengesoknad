@@ -1,7 +1,12 @@
-import { Block, Step, StepButtonWrapper, intlUtils, validateYesOrNoIsAnswered } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import { useState } from 'react';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Block, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
+import { BodyShort, Button, ReadMore } from '@navikt/ds-react';
+import { niMånederFremITid, halvannetÅrSiden } from 'app/utils/dateUtils';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 import { BarnetFormComponents, BarnetFormData, BarnetFormField } from './barnetFormConfig';
 import {
     cleanupOmBarnetFormData,
@@ -10,33 +15,42 @@ import {
     mapOmBarnetFormDataToState,
 } from './barnetUtils';
 import barnetQuestionsConfig from './barnetQuestionsConfig';
-import stepConfig from '../stepsConfig';
-import actionCreator from 'app/context/action/actionCreator';
-import { BodyShort, Button, ReadMore } from '@navikt/ds-react';
+import { useStepConfig } from '../stepsConfig';
 import { validateFødselsdato, validateTermindato } from './barnetValidering';
-import dayjs from 'dayjs';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import { niMånederFremITid, halvannetÅrSiden } from 'app/utils/dateUtils';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
-const Barnet: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
+};
+
+const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
-    const søknad = useSøknad();
-    const { barn } = søknad;
-    const { arbeidsforhold } = useSøkerinfo();
-    const onValidSubmitHandler = (values: Partial<BarnetFormData>) => {
-        const barn = mapOmBarnetFormDataToState(values);
-        return [actionCreator.setBarn(barn)];
-    };
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, SøknadRoutes.UTENLANDSOPPHOLD);
-    const onAvbrytSøknad = useAvbrytSøknad();
+    const barnet = useContextGetData(ContextDataType.OM_BARNET);
+
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const onSubmit = (values: Partial<BarnetFormData>) => {
+        setIsSubmitting(true);
+
+        const oppdatertBarn = mapOmBarnetFormDataToState(values);
+
+        oppdaterOmBarnet(oppdatertBarn);
+        oppdaterAppRoute(SøknadRoutes.UTENLANDSOPPHOLD);
+
+        mellomlagreSøknadOgNaviger();
+    };
 
     return (
         <BarnetFormComponents.FormikWrapper
-            initialValues={getBarnetInitialValues(barn)}
-            onSubmit={handleSubmit}
+            initialValues={getBarnetInitialValues(barnet)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = barnetQuestionsConfig.getVisbility({
                     ...formValues,
@@ -44,12 +58,12 @@ const Barnet: React.FunctionComponent = () => {
                 const minDatoTermin = getMinDatoTermin(formValues.erBarnetFødt!, formValues.fødselsdato!);
                 return (
                     <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
                         activeStepId="barnet"
-                        pageTitle={intlUtils(intl, 'steps.label.barnet')}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        supportsTempSaving={false}
+                        pageTitle={intl.formatMessage({ id: 'steps.label.barnet' })}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <BarnetFormComponents.Form
                             includeButtons={false}
@@ -60,16 +74,18 @@ const Barnet: React.FunctionComponent = () => {
                                 <Block padBottom="m">
                                     <BarnetFormComponents.YesOrNoQuestion
                                         name={BarnetFormField.erBarnetFødt}
-                                        legend={intlUtils(intl, 'barnet.erBarnetFødt')}
+                                        legend={intl.formatMessage({ id: 'barnet.erBarnetFødt' })}
                                         validate={(value) =>
                                             validateYesOrNoIsAnswered(
                                                 value,
-                                                intlUtils(intl, 'valideringsfeil.barnet.erBarnetFødt.påkrevd'),
+                                                intl.formatMessage({
+                                                    id: 'valideringsfeil.barnet.erBarnetFødt.påkrevd',
+                                                }),
                                             )
                                         }
                                     />
                                 </Block>
-                                <ReadMore header={intlUtils(intl, 'barnet.erBarnetFødt.merInfo.tittel')}>
+                                <ReadMore header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}>
                                     <BodyShort>
                                         <FormattedMessage id="barnet.erBarnetFødt.merInfo.tekst" />
                                     </BodyShort>
@@ -78,7 +94,7 @@ const Barnet: React.FunctionComponent = () => {
                             <Block padBottom="xxl" visible={visibility.isVisible(BarnetFormField.fødselsdato)}>
                                 <BarnetFormComponents.DatePicker
                                     name={BarnetFormField.fødselsdato}
-                                    label={intlUtils(intl, 'barnet.fødselsdato')}
+                                    label={intl.formatMessage({ id: 'barnet.fødselsdato' })}
                                     minDate={halvannetÅrSiden(new Date())}
                                     maxDate={dayjs().toDate()}
                                     validate={validateFødselsdato(intl)}
@@ -89,14 +105,14 @@ const Barnet: React.FunctionComponent = () => {
                                 <Block padBottom="l">
                                     <BarnetFormComponents.DatePicker
                                         name={BarnetFormField.termindato}
-                                        label={intlUtils(intl, 'barnet.termindato')}
+                                        label={intl.formatMessage({ id: 'barnet.termindato' })}
                                         placeholder={'dd.mm.åååå'}
                                         minDate={minDatoTermin}
                                         maxDate={niMånederFremITid(new Date())}
                                         validate={validateTermindato(intl, formValues.fødselsdato)}
                                     />
                                 </Block>
-                                <ReadMore header={intlUtils(intl, 'barnet.termindato.merInfo.tittel')}>
+                                <ReadMore header={intl.formatMessage({ id: 'barnet.termindato.merInfo.tittel' })}>
                                     <BodyShort>
                                         <FormattedMessage id="barnet.termindato.merInfo.tekst" />
                                     </BodyShort>
@@ -105,7 +121,7 @@ const Barnet: React.FunctionComponent = () => {
                             <Block padBottom="l">
                                 <StepButtonWrapper>
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                        <FormattedMessage id="søknad.gåVidere" />
                                     </Button>
                                 </StepButtonWrapper>
                             </Block>

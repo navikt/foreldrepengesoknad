@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import { BarnType, Dekningsgrad } from '@navikt/fp-common';
-import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-aleneomsorg/søkerinfo.json';
@@ -13,6 +12,9 @@ import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import UttaksplanInfo from './UttaksplanInfo';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
+import SøknadRoutes from 'app/routes/routes';
+import { MemoryRouter } from 'react-router-dom';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = 'test/konto';
@@ -22,10 +24,10 @@ const søkerinfo = _søkerinfo as any;
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselAleneomsorg',
     component: UttaksplanInfo,
-    decorators: [withRouter],
 };
 
 const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }> = (args) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
@@ -33,49 +35,51 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
     };
 
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: {
-                        situasjon: 'fødsel',
-                        rolle: 'far',
-                    },
-                    [ContextDataType.OM_BARNET]: {
-                        type: BarnType.FØDT,
-                        fødselsdatoer: args.fødselsdatoer,
-                        termindato: args.termindato,
-                        antallBarn: args.antallBarn,
-                        datoForAleneomsorg: dayjs('2022-03-24').toDate(),
-                        dokumentasjonAvAleneomsorg: [],
-                    },
-                    [ContextDataType.SØKER]: {
-                        erAleneOmOmsorg: true,
-                        harJobbetSomFrilansSiste10Mnd: false,
-                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-                        harHattAnnenInntektSiste10Mnd: false,
-                    },
-                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
-                        dekningsgrad: args.dekningsgrad,
-                    },
-                    [ContextDataType.ANNEN_FORELDER]: {
-                        etternavn: 'Hanson',
-                        fornavn: 'Hanne',
-                        fnr: '02068629902',
-                        utenlandskFnr: false,
-                        kanIkkeOppgis: false,
-                        harRettPåForeldrepengerINorge: true,
-                        erInformertOmSøknaden: true,
-                    },
-                }}
-            >
-                <UttaksplanInfo
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
-                    erEndringssøknad={false}
-                    mellomlagreSøknadOgNaviger={() => Promise.resolve()}
-                    avbrytSøknad={() => undefined}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            situasjon: 'fødsel',
+                            rolle: 'far',
+                        },
+                        [ContextDataType.OM_BARNET]: {
+                            type: BarnType.FØDT,
+                            fødselsdatoer: args.fødselsdatoer,
+                            termindato: args.termindato,
+                            antallBarn: args.antallBarn,
+                            datoForAleneomsorg: dayjs('2022-03-24').toDate(),
+                            dokumentasjonAvAleneomsorg: [],
+                        },
+                        [ContextDataType.SØKER]: {
+                            erAleneOmOmsorg: true,
+                            harJobbetSomFrilansSiste10Mnd: false,
+                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+                            harHattAnnenInntektSiste10Mnd: false,
+                        },
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                            dekningsgrad: args.dekningsgrad,
+                        },
+                        [ContextDataType.ANNEN_FORELDER]: {
+                            etternavn: 'Hanne',
+                            fornavn: 'Hanson',
+                            fnr: '02068629902',
+                            utenlandskFnr: false,
+                            kanIkkeOppgis: false,
+                            harRettPåForeldrepengerINorge: true,
+                            erInformertOmSøknaden: true,
+                        },
+                    }}
+                >
+                    <UttaksplanInfo
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        erEndringssøknad={false}
+                        mellomlagreSøknadOgNaviger={() => Promise.resolve()}
+                        avbrytSøknad={() => undefined}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 

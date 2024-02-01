@@ -1,23 +1,26 @@
-import { Block, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import stepConfig, { getBackLinkPerioderSteg } from '../stepsConfig';
-import { Alert, BodyShort, Button, Heading, ReadMore, Tag } from '@navikt/ds-react';
+import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import actionCreator from 'app/context/action/actionCreator';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import { TilOgMedDatoType } from 'app/types/Tilrettelegging';
-import { Link } from 'react-router-dom';
-import { FunctionComponent } from 'react';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
-import { getNesteTilretteleggingId } from 'app/routes/SvangerskapspengesøknadRoutes';
-import { useSvangerskapspengerContext } from 'app/context/hooks/useSvangerskapspengerContext';
-import { validatePeriodeFom, validatePeriodeTom, validatePeriodeTomType } from './perioderValidation';
+import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
+import { Alert, BodyShort, Button, Heading, ReadMore, Tag } from '@navikt/ds-react';
+import { Block, Step, StepButtonWrapper, bemUtils, intlUtils } from '@navikt/fp-common';
+import { notEmpty } from '@navikt/fp-validation';
+import SøknadRoutes from 'app/routes/routes';
+import { TilOgMedDatoType } from 'app/types/Tilrettelegging';
+import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
+import { getOpprinneligStillingsprosent } from 'app/utils/tilretteleggingUtils';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
+import {
+    getSisteDagForSvangerskapspenger,
+    getKanHaSvpFremTilTreUkerFørTermin,
+    getDefaultMonth,
+} from 'app/utils/dateUtils';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
+import { validatePeriodeFom, validatePeriodeTom, validatePeriodeTomType } from './perioderValidation';
+import { useStepConfig, getNesteTilretteleggingId } from '../stepsConfig';
+import { PerioderFormComponents, PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 import {
     getDescriptionTekst,
     getMinDatoTom,
@@ -29,70 +32,77 @@ import {
     mapPerioderFormDataToState,
 } from './perioderStepUtils';
 import { validateStillingsprosentPåPerioder } from '../tilrettelegging/tilretteleggingValidation';
-import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
-import { getPeriodeInfoTekst } from 'app/utils/perioderUtils';
-import './perioderStep.css';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import dayjs from 'dayjs';
-import {
-    getSisteDagForSvangerskapspenger,
-    getKanHaSvpFremTilTreUkerFørTermin,
-    getDefaultMonth,
-} from 'app/utils/dateUtils';
 import { getRadioOptionsTomType } from '../tilrettelegging/tilretteleggingStepUtils';
-import { getOpprinneligStillingsprosent } from 'app/utils/tilretteleggingUtils';
 
-interface Props {
-    id: string;
-    navn: string;
+import './perioderStep.css';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
+import { Søkerinfo } from 'app/types/Søkerinfo';
+
+export interface Props {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
 }
 
-const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
-    useUpdateCurrentTilretteleggingId(id);
+const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const bem = bemUtils('perioderStep');
-    const søknad = useSøknad();
-    const { tilrettelegging: tilretteleggingFraState, barn } = søknad;
-    const { state } = useSvangerskapspengerContext();
-    const { arbeidsforhold } = useSøkerinfo();
-    const onAvbrytSøknad = useAvbrytSøknad();
 
-    const currentTilrettelegging = tilretteleggingFraState.find((t) => t.id === id);
-    const aktiveStillinger = currentTilrettelegging!.arbeidsforhold.stillinger;
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const vti = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved neste
+
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+
+    const valgtTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
-    const erFlereTilrettelegginger = tilretteleggingFraState.length > 1;
+    const erFlereTilrettelegginger = tilrettelegginger.length > 1;
 
-    const onValidSubmitHandler = (values: Partial<PerioderFormData>) => {
-        const mappedTilrettelegging = mapPerioderFormDataToState(id, values, tilretteleggingFraState);
-        return [actionCreator.setTilrettelegging(mappedTilrettelegging)];
-    };
-
-    const nesteTilretteleggingId = getNesteTilretteleggingId(tilretteleggingFraState, state.currentTilretteleggingId);
-    let nextRoute = SøknadRoutes.OPPSUMMERING.toString();
-    if (nesteTilretteleggingId) {
-        nextRoute = `${SøknadRoutes.SKJEMA}/${nesteTilretteleggingId}`;
-    }
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-
-    const sluttDatoArbeid = currentTilrettelegging!.arbeidsforhold.sluttdato;
+    const sluttDatoArbeid = valgtTilrettelegging.arbeidsforhold.sluttdato;
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
     const maxDato = sluttDatoArbeid
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
-    const minDatoFom = new Date(currentTilrettelegging!.behovForTilretteleggingFom);
-    const sideTittel = getPeriodeSideTittel(erFlereTilrettelegginger, navn, intl);
-    const descriptionTekst = getDescriptionTekst(kanHaSVPFremTilTreUkerFørTermin, intl);
-    const defaultMonthFom = getDefaultMonth(minDatoFom, maxDato);
+    const minDatoFom = new Date(valgtTilrettelegging.behovForTilretteleggingFom);
+
+    const onSubmit = (values: Partial<PerioderFormData>) => {
+        setIsSubmitting(true);
+
+        const mappedTilrettelegging = mapPerioderFormDataToState(valgtTilretteleggingId, values, tilrettelegginger);
+        oppdaterTilrettelegginger(mappedTilrettelegging);
+
+        const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, valgtTilretteleggingId);
+        if (nesteTilretteleggingId) {
+            oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
+            oppdaterAppRoute(SøknadRoutes.SKJEMA);
+        } else {
+            oppdaterAppRoute(SøknadRoutes.OPPSUMMERING);
+        }
+
+        mellomlagreSøknadOgNaviger();
+    };
+
+    const setTilretteleggingIdOgMellomlagre = () => {
+        oppdaterValgtTilretteleggingId(valgtTilretteleggingId);
+        return mellomlagreSøknadOgNaviger();
+    };
 
     return (
         <PerioderFormComponents.FormikWrapper
             enableReinitialize={true}
-            initialValues={getPerioderInitialValues(currentTilrettelegging!)}
-            onSubmit={handleSubmit}
+            initialValues={getPerioderInitialValues(valgtTilrettelegging)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const opprinneligStillingsprosent = getOpprinneligStillingsprosent(
                     formValues.varierendePerioder,
-                    aktiveStillinger,
+                    valgtTilrettelegging.arbeidsforhold.stillinger,
                 );
                 const periodeDerSøkerErTilbakeIOpprinneligStilling = getPeriodeDerSøkerErTilbakeIFullStilling(
                     formValues.varierendePerioder,
@@ -107,21 +117,25 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId={`periode-${id}`}
-                        pageTitle={sideTittel}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        supportsTempSaving={false}
+                        activeStepId={`periode-${valgtTilretteleggingId}`}
+                        pageTitle={getPeriodeSideTittel(
+                            erFlereTilrettelegginger,
+                            valgtTilrettelegging.arbeidsforhold.navn,
+                            intl,
+                        )}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <PerioderFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             {erFlereTilrettelegginger && (
                                 <Block padBottom="xxl">
-                                    <Bedriftsbanner arbeid={currentTilrettelegging!.arbeidsforhold} />
+                                    <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />
                                 </Block>
                             )}
                             <Block padBottom="xl">
                                 <Heading size="small">{intlUtils(intl, 'perioder.varierende.heading')}</Heading>
-                                <BodyShort>{descriptionTekst}</BodyShort>
+                                <BodyShort>{getDescriptionTekst(kanHaSVPFremTilTreUkerFørTermin, intl)}</BodyShort>
                             </Block>
                             <FieldArray
                                 validateOnChange={false}
@@ -174,13 +188,15 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             intl,
                                                             index,
                                                             formValues.varierendePerioder,
-                                                            currentTilrettelegging!.behovForTilretteleggingFom,
+                                                            valgtTilrettelegging.behovForTilretteleggingFom,
                                                             sisteDagForSvangerskapspenger,
-                                                            currentTilrettelegging!.arbeidsforhold.navn,
+                                                            valgtTilrettelegging.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
                                                             kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
-                                                        dayPickerProps={{ defaultMonth: defaultMonthFom }}
+                                                        dayPickerProps={{
+                                                            defaultMonth: getDefaultMonth(minDatoFom, maxDato),
+                                                        }}
                                                         placeholder={'dd.mm.åååå'}
                                                     />
                                                 </Block>
@@ -196,7 +212,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                         validate={validatePeriodeTomType(
                                                             intl,
                                                             sisteDagForSvangerskapspenger,
-                                                            currentTilrettelegging!.arbeidsforhold.navn,
+                                                            valgtTilrettelegging.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
                                                             kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
@@ -218,7 +234,7 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
                                                             index,
                                                             formValues.varierendePerioder,
                                                             sisteDagForSvangerskapspenger,
-                                                            currentTilrettelegging!.arbeidsforhold.navn,
+                                                            valgtTilrettelegging.arbeidsforhold.navn,
                                                             sluttDatoArbeid,
                                                             kanHaSVPFremTilTreUkerFørTermin,
                                                         )}
@@ -312,13 +328,10 @@ const PerioderStep: FunctionComponent<Props> = ({ navn, id }) => {
 
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button
-                                        variant="secondary"
-                                        as={Link}
-                                        to={getBackLinkPerioderSteg(state.currentTilretteleggingId)}
-                                    >
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={setTilretteleggingIdOgMellomlagre}
+                                        route={SøknadRoutes.TILRETTELEGGING}
+                                    />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>

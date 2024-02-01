@@ -1,10 +1,12 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import withRouter from 'storybook/decorators/withRouter';
 import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import { MemoryRouter } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const promiseAction =
     () =>
@@ -16,7 +18,6 @@ const promiseAction =
 export default {
     title: 'steps/UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
-    decorators: [withRouter],
 };
 
 interface Props {
@@ -25,26 +26,29 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: {
-                        situasjon: 'fødsel',
-                        rolle: 'mor',
-                    },
-                }}
-            >
-                <UtenlandsoppholdSteg
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={action('button-click')}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.UTENLANDSOPPHOLD]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            situasjon: 'fødsel',
+                            rolle: 'mor',
+                        },
+                    }}
+                >
+                    <UtenlandsoppholdSteg
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={action('button-click')}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 

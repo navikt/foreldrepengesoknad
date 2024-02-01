@@ -4,7 +4,17 @@ import { Link, useParams } from 'react-router-dom';
 import { Add } from '@navikt/ds-icons';
 import { Attachment } from '@navikt/fp-types';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Alert, BodyLong, BodyShort, Button, Link as NAVLink, Select, VStack, HStack } from '@navikt/ds-react';
+import {
+    Alert,
+    BodyLong,
+    BodyShort,
+    Button,
+    Link as NAVLink,
+    Select,
+    VStack,
+    HStack,
+    GuidePanel,
+} from '@navikt/ds-react';
 import { bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { FileUploader } from '@navikt/fp-ui';
@@ -172,7 +182,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                         saveAttachment={getSaveAttachment(Environment.REST_API_URL, mapYtelse(sak!.ytelse))}
                     />
                 )}
-                {vedlegg && vedlegg.length > 0 && (
+                {vedlegg && vedlegg.length > 0 && vedlegg.length <= 40 && (
                     <HStack>
                         <Button
                             type="submit"
@@ -183,6 +193,12 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                             Legg ved sak
                         </Button>
                     </HStack>
+                )}
+                {vedlegg && vedlegg.length > 40 && (
+                    <GuidePanel>
+                        Du kan bare laste opp 40 dokumenter på en gang. Hvis du skal laste opp flere enn 40 dokumenter
+                        kan du gjøre det i flere omganger.
+                    </GuidePanel>
                 )}
             </VStack>
         </form>

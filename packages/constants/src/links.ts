@@ -7,6 +7,7 @@ export const links = {
     foreldrepenger: 'https://foreldrepenger.nav.no',
     nav: 'https://www.nav.no',
     papirsøknad: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
+    papirsøknadSvp: 'https://www.nav.no/start/soknad-svangerskapspenger?stegvalg=1',
     personvernerklæring:
         'https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten',
     plikter: 'https://www.nav.no/endringer',
@@ -22,4 +23,18 @@ export const links = {
     svangerskapspengerUtland: 'https://www.nav.no/no/person/familie/relatert-informasjon/svangerskapspenger-og-utland',
     søknadsfrister: 'https://www.nav.no/foreldrepenger#soknadsfrister',
     hvorLenge: 'https://www.nav.no/foreldrepenger#hvor-lenge',
+    svangerskapspenger: 'https://familie.nav.no/om-svangerskapspenger',
+    tilretteleggingsskjema:
+        'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
+    rettOgPlikt: 'https://www.nav.no/endringer',
+    slikSøkerDuSvp: 'https://familie.nav.no/om-svangerskapspenger#slik-soker-du',
+    arbeidstilsynetSkjema:
+        'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
+    frilanserInfoBoks:
+        'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
+    næringsdrivendeInfoBoks:
+        'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
+    hvordanSendeInntektsmelding:
+        'https://www.nav.no/no/bedrift/tjenester-og-skjemaer/nav-og-altinn-tjenester/foreldrepenger-og-svangerskapspenger2',
+    omLottOgHyre: 'https://www.skatteetaten.no/en/rettskilder/type/handboker/skatte-abc/2021/fiske/F-13.014/F-13.048/',
 };

@@ -2,27 +2,23 @@ import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
-import { AttachmentType, Step, intlUtils } from '@navikt/fp-common';
+import { AttachmentType, Step } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { FileUploader } from '@navikt/fp-ui';
 import { Attachment } from '@navikt/fp-types';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import { Skjemanummer } from 'app/types/Skjemanummer';
-import actionCreator from 'app/context/action/actionCreator';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
 import SøknadRoutes from 'app/routes/routes';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import Environment from 'app/Environment';
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
-import stepConfig, { getBackLinkForSkjemaSteg } from '../stepsConfig';
-import { useNavigate } from 'react-router-dom';
+import { getBackLinkForSkjemaSteg, useStepConfig } from '../stepsConfig';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -31,40 +27,37 @@ export interface SkjemaFormData {
 }
 
 export interface Props {
-    id: string;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
     maxAntallVedlegg?: number;
 }
 
-const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTALL_VEDLEGG }) => {
-    useUpdateCurrentTilretteleggingId(id);
-    const navigate = useNavigate();
-
+const SkjemaSteg: FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+    maxAntallVedlegg = MAX_ANTALL_VEDLEGG,
+}) => {
     const intl = useIntl();
-    const onAvbrytSøknad = useAvbrytSøknad();
-    const { arbeidsforhold } = useSøkerinfo();
-    const søknad = useSøknad();
-    const { søker, barn, tilrettelegging } = søknad;
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
+    const vti = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved forrige
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
-    const currentTilrettelegging = notEmpty(tilrettelegging.find((t) => t.id === id));
+    const valgtTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
 
-    const onValidSubmitHandler = (values: SkjemaFormData) => {
-        const oppdatertTilrettelegging = {
-            ...currentTilrettelegging,
-            vedlegg: values.vedlegg,
-        };
-
-        const alleTilrettelegginger = tilrettelegging.map((t) => {
-            return t.id === currentTilrettelegging.id ? oppdatertTilrettelegging : t;
-        });
-
-        return [actionCreator.setTilrettelegging(alleTilrettelegginger)];
-    };
-
-    const nextRoute = `${SøknadRoutes.TILRETTELEGGING}/${currentTilrettelegging.id}`;
-    const { handleSubmit } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-
-    const handleOnSubmit = (values: SkjemaFormData) => {
+    const onSubmit = (values: SkjemaFormData) => {
         if (values.vedlegg.length === 0) {
             formMethods.setError('vedlegg', {
                 message: intl.formatMessage({ id: 'SkjemaSteg.MinstEttDokument' }),
@@ -72,8 +65,8 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
             return Promise.resolve();
         }
 
-        const antallVedleggAndreTilrettelegginger = tilrettelegging
-            .filter((t) => t.id !== currentTilrettelegging!.id)
+        const antallVedleggAndreTilrettelegginger = tilrettelegginger
+            .filter((t) => t.id !== valgtTilrettelegging!.id)
             .reduce((total, tilrettelegging) => total + tilrettelegging.vedlegg.length, 0);
         const antallNyeVedlegg = values.vedlegg ? values.vedlegg.length : 0;
         const antallVedlegg = antallVedleggAndreTilrettelegginger + antallNyeVedlegg;
@@ -85,11 +78,24 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
             });
             return Promise.resolve();
         } else {
-            return handleSubmit(values);
+            const oppdatertTilrettelegginger = {
+                ...valgtTilrettelegging,
+                vedlegg: values.vedlegg,
+            };
+
+            const alleValgteTilrettelegginger = tilrettelegginger.map((t) => {
+                return t.id === valgtTilrettelegging.id ? oppdatertTilrettelegginger : t;
+            });
+
+            oppdaterTilrettelegginger(alleValgteTilrettelegginger);
+            oppdaterValgtTilretteleggingId(valgtTilrettelegging.id);
+            oppdaterAppRoute(SøknadRoutes.TILRETTELEGGING);
+
+            return mellomlagreSøknadOgNaviger();
         }
     };
 
-    const defaultValues = { vedlegg: currentTilrettelegging.vedlegg };
+    const defaultValues = { vedlegg: valgtTilrettelegging.vedlegg };
 
     const formMethods = useForm<SkjemaFormData>({
         defaultValues: defaultValues,
@@ -103,27 +109,32 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
         }
     };
 
-    const typeArbeid = currentTilrettelegging.arbeidsforhold.type;
+    const typeArbeid = valgtTilrettelegging.arbeidsforhold.type;
     const erSNEllerFrilans =
         typeArbeid === Arbeidsforholdstype.FRILANSER || typeArbeid === Arbeidsforholdstype.SELVSTENDIG;
 
     return (
         <Step
-            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            activeStepId={`skjema-${id}`}
+            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
+            activeStepId={`skjema-${valgtTilrettelegging.id}`}
             pageTitle={
-                tilrettelegging.length > 1
-                    ? intlUtils(intl, 'steps.label.skjema.flere', { navn: currentTilrettelegging.arbeidsforhold.navn })
-                    : intlUtils(intl, 'steps.label.skjema.en')
+                tilrettelegginger.length > 1
+                    ? intl.formatMessage(
+                          { id: 'steps.label.skjema.flere' },
+                          {
+                              navn: valgtTilrettelegging.arbeidsforhold.navn,
+                          },
+                      )
+                    : intl.formatMessage({ id: 'steps.label.skjema.en' })
             }
-            onCancel={onAvbrytSøknad}
-            steps={stepConfig(intl, søknad, arbeidsforhold)}
-            supportsTempSaving={false}
+            onCancel={avbrytSøknad}
+            steps={stepConfig}
+            onContinueLater={onFortsettSøknadSenere}
         >
-            <Form formMethods={formMethods} onSubmit={handleOnSubmit}>
+            <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    {tilrettelegging.length > 1 && <Bedriftsbanner arbeid={currentTilrettelegging.arbeidsforhold} />}
+                    {tilrettelegginger.length > 1 && <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />}
                     <VStack gap="4">
                         {erSNEllerFrilans && <SkjemaopplastningTekstFrilansSN typeArbeid={typeArbeid} />}
                         {!erSNEllerFrilans && <SkjemaopplastningTekstArbeidsgiver />}
@@ -136,17 +147,21 @@ const SkjemaSteg: FunctionComponent<Props> = ({ id, maxAntallVedlegg = MAX_ANTAL
                         />
                     </VStack>
                     <StepButtonsHookForm
-                        goToPreviousStep={() =>
-                            navigate(
-                                getBackLinkForSkjemaSteg(
-                                    barn.termindato,
-                                    arbeidsforhold,
-                                    søker,
-                                    tilrettelegging,
-                                    currentTilrettelegging.id,
-                                ),
-                            )
-                        }
+                        goToPreviousStep={() => {
+                            const linkData = getBackLinkForSkjemaSteg(
+                                barnet.termindato,
+                                søkerInfo.arbeidsforhold,
+                                inntektsinformasjon,
+                                tilrettelegginger,
+                                valgtTilrettelegging.id,
+                            );
+
+                            if (linkData.previousTilretteleggingId) {
+                                oppdaterValgtTilretteleggingId(linkData.previousTilretteleggingId);
+                            }
+                            oppdaterAppRoute(linkData.previousRoute);
+                            mellomlagreSøknadOgNaviger();
+                        }}
                         isDisabledAndLoading={avventerVedlegg}
                     />
                 </VStack>

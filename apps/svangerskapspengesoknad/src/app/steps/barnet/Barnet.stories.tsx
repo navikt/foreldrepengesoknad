@@ -1,33 +1,38 @@
 import { StoryFn } from '@storybook/react';
-import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
-import withRouterProvider from 'storybook/decorators/withRouter';
-import Barnet from './Barnet';
+import { action } from '@storybook/addon-actions';
 import _context from 'storybook/storydata/soknad/soknad.json';
-import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
-import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
+import Barnet from './Barnet';
+import { Action, SvpDataContext } from 'app/context/SvpDataContext';
 
 const defaultExport = {
     title: 'steps/Barnet',
     component: Barnet,
-    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
-
 export default defaultExport;
 
 const context = _context as any;
-const contextUtenOppgittBarn = {
-    ...context,
-    søknad: { ...context.søknad, barn: undefined! },
-} as SvangerskapspengerContextState;
 
-const Template: StoryFn = () => {
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
+interface Props {
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+    gåTilNesteSide?: (action: Action) => void;
+}
+
+const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
     return (
-        <SvangerskapspengerStateMock context={contextUtenOppgittBarn}>
-            <Barnet />
-        </SvangerskapspengerStateMock>
+        <SvpDataContext onDispatch={gåTilNesteSide}>
+            <Barnet
+                søkerInfo={context.søkerinfo}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                avbrytSøknad={promiseAction()}
+            />
+        </SvpDataContext>
     );
 };
 export const Default = Template.bind({});
-Default.args = {
-    contextUtenOppgittBarn,
-};

@@ -1,36 +1,61 @@
 import { StoryFn } from '@storybook/react';
-import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
-import withRouterProvider from 'storybook/decorators/withRouter';
-import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
-import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
+import { action } from '@storybook/addon-actions';
 import _context from 'storybook/storydata/soknad/soknad.json';
+import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
 import Oppsummering from './Oppsummering';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 const defaultExport = {
     title: 'steps/Oppsummering',
     component: Oppsummering,
-    decorators: [withRouterProvider, withSvangerskapspengerContextProvider],
 };
 
 export default defaultExport;
 
-interface OppsummeringProps {
-    søkerinfo: SøkerinfoDTO;
-    context: SvangerskapspengerContextState;
-}
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 const context = _context as any;
 
-const Template: StoryFn<OppsummeringProps> = () => {
+interface Props {
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+    gåTilNesteSide?: (action: Action) => void;
+    sendSøknad: () => Promise<any>;
+}
+
+const Template: StoryFn<Props> = ({
+    mellomlagreSøknadOgNaviger = promiseAction(),
+    gåTilNesteSide,
+    sendSøknad = () => Promise.resolve(),
+}) => {
     return (
-        <SvangerskapspengerStateMock context={context}>
-            <Oppsummering />
-        </SvangerskapspengerStateMock>
+        <SvpDataContext
+            onDispatch={gåTilNesteSide}
+            initialState={{
+                [ContextDataType.TILRETTELEGGINGER]: context.søknad.tilrettelegging,
+                [ContextDataType.INNTEKTSINFORMASJON]: {
+                    harHattAnnenInntekt: false,
+                    harJobbetSomFrilans: false,
+                    harJobbetSomSelvstendigNæringsdrivende: false,
+                },
+                [ContextDataType.OM_BARNET]: context.søknad.barn,
+                [ContextDataType.UTENLANDSOPPHOLD]: {
+                    iNorgeNeste12Mnd: true,
+                    iNorgeSiste12Mnd: true,
+                },
+            }}
+        >
+            <Oppsummering
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                avbrytSøknad={promiseAction()}
+                søkerInfo={context.søkerinfo}
+                sendSøknad={sendSøknad}
+            />
+        </SvpDataContext>
     );
 };
 
 export const Default = Template.bind({});
-Default.args = {
-    context,
-};

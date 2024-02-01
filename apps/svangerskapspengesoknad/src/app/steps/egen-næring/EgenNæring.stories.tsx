@@ -1,43 +1,50 @@
 import { StoryFn } from '@storybook/react';
-import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
-import withRouterProvider from 'storybook/decorators/withRouter';
+import { action } from '@storybook/addon-actions';
 import EgenNæringStep from './EgenNæringStep';
-import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
 import _context from 'storybook/storydata/soknad/soknad.json';
-import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
+import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
 
 const defaultExport = {
     title: 'steps/EgenNæringStep',
     component: EgenNæringStep,
-    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;
 
-interface EgenNæringStepStoryProps {
-    contextWithEgenNæring: SvangerskapspengerContextState;
-}
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 const context = _context as any;
-const contextWithEgenNæring = {
-    ...context,
-    søknad: {
-        ...context.søknad,
-        søker: {
-            ...context.søknad.søker,
-            harJobbetSomSelvstendigNæringsdrivende: true,
-        },
-    },
-} as SvangerskapspengerContextState;
 
-const Template: StoryFn<EgenNæringStepStoryProps> = ({ contextWithEgenNæring }) => {
+interface Props {
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+    gåTilNesteSide?: (action: Action) => void;
+}
+
+const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
     return (
-        <SvangerskapspengerStateMock context={contextWithEgenNæring}>
-            <EgenNæringStep />
-        </SvangerskapspengerStateMock>
+        <SvpDataContext
+            onDispatch={gåTilNesteSide}
+            initialState={{
+                [ContextDataType.INNTEKTSINFORMASJON]: {
+                    harJobbetSomSelvstendigNæringsdrivende: true,
+                    harHattAnnenInntekt: false,
+                    harJobbetSomFrilans: false,
+                },
+                [ContextDataType.TILRETTELEGGINGER]: context.søknad.tilrettelegging,
+                [ContextDataType.OM_BARNET]: context.søknad.barn,
+            }}
+        >
+            <EgenNæringStep
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                avbrytSøknad={promiseAction()}
+                søkerInfo={context.søkerinfo}
+            />
+        </SvpDataContext>
     );
 };
 export const Default = Template.bind({});
-Default.args = {
-    contextWithEgenNæring,
-};

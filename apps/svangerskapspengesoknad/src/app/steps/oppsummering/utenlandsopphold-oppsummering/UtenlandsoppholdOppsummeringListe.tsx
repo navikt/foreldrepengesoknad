@@ -2,13 +2,13 @@ import { Block, bemUtils, formatDate } from '@navikt/fp-common';
 import countries from 'i18n-iso-countries';
 import { FunctionComponent } from 'react';
 import { BodyShort } from '@navikt/ds-react';
-import { Utenlandsopphold } from 'app/types/InformasjonOmUtenlandsopphold';
+import { UtenlandsoppholdPeriode } from 'app/types/Utenlandsopphold';
 import { FormattedMessage } from 'react-intl';
 
 import './utenlandsoppholdOppsummeringListe.css';
 
 interface Props {
-    utenlandsopphold: Utenlandsopphold[];
+    utenlandsopphold: UtenlandsoppholdPeriode[];
     tidligereOpphold: boolean;
 }
 

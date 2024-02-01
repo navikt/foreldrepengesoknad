@@ -1,4 +1,4 @@
-import { formatDate, intlUtils } from '@navikt/fp-common';
+import { formatDate } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
@@ -16,24 +16,29 @@ const SelvstendigNæringsdrivendeOppsummering: FunctionComponent<Props> = ({ sø
 
     if (!søker.selvstendigNæringsdrivendeInformasjon || !søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
         return (
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.tittel' })}>
                 <BodyShort>
-                    {intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende')}
+                    {intl.formatMessage({
+                        id: 'oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende',
+                    })}
                 </BodyShort>
             </OppsummeringsPunkt>
         );
     }
 
     return (
-        <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
+        <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.tittel' })}>
             <InntekterTabell
                 list={søker.selvstendigNæringsdrivendeInformasjon.map((næring) => ({
                     key: næring.navnPåNæringen + næring.tidsperiode,
                     headerVenstre: næring.navnPåNæringen,
-                    headerHøyre: intlUtils(intl, 'tidsintervall', {
-                        fom: formatDate(næring.tidsperiode.fom)!,
-                        tom: næring.pågående ? 'pågående' : formatDate(næring.tidsperiode.tom!),
-                    }),
+                    headerHøyre: intl.formatMessage(
+                        { id: 'tidsintervall' },
+                        {
+                            fom: formatDate(næring.tidsperiode.fom)!,
+                            tom: næring.pågående ? 'pågående' : formatDate(næring.tidsperiode.tom!),
+                        },
+                    ),
                     content: <Næringsdetaljer næring={næring} />,
                 }))}
             />

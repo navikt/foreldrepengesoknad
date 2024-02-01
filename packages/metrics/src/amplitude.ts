@@ -8,12 +8,16 @@ export const initAmplitude = () => {
             includeUtm: true,
             includeReferrer: true,
             platform: window.location.toString(),
+            onError: () => console.log('Amplitude klarte ikke å starte opp'),
         });
     }
 };
 
 export const logAmplitudeEvent = (eventName: string, eventData?: any, logToConsoleOnly = false) => {
     if (logToConsoleOnly) {
+        if (process.env.NODE_ENV !== 'test') {
+            console.log({ eventName, eventData });
+        }
         return;
     }
 

@@ -5,7 +5,6 @@ import {
     PeriodeUtenUttakUtsettelse,
     Periodetype,
     Utsettelsesperiode,
-    intlUtils,
 } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
 
@@ -35,7 +34,7 @@ export const getArbeidsformTekst = (
     if (orgnumre !== undefined && orgnumre.length > 0 && arbeidsforhold && arbeidsforhold.length > 0) {
         arbeidstakerTekster = orgnumre.map((orgnr) => {
             const arbeidsgiverNavn = getValgtArbeidsgiverNavn(arbeidsforhold, orgnr);
-            return intlUtils(intl, `oppsummering.uttak.arbeidstaker`, { orgnr, arbeidsgiverNavn });
+            return intl.formatMessage({ id: `oppsummering.uttak.arbeidstaker` }, { orgnr, arbeidsgiverNavn });
         });
     }
 
@@ -43,7 +42,7 @@ export const getArbeidsformTekst = (
         arbeidsformerTekster = arbeidsformer
             .filter((arbeidsform) => arbeidsform !== Arbeidsform.arbeidstaker)
             .map((arbeidsform) => {
-                return intlUtils(intl, `oppsummering.uttak.${arbeidsform.toLowerCase()}`);
+                return intl.formatMessage({ id: `oppsummering.uttak.${arbeidsform.toLowerCase()}` });
             });
     }
 
@@ -56,5 +55,5 @@ export const getÅrsakTekst = (
     messageValues?: { [key: string]: MessageValue },
 ) => {
     const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';
-    return intlUtils(intl, `uttaksplan.${intlKeyPrefix + årsak}`, messageValues);
+    return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix + årsak}` }, messageValues);
 };

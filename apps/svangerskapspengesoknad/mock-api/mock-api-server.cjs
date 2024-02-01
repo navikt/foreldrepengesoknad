@@ -28,10 +28,22 @@ router.get(['/rest/sokerinfo'], (_req, res) => {
     res.send(MockStorage.getSokerInfo());
 });
 
-router.post('/rest/engangsstonad', (_req, res) => res.sendStatus(200));
-
 router.post('/rest/soknad', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
+});
+
+router.get('/rest/storage/svangerskapspenger', (_req, res) => {
+    res.send(MockStorage.getMellomlagretData());
+});
+
+router.post('/rest/storage/svangerskapspenger', (req, res) => {
+    MockStorage.lagreMellomlagretData(req.body);
+    return res.sendStatus(200);
+});
+
+router.delete('/rest/storage/svangerskapspenger', (_req, res) => {
+    MockStorage.deleteMellomlagretData();
+    return res.sendStatus(200);
 });
 
 const vedleggUpload = multer({ dest: './dist/vedlegg/' });

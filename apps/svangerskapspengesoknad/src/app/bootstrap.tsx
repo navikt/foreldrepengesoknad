@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+import { initAmplitude } from '@navikt/fp-metrics';
 import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import '@navikt/ds-css';
@@ -5,13 +7,11 @@ import '@navikt/ds-css';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import * as countries from 'i18n-iso-countries';
-import { initAmplitude } from './amplitude/amplitude';
 import AppContainer from './AppContainer';
 import '@formatjs/intl-pluralrules/polyfill';
 import '@formatjs/intl-pluralrules/locale-data/nb';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
-import dayjs from 'dayjs';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
@@ -28,6 +28,7 @@ Sentry.init({
 initAmplitude();
 
 const container = document.getElementById('app');
-const root = createRoot(container!);
-
-root.render(<AppContainer />);
+if (container) {
+    const root = createRoot(container);
+    root.render(<AppContainer />);
+}

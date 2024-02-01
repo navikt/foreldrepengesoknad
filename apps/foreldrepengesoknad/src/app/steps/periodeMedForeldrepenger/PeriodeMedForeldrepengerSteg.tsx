@@ -11,7 +11,6 @@ import {
     isFødtBarn,
 } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { useApiPostData, useApiGetData } from 'app/api/context/useFpApiData';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
@@ -19,9 +18,10 @@ import getStønadskontoParams from 'app/api/getStønadskontoParams';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { RequestStatus } from 'app/types/RequestState';
-import stepConfig from '../stepsConfig';
 import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
+import useStepConfig from 'app/appData/useStepConfig';
+import useFpNavigator from 'app/appData/useFpNavigator';
 
 const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
     const annenPartFødselsnummer =
@@ -48,7 +48,9 @@ type Props = {
 
 const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
+    const stepConfig = useStepConfig();
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
 
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -100,10 +102,9 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="periodeMedForeldrepenger"
             onCancel={avbrytSøknad}
-            onContinueLater={onFortsettSøknadSenere}
-            steps={stepConfig(intl, false)}
+            onContinueLater={navigator.fortsettSøknadSenere}
+            steps={stepConfig}
         >
             {!tilgjengeligeStønadskontoer && (
                 <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -114,7 +115,8 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
                 <>
                     {visAnnenPartsValg && isAnnenForelderOppgitt(annenForelder) && (
                         <DekningsgradValgtAvAnnenPartPanel
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
+                            goToNextDefaultStep={navigator.goToNextDefaultStep}
                             fornavnAnnenForelder={annenForelder.fornavn}
                             kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
                             dekningsgrad={
@@ -133,7 +135,8 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
                     )}
                     {!visAnnenPartsValg && (
                         <DekningsgradForm
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
+                            goToNextDefaultStep={navigator.goToNextDefaultStep}
                             barn={barn}
                             søkersituasjon={søkersituasjon}
                             stønadskonto100={tilgjengeligeStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]}

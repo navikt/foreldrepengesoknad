@@ -2,7 +2,6 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import { action } from '@storybook/addon-actions';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedTreBarn.json';
 import _søkerinfoMedDødTrilling from 'storybook/storyData/sokerinfo/søkerinfoMedDødTrilling.json';
@@ -11,6 +10,9 @@ import { Barn, BarnType } from '@navikt/fp-common';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { MemoryRouter } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const promiseAction =
     () =>
@@ -25,7 +27,6 @@ const søkerinfoMedDødTrilling = _søkerinfoMedDødTrilling as any;
 export default {
     title: 'steps/OmBarnet',
     component: OmBarnet,
-    decorators: [withRouter],
 };
 
 interface Props {
@@ -48,6 +49,7 @@ const Template: StoryFn<Props> = ({
     gåTilNesteSide,
     mellomlagreSøknadOgNaviger = promiseAction(),
 }) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
             200,
@@ -59,22 +61,24 @@ const Template: StoryFn<Props> = ({
         apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                    [ContextDataType.OM_BARNET]: barn,
-                }}
-            >
-                <OmBarnet
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
-                    søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={action('button-click')}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.OM_BARNET]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                        [ContextDataType.OM_BARNET]: barn,
+                    }}
+                >
+                    <OmBarnet
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                        søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={action('button-click')}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 

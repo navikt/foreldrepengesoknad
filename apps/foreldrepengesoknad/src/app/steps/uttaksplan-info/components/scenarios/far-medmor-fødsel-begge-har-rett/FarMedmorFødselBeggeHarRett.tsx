@@ -2,17 +2,15 @@ import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
-import { Button, GuidePanel, VStack } from '@navikt/ds-react';
+import { GuidePanel, VStack } from '@navikt/ds-react';
 import {
     Block,
     Dekningsgrad,
     Forelder,
     ISOStringToDate,
-    StepButtonWrapper,
     Uttaksdagen,
     andreAugust2022ReglerGjelder,
     getErMorUfør,
-    intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
@@ -35,25 +33,24 @@ import farMedmorFødselBeggeHarRettQuestionsConfig, {
 import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import SøknadRoutes from 'app/routes/routes';
 import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { getTilgjengeligeDager } from '../../../../../utils/tilgjengeligeDagerUtils';
+import { StepButtons } from '@navikt/fp-ui';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => void;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -62,12 +59,13 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     tilgjengeligeStønadskontoer80DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
-    const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const intl = useIntl();
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -79,7 +77,6 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
         ContextDataType.UTTAKSPLAN_INFO,
     ) as FarMedmorFødselBeggeHarRettUttaksplanInfo;
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -167,9 +164,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
             antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad! === '100' ? 100 : 80]),
         });
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     return (
@@ -267,17 +262,11 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                                 )}
                             </Block>
                             <Block>
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getPreviousStepHref('uttaksplanInfo')}
-                                    />
-                                    {visibility.areAllQuestionsAnswered() && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
-                                </StepButtonWrapper>
+                                <StepButtons
+                                    isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                    goToPreviousStep={goToPreviousDefaultStep}
+                                    isDisabledAndLoading={isSubmitting}
+                                />
                             </Block>
                         </FarMedmorFødselBeggeHarRettFormComponents.Form>
                     );

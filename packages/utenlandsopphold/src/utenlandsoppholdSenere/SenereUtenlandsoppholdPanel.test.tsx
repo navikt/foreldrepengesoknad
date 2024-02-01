@@ -23,8 +23,8 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Du må velge et land du skal oppholde deg i')).toHaveLength(2);
-        expect(screen.getAllByText('Du må velge en fra og med dato')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi et land du skal oppholde deg i')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi en fra og med dato')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
@@ -32,8 +32,8 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Du må velge et land du skal oppholde deg i')).toHaveLength(3);
-        expect(screen.getAllByText('Du må velge en fra og med dato')).toHaveLength(3);
+        expect(screen.getAllByText('Du må oppgi et land du skal oppholde deg i')).toHaveLength(3);
+        expect(screen.getAllByText('Du må oppgi en fra og med dato')).toHaveLength(3);
     });
 
     it('skal fylle ut to perioder og så gå videre', async () => {

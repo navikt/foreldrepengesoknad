@@ -1,12 +1,11 @@
 import { Block, bemUtils } from '@navikt/fp-common';
-import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import { FormattedMessage } from 'react-intl';
-import { PageKeys } from 'app/types/PageKeys';
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
+import { ArrowRightIcon } from '@navikt/aksel-icons';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 import './ikkeKvinne.css';
-import { ArrowRightIcon } from '@navikt/aksel-icons';
-import links from 'app/links/links';
+import { links } from '@navikt/fp-constants';
 
 const IkkeKvinne: React.FunctionComponent = () => {
     const bem = bemUtils('ikke-kvinne');
@@ -14,7 +13,7 @@ const IkkeKvinne: React.FunctionComponent = () => {
     logAmplitudeEvent('sidevisning', {
         app: 'svangerskapspengerny',
         team: 'foreldrepenger',
-        pageKey: PageKeys.IkkeKvinne,
+        pageKey: 'ikkeKvinne',
     });
 
     return (

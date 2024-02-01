@@ -1,10 +1,12 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Kjønn } from '@navikt/fp-common';
-import withRouter from 'storybook/decorators/withRouter';
 import SøkersituasjonSteg from './SøkersituasjonSteg';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { SøkersituasjonFp } from '@navikt/fp-types';
+import { MemoryRouter } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const promiseAction =
     () =>
@@ -16,7 +18,6 @@ const promiseAction =
 export default {
     title: 'steps/SøkersituasjonSteg',
     component: SøkersituasjonSteg,
-    decorators: [withRouter],
 };
 
 interface Props {
@@ -34,20 +35,23 @@ const Template: StoryFn<Props> = ({
     avbrytSøknad = action('button-click'),
     gåTilNesteSide,
 }) => {
+    initAmplitude();
     return (
-        <FpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-            }}
-        >
-            o
-            <SøkersituasjonSteg
-                kjønn={kjønn}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={avbrytSøknad}
-            />
-        </FpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.SØKERSITUASJON]}>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                }}
+            >
+                o
+                <SøkersituasjonSteg
+                    kjønn={kjønn}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={avbrytSøknad}
+                />
+            </FpDataContext>
+        </MemoryRouter>
     );
 };
 

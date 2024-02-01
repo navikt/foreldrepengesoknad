@@ -1,7 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
-import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-begge-har-rett/søkerinfo.json';
@@ -13,8 +11,11 @@ import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
-import dayjs from 'dayjs';
+import SøknadRoutes from 'app/routes/routes';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -60,10 +61,10 @@ const uttaksperiodeFellesperiode = {
 export default {
     title: 'steps/uttaksplan-info/FarMedmorMedAnnenPart',
     component: UttaksplanInfo,
-    decorators: [withRouter],
 };
 
 const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dekningsgrad }> = (args) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(
             200,
@@ -77,42 +78,44 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
     };
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: {
-                        situasjon: 'fødsel',
-                        rolle: 'far',
-                    },
-                    [ContextDataType.OM_BARNET]: args.barn,
-                    [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
-                        dekningsgrad: args.dekningsgrad,
-                    },
-                    [ContextDataType.SØKER]: {
-                        erAleneOmOmsorg: false,
-                        harJobbetSomFrilansSiste10Mnd: false,
-                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-                        harHattAnnenInntektSiste10Mnd: false,
-                    },
-                    [ContextDataType.ANNEN_FORELDER]: {
-                        etternavn: 'Pettersen',
-                        fornavn: 'Helga',
-                        fnr: '02068629902',
-                        utenlandskFnr: false,
-                        kanIkkeOppgis: false,
-                        harRettPåForeldrepengerINorge: true,
-                        erInformertOmSøknaden: true,
-                    },
-                }}
-            >
-                <UttaksplanInfo
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
-                    erEndringssøknad={false}
-                    mellomlagreSøknadOgNaviger={() => Promise.resolve()}
-                    avbrytSøknad={() => undefined}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            situasjon: 'fødsel',
+                            rolle: 'far',
+                        },
+                        [ContextDataType.OM_BARNET]: args.barn,
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                            dekningsgrad: args.dekningsgrad,
+                        },
+                        [ContextDataType.SØKER]: {
+                            erAleneOmOmsorg: false,
+                            harJobbetSomFrilansSiste10Mnd: false,
+                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+                            harHattAnnenInntektSiste10Mnd: false,
+                        },
+                        [ContextDataType.ANNEN_FORELDER]: {
+                            etternavn: 'Pettersen',
+                            fornavn: 'Helga',
+                            fnr: '02068629902',
+                            utenlandskFnr: false,
+                            kanIkkeOppgis: false,
+                            harRettPåForeldrepengerINorge: true,
+                            erInformertOmSøknaden: true,
+                        },
+                    }}
+                >
+                    <UttaksplanInfo
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        erEndringssøknad={false}
+                        mellomlagreSøknadOgNaviger={() => Promise.resolve()}
+                        avbrytSøknad={() => undefined}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 

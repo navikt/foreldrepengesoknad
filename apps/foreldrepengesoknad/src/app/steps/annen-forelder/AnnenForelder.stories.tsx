@@ -2,7 +2,6 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import { action } from '@storybook/addon-actions';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
 import AnnenForelder from './AnnenForelder';
@@ -11,6 +10,9 @@ import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import dayjs from 'dayjs';
+import SøknadRoutes from 'app/routes/routes';
+import { MemoryRouter } from 'react-router-dom';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const promiseAction =
     () =>
@@ -24,7 +26,6 @@ const søkerinfo = _søkerinfo as any;
 export default {
     title: 'steps/AnnenForelder',
     component: AnnenForelder,
-    decorators: [withRouter],
 };
 
 interface Props {
@@ -57,6 +58,7 @@ const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
     avbrytSøknad = action('button-click'),
 }) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
             200,
@@ -68,32 +70,34 @@ const Template: StoryFn<Props> = ({
         apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                    [ContextDataType.OM_BARNET]: barn,
-                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                    [ContextDataType.SØKER]: {
-                        // @ts-ignore TODO (TOR) Fiks Søker-typen
-                        harHattAnnenInntektSiste10Mnd: undefined,
-                        // @ts-ignore TODO (TOR) Fiks Søker-typen
-                        harJobbetSomFrilansSiste10Mnd: undefined,
-                        // @ts-ignore TODO (TOR) Fiks Søker-typen
-                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
-                        // @ts-ignore TODO (TOR) Fiks Søker-typen
-                        erAleneOmOmsorg: undefined,
-                    },
-                }}
-            >
-                <AnnenForelder
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={avbrytSøknad}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                        [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.SØKER]: {
+                            // @ts-ignore TODO (TOR) Fiks Søker-typen
+                            harHattAnnenInntektSiste10Mnd: undefined,
+                            // @ts-ignore TODO (TOR) Fiks Søker-typen
+                            harJobbetSomFrilansSiste10Mnd: undefined,
+                            // @ts-ignore TODO (TOR) Fiks Søker-typen
+                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
+                            // @ts-ignore TODO (TOR) Fiks Søker-typen
+                            erAleneOmOmsorg: undefined,
+                        },
+                    }}
+                >
+                    <AnnenForelder
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 

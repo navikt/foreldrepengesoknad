@@ -19,7 +19,6 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { links } from '@navikt/fp-constants';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import SøknadRoutes from 'app/routes/routes';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
@@ -70,7 +69,8 @@ const getSøkerAntallTekst = (intl: IntlShape, erDeltUttak: boolean) => {
 };
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
+    goToNextDefaultStep: () => Promise<void>;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
     stønadskonto100: TilgjengeligStønadskonto[];
@@ -78,7 +78,8 @@ type Props = {
 };
 
 const DekningsgradForm: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
+    goToPreviousDefaultStep,
+    goToNextDefaultStep,
     barn,
     søkersituasjon,
     stønadskonto100,
@@ -90,7 +91,6 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const formMethods = useForm<PeriodeMedForeldrepenger>({
         defaultValues: periodeMedForeldrepenger,
@@ -98,14 +98,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
 
     const onSubmit = (values: PeriodeMedForeldrepenger) => {
         oppdaterPeriodeMedForeldrepenger(values);
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
-
-        return mellomlagreSøknadOgNaviger();
-    };
-
-    const goToPreviousStep = () => {
-        oppdaterAppRoute(SøknadRoutes.ANNEN_FORELDER);
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     const erDeltUttak =
@@ -279,7 +272,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         </HStack>
                     </Box>
                 )}
-                <StepButtonsHookForm goToPreviousStep={goToPreviousStep} />
+                <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
             </VStack>
         </Form>
     );

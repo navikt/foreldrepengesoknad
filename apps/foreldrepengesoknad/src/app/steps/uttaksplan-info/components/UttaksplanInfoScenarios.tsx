@@ -30,7 +30,8 @@ interface Props {
     annenForelder: AnnenForelder;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -43,7 +44,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     annenForelder,
     erEndringssøknad,
     person,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -77,7 +79,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    goToNextDefaultStep={goToNextDefaultStep}
+                    goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                     scenario={scenario}
                 />
@@ -89,7 +92,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    goToNextDefaultStep={goToNextDefaultStep}
+                    goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
@@ -100,7 +104,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    goToNextDefaultStep={goToNextDefaultStep}
+                    goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                     scenario={scenario}
                 />
@@ -112,7 +117,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    goToNextDefaultStep={goToNextDefaultStep}
+                    goToPreviousDefaultStep={goToPreviousDefaultStep}
                     person={person}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
@@ -124,7 +130,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    goToNextDefaultStep={goToNextDefaultStep}
+                    goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
@@ -136,7 +143,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     eksisterendeSakFar={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    goToNextDefaultStep={goToNextDefaultStep}
+                    goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
@@ -147,7 +155,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    goToNextDefaultStep={goToNextDefaultStep}
+                    goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
@@ -158,7 +167,8 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
                     person={person}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    goToNextDefaultStep={goToNextDefaultStep}
+                    goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );

@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -10,7 +10,6 @@ import {
     Block,
     Dekningsgrad,
     ISOStringToDate,
-    StepButtonWrapper,
     Uttaksdagen,
     formaterDatoUtenDag,
     getErMorUfør,
@@ -19,8 +18,9 @@ import {
     isFarEllerMedmor,
     isFødtBarn,
 } from '@navikt/fp-common';
+import { StepButtons } from '@navikt/fp-ui';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import SøknadRoutes from 'app/routes/routes';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
@@ -38,10 +38,6 @@ import {
     mapFarMedmorAleneomsorgFødselFormToState,
 } from './farMedmorAleneomsorgFødselUtils';
 import { validateStartdatoUttakFarMedmorAleneomsorgFødsel } from './validation/farMedmorAleneomsorgFødselValidation';
-import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import BackButton from 'app/steps/BackButton';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { UttaksplanInfoScenario } from '../scenarios';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 
@@ -50,8 +46,8 @@ interface Props {
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    scenario: UttaksplanInfoScenario;
-    mellomlagreSøknadOgNaviger: () => void;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -60,7 +56,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const intl = useIntl();
@@ -78,7 +75,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         ContextDataType.UTTAKSPLAN_INFO,
     ) as FarMedmorAleneomsorgFødselUttaksplanInfo;
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -147,9 +143,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             antallUkerIUttaksplan: getAntallUker(kontoerForValgtDekningsgrad),
         });
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     const shouldRender = erFødsel && erFarEllerMedmor && (!!søker.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
@@ -253,17 +247,11 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                                 />
                             </Block>
                             <Block>
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getPreviousStepHref('uttaksplanInfo')}
-                                    />
-                                    {visibility.areAllQuestionsAnswered() && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
-                                </StepButtonWrapper>
+                                <StepButtons
+                                    isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                    goToPreviousStep={goToPreviousDefaultStep}
+                                    isDisabledAndLoading={isSubmitting}
+                                />
                             </Block>
                         </FarMedmorAleneomsorgFødselFormComponents.Form>
                     );
