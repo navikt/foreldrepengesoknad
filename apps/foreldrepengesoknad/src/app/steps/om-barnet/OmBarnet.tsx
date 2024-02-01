@@ -148,15 +148,6 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         søkersituasjon.situasjon,
     );
 
-    // const visibility = omBarnetQuestionsConfig.getVisbility({
-    //     ...formValues,
-    //     arbeidsforhold,
-    //     situasjon: søkersituasjon.situasjon,
-    //     rolle: søkersituasjon.rolle,
-    //     valgteRegistrerteBarn,
-    //     søknadGjelderEtNyttBarn: barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn,
-    // } as OmBarnetQuestionPayload);
-
     // const farMedmorSøkerPåTerminFørWLB =
     //     erFarEllerMedmor &&
     //     convertYesOrNoOrUndefinedToBoolean(formValues.erBarnetFødt) === false &&
