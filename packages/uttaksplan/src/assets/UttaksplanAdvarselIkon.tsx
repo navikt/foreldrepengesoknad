@@ -8,7 +8,7 @@ export interface OwnProps {
 type Props = OwnProps & SVGProps<any>;
 
 const UttaksplanAdvarselIkon = (props: Props) => {
-    const farge = '#ba3a26';
+    const farge = '#C30000';
     const { title, ...rest } = props;
 
     return (

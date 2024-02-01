@@ -7,6 +7,7 @@ import { RequestStatus } from 'app/types/RequestState';
 import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-aleneomsorg/søkerinfo.json';
 import stønadskonto80AleneomsorgFar from 'storybook/storyData/stonadskontoer/stønadskonto80AleneomsorgFar.json';
 import stønadskonto100AleneomsorgFar from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFar.json';
+import stønadskonto100AleneomsorgFarTrillinger from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFarTrillinger.json';
 import stønadskonto100AleneomsorgFarPrematur from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFarPrematur.json';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
@@ -113,10 +114,10 @@ FarMedmorFødselAleneomsorgFør1Okt2021.args = {
     fødselsdatoer: [dayjs('2021-09-30').toDate()],
 };
 
-export const FarMedmorFødselAleneomsorgFør1Okt2021Trillinger = Template.bind({});
-FarMedmorFødselAleneomsorgFør1Okt2021Trillinger.args = {
-    stønadskonto100: stønadskonto100AleneomsorgFar,
-    stønadskonto80: stønadskonto80AleneomsorgFar,
+export const FarMedmorFødselAleneomsorgEtter1Okt2021Trillinger = Template.bind({});
+FarMedmorFødselAleneomsorgEtter1Okt2021Trillinger.args = {
+    stønadskonto100: stønadskonto100AleneomsorgFarTrillinger,
+    stønadskonto80: stønadskonto100AleneomsorgFarTrillinger,
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     antallBarn: 3,

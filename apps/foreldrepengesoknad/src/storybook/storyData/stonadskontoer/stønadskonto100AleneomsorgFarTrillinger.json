@@ -1,0 +1,11 @@
+{
+    "kontoer": {
+        "FORELDREPENGER": 460,
+        "FORELDREPENGER_FØR_FØDSEL": 15
+    },
+    "minsteretter": {
+        "generellMinsterett": 0,
+        "farRundtFødsel": 10,
+        "toTette": 0
+    }
+}

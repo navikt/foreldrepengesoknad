@@ -3,9 +3,9 @@ import { UttaksplanColor } from '../types/UttaksplanColor';
 
 export const getForelderFarge = (forelder: Forelder, erFarEllerMedmor: boolean) => {
     if (forelder === Forelder.mor) {
-        return erFarEllerMedmor ? UttaksplanColor.lightBlue : UttaksplanColor.green;
+        return erFarEllerMedmor ? UttaksplanColor.lightBlue : UttaksplanColor.blue;
     }
-    return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.lightBlue;
+    return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.lightGreen;
 };
 
 export const getStønadskontoFarge = (
