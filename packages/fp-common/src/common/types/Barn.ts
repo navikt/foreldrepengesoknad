@@ -13,27 +13,29 @@ interface Common {
 
 export interface IkkeUtfyltTypeBarn extends Common {
     type: BarnType.IKKE_UTFYLT;
-    fødselsdatoer: Date[];
+    fødselsdatoer: Array<{ dato: string }>;
     fnr?: string[];
 }
 
 export interface FødtBarn extends Common {
     type: BarnType.FØDT;
-    fødselsdatoer: Date[];
-    termindato?: Date;
+    fødselsdatoer: Array<{ dato: string }>;
+    termindato?: string;
     fnr?: string[];
 }
 
 export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
-    termindato: Date;
-    terminbekreftelsedato?: Date;
+    termindato: string;
+    terminbekreftelse?: Attachment[];
+    terminbekreftelsedato?: string;
 }
 
 export interface AdoptertBarn extends Common {
     type: BarnType.ADOPTERT_STEBARN | BarnType.ADOPTERT_ANNET_BARN;
-    adopsjonsdato: Date;
-    fødselsdatoer: Date[];
+    adopsjonsdato: string;
+    fødselsdatoer: Array<{ dato: string }>;
+    omsorgsovertakelse: Attachment[];
     fnr?: string[];
 }
 
@@ -44,14 +46,14 @@ export interface AdoptertStebarn extends AdoptertBarn {
 export interface AdoptertAnnetBarn extends AdoptertBarn {
     type: BarnType.ADOPTERT_ANNET_BARN;
     adoptertIUtlandet: boolean;
-    ankomstdato?: Date;
+    ankomstdato?: string;
 }
 
 export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
 
 export interface BarnFraNesteSak {
-    familiehendelsesdato: Date;
-    startdatoFørsteStønadsperiode: Date;
+    familiehendelsesdato: string;
+    startdatoFørsteStønadsperiode: string;
     fnr: string[] | undefined;
     annenForelderFnr: string | undefined;
 }

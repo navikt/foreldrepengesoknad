@@ -1,14 +1,15 @@
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { isISODateString } from '@navikt/ds-datepicker';
-import { Alert, BodyShort, GuidePanel, Heading, Link, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyShort, GuidePanel, Heading, Link, Radio, ReadMore } from '@navikt/ds-react';
 
 import {
     Block,
+    RegistrertBarn,
     Søkersituasjon,
+    andreAugust2022ReglerGjelder,
     attenUkerTreDager,
     date21DaysAgo,
     dateToday,
@@ -18,32 +19,39 @@ import {
     isFarEllerMedmor,
     links,
 } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
+import { Søkerrolle } from '@navikt/fp-types';
 
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-
-import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
-import { kanSøkePåTermin } from '../omBarnetQuestionsConfig';
 import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
+import { OmBarnetFormValues } from './OmBarnetFormValues';
+
+const kanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
+    if (!isFarEllerMedmor(rolle)) {
+        return true;
+    }
+    return hasValue(termindato) ? andreAugust2022ReglerGjelder(new Date(termindato)) : false;
+};
 
 interface Props {
     søkersituasjon: Søkersituasjon;
-    formValues: OmBarnetFormData;
-    visibility: QuestionVisibility<OmBarnetFormField, undefined>;
     søknadGjelderEtNyttBarn: boolean;
     setErForTidligTilÅSøkePåTermin: (val: boolean) => void;
+    valgteBarn?: RegistrertBarn[];
 }
 
 const Termin: FunctionComponent<Props> = ({
     søkersituasjon,
-    visibility,
-    formValues,
     søknadGjelderEtNyttBarn,
     setErForTidligTilÅSøkePåTermin,
+    valgteBarn,
 }) => {
     const intl = useIntl();
 
-    if (søkersituasjon.situasjon === 'adopsjon' || formValues.erBarnetFødt !== YesOrNo.NO || !søknadGjelderEtNyttBarn) {
+    const formMethods = useFormContext<OmBarnetFormValues>();
+
+    const formValues = formMethods.watch();
+
+    if (søkersituasjon.situasjon === 'adopsjon' || formValues.erBarnetFødt !== false || !søknadGjelderEtNyttBarn) {
         return null;
     }
 
@@ -55,7 +63,6 @@ const Termin: FunctionComponent<Props> = ({
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && hasValue(formValues.termindato);
-    const intlSpørsmålAntallBarnId = søkerErFarMedmor ? 'omBarnet.antallBarn.termin.far' : 'omBarnet.antallBarn.termin';
 
     const intlTerminbekreftelseId = søkerErFarMedmor
         ? 'omBarnet.veileder.terminbekreftelse.far'
@@ -63,32 +70,41 @@ const Termin: FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
-                <OmBarnetFormComponents.RadioGroup
-                    name={OmBarnetFormField.antallBarn}
-                    radios={[
-                        {
-                            label: intlUtils(intl, 'omBarnet.radiobutton.ettBarn'),
-                            value: '1',
-                        },
-                        {
-                            label: intlUtils(intl, 'omBarnet.radiobutton.tvillinger'),
-                            value: '2',
-                        },
-                        {
-                            label: intlUtils(intl, 'omBarnet.radiobutton.flere'),
-                            value: '3',
-                        },
-                    ]}
-                    legend={intlUtils(intl, intlSpørsmålAntallBarnId)}
-                />
-            </Block>
+            {(formValues.erBarnetFødt !== undefined ||
+                (formValues.adopsjonAvEktefellesBarn !== undefined && hasValue(formValues.adopsjonsdato))) && (
+                <Block padBottom="xl">
+                    <RadioGroup
+                        name="antallBarn"
+                        label={
+                            søkerErFarMedmor
+                                ? intl.formatMessage({ id: 'omBarnet.antallBarn.termin.far' })
+                                : intl.formatMessage({ id: 'omBarnet.antallBarn.termin' })
+                        }
+                        // validate={[
+                        //     isRequired(
+                        //         intl.formatMessage({
+                        //             id: 'valideringsfeil.annenForelder',
+                        //         }),
+                        //     ),
+                        // ]}
+                    >
+                        <Radio value="1">
+                            <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
+                        </Radio>
+                        <Radio value="2">
+                            <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
+                        </Radio>
+                        <Radio value="3">
+                            <FormattedMessage id="omBarnet.radiobutton.flere" />
+                        </Radio>
+                    </RadioGroup>
+                </Block>
+            )}
             <Block
                 padBottom="xl"
                 visible={formValues.antallBarn !== undefined && parseInt(formValues.antallBarn, 10) >= 3}
             >
-                <OmBarnetFormComponents.Select label="Antall barn" name={OmBarnetFormField.antallBarnSelect}>
-                    <option value="" />
+                <Select name="antallBarnSelect" label="Antall barn">
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
@@ -96,27 +112,33 @@ const Termin: FunctionComponent<Props> = ({
                     <option value="7">7</option>
                     <option value="8">8</option>
                     <option value="9">9</option>
-                </OmBarnetFormComponents.Select>
+                </Select>
             </Block>
-            <Block padBottom="s" visible={visibility.isVisible(OmBarnetFormField.termindato)}>
-                <OmBarnetFormComponents.DatePicker
-                    name={OmBarnetFormField.termindato}
-                    label={intlUtils(intl, 'omBarnet.termindato.termin')}
-                    placeholder={'dd.mm.åååå'}
-                    minDate={date21DaysAgo}
-                    maxDate={attenUkerTreDager}
-                    validate={validateTermindato(intl)}
-                />
-            </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.termindato) && !søkerErFarMedmor}>
-                <ReadMore header={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
-                    <Block padBottom="m">
-                        <FormattedMessage id="omBarnet.termindato.innhold.del1" />
+            {((formValues.fødselsdatoer && hasValue(formValues.fødselsdatoer[0].dato)) ||
+                (formValues.erBarnetFødt === false && hasValue(formValues.antallBarn)) ||
+                (valgteBarn !== undefined && valgteBarn.length > 0)) && (
+                <>
+                    <Block padBottom="s">
+                        <Datepicker
+                            name="termindato"
+                            label={intl.formatMessage({ id: 'omBarnet.termindato.termin' })}
+                            minDate={date21DaysAgo}
+                            maxDate={attenUkerTreDager}
+                            validate={[validateTermindato(intl)]}
+                        />
                     </Block>
-                    <FormattedMessage id="omBarnet.termindato.innhold.del2" />
-                </ReadMore>
-            </Block>
-
+                    {!søkerErFarMedmor && (
+                        <Block padBottom="xl">
+                            <ReadMore header={intlUtils(intl, 'omBarnet.termindato.åpneLabel')}>
+                                <Block padBottom="m">
+                                    <FormattedMessage id="omBarnet.termindato.innhold.del1" />
+                                </Block>
+                                <FormattedMessage id="omBarnet.termindato.innhold.del2" />
+                            </ReadMore>
+                        </Block>
+                    )}
+                </>
+            )}
             {farMedMorSøkerPåTermin && !kanSøkePåTermin(søkersituasjon.rolle, formValues.termindato) && (
                 <Block padBottom="xl">
                     <GuidePanel>
@@ -133,13 +155,14 @@ const Termin: FunctionComponent<Props> = ({
                     </GuidePanel>
                 </Block>
             )}
-
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
-                <GuidePanel>
-                    <FormattedMessage id={intlTerminbekreftelseId} />
-                </GuidePanel>
-            </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelse)}>
+            {hasValue(formValues.termindato) && (
+                <>
+                    <Block padBottom="xl">
+                        <GuidePanel>
+                            <FormattedMessage id={intlTerminbekreftelseId} />
+                        </GuidePanel>
+                    </Block>
+                    {/* <Block padBottom="xl">
                 <FormikFileUploader
                     legend="Dokumentasjon om terminbekreftelse"
                     label={intlUtils(intl, 'omBarnet.terminbekreftelse.lastOpp')}
@@ -148,16 +171,19 @@ const Termin: FunctionComponent<Props> = ({
                     attachmentType={AttachmentType.TERMINBEKREFTELSE}
                     skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 />
-            </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.terminbekreftelsedato)}>
-                <OmBarnetFormComponents.DatePicker
-                    name={OmBarnetFormField.terminbekreftelsedato}
-                    label={intlUtils(intl, 'omBarnet.terminbekreftelseDato')}
-                    placeholder={'dd.mm.åååå'}
-                    validate={validateTerminbekreftelse(intl)}
-                    maxDate={dateToday}
-                />
-            </Block>
+            </Block> */}
+                </>
+            )}
+            {hasValue(formValues.termindato) && (
+                <Block padBottom="xl">
+                    <Datepicker
+                        name="terminbekreftelsedato"
+                        label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}
+                        maxDate={dateToday}
+                        validate={[validateTerminbekreftelse(intl)]}
+                    />
+                </Block>
+            )}
             {erForTidligTilÅSøkePåTermin && (
                 <Block padBottom="xl">
                     <Alert variant="warning">

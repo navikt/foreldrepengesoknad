@@ -90,7 +90,7 @@ const Template: StoryFn<Props> = ({
         rolle: 'mor',
     },
     barn,
-    søknadGjelderEtNyttBarn = false,
+    søknadGjelderEtNyttBarn = true,
     gåTilNesteSide,
     mellomlagreSøknadOgNaviger = promiseAction(),
 }) => {

@@ -1,5 +1,4 @@
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 import {
     AdoptertBarn,
@@ -9,68 +8,19 @@ import {
     ISOStringToDate,
     IkkeUtfyltTypeBarn,
     Situasjon,
-    convertBooleanOrUndefinedToYesOrNo,
-    convertYesOrNoOrUndefinedToBoolean,
+    Skjemanummer,
     hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { Skjemanummer } from '@navikt/fp-constants';
-import { Arbeidsforhold } from '@navikt/fp-types';
-
-import { VedleggDataType } from 'app/types/VedleggDataType';
-
-import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
-
-const getInitValues = (): Readonly<OmBarnetFormData> => ({
-    [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,
-    [OmBarnetFormField.adopsjonAvEktefellesBarn]: YesOrNo.UNANSWERED,
-    [OmBarnetFormField.antallBarn]: '',
-    [OmBarnetFormField.antallBarnSelect]: '',
-    [OmBarnetFormField.adopsjonsdato]: '',
-    [OmBarnetFormField.fødselsdatoer]: [],
-    [OmBarnetFormField.omsorgsovertakelse]: [],
-    [OmBarnetFormField.termindato]: '',
-    [OmBarnetFormField.terminbekreftelse]: [],
-    [OmBarnetFormField.terminbekreftelsedato]: '',
-    [OmBarnetFormField.adoptertIUtlandet]: YesOrNo.UNANSWERED,
-    [OmBarnetFormField.ankomstdato]: '',
-});
-
-export const cleanupOmBarnetFormData = (
-    values: OmBarnetFormData,
-    visibility: QuestionVisibility<OmBarnetFormField, undefined>,
-): OmBarnetFormData => {
-    const cleanedData: OmBarnetFormData = {
-        erBarnetFødt: visibility.isVisible(OmBarnetFormField.erBarnetFødt) ? values.erBarnetFødt : YesOrNo.UNANSWERED,
-        adopsjonAvEktefellesBarn: visibility.isVisible(OmBarnetFormField.adopsjonAvEktefellesBarn)
-            ? values.adopsjonAvEktefellesBarn
-            : YesOrNo.UNANSWERED,
-        antallBarn: visibility.isVisible(OmBarnetFormField.antallBarn) ? values.antallBarn : '',
-        antallBarnSelect: visibility.isVisible(OmBarnetFormField.antallBarnSelect) ? values.antallBarnSelect : '',
-        adopsjonsdato: visibility.isVisible(OmBarnetFormField.adopsjonsdato) ? values.adopsjonsdato : '',
-        fødselsdatoer: visibility.isVisible(OmBarnetFormField.fødselsdatoer) ? values.fødselsdatoer : [],
-        omsorgsovertakelse: visibility.isVisible(OmBarnetFormField.omsorgsovertakelse) ? values.omsorgsovertakelse : [],
-        termindato: visibility.isVisible(OmBarnetFormField.termindato) ? values.termindato : '',
-        terminbekreftelse: visibility.isVisible(OmBarnetFormField.terminbekreftelse) ? values.terminbekreftelse : [],
-        terminbekreftelsedato: visibility.isVisible(OmBarnetFormField.terminbekreftelsedato)
-            ? values.terminbekreftelsedato
-            : '',
-        adoptertIUtlandet: visibility.isVisible(OmBarnetFormField.adoptertIUtlandet)
-            ? values.adoptertIUtlandet
-            : YesOrNo.UNANSWERED,
-        ankomstdato: visibility.isVisible(OmBarnetFormField.ankomstdato) ? values.ankomstdato : '',
-    };
-
-    return cleanedData;
-};
+import { OmBarnetFormValues } from './components/OmBarnetFormValues';
 
 export const mapOmDetValgteBarnetFormDataToState = (
     valgtRegistrertBarn: FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
     situasjon: Situasjon,
-    values: Partial<OmBarnetFormData>,
+    values: OmBarnetFormValues,
     barnSøktOmFørMenIkkeRegistrert: boolean,
 ): Barn => {
     if (valgtRegistrertBarn !== undefined && situasjon === 'fødsel') {
@@ -83,25 +33,33 @@ export const mapOmDetValgteBarnetFormDataToState = (
         } as Barn;
     }
 
-    if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {
+    const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
+        values.omsorgsovertakelse,
+        AttachmentType.OMSORGSOVERTAKELSE,
+        Skjemanummer.OMSORGSOVERTAKELSESDATO,
+    );
+
+    if (values.adopsjonAvEktefellesBarn === true) {
         return {
             ...valgtRegistrertBarn,
             type: BarnType.ADOPTERT_STEBARN,
-            adopsjonsdato: ISOStringToDate(values.adopsjonsdato)!,
+            adopsjonsdato: values.adopsjonsdato,
+            omsorgsovertakelse,
         };
     }
 
     return {
         ...valgtRegistrertBarn,
         type: BarnType.ADOPTERT_ANNET_BARN,
-        adopsjonsdato: ISOStringToDate(values.adopsjonsdato)!,
-        adoptertIUtlandet: convertYesOrNoOrUndefinedToBoolean(values.adoptertIUtlandet)!,
-        ankomstdato: values.adoptertIUtlandet === YesOrNo.YES ? ISOStringToDate(values.ankomstdato) : undefined,
+        adopsjonsdato: values.adopsjonsdato,
+        adoptertIUtlandet: values.adoptertIUtlandet,
+        ankomstdato: values.adoptertIUtlandet === true ? values.ankomstdato : undefined,
+        omsorgsovertakelse,
     };
 };
 
 export const mapOmBarnetFormDataToState = (
-    values: Partial<OmBarnetFormData>,
+    values: OmBarnetFormValues,
     arbeidsforhold: Arbeidsforhold[],
     valgtRegistrertBarn: Barn | undefined,
     situasjon: Situasjon,
@@ -120,69 +78,77 @@ export const mapOmBarnetFormDataToState = (
             ? parseInt(values.antallBarn!, 10)
             : parseInt(values.antallBarnSelect!, 10);
 
-    if (values.erBarnetFødt === YesOrNo.YES) {
+    if (values.erBarnetFødt === true) {
         return {
             type: BarnType.FØDT,
-            fødselsdatoer: values.fødselsdatoer!.map((fødselsdato) => ISOStringToDate(fødselsdato)!),
+            fødselsdatoer: values.fødselsdatoer,
             antallBarn,
-            termindato: hasValue(values.termindato) ? ISOStringToDate(values.termindato) : undefined,
+            termindato: hasValue(values.termindato) ? values.termindato : undefined,
         };
     }
 
-    if (values.erBarnetFødt === YesOrNo.NO) {
+    if (values.erBarnetFødt === false) {
+        const terminbekreftelse = lagSendSenereDokumentNårIngenAndreFinnes(
+            values.terminbekreftelse!,
+            AttachmentType.TERMINBEKREFTELSE,
+            Skjemanummer.TERMINBEKREFTELSE,
+        );
+
         if (arbeidsforhold.length === 0) {
             return {
                 type: BarnType.UFØDT,
-                terminbekreftelsedato: ISOStringToDate(values.terminbekreftelsedato),
+                terminbekreftelse: terminbekreftelse,
+                terminbekreftelsedato: values.terminbekreftelsedato,
                 antallBarn,
-                termindato: ISOStringToDate(values.termindato)!,
+                termindato: values.termindato,
             };
         }
         return {
             type: BarnType.UFØDT,
             antallBarn,
-            termindato: ISOStringToDate(values.termindato)!,
+            termindato: values.termindato,
         };
     }
 
-    if (values.adopsjonAvEktefellesBarn === YesOrNo.YES) {
+    const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
+        values.omsorgsovertakelse!,
+        AttachmentType.OMSORGSOVERTAKELSE,
+        Skjemanummer.OMSORGSOVERTAKELSESDATO,
+    );
+
+    if (values.adopsjonAvEktefellesBarn === true) {
         return {
             type: BarnType.ADOPTERT_STEBARN,
-            adopsjonsdato: ISOStringToDate(values.adopsjonsdato)!,
+            adopsjonsdato: values.adopsjonsdato,
             antallBarn,
-            fødselsdatoer: values.fødselsdatoer!.map((fødselsdato) => ISOStringToDate(fødselsdato)!),
+            fødselsdatoer: values.fødselsdatoer,
+            omsorgsovertakelse,
         };
     }
 
     return {
         type: BarnType.ADOPTERT_ANNET_BARN,
-        fødselsdatoer: values.fødselsdatoer!.map((fødselsdato) => ISOStringToDate(fødselsdato)!),
-        adopsjonsdato: ISOStringToDate(values.adopsjonsdato)!,
+        fødselsdatoer: values.fødselsdatoer,
+        adopsjonsdato: values.adopsjonsdato,
         antallBarn,
-        adoptertIUtlandet: convertYesOrNoOrUndefinedToBoolean(values.adoptertIUtlandet)!,
-        ankomstdato: values.adoptertIUtlandet === YesOrNo.YES ? ISOStringToDate(values.ankomstdato) : undefined,
+        adoptertIUtlandet: values.adoptertIUtlandet,
+        ankomstdato: values.adoptertIUtlandet === true ? values.ankomstdato : undefined,
+        omsorgsovertakelse,
     };
 };
 
-export const getOmBarnetInitialValues = (
-    arbeidsforhold: Arbeidsforhold[],
-    vedlegg: VedleggDataType,
-    barn?: Barn,
-): OmBarnetFormData => {
-    const initialOmBarnetValues = getInitValues();
-
+export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?: Barn): OmBarnetFormValues => {
     if (!barn) {
-        return initialOmBarnetValues;
+        return { fødselsdatoer: [{ dato: undefined }] };
     }
 
     const erFlereEnnToBarn = barn.antallBarn > 2;
 
     if (isFødtBarn(barn)) {
         return {
-            ...initialOmBarnetValues,
-            erBarnetFødt: YesOrNo.YES,
-            fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
-            termindato: dateToISOString(barn.termindato),
+            erBarnetFødt: true,
+            fødselsdatoer: barn.fødselsdatoer,
+            termindato: barn.termindato,
             antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
         };
@@ -191,20 +157,18 @@ export const getOmBarnetInitialValues = (
     if (isUfødtBarn(barn)) {
         if (arbeidsforhold.length === 0) {
             return {
-                ...initialOmBarnetValues,
-                erBarnetFødt: YesOrNo.NO,
-                terminbekreftelse: vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [],
-                terminbekreftelsedato: dateToISOString(barn.terminbekreftelsedato),
-                termindato: dateToISOString(barn.termindato),
+                erBarnetFødt: false,
+                terminbekreftelse: barn.terminbekreftelse || [],
+                terminbekreftelsedato: barn.terminbekreftelsedato,
+                termindato: barn.termindato,
                 antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
                 antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
             };
         }
 
         return {
-            ...initialOmBarnetValues,
-            erBarnetFødt: YesOrNo.NO,
-            termindato: dateToISOString(barn.termindato),
+            erBarnetFødt: false,
+            termindato: barn.termindato,
             antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
         };
@@ -212,29 +176,26 @@ export const getOmBarnetInitialValues = (
 
     if (isAdoptertAnnetBarn(barn)) {
         return {
-            ...initialOmBarnetValues,
-            adopsjonAvEktefellesBarn: YesOrNo.NO,
-            fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
-            adopsjonsdato: dateToISOString(barn.adopsjonsdato),
+            adopsjonAvEktefellesBarn: false,
+            fødselsdatoer: barn.fødselsdatoer,
+            adopsjonsdato: barn.adopsjonsdato,
             antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
-            adoptertIUtlandet: convertBooleanOrUndefinedToYesOrNo(barn.adoptertIUtlandet),
-            omsorgsovertakelse: vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [],
-            ankomstdato: dateToISOString(barn.ankomstdato),
+            adoptertIUtlandet: barn.adoptertIUtlandet,
+            omsorgsovertakelse: barn.omsorgsovertakelse,
+            ankomstdato: barn.ankomstdato,
         };
     }
 
     if (isAdoptertStebarn(barn)) {
         return {
-            ...initialOmBarnetValues,
-            adopsjonAvEktefellesBarn: YesOrNo.YES,
-            adopsjonsdato: dateToISOString(barn.adopsjonsdato),
+            adopsjonAvEktefellesBarn: true,
+            adopsjonsdato: barn.adopsjonsdato,
             antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
             fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
             omsorgsovertakelse: vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [],
-        };
-    }
-
-    return initialOmBarnetValues;
+            fødselsdatoer: barn.fødselsdatoer,
+            omsorgsovertakelse: barn.omsorgsovertakelse,
+    return { fødselsdatoer: [{ dato: undefined }] };
 };

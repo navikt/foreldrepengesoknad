@@ -1,73 +1,116 @@
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import dayjs from 'dayjs';
-import { FieldArray } from 'formik';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Heading } from '@navikt/ds-react';
+import { BodyShort, Heading, Radio } from '@navikt/ds-react';
 
-import { Block, ISOStringToDate, Søkersituasjon, guid, intlUtils } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-
-import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import {
-    validateAdopsjonsdato,
-    validateAnkomstdato,
-    validateFødselsdatoAdopsjon,
-} from '../validation/omBarnetValidering';
+    Block,
+    ISOStringToDate,
+    Søkersituasjon,
+    førsteOktober2021ReglerGjelder,
+    hasValue,
+    intlUtils,
+} from '@navikt/fp-common';
+import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
+
+import { validateAdopsjonsdato } from '../validation/omBarnetValidering';
+import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
+import { OmBarnetFormValues } from './OmBarnetFormValues';
+
+const includeAdoptertIUtlandet = (omsorgsovertakelse: string, adopsjonAvEktefellesBarn?: boolean) => {
+    return (
+        adopsjonAvEktefellesBarn === false &&
+        omsorgsovertakelse !== '' &&
+        !førsteOktober2021ReglerGjelder(ISOStringToDate(omsorgsovertakelse)!)
+    );
+};
+
+export const skalViseOmsorgsovertakelse = (
+    adopsjonsdato: string,
+    ankomstdato: string,
+    søknadGjelderEtNyttBarn: boolean,
+    fødselsdatoer: string[] | undefined,
+    adopsjonAvEktefellesBarn?: boolean,
+    adoptertIUtlandet?: boolean,
+) => {
+    if (søknadGjelderEtNyttBarn) {
+        return (
+            (includeAdoptertIUtlandet(adopsjonsdato, adopsjonAvEktefellesBarn) && adoptertIUtlandet !== undefined) ||
+            (!includeAdoptertIUtlandet(adopsjonsdato, adopsjonAvEktefellesBarn) &&
+                fødselsdatoer !== undefined &&
+                hasValue(fødselsdatoer[0])) ||
+            (adopsjonAvEktefellesBarn === true && fødselsdatoer !== undefined && hasValue(fødselsdatoer[0]))
+        );
+    } else {
+        return (
+            (adopsjonAvEktefellesBarn === true && hasValue(adopsjonsdato)) ||
+            (adopsjonAvEktefellesBarn === false &&
+                hasValue(adopsjonsdato) &&
+                !includeAdoptertIUtlandet(adopsjonsdato, adopsjonAvEktefellesBarn)) ||
+            (adopsjonAvEktefellesBarn === false &&
+                includeAdoptertIUtlandet(adopsjonsdato, adopsjonAvEktefellesBarn) &&
+                adoptertIUtlandet === false) ||
+            (adopsjonAvEktefellesBarn === false &&
+                includeAdoptertIUtlandet(adopsjonsdato, adopsjonAvEktefellesBarn) &&
+                adoptertIUtlandet === true &&
+                hasValue(ankomstdato))
+        );
+    }
+};
 
 interface Props {
     søkersituasjon: Søkersituasjon;
-    formValues: OmBarnetFormData;
-    visibility: QuestionVisibility<OmBarnetFormField, undefined>;
     søknadGjelderEtNyttBarn: boolean;
 }
 
-const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
-    søkersituasjon,
-    formValues,
-    visibility,
-    søknadGjelderEtNyttBarn,
-}) => {
+const AdopsjonAnnetBarn: FunctionComponent<Props> = ({ søkersituasjon, søknadGjelderEtNyttBarn }) => {
     const intl = useIntl();
 
-    if (søkersituasjon.situasjon === 'fødsel' || formValues.adopsjonAvEktefellesBarn !== YesOrNo.NO) {
+    const formMethods = useFormContext<OmBarnetFormValues>();
+
+    const formValues = formMethods.watch();
+
+    if (søkersituasjon.situasjon === 'fødsel' || formValues.adopsjonAvEktefellesBarn !== false) {
         return null;
     }
 
     return (
         <>
             <Block padBottom="xl">
-                <OmBarnetFormComponents.DatePicker
-                    label={intlUtils(intl, 'omBarnet.adopsjonsdato.annetBarn')}
-                    name={OmBarnetFormField.adopsjonsdato}
-                    validate={validateAdopsjonsdato(intl)}
-                    placeholder={'dd.mm.åååå'}
+                <Datepicker
+                    name="adopsjonsdato"
+                    label={intl.formatMessage({ id: 'omBarnet.adopsjonsdato.annetBarn' })}
+                    validate={[validateAdopsjonsdato(intl)]}
                 />
             </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.antallBarn)}>
-                <OmBarnetFormComponents.RadioGroup
-                    name={OmBarnetFormField.antallBarn}
-                    radios={[
-                        {
-                            label: intlUtils(intl, 'omBarnet.radiobutton.ettBarn'),
-                            value: '1',
-                        },
-                        {
-                            label: intlUtils(intl, 'omBarnet.radiobutton.toBarn'),
-                            value: '2',
-                        },
-                        {
-                            label: intlUtils(intl, 'omBarnet.radiobutton.flere'),
-                            value: '3',
-                        },
-                    ]}
-                    legend={intlUtils(intl, 'omBarnet.antallBarn.adopsjon.født')}
-                />
-            </Block>
+            {(formValues.erBarnetFødt !== undefined ||
+                (formValues.adopsjonAvEktefellesBarn !== undefined && hasValue(formValues.adopsjonsdato))) && (
+                <Block padBottom="xl">
+                    <RadioGroup
+                        name="antallBarn"
+                        label={intl.formatMessage({ id: 'omBarnet.antallBarn.adopsjon.født' })}
+                        // validate={[
+                        //     isRequired(
+                        //         intl.formatMessage({
+                        //             id: 'valideringsfeil.annenForelder',
+                        //         }),
+                        //     ),
+                        // ]}
+                    >
+                        <Radio value="1">
+                            <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
+                        </Radio>
+                        <Radio value="2">
+                            <FormattedMessage id="omBarnet.radiobutton.toBarn" />
+                        </Radio>
+                        <Radio value="3">
+                            <FormattedMessage id="omBarnet.radiobutton.flere" />
+                        </Radio>
+                    </RadioGroup>
+                </Block>
+            )}
             <Block
                 padBottom="xl"
                 visible={
@@ -76,8 +119,7 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                     parseInt(formValues.antallBarn, 10) >= 3
                 }
             >
-                <OmBarnetFormComponents.Select label="Antall barn" name={OmBarnetFormField.antallBarnSelect}>
-                    <option value="" />
+                <Select name="antallBarnSelect" label="Antall barn">
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
@@ -85,70 +127,71 @@ const AdopsjonAnnetBarn: FunctionComponent<Props> = ({
                     <option value="7">7</option>
                     <option value="8">8</option>
                     <option value="9">9</option>
-                </OmBarnetFormComponents.Select>
+                </Select>
             </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.fødselsdatoer)}>
-                <FieldArray
-                    name={OmBarnetFormField.fødselsdatoer}
-                    render={() =>
-                        [...Array(parseInt(formValues.antallBarn!, 10))].map((_, index) => {
-                            return (
-                                <Block key={guid()} padBottom="xl">
-                                    <OmBarnetFormComponents.DatePicker
-                                        name={
-                                            `${OmBarnetFormField.fødselsdatoer}.${index}` as unknown as OmBarnetFormField
-                                        }
-                                        label={
-                                            formValues.antallBarn === '1'
-                                                ? intlUtils(intl, 'omBarnet.fødselsdato')
-                                                : intlUtils(intl, `omBarnet.fødselsdato.adopsjon.${index + 1}`)
-                                        }
-                                        minDate={dayjs(formValues.adopsjonsdato).subtract(15, 'years').toDate()}
-                                        maxDate={ISOStringToDate(formValues.adopsjonsdato)}
-                                        validate={(value) =>
-                                            validateFødselsdatoAdopsjon(intl)(value, formValues.adopsjonsdato)
-                                        }
-                                        placeholder={'dd.mm.åååå'}
-                                        showYearSelector={true}
-                                    />
-                                </Block>
-                            );
-                        })
-                    }
-                />
-            </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.adoptertIUtlandet)}>
-                <OmBarnetFormComponents.YesOrNoQuestion
-                    name={OmBarnetFormField.adoptertIUtlandet}
-                    legend={intlUtils(intl, 'omBarnet.adopteresFraUtlandet')}
-                />
-            </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.ankomstdato)}>
-                <OmBarnetFormComponents.DatePicker
-                    name={OmBarnetFormField.ankomstdato}
-                    label={intlUtils(intl, 'omBarnet.ankomstDato')}
-                    minDate={dayjs(formValues.fødselsdatoer[0]).toDate()}
-                    maxDate={dayjs().add(6, 'months').toDate()}
-                    validate={(value) => validateAnkomstdato(intl)(value, formValues.fødselsdatoer[0])}
-                    placeholder={'dd.mm.åååå'}
-                />
-            </Block>
-            <Block padBottom="xl" visible={visibility.isVisible(OmBarnetFormField.omsorgsovertakelse)}>
+            {formValues.antallBarn && (
                 <Block padBottom="xl">
-                    <Heading level="3" size="xsmall">
-                        {intlUtils(intl, 'omBarnet.tittel.omsorgsovertakelse')}
-                    </Heading>
-                    <BodyShort> {intlUtils(intl, 'omBarnet.veileder.omsorgsovertakelse')}</BodyShort>
+                    <AdopsjonFodselFieldArray
+                        adopsjonsdato={formValues.adopsjonsdato}
+                        antallBarn={parseInt(formValues.antallBarn, 10)}
+                        antallBarnDropDown={formValues.antallBarnSelect}
+                    />
                 </Block>
-                <FormikFileUploader
+            )}
+            {((søknadGjelderEtNyttBarn && hasValue(formValues.fødselsdatoer[0])) || !søknadGjelderEtNyttBarn) && (
+                <Block padBottom="xl">
+                    <RadioGroup
+                        name="adoptertIUtlandet"
+                        label={intl.formatMessage({ id: 'omBarnet.adopteresFraUtlandet' })}
+                        // validate={[
+                        //     isRequired(
+                        //         intl.formatMessage({
+                        //             id: 'valideringsfeil.annenForelder',
+                        //         }),
+                        //     ),
+                        // ]}
+                    >
+                        <Radio value={true}>Ja</Radio>
+                        <Radio value={false}>Nei</Radio>
+                    </RadioGroup>
+                </Block>
+            )}
+            {formValues.adoptertIUtlandet === true && (
+                <Block padBottom="xl">
+                    <Datepicker
+                        name="ankomstdato"
+                        minDate={dayjs(formValues.fødselsdatoer[0]).toDate()}
+                        maxDate={dayjs().add(6, 'months').toDate()}
+                        label={intl.formatMessage({ id: 'omBarnet.ankomstDato' })}
+                        //validate={(value) => validateAnkomstdato(intl)(value, formValues.fødselsdatoer[0])}
+                    />
+                </Block>
+            )}
+            {skalViseOmsorgsovertakelse(
+                formValues.adopsjonsdato,
+                formValues.ankomstdato,
+                søknadGjelderEtNyttBarn,
+                formValues.fødselsdatoer,
+                formValues.adopsjonAvEktefellesBarn,
+                formValues.adoptertIUtlandet,
+            ) && (
+                <Block padBottom="xl">
+                    <Block padBottom="xl">
+                        <Heading level="3" size="xsmall">
+                            {intlUtils(intl, 'omBarnet.tittel.omsorgsovertakelse')}
+                        </Heading>
+                        <BodyShort> {intlUtils(intl, 'omBarnet.veileder.omsorgsovertakelse')}</BodyShort>
+                    </Block>
+                    {/* <FormikFileUploader
                     legend={''}
                     label={intlUtils(intl, 'omBarnet.adopsjon.vedlegg')}
                     name={OmBarnetFormField.omsorgsovertakelse}
                     attachments={formValues.omsorgsovertakelse || []}
                     attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
-                    skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
-                />
-            </Block>
+                    skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
+                /> */}
+                </Block>
+            )}
         </>
     );
 };
