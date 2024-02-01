@@ -11,9 +11,10 @@ import { OmBarnetFormValues } from './OmBarnetFormValues';
 interface Props {
     søknadGjelderEtNyttBarn?: boolean;
     valgteBarn?: RegistrertBarn[];
+    skalInkludereTermindato: boolean;
 }
 
-const Fødsel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn, valgteBarn }) => {
+const Fødsel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn, valgteBarn, skalInkludereTermindato }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
@@ -26,29 +27,31 @@ const Fødsel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn, valgteBar
 
     return (
         <>
-            <Block padBottom="xl">
-                <RadioGroup
-                    name="antallBarn"
-                    label={intl.formatMessage({ id: 'omBarnet.antallBarn.født' })}
-                    // validate={[
-                    //     isRequired(
-                    //         intl.formatMessage({
-                    //             id: 'valideringsfeil.annenForelder',
-                    //         }),
-                    //     ),
-                    // ]}
-                >
-                    <Radio value="1">
-                        <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
-                    </Radio>
-                    <Radio value="2">
-                        <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
-                    </Radio>
-                    <Radio value="3">
-                        <FormattedMessage id="omBarnet.radiobutton.flere" />
-                    </Radio>
-                </RadioGroup>
-            </Block>
+            {søknadGjelderEtNyttBarn && (
+                <Block padBottom="xl">
+                    <RadioGroup
+                        name="antallBarn"
+                        label={intl.formatMessage({ id: 'omBarnet.antallBarn.født' })}
+                        // validate={[
+                        //     isRequired(
+                        //         intl.formatMessage({
+                        //             id: 'valideringsfeil.annenForelder',
+                        //         }),
+                        //     ),
+                        // ]}
+                    >
+                        <Radio value="1">
+                            <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
+                        </Radio>
+                        <Radio value="2">
+                            <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
+                        </Radio>
+                        <Radio value="3">
+                            <FormattedMessage id="omBarnet.radiobutton.flere" />
+                        </Radio>
+                    </RadioGroup>
+                </Block>
+            )}
             {antallBarn !== undefined && søknadGjelderEtNyttBarn && parseInt(antallBarn, 10) >= 3 && (
                 <Block padBottom="xl">
                     <Select name="antallBarnSelect" label="Antall barn">
@@ -73,7 +76,8 @@ const Fødsel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn, valgteBar
                     />
                 </Block>
             )}
-            {fødselsdatoer &&
+            {skalInkludereTermindato &&
+                fødselsdatoer &&
                 (hasValue(fødselsdatoer[0].dato) || (valgteBarn !== undefined && valgteBarn.length > 0)) && (
                     <Block padBottom="l">
                         <Datepicker

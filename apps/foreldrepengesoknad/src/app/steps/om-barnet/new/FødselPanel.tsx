@@ -1,5 +1,5 @@
 import { Radio, ReadMore } from '@navikt/ds-react';
-import { Block, RegistrertBarn, Søkersituasjon } from '@navikt/fp-common';
+import { Arbeidsforhold, Block, RegistrertBarn, Søkersituasjon } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -14,6 +14,8 @@ interface Props {
     søknadGjelderEtNyttBarn: boolean;
     barnSøktOmFørMenIkkeRegistrert: boolean;
     valgteRegistrerteBarn?: RegistrertBarn[];
+    arbeidsforhold: Arbeidsforhold[];
+    skalInkludereTermindato: boolean;
 }
 
 const FødselPanel: FunctionComponent<Props> = ({
@@ -22,6 +24,8 @@ const FødselPanel: FunctionComponent<Props> = ({
     søknadGjelderEtNyttBarn,
     barnSøktOmFørMenIkkeRegistrert,
     valgteRegistrerteBarn,
+    arbeidsforhold,
+    skalInkludereTermindato,
 }) => {
     const intl = useIntl();
     const formMethods = useFormContext<OmBarnetFormValues>();
@@ -56,9 +60,19 @@ const FødselPanel: FunctionComponent<Props> = ({
                     )}
                 </Block>
             )}
-            {erBarnetFødt === false && søknadGjelderEtNyttBarn && <Termin søkersituasjon={søkersituasjon} />}
+            {erBarnetFødt === false && søknadGjelderEtNyttBarn && (
+                <Termin
+                    søkersituasjon={søkersituasjon}
+                    arbeidsforhold={arbeidsforhold}
+                    søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                />
+            )}
             {erBarnetFødt === true && (søknadGjelderEtNyttBarn || barnSøktOmFørMenIkkeRegistrert) && (
-                <Fødsel valgteBarn={valgteRegistrerteBarn} søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn} />
+                <Fødsel
+                    valgteBarn={valgteRegistrerteBarn}
+                    søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
+                    skalInkludereTermindato={skalInkludereTermindato}
+                />
             )}
         </>
     );

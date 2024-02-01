@@ -14,9 +14,10 @@ import { OmBarnetFormValues } from './OmBarnetFormValues';
 
 interface Props {
     valgteRegistrerteBarn: RegistrertBarn[];
+    skalInkludereTermindato: boolean;
 }
 
-const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrerteBarn }) => {
+const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrerteBarn, skalInkludereTermindato }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
@@ -64,9 +65,10 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrer
                     )}
                 </div>
             </Block>
-            {((formValues.fødselsdatoer && hasValue(formValues.fødselsdatoer[0].dato)) ||
-                (formValues.erBarnetFødt === false && hasValue(antallBarn)) ||
-                (valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0)) &&
+            {skalInkludereTermindato &&
+                ((formValues.fødselsdatoer && hasValue(formValues.fødselsdatoer[0].dato)) ||
+                    (formValues.erBarnetFødt === false && hasValue(antallBarn)) ||
+                    (valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0)) &&
                 valgteRegistrerteBarn.length > 0 && (
                     <Block padBottom="l">
                         <Datepicker

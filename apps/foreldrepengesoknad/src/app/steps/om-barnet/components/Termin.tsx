@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, GuidePanel, Heading, Link, Radio, ReadMore } from '@navikt/ds-react';
 
 import {
+    Arbeidsforhold,
     Block,
     Søkersituasjon,
     andreAugust2022ReglerGjelder,
@@ -23,7 +24,7 @@ import { Søkerrolle } from '@navikt/fp-types';
 import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
 import { OmBarnetFormValues } from './OmBarnetFormValues';
 
-const kanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
+const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
     if (!isFarEllerMedmor(rolle)) {
         return true;
     }
@@ -32,9 +33,11 @@ const kanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
 
 interface Props {
     søkersituasjon: Søkersituasjon;
+    arbeidsforhold: Arbeidsforhold[];
+    søknadGjelderEtNyttBarn?: boolean;
 }
 
-const Termin: FunctionComponent<Props> = ({ søkersituasjon }) => {
+const Termin: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtNyttBarn }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
@@ -45,35 +48,39 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon }) => {
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && termindato;
 
+    const kanSøkerPåTermin = getKanSøkePåTermin(søkersituasjon.rolle, termindato);
+
     return (
         <>
-            <Block padBottom="xl">
-                <RadioGroup
-                    name="antallBarn"
-                    label={
-                        søkerErFarMedmor
-                            ? intl.formatMessage({ id: 'omBarnet.antallBarn.termin.far' })
-                            : intl.formatMessage({ id: 'omBarnet.antallBarn.termin' })
-                    }
-                    // validate={[
-                    //     isRequired(
-                    //         intl.formatMessage({
-                    //             id: 'valideringsfeil.annenForelder',
-                    //         }),
-                    //     ),
-                    // ]}
-                >
-                    <Radio value="1">
-                        <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
-                    </Radio>
-                    <Radio value="2">
-                        <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
-                    </Radio>
-                    <Radio value="3">
-                        <FormattedMessage id="omBarnet.radiobutton.flere" />
-                    </Radio>
-                </RadioGroup>
-            </Block>
+            {søknadGjelderEtNyttBarn && (
+                <Block padBottom="xl">
+                    <RadioGroup
+                        name="antallBarn"
+                        label={
+                            søkerErFarMedmor
+                                ? intl.formatMessage({ id: 'omBarnet.antallBarn.termin.far' })
+                                : intl.formatMessage({ id: 'omBarnet.antallBarn.termin' })
+                        }
+                        // validate={[
+                        //     isRequired(
+                        //         intl.formatMessage({
+                        //             id: 'valideringsfeil.annenForelder',
+                        //         }),
+                        //     ),
+                        // ]}
+                    >
+                        <Radio value="1">
+                            <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
+                        </Radio>
+                        <Radio value="2">
+                            <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
+                        </Radio>
+                        <Radio value="3">
+                            <FormattedMessage id="omBarnet.radiobutton.flere" />
+                        </Radio>
+                    </RadioGroup>
+                </Block>
+            )}
             {antallBarn && parseInt(antallBarn, 10) >= 3 && (
                 <Block padBottom="xl">
                     <Select name="antallBarnSelect" label="Antall barn">
@@ -107,7 +114,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon }) => {
                     </ReadMore>
                 </Block>
             )}
-            {farMedMorSøkerPåTermin && !kanSøkePåTermin(søkersituasjon.rolle, termindato) && (
+            {farMedMorSøkerPåTermin && !kanSøkerPåTermin && (
                 <Block padBottom="xl">
                     <GuidePanel>
                         <FormattedMessage
@@ -148,7 +155,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon }) => {
             </Block> */}
                 </>
             )}
-            {termindato && (
+            {termindato && arbeidsforhold.length === 0 && kanSøkerPåTermin && (
                 <Block padBottom="xl">
                     <Datepicker
                         name="terminbekreftelsedato"
