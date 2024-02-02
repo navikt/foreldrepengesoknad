@@ -81,7 +81,7 @@ const Termin: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold, sø
                     </RadioGroup>
                 </Block>
             )}
-            {antallBarn && parseInt(antallBarn, 10) >= 3 && (
+            {søknadGjelderEtNyttBarn && antallBarn && parseInt(antallBarn, 10) >= 3 && (
                 <Block padBottom="xl">
                     <Select name="antallBarnSelect" label="Antall barn">
                         <option value="3">3</option>
