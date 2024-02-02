@@ -8,7 +8,7 @@ const useStepData = () => {
 
     const currentPath = useMemo(
         () => notEmpty(Object.values(PlanleggerRoutes).find((v) => v === decodeURIComponent(location.pathname))),
-        [],
+        [location.pathname],
     );
 
     const appPathList = useMemo(
@@ -25,7 +25,7 @@ const useStepData = () => {
                 index,
             })),
         }),
-        [],
+        [appPathList, currentPath],
     );
 };
 
