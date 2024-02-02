@@ -1032,11 +1032,15 @@
     "fordeling.flerbarnsuker.info.del2": "For eksempel kan far bruke fem av sine uker samtidig som mor etter fødsel. Da vil disse tas fra kvoten til far og man vil ha 5 færre uker man kan ta samtidig.",
     "fordeling.sammenhengendeUttak.info.beggeHarRett": "Siden dere har fått barn før 1. oktober 2021, må dere bruke foreldrepengeperioden deres sammenhengende. Man må senest starte å bruke ukene sine når den andre forelderens periode med foreldrepenger er ferdig, eller søke om utsettelse.",
     "fordeling.sammenhengendeUttak.info.enHarRett": "Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.",
-    "fordeling.påvirkninger.tittel": "Situasjoner som påvirker fordelingen av foreldrepenger",
-    "fordeling.påvirkninger.morSyk.tittel": "Hvis mor blir syk i de første seks ukene med foreldrepenger",
-    "fordeling.påvirkninger.morSyk.info": "Hvis mor blir syk, kan far søke om å ta foreldrepenger i denne perioden i stedet for mor.",
+    "fordeling.påvirkninger.tittel": "Situasjoner som kan påvirke perioden med foreldrepenger",
+    "fordeling.påvirkninger.morSykISinPeriode.tittel": "Hvis man blir syk i sin periode med foreldrepenger",
+    "fordeling.påvirkninger.morSykISinPeriode.info": "Den andre forelderen kan ta over perioden med foreldrepenger når man er syk. Da må den som er syk fjerne dagene med foreldrepenger i sin plan, deretter kan den andre søke om å ta over disse. Forelderen som er syk får vanligvis sykepenger i stedet for foreldrepenger.",
+    "fordeling.påvirkninger.morSykFørste6Uker.tittel": "Hvis mor blir syk i de første seks ukene med foreldrepenger",
+    "fordeling.påvirkninger.morSykFørste6Uker.info": "De første seks ukene etter fødsel er forbeholdt mor, og det er i utgangspunktet ikke mulig å flytte de til et senere tidspunkt. Unntaket er dersom mor blir syk og ikke kan ta seg av barnet. Da kan far/medmor ta over perioden. For å gjøre dette må mor søke om utsettelse for dagene hun er syk og deretter kan den andre søke om å ta over.",
     "fordeling.påvirkninger.totette.tittel": "Hvis man får nytt barn før det har gått tre år",
-    "fordeling.påvirkninger.totette.info": "Hvis man får et nytt barn før det har gått tre år, må man bruke opp ukene før man starter med foreldrepenger for det neste barnet.",
+    "fordeling.påvirkninger.totette.info": "Hvis man får et nytt barn før det har gått tre år, må man bruke opp foreldrepengene før man starter med foreldrepenger for det neste barnet.",
     "fordeling.påvirkninger.jobb.tittel": "Hvis man jobber samtidig som man har foreldrepenger",
-    "fordeling.påvirkninger.jobb.info": "Hvis det ikke passer å ta full permisjon, kan du ta ut foreldrepengene dine i kombinasjon med delvis arbeid. Da kan du fordele de graderte forelrepengene dine utover flere uker."
+    "fordeling.påvirkninger.jobb.info": "Perioden med foreldrepenger kan vare lenger hvis du jobber delvis samtidig som du har foreldrepenger. Hvis du for eksempel jobber 50 prosent og får 50 prosent foreldrepenger, vil perioden med foreldrepenger bli dobbelt så lang.",
+    "fordeling.påvirkninger.samtidigUttak.tittel": "Hvis man har foreldrepenger samtidig",
+    "fordeling.påvirkninger.samtidigUttak.info": "Man kan være hjemme samtidig med opp til 150% foreldrepenger. Dette er mulig fra uke 7 etter fødsel. For eksempel kan den ene forelderen bruke ut inntil 100 prosent av sin kvote og den andre inntil 50 prosent av fellesperioden. Da vil den totale lengden av perioden med foreldrepenger bli kortere."
 }

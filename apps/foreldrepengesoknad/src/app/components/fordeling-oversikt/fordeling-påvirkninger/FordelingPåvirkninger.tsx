@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, StethoscopeIcon, Buldings2Icon } from '@navikt/aksel-icons';
+import { StethoscopeIcon, PersonGroupIcon, PersonPregnantIcon, BriefcaseIcon } from '@navikt/aksel-icons';
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
@@ -19,24 +19,39 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 {beggeHarRett && (
-                    <Block padBottom="l">
-                        <div className={bem.element('påvirkning')}>
-                            <div className={bem.element('ikon-frame')}>
-                                <StethoscopeIcon className={bem.element('ikon')} />
+                    <>
+                        <Block padBottom="l">
+                            <div className={bem.element('påvirkning')}>
+                                <div className={bem.element('ikon-frame')}>
+                                    <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
+                                </div>
+                                <VStack>
+                                    <BodyShort className={bem.element('undertittel')}>
+                                        <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.tittel" />
+                                    </BodyShort>
+                                    <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.info" />
+                                </VStack>
                             </div>
-                            <VStack>
-                                <BodyShort className={bem.element('undertittel')}>
-                                    <FormattedMessage id="fordeling.påvirkninger.morSyk.tittel" />
-                                </BodyShort>
-                                <FormattedMessage id="fordeling.påvirkninger.morSyk.info" />
-                            </VStack>
-                        </div>
-                    </Block>
+                        </Block>
+                        <Block padBottom="l">
+                            <div className={bem.element('påvirkning')}>
+                                <div className={bem.element('ikon-frame')}>
+                                    <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
+                                </div>
+                                <VStack>
+                                    <BodyShort className={bem.element('undertittel')}>
+                                        <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.tittel" />
+                                    </BodyShort>
+                                    <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.info" />
+                                </VStack>
+                            </div>
+                        </Block>
+                    </>
                 )}
                 <Block padBottom="l">
                     <div className={bem.element('påvirkning')}>
                         <div className={bem.element('ikon-frame')}>
-                            <BabyWrappedIcon className={bem.element('ikon')} />
+                            <PersonPregnantIcon className={bem.element('ikon')} aria-hidden={true} />
                         </div>
                         <VStack>
                             <BodyShort className={bem.element('undertittel')}>
@@ -49,7 +64,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }
                 <Block padBottom="l">
                     <div className={bem.element('påvirkning')}>
                         <div className={bem.element('ikon-frame')}>
-                            <Buldings2Icon className={bem.element('ikon')} />
+                            <BriefcaseIcon className={bem.element('ikon')} aria-hidden={true} />
                         </div>
                         <VStack>
                             <BodyShort className={bem.element('undertittel')}>
@@ -59,6 +74,21 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }
                         </VStack>
                     </div>
                 </Block>
+                {beggeHarRett && (
+                    <Block padBottom="l">
+                        <div className={bem.element('påvirkning')}>
+                            <div className={bem.element('ikon-frame')}>
+                                <PersonGroupIcon className={bem.element('ikon')} aria-hidden={true} />
+                            </div>
+                            <VStack>
+                                <BodyShort className={bem.element('undertittel')}>
+                                    <FormattedMessage id="fordeling.påvirkninger.samtidigUttak.tittel" />
+                                </BodyShort>
+                                <FormattedMessage id="fordeling.påvirkninger.samtidigUttak.info" />
+                            </VStack>
+                        </div>
+                    </Block>
+                )}
             </ExpansionCard.Content>
         </ExpansionCard>
     );
