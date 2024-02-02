@@ -724,6 +724,7 @@
     "uttaksplan.stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepengar før fødsel",
     "uttaksplan.stønadskontotype.MØDREKVOTE": "Mors kvote",
     "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
+    "uttaksplan.stønadskontotype.dinKvote": "Din kvote",
     "uttaksplan.stønadskontotype.undefined": "Ny periode utan kvote",
     "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak": "{navn} periode {prosent}%",
     "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode": "{navn} fellesperiode {prosent}%",

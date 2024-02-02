@@ -24,6 +24,12 @@ export const getStønadskontoNavn = (
     erFarEllerMedmor?: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
+    if (
+        (erFarEllerMedmor && konto === StønadskontoType.Fedrekvote) ||
+        (!erFarEllerMedmor && konto === StønadskontoType.Mødrekvote)
+    ) {
+        return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.dinKvote' });
+    }
     let navn;
 
     switch (konto) {
