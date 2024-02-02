@@ -3,6 +3,7 @@ import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
 import './fordeling-påvirkninger.css';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     beggeHarRett: boolean;
@@ -12,9 +13,16 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }
     const intl = useIntl();
     const bem = bemUtils('fordeling-påvirkninger');
     const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
+    const onClickHandler = () => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'foreldrepengesoknad',
+            team: 'foreldrepenger',
+            hendelse: 'expand-fordeling-påvirkninger',
+        });
+    };
     return (
         <ExpansionCard aria-label={heading}>
-            <ExpansionCard.Header>
+            <ExpansionCard.Header onClick={onClickHandler}>
                 <ExpansionCard.Title className={bem.element('heading')}>{heading}</ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>

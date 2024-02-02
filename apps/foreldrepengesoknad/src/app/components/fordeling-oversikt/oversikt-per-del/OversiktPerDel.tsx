@@ -50,7 +50,7 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
             <VStack gap="2">
                 {delInformasjon.fordelingInfo.map((infoTekst) => {
                     return (
-                        <BodyLong size="small" key={guid()}>
+                        <BodyLong size="medium" key={guid()}>
                             {infoTekst}
                         </BodyLong>
                     );
