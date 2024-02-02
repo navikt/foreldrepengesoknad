@@ -208,6 +208,28 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, delt uttak i Norge', () => {
         //Skal kunne legge til perioden.
         expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
     });
+    it('mor skal kun kunne legge til fellesperiode før 3 uker før fødsel', async () => {
+        render(<NyPeriodeForMorEttBarnDeltUttakINorge />);
+        const fomDagInput = screen.getByLabelText(FRA_OG_MED);
+        const tomDagInput = screen.getByLabelText(TIL_OG_MED);
+        await userEvent.type(fomDagInput, dayjs(new Date('2021-09-23')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+
+        //Skal kunne besvare hvem som skal ta ut foreldrepenger i perioden
+        expect(await screen.findByText(HVEM_SKAL_HA_FP)).toBeInTheDocument();
+        expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
+        await userEvent.click(screen.getByText(MOR_NAVN));
+
+        //Skal kunne besvare at far ønsker fedrekvote
+        expect(await screen.findByText(HVILKEN_KONTO)).toBeInTheDocument();
+        expect(await screen.findByText(FELLESPERIODE)).toBeInTheDocument();
+        expect(screen.queryByText(FARS_KVOTE)).not.toBeInTheDocument();
+        expect(screen.queryByText(MORS_KVOTE)).not.toBeInTheDocument();
+        expect(screen.queryByText(FORELDREPENGER)).not.toBeInTheDocument();
+    });
 });
 
 describe('PeriodeUttakForm - Far søker, 1 barn, delt uttak i Norge', () => {
@@ -739,6 +761,23 @@ describe('PeriodeUttakForm - Mor søker, aleneomsorg', () => {
 
         //Skal kunne legge til perioden.
         expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
+    });
+    it('skal kun kunne legge til foreldrepenger for en periode som starter med enn 3 uker før fødsel', async () => {
+        render(<NyPeriodeMorAleneomssorg />);
+        const fomDagInput = screen.getByLabelText(FRA_OG_MED);
+        const tomDagInput = screen.getByLabelText(TIL_OG_MED);
+        await userEvent.type(fomDagInput, dayjs(new Date('2021-09-23')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+        await userEvent.type(tomDagInput, dayjs(new Date('2022-09-23')).format('DD.MM.YYYY'));
+        await userEvent.tab();
+        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+
+        //Skal kunne besvare hvilken konto hun ønsker å ta ut i perioden
+        expect(await screen.findByText(HVILKEN_KONTO)).toBeInTheDocument();
+        expect(await screen.findByText(FORELDREPENGER)).toBeInTheDocument();
+        expect(screen.queryByText(MORS_KVOTE)).not.toBeInTheDocument();
+        expect(screen.queryByText(FARS_KVOTE)).not.toBeInTheDocument();
+        expect(screen.queryByText(FELLESPERIODE)).not.toBeInTheDocument();
     });
 });
 
