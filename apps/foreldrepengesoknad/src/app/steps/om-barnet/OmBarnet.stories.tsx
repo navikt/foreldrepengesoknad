@@ -127,8 +127,8 @@ const Template: StoryFn<Props> = ({
     );
 };
 
-export const Default = Template.bind({});
-Default.args = {
+export const MorFødsel = Template.bind({});
+MorFødsel.args = {
     barn: undefined,
     søkerinfo,
 };
@@ -172,7 +172,7 @@ RegistrertBarnFødselFar.args = {
     barn: {
         antallBarn: 1,
         fnr: ['21091981146'],
-        fødselsdatoer: [new Date('2021-03-15')],
+        fødselsdatoer: ['2021-03-15'],
         type: BarnType.FØDT,
     },
     søkerinfo,
@@ -187,7 +187,7 @@ RegistrertBarnFødselMor.args = {
     barn: {
         antallBarn: 2,
         fnr: ['31091981146', '31091981147'],
-        fødselsdatoer: [new Date('2022-08-02'), new Date('2022-08-02')],
+        fødselsdatoer: ['2022-08-02', '2022-08-02'],
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
@@ -203,7 +203,7 @@ RegistrertBarnAdopsjonMor.args = {
     barn: {
         antallBarn: 1,
         fnr: ['21091981146'],
-        fødselsdatoer: [new Date('2021-03-15')],
+        fødselsdatoer: ['2021-03-15'],
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
@@ -219,7 +219,7 @@ RegistrertBarnTrillingerDerEnErDød.args = {
     barn: {
         antallBarn: 3,
         fnr: ['21091981146', '31091981147', '31091981148'],
-        fødselsdatoer: [new Date('2023-01-02')],
+        fødselsdatoer: ['2023-01-02'],
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,

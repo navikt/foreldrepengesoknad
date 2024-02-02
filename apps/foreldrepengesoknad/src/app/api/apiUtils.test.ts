@@ -49,9 +49,10 @@ const getAnnenForelderIkkeOppgittMock = (): AnnenForelder => {
 const getBarnMock = () => {
     return {
         type: BarnType.FØDT,
-        fødselsdatoer: [new Date('01-01-2022')],
-        termindato: new Date('01-02-2022'),
+        fødselsdatoer: [{ dato: '01-01-2022' }],
+        termindato: '01-02-2022',
         fnr: ['01010111111'],
+        antallBarn: 1,
     } as FødtBarn;
 };
 
@@ -90,7 +91,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const fødselsdato = barnMock.fødselsdatoer[0];
     const annenForelderMock = getAnnenForelderUførMock(true, false, '2021-01-01');
     const hentData = getStateMock(annenForelderMock, barnMock, []);
-    const cleanedSøknad = cleanSøknad(hentData, fødselsdato, 'nb');
+    const cleanedSøknad = cleanSøknad(hentData, fødselsdato.dato, 'nb');
 
     it('skal bytte navn på annenForelder.erUfør til annenForelder.harMorUføretrygd', () => {
         expect(Object.prototype.hasOwnProperty.call(cleanedSøknad.annenForelder, 'harMorUføretrygd')).toBe(true);
@@ -105,14 +106,14 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
         const hentData = getStateMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
-        const cleanedSøknadUtenForelder = cleanSøknad(hentData, fødselsdato, 'nb');
+        const cleanedSøknadUtenForelder = cleanSøknad(hentData, fødselsdato.dato, 'nb');
         expect(cleanedSøknadUtenForelder.annenForelder.kanIkkeOppgis).toBe(true);
     });
 
     it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const hentData = getStateMock(annenForelderUtenUførInfo, barnMock, []);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato, 'nb');
+        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato.dato, 'nb');
         expect(Object.prototype.hasOwnProperty.call(cleanedSøknadUtenUførInfo.annenForelder, 'erUfør')).toBe(false);
     });
 
@@ -130,7 +131,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
         } as PeriodeHull;
         const hentData = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato, 'nb');
+        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato.dato, 'nb');
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(1);
         expect(Object.prototype.hasOwnProperty.call(cleanedSøknadUtenUførInfo.uttaksplan[0], 'erMorForSyk')).toBe(
             false,
@@ -147,7 +148,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         } as Uttaksperiode;
 
         const hentData = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato, 'nb');
+        const cleanedSøknadUtenUførInfo = cleanSøknad(hentData, fødselsdato.dato, 'nb');
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(0);
     });
 

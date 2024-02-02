@@ -162,7 +162,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
 ): EksisterendeSak | undefined => {
     if (eksisterendeSakAnnenPart === undefined || eksisterendeSakAnnenPart === null) {
         return undefined;
@@ -177,10 +177,10 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     if (eksisterendeSakAnnenPart.termindato !== undefined) {
         termindato = eksisterendeSakAnnenPart.termindato;
     } else if ((isFødtBarn(barn) || isUfødtBarn(barn)) && barn.termindato !== undefined) {
-        termindato = dateToISOString(barn.termindato);
+        termindato = barn.termindato;
     }
-    const fødselsdato = isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined;
-    const adopsjonsdato = isAdoptertBarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined;
+    const fødselsdato = isFødtBarn(barn) ? barn.fødselsdatoer[0].dato : undefined;
+    const adopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
 
     const grunnlagForAnnenPart = {
         dekningsgrad:
@@ -223,7 +223,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 
 export const mapSøkerensEksisterendeSakFromDTO = (
     eksisterendeSak: Sak | undefined | null,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === null) {
         return undefined;

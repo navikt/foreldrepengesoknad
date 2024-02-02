@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import {
-    Block,
-    ISOStringToDate,
     RegistrertBarn,
     Situasjon,
     Step,
@@ -25,18 +23,25 @@ import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUt
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getEldsteRegistrerteBarn } from 'app/utils/dateUtils';
 
-import { OmBarnetFormValues } from './components/OmBarnetFormValues';
+import AdopsjonPanel from './components/AdopsjonPanel';
+import FødselPanel from './components/FødselPanel';
+import { BarnetFormValues } from './components/OmBarnetFormValues';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
-import AdopsjonPanel from './new/AdopsjonPanel';
-import FødselPanel from './new/FødselPanel';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 
-const erDatoInnenforDeSiste12Ukene = (dato: Date) => {
+const erDatoInnenforDeSiste12Ukene = (dato: string) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
     return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
 };
 
-const includeTermindato = (
+const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn, barnet: Barn) => {
+    if (barnet && !isUfødtBarn(barnet) && barnet.fnr !== undefined && barnet.fnr.length > 0) {
+        return barnet.fnr.includes(regBarn.fnr);
+    }
+    return false;
+};
+
+const skalViseTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
     valgteRegistrerteBarn: RegistrertBarn[] | undefined,
@@ -58,7 +63,7 @@ const includeTermindato = (
         return false;
     }
 
-    const relevantFødselsdato = eldsteBarnFødselsdato || ISOStringToDate(fødselsdato);
+    const relevantFødselsdato = eldsteBarnFødselsdato || fødselsdato;
 
     if (isFarEllerMedmor(rolle)) {
         if (andreAugust2022ReglerGjelder(relevantFødselsdato!)) {
@@ -92,21 +97,13 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, søker } = søkerInfo;
-
+    const { arbeidsforhold, registrerteBarn } = søkerInfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const findBarnetIRegistrerteBarn = (regBarn: SøkerBarn) => {
-        if (omBarnet && !isUfødtBarn(omBarnet) && omBarnet.fnr !== undefined && omBarnet.fnr.length > 0) {
-            return omBarnet.fnr.includes(regBarn.fnr);
-        }
-        return false;
-    };
-
-    const familiehendelsesdato = omBarnet ? ISOStringToDate(getFamiliehendelsedato(omBarnet)) : undefined;
+    const familiehendelsesdato = getFamiliehendelsedato(omBarnet);
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? søker.barn.filter(
+            ? registrerteBarn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -114,12 +111,15 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? søker.barn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
+            ? registrerteBarn
+                  .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
+                  .concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;
+
     const barnSøktOmFørMenIkkeRegistrert =
         !søknadGjelderNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
 
-    const onSubmit = (values: OmBarnetFormValues) => {
+    const onSubmit = (values: BarnetFormValues) => {
         const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
 
         const oppdatertBarn = mapOmBarnetFormDataToState(
@@ -135,28 +135,18 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         return navigator.goToNextDefaultStep();
     };
 
-    const formMethods = useForm<OmBarnetFormValues>({
+    const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,
         defaultValues: getOmBarnetInitialValues(arbeidsforhold, omBarnet),
     });
 
     const fødselsdatoer = formMethods.watch('fødselsdatoer');
-    const skalInkludereTermindato = includeTermindato(
+    const skalInkludereTermindato = skalViseTermindato(
         søkersituasjon.rolle,
         fødselsdatoer ? fødselsdatoer[0].dato : undefined,
         valgteRegistrerteBarn,
         søkersituasjon.situasjon,
     );
-
-    // const farMedmorSøkerPåTerminFørWLB =
-    //     erFarEllerMedmor &&
-    //     convertYesOrNoOrUndefinedToBoolean(formValues.erBarnetFødt) === false &&
-    //     hasValue(formValues.termindato) &&
-    //     !andreAugust2022ReglerGjelder(ISOStringToDate(formValues.termindato)!);
-
-    // const visGåVidereKnapp = visibility.areAllQuestionsAnswered() && !farMedmorSøkerPåTerminFørWLB;
-
-    //cleanup={(values) => cleanupOmBarnetFormData(values, visibility)}
 
     return (
         <Step
@@ -166,30 +156,29 @@ const OmBarnet: React.FunctionComponent<Props> = ({
             steps={stepConfig}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
-                <ErrorSummaryHookForm />
-                {valgteRegistrerteBarn && valgteRegistrerteBarn.length > 0 && (
-                    <ValgteRegistrerteBarn
-                        valgteRegistrerteBarn={valgteRegistrerteBarn}
-                        skalInkludereTermindato={skalInkludereTermindato}
-                    />
-                )}
-                {søkersituasjon.situasjon === 'fødsel' && (
-                    <FødselPanel
-                        erFarEllerMedmor={erFarEllerMedmor}
-                        søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
-                        søkersituasjon={søkersituasjon}
-                        valgteRegistrerteBarn={valgteRegistrerteBarn}
-                        barnSøktOmFørMenIkkeRegistrert={barnSøktOmFørMenIkkeRegistrert}
-                        arbeidsforhold={arbeidsforhold}
-                        skalInkludereTermindato={skalInkludereTermindato}
-                    />
-                )}
-                {søkersituasjon.situasjon === 'adopsjon' && (
-                    <AdopsjonPanel søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn} />
-                )}
-                <Block margin="l">
+                <VStack gap="10">
+                    <ErrorSummaryHookForm />
+                    {valgteRegistrerteBarn && valgteRegistrerteBarn.length > 0 && (
+                        <ValgteRegistrerteBarn
+                            valgteRegistrerteBarn={valgteRegistrerteBarn}
+                            skalInkludereTermindato={skalInkludereTermindato}
+                        />
+                    )}
+                    {søkersituasjon.situasjon === 'fødsel' && (
+                        <FødselPanel
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
+                            søkersituasjon={søkersituasjon}
+                            arbeidsforhold={arbeidsforhold}
+                        />
+                    )}
+                    {søkersituasjon.situasjon === 'adopsjon' && (
+                        <AdopsjonPanel
+                            søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
+                        />
+                    )}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </Block>
+                </VStack>
             </Form>
         </Step>
     );

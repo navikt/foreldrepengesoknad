@@ -80,7 +80,11 @@ export const validateTermindato = (intl: IntlShape) => (termindato: string) => {
     return undefined;
 };
 
-export const validateTermindatoFødsel = (fødselsdato: string, intl: IntlShape) => (termindato: string) => {
+export const validateTermindatoFødsel = (intl: IntlShape, fødselsdato?: string) => (termindato: string) => {
+    if (!fødselsdato) {
+        return undefined;
+    }
+
     if (!hasValue(termindato)) {
         return intlUtils(intl, 'valideringsfeil.omBarnet.termindato.duMåOppgi');
     }

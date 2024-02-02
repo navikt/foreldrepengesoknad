@@ -8,8 +8,8 @@ export interface PersonBase {
     mellomnavn?: string;
     etternavn: string;
     kjønn: Kjønn;
-    fødselsdato: Date;
-    dødsdato?: Date;
+    fødselsdato: string;
+    dødsdato?: string;
     sivilstand?: Sivilstand;
 }
 

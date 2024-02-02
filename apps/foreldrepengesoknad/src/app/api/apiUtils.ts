@@ -23,6 +23,7 @@ import {
     assertUnreachable,
     førsteOktober2021ReglerGjelder,
     guid,
+    harFødselsdato,
     isAdoptertBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
@@ -127,7 +128,7 @@ export const UKJENT_UUID = 'ukjent uuid';
 const getUttaksperiodeForInnsending = (
     uttaksPeriode: UttaksperiodeBase,
     ønskerJustertUttakVedFødsel: boolean | undefined,
-    termindato: Date | undefined,
+    termindato: string | undefined,
 ): UttaksPeriodeForInnsending => {
     const cleanedPeriode = changeGradertUttaksPeriode(cleanUttaksperiode(uttaksPeriode));
     if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, termindato, uttaksPeriode.tidsperiode.fom)) {
@@ -202,8 +203,8 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
 const cleanBarn = (barn: Barn): BarnForInnsending => {
     if (isFødtBarn(barn)) {
         const { type, fnr, ...barnRest } = barn;
-
-        return barnRest;
+        // @ts-ignore fiks
+        return { ...barnRest, fødselsdatoer: barnRest.fødselsdatoer.map((f) => f.dato) };
     }
 
     if (isAdoptertBarn(barn)) {
@@ -211,6 +212,8 @@ const cleanBarn = (barn: Barn): BarnForInnsending => {
         return {
             adopsjonAvEktefellesBarn: isAdoptertStebarn(barn),
             ...barnRest,
+            // @ts-ignore fiks
+            fødselsdatoer: barnRest.fødselsdatoer.map((f) => f.dato),
         };
     }
     const { type, ...barnRest } = barn;
@@ -235,7 +238,7 @@ const changeClientonlyKontotype = (
     annenForelderHarRettPåForeldrepengerINorge: boolean,
     morErUfør: boolean,
     søkerErFarEllerMedmor: boolean,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
 ) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.Flerbarnsdager) {
@@ -281,10 +284,10 @@ const changeGradertUttaksPeriode = (periode: UttaksPeriodeForInnsending): Uttaks
 
 const cleanUttaksplan = (
     plan: Periode[],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     søkerErFarEllerMedmor: boolean,
     ønskerJustertUttakVedFødsel: boolean | undefined,
-    termindato: Date | undefined,
+    termindato: string | undefined,
     annenForelder?: AnnenForelder,
     endringstidspunkt?: Date,
 ): PeriodeForInnsending[] => {
@@ -376,7 +379,7 @@ export const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefine
 
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     locale: LocaleNo,
 ): SøknadForInnsending => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
@@ -448,7 +451,7 @@ export const getSøknadsdataForInnsending = (
     erEndringssøknad: boolean,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     locale: LocaleNo,
     endringstidspunkt?: Date,
 ): SøknadForInnsending | EndringssøknadForInnsending => {
@@ -462,7 +465,7 @@ export const getSøknadsdataForInnsending = (
 export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     locale: LocaleNo,
     endringstidspunkt?: Date,
 ): EndringssøknadForInnsending => {
@@ -492,7 +495,8 @@ export const cleanEndringssøknad = (
         ),
         søker: cleanSøker(søker, søkersituasjon, locale, annenForelder),
         annenForelder: cleanAnnenForelder(annenForelder, true),
-        barn: barn,
+        // @ts-ignore Fiks
+        barn: harFødselsdato(barn) ? { ...barn, fødselsdatoer: barn.fødselsdatoer.map((f) => f.dato) } : barn,
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         situasjon: søkersituasjon.situasjon,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,

@@ -190,7 +190,7 @@ export const getPerioderMedUttakRundtFødsel = (
 
 export const uttaksperiodeKanJusteresVedFødsel = (
     ønskerJustertUttakVedFødsel: boolean | undefined,
-    termindato: Date | undefined,
+    termindato: string | undefined,
     uttaksperiodeFom: Date,
 ) => {
     return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato, 'd');

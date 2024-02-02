@@ -57,7 +57,7 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date
     );
 };
 
-export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string): boolean => {
     const førsteOktober2021 = new Date('2021-10-01');
 
     return (
@@ -202,8 +202,8 @@ export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdat
 }
 
 export const getToTetteReglerGjelder = (
-    familiehendelsesdato: Date | undefined,
-    familiehendelsesdatoNesteBarn: Date | undefined,
+    familiehendelsesdato: string | undefined,
+    familiehendelsesdatoNesteBarn: string | undefined,
 ): boolean => {
     if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
         return false;

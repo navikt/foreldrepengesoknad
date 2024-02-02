@@ -204,7 +204,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     </ReadMore>
                 </VStack>
                 {visInfoOmPrematuruker && !!ekstraDagerGrunnetPrematurFødsel && (
-                    <Box padding="4" background="surface-action-subtle">
+                    <Box padding="4" background="surface-alt-3-subtle">
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
                                 <Heading size="xsmall">
@@ -229,13 +229,13 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 </BodyShort>
                             </VStack>
                             <div className={bem.block}>
-                                <FeedingBottleIcon height={24} width={24} color="#3386E0" />
+                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
                             </div>
                         </HStack>
                     </Box>
                 )}
                 {barn.antallBarn > 1 && (
-                    <Box padding="4" background="surface-action-subtle">
+                    <Box padding="4" background="surface-alt-3-subtle">
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
                                 <Heading size="xsmall">
@@ -270,7 +270,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 </BodyShort>
                             </VStack>
                             <div className={bem.block}>
-                                <FeedingBottleIcon height={24} width={24} color="#3386E0" />
+                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
                             </div>
                         </HStack>
                     </Box>

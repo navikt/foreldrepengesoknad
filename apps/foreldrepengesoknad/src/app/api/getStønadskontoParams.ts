@@ -56,9 +56,9 @@ const getAnnenForelderHarRettIEØS = (annenForelder: AnnenForelder): boolean => 
     return false;
 };
 
-const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string) => {
+const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string): string | undefined => {
     if (isFødtBarn(barn) || isUfødtBarn(barn)) {
-        return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : dateToISOString(barn.termindato);
+        return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : barn.termindato;
     }
 
     return undefined;
