@@ -10,20 +10,20 @@
         "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^5.15.1",
-        "@navikt/ds-css": "^5.15.1",
+        "@navikt/aksel-icons": "^5.17.3",
+        "@navikt/ds-css": "^5.17.3",
         "@navikt/ds-datepicker": "^4.2.0",
-        "@navikt/ds-react": "^5.15.1",
+        "@navikt/ds-react": "^5.17.3",
         "@navikt/fp-common": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@navikt/sif-common-question-config": "^0.0.7",
-        "@types/react": "^18.2.48",
+        "@types/react": "^18.2.51",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.10",
         "formik": "^2.4.5",
         "lodash": "^4.17.21",
         "react": "^18.2.0",
-        "react-intl": "^6.6.1",
+        "react-intl": "^6.6.2",
         "typescript": "^5.3.3"
     },
     "devDependencies": {
