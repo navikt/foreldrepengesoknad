@@ -42,7 +42,6 @@ export const Aleneforsørger = Template.bind({});
 Aleneforsørger.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
-        navnPåFar: 'Espen ',
         type: SøkersituasjonEnum.MOR,
     },
 };
