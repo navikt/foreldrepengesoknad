@@ -24,7 +24,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrer
     const formValues = formMethods.watch();
 
     const antallBarn = valgteRegistrerteBarn.length;
-    const alleBarnaLever = valgteRegistrerteBarn.every((b) => getLeverBarnet(b));
+    const alleBarnaLever = valgteRegistrerteBarn.every((barn) => !barn.dødsdato);
     valgteRegistrerteBarn.sort(sorterRegistrerteBarnEtterEldstOgNavn);
     const fødselsdatoer = valgteRegistrerteBarn.map((b) => b.fødselsdato);
     const fødselsdato = valgteRegistrerteBarn[0].fødselsdato;

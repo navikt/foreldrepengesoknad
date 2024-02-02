@@ -10,11 +10,15 @@ import { OmBarnetFormValues } from './OmBarnetFormValues';
 
 interface Props {
     søknadGjelderEtNyttBarn?: boolean;
-    valgteBarn?: RegistrertBarn[];
+    valgteRegistrerteBarn?: RegistrertBarn[];
     skalInkludereTermindato: boolean;
 }
 
-const Fødsel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn, valgteBarn, skalInkludereTermindato }) => {
+const Fødsel: FunctionComponent<Props> = ({
+    søknadGjelderEtNyttBarn,
+    valgteRegistrerteBarn,
+    skalInkludereTermindato,
+}) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetFormValues>();
@@ -78,7 +82,8 @@ const Fødsel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn, valgteBar
             )}
             {skalInkludereTermindato &&
                 fødselsdatoer &&
-                (hasValue(fødselsdatoer[0].dato) || (valgteBarn !== undefined && valgteBarn.length > 0)) && (
+                (hasValue(fødselsdatoer[0].dato) ||
+                    (valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0)) && (
                     <Block padBottom="l">
                         <Datepicker
                             name="termindato"

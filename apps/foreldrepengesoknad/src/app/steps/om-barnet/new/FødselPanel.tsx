@@ -69,7 +69,7 @@ const FødselPanel: FunctionComponent<Props> = ({
             )}
             {erBarnetFødt === true && (søknadGjelderEtNyttBarn || barnSøktOmFørMenIkkeRegistrert) && (
                 <Fødsel
-                    valgteBarn={valgteRegistrerteBarn}
+                    valgteRegistrerteBarn={valgteRegistrerteBarn}
                     søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                     skalInkludereTermindato={skalInkludereTermindato}
                 />
