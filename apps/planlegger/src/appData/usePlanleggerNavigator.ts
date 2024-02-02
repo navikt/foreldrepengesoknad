@@ -14,7 +14,7 @@ const usePlanleggerNavigator = () => {
             team: 'foreldrepenger',
             pageKey: activeStepId,
         });
-    }, []);
+    }, [activeStepId]);
 
     const goToPreviousDefaultStep = useCallback(() => {
         const index = stepConfig.findIndex((s) => s.id === activeStepId) - 1;
@@ -37,7 +37,7 @@ const usePlanleggerNavigator = () => {
 
     const avbrytSøknad = useCallback(() => {
         navigate(PlanleggerRoutes.OM_PLANLEGGEREN);
-    }, []);
+    }, [navigate]);
 
     return useMemo(
         () => ({
@@ -46,7 +46,7 @@ const usePlanleggerNavigator = () => {
             goToNextDefaultStep,
             avbrytSøknad,
         }),
-        [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep],
+        [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep, avbrytSøknad],
     );
 };
 

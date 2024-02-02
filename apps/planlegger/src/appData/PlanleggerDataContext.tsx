@@ -55,12 +55,15 @@ export const PlanleggerDataContext: FunctionComponent<OwnProps> = ({
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = useCallback((a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
-        dispatch(a);
-    }, []);
+    const dispatchWrapper = useCallback(
+        (a: Action) => {
+            if (onDispatch) {
+                onDispatch(a);
+            }
+            dispatch(a);
+        },
+        [onDispatch],
+    );
 
     return (
         <PlanleggerStateContext.Provider value={state}>
@@ -72,21 +75,27 @@ export const PlanleggerDataContext: FunctionComponent<OwnProps> = ({
 /** Hook returns save function for one specific data type */
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback((data: ContextDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    }, []);
+    return useCallback(
+        (data: ContextDataMap[TYPE]) => {
+            if (dispatch) {
+                dispatch({ type: 'update', key, data });
+            }
+        },
+        [dispatch, key],
+    );
 };
 
 /** Hook returns save function usable with all data types  */
 export const useContextSaveAnyData = () => {
     const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback(<TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    }, []);
+    return useCallback(
+        <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
+            if (dispatch) {
+                dispatch({ type: 'update', key, data });
+            }
+        },
+        [dispatch],
+    );
 };
 
 /** Hook returns state reset function  */
@@ -96,7 +105,7 @@ export const useContextReset = () => {
         if (dispatch) {
             dispatch({ type: 'reset' });
         }
-    }, []);
+    }, [dispatch]);
 };
 
 /** Hook returns data for one specific data type  */
@@ -109,7 +118,10 @@ export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): Cont
 export const useContextGetAnyData = () => {
     const state = useContext(PlanleggerStateContext);
 
-    return useCallback(<TYPE extends ContextDataType>(key: TYPE) => {
-        return state[key];
-    }, []);
+    return useCallback(
+        <TYPE extends ContextDataType>(key: TYPE) => {
+            return state[key];
+        },
+        [state],
+    );
 };
