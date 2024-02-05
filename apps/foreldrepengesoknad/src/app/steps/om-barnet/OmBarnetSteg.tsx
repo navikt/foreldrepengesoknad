@@ -22,11 +22,13 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getEldsteRegistrerteBarn } from 'app/utils/dateUtils';
-
-import AdopsjonPanel from './components/AdopsjonPanel';
-import FødselPanel from './components/FødselPanel';
-import { BarnetFormValues } from './components/OmBarnetFormValues';
-import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
+import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+import AdopsjonPanel from './adopsjon/AdopsjonPanel';
+import FødselPanel from './fødsel/FødselPanel';
+import { BarnetFormValues } from './OmBarnetFormValues';
+import ValgteRegistrerteBarn from './ValgteRegistrerteBarn';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 
 const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
@@ -81,7 +83,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const OmBarnet: React.FunctionComponent<Props> = ({
+const OmBarnetSteg: React.FunctionComponent<Props> = ({
     søkerInfo,
     søknadGjelderNyttBarn,
     mellomlagreSøknadOgNaviger,
@@ -184,4 +186,4 @@ const OmBarnet: React.FunctionComponent<Props> = ({
     );
 };
 
-export default OmBarnet;
+export default OmBarnetSteg;

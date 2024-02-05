@@ -7,6 +7,7 @@ import {
     isIkkeUtfyltTypeBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
+import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
@@ -151,5 +152,5 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined
         const sisteFødselsdato = fødselsdatoerTekst[fødselsdatoerTekst.length - 1];
         return `${førsteFødselsdaoer} og ${sisteFødselsdato}`;
     }
-    return formatDate(unikeFødselsdatoer[0]);
+    return dayjs(unikeFødselsdatoer[0]).format(DDMMMMYYY_DATE_FORMAT);
 };

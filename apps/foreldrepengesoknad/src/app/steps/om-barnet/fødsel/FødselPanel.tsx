@@ -4,9 +4,10 @@ import { RadioGroup } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import ErFødtPanel from '../components/ErFødtPanel';
-import { BarnetFormValues } from '../components/OmBarnetFormValues';
-import TerminPanel from '../components/TerminPanel';
+import ErFødtPanel from './ErFødtPanel';
+import { BarnetFormValues } from '../OmBarnetFormValues';
+import TerminPanel from './TerminPanel';
+import { isRequired } from '@navikt/fp-validation';
 
 const finnAntallBarnLabel = (intl: IntlShape, søkerErFarMedmor: boolean, erBarnetFødt?: boolean) => {
     if (erBarnetFødt !== false) {
@@ -15,6 +16,15 @@ const finnAntallBarnLabel = (intl: IntlShape, søkerErFarMedmor: boolean, erBarn
     return søkerErFarMedmor
         ? intl.formatMessage({ id: 'omBarnet.antallBarn.termin.far' })
         : intl.formatMessage({ id: 'omBarnet.antallBarn.termin' });
+};
+
+const finnAntallBarnIsRequired = (intl: IntlShape, søkerErFarMedmor: boolean, erBarnetFødt?: boolean) => {
+    if (erBarnetFødt !== false) {
+        return intl.formatMessage({ id: 'valideringsfeil.omBarnet.antallFått.duMåOppgi' });
+    }
+    return søkerErFarMedmor
+        ? intl.formatMessage({ id: 'valideringsfeil.omBarnet.antallVenter.duMåOppgi' })
+        : intl.formatMessage({ id: 'valideringsfeil.omBarnet.antallVenterDu.duMåOppgi' });
 };
 
 interface Props {
@@ -46,13 +56,13 @@ const FødselPanel: FunctionComponent<Props> = ({
                         <RadioGroup
                             name="erBarnetFødt"
                             label={intl.formatMessage({ id: 'omBarnet.erBarnetFødt' })}
-                            // validate={[
-                            //     isRequired(
-                            //         intl.formatMessage({
-                            //             id: 'valideringsfeil.annenForelder',
-                            //         }),
-                            //     ),
-                            // ]}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'valideringsfeil.omBarnet.erBarnetFødt.duMåOppgi',
+                                    }),
+                                ),
+                            ]}
                         >
                             <Radio value={true}>Ja</Radio>
                             <Radio value={false}>Nei</Radio>
@@ -69,21 +79,15 @@ const FødselPanel: FunctionComponent<Props> = ({
                     <RadioGroup
                         name="antallBarn"
                         label={finnAntallBarnLabel(intl, søkerErFarMedmor, erBarnetFødt)}
-                        // validate={[
-                        //     isRequired(
-                        //         intl.formatMessage({
-                        //             id: 'valideringsfeil.annenForelder',
-                        //         }),
-                        //     ),
-                        // ]}
+                        validate={[isRequired(finnAntallBarnIsRequired(intl, søkerErFarMedmor, erBarnetFødt))]}
                     >
-                        <Radio value="1">
+                        <Radio value={1}>
                             <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
                         </Radio>
-                        <Radio value="2">
+                        <Radio value={2}>
                             <FormattedMessage id="omBarnet.radiobutton.tvillinger" />
                         </Radio>
-                        <Radio value="3">
+                        <Radio value={3}>
                             <FormattedMessage id="omBarnet.radiobutton.flere" />
                         </Radio>
                     </RadioGroup>

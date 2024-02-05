@@ -8,7 +8,7 @@ import SøknadRoutes from 'app/routes/routes';
 import MockAdapter from 'axios-mock-adapter/types';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import OmBarnet from './OmBarnet';
+import OmBarnetSteg from './OmBarnetSteg';
 
 const promiseAction =
     () =>
@@ -70,8 +70,8 @@ const søkerinfo = {
 } as Søkerinfo;
 
 export default {
-    title: 'steps/OmBarnet',
-    component: OmBarnet,
+    title: 'steps/OmBarnetSteg',
+    component: OmBarnetSteg,
 };
 
 interface Props {
@@ -115,7 +115,7 @@ const Template: StoryFn<Props> = ({
                         [ContextDataType.OM_BARNET]: barn,
                     }}
                 >
-                    <OmBarnet
+                    <OmBarnetSteg
                         søkerInfo={søkerinfo}
                         søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}

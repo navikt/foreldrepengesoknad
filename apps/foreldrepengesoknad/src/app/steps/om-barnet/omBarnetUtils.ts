@@ -19,9 +19,9 @@ import BarnetFormValues, {
     erAdoptertStebarn,
     erFødtBarn,
     erUfødtBarn,
-} from './components/OmBarnetFormValues';
+} from './OmBarnetFormValues';
 
-export const mapOmDetValgteBarnetFormDataToState = (
+const mapOmDetValgteBarnetFormDataToState = (
     valgtRegistrertBarn: FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
     situasjon: Situasjon,
     values: BarnetFormValues,

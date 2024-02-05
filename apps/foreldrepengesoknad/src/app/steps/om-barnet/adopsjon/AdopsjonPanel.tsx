@@ -1,12 +1,16 @@
-import { Radio, Select } from '@navikt/ds-react';
+import { FileIcon } from '@navikt/aksel-icons';
+import { BodyLong, Box, HStack, Radio, Select, VStack } from '@navikt/ds-react';
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
+import { isRequired, isValidDate } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import FødselsdatoerFieldArray from '../components/FødselsdatoerFieldArray';
-import { BarnetFormValues } from '../components/OmBarnetFormValues';
-import { validateAdopsjonsdato } from '../validation/omBarnetValidering';
+import { BarnetFormValues } from '../OmBarnetFormValues';
+import FødselsdatoerFieldArray from './FødselsdatoerFieldArray';
+
+dayjs.extend(isSameOrBefore);
 
 interface Props {
     søknadGjelderEtNyttBarn: boolean;
@@ -29,13 +33,13 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
             <RadioGroup
                 name="adopsjonAvEktefellesBarn"
                 label={intl.formatMessage({ id: 'omBarnet.adopsjonGjelder' })}
-                // validate={[
-                //     isRequired(
-                //         intl.formatMessage({
-                //             id: 'valideringsfeil.annenForelder',
-                //         }),
-                //     ),
-                // ]}
+                validate={[
+                    isRequired(
+                        intl.formatMessage({
+                            id: 'valideringsfeil.omBarnet.adopsjonGjelder.duMåOppgi',
+                        }),
+                    ),
+                ]}
             >
                 <Radio value={true}>Ja</Radio>
                 <Radio value={false}>Nei</Radio>
@@ -47,20 +51,33 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                         ? intl.formatMessage({ id: 'omBarnet.adopsjonsdato.stebarn' })
                         : intl.formatMessage({ id: 'omBarnet.adopsjonsdato.annetBarn' })
                 }
-                validate={[validateAdopsjonsdato(intl)]}
+                validate={[
+                    isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonsdato.duMåOppgi' })),
+                    isValidDate(intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonsdato.ugyldigDatoFormat' })),
+                ]}
             />
+            <Box padding="4" background="surface-alt-3-subtle" borderRadius="medium">
+                <HStack gap="2">
+                    <FileIcon height={24} width={24} color="#005B82" />
+                    <VStack gap="2" style={{ width: '85%' }}>
+                        <BodyLong>
+                            <FormattedMessage id="omBarnet.opplaste.bekreftelse" />
+                        </BodyLong>
+                    </VStack>
+                </HStack>
+            </Box>
             {søknadGjelderEtNyttBarn && (
                 <>
                     <RadioGroup
                         name="antallBarn"
                         label={intl.formatMessage({ id: 'omBarnet.antallBarn.adopsjon.født' })}
-                        // validate={[
-                        //     isRequired(
-                        //         intl.formatMessage({
-                        //             id: 'valideringsfeil.annenForelder',
-                        //         }),
-                        //     ),
-                        // ]}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'valideringsfeil.omBarnet.adopsjon.født.duMåOppgi',
+                                }),
+                            ),
+                        ]}
                     >
                         <Radio value="1">
                             <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
@@ -95,13 +112,13 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                     <RadioGroup
                         name="adoptertIUtlandet"
                         label={intl.formatMessage({ id: 'omBarnet.adopteresFraUtlandet' })}
-                        // validate={[
-                        //     isRequired(
-                        //         intl.formatMessage({
-                        //             id: 'valideringsfeil.annenForelder',
-                        //         }),
-                        //     ),
-                        // ]}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'valideringsfeil.omBarnet.adopteresFraUtlandet.duMåOppgi',
+                                }),
+                            ),
+                        ]}
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
@@ -112,7 +129,24 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                             minDate={fødselsdatoer ? dayjs(fødselsdatoer[0].dato).toDate() : undefined}
                             maxDate={dayjs().add(6, 'months').toDate()}
                             label={intl.formatMessage({ id: 'omBarnet.ankomstDato' })}
-                            //validate={(value) => validateAnkomstdato(intl)(value, formValues.fødselsdatoer[0])}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonsdato.duMåOppgi' }),
+                                ),
+                                isValidDate(
+                                    intl.formatMessage({
+                                        id: 'valideringsfeil.omBarnet.adopsjonsdato.ugyldigDatoFormat',
+                                    }),
+                                ),
+                                (ankomstdato) => {
+                                    return fødselsdatoer[0]?.dato !== undefined &&
+                                        !dayjs(fødselsdatoer[0].dato).isSameOrBefore(ankomstdato, 'day')
+                                        ? intl.formatMessage({
+                                              id: 'valideringsfeil.omBarnet.ankomstDato.førFødselsdato',
+                                          })
+                                        : undefined;
+                                },
+                            ]}
                         />
                     )}
                 </>

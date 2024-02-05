@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import * as stories from './OmBarnet.stories';
+import * as stories from './OmBarnetSteg.stories';
 import SøknadRoutes from 'app/routes/routes';
 import { ContextDataType } from 'app/context/FpDataContext';
 
@@ -25,7 +25,7 @@ const farEllerMedMorSøker = [FarFødsel, MedmorFødsel];
 
 //TODO (TOR) Testane her må i større grad testa output frå onSubmit-funksjonen. Kan testast gjennom 'gåTilNesteSide'
 
-describe('<OmBarnet>', () => {
+describe('<OmBarnetSteg>', () => {
     it('skal ha født ett barn', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

@@ -8,17 +8,18 @@ import {
     date21DaysAgo,
     dateToday,
     erIUke22Pluss3,
+    erMindreEnn3UkerSiden,
     hasValue,
     isFarEllerMedmor,
     links,
 } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { Søkerrolle } from '@navikt/fp-types';
+import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
-import { UfødtBarn } from './OmBarnetFormValues';
+import { UfødtBarn } from '../OmBarnetFormValues';
 
 const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
     if (!isFarEllerMedmor(rolle)) {
@@ -55,8 +56,27 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                             label={intl.formatMessage({ id: 'omBarnet.termindato.termin' })}
                             minDate={date21DaysAgo}
                             maxDate={attenUkerTreDager}
-                            validate={[validateTermindato(intl)]}
-                            //valider erForTidligTilÅSøkePåTermin
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
+                                isValidDate(
+                                    intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat' }),
+                                ),
+                                (termindato) => {
+                                    if (!erMindreEnn3UkerSiden(termindato)) {
+                                        return intl.formatMessage({
+                                            id: 'valideringsfeil.omBarnet.termindato.forTidlig',
+                                        });
+                                    }
+
+                                    if (!erIUke22Pluss3(termindato)) {
+                                        return intl.formatMessage({
+                                            id: 'valideringsfeil.omBarnet.termindato.duMåVæreIUke22',
+                                        });
+                                    }
+
+                                    return undefined;
+                                },
+                            ]}
                         />
                         {!søkerErFarMedmor && (
                             <ReadMore header={intl.formatMessage({ id: 'omBarnet.termindato.åpneLabel' })}>
@@ -88,7 +108,21 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                     name="terminbekreftelsedato"
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}
                     maxDate={dateToday}
-                    validate={[validateTerminbekreftelse(intl)]}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi' }),
+                        ),
+                        isValidDate(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.omBarnet.terminbekreftelseDato.ugyldigDatoFormat',
+                            }),
+                        ),
+                        isBeforeToday(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid',
+                            }),
+                        ),
+                    ]}
                 />
             )}
             {erForTidligTilÅSøkePåTermin && (

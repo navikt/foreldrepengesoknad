@@ -1,9 +1,18 @@
 import { VStack } from '@navikt/ds-react';
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { useCustomIntl } from '@navikt/fp-ui';
+import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+
+const erBarnetUnder15årPåAdopsjonsdato = (i18nText: string, adopsjonsdato?: string) => (fødselsdato: string) => {
+    if (!adopsjonsdato) {
+        return undefined;
+    }
+    const datoBarnetFyllerFemten = dayjs(fødselsdato).startOf('day').add(15, 'year');
+    return dayjs(adopsjonsdato).isBetween(fødselsdato, datoBarnetFyllerFemten, null, '[]') ? undefined : i18nText;
+};
 
 export type FormValues = {
     fødselsdatoer?: Array<{
@@ -18,7 +27,7 @@ interface Props {
 }
 
 const FødselsdatoerFieldArray: React.FunctionComponent<Props> = ({ adopsjonsdato, antallBarn, antallBarnDropDown }) => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
     const { control } = useFormContext<FormValues>();
     const { fields, remove, append } = useFieldArray({
         control,
@@ -53,10 +62,28 @@ const FødselsdatoerFieldArray: React.FunctionComponent<Props> = ({ adopsjonsdat
                     maxDate={dayjs(adopsjonsdato).toDate()}
                     label={
                         fields.length === 1
-                            ? i18n('omBarnet.fødselsdato')
-                            : i18n(`omBarnet.fødselsdato.adopsjon.${index + 1}`)
+                            ? intl.formatMessage({ id: 'omBarnet.fødselsdato' })
+                            : intl.formatMessage({ id: `omBarnet.fødselsdato.adopsjon.${index + 1}` })
                     }
-                    //validate={[(value) => validateFødselsdatoAdopsjon(intl)(value, adopsjonsdato)]}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.duMåOppgi' })),
+                        isValidDate(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.ugyldigDatoFormat' }),
+                        ),
+                        isBeforeTodayOrToday(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere' }),
+                        ),
+                        isBeforeOrSame(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.måVæreFørAdopsjonsdato' }),
+                            adopsjonsdato,
+                        ),
+                        erBarnetUnder15årPåAdopsjonsdato(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn15År3MndTilbake',
+                            }),
+                            adopsjonsdato,
+                        ),
+                    ]}
                 />
             ))}
         </VStack>

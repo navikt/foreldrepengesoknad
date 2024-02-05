@@ -14,7 +14,7 @@ import Velkommen from 'app/pages/velkommen/Velkommen';
 import AnnenForelderSteg from 'app/steps/annen-forelder/AnnenForelderSteg';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 import ManglendeVedlegg from 'app/steps/manglende-vedlegg/ManglendeVedlegg';
-import OmBarnet from 'app/steps/om-barnet/OmBarnet';
+import OmBarnetSteg from 'app/steps/om-barnet/OmBarnetSteg';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import PeriodeMedForeldrepengerSteg from 'app/steps/periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
 import SøkersituasjonSteg from 'app/steps/søkersituasjon/SøkersituasjonSteg';
@@ -101,7 +101,7 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.OM_BARNET}
                 element={
-                    <OmBarnet
+                    <OmBarnetSteg
                         søkerInfo={søkerInfo}
                         søknadGjelderNyttBarn={søknadGjelderNyttBarn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}

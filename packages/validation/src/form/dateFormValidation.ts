@@ -26,8 +26,13 @@ export const isBeforeTodayOrToday =
     (date: string): FormValidationResult =>
         dayjs(date).isAfter(DATE_TODAY) ? i18nText : null;
 
+export const isBeforeToday =
+    (i18nText: string) =>
+    (date: string): FormValidationResult =>
+        dayjs(date).isBefore(DATE_TODAY) ? null : i18nText;
+
 export const isBeforeOrSame =
-    (i18nText: string, endDate: string) =>
+    (i18nText: string, endDate?: string) =>
     (startDate: string): FormValidationResult =>
         endDate && dayjs(startDate).isAfter(endDate, 'day') ? i18nText : null;
 
