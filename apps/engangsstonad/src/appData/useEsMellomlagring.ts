@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AxiosInstance } from 'axios';
+import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/fp-api';
 import { Kvittering, LocaleAll } from '@navikt/fp-types';
-import { postData, ApiAccessError, ApiGeneralError, deleteData } from '@navikt/fp-api';
+import * as Sentry from '@sentry/browser';
+import { AxiosInstance } from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
 export const VERSJON_MELLOMLAGRING = 1;
@@ -18,8 +19,6 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
     const state = useContextComplete();
     const resetState = useContextReset();
 
-    const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
-
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
     const promiseRef = useRef<() => void>();
@@ -31,6 +30,8 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
 
                 const currentPath = state[ContextDataType.CURRENT_PATH];
                 if (currentPath) {
+                    navigate(currentPath);
+
                     await postData<EsDataMapAndMetaData, Kvittering>(
                         esApi,
                         '/storage/engangsstonad',
@@ -41,8 +42,6 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
                         },
                         FEIL_VED_INNSENDING,
                     );
-
-                    navigate(currentPath);
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
                     await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING);
@@ -58,7 +57,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
             };
 
             lagreEllerSlett().catch((error: ApiAccessError | ApiGeneralError) => {
-                setError(error);
+                Sentry.captureMessage(error.message);
 
                 if (promiseRef.current) {
                     promiseRef.current();
@@ -79,13 +78,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
         return promise;
     }, []);
 
-    return useMemo(
-        () => ({
-            mellomlagreOgNaviger,
-            errorMellomlagre: error,
-        }),
-        [mellomlagreOgNaviger, error],
-    );
+    return mellomlagreOgNaviger;
 };
 
 export default useEsMellomlagring;

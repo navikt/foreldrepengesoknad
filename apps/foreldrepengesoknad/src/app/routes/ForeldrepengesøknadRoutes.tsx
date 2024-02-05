@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-dom';
 import { Sak, Søkerinfo } from '@navikt/fp-common';
-import { Umyndig } from '@navikt/fp-ui';
+import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { LocaleNo } from '@navikt/fp-types';
 import Velkommen from 'app/pages/velkommen/Velkommen';
 import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
@@ -212,14 +212,19 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     setKvittering,
 }) => {
     const navigate = useNavigate();
-    const location = useLocation();
+    const routerLocation = useLocation();
     const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const sendSøknad = useSendSøknad(søkerInfo.person.fnr, erEndringssøknad, setKvittering, locale);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(
+        søkerInfo.person.fnr,
+        erEndringssøknad,
+        setKvittering,
+        locale,
+    );
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         locale,
@@ -246,7 +251,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
             if (isAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);
             } else {
-                if (location.pathname === SøknadRoutes.OPPSUMMERING) {
+                if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
                     navigate(SøknadRoutes.UTTAKSPLAN);
                 }
             }
@@ -257,9 +262,19 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
         lagretHarGodkjentVilkår,
         navigate,
         isFirstTimeLoadingApp,
-        location.pathname,
+        routerLocation.pathname,
         uttaksplan,
     ]);
+
+    if (errorSendSøknad) {
+        return (
+            <ErrorPage
+                appName="Foreldrepenger"
+                errorMessage={errorSendSøknad.message}
+                retryCallback={() => location.reload()}
+            />
+        );
+    }
 
     return (
         <Routes>
