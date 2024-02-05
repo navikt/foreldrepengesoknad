@@ -112,8 +112,8 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         const startdato = finnStartdatoAdopsjon(
             values.startdatoAdopsjonValg!,
             values.annenStartdatoAdopsjon,
-            dateToISOString(barnAdopsjonsdato),
-            dateToISOString(ankomstdato),
+            barnAdopsjonsdato,
+            ankomstdato,
         );
 
         const uttaksplan = lagUttaksplan({

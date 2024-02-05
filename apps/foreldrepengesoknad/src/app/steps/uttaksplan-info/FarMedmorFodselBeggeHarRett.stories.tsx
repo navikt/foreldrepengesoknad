@@ -108,7 +108,7 @@ FarMedmorFødselBeggeHarRettDekningsgrad100FørWLB.args = {
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-08-01').toDate()],
+        fødselsdatoer: ['2021-06-14'],
         antallBarn: 1,
     },
     søkerinfo,
@@ -121,20 +121,7 @@ FarMedmorFødselBeggeHarRettDekningsgrad100EtterWLB.args = {
     stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-08-03').toDate()],
-        antallBarn: 1,
-    },
-    søkerinfo,
-    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-};
-
-export const FarMedmorFødselBeggeHarRettDekningsgrad80EtterWLBTermin = Template.bind({});
-FarMedmorFødselBeggeHarRettDekningsgrad80EtterWLBTermin.args = {
-    stønadskonto100: stønadskontoDeltUttak100WLB,
-    stønadskonto80: stønadskontoDeltUttak80WLB,
-    barn: {
-        type: BarnType.UFØDT,
-        termindato: new Date('2022-08-31'),
+        fødselsdatoer: ['2021-06-14'],
         antallBarn: 1,
     },
     søkerinfo,
@@ -147,7 +134,7 @@ FarMedmorFødselBeggeHarRettFødselFør1Okt2021.args = {
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-09-02').toDate()],
+        fødselsdatoer: ['2022-08-02'],
         antallBarn: 1,
     },
     søkerinfo,

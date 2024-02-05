@@ -151,7 +151,7 @@ FarSøkerEtterMorFør1Okt2021.args = {
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-06-14').toDate()],
+        fødselsdatoer: ['2021-06-14'],
         antallBarn: 1,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,

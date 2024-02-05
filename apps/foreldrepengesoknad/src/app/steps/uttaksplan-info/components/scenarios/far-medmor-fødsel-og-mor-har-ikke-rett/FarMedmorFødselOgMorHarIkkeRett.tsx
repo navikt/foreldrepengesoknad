@@ -134,7 +134,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                 startdatoPermisjon: startDatoUttaksplan,
             },
             bareFarMedmorHarRett: true,
-            termindato,
+            termindato: ISOStringToDate(termindato),
             harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
                 erDeltUttak: false,
                 morHarRett: false,
@@ -165,7 +165,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const navnFarMedmor = formaterNavn(fornavn, etternavn, false, mellomnavn);
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
         familiehendelsesdatoDate!,
-        termindato,
+        ISOStringToDate(termindato),
         søkersituasjon.situasjon,
     );
 

@@ -1,7 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
 
@@ -154,9 +153,9 @@ FarEllerMedmorAleneomsorgFødsel.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-03-01').toDate()],
+        fødselsdatoer: ['2022-03-01'],
         antallBarn: 1,
-        termindato: dayjs('2022-03-24').toDate(),
+        termindato: '2022-03-24',
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -174,7 +173,7 @@ FarEllerMedmorFødselBeggeHarRett.args = {
     barnet: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2022-03-24').toDate(),
+        termindato: '2022-03-24',
     },
     annenForelder: {
         etternavn: 'Pettersen',
@@ -198,9 +197,9 @@ FarEllerMedmorFødselOgMorHarIkkeRett.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-03-01').toDate()],
+        fødselsdatoer: ['2022-03-01'],
         antallBarn: 1,
-        termindato: dayjs('2022-03-24').toDate(),
+        termindato: '2022-03-24',
     },
     annenForelder: {
         etternavn: 'dfg',
@@ -236,7 +235,7 @@ MorSøkerAdopsjonMedAleneomsorg.args = {
     barnet: {
         type: BarnType.ADOPTERT_ANNET_BARN,
         antallBarn: 1,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -268,7 +267,7 @@ MorSøkerAdopsjonMedDeltUttak.args = {
     barnet: {
         type: BarnType.ADOPTERT_ANNET_BARN,
         antallBarn: 1,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -305,7 +304,7 @@ FarSøkerAdopsjonMedDeltUttak.args = {
     barnet: {
         type: BarnType.ADOPTERT_ANNET_BARN,
         antallBarn: 1,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -342,7 +341,7 @@ MorSøkerAdopsjonDerFarHarRettIEOS.args = {
     barnet: {
         type: BarnType.ADOPTERT_ANNET_BARN,
         antallBarn: 1,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -378,8 +377,8 @@ MorSøkerFodselDerFarHarRettIEOS.args = {
         rolle: 'mor',
     },
     barnet: {
-        fødselsdatoer: [dayjs('2022-06-14').toDate()],
-        termindato: dayjs('2022-08-14').toDate(),
+        fødselsdatoer: ['2022-06-14'],
+        termindato: '2022-08-14',
         antallBarn: 1,
         // @ts-ignore FIX
         adopsjonsdato: undefined,
@@ -420,7 +419,7 @@ MorAleneomsorgFødsel.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -451,8 +450,8 @@ MorFødselDeltUttakPrematurFødsel.args = {
     barnet: {
         type: BarnType.FØDT,
         antallBarn: 1,
-        fødselsdatoer: [dayjs('2021-01-11').toDate()],
-        termindato: dayjs('2021-03-11').toDate(),
+        fødselsdatoer: ['2021-01-11'],
+        termindato: '2021-03-11',
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -476,8 +475,8 @@ MorAleneomsorgPrematurFødsel.args = {
     barnet: {
         type: BarnType.FØDT,
         antallBarn: 1,
-        fødselsdatoer: [dayjs('2021-01-11').toDate()],
-        termindato: dayjs('2021-03-11').toDate(),
+        fødselsdatoer: ['2021-01-11'],
+        termindato: '2021-03-11',
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -506,7 +505,7 @@ MorFødselDeltUttak.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -529,7 +528,7 @@ MorFødselMedTvillingFlerbarnsuker.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 2,
     },
     annenForelder: {
@@ -571,7 +570,7 @@ MorFødselAleneomsorgMedTrillingFlerbarnsuker.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 3,
     },
     annenForelder: {
@@ -607,7 +606,7 @@ FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 2,
     },
     annenForelder: {

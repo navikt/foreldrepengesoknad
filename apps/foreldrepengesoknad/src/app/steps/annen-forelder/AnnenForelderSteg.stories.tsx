@@ -1,7 +1,9 @@
+import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { SivilstandType, Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
 
@@ -67,7 +69,7 @@ const Template: StoryFn<Props> = ({
     },
     barn = {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
     },
     annenForelder,
@@ -112,7 +114,7 @@ export const AnnenForelderFraOppgittBarn = Template.bind({});
 AnnenForelderFraOppgittBarn.args = {
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
         fnr: ['21091981146'],
     },
@@ -170,7 +172,7 @@ export const ForFar = Template.bind({});
 ForFar.args = {
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
         fnr: ['21091981146'],
     },
@@ -206,7 +208,7 @@ MorUfødtBarn.args = {
     barn: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2023-05-05').toDate(),
+        termindato: '2023-05-05',
     },
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -226,7 +228,7 @@ MedmorUfødtBarn.args = {
     barn: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2023-05-05').toDate(),
+        termindato: '2023-05-05',
     },
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -247,7 +249,7 @@ FarUfødtBarn.args = {
     barn: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2023-05-05').toDate(),
+        termindato: '2023-05-05',
     },
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -270,7 +272,7 @@ FarGiftUfødtBarn.args = {
     barn: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2023-05-05').toDate(),
+        termindato: '2023-05-05',
     },
     søkersituasjon: {
         situasjon: 'fødsel',

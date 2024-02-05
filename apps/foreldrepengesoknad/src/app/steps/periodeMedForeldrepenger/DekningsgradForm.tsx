@@ -1,10 +1,5 @@
 import { ExternalLinkIcon, FeedingBottleIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-
 import { BodyShort, Box, HStack, Heading, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
-
 import {
     Barn,
     Dekningsgrad,
@@ -15,22 +10,20 @@ import {
     capitalizeFirstLetter,
     getFlerbarnsuker,
     isAdoptertBarn,
-    isAnnenForelderOppgitt,
+    isAnnenForelderOppgitt
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
-
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
-import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
+import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import './dekningsgradForm.less';
 
-const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskonto[], barn: Barn): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
@@ -44,7 +37,7 @@ const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskont
     const dagerSomSkalLeggesTil =
         getAntallUker(stønadskontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel)) * 5;
 
-    const førsteDag = Uttaksdagen(dato).denneEllerNeste();
+    const førsteDag = Uttaksdagen(dayjs(dato).toDate()).denneEllerNeste();
     const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil - 1);
     return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
 };
@@ -114,7 +107,10 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
     const ekstraDagerGrunnetPrematurFødsel =
         visInfoOmPrematuruker && fødselsdato && termindato
-            ? getAntallPrematurdager(fødselsdato, termindato)
+            ? Tidsperioden({
+                  fom: dayjs(fødselsdato).toDate(),
+                  tom: dayjs(termindato).toDate(),
+              }).getAntallUttaksdager() - 1
             : undefined;
 
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(stønadskonto100, barn);

@@ -125,7 +125,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                 startdatoPermisjon: uttaksplanInfo.startdatoUttak,
             },
             bareFarMedmorHarRett: false,
-            termindato,
+            termindato: ISOStringToDate(termindato),
             harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
                 erDeltUttak: false,
                 morHarRett: false,

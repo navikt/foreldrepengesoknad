@@ -67,7 +67,7 @@ const Template: StoryFn<Props> = ({
             initialState={{
                 [ContextDataType.OM_BARNET]: {
                     type: BarnType.FØDT,
-                    fødselsdatoer: [new Date('2021-03-15')],
+                    fødselsdatoer: ['2021-03-15'],
                     antallBarn: 1,
                 },
                 [ContextDataType.ANNEN_FORELDER]: annenForelder,

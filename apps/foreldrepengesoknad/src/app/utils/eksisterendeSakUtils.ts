@@ -1,4 +1,3 @@
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { IntlShape } from 'react-intl';
 
 import {
@@ -162,7 +161,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
-    førsteUttaksdagNesteBarnsSak: string | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
     if (eksisterendeSakAnnenPart === undefined || eksisterendeSakAnnenPart === null) {
         return undefined;
@@ -179,7 +178,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     } else if ((isFødtBarn(barn) || isUfødtBarn(barn)) && barn.termindato !== undefined) {
         termindato = barn.termindato;
     }
-    const fødselsdato = isFødtBarn(barn) ? barn.fødselsdatoer[0].dato : undefined;
+    const fødselsdato = isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
     const adopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
 
     const grunnlagForAnnenPart = {
@@ -223,7 +222,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 
 export const mapSøkerensEksisterendeSakFromDTO = (
     eksisterendeSak: Sak | undefined | null,
-    førsteUttaksdagNesteBarnsSak: string | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === null) {
         return undefined;
@@ -307,11 +306,11 @@ const getSøkerrolleFromSaksgrunnlag = (
     }
 };
 
-const getFødselsdatoer = (valgteBarn: ValgtBarn | undefined, sak: Saksgrunnlag): Date[] => {
+const getFødselsdatoer = (valgteBarn: ValgtBarn | undefined, sak: Saksgrunnlag): string[] => {
     if (valgteBarn && valgteBarn.fødselsdatoer) {
         return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
     } else if (sak.fødselsdato) {
-        return Array(sak.antallBarn).fill(ISOStringToDate(sak.fødselsdato)!);
+        return Array(sak.antallBarn).fill(sak.fødselsdato!);
     }
     return [];
 };
@@ -328,7 +327,7 @@ const getBarnFromSaksgrunnlag = (
                     type: BarnType.FØDT,
                     antallBarn: sak.antallBarn,
                     fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
-                    termindato: sak.termindato ? ISOStringToDate(sak.termindato) : undefined,
+                    termindato: sak.termindato ? sak.termindato : undefined,
                     fnr: valgteBarn?.fnr,
                 };
             }
@@ -341,7 +340,7 @@ const getBarnFromSaksgrunnlag = (
         case 'adopsjon':
             return {
                 type: BarnType.ADOPTERT_STEBARN,
-                adopsjonsdato: ISOStringToDate(sak.omsorgsovertakelsesdato)!,
+                adopsjonsdato: sak.omsorgsovertakelsesdato!,
                 antallBarn: sak.antallBarn,
                 fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
                 fnr: valgteBarn?.fnr,
@@ -445,7 +444,7 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
         return {
             type: BarnType.UFØDT,
             antallBarn: valgteBarn.antallBarn,
-            termindato: valgteBarn.termindato,
+            termindato: dayjs(valgteBarn.termindato).format(ISO_DATE_FORMAT),
         };
     } else {
         return {

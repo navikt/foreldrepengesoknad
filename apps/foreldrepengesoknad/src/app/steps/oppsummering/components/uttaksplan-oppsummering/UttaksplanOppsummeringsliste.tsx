@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -37,7 +38,7 @@ interface UttaksplanOppsummeringslisteProps {
     annenForelder: AnnenForelder;
     eksisterendeUttaksplan?: Periode[];
     familiehendelsesdato: Date;
-    termindato: Date | undefined;
+    termindato: string | undefined;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
     ønskerJustertUttakVedFødsel: boolean | undefined;
@@ -70,7 +71,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
             periode,
             situasjon,
             familiehendelsesdato,
-            termindato,
+            termindato ? dayjs(termindato).toDate() : undefined,
         );
     };
 
@@ -119,7 +120,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
                 periode,
                 navnPåForeldre,
                 familiehendelsesdato,
-                termindato,
+                termindato ? dayjs(termindato).toDate() : undefined,
                 situasjon,
                 erFarEllerMedmor,
             ),

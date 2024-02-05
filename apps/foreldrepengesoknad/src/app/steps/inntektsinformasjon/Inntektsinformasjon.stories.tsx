@@ -1,13 +1,14 @@
-import { BarnType } from '@navikt/fp-common';
+import { Arbeidsforhold, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import Inntektsinformasjon from './Inntektsinformasjon';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import SøknadRoutes from 'app/routes/routes';
 import { MemoryRouter } from 'react-router-dom';
-import Inntektsinformasjon from './Inntektsinformasjon';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import dayjs from 'dayjs';
 
 const promiseAction =
     () =>
@@ -52,7 +53,7 @@ const Template: StoryFn<Props> = ({
                     },
                     [ContextDataType.OM_BARNET]: {
                         type: BarnType.FØDT,
-                        fødselsdatoer: [new Date()],
+                        fødselsdatoer: [dayjs().format(ISO_DATE_FORMAT)],
                         antallBarn: 1,
                     },
                     [ContextDataType.SØKER_DATA]: {

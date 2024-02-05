@@ -302,7 +302,7 @@ SøknadPåUregistrertBarnSomErFødt.args = {
     barn: {
         antallBarn: 1,
         fnr: undefined,
-        fødselsdatoer: [new Date('2023-01-02')],
+        fødselsdatoer: ['2023-01-02'],
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,

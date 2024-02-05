@@ -58,7 +58,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
                         },
                         [ContextDataType.OM_BARNET]: {
                             type: BarnType.FØDT,
-                            fødselsdatoer: [dayjs('2022-03-01').toDate()],
+                            fødselsdatoer: ['2022-03-01'],
                             antallBarn: 1,
                         },
                         [ContextDataType.SØKER_DATA]: {

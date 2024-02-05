@@ -47,8 +47,8 @@ export const getEldsteRegistrerteBarn = (registrerteBarn: SøkerBarn[]): SøkerB
     ];
 };
 
-export const sorterDatoEtterEldst = (dato: Date[]): Date[] => {
-    const d = [...dato].sort((a, b) => (isDateABeforeDateB(dateToISOString(a)!, dateToISOString(b)!) ? -1 : 1));
+export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
+    const d = [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a!, b!) ? -1 : 1));
     return d;
 };
 
@@ -71,9 +71,9 @@ export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolea
     return true;
 };
 
-export const findEldsteDato = (dateArray: Date[]): DateValue => {
+export const findEldsteDato = (dateArray: Array<Date | string>): DateValue => {
     if (dateArray.length > 0) {
-        return dayjs.min(dateArray.map((date: Date) => dayjs(date)))!.toDate();
+        return dayjs.min(dateArray.map((date) => dayjs(date)))!.toDate();
     }
     return undefined;
 };

@@ -15,13 +15,14 @@ import {
 } from '@navikt/fp-common';
 
 import './infoEksisterendePerioder.less';
+import dayjs from 'dayjs';
 
 interface Props {
     oppgittePerioder: Periode[];
     navnForOverskrift?: string;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: Date;
-    termindato: Date | undefined;
+    familiehendelsesdato: string;
+    termindato: string | undefined;
     situasjon: Situasjon;
     erFarEllerMedmor: boolean;
 }
@@ -65,8 +66,8 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
                                         intl,
                                         periode,
                                         navnPåForeldre,
-                                        familiehendelsesdato,
-                                        termindato,
+                                        dayjs(familiehendelsesdato).toDate(),
+                                        termindato ? dayjs(termindato).toDate() : undefined,
                                         situasjon,
                                         erFarEllerMedmor,
                                     )}

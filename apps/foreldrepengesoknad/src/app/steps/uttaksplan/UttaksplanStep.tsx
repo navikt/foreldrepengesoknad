@@ -431,7 +431,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
         uttaksplan,
         familiehendelsesdatoDate!,
-        termindato,
+        termindato ? dayjs(termindato).toDate() : undefined,
     );
 
     const visAutomatiskJusteringForm = getKanSøkersituasjonAutomatiskJustereRundtFødsel(
@@ -673,7 +673,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             opprinneligPlan={uttaksplanMetadata.harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
                             handleSlettUttaksplan={handleSlettUttaksplan}
                             handleResetUttaksplan={handleResetUttaksplan}
-                            termindato={termindato}
+                            termindato={termindato ? dayjs(termindato).toDate() : undefined}
                             barn={barn}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
@@ -685,7 +685,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                         {visAutomatiskJusteringForm && (
                             <Block padBottom="l">
                                 <AutomatiskJusteringForm
-                                    termindato={termindato!}
+                                    termindato={termindato ? dayjs(termindato).toDate() : undefined!}
                                     perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                                     antallBarn={barn.antallBarn}
                                     visibility={visibility}

@@ -528,7 +528,7 @@ export const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
 const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
-    førsteUttaksdagNesteBarnsSak: string | undefined,
+    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const gyldigePerioder = saksperioder.filter((periode) => gyldigeSaksperioder(periode, grunnlag.termindato));
     const perioder = gyldigePerioder.map((periode) => mapPeriodeFromSaksperiode(periode, grunnlag, gyldigePerioder));

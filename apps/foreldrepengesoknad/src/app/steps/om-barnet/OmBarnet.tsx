@@ -29,7 +29,7 @@ import { BarnetFormValues } from './components/OmBarnetFormValues';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 
-const erDatoInnenforDeSiste12Ukene = (dato: string) => {
+const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
     return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
 };
@@ -99,7 +99,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const { arbeidsforhold, registrerteBarn } = søkerInfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const familiehendelsesdato = getFamiliehendelsedato(omBarnet);
+    const familiehendelsesdato = omBarnet ? getFamiliehendelsedato(omBarnet) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)

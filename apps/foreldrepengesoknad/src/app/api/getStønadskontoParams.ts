@@ -151,7 +151,7 @@ const getStønadskontoParams = (
         farHarAleneomsorg: farMedmorErAleneOmOmsorg || false,
         antallBarn: saksgrunnlagsAntallBarn,
         fødselsdato: formaterStønadskontoParamsDatoer(
-            isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
+            isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
             fpUttakServiceDateFormat,
         ),
         termindato: formaterStønadskontoParamsDatoer(
@@ -159,7 +159,7 @@ const getStønadskontoParams = (
             fpUttakServiceDateFormat,
         ),
         omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(
-            isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,
+            isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
             fpUttakServiceDateFormat,
         ),
         startdatoUttak: formaterStønadskontoParamsDatoer(getFamiliehendelsedato(barn), fpUttakServiceDateFormat),

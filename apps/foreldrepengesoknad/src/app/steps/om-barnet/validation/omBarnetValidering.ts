@@ -80,7 +80,7 @@ export const validateTermindato = (intl: IntlShape) => (termindato: string) => {
     return undefined;
 };
 
-export const validateTermindatoFødsel = (intl: IntlShape, fødselsdato?: string) => (termindato: string) => {
+export const validateTermindatoFødsel = (intl: IntlShape, fødselsdato?: Date | string) => (termindato: string) => {
     if (!fødselsdato) {
         return undefined;
     }

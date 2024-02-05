@@ -7,7 +7,6 @@ import {
     Block,
     EksisterendeSak,
     Forelder,
-    ISOStringToDate,
     InfoPeriode,
     Periodene,
     Periodetype,
@@ -34,7 +33,6 @@ import {
 import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
 import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
-import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -118,7 +116,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsedatoNesteBarn =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erToTette = getToTetteReglerGjelder(familiehendelsesdato, familiehendelsedatoNesteBarn);
     const minsterettToTetteAntallUkerTekst = [minsterettUkerToTette, intlUtils(intl, 'uker')].join(' ');
     const startStønadsperiodeNyttBarn =

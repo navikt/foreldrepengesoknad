@@ -13,13 +13,9 @@ import { IntlShape } from 'react-intl';
 
 dayjs.extend(utc);
 
-export const getFamiliehendelsedato = (barn?: Barn): string | undefined => {
-    if (!barn) {
-        return undefined;
-    }
-
+export const getFamiliehendelsedato = (barn: Barn): string => {
     if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {
-        return barn.fødselsdatoer[0].dato;
+        return barn.fødselsdatoer[0];
     }
     if (isUfødtBarn(barn)) {
         return barn.termindato;
@@ -29,11 +25,11 @@ export const getFamiliehendelsedato = (barn?: Barn): string | undefined => {
 };
 
 const barnFødselsdatoLikSakFødselsdato = (
-    fødselsdatoer: Array<{ dato: string }> | undefined,
-    regBarnFødselsdato: Date | undefined,
+    fødselsdatoer: string[] | undefined,
+    regBarnFødselsdato: string | Date | undefined,
 ) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
-        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato.dato).isSame(regBarnFødselsdato)) !== undefined
+        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
         : false;
 };
 
@@ -52,7 +48,7 @@ export const getTermindato = (barn: Barn): string | undefined => {
 };
 
 export const getFødselsdato = (barn: Barn): string | undefined => {
-    return isFødtBarn(barn) ? barn.fødselsdatoer[0].dato : undefined;
+    return isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
 };
 
 export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: SøkerBarn) => {
@@ -95,7 +91,7 @@ export const getAndreBarnFødtSammenMedBarnet = (
 
 export const getTittelBarnNårNavnSkalIkkeVises = (
     omsorgsovertagelsesdato: Date | undefined,
-    fødselsdatoer: string[] | undefined,
+    fødselsdatoer: Date[] | undefined,
     antallBarn: number,
     intl: IntlShape,
 ): string => {
@@ -136,11 +132,11 @@ export const formaterNavnPåBarn = (
     return `${fornavn[0]}`;
 };
 
-export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | undefined): string | undefined => {
+export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }
-    const unikeFødselsdatoer = [] as string[];
+    const unikeFødselsdatoer = [] as Date[];
     fødselsdatoer.forEach((f) => {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
         if (finnesIUnikeFødselsdatoer === undefined) {

@@ -54,9 +54,9 @@ const defaultSøkerinfo = {
 
 const defaultBarn = {
     type: BarnType.FØDT,
-    fødselsdatoer: [ISOStringToDate('2021-03-15')],
+    fødselsdatoer: ['2021-03-15'],
     antallBarn: 1,
-    datoForAleneomsorg: ISOStringToDate('2021-03-15'),
+    datoForAleneomsorg: '2021-03-15',
     dokumentasjonAvAleneomsorg: [],
 } as Barn;
 
@@ -338,8 +338,8 @@ MedAdoptertBarn.args = {
     barn: {
         type: BarnType.ADOPTERT_STEBARN,
         antallBarn: 1,
-        adopsjonsdato: ISOStringToDate('2021-10-01'),
-        fødselsdatoer: [ISOStringToDate('2021-01-01')],
+        adopsjonsdato: '2021-10-01',
+        fødselsdatoer: ['2021-01-01'],
         adoptertIUtlandet: false,
         omsorgsovertakelse: [],
     } as Barn,

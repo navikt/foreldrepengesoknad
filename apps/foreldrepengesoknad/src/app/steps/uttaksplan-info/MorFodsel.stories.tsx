@@ -140,7 +140,7 @@ MorAleneomsorgDekningsgrad100Før1Okt2021.args = {
     stønadskonto80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -160,7 +160,7 @@ MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
     stønadskonto80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -183,8 +183,8 @@ MorAleneomsorgPrematurFødsel.args = {
         fødselsdatoer: [dayjs('2023-01-25').toDate()],
         termindato: dayjs('2023-04-01').toDate(),
         antallBarn: 1,
-        fødselsdatoer: [dayjs('2021-01-11').toDate()],
-        termindato: dayjs('2021-03-11').toDate(),
+        fødselsdatoer: ['2021-01-11'],
+        termindato: '2021-03-11',
     },
     annenForelder: {
         kanIkkeOppgis: true,

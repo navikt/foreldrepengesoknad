@@ -149,7 +149,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                 skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
             },
             bareFarMedmorHarRett: false,
-            termindato,
+            termindato: ISOStringToDate(termindato),
             harAktivitetskravIPeriodeUtenUttak: false,
             førsteUttaksdagNesteBarnsSak,
         });

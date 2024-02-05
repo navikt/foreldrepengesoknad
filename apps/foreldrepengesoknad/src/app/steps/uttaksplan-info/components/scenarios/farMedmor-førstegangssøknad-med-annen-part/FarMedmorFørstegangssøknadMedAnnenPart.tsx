@@ -140,7 +140,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 antallUkerFellesperiodeFarMedmor: undefined,
             },
             bareFarMedmorHarRett: bareFarHarRett,
-            termindato,
+            termindato: ISOStringToDate(termindato),
             harAktivitetskravIPeriodeUtenUttak,
             førsteUttaksdagNesteBarnsSak,
         });

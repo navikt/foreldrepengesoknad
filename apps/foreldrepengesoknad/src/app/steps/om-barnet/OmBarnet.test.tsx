@@ -11,7 +11,7 @@ vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
 });
 
 const {
-    Default,
+    MorFødsel,
     ForAdopsjon,
     FarFødsel,
     MedmorFødsel,
@@ -30,7 +30,7 @@ describe('<OmBarnet>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
 
@@ -77,7 +77,7 @@ describe('<OmBarnet>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
@@ -93,7 +93,7 @@ describe('<OmBarnet>', () => {
     });
 
     it('skal ikke ha født barn ennå', async () => {
-        render(<Default />);
+        render(<MorFødsel />);
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
 
