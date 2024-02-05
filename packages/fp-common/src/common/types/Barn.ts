@@ -52,8 +52,8 @@ export interface AdoptertAnnetBarn extends AdoptertBarn {
 export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
 
 export interface BarnFraNesteSak {
-    familiehendelsesdato: string;
-    startdatoFørsteStønadsperiode: string;
+    familiehendelsesdato: Date;
+    startdatoFørsteStønadsperiode: Date;
     fnr: string[] | undefined;
     annenForelderFnr: string | undefined;
 }
