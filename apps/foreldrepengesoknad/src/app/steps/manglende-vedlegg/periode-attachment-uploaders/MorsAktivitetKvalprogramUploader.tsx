@@ -60,8 +60,12 @@ const MorsAktivitetKvalprogramUploader: FunctionComponent<Props> = ({
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon av mor kvalprogram</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at mor er i aktivitet i de følgende periodene</BodyLong>
+                <Label>
+                    <FormattedMessage id="manglendeVedlegg.morsAktivitetKvalprogram.label" />
+                </Label>
+                <BodyLong>
+                    <FormattedMessage id="manglendeVedlegg.morsAktivitetKvalprogram.beskrivelse" />
+                </BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>

@@ -60,10 +60,11 @@ const MorsAktivitetSykdomUtdanningEllerArbeidUploader: FunctionComponent<Props> 
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon på at mor er i arbeid, for syk eller i utdanning</Label>
+                <Label>
+                    <FormattedMessage id="manglendeVedlegg.morsAktivitetSykdomArbeidUtdannelse.label" />
+                </Label>
                 <BodyLong>
-                    Du må laste opp dokumentasjon på at mor er i arbeid, for syk eller i utdanning i de følgende
-                    periodene
+                    <FormattedMessage id="manglendeVedlegg.morsAktivitetSykdomArbeidUtdannelse.beskrivelse" />
                 </BodyLong>
                 {perioder.map((p) => {
                     return (

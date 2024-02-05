@@ -37,8 +37,12 @@ const UtsettelseUploader: FunctionComponent<Props> = ({
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon av utsettelse pga sykdom</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at du er for syk</BodyLong>
+                <Label>
+                    <FormattedMessage id="manglendeVedlegg.utsettelseMorForSyk.label" />
+                </Label>
+                <BodyLong>
+                    <FormattedMessage id="manglendeVedlegg.utsettelseMorForSyk.beskrivelse" />
+                </BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>
