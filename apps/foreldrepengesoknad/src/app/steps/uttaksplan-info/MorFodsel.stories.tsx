@@ -45,7 +45,7 @@ const uttaksplanFar = [
     },
     {
         fom: '2024-06-11',
-        tom: '2024-06-31',
+        tom: '2024-06-30',
         kontoType: 'FELLESPERIODE',
         resultat: {
             innvilget: true,

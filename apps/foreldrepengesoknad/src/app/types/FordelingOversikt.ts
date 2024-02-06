@@ -11,6 +11,10 @@ export enum FordelingFargekode {
     SØKER_FAR = 'søker-far',
     ANNEN_PART_MOR = 'annen-part-mor',
     ANNEN_PART_FAR = 'annen-part-far',
+    FELLESPERIODE_BRUKT_AV_FAR = 'fellesperiode-brukt-av-far',
+    FELLESPERIODE_BRUKT_AV_MOR = 'fellesperiode-brukt-av-mor',
+    FEDREKVOTE_BRUKT_AV_MOR = 'fedrekvote-brukt-av-mor',
+    MØDREKVOTE_BRUKT_AV_FAR = 'mødrekvote-brukt-av-far',
     IKKE_TILDELT = 'ikke-tildelt',
 }
 

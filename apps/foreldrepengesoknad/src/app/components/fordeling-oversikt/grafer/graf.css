@@ -45,28 +45,48 @@
 }
 
 .graf--søker-mor {
-    background-color: var(--data-surface-data-1, #3386e0);
-    border-color: #3386e0;
+    background-color: var(--a-data-surface-1);
+    border-color: var(--a-data-surface-1);
 }
 
 .graf--annen-part-mor {
-    background-color: var(--data-surface-data-2-subtle, #99c4dd);
-    border-color: #99c4dd;
+    background-color: var(--a-data-surface-2-subtle);
+    border-color: var(--a-data-surface-2-subtle);
 }
 
 .graf--søker-far {
-    background-color: var(--data-surface-data-5, #33aa5f);
-    border-color: #33aa5f;
+    background-color: var(--a-data-surface-5);
+    border-color: var(--a-data-surface-5);
 }
 
 .graf--annen-part-far {
-    background-color: var(--data-surface-data-5-subtle, #99dead);
-    border-color: #99dead;
+    background-color: var(--a-data-surface-5-subtle);
+    border-color: var(--a-data-surface-5-subtle);
 }
 
 .graf--fellesperiode {
-    background-color: var(--Bg-Subtle, #eceef0);
-    border-color: black;
+    background-color: var(--a-bg-subtle);
+    border-color: var(--a-border-default);
+}
+
+.graf--fellesperiode-brukt-av-far {
+    background-color: var(--a-data-surface-5-subtle);
+    border-color: var(--a-border-default);
+}
+
+.graf--fellesperiode-brukt-av-mor {
+    background-color: var(--a-data-surface-2-subtle);
+    border-color: var(--a-deepblue-500);
+}
+
+.graf--fedrekvote-brukt-av-mor {
+    background-color: var(--a-data-surface-2-subtle);
+    border-color: var(--a-green-500);
+}
+
+.graf--mødrekvote-brukt-av-far {
+    background-color: var(--a-data-surface-5-subtle);
+    border-color: var(--a-data-surface-1);
 }
 
 .graf__del-graf-box {

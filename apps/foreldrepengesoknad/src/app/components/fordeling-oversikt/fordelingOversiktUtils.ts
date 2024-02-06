@@ -179,8 +179,8 @@ const getFordelingFelles = (
     if (dagerBruktAvAnnenPart && dagerBruktAvAnnenPart > 0) {
         const varighetTekstAnnenPart = getVarighetString(dagerBruktAvAnnenPart, intl);
         const fargekodeAnnenPart = erFarEllerMedmor
-            ? FordelingFargekode.ANNEN_PART_MOR
-            : FordelingFargekode.ANNEN_PART_FAR;
+            ? FordelingFargekode.FELLESPERIODE_BRUKT_AV_MOR
+            : FordelingFargekode.FELLESPERIODE_BRUKT_AV_FAR;
         fordelingDager.push({ antallDager: dagerBruktAvAnnenPart, fargekode: fargekodeAnnenPart });
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.felles.annenForelder.del1', {
@@ -229,7 +229,7 @@ const getFordelingFelles = (
     return {
         eier: FordelingEier.Felles,
         sumDager: dagerFelles,
-        fordelingDager: fordelingDager,
+        fordelingDager,
         fordelingInfo,
     };
 };
@@ -278,7 +278,10 @@ const getFordelingFedrekvote = (
 
     if (erFarEllerMedmor && dagerFarsKvoteBruktAvMor && dagerFarsKvoteBruktAvMor > 0) {
         const varighetTekst = getVarighetString(dagerFarsKvoteBruktAvMor, intl);
-        fordelingDager.push({ antallDager: dagerFarsKvoteBruktAvMor, fargekode: FordelingFargekode.ANNEN_PART_MOR });
+        fordelingDager.push({
+            antallDager: dagerFarsKvoteBruktAvMor,
+            fargekode: FordelingFargekode.FEDREKVOTE_BRUKT_AV_MOR,
+        });
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.annenPart.brukteDagerAvDinKvote', {
                 varighetTekst,
@@ -335,7 +338,10 @@ const getFordelingMor = (
 
     if (!erFarEllerMedmor && dagerMorsKvoteBruktAvFar && dagerMorsKvoteBruktAvFar > 0) {
         const varighetTekst = getVarighetString(dagerMorsKvoteBruktAvFar, intl);
-        fordelingDager.push({ antallDager: dagerMorsKvoteBruktAvFar, fargekode: FordelingFargekode.ANNEN_PART_FAR });
+        fordelingDager.push({
+            antallDager: dagerMorsKvoteBruktAvFar,
+            fargekode: FordelingFargekode.MØDREKVOTE_BRUKT_AV_FAR,
+        });
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.annenPart.brukteDagerAvDinKvote', {
                 varighetTekst,
