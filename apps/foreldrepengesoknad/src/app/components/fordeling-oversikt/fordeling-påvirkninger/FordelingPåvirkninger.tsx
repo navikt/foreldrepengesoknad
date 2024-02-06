@@ -13,16 +13,18 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }
     const intl = useIntl();
     const bem = bemUtils('fordeling-påvirkninger');
     const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
-    const onClickHandler = () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'expand-fordeling-påvirkninger',
-        });
+    const onToggleHandler = (open: boolean) => {
+        if (open) {
+            logAmplitudeEvent('applikasjon-hendelse', {
+                app: 'foreldrepengesoknad',
+                team: 'foreldrepenger',
+                hendelse: 'expand-fordeling-påvirkninger',
+            });
+        }
     };
     return (
-        <ExpansionCard aria-label={heading}>
-            <ExpansionCard.Header onClick={onClickHandler}>
+        <ExpansionCard aria-label={heading} onToggle={onToggleHandler}>
+            <ExpansionCard.Header>
                 <ExpansionCard.Title className={bem.element('heading')}>{heading}</ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
