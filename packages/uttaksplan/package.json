@@ -15,6 +15,7 @@
         "@navikt/ds-datepicker": "^4.2.0",
         "@navikt/ds-react": "^5.15.1",
         "@navikt/fp-common": "workspace:*",
+        "@navikt/fp-metrics": "workspace:*",
         "@navikt/sif-common-formik-ds": "^0.25.0",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@types/react": "^18.2.48",

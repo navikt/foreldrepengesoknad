@@ -1,6 +1,7 @@
 import { IntlShape, useIntl } from 'react-intl';
 import { formatDate, Block, intlUtils, TidsperiodeDate, bemUtils } from '@navikt/fp-common';
 import { BodyShort, Label, Link } from '@navikt/ds-react';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 import './tidsperiodeDisplay.less';
 
@@ -51,6 +52,11 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
                     onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
                         e.preventDefault();
                         e.stopPropagation();
+                        logAmplitudeEvent('applikasjon-hendelse', {
+                            app: 'foreldrepengesoknad',
+                            team: 'foreldrepenger',
+                            hendelse: 'endrePeriodeTidsromLinkKlikk',
+                        });
                         toggleVisTidsperiode();
                     }}
                 >

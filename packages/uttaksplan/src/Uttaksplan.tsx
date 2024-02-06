@@ -37,6 +37,7 @@ import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -261,6 +262,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     const handleSlettUttaksplanModalBekreft = () => {
         setSlettUttaksplanModalOpen(false);
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'foreldrepengesoknad',
+            team: 'foreldrepenger',
+            hendelse: 'slettUttaksplan',
+        });
         handleSlettUttaksplan();
     };
 
