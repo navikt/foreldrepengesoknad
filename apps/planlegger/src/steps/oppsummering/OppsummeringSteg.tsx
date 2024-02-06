@@ -16,15 +16,17 @@ const Oppsummering = () => {
     return (
         <ContentWrapper>
             <VStack gap="10">
-                <Heading size="large">
-                    <HStack gap="5" align="center">
-                        <OppsummeringCheck />
-                        <FormattedMessage id="oppsummering.tittel" />
-                    </HStack>
-                </Heading>
+                <div className="panel-top green">
+                    <Heading size="large">
+                        <HStack gap="5" align="center">
+                            <OppsummeringCheck />
+                            <FormattedMessage id="oppsummering.tittel" />
+                        </HStack>
+                    </Heading>
+                </div>
 
                 <BodyLong size="large">
-                    <FormattedMessage id="oppsummering.ingress" />
+                    <FormattedMessage id="oppsummering.ingress" values={{ i: (msg: any) => <i>{msg}</i> }} />
                 </BodyLong>
 
                 <ExpansionCard aria-label="">
