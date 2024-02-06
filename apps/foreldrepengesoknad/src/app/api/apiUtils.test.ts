@@ -1,10 +1,4 @@
 import {
-    AnnenForelderOppgittForInnsending,
-    cleanSøknad,
-    getPeriodeVedTidspunkt,
-    getUttaksplanMedFriUtsettelsesperiode,
-} from './apiUtils';
-import {
     AnnenForelder,
     Barn,
     BarnType,
@@ -16,6 +10,7 @@ import {
     Uttaksperiode,
 } from '@navikt/fp-common';
 import { ContextDataType } from 'app/context/FpDataContext';
+import { cleanSøknad, getPeriodeVedTidspunkt, getUttaksplanMedFriUtsettelsesperiode } from './apiUtils';
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
@@ -49,8 +44,8 @@ const getAnnenForelderIkkeOppgittMock = (): AnnenForelder => {
 const getBarnMock = () => {
     return {
         type: BarnType.FØDT,
-        fødselsdatoer: ['01-01-2022'],
-        termindato: '01-02-2022',
+        fødselsdatoer: ['2022-01-01'],
+        termindato: '2022-02-01',
         fnr: ['01010111111'],
     } as FødtBarn;
 };
@@ -91,13 +86,6 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const annenForelderMock = getAnnenForelderUførMock(true, false, '2021-01-01');
     const hentData = getStateMock(annenForelderMock, barnMock, []);
     const cleanedSøknad = cleanSøknad(hentData, fødselsdato, 'nb');
-
-    it('skal bytte navn på annenForelder.erUfør til annenForelder.harMorUføretrygd', () => {
-        expect(Object.prototype.hasOwnProperty.call(cleanedSøknad.annenForelder, 'harMorUføretrygd')).toBe(true);
-        expect(Object.prototype.hasOwnProperty.call(cleanedSøknad.annenForelder, 'erUfør')).toBe(false);
-        const { harMorUføretrygd } = cleanedSøknad.annenForelder as AnnenForelderOppgittForInnsending;
-        expect(harMorUføretrygd).toBe(true);
-    });
 
     it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
         expect(Object.prototype.hasOwnProperty.call(cleanedSøknad.annenForelder, 'erForSyk')).toBe(false);

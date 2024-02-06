@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 
@@ -23,7 +22,6 @@ import {
     assertUnreachable,
     førsteOktober2021ReglerGjelder,
     guid,
-    harFødselsdato,
     isAdoptertBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
@@ -48,7 +46,7 @@ import { getTermindato } from 'app/utils/barnUtils';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
-        'erUfør' | 'harRettPåForeldrepengerINorge' | 'harOppholdtSegIEØS' | 'harRettPåForeldrepengerIEØS'
+        'erMorUfør' | 'harRettPåForeldrepengerINorge' | 'harOppholdtSegIEØS' | 'harRettPåForeldrepengerIEØS'
     > {
     harMorUføretrygd?: boolean;
     harRettPåForeldrepenger?: boolean;
@@ -203,8 +201,7 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
 const cleanBarn = (barn: Barn): BarnForInnsending => {
     if (isFødtBarn(barn)) {
         const { type, fnr, ...barnRest } = barn;
-        // @ts-ignore fiks
-        return { ...barnRest, fødselsdatoer: barnRest.fødselsdatoer.map((f) => f.dato) };
+        return barnRest;
     }
 
     if (isAdoptertBarn(barn)) {
@@ -212,8 +209,6 @@ const cleanBarn = (barn: Barn): BarnForInnsending => {
         return {
             adopsjonAvEktefellesBarn: isAdoptertStebarn(barn),
             ...barnRest,
-            // @ts-ignore fiks
-            fødselsdatoer: barnRest.fødselsdatoer.map((f) => f.dato),
         };
     }
     const { type, ...barnRest } = barn;
@@ -495,8 +490,7 @@ export const cleanEndringssøknad = (
         ),
         søker: cleanSøker(søker, søkersituasjon, locale, annenForelder),
         annenForelder: cleanAnnenForelder(annenForelder, true),
-        // @ts-ignore Fiks
-        barn: harFødselsdato(barn) ? { ...barn, fødselsdatoer: barn.fødselsdatoer.map((f) => f.dato) } : barn,
+        barn,
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         situasjon: søkersituasjon.situasjon,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,

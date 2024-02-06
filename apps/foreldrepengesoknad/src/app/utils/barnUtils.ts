@@ -1,12 +1,4 @@
-import {
-    Barn,
-    RegistrertBarn,
-    formatDate,
-    intlUtils,
-    isFødtBarn,
-    isIkkeUtfyltTypeBarn,
-    isUfødtBarn,
-} from '@navikt/fp-common';
+import { Barn, RegistrertBarn, intlUtils, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -98,7 +90,7 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
 ): string => {
     if (omsorgsovertagelsesdato !== undefined) {
         return intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
-            adopsjonsdato: formatDate(omsorgsovertagelsesdato),
+            adopsjonsdato: dayjs(omsorgsovertagelsesdato).format(DDMMMMYYY_DATE_FORMAT),
         });
     } else {
         const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
@@ -147,7 +139,7 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined
     });
 
     if (unikeFødselsdatoer.length > 1) {
-        const fødselsdatoerTekst = unikeFødselsdatoer.map((fd) => formatDate(fd));
+        const fødselsdatoerTekst = unikeFødselsdatoer.map((fd) => dayjs(fd).format(DDMMMMYYY_DATE_FORMAT));
         const førsteFødselsdaoer = fødselsdatoerTekst.slice(0, -1).join(', ');
         const sisteFødselsdato = fødselsdatoerTekst[fødselsdatoerTekst.length - 1];
         return `${førsteFødselsdaoer} og ${sisteFødselsdato}`;

@@ -100,7 +100,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                         !annenForelder.harRettPåForeldrepengerIEØS && (
                             <OppsummeringsPunkt
                                 title={intl.formatMessage(
-                                    { id: 'annenForelder.erMorUfør' },
+                                    { id: 'oppsummering.annenForelder.erMorUfør' },
                                     {
                                         navn: annenForelder.fornavn,
                                     },

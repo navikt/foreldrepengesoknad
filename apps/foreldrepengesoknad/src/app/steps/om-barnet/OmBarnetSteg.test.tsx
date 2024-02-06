@@ -443,6 +443,6 @@ describe('<OmBarnetSteg>', () => {
     it('Trillinger der en er død skal vises uten navn', async () => {
         render(<RegistrertBarnTrillingerDerEnErDød />);
         expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
-        expect(screen.getByText('Trillinger født 01.03.2023 og 02.03.2023')).toBeInTheDocument();
+        expect(screen.getByText('Trillinger født 01. mars 2023 og 02. mars 2023')).toBeInTheDocument();
     });
 });

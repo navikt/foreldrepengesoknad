@@ -1047,7 +1047,7 @@ describe('getEldsteDato', () => {
             new Date('2021-12-20'),
         ];
         const result = getEldsteDato(datoListe);
-        expect(result).toEqual(new Date('2021-11-20'));
+        expect(result).toEqual('2021-11-20');
     });
 });
 
@@ -1060,8 +1060,8 @@ describe('sorterDatoEtterEldst', () => {
         ];
         const result = sorterDatoEtterEldst(datoListe);
         expect(result.length).toBe(3);
-        expect(result[0]).toEqual(new Date('2021-11-19'));
-        expect(result[1]).toEqual(new Date('2021-11-20'));
-        expect(result[2]).toEqual(new Date('2021-11-21'));
+        expect(result[0]).toEqual('2021-11-19');
+        expect(result[1]).toEqual('2021-11-20');
+        expect(result[2]).toEqual('2021-11-21');
     });
 });

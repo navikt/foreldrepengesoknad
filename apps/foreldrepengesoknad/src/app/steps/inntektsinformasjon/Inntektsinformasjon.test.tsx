@@ -52,7 +52,6 @@ describe('<Inntektsinformasjon>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 andreInntekterSiste10Mnd: [],
-                erAleneOmOmsorg: false,
                 frilansInformasjon: undefined,
                 harHattAnnenInntektSiste10Mnd: false,
                 harJobbetSomFrilansSiste10Mnd: false,

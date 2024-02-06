@@ -52,7 +52,7 @@ export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
     return d;
 };
 
-export const getEldsteDato = (dato: Date[]) => {
+export const getEldsteDato = (dato: Date[]): string => {
     return sorterDatoEtterEldst(dato)[0];
 };
 
