@@ -21,36 +21,48 @@
     }
 
     &--green {
-        background-color: #33aa5f;
+        background-color: var(--a-data-surface-5);
         &--striped {
-            .striped(#33aa5f, #99dead);
+            .striped(var(--a-data-surface-5), var(--a-data-surface-5-subtle));
         }
     }
 
     &--lightGreen {
-        background-color: #99dead;
+        background-color: var(--a-data-surface-5-subtle);
         &--striped {
-            .striped(#99dead, #99dead);
+            .striped(var(--a-data-surface-5-subtle), var(--a-data-surface-5-subtle));
         }
     }
     &--blue {
-        background-color: #3386e0;
+        background-color: var(--a-data-surface-1);
         &--striped {
-            .striped(#3386, #99c4dd);
+            .striped(#3386, var(--a-data-surface-2-subtle));
         }
     }
 
     &--lightBlue {
-        background-color: #99c4dd;
+        background-color: var(--a-data-surface-2-subtle);
         &--striped {
-            .striped(#99c4dd,#99c4dd);
+            .striped(var(--a-data-surface-2-subtle),var(--a-data-surface-2-subtle));
         }
     }
 
     &--blueLightGreen {
-        background: repeating-linear-gradient(-45deg, #3386e0, #3386e0 50%, #99dead 50%, #99dead 100%);
+        background: repeating-linear-gradient(
+            -45deg,
+            var(--a-data-surface-1),
+            var(--a-data-surface-1) 50%,
+            var(--a-data-surface-5-subtle) 50%,
+            var(--a-data-surface-5-subtle) 100%
+        );
         &--striped {
-            background: repeating-linear-gradient(-45deg, #3386e0, #3386e0 50%, #99dead 50%, #99dead 100%);
+            background: repeating-linear-gradient(
+                -45deg,
+                var(--a-data-surface-1),
+                var(--a-data-surface-1) 50%,
+                var(--a-data-surface-5-subtle) 50%,
+                var(--a-data-surface-5-subtle) 100%
+            );
             &:before {
                 position: absolute;
                 content: '';
@@ -64,9 +76,21 @@
     }
 
     &--greenLightBlue {
-        background: repeating-linear-gradient(-45deg, #33aa5f, #33aa5f 50%, #99c4dd 50%, #99c4dd 100%);
+        background: repeating-linear-gradient(
+            -45deg,
+            var(--a-data-surface-5),
+            var(--a-data-surface-5) 50%,
+            var(--a-data-surface-2-subtle) 50%,
+            var(--a-data-surface-2-subtle) 100%
+        );
         &--striped {
-            background: repeating-linear-gradient(-45deg, #33aa5f, #33aa5f 50%, #99c4dd 50%, #99c4dd 100%);
+            background: repeating-linear-gradient(
+                -45deg,
+                var(--a-data-surface-5),
+                var(--a-data-surface-5) 50%,
+                var(--a-data-surface-2-subtle) 50%,
+                var(--a-data-surface-2-subtle) 100%
+            );
             &:before {
                 position: absolute;
                 content: '';
