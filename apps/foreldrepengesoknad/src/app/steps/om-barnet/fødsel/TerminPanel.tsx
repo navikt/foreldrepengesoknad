@@ -1,4 +1,4 @@
-import { Alert, BodyShort, GuidePanel, Heading, Link, ReadMore, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 import {
     Arbeidsforhold,
     Block,
@@ -9,9 +9,7 @@ import {
     dateToday,
     erIUke22Pluss3,
     erMindreEnn3UkerSiden,
-    hasValue,
     isFarEllerMedmor,
-    links,
 } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { Søkerrolle } from '@navikt/fp-types';
@@ -25,7 +23,7 @@ const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean =
     if (!isFarEllerMedmor(rolle)) {
         return true;
     }
-    return hasValue(termindato) ? andreAugust2022ReglerGjelder(termindato) : false;
+    return termindato ? andreAugust2022ReglerGjelder(termindato) : false;
 };
 
 interface Props {
@@ -87,20 +85,6 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                             </ReadMore>
                         )}
                     </VStack>
-                    {farMedMorSøkerPåTermin && !kanSøkePåTermin && (
-                        <GuidePanel>
-                            <FormattedMessage
-                                id="omBarnet.veileder.medMorEllerFarTermin"
-                                values={{
-                                    lenke: (
-                                        <Link href={links.papirsøknad}>
-                                            <FormattedMessage id="omBarnet.papirsøknad.lenke" />
-                                        </Link>
-                                    ),
-                                }}
-                            />
-                        </GuidePanel>
-                    )}
                 </>
             )}
             {arbeidsforhold.length === 0 && kanSøkePåTermin && (
@@ -125,7 +109,7 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                     ]}
                 />
             )}
-            {erForTidligTilÅSøkePåTermin && (
+            {(erForTidligTilÅSøkePåTermin || (farMedMorSøkerPåTermin && !kanSøkePåTermin)) && (
                 <Alert variant="warning">
                     <VStack gap="4">
                         <Heading level="3" size="small">
