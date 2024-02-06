@@ -4,6 +4,28 @@ import { capitalizeFirstLetter } from './stringUtils';
 import { Forelder, NavnPåForeldre, StønadskontoType, TilgjengeligStønadskonto } from '../types';
 import { getNavnGenitivEierform } from './personUtils';
 import intlUtils from './intlUtils';
+import dayjs from 'dayjs';
+import { Uttaksdagen } from './Uttaksdagen';
+
+export const getFiltrerteVelgbareStønadskontotyper = (
+    valgbareKontoer: StønadskontoType[],
+    periodeFom: Date | undefined,
+    familiehendelsesdato: Date,
+): StønadskontoType[] => {
+    if (!periodeFom) {
+        return valgbareKontoer;
+    }
+    const uttaksdagFamiliehendelse = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const periodenStarterFørFødsel = dayjs(periodeFom).isBefore(dayjs(uttaksdagFamiliehendelse), 'd');
+    const kontoer = periodenStarterFørFødsel
+        ? valgbareKontoer.filter(
+              (kontoType) =>
+                  kontoType === StønadskontoType.Fellesperiode || kontoType === StønadskontoType.Foreldrepenger,
+          )
+        : valgbareKontoer;
+
+    return kontoer;
+};
 
 export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>
     stønadskontoTyper
@@ -16,7 +38,6 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
                 kontoType.konto === StønadskontoType.AktivitetsfriKvote,
         )
         .map((kontoType) => kontoType.konto);
-
 export const getStønadskontoNavn = (
     intl: IntlShape,
     konto: StønadskontoType,

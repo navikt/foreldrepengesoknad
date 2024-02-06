@@ -93,6 +93,8 @@ const useMellomlagreSøknad = (
             const lagre = async () => {
                 setSkalMellomlagre(false);
 
+                navigate(currentRoute);
+
                 await mellomlagre(
                     locale,
                     getDataFromState,
@@ -101,8 +103,6 @@ const useMellomlagreSøknad = (
                     harGodkjentVilkår,
                     søknadGjelderEtNyttBarn,
                 );
-
-                navigate(currentRoute);
 
                 if (promiseRef.current) {
                     promiseRef.current();
@@ -115,8 +115,6 @@ const useMellomlagreSøknad = (
                 } else {
                     //Logg feil, men ikkje vis feilmelding til brukar
                     sendErrorMessageToSentry(error);
-
-                    navigate(currentRoute);
                 }
 
                 if (promiseRef.current) {

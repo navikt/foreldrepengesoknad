@@ -164,6 +164,10 @@ export const isUttakAvForeldrepengerFørFødsel = (periode: Periode): periode is
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 };
 
+export const isSkalIkkeHaForeldrepengerFørFødselPeriode = (periode: Periode): boolean => {
+    return isUttakAvForeldrepengerFørFødsel(periode) && periode.skalIkkeHaUttakFørTermin === true;
+};
+
 export const isUtsettelsesperiode = (periode: Periode): periode is Utsettelsesperiode => {
     return periode.type === Periodetype.Utsettelse;
 };

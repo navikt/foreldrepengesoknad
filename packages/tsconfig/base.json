@@ -3,8 +3,7 @@
     "display": "Default",
     "compilerOptions": {
         "composite": false,
-        "declaration": true,
-        "declarationMap": true,
+        "declaration": false,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "inlineSources": false,
@@ -17,7 +16,5 @@
         "strict": true,
         "useDefineForClassFields": true
     },
-    "exclude": [
-        "node_modules"
-    ]
+    "exclude": ["node_modules"]
 }
