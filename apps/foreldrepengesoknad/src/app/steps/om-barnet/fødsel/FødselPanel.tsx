@@ -1,6 +1,6 @@
-import { Radio, ReadMore, Select, VStack } from '@navikt/ds-react';
+import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 import { Arbeidsforhold, Søkersituasjon, isFarEllerMedmor } from '@navikt/fp-common';
-import { RadioGroup } from '@navikt/fp-form-hooks';
+import { RadioGroup, Select } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';

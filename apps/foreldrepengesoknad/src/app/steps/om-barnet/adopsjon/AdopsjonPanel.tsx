@@ -1,6 +1,6 @@
 import { FileIcon } from '@navikt/aksel-icons';
-import { BodyLong, Box, HStack, Radio, Select, VStack } from '@navikt/ds-react';
-import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
+import { BodyLong, Box, HStack, Radio, VStack } from '@navikt/ds-react';
+import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';

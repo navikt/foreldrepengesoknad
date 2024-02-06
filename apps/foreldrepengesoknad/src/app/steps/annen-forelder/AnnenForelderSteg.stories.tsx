@@ -1,11 +1,6 @@
-import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
-import { initAmplitude } from '@navikt/fp-metrics';
-import { SivilstandType, Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
-import MockAdapter from 'axios-mock-adapter/types';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -73,39 +68,27 @@ const Template: StoryFn<Props> = ({
         antallBarn: 1,
     },
     annenForelder,
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     mellomlagreSøknadOgNaviger = promiseAction(),
     avbrytSøknad = action('button-click'),
 }) => {
     initAmplitude();
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
-            200,
-            { data: {} },
-            {
-                location: '',
-            },
-        );
-        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
-    };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
-            <AxiosMock mock={restMock}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.OM_BARNET]: barn,
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                    }}
-                >
-                    <AnnenForelderSteg
-                        søker={søker}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
-                </FpDataContext>
-            </AxiosMock>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    [ContextDataType.OM_BARNET]: barn,
+                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                }}
+            >
+                <AnnenForelderSteg
+                    søker={søker}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={avbrytSøknad}
+                />
+            </FpDataContext>
         </MemoryRouter>
     );
 };

@@ -5,9 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import MockAdapter from 'axios-mock-adapter/types';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
 import OmBarnetSteg from './OmBarnetSteg';
 
 const promiseAction =
@@ -91,38 +89,26 @@ const Template: StoryFn<Props> = ({
     },
     barn,
     søknadGjelderEtNyttBarn = true,
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     mellomlagreSøknadOgNaviger = promiseAction(),
 }) => {
     initAmplitude();
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
-            200,
-            { data: {} },
-            {
-                location: '',
-            },
-        );
-        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
-    };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.OM_BARNET]}>
-            <AxiosMock mock={restMock}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.OM_BARNET]: barn,
-                    }}
-                >
-                    <OmBarnetSteg
-                        søkerInfo={søkerinfo}
-                        søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={action('button-click')}
-                    />
-                </FpDataContext>
-            </AxiosMock>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    [ContextDataType.OM_BARNET]: barn,
+                }}
+            >
+                <OmBarnetSteg
+                    søkerInfo={søkerinfo}
+                    søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={action('button-click')}
+                />
+            </FpDataContext>
         </MemoryRouter>
     );
 };

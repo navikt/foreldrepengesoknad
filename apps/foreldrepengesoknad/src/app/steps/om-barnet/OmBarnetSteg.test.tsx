@@ -67,6 +67,50 @@ describe('<OmBarnetSteg>', () => {
         });
     });
 
+    it('skal ha født flere barn', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        expect(screen.getByText('Hvor mange barn har du fått?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Flere barn'));
+
+        await userEvent.selectOptions(screen.getByLabelText('Antall barn'), '4');
+
+        const barnFødtInput = screen.getByLabelText('Når ble det eldste barnet født?');
+        await userEvent.type(barnFødtInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                antallBarn: 4,
+                type: 'født',
+                fødselsdatoer: [dayjs().format(ISO_DATE_FORMAT)],
+                termindato: dayjs().subtract(10, 'days').format(ISO_DATE_FORMAT),
+            },
+            key: ContextDataType.OM_BARNET,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.ANNEN_FORELDER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
     it('skal lagre route når en går til forrige steg som er søkersituasjon', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
@@ -159,6 +203,67 @@ describe('<OmBarnetSteg>', () => {
                 type: 'adoptertStebarn',
                 adopsjonsdato: dayjs().format(ISO_DATE_FORMAT),
                 fødselsdatoer: [dayjs().subtract(10, 'days').format(ISO_DATE_FORMAT)],
+            },
+            key: ContextDataType.OM_BARNET,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.ANNEN_FORELDER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal søke stebarnsadopsjon for flere barn', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        const stebarnsadopsjonInput = screen.getByLabelText('Oppgi datoen for stebarnsadopsjon');
+        await userEvent.type(stebarnsadopsjonInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Flere barn'));
+
+        await userEvent.selectOptions(screen.getByLabelText('Antall barn'), '4');
+
+        const barn1FødtInput = screen.getByLabelText('Når er det første barnet født?');
+        await userEvent.type(barn1FødtInput, dayjs().subtract(10, 'days').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        const barn2FødtInput = screen.getByLabelText('Når er det andre barnet født?');
+        await userEvent.type(barn2FødtInput, dayjs().subtract(15, 'days').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        const barn3FødtInput = screen.getByLabelText('Når er det tredje barnet født?');
+        await userEvent.type(barn3FødtInput, dayjs().subtract(20, 'days').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        const barn4FødtInput = screen.getByLabelText('Når er det fjerde barnet født?');
+        await userEvent.type(barn4FødtInput, dayjs().subtract(25, 'days').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                antallBarn: 4,
+                type: 'adoptertStebarn',
+                adopsjonsdato: dayjs().format(ISO_DATE_FORMAT),
+                fødselsdatoer: [
+                    dayjs().subtract(10, 'days').format(ISO_DATE_FORMAT),
+                    dayjs().subtract(15, 'days').format(ISO_DATE_FORMAT),
+                    dayjs().subtract(20, 'days').format(ISO_DATE_FORMAT),
+                    dayjs().subtract(25, 'days').format(ISO_DATE_FORMAT),
+                ],
             },
             key: ContextDataType.OM_BARNET,
             type: 'update',
