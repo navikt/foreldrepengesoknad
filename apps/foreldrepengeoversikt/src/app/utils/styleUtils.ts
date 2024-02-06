@@ -1,17 +1,18 @@
 import { StønadskontoType } from 'app/types/StønadskontoType';
 import { UttaksplanColor } from 'app/types/UttaksplanColor';
 
-export const getStønadskontoFarge = (konto: StønadskontoType): UttaksplanColor => {
+export const getStønadskontoFarge = (konto: StønadskontoType, erFarEllerMedmor: boolean): UttaksplanColor => {
     switch (konto) {
         case StønadskontoType.Fedrekvote:
         case StønadskontoType.AktivitetsfriKvote:
-            return UttaksplanColor.blue;
-        case StønadskontoType.Mødrekvote:
-        case StønadskontoType.Foreldrepenger:
+            return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.lightGreen;
         case StønadskontoType.ForeldrepengerFørFødsel:
-            return UttaksplanColor.purple;
+        case StønadskontoType.Mødrekvote:
+            return erFarEllerMedmor ? UttaksplanColor.lightBlue : UttaksplanColor.blue;
+        case StønadskontoType.Foreldrepenger:
+            return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.blue;
         case StønadskontoType.Fellesperiode:
-            return UttaksplanColor.purpleBlue;
+            return erFarEllerMedmor ? UttaksplanColor.greenLightBlue : UttaksplanColor.blueLightGreen;
         default:
             return UttaksplanColor.transparent;
     }

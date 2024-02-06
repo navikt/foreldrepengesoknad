@@ -1,9 +1,13 @@
 export enum UttaksplanColor {
-    'purple' = 'purple',
+    'orange' = 'orange',
     'blue' = 'blue',
+    'lightBlue' = 'lightBlue',
     'green' = 'green',
-    'purpleBlue' = 'purpleBlue',
+    'lightGreen' = 'lightGreen',
+    'blueLightGreen' = 'blueLightGreen',
+    'greenLightBlue' = 'greenLightBlue',
     'yellow' = 'yellow',
+    'white' = 'white',
     'transparent' = 'transparent',
-    'gray' = 'gray',
+    'infoBlue' = 'infoBlue',
 }

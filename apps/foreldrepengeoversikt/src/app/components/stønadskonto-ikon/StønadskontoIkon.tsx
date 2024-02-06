@@ -11,13 +11,13 @@ import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
 export interface Props {
-    erAleneOmOmsorg?: boolean;
-    erFarEllerMedmor?: boolean;
-    gradert?: boolean;
+    erFarEllerMedmor: boolean;
     konto: StønadskontoType;
     morsAktivitet: MorsAktivitet | undefined;
     navnPåForeldre: NavnPåForeldre;
     periodeResultat: PeriodeResultat | undefined;
+    erAleneOmOmsorg?: boolean;
+    gradert?: boolean;
 }
 
 const StønadskontoIkon: FunctionComponent<Props> = ({
@@ -32,7 +32,7 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
     const intl = useIntl();
 
     return (
-        <IconBox color={getStønadskontoFarge(konto)} stripes={gradert}>
+        <IconBox color={getStønadskontoFarge(konto, erFarEllerMedmor)} stripes={gradert}>
             <UttaksplanIkon
                 ikon={UttaksplanIkonKeys.uttak}
                 title={getStønadskontoForelderNavn(

@@ -151,5 +151,6 @@
     "tidslinje.navVenterPå": "Du må sende inn {dokumentasjon}",
     "periodeOversikt.ingenPerioder.visKunNåværendeOgNeste": "Du har ingen løpende perioder med foreldrepenger. Klikk på 'Se hele planen' for en oversikt over tidligere perioder med foreldrepenger.",
     "periodeOversikt.ingenPerioder.visHelePlanen": "Du har ingen perioder med foreldrepenger. ",
-    "ok": "Ok"
+    "ok": "Ok",
+    "uttaksplan.stønadskontotype.dinKvote": "Din kvote"
 }
