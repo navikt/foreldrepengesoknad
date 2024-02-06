@@ -30,6 +30,7 @@ import FødselPanel from './fødsel/FødselPanel';
 import { BarnetFormValues } from './OmBarnetFormValues';
 import ValgteRegistrerteBarn from './ValgteRegistrerteBarn';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetContextFormMapping';
+import { useMemo } from 'react';
 
 const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
@@ -137,9 +138,10 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
         return navigator.goToNextDefaultStep();
     };
 
+    const defaultValues = useMemo(() => getOmBarnetInitialValues(arbeidsforhold, omBarnet), [arbeidsforhold, omBarnet]);
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,
-        defaultValues: getOmBarnetInitialValues(arbeidsforhold, omBarnet),
+        defaultValues,
     });
 
     const fødselsdatoer = formMethods.watch('fødselsdatoer');

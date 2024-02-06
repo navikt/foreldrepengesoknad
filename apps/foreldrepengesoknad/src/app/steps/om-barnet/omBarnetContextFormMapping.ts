@@ -27,11 +27,14 @@ const mapOmDetValgteBarnetFormDataToState = (
     values: BarnetFormValues,
     barnSøktOmFørMenIkkeRegistrert: boolean,
 ): Barn => {
-    if (valgtRegistrertBarn !== undefined && situasjon === 'fødsel' && (erFødtBarn(values) || erUfødtBarn(values))) {
+    if (valgtRegistrertBarn !== undefined && situasjon === 'fødsel') {
+        console.log(erFødtBarn(values));
+        console.log(values);
         return {
             ...valgtRegistrertBarn,
             type: barnSøktOmFørMenIkkeRegistrert ? BarnType.UFØDT : BarnType.FØDT,
-            termindato: values.termindato ? values.termindato : undefined,
+            termindato:
+                (erFødtBarn(values) || erUfødtBarn(values)) && values.termindato ? values.termindato : undefined,
             fødselsdatoer: valgtRegistrertBarn.fødselsdatoer,
             antallBarn: valgtRegistrertBarn.antallBarn,
         } as Barn;
