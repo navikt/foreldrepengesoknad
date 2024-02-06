@@ -3,7 +3,7 @@
 Kildekoden til frontend-appen for ny selvbetjeningsløsning for
 svangerskapspenger.
 
-# Komme i gang
+# Komme i gang!
 
 For å kjøre opp app-en lokalt (med mock-API):
 
