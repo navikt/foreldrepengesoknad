@@ -23,7 +23,7 @@ import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/Utt
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
@@ -93,7 +93,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO,
     );
-    const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
@@ -166,16 +165,11 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
         minsterett,
-        erFarEllerMedmor,
-        erBarnetFødt,
-        familiehendelsesdatoDate!,
-        erAdopsjon,
+        søkersituasjon,
+        barn,
         true,
         navnMor,
         navnFar,
-        barn.antallBarn,
-        fødselsdato,
-        termindato,
         intl,
     );
     return (

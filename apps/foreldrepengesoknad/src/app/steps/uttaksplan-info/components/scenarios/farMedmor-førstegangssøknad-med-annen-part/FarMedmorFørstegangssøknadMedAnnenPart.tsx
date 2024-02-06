@@ -23,7 +23,7 @@ import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknade
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
@@ -41,7 +41,6 @@ import Person from '@navikt/fp-common/src/common/types/Person';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getBrukteDager } from '@navikt/uttaksplan/src/utils/brukteDagerUtils';
 import { StepButtons } from '@navikt/fp-ui';
 
 interface Props {
@@ -97,7 +96,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const erDeltUttak = true;
-    const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
         erDeltUttak,
@@ -192,14 +190,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer100DTO,
     );
     const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
-    const morBrukteDagerFellesperiode = eksisterendeSakAnnenPart?.uttaksplan
-        ? getBrukteDager(valgtMengdeStønadskonto, eksisterendeSakAnnenPart.uttaksplan, familiehendelsedatoDate!).mor
-              .dagerFellesperiode
-        : 0;
-    const morBrukteDagerFarsKvote = eksisterendeSakAnnenPart?.uttaksplan
-        ? getBrukteDager(valgtMengdeStønadskonto, eksisterendeSakAnnenPart.uttaksplan, familiehendelsedatoDate!).mor
-              .dagerAnnenForeldersKvote
-        : 0;
 
     const minsterett =
         grunnlag.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
@@ -209,20 +199,14 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const fordelingScenario = getFordelingFraKontoer(
         valgtMengdeStønadskonto,
         minsterett,
-        erFarEllerMedmor,
-        erBarnetFødt,
-        familiehendelsedatoDate!,
-        erAdopsjon,
+        søkersituasjon,
+        barn,
         false,
         navnMor,
         navnFarMedmor,
-        barn.antallBarn,
-        fødselsdato,
-        termindato,
         intl,
         false,
-        morBrukteDagerFellesperiode,
-        morBrukteDagerFarsKvote,
+        eksisterendeSakAnnenPart?.uttaksplan,
     );
 
     return (

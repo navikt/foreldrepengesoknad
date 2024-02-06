@@ -17,17 +17,44 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import Søker from 'app/context/types/Søker';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
 const søkerinfo = _søkerinfo as any;
+
+const uttaksplanFar = [
+    {
+        fom: '2024-02-07',
+        tom: '2024-02-27',
+        kontoType: 'MØDREKVOTE',
+        overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+        resultat: {
+            innvilget: true,
+            trekkerMinsterett: false,
+            trekkerDager: true,
+            årsak: 'ANNET',
+        },
+    },
+    {
+        fom: '2024-06-11',
+        tom: '2024-06-31',
+        kontoType: 'FELLESPERIODE',
+        resultat: {
+            innvilget: true,
+            trekkerMinsterett: false,
+            trekkerDager: true,
+            årsak: 'ANNET',
+        },
+    },
+] as SaksperiodeDTO[];
 
 export default {
     title: 'steps/uttaksplan-info/MorFødsel',
@@ -39,7 +66,18 @@ const Template: StoryFn<
 > = (args) => {
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
+        if (args.uttaksplanAnnenPart) {
+            apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(
+                200,
+                {
+                    perioder: args.uttaksplanAnnenPart,
+                    dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+                } as AnnenPartVedtakDTO,
+                RequestStatus.FINISHED,
+            );
+        } else {
+            apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
+        }
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
     };
@@ -152,8 +190,6 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
     barn: {
         type: BarnType.FØDT,
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2023-01-11').toDate()],
         termindato: dayjs('2023-03-11').toDate(),
     },
@@ -182,8 +218,6 @@ MorDeltUttakDekningsgrad100EtterWLB.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-12-15').toDate()],
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -210,8 +244,6 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-07-15').toDate()],
         antallBarn: 2,
-        datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -228,4 +260,33 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode = Template.bind({});
+MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args = {
+    stønadskonto100: stønadskontoDeltUttak100WLB,
+    stønadskonto80: stønadskontoDeltUttak80WLB,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2024-01-15').toDate()],
+        antallBarn: 1,
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        utenlandskFnr: false,
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+        erInformertOmSøknaden: true,
+    },
+    søker: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    uttaksplanAnnenPart: uttaksplanFar,
 };

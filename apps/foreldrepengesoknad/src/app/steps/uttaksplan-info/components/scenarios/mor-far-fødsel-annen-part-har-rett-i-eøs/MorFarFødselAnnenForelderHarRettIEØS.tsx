@@ -23,7 +23,7 @@ import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/contex
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
@@ -81,8 +81,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
-
-    const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const erDeltUttak = true;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -176,16 +174,11 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
         minsterett,
-        erFarEllerMedmor,
-        erBarnetFødt,
-        familiehendelsesdatoDate!,
-        erAdopsjon,
+        søkersituasjon,
+        barn,
         søker.erAleneOmOmsorg,
         navnMor,
         navnFarMedmor,
-        antallBarn,
-        fødselsdato,
-        termindato,
         intl,
         true,
     );

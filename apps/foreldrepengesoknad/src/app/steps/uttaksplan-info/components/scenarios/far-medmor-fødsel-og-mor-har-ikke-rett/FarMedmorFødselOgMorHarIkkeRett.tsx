@@ -30,7 +30,7 @@ import {
     getInitialFarMedmorFødselOgMorHarIkkeRettValues,
     mapFarMedmorFødselOgMorHarIkkeRettFormToState,
 } from './farMedmorFødselOgMorHarIkkeRettUtils';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import {
     FarMedmorFødselOgMorHarIkkeRettQuestionsPayload,
     farMedmorFødselOgMorHarIkkeRettQuestionsConfig,
@@ -167,7 +167,6 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         termindato,
         søkersituasjon.situasjon,
     );
-    const fødselsdato = getFødselsdato(barn);
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
@@ -183,16 +182,11 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
         minsterett,
-        erFarEllerMedmor,
-        erBarnetFødt,
-        familiehendelsesdatoDate!,
-        erAdopsjon,
+        søkersituasjon,
+        barn,
         false,
         navnMor,
         navnFarMedmor,
-        barn.antallBarn,
-        fødselsdato,
-        termindato,
         intl,
     );
     return (

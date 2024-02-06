@@ -18,7 +18,6 @@ import {
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    isFødtBarn,
 } from '@navikt/fp-common';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
@@ -89,7 +88,6 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const erBarnetFødt = isFødtBarn(barn);
     const søkerErAleneOmOmsorg = !!søker.erAleneOmOmsorg;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined ||
@@ -214,16 +212,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
         minsterett,
-        erFarEllerMedmor,
-        erBarnetFødt,
-        familiehendelsesdatoDate!,
-        erAdopsjon,
+        søkersituasjon,
+        barn,
         søker.erAleneOmOmsorg,
         navnMor,
         navnFarMedmor,
-        antallBarn,
-        undefined,
-        undefined,
         intl,
     );
     return (

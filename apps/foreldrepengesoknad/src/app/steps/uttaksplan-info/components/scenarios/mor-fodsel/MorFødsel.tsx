@@ -17,7 +17,7 @@ import {
     isFødtBarn,
     uttaksConstants,
 } from '@navikt/fp-common';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { MorFødselFormComponents, MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
@@ -75,7 +75,6 @@ const MorFødsel: FunctionComponent<Props> = ({
     const antallBarn = barn.antallBarn;
     const { dekningsgrad } = periodeMedForeldrepenger;
 
-    const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
     const erBarnetFødt = isFødtBarn(barn);
     const førsteUttaksdagNesteBarnsSak =
@@ -112,23 +111,17 @@ const MorFødsel: FunctionComponent<Props> = ({
             : tilgjengeligeStønadskontoer80DTO.minsteretter;
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const valgtStønadskonto = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
-    const ukerFellesperiodeBruktAvAnnenPart = 0; //TODO GR: er dette riktig? far kan nå søke før mor.
     const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
         minsterett,
-        erFarEllerMedmor,
-        erBarnetFødt,
-        familiehendelsesdatoDate!,
-        erAdopsjon,
+        søkersituasjon,
+        barn,
         søker.erAleneOmOmsorg,
         navnMor,
         navnFarMedmor,
-        antallBarn,
-        fødselsdato,
-        termindato,
         intl,
         annenForeldrerHarKunRettiEØS,
-        ukerFellesperiodeBruktAvAnnenPart,
+        eksisterendeSakFar?.uttaksplan,
     );
 
     const onSubmit = (values: Partial<MorFødselFormData>) => {

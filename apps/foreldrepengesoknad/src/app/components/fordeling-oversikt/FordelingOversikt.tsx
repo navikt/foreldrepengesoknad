@@ -96,7 +96,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                     );
                 })}
             </Block>
-            {annenForeldrerHarRett && antallFlerbarnsdager && antallFlerbarnsdager > 0 && (
+            {annenForeldrerHarRett && !!antallFlerbarnsdager && antallFlerbarnsdager > 0 && (
                 <FlerbarnsdagerInformasjon
                     flerbarnsDager={antallFlerbarnsdager}
                     antallBarn={antallBarn}

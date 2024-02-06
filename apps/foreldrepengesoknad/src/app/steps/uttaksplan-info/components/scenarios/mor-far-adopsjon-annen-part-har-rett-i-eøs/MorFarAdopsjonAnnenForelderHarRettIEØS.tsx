@@ -18,7 +18,6 @@ import {
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    isFødtBarn,
 } from '@navikt/fp-common';
 import { StepButtons } from '@navikt/fp-ui';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
@@ -87,7 +86,6 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const erDeltUttak = true;
-    const erBarnetFødt = isFødtBarn(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -180,16 +178,11 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const fordelingScenario = getFordelingFraKontoer(
         valgtStønadskonto,
         minsterett,
-        erFarEllerMedmor,
-        erBarnetFødt,
-        familiehendelsesdatoDate!,
-        erAdopsjon,
+        søkersituasjon,
+        barn,
         søker.erAleneOmOmsorg,
         navnMor,
         navnFarMedmor,
-        antallBarn,
-        undefined,
-        undefined,
         intl,
         true,
     );

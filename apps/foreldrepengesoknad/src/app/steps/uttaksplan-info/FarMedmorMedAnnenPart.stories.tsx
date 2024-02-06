@@ -26,6 +26,7 @@ const uttaksperiodeFedrekvote = {
     fom: '2022-12-07',
     tom: '2022-12-27',
     kontoType: 'FEDREKVOTE',
+    overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
     resultat: {
         innvilget: true,
         trekkerMinsterett: false,
