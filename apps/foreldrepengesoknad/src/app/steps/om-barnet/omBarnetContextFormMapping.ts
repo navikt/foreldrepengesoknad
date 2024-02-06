@@ -8,6 +8,7 @@ import {
     FødtBarn,
     IkkeUtfyltTypeBarn,
     Situasjon,
+    UfødtBarn,
     hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
@@ -28,13 +29,10 @@ const mapOmDetValgteBarnetFormDataToState = (
     barnSøktOmFørMenIkkeRegistrert: boolean,
 ): Barn => {
     if (valgtRegistrertBarn !== undefined && situasjon === 'fødsel') {
-        console.log(erFødtBarn(values));
-        console.log(values);
         return {
             ...valgtRegistrertBarn,
             type: barnSøktOmFørMenIkkeRegistrert ? BarnType.UFØDT : BarnType.FØDT,
-            termindato:
-                (erFødtBarn(values) || erUfødtBarn(values)) && values.termindato ? values.termindato : undefined,
+            termindato: (values as FødtBarn | UfødtBarn).termindato,
             fødselsdatoer: valgtRegistrertBarn.fødselsdatoer,
             antallBarn: valgtRegistrertBarn.antallBarn,
         } as Barn;
