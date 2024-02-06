@@ -117,6 +117,7 @@ export const mapOmBarnetFormDataToState = (
             ankomstdato: values.adoptertIUtlandet === true ? values.ankomstdato : undefined,
         };
     }
+
     throw new Error('Unreachable code');
 };
 

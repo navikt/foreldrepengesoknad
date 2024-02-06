@@ -9,6 +9,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BarnetFormValues } from '../OmBarnetFormValues';
 import FødselsdatoerFieldArray from './FødselsdatoerFieldArray';
+import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
 
 dayjs.extend(isSameOrBefore);
 
@@ -79,13 +80,13 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                             ),
                         ]}
                     >
-                        <Radio value="1">
+                        <Radio value={1}>
                             <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
                         </Radio>
-                        <Radio value="2">
+                        <Radio value={2}>
                             <FormattedMessage id="omBarnet.radiobutton.toBarn" />
                         </Radio>
-                        <Radio value="3">
+                        <Radio value={3}>
                             <FormattedMessage id="omBarnet.radiobutton.flere" />
                         </Radio>
                     </RadioGroup>
@@ -107,7 +108,7 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                     />
                 </>
             )}
-            {adopsjonAvEktefellesBarn === false && (
+            {adopsjonAvEktefellesBarn === false && !førsteOktober2021ReglerGjelder(adopsjonsdato) && (
                 <>
                     <RadioGroup
                         name="adoptertIUtlandet"

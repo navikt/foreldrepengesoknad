@@ -29,7 +29,7 @@ import AdopsjonPanel from './adopsjon/AdopsjonPanel';
 import FødselPanel from './fødsel/FødselPanel';
 import { BarnetFormValues } from './OmBarnetFormValues';
 import ValgteRegistrerteBarn from './ValgteRegistrerteBarn';
-import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
+import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetContextFormMapping';
 
 const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
