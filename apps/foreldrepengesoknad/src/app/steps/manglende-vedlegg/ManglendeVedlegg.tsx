@@ -64,6 +64,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
     const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
     const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -158,7 +159,10 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     </GuidePanel>
                 </Block>
                 <StepButtonsHookForm<ManglendeVedleggFormData>
-                    goToPreviousStep={() => navigate(SøknadRoutes.UTTAKSPLAN)}
+                    goToPreviousStep={() => {
+                        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
+                        navigate(SøknadRoutes.UTTAKSPLAN);
+                    }}
                 />
             </Form>
         </Step>
