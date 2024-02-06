@@ -19,10 +19,18 @@ const Aleneforsørger: FunctionComponent = () => {
                     ),
                 ]}
             >
-                <Radio value={true} description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}>
+                <Radio
+                    value={true}
+                    description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}
+                    className="panel green"
+                >
                     <FormattedMessage id="arbeid.jobber" />
                 </Radio>
-                <Radio value={false} description={intl.formatMessage({ id: 'arbeid.jobberIkke.beskrivelseDeg' })}>
+                <Radio
+                    value={false}
+                    description={intl.formatMessage({ id: 'arbeid.jobberIkke.beskrivelseDeg' })}
+                    className="panel green"
+                >
                     <FormattedMessage id="arbeid.jobberIkke" />
                 </Radio>
             </RadioGroup>

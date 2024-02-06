@@ -1,4 +1,4 @@
-import { Box, Heading, Radio, VStack } from '@navikt/ds-react';
+import { Heading, Radio, VStack } from '@navikt/ds-react';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
@@ -43,26 +43,26 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                 ),
                             ]}
                         >
-                            <Radio value={SøkersituasjonEnum.MOR_OG_FAR}>
+                            <Radio value={SøkersituasjonEnum.MOR_OG_FAR} className="margin-bottom-2 panel green">
                                 <FormattedMessage id="hvem.morOgFar" />
                             </Radio>
-                            <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
+                            <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR} className="margin-bottom-2 panel green">
                                 <FormattedMessage id="hvem.morOgMedmor" />
                             </Radio>
-                            <Radio value={SøkersituasjonEnum.FAR_OG_FAR}>
+                            <Radio value={SøkersituasjonEnum.FAR_OG_FAR} className="margin-bottom-2 panel green">
                                 <FormattedMessage id="hvem.farOgFar" />
                             </Radio>
-                            <Radio value={SøkersituasjonEnum.MOR}>
+                            <Radio value={SøkersituasjonEnum.MOR} className="margin-bottom-2 panel green">
                                 <FormattedMessage id="hvem.bareMor" />
                             </Radio>
-                            <Radio value={SøkersituasjonEnum.FAR}>
+                            <Radio value={SøkersituasjonEnum.FAR} className="margin-bottom-2 panel green">
                                 <FormattedMessage id="hvem.bareFar" />
                             </Radio>
                         </RadioGroup>
                     </VStack>
                     {planleggerType === SøkersituasjonEnum.MOR_OG_FAR && (
                         <VStack gap="5">
-                            <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
+                            <div className="panel green">
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.mor' })}
                                     name="navnPåMor"
@@ -74,8 +74,8 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </Box>
-                            <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
+                            </div>
+                            <div className="panel green">
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.far' })}
                                     name="navnPåFar"
@@ -87,12 +87,12 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </Box>
+                            </div>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR && (
                         <VStack gap="5">
-                            <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
+                            <div className="panel green">
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.mor' })}
                                     name="navnPåMor"
@@ -104,8 +104,8 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </Box>
-                            <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
+                            </div>
+                            <div className="panel green">
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.medmor' })}
                                     name="navnPåMedmor"
@@ -117,12 +117,12 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </Box>
+                            </div>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.FAR_OG_FAR && (
                         <VStack gap="5">
-                            <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
+                            <div className="panel green">
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.far' })}
                                     name="navnPåFar"
@@ -134,8 +134,8 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </Box>
-                            <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
+                            </div>
+                            <div className="panel green">
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.far' })}
                                     name="navnPåMedfar"
@@ -147,12 +147,12 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </Box>
+                            </div>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.MOR && (
                         <VStack gap="5">
-                            <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
+                            <div className="panel green">
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.mor' })}
                                     name="navnPåMor"
@@ -164,12 +164,12 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </Box>
+                            </div>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.FAR && (
                         <VStack gap="5">
-                            <Box padding="4" background="surface-alt-3-subtle" borderRadius="xlarge">
+                            <div className="panel green">
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.far' })}
                                     name="navnPåFar"
@@ -181,7 +181,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </Box>
+                            </div>
                         </VStack>
                     )}
                     <VStack gap="20">

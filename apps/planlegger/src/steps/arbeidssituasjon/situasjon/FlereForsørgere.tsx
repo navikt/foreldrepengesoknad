@@ -7,7 +7,7 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 
-const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
+export const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
     if (isMorOgMedmor(hvemPlanlegger)) {
         return [hvemPlanlegger.navnPåMor, hvemPlanlegger.navnPåMedmor];
     }
@@ -61,6 +61,7 @@ const FlereForsørgere: FunctionComponent = () => {
                                 navn: navn[0],
                             },
                         )}
+                        className="panel green"
                     >
                         <FormattedMessage id="arbeid.jobber" />
                     </Radio>
@@ -73,6 +74,7 @@ const FlereForsørgere: FunctionComponent = () => {
                                 navn: navn[0],
                             },
                         )}
+                        className="panel green"
                     >
                         <FormattedMessage id="arbeid.jobberIkke" />
                     </Radio>
@@ -97,6 +99,7 @@ const FlereForsørgere: FunctionComponent = () => {
                                 navn: navn[1],
                             },
                         )}
+                        className="panel green"
                     >
                         <FormattedMessage id="arbeid.jobber" />
                     </Radio>
@@ -107,6 +110,7 @@ const FlereForsørgere: FunctionComponent = () => {
 
                             { navn: navn[1] },
                         )}
+                        className="panel green"
                     >
                         <FormattedMessage id="arbeid.jobberIkke" />
                     </Radio>
