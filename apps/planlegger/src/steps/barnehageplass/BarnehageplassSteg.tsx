@@ -7,7 +7,6 @@ import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDett
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { date1YearAgo } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { isAlene } from 'types/HvemPlanlegger';
@@ -21,12 +20,21 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
 
+    const barnehagelovenTekst =
+        'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/';
+
     const barnehageStartdato = () => {
-        if (erFødt && dayjs(barnet.fødselsdato).isAfter(date1YearAgo, 'day')) {
-            return dayjs(barnet.fødselsdato).add(1, 'year').add(4, 'days').format(DDMMYYYY_DATE_FORMAT);
-        }
-        if (erIkkeFødt && dayjs(barnet.termindato).isAfter(date1YearAgo, 'day')) {
-            return dayjs(barnet.termindato).add(1, 'year').add(4, 'days').format(DDMMYYYY_DATE_FORMAT);
+        if (erFødt || erIkkeFødt) {
+            const dato = erIkkeFødt ? barnet.termindato : barnet.fødselsdato;
+
+            if (dayjs(dato).month() < 8)
+                return dayjs(dato).startOf('year').add(1, 'year').add(7, 'months').format('MMMM YYYY');
+
+            if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11)
+                return dayjs(dato).add(1, 'year').format('MMMM YYYY');
+
+            if (dayjs(dato).month() === 11)
+                return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM YYYY');
         }
         return 'undefined';
     };
@@ -70,6 +78,16 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                             <FormattedMessage
                                                 id="barnehageplass.datoTekst"
                                                 values={{
+                                                    a: (msg: any) => (
+                                                        <a
+                                                            href={barnehagelovenTekst}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </a>
+                                                    ),
                                                     dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
                                                 }}
                                             />
@@ -77,7 +95,19 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                         {erIkkeFødt && (
                                             <FormattedMessage
                                                 id="barnehageplass.datoTekstTermin"
-                                                values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
+                                                values={{
+                                                    a: (msg: any) => (
+                                                        <a
+                                                            href={barnehagelovenTekst}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </a>
+                                                    ),
+                                                    dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT),
+                                                }}
                                             />
                                         )}
                                     </BodyLong>
@@ -154,6 +184,16 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                             <FormattedMessage
                                                 id="barnehageplass.datoTekstDeg"
                                                 values={{
+                                                    a: (msg: any) => (
+                                                        <a
+                                                            href={barnehagelovenTekst}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </a>
+                                                    ),
                                                     dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
                                                 }}
                                             />
@@ -161,7 +201,19 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                         {erIkkeFødt && (
                                             <FormattedMessage
                                                 id="barnehageplass.datoTekstTerminDeg"
-                                                values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
+                                                values={{
+                                                    a: (msg: any) => (
+                                                        <a
+                                                            href={barnehagelovenTekst}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </a>
+                                                    ),
+                                                    dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT),
+                                                }}
                                             />
                                         )}{' '}
                                     </BodyLong>

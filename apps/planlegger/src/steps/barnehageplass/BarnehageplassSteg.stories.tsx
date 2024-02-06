@@ -35,22 +35,8 @@ const Template: StoryFn<{
     );
 };
 
-export const FlereForsørgereBarnErFødt = Template.bind({});
-FlereForsørgereBarnErFødt.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
-    },
-    omBarnet: {
-        erBarnetFødt: true,
-        erFødsel: true,
-        fødselsdato: '2021-01-01',
-    },
-};
-
-export const FlereForsørgereTermin = Template.bind({});
-FlereForsørgereTermin.args = {
+export const FlereForsørgereBarnTerminDesemberStartAugustOmToÅr = Template.bind({});
+FlereForsørgereBarnTerminDesemberStartAugustOmToÅr.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         navnPåFar: 'Espen Utvikler',
@@ -59,12 +45,26 @@ FlereForsørgereTermin.args = {
     omBarnet: {
         erBarnetFødt: false,
         erFødsel: true,
-        termindato: '2021-01-01',
+        termindato: '2024-12-01',
     },
 };
 
-export const AleneforsørgerBarnErFødt = Template.bind({});
-AleneforsørgerBarnErFødt.args = {
+export const FlereForsørgereBarnFødtSeptemberStartSeptember = Template.bind({});
+FlereForsørgereBarnFødtSeptemberStartSeptember.args = {
+    hvemPlanlegger: {
+        navnPåFar: 'Espen Utvikler',
+        navnPåMor: 'Klara Utvikler',
+        type: SøkersituasjonEnum.MOR_OG_FAR,
+    },
+    omBarnet: {
+        erBarnetFødt: true,
+        erFødsel: true,
+        fødselsdato: '2024-09-01',
+    },
+};
+
+export const AleneforsørgerBarnFødtJanuarStartAugust = Template.bind({});
+AleneforsørgerBarnFødtJanuarStartAugust.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
@@ -72,19 +72,6 @@ AleneforsørgerBarnErFødt.args = {
     omBarnet: {
         erBarnetFødt: true,
         erFødsel: true,
-        fødselsdato: '2021-01-01',
-    },
-};
-
-export const AleneforsørgerTermin = Template.bind({});
-AleneforsørgerTermin.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR,
-    },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2021-01-01',
+        fødselsdato: '2024-01-01',
     },
 };
