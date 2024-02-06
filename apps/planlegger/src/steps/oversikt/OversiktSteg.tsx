@@ -1,4 +1,4 @@
-import { BodyShort, Box, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -9,21 +9,53 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { isAlene } from 'types/HvemPlanlegger';
 import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
+import BlåSirkel from 'components/ikoner/BlåSirkel';
+import Hjerte from 'components/ikoner/Hjerte';
+import RosaSirkel from 'components/ikoner/RosaSirkel';
+import { PeriodeEnum } from 'types/Periode';
 
 const OversiktSteg = () => {
     const navigate = useNavigate();
     const navigator = usePlanleggerNavigator();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const valgtPeriode = notEmpty(useContextGetData(ContextDataType.PERIODE));
 
     return (
         <ContentWrapper>
             <VStack gap="10">
-                <Heading size="large" spacing>
-                    <FormattedMessage id="oversikt.tittel" />
-                </Heading>
                 {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
                 {isAlene(hvemPlanlegger) && <Aleneforsørger />}
+                <VStack gap="2">
+                    <HStack gap="32">
+                        <HStack gap="5" align="center">
+                            <BlåSirkel />
+                            <BodyShort>
+                                {valgtPeriode.periode === PeriodeEnum.HUNDRE && (
+                                    <FormattedMessage id="ukerForeldrepenger.100" />
+                                )}
+                                {valgtPeriode.periode === PeriodeEnum.ÅTTI && (
+                                    <FormattedMessage id="ukerForeldrepenger.80" />
+                                )}
+                            </BodyShort>
+                        </HStack>
 
+                        <HStack gap="5" align="center">
+                            <Hjerte />
+                            <BodyShort>
+                                <FormattedMessage id="termindatoIkontekst" />
+                            </BodyShort>
+                        </HStack>
+                    </HStack>
+
+                    <HStack gap="4">
+                        <HStack gap="5" align="center">
+                            <RosaSirkel />
+                            <BodyShort>
+                                <FormattedMessage id="barnehagestartIkontekst" />
+                            </BodyShort>
+                        </HStack>
+                    </HStack>
+                </VStack>
                 <VStack gap="10">
                     <VStack gap="2">
                         <Heading size="small" spacing>
