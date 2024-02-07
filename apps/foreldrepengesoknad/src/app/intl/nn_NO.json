@@ -401,6 +401,7 @@
     "manglendeVedlegg.morsAktivitetIntroprogram.beskrivelse": "Du må laste opp dokumentasjon på at mor er i introduksjonsprogrammet i de følgende periodene",
     "manglendeVedlegg.utsettelseMorForSyk.label": "Dokumentasjon av utsettelse på grunn av sykdom",
     "manglendeVedlegg.utsettelseMorForSyk.beskrivelse": "Du må laste opp dokumentasjon på at du er for syk til å ta deg av barnet",
+    "manglendeVedlegg.størrelse": "Fil kan ikkje vera større enn 9MB og kan vera i formata pdf, png og jpg.",
     "oppsummering.barn.søknadenGjelder": "Søknaden gjeld",
     "oppsummering.barn.termindato": "Termindato",
     "oppsummering.barn.fødseldato": "Fødselsdato",
@@ -977,14 +978,12 @@
     "uttaksplan.veileder.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikkje vere lengre enn {maxLength} tegn.",
     "vedlagtdokumentasjon": "Vedlagd dokumentasjon",
     "Oppsummering.Forrige": "Forrige steg",
-
     "DekningsgradForm.InformasjonPrematurukerHeader": "{soker} får lenger periode med foreldrepengar sidan barnet er født før veke 33",
     "DekningsgradForm.InformasjonPrematuruker": "Perioden blir forlenga med like mange veker og dagar som barnet er født før termin. For dykk blir det {uker} veker og {dager} dagar",
     "DekningsgradForm.InformasjonToBarn": "{sokerStorBokstav} får lenger periode med foreldrepengar sidan {soker} skal ha tvillingar",
     "DekningsgradForm.InformasjonFlereEnnToBarn": "{sokerStorBokstav} får lenger periode med foreldrepengar sidan {soker} skal ha fleire barn",
     "DekningsgradForm.InformasjonFlerbarnUker": "Perioden blir forlenga med {uker100} veker om {soker} vel 100% foreldrepengar eller {uker80} veker om {soker} vel 80% foreldrepengar.",
     "DekningsgradForm.MåOppgiDekningsgrad": "Du må oppgje kor lang periode {soker} vil ha",
-
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dykk har valgt {uker} med {dekningsgrad}% foreldrepengar",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette vart valgt av {navn} i søknaden hennar, og det kan ikkje endras av deg.",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHans": "Dette vart valgt av {navn} i søknaden hans, og det kan ikkje endras av deg."

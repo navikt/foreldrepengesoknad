@@ -85,7 +85,7 @@ const MorsAktivitetKvalprogramUploader: FunctionComponent<Props> = ({
                 })}
             </div>
             <BodyLong>
-                <FormattedMessage id="manglendeVedlegg.storrelse" />
+                <FormattedMessage id="manglendeVedlegg.størrelse" />
             </BodyLong>
             <FileUploader
                 attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
