@@ -23,7 +23,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }
         }
     };
     return (
-        <ExpansionCard aria-label={heading} onToggle={onToggleHandler}>
+        <ExpansionCard size="small" title-size="small" aria-label={heading} onToggle={onToggleHandler}>
             <ExpansionCard.Header>
                 <ExpansionCard.Title className={bem.element('heading')}>{heading}</ExpansionCard.Title>
             </ExpansionCard.Header>
