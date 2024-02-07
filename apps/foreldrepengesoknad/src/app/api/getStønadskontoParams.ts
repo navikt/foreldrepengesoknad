@@ -1,14 +1,18 @@
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { TilgjengeligeStønadskontoerParams } from './api';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import {
     AnnenForelder,
     Barn,
+    BarnFraNesteSak,
     Dekningsgrad,
+    EksisterendeSak,
     ISOStringToDate,
-    Søkersituasjon,
     andreAugust2022ReglerGjelder,
+    formaterDato,
     getErMorUfør,
+    getFarMedmorErAleneOmOmsorg,
+    getMorErAleneOmOmsorg,
+    hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
@@ -16,6 +20,10 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+import Søker from 'app/context/types/Søker';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {
@@ -57,7 +65,7 @@ const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string)
     return undefined;
 };
 
-export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
+const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     termindatoSaksgrunnlag?: string,
     termindatoSaksgrunnlagAnnenPart?: string,
 ) => {
@@ -80,37 +88,97 @@ export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     return antallBarnSaksgrunnlag;
 };
 
+const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
+    return hasValue(dato) ? formaterDato(dato, datoformat) : undefined;
+};
+
 const getStønadskontoParams = (
-    dekningsgrad: Dekningsgrad,
     barn: Barn,
     annenForelder: AnnenForelder,
-    søkersituasjon: Søkersituasjon,
-    farHarAleneomsorg: boolean,
-    morHarAleneomsorg: boolean,
-    familieHendelseDatoNesteSak: string | undefined,
-    antallBarn: number,
-    oppgittTermindato?: string,
-): TilgjengeligeStønadskontoerParams => {
+    søkersituasjon: SøkersituasjonFp,
+    søker: Søker,
+    barnFraNesteSak?: BarnFraNesteSak,
+    annenPartsVedtak?: AnnenPartVedtakDTO,
+    eksisterendeSak?: EksisterendeSak,
+) => {
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
+        erFarEllerMedmor,
+        søker.erAleneOmOmsorg,
+        annenForelder,
+    );
+
+    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, søker.erAleneOmOmsorg, annenForelder);
+
+    const familieHendelseDatoNesteSak = barnFraNesteSak?.familiehendelsesdato;
+
+    const førsteUttaksdagNesteBarnsSak =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+
+    const eksisterendeVedtakAnnenPart = mapAnnenPartsEksisterendeSakFromDTO(
+        annenPartsVedtak,
+        barn,
+        erFarEllerMedmor,
+        getFamiliehendelsedato(barn),
+        førsteUttaksdagNesteBarnsSak,
+    );
+
+    const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
+        barn.antallBarn,
+        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
+    );
+
+    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        eksisterendeSak?.grunnlag.termindato,
+        eksisterendeVedtakAnnenPart?.grunnlag.termindato,
+    );
+
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    return {
-        antallBarn: antallBarn.toString(),
-        startdatoUttak: getFamiliehendelsedato(barn),
-        dekningsgrad: dekningsgrad,
-        farHarRettINorge: getFarHarRettINorge(erFarMedmor, annenForelder),
-        morHarRettINorge: getMorHarRettINorge(erFarMedmor, annenForelder),
+
+    const fpUttakServiceDateFormat = 'YYYYMMDD';
+
+    const params = {
+        farHarRett: getFarHarRettINorge(erFarMedmor, annenForelder),
+        morHarRett: getMorHarRettINorge(erFarMedmor, annenForelder),
         harAnnenForelderTilsvarendeRettEØS: getAnnenForelderHarRettIEØS(annenForelder),
-        morHarAleneomsorg,
-        farHarAleneomsorg,
-        fødselsdato: isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
-        omsorgsovertakelsesdato:
+        morHarAleneomsorg: morErAleneOmOmsorg || false,
+        farHarAleneomsorg: farMedmorErAleneOmOmsorg || false,
+        antallBarn: saksgrunnlagsAntallBarn,
+        fødselsdato: formaterStønadskontoParamsDatoer(
+            isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
+            fpUttakServiceDateFormat,
+        ),
+        termindato: formaterStønadskontoParamsDatoer(
+            getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
+            fpUttakServiceDateFormat,
+        ),
+        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(
             isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,
-        termindato: getTermindatoSomSkalBrukes(barn, oppgittTermindato),
+            fpUttakServiceDateFormat,
+        ),
+        startdatoUttak: formaterStønadskontoParamsDatoer(getFamiliehendelsedato(barn), fpUttakServiceDateFormat),
         minsterett: andreAugust2022ReglerGjelder(familiehendelsesdato!),
         erMor: !søkerErFarEllerMedmor,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
-        familieHendelseDatoNesteSak: familieHendelseDatoNesteSak,
+
+        familieHendelseDatoNesteSak: formaterStønadskontoParamsDatoer(
+            dateToISOString(familieHendelseDatoNesteSak),
+            fpUttakServiceDateFormat,
+        ),
+    };
+
+    return {
+        stønadskontoParams100: {
+            ...params,
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        stønadskontoParams80: {
+            ...params,
+            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        },
     };
 };
 

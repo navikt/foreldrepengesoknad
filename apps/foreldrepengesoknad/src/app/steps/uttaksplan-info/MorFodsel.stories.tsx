@@ -1,7 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
 
@@ -19,9 +18,12 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import Søker from 'app/context/types/Søker';
 import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -31,12 +33,12 @@ const søkerinfo = _søkerinfo as any;
 export default {
     title: 'steps/uttaksplan-info/MorFødsel',
     component: UttaksplanInfo,
-    decorators: [withRouter],
 };
 
-const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder; barn: Barn; søker: Søker }> = (
-    args,
-) => {
+const Template: StoryFn<
+    UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; annenForelder: AnnenForelder; barn: Barn; søker: Søker }
+> = (args) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
@@ -44,31 +46,59 @@ const Template: StoryFn<UttaksplanInfoTestData & { annenForelder: AnnenForelder;
     };
 
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: {
-                        situasjon: 'fødsel',
-                        rolle: 'mor',
-                    },
-                    [ContextDataType.OM_BARNET]: args.barn,
-                    [ContextDataType.SØKER]: args.søker,
-                    [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
-                }}
-            >
-                <UttaksplanInfo
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
-                    erEndringssøknad={false}
-                    mellomlagreSøknadOgNaviger={() => Promise.resolve()}
-                    avbrytSøknad={() => undefined}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            situasjon: 'fødsel',
+                            rolle: 'mor',
+                        },
+                        [ContextDataType.OM_BARNET]: args.barn,
+                        [ContextDataType.SØKER]: args.søker,
+                        [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                            dekningsgrad: args.dekningsgrad,
+                        },
+                    }}
+                >
+                    <UttaksplanInfo
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        erEndringssøknad={false}
+                        mellomlagreSøknadOgNaviger={() => Promise.resolve()}
+                        avbrytSøknad={() => undefined}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 
-export const UttaksplanMedAleneomsorg = Template.bind({});
-UttaksplanMedAleneomsorg.args = {
+export const UttaksplanMedAleneomsorgDekningsgrad100 = Template.bind({});
+UttaksplanMedAleneomsorgDekningsgrad100.args = {
+    stønadskonto100,
+    stønadskonto80,
+    søkerinfo,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        antallBarn: 1,
+        datoForAleneomsorg: new Date(),
+    },
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    søker: {
+        erAleneOmOmsorg: true,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
+
+export const UttaksplanMedAleneomsorgDekningsgrad80 = Template.bind({});
+UttaksplanMedAleneomsorgDekningsgrad80.args = {
     stønadskonto100,
     stønadskonto80,
     søkerinfo,
@@ -87,10 +117,11 @@ UttaksplanMedAleneomsorg.args = {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
-export const UttaksplanMedPrematurFødsel = Template.bind({});
-UttaksplanMedPrematurFødsel.args = {
+export const UttaksplanMedPrematurFødselDekningsgrad100 = Template.bind({});
+UttaksplanMedPrematurFødselDekningsgrad100.args = {
     stønadskonto100: stønadskontoPrematurUker100,
     stønadskonto80: stønadskontoPrematurUker80,
     barn: {
@@ -110,10 +141,11 @@ UttaksplanMedPrematurFødsel.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanMedDeltUttak = Template.bind({});
-UttaksplanMedDeltUttak.args = {
+export const UttaksplanMedDeltUttakDekningsgrad100 = Template.bind({});
+UttaksplanMedDeltUttakDekningsgrad100.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
@@ -136,10 +168,11 @@ UttaksplanMedDeltUttak.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanMedFlerbarnsukerTvillinger = Template.bind({});
-UttaksplanMedFlerbarnsukerTvillinger.args = {
+export const UttaksplanMedFlerbarnsukerTvillingerDekningsgrad100 = Template.bind({});
+UttaksplanMedFlerbarnsukerTvillingerDekningsgrad100.args = {
     stønadskonto100: stønadskontoFlerbarnsuker100,
     stønadskonto80: stønadskontoFlerbarnsuker80,
     barn: {
@@ -162,4 +195,5 @@ UttaksplanMedFlerbarnsukerTvillinger.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };

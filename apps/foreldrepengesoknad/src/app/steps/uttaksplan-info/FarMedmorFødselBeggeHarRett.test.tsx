@@ -5,24 +5,16 @@ import * as stories from './FarMedmorFodselBeggeHarRett.stories';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
-const { UttaksplanInfoFarMedmorFødselBeggeHarRett, UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB } =
-    composeStories(stories);
+const {
+    UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad100,
+    UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB,
+} = composeStories(stories);
 
 describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 80', async () => {
-        render(<UttaksplanInfoFarMedmorFødselBeggeHarRett />);
+        render(<UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad100 />);
 
-        expect(
-            await screen.findByText(
-                'Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i dfgs søknad.',
-            ),
-        ).toBeInTheDocument();
-
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('59 uker med 80 prosent foreldrepenger'));
-        expect(screen.getByText('3 + 19 uker')).toBeInTheDocument();
+        expect(await screen.findByText('3 + 19 uker')).toBeInTheDocument();
 
         expect(screen.getByText('18 uker')).toBeInTheDocument();
         expect(screen.getByText('19 uker')).toBeInTheDocument();
@@ -46,22 +38,12 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 100, og siden WLB ikke gjeder, spørre om mors siste dag ', async () => {
         MockDate.set(new Date('2022-08-01'));
 
-        render(<UttaksplanInfoFarMedmorFødselBeggeHarRett />);
+        render(<UttaksplanInfoFarMedmorFødselBeggeHarRettDekningsgrad100 />);
 
-        expect(
-            await screen.findByText(
-                'Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i dfgs søknad.',
-            ),
-        ).toBeInTheDocument();
+        expect(await screen.findByText('3 + 19 uker')).toBeInTheDocument();
 
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
-        expect(screen.getByText('3 + 15 uker')).toBeInTheDocument();
-
-        expect(screen.getByText('16 uker')).toBeInTheDocument();
-        expect(screen.getByText('15 uker')).toBeInTheDocument();
+        expect(screen.getByText('18 uker')).toBeInTheDocument();
+        expect(screen.getByText('19 uker')).toBeInTheDocument();
 
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
         expect(screen.getByText('Når er dfg siste dag med foreldrepenger?')).toBeInTheDocument();
@@ -84,17 +66,8 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
     it('hvis WLB gjelder, skal ikke spørre far om mors siste dag', async () => {
         MockDate.set(new Date('2022-08-02'));
         render(<UttaksplanInfoFarMedmorFødselBeggeHarRettFødselEtterWLB />);
-        expect(
-            await screen.findByText(
-                'Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i dfgs søknad.',
-            ),
-        ).toBeInTheDocument();
 
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
-        expect(screen.getByText('Hvor lang periode med foreldrepenger har dere valgt?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('49 uker med 100 prosent foreldrepenger'));
-        expect(screen.getByText('3 + 15 uker')).toBeInTheDocument();
+        expect(await screen.findByText('3 + 15 uker')).toBeInTheDocument();
 
         expect(screen.getByText('16 uker')).toBeInTheDocument();
         expect(screen.getByText('15 uker')).toBeInTheDocument();

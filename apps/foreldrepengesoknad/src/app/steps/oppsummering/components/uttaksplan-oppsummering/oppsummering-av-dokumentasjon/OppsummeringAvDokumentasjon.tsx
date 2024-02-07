@@ -1,4 +1,4 @@
-import { intlUtils, isAttachmentWithError } from '@navikt/fp-common';
+import { isAttachmentWithError } from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import KompleksFeltoppsummering from '../kompleks-feltoppsummering/KompleksFeltoppsummering';
@@ -31,13 +31,15 @@ const OppsummeringAvDokumentasjon: React.FunctionComponent<Props> = (props) => {
     return (
         <KompleksFeltoppsummering
             className="oppsummeringAvDokumentasjon"
-            ledetekst={ledetekst || intlUtils(intl, 'vedlagtdokumentasjon')}
+            ledetekst={ledetekst || intl.formatMessage({ id: 'vedlagtdokumentasjon' })}
         >
             {vedlegg && vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)).length > 0 ? (
                 <div>{renderListOfAttachmentPreviewLinks()}</div>
             ) : (
                 <div>
-                    <Tag variant="warning">{intlUtils(intl, 'oppsummering.andreInntekter.dokumentasjon.mangler')}</Tag>
+                    <Tag variant="warning">
+                        {intl.formatMessage({ id: 'oppsummering.andreInntekter.dokumentasjon.mangler' })}
+                    </Tag>
                 </div>
             )}
         </KompleksFeltoppsummering>

@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './Frilans.stories';
 import dayjs from 'dayjs';
+import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 
 const { Default } = composeStories(stories);
 
@@ -19,7 +21,10 @@ describe('<Arbeid som frilanser>', () => {
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
-        render(<Default />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
         expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
@@ -34,6 +39,27 @@ describe('<Arbeid som frilanser>', () => {
 
         expect(screen.queryByText('Du må oppgi startdatoen for behov for tilrettelegging.')).not.toBeInTheDocument();
         expect(screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                jobberFremdelesSomFrilans: true,
+                oppstart: '2023-12-30',
+            },
+            key: ContextDataType.FRILANS,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: SøknadRoutes.VELG_ARBEID,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('validering av dato på feil format', async () => {

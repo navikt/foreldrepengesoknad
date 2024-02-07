@@ -13,16 +13,6 @@ import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from './arbeidsforholdUtils';
 
-export const getValgtTilrettelegging = (
-    allTilretteleggingOptions: Tilrettelegging[],
-    valgtTilrettelegging: string[],
-) => {
-    const selectedTilrettelegging = allTilretteleggingOptions.filter((o) =>
-        valgtTilrettelegging.find((t) => t === o.id),
-    );
-    return selectedTilrettelegging;
-};
-
 const mapTilretteleggingTilPeriode = (
     tilrettelegging: Tilrettelegging,
     type: Tilretteleggingstype,

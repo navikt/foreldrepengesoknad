@@ -8,10 +8,9 @@ import './stepFooter.less';
 interface Props {
     onAvbrytOgFortsettSenere?: () => void;
     onAvbrytOgSlett?: () => void;
-    supportsTempSaving?: boolean;
 }
 
-function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett, supportsTempSaving }: Props) {
+function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
     const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
 
     const bem = bemUtils('stepFooter');
@@ -24,7 +23,6 @@ function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett, supportsTempSav
                     setIsOpen={setAvsluttIsOpen}
                     onAvbrytOgFortsettSenere={onAvbrytOgFortsettSenere}
                     onAvbrytOgSlett={onAvbrytOgSlett}
-                    supportsTempSaving={supportsTempSaving}
                 />
                 <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
                     Avslutt

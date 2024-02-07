@@ -24,7 +24,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(4);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 iNorgeNeste12Mnd: true,
@@ -34,6 +34,16 @@ describe('<UtenlandsoppholdSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: undefined,
+            key: ContextDataType.UTENLANDSOPPHOLD_SENERE,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
             data: SøknadRoutes.INNTEKTSINFORMASJON,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
@@ -56,7 +66,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 iNorgeNeste12Mnd: true,
@@ -66,6 +76,11 @@ describe('<UtenlandsoppholdSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.UTENLANDSOPPHOLD_SENERE,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
@@ -88,7 +103,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 iNorgeNeste12Mnd: false,
@@ -98,6 +113,11 @@ describe('<UtenlandsoppholdSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',

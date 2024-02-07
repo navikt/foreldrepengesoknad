@@ -26,6 +26,7 @@ import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/comm
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 
 import './periodeliste.less';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     uttaksplan: Periode[];
@@ -102,6 +103,11 @@ const Periodeliste: FunctionComponent<Props> = ({
         if (openPeriodeId === id) {
             setOpenPeriodeId(null!);
         } else {
+            logAmplitudeEvent('applikasjon-hendelse', {
+                app: 'foreldrepengesoknad',
+                team: 'foreldrepenger',
+                hendelse: 'expandPeriode',
+            });
             setOpenPeriodeId(id);
         }
     };

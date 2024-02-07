@@ -1,59 +1,55 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, GuidePanel } from '@navikt/ds-react';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import { notEmpty } from '@navikt/fp-validation';
-import Person from '@navikt/fp-common/src/common/types/Person';
+import { FormattedMessage } from 'react-intl';
+import { GuidePanel } from '@navikt/ds-react';
 import {
     Block,
     ISOStringToDate,
-    StepButtonWrapper,
     Tidsperioden,
     Uttaksdagen,
     formaterNavn,
     getFlerbarnsuker,
     hasValue,
-    intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     uttaksConstants,
 } from '@navikt/fp-common';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
-import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
-import SøknadRoutes from 'app/routes/routes';
+import Person from '@navikt/fp-common/src/common/types/Person';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
-import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
+import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
+import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import {
-    morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
-    MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
-} from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
-import {
-    MorFarFødselAnnenForelderHarRettIEØSFormComponents as MorFarFødselAnnenForelderHarRettIEØSFormComponents,
+    MorFarFødselAnnenForelderHarRettIEØSFormComponents,
     MorFarFødselAnnenForelderHarRettIEØSFormData,
     MorFarFødselAnnenForelderHarRettIEØSFormField,
 } from './morFarFødselAnnenForelderHarRettIEØSFormConfig';
 import {
+    MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
+    morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
+} from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
+import {
     getInitialMorFarFødselAnnenForelderHarRettIEØSValues,
     mapMorFarFødselAnnenForelderHarRettIEØSFormToState,
 } from './morFarFødselAnnenForelderHarRettIEØSUtils';
-import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
-import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
-import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import BackButton from 'app/steps/BackButton';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => void;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -62,15 +58,16 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
-    const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -78,7 +75,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         ContextDataType.UTTAKSPLAN_INFO,
     ) as MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo;
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -91,6 +87,8 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+
+    const { dekningsgrad } = periodeMedForeldrepenger;
 
     const shouldRender = erFødsel;
 
@@ -114,7 +112,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             situasjon: søkersituasjon.situasjon,
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
             uttaksplanSkjema: {
                 startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin ? undefined : startdato,
                 farSinFørsteUttaksdag: erFarEllerMedmor ? startdato : undefined,
@@ -134,15 +132,10 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
-            antallUkerIUttaksplan: getAntallUker(
-                tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80],
-            ),
+            antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
         });
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     if (!shouldRender) {
@@ -155,8 +148,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const navnAnnenPart = oppgittAnnenForelder
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
         : '';
-
-    const erDeltUttakINorge = false;
 
     const navnSøker = formaterNavn(person.fornavn, person.etternavn, true, person.mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
@@ -182,7 +173,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
             initialValues={getInitialMorFarFødselAnnenForelderHarRettIEØSValues(
                 defaultPermisjonStartdato,
                 uttaksplanInfo,
-                uttaksplanMetadata?.dekningsgrad,
             )}
             onSubmit={onSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
@@ -196,17 +186,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isIncluded(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad)}
-                        >
-                            <DekningsgradSpørsmål
-                                FormKomponent={MorFarFødselAnnenForelderHarRettIEØSFormComponents}
-                                dekningsgradFeltNavn={MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad}
-                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                erDeltUttak={erDeltUttakINorge}
-                            />
-                        </Block>
                         <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
                             <GuidePanel>
                                 <FormattedMessage
@@ -253,7 +232,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                         <Block
                             padBottom="xl"
                             visible={
-                                visibility.isAnswered(MorFarFødselAnnenForelderHarRettIEØSFormField.dekningsgrad) &&
                                 antallBarn > 1 &&
                                 (formValues.permisjonStartdato !== undefined ||
                                     formValues.skalIkkeHaUttakFørTermin === true)
@@ -263,7 +241,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                 <FormattedMessage
                                     id="uttaksplaninfo.veileder.flerbarnsInformasjon.annenForelderHarRettIEØS"
                                     values={{
-                                        uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                        uker: getFlerbarnsuker(dekningsgrad, antallBarn),
                                         navnFar: navnFarMedmor,
                                         navnMor: navnMor,
                                     }}
@@ -271,17 +249,11 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                             </GuidePanel>
                         </Block>
                         <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
-                                />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
+                            <StepButtons
+                                isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                goToPreviousStep={goToPreviousDefaultStep}
+                                isDisabledAndLoading={isSubmitting}
+                            />
                         </Block>
                     </MorFarFødselAnnenForelderHarRettIEØSFormComponents.Form>
                 );

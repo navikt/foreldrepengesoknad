@@ -1,10 +1,9 @@
 export const frilansId = 'frilans';
 
-export interface Frilans {
+export type Frilans = {
     jobberFremdelesSomFrilans: boolean;
     oppstart: string;
-    // sluttDato: string | undefined;
-}
+};
 
 export interface FrilansDTO {
     jobberFremdelesSomFrilans: boolean;

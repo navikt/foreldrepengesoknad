@@ -1,7 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 
-import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
 
@@ -14,10 +13,13 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import Søker from 'app/context/types/Søker';
 import dayjs from 'dayjs';
 import { SøkersituasjonFp } from '@navikt/fp-types';
+import { MemoryRouter } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -28,7 +30,6 @@ const søkerinfoFarSøker = _søkerinfoFarSøker as any;
 export default {
     title: 'steps/uttaksplan-info/MorFarAnnenForelderHarRettIEØS',
     component: UttaksplanInfo,
-    decorators: [withRouter],
 };
 
 const Template: StoryFn<
@@ -37,31 +38,38 @@ const Template: StoryFn<
         annenForelder: AnnenForelder;
         barn: Barn;
         søker: Søker;
+        dekningsgrad: Dekningsgrad;
     }
 > = (args) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
     };
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
-                    [ContextDataType.OM_BARNET]: args.barn,
-                    [ContextDataType.SØKER]: args.søker,
-                    [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
-                }}
-            >
-                <UttaksplanInfo
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
-                    erEndringssøknad={false}
-                    mellomlagreSøknadOgNaviger={() => Promise.resolve()}
-                    avbrytSøknad={() => undefined}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
+                        [ContextDataType.OM_BARNET]: args.barn,
+                        [ContextDataType.SØKER]: args.søker,
+                        [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
+                            dekningsgrad: args.dekningsgrad,
+                        },
+                    }}
+                >
+                    <UttaksplanInfo
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        erEndringssøknad={false}
+                        mellomlagreSøknadOgNaviger={() => Promise.resolve()}
+                        avbrytSøknad={() => undefined}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 
@@ -95,6 +103,7 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoMorSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
 export const UttaksplanAdopsjonFarSøkerMorHarRettIEOS = Template.bind({});
@@ -127,6 +136,7 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
 export const UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger = Template.bind({});
@@ -161,6 +171,7 @@ UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
 export const UttaksplanFødselMorSøkerFarHarRettIEOSPrematur = Template.bind({});
@@ -181,7 +192,7 @@ UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
         type: BarnType.FØDT,
     },
     annenForelder: {
-        fornavn: 'Mor',
+        fornavn: 'Espen',
         etternavn: 'EØS',
         fnr: '2222UUUUU',
         harRettPåForeldrepengerINorge: false,
@@ -195,4 +206,5 @@ UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: søkerinfoFarSøker,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };

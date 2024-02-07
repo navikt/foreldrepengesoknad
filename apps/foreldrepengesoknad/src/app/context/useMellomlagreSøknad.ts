@@ -30,8 +30,9 @@ const mellomlagre = (
     const eksisterendeSak = getDataFromState(ContextDataType.EKSISTERENDE_SAK);
     const uttaksplan = getDataFromState(ContextDataType.UTTAKSPLAN);
     const uttaksplanInfo = getDataFromState(ContextDataType.UTTAKSPLAN_INFO);
-    const manglerDokumentasjon = getDataFromState(ContextDataType.MANGLER_DOKUMENTASJON);
+    const periodeMedForeldrepenger = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
+    const manglerDokumentasjon = getDataFromState(ContextDataType.MANGLER_DOKUMENTASJON);
 
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
@@ -55,7 +56,7 @@ const mellomlagre = (
                   }
                 : undefined,
             erEndringssøknad,
-            dekningsgrad: uttaksplanMetadata?.dekningsgrad,
+            dekningsgrad: periodeMedForeldrepenger?.dekningsgrad,
             uttaksplan,
             vedlegg,
             ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
@@ -95,6 +96,8 @@ const useMellomlagreSøknad = (
             const lagre = async () => {
                 setSkalMellomlagre(false);
 
+                navigate(currentRoute);
+
                 await mellomlagre(
                     locale,
                     getDataFromState,
@@ -103,8 +106,6 @@ const useMellomlagreSøknad = (
                     harGodkjentVilkår,
                     søknadGjelderEtNyttBarn,
                 );
-
-                navigate(currentRoute);
 
                 if (promiseRef.current) {
                     promiseRef.current();
@@ -117,8 +118,6 @@ const useMellomlagreSøknad = (
                 } else {
                     //Logg feil, men ikkje vis feilmelding til brukar
                     sendErrorMessageToSentry(error);
-
-                    navigate(currentRoute);
                 }
 
                 if (promiseRef.current) {

@@ -1,15 +1,9 @@
-import { VelgArbeidFormComponents, VelgArbeidFormField } from './velgArbeidFormConfig';
-import { Block, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { useState } from 'react';
+import { VelgArbeidFormComponents, VelgArbeidFormData, VelgArbeidFormField } from './velgArbeidFormConfig';
+import { Block, Step, StepButtonWrapper } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import stepConfig, { getBackLinkForVelgArbeidSteg } from 'app/steps/stepsConfig';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
+import { getBackLinkForVelgArbeidSteg, useStepConfig } from 'app/steps/stepsConfig';
 import { Button } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
-import actionCreator from 'app/context/action/actionCreator';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { getValgtTilrettelegging } from 'app/utils/tilretteleggingUtils';
 import SøknadRoutes from 'app/routes/routes';
 import {
     cleanupOmValgArbeidFormData,
@@ -18,46 +12,75 @@ import {
     mapArbeidsforholdToVelgArbeidOptions,
     validateVelgArbeidIsAnswered,
 } from './velgArbeidFormUtils';
-import useUpdateCurrentTilretteleggingId from 'app/utils/hooks/useUpdateCurrentTilretteleggingId';
-import { useMemo, useState } from 'react';
-import Tilrettelegging from 'app/types/Tilrettelegging';
 import FlereArbeidsforholdGuidePanel from './components/guidepanel/FlereArbeidsforholdGuidePanel';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
+import { Søkerinfo } from 'app/types/Søkerinfo';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
-const VelgArbeid: React.FunctionComponent = () => {
-    useUpdateCurrentTilretteleggingId(undefined);
+type Props = {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
+};
+
+const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
-    const søknad = useSøknad();
-    const { søker, tilrettelegging, barn } = søknad;
-    const { termindato } = barn;
-    const { arbeidsforhold } = useSøkerinfo();
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [nextRoute, setNextRoute] = useState(SøknadRoutes.SKJEMA.toString());
-    const [valgtTilrettelegging, setValgtTilrettelegging] = useState<Tilrettelegging[]>([]);
-    const tilretteleggingOptions = useMemo(
-        () => mapArbeidsforholdToVelgArbeidOptions(tilrettelegging, søker, arbeidsforhold, termindato, intl),
-        [tilrettelegging, søker, arbeidsforhold, termindato, intl],
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const frilans = useContextGetData(ContextDataType.FRILANS);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const { termindato } = barnet;
+
+    const tilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
+        tilrettelegginger || [],
+        inntektsinformasjon,
+        søkerInfo.arbeidsforhold,
+        termindato,
+        intl,
+        frilans,
+        egenNæring,
     );
-    const onValidSubmitHandler = () => {
-        return [actionCreator.setTilrettelegging(valgtTilrettelegging)];
-    };
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-    const onAvbrytSøknad = useAvbrytSøknad();
+    const onSubmit = (formValues: Partial<VelgArbeidFormData>) => {
+        setIsSubmitting(true);
+
+        const valgteTilrettelegginger = tilretteleggingOptions.filter((o) =>
+            formValues.arbeidMedTilrettelegging!.some((t) => t === o.id),
+        );
+        oppdaterTilrettelegginger(valgteTilrettelegginger);
+
+        oppdaterValgtTilretteleggingId(valgteTilrettelegginger[0].id);
+        oppdaterAppRoute(SøknadRoutes.SKJEMA);
+
+        mellomlagreSøknadOgNaviger();
+    };
 
     return (
         <VelgArbeidFormComponents.FormikWrapper
-            initialValues={getInitialVelgArbeidFormValues(tilrettelegging)}
-            onSubmit={handleSubmit}
+            initialValues={getInitialVelgArbeidFormValues(tilrettelegginger)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visInfo = formValues.arbeidMedTilrettelegging && formValues.arbeidMedTilrettelegging.length > 1;
                 return (
                     <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
                         activeStepId="velgArbeid"
-                        pageTitle={intlUtils(intl, 'steps.label.velgArbeid')}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        supportsTempSaving={false}
+                        pageTitle={intl.formatMessage({ id: 'steps.label.velgArbeid' })}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <VelgArbeidFormComponents.Form
                             includeButtons={false}
@@ -67,7 +90,7 @@ const VelgArbeid: React.FunctionComponent = () => {
                             <Block padBottom="l">
                                 <VelgArbeidFormComponents.CheckboxGroup
                                     name={VelgArbeidFormField.arbeidMedTilrettelegging}
-                                    legend={intlUtils(intl, 'velgArbeid.hvor')}
+                                    legend={intl.formatMessage({ id: 'velgArbeid.hvor' })}
                                     checkboxes={tilretteleggingOptions.map((option) => ({
                                         label: getOptionNavn(
                                             option.arbeidsforhold.type,
@@ -83,27 +106,12 @@ const VelgArbeid: React.FunctionComponent = () => {
 
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getBackLinkForVelgArbeidSteg(søker)}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
-                                    <Button
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                        loading={isSubmitting}
-                                        onClick={() => {
-                                            const tilretteleggingValg = getValgtTilrettelegging(
-                                                tilretteleggingOptions,
-                                                formValues.arbeidMedTilrettelegging!,
-                                            );
-                                            setValgtTilrettelegging(tilretteleggingValg);
-                                            const førsteTilretteleggingId =
-                                                tilretteleggingValg.length > 0 ? tilretteleggingValg[0].id : undefined;
-                                            if (førsteTilretteleggingId) {
-                                                setNextRoute(`${SøknadRoutes.SKJEMA}/${førsteTilretteleggingId}`);
-                                            }
-                                        }}
-                                    >
-                                        {intlUtils(intl, 'søknad.gåVidere')}
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getBackLinkForVelgArbeidSteg(inntektsinformasjon)}
+                                    />
+                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
+                                        <FormattedMessage id="søknad.gåVidere" />
                                     </Button>
                                 </StepButtonWrapper>
                             </Block>

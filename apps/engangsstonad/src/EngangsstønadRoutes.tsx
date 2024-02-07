@@ -1,26 +1,25 @@
-import { useEffect, useState } from 'react';
 import { Loader } from '@navikt/ds-react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { Kvittering, LocaleAll } from '@navikt/fp-types';
 import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
-import { redirect, redirectToLogin } from '@navikt/fp-utils';
+import { Kvittering, LocaleAll } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
+import { redirect, redirectToLogin } from '@navikt/fp-utils';
+import { useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
+import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import Environment from 'appData/Environment';
-import Person from './types/Person';
-import SøkersituasjonSteg from './steg/sokersituasjon/SøkersituasjonSteg';
-import Velkommen from './velkommen/Velkommen';
-import OmBarnetSteg from './steg/omBarnet/OmBarnetSteg';
-import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
-import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
+import useEsMellomlagring, { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
+import useEsSendSøknad from 'appData/useEsSendSøknad';
 import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
+import OmBarnetSteg from './steg/omBarnet/OmBarnetSteg';
+import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
+import SøkersituasjonSteg from './steg/sokersituasjon/SøkersituasjonSteg';
+import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
 import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import useEsSendSøknad from 'appData/useEsSendSøknad';
-import useEsMellomlagring, { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
+import Person from './types/Person';
+import Velkommen from './velkommen/Velkommen';
 
 export const esApi = createApi(Environment.REST_API_URL);
 
@@ -52,7 +51,7 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
-    const { mellomlagreOgNaviger, errorMellomlagre } = useEsMellomlagring(esApi, locale, setVelkommen);
+    const mellomlagreOgNaviger = useEsMellomlagring(esApi, locale, setVelkommen);
 
     useEffect(() => {
         if (mellomlagretData && mellomlagretData[ContextDataType.CURRENT_PATH]) {
@@ -77,8 +76,8 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
         return <div>Redirected to Innsyn</div>;
     }
 
-    if (errorSendSøknad || errorMellomlagre) {
-        return <ApiErrorHandler error={notEmpty(errorSendSøknad || errorMellomlagre)} />;
+    if (errorSendSøknad) {
+        return <ApiErrorHandler error={errorSendSøknad} />;
     }
 
     return (

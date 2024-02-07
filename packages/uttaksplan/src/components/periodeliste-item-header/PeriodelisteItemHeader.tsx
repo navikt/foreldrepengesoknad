@@ -10,7 +10,7 @@ import {
     getUkerOgDagerFromDager,
     getValidTidsperiode,
     intlUtils,
-    isForeldrepengerFørFødselUttaksperiode,
+    isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
     måned,
@@ -156,8 +156,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     const intl = useIntl();
 
     let varighetString;
-    const erFpFørTerminUtenUttak =
-        isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true;
+    const erFpFørTerminUtenUttak = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode);
     if (erFpFørTerminUtenUttak) {
         varighetString = intlUtils(intl, 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin');
     } else {

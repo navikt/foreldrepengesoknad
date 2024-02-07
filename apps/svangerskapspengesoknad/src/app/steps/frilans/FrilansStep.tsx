@@ -1,58 +1,87 @@
-import { FrilansFormComponents, FrilansFormData, FrilansFormField } from './frilansFormConfig';
-import { cleanupFrilansFormData, getInitialFrilansFormValues, mapFrilansDataToSøkerState } from './frilansFormUtils';
-import frilansSubformQuestionsConfig from './frilansFormQuestionsConfig';
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
+import { Button } from '@navikt/ds-react';
+import { notEmpty } from '@navikt/fp-validation';
 import {
     Block,
     Step,
     StepButtonWrapper,
+    convertYesOrNoOrUndefinedToBoolean,
     date20YearsAgo,
     dateToday,
     intlUtils,
     validateYesOrNoIsAnswered,
 } from '@navikt/fp-common';
-import { FormattedMessage, useIntl } from 'react-intl';
-import useAvbrytSøknad from 'app/utils/hooks/useAvbrytSøknad';
-import stepConfig, { getNextRouteForFrilans, getPreviousSetStepHref } from 'app/steps/stepsConfig';
-import { validateFrilansStart } from './frilansValidation';
-import useSøknad from 'app/utils/hooks/useSøknad';
-import actionCreator from 'app/context/action/actionCreator';
-import useOnValidSubmit from 'app/utils/hooks/useOnValidSubmit';
-import { Button } from '@navikt/ds-react';
-import { Link } from 'react-router-dom';
-import useSøkerinfo from 'app/utils/hooks/useSøkerinfo';
-import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { Søkerinfo } from 'app/types/Søkerinfo';
+import { getNextRouteForFrilans, getPreviousSetStepHref, useStepConfig } from 'app/steps/stepsConfig';
+import { FrilansFormComponents, FrilansFormData, FrilansFormField } from './frilansFormConfig';
+import { cleanupFrilansFormData, getInitialFrilansFormValues } from './frilansFormUtils';
+import frilansSubformQuestionsConfig from './frilansFormQuestionsConfig';
+import { validateFrilansStart } from './frilansValidation';
+import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import BackButton from '../BackButton';
 
-const FrilansStep: React.FunctionComponent = () => {
+type Props = {
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    søkerInfo: Søkerinfo;
+};
+
+const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
     const intl = useIntl();
-    const { arbeidsforhold } = useSøkerinfo();
-    const søknad = useSøknad();
-    const { søker, barn, tilrettelegging } = søknad;
+    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const onValidSubmitHandler = (values: Partial<FrilansFormData>) => {
-        const søkerMedFrilans = mapFrilansDataToSøkerState(søker, values as FrilansFormData);
+    const frilans = useContextGetData(ContextDataType.FRILANS);
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
+    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const onSubmit = (values: Partial<FrilansFormData>) => {
+        setIsSubmitting(true);
+
         const harKunEtAktivtArbeid = søkerHarKunEtAktivtArbeid(
-            barn.termindato,
-            arbeidsforhold,
-            søkerMedFrilans.harJobbetSomFrilans,
-            søkerMedFrilans.harJobbetSomSelvstendigNæringsdrivende,
+            barnet.termindato,
+            søkerInfo.arbeidsforhold,
+            inntektsinformasjon.harJobbetSomFrilans,
+            inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
         );
         if (harKunEtAktivtArbeid) {
             const tilretteleggingOptions = [
-                getFrilansTilretteleggingOption(tilrettelegging, søkerMedFrilans.frilansInformasjon!),
+                getFrilansTilretteleggingOption(tilrettelegginger || [], values.frilansFom!),
             ];
-            return [actionCreator.setSøker(søkerMedFrilans), actionCreator.setTilrettelegging(tilretteleggingOptions)];
+            oppdaterTilrettelegginger(tilretteleggingOptions);
         }
-        return [actionCreator.setSøker(søkerMedFrilans)];
-    };
-    const nextRoute = getNextRouteForFrilans(søker, barn.termindato, arbeidsforhold);
 
-    const { handleSubmit, isSubmitting } = useOnValidSubmit(onValidSubmitHandler, nextRoute);
-    const onAvbrytSøknad = useAvbrytSøknad();
+        oppdaterFrilans({
+            jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
+            oppstart: values.frilansFom!,
+        });
+
+        const { nextRoute, nextTilretteleggingId } = getNextRouteForFrilans(
+            inntektsinformasjon,
+            barnet.termindato,
+            søkerInfo.arbeidsforhold,
+        );
+        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
+        oppdaterAppRoute(nextRoute);
+
+        mellomlagreSøknadOgNaviger();
+    };
+
     return (
         <FrilansFormComponents.FormikWrapper
-            initialValues={getInitialFrilansFormValues(søker.frilansInformasjon)}
-            onSubmit={handleSubmit}
+            initialValues={getInitialFrilansFormValues(frilans)}
+            onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = frilansSubformQuestionsConfig.getVisbility(formValues as FrilansFormData);
                 return (
@@ -60,9 +89,9 @@ const FrilansStep: React.FunctionComponent = () => {
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
                         activeStepId="frilans"
                         pageTitle={intlUtils(intl, 'steps.label.frilans')}
-                        onCancel={onAvbrytSøknad}
-                        steps={stepConfig(intl, søknad, arbeidsforhold)}
-                        supportsTempSaving={false}
+                        onCancel={avbrytSøknad}
+                        steps={stepConfig}
+                        onContinueLater={onFortsettSøknadSenere}
                     >
                         <FrilansFormComponents.Form
                             includeButtons={false}
@@ -95,26 +124,12 @@ const FrilansStep: React.FunctionComponent = () => {
                                     }
                                 />
                             </Block>
-                            {/* <Block padBottom="xxl" visible={visibility.isVisible(FrilansFormField.frilansTom)}>
-                                <FrilansFormComponents.DatePicker
-                                    name={FrilansFormField.frilansTom}
-                                    label={intlUtils(intl, 'frilans.slutt')}
-                                    minDate={getMinInputTilOgMedValue(formValues.frilansFom, date4WeeksAgo)}
-                                    maxDate={dateToday}
-                                    showYearSelector={true}
-                                    placeholder={'dd.mm.åååå'}
-                                    validate={validateFrilansSlutt(
-                                        intl,
-                                        formValues.jobberFremdelesSomFrilanser!,
-                                        formValues.frilansFom!,
-                                    )}
-                                />
-                            </Block> */}
                             <Block padBottom="l">
                                 <StepButtonWrapper>
-                                    <Button variant="secondary" as={Link} to={getPreviousSetStepHref('frilans')}>
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                    <BackButton
+                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                        route={getPreviousSetStepHref('frilans')}
+                                    />
                                     <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
                                         {intlUtils(intl, 'søknad.gåVidere')}
                                     </Button>

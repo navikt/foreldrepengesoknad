@@ -1,4 +1,4 @@
-import { Block, ISOStringToDate, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
+import { Block, ISOStringToDate, bemUtils, formatDate } from '@navikt/fp-common';
 import { EgenNæring } from 'app/types/EgenNæring';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
@@ -26,9 +26,12 @@ const EgenNæringVisning: FunctionComponent<Props> = ({ næring }) => {
                         <BodyShort className={bem.element('tittel')}>{næring.navnPåNæringen}</BodyShort>
                         {næring.registrertINorge && (
                             <BodyShort className={bem.element('orgnr')}>
-                                {intlUtils(intl, 'egenNæring.visning.orgnr', {
-                                    orgnr: næring.organisasjonsnummer,
-                                })}
+                                {intl.formatMessage(
+                                    { id: 'egenNæring.visning.orgnr' },
+                                    {
+                                        orgnr: næring.organisasjonsnummer,
+                                    },
+                                )}
                             </BodyShort>
                         )}
                         {!næring.registrertINorge && næring.registrertILand && (
@@ -41,44 +44,60 @@ const EgenNæringVisning: FunctionComponent<Props> = ({ næring }) => {
                         </BodyShort>
                         {næring.næringsinntekt && (
                             <BodyShort className={bem.element('inntekt')}>
-                                {intlUtils(intl, 'egenNæring.visning.inntekt', {
-                                    inntekt: næring.næringsinntekt,
-                                })}
+                                {intl.formatMessage(
+                                    { id: 'egenNæring.visning.inntekt' },
+                                    {
+                                        inntekt: næring.næringsinntekt,
+                                    },
+                                )}
                             </BodyShort>
                         )}
                     </div>
                     {!erNyoppstartetNæring && næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår && (
                         <div>
                             <BodyShort>
-                                {intlUtils(intl, 'egenNæring.visning.varigEndring', {
-                                    dato: formatDate(næring.varigEndringDato!),
-                                    inntekt: næring.varigEndringInntektEtterEndring,
-                                })}
+                                {intl.formatMessage(
+                                    { id: 'egenNæring.visning.varigEndring' },
+                                    {
+                                        dato: næring.varigEndringDato ? formatDate(næring.varigEndringDato) : '-',
+                                        inntekt: næring.varigEndringInntektEtterEndring,
+                                    },
+                                )}
                             </BodyShort>
                             <BodyShort>
-                                {intlUtils(intl, 'egenNæring.visning.varigEndring.beskrivelse', {
-                                    beskrivelse: næring.varigEndringBeskrivelse,
-                                })}
+                                {intl.formatMessage(
+                                    { id: 'egenNæring.visning.varigEndring.beskrivelse' },
+                                    {
+                                        beskrivelse: næring.varigEndringBeskrivelse,
+                                    },
+                                )}
                             </BodyShort>
                         </div>
                     )}
                     {!erNyoppstartetNæring && !næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår && (
                         <div>
-                            <BodyShort>{intlUtils(intl, 'egenNæring.visning.varigEndring.ingen', {})}</BodyShort>
+                            <BodyShort>
+                                {intl.formatMessage({ id: 'egenNæring.visning.varigEndring.ingen' }, {})}
+                            </BodyShort>
                         </div>
                     )}
                     {erNyoppstartetNæring && næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene && (
                         <div>
                             <BodyShort>
-                                {intlUtils(intl, 'egenNæring.visning.yrkesaktivSiste3år', {
-                                    dato: formatDate(næring.oppstartsdato!),
-                                })}
+                                {intl.formatMessage(
+                                    { id: 'egenNæring.visning.yrkesaktivSiste3år' },
+                                    {
+                                        dato: næring.oppstartsdato ? formatDate(næring.oppstartsdato) : '-',
+                                    },
+                                )}
                             </BodyShort>
                         </div>
                     )}
                     {erNyoppstartetNæring && !næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene && (
                         <div>
-                            <BodyShort>{intlUtils(intl, 'egenNæring.visning.ikkeYrkesaktivSiste3år')}</BodyShort>
+                            <BodyShort>
+                                {intl.formatMessage({ id: 'egenNæring.visning.ikkeYrkesaktivSiste3år' })}
+                            </BodyShort>
                         </div>
                     )}
                 </div>

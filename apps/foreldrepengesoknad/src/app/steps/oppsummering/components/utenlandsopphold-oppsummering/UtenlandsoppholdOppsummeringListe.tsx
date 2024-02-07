@@ -1,12 +1,12 @@
-import { bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
+import { bemUtils, formatDate } from '@navikt/fp-common';
 import { Utenlandsopphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import countries from 'i18n-iso-countries';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-
-import './utenlandsoppholdOppsummeringListe.less';
 import { BodyShort } from '@navikt/ds-react';
 import dayjs from 'dayjs';
+
+import './utenlandsoppholdOppsummeringListe.less';
 
 const sortOpphold = (d1: Utenlandsopphold, d2: Utenlandsopphold) => {
     return dayjs(d1.tidsperiode.fom).isBefore(d2.tidsperiode.fom, 'day') ? -1 : 1;
@@ -31,12 +31,18 @@ const UtenlandsoppholdOppsummeringListe: FunctionComponent<Props> = ({ utenlands
                     >
                         <BodyShort>
                             {tidligereOpphold
-                                ? intlUtils(intl, 'oppsummering.utenlandsopphold.harBoddINorge.utenlands', {
-                                      land: countries.getName(opphold.land, 'nb'),
-                                  })
-                                : intlUtils(intl, 'oppsummering.utenlandsopphold.skalBoINorge.utenlands', {
-                                      land: countries.getName(opphold.land, 'nb'),
-                                  })}
+                                ? intl.formatMessage(
+                                      { id: 'oppsummering.utenlandsopphold.harBoddINorge.utenlands' },
+                                      {
+                                          land: countries.getName(opphold.land, 'nb'),
+                                      },
+                                  )
+                                : intl.formatMessage(
+                                      { id: 'oppsummering.utenlandsopphold.skalBoINorge.utenlands' },
+                                      {
+                                          land: countries.getName(opphold.land, 'nb'),
+                                      },
+                                  )}
                         </BodyShort>
                         <BodyShort>
                             {formatDate(opphold.tidsperiode.fom)} - {formatDate(opphold.tidsperiode.tom)}

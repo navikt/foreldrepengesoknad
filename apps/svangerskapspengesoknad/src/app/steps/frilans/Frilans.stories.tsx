@@ -1,43 +1,50 @@
 import { StoryFn } from '@storybook/react';
-import withSvangerskapspengerContextProvider from 'storybook/decorators/withSvangerskapspengerContext';
-import withRouterProvider from 'storybook/decorators/withRouter';
+import { action } from '@storybook/addon-actions';
 import FrilansStep from './FrilansStep';
-import SvangerskapspengerStateMock from 'storybook/utils/SvangerskapspengerStateMock';
 import _context from 'storybook/storydata/soknad/soknad.json';
-import { SvangerskapspengerContextState } from 'app/context/SvangerskapspengerContextConfig';
+import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
 
 const defaultExport = {
     title: 'steps/FrilansStep',
     component: FrilansStep,
-    decorators: [withSvangerskapspengerContextProvider, withRouterProvider],
 };
 
 export default defaultExport;
 
-interface FrilansStepStoryProps {
-    contextWithFrilans: SvangerskapspengerContextState;
-}
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
 
 const context = _context as any;
-const contextWithFrilans = {
-    ...context,
-    søknad: {
-        ...context.søknad,
-        søker: {
-            ...context.søknad.søker,
-            harJobbetSomFrilans: true,
-        },
-    },
-} as SvangerskapspengerContextState;
 
-const Template: StoryFn<FrilansStepStoryProps> = ({ contextWithFrilans }) => {
+interface Props {
+    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+    gåTilNesteSide?: (action: Action) => void;
+}
+
+const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
     return (
-        <SvangerskapspengerStateMock context={contextWithFrilans}>
-            <FrilansStep />
-        </SvangerskapspengerStateMock>
+        <SvpDataContext
+            onDispatch={gåTilNesteSide}
+            initialState={{
+                [ContextDataType.INNTEKTSINFORMASJON]: {
+                    harJobbetSomFrilans: true,
+                    harHattAnnenInntekt: false,
+                    harJobbetSomSelvstendigNæringsdrivende: false,
+                },
+                [ContextDataType.TILRETTELEGGINGER]: context.søknad.tilrettelegging,
+                [ContextDataType.OM_BARNET]: context.søknad.barn,
+            }}
+        >
+            <FrilansStep
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                avbrytSøknad={promiseAction()}
+                søkerInfo={context.søkerinfo}
+            />
+        </SvpDataContext>
     );
 };
 export const Default = Template.bind({});
-Default.args = {
-    contextWithFrilans,
-};

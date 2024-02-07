@@ -10,14 +10,10 @@ const FarMedmorAleneomsorgFødselFormConfig: QuestionConfig<
     FarMedmorAleneomsorgFødselFormData,
     FarMedmorAleneomsorgFødselFormField
 > = {
-    [FarMedmorAleneomsorgFødselFormField.dekningsgrad]: {
-        isIncluded: () => true,
-        isAnswered: ({ dekningsgrad }) => hasValue(dekningsgrad),
-    },
     [FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse]: {
         isIncluded: () => true,
         isAnswered: ({ startPåOmsorgsovertakelse }) => startPåOmsorgsovertakelse !== YesOrNo.UNANSWERED,
-        visibilityFilter: ({ dekningsgrad }) => hasValue(dekningsgrad),
+        visibilityFilter: () => true,
     },
     [FarMedmorAleneomsorgFødselFormField.startdatoUttak]: {
         isIncluded: ({ startPåOmsorgsovertakelse }) => startPåOmsorgsovertakelse === YesOrNo.NO,

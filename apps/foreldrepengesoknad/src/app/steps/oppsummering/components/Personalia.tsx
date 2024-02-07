@@ -3,8 +3,6 @@ import { BodyShort } from '@navikt/ds-react';
 import OppsummeringsPunkt from './OppsummeringsPunkt';
 import { Søkerinfo } from '@navikt/fp-common';
 
-import './personalia.less';
-
 interface Props {
     søkerinfo: Søkerinfo;
 }

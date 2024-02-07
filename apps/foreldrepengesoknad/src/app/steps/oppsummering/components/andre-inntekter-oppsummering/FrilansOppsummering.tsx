@@ -1,9 +1,9 @@
-import { formatDate, intlUtils } from '@navikt/fp-common';
+import { BodyShort } from '@navikt/ds-react';
+import { formatDate } from '@navikt/fp-common';
+import Søker from 'app/context/types/Søker';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
-import { BodyShort } from '@navikt/ds-react';
-import Søker from 'app/context/types/Søker';
 
 interface Props {
     søker: Søker;
@@ -14,8 +14,8 @@ const FrilansOppsummering: FunctionComponent<Props> = ({ søker }) => {
 
     if (!søker.frilansInformasjon || !søker.harJobbetSomFrilansSiste10Mnd) {
         return (
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.tittel')}>
-                <BodyShort>{intlUtils(intl, 'oppsummering.frilans.ikkeFrilans')}</BodyShort>
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.frilans.tittel' })}>
+                <BodyShort>{intl.formatMessage({ id: 'oppsummering.frilans.ikkeFrilans' })}</BodyShort>
             </OppsummeringsPunkt>
         );
     }
@@ -23,12 +23,14 @@ const FrilansOppsummering: FunctionComponent<Props> = ({ søker }) => {
 
     return (
         <>
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.tittel')} />
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.oppstartsdato')}>
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.frilans.tittel' })} />
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.frilans.oppstartsdato' })}>
                 <BodyShort>{formatDate(oppstart)}</BodyShort>
             </OppsummeringsPunkt>
-            <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.frilans.fremdelesFrilans')}>
-                <BodyShort>{jobberFremdelesSomFrilans ? intlUtils(intl, 'ja') : intlUtils(intl, 'nei')}</BodyShort>
+            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.frilans.fremdelesFrilans' })}>
+                <BodyShort>
+                    {jobberFremdelesSomFrilans ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                </BodyShort>
             </OppsummeringsPunkt>
         </>
     );

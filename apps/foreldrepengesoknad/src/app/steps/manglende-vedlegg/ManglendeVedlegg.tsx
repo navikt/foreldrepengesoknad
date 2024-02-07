@@ -10,8 +10,6 @@ import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import SøknadRoutes from 'app/routes/routes';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import stepConfig from '../stepsConfig';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { perioderSomKreverVedlegg } from '@navikt/uttaksplan';
 import { ManglendeVedleggFormData } from './manglendeVedleggFormConfig';
 import { useNavigate } from 'react-router-dom';
@@ -34,6 +32,8 @@ import UtsettelseDok from './dokumentasjon/UtsettelseDok';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 import { GuidePanel } from '@navikt/ds-react';
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
 
 type Props = {
     person: Person;
@@ -54,17 +54,17 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
-    const manglerDokumentasjon = useContextGetData(ContextDataType.MANGLER_DOKUMENTASJON);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const saveNextRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigate = useNavigate();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
     const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
     const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
     const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const stepConfig = useStepConfig(erEndringssøknad);
 
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -109,11 +109,9 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            activeStepId="dokumentasjon"
-            pageTitle={intlUtils(intl, 'søknad.manglendeVedlegg')}
             onCancel={avbrytSøknad}
-            onContinueLater={onFortsettSøknadSenere}
-            steps={stepConfig(intl, erEndringssøknad, manglerDokumentasjon)}
+            onContinueLater={navigator.fortsettSøknadSenere}
+            steps={stepConfig}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <FellesperiodeDok

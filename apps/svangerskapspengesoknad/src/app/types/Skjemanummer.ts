@@ -1,3 +1,0 @@
-export enum Skjemanummer {
-    SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING = 'I000109',
-}

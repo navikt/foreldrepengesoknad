@@ -105,7 +105,7 @@ export const idagEllerTidligere = (dato: string) => {
     return dayjs.max(utstedtDato, tomorrow) === tomorrow;
 };
 
-export const erMyndig = (fødselsdato: string) => {
+export const erMyndig = (fødselsdato: string | Date) => {
     const now = dayjs();
     const momentDate = dayjs(fødselsdato);
     return now.diff(momentDate, 'years') >= 18;

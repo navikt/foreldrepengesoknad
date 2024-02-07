@@ -7,7 +7,7 @@ import {
     formatDate,
     getPeriodeTittel,
     getStønadskontoNavn,
-    intlUtils,
+    isSkalIkkeHaForeldrepengerFørFødselPeriode,
     NavnPåForeldre,
     Oppholdsperiode,
     Overføringsperiode,
@@ -73,12 +73,15 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     };
 
     const formatTidsperiode = (tidsperiode: TidsperiodeDate): string => {
-        const formatertTidsperiode = intlUtils(intl, 'tidsintervall', {
-            fom: formatDate(tidsperiode.fom),
-            tom: formatDate(tidsperiode.tom),
-        });
+        const formatertTidsperiode = intl.formatMessage(
+            { id: 'tidsintervall' },
+            {
+                fom: formatDate(tidsperiode.fom),
+                tom: formatDate(tidsperiode.tom),
+            },
+        );
         if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, termindato, tidsperiode.fom)) {
-            const justeringTekst = intlUtils(intl, 'oppsummering.uttak.periodenBlirAutomatiskJustert');
+            const justeringTekst = intl.formatMessage({ id: 'oppsummering.uttak.periodenBlirAutomatiskJustert' });
             return justeringTekst.concat(formatertTidsperiode);
         }
         return formatertTidsperiode;
@@ -87,9 +90,14 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         periode: Uttaksperiode,
         periodeErNyEllerEndret = true,
     ): OppsummeringslisteelementProps => {
+        console.log(periode);
+        const høyrestiltTekst = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode)
+            ? intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' })
+            : formatTidsperiode(periode.tidsperiode);
+        console.log('h', høyrestiltTekst);
         return {
             venstrestiltTekst: getUttaksperiodeNavn(periode),
-            høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
+            høyrestiltTekst,
             content: (
                 <Uttaksperiodedetaljer
                     periode={periode}
@@ -123,7 +131,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         periodeErNyEllerEndret: boolean,
     ): OppsummeringslisteelementProps => {
         return {
-            venstrestiltTekst: intlUtils(intl, 'oppsummering.utsettelse.pga'),
+            venstrestiltTekst: intl.formatMessage({ id: 'oppsummering.utsettelse.pga' }),
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
             content: (
                 <Utsettelsesperiodedetaljer
@@ -142,9 +150,12 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     ): OppsummeringslisteelementProps => {
         const kontonavn = getStønadskontoNavnFromKonto(periode.konto);
         return {
-            venstrestiltTekst: intlUtils(intl, 'oppsummering.overtakelse.pga', {
-                konto: kontonavn,
-            }),
+            venstrestiltTekst: intl.formatMessage(
+                { id: 'oppsummering.overtakelse.pga' },
+                {
+                    konto: kontonavn,
+                },
+            ),
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
             content: <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />,
         };

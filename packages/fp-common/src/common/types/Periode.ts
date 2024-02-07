@@ -167,6 +167,10 @@ export const isUttakAvFedrekvoteMorForSyk = (periode: Periode): periode is Uttak
     return periode.type === Periodetype.Uttak && periode.erMorForSyk === true;
 };
 
+export const isSkalIkkeHaForeldrepengerFørFødselPeriode = (periode: Periode): boolean => {
+    return isUttakAvForeldrepengerFørFødsel(periode) && periode.skalIkkeHaUttakFørTermin === true;
+};
+
 export const isUtsettelsesperiode = (periode: Periode): periode is Utsettelsesperiode => {
     return periode.type === Periodetype.Utsettelse;
 };

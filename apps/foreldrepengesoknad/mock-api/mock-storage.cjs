@@ -49,8 +49,8 @@ const getSokerInfo = function () {
     }
 };
 
-const getStønadskontoer = function () {
-    const fileName = getFilePath('stønadskontoer.json');
+const getStønadskontoer = function (erDekningsgrad100) {
+    const fileName = erDekningsgrad100 ? getFilePath('stønadskontoer100.json') : getFilePath('stønadskontoer80.json');
     if (!fs.existsSync(fileName)) {
         return {};
     } else {
@@ -90,12 +90,13 @@ const getSaker = function () {
 const getAnnenPartVedtak = function () {
     const fileName = getFilePath('annenPartVedtak.json');
     if (!fs.existsSync(fileName)) {
-        return {};
+        return null;
     } else {
         try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+            const data = fs.readFileSync(fileName, 'utf8');
+            return data && data !== '' ? JSON.parse(data) : null;
         } catch (err) {
-            return {};
+            return null;
         }
     }
 };

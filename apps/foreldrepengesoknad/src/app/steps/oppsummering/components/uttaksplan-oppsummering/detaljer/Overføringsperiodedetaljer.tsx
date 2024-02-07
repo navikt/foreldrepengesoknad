@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
-import { NavnPåForeldre, Overføringsperiode, StønadskontoType, intlUtils } from '@navikt/fp-common';
+import { NavnPåForeldre, Overføringsperiode, StønadskontoType } from '@navikt/fp-common';
 import { getÅrsakTekst } from '../OppsummeringUtils';
 
 interface OverføringsperiodedetaljerProps {
@@ -17,7 +17,7 @@ const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: Støna
     } else if (konto === StønadskontoType.Mødrekvote) {
         return navnPåForeldre.mor;
     }
-    return intlUtils(intl, 'annen.forelder');
+    return intl.formatMessage({ id: 'annen.forelder' });
 };
 
 const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({ periode, navnPåForeldre }) => {
@@ -26,7 +26,7 @@ const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({ periode, 
     return (
         <>
             <Feltoppsummering
-                feltnavn={intlUtils(intl, 'oppsummering.uttak.årsak')}
+                feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
                 verdi={getÅrsakTekst(intl, periode, { navnAnnenForelder })}
             />
         </>

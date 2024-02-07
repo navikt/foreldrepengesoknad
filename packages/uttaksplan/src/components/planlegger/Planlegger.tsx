@@ -23,6 +23,7 @@ import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
 import { Button, Heading } from '@navikt/ds-react';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 import './planlegger.less';
 
@@ -187,6 +188,11 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
+                                logAmplitudeEvent('applikasjon-hendelse', {
+                                    app: 'foreldrepengesoknad',
+                                    team: 'foreldrepenger',
+                                    hendelse: 'leggTilPeriodeKlikk',
+                                });
                                 setNyPeriodeFormIsVisible(true);
                                 setIsUtsettelse(false);
                             }}
@@ -197,6 +203,11 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
+                                logAmplitudeEvent('applikasjon-hendelse', {
+                                    app: 'foreldrepengesoknad',
+                                    team: 'foreldrepenger',
+                                    hendelse: 'leggTilUtsettelseKlikk',
+                                });
                                 setNyPeriodeFormIsVisible(true);
                                 setIsUtsettelse(true);
                             }}

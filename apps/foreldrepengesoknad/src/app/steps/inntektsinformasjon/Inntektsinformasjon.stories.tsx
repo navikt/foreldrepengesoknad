@@ -2,7 +2,6 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import { action } from '@storybook/addon-actions';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import withRouter from 'storybook/decorators/withRouter';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
@@ -11,6 +10,9 @@ import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContex
 import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { BarnType } from '@navikt/fp-common';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { MemoryRouter } from 'react-router-dom';
+import SøknadRoutes from 'app/routes/routes';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const promiseAction =
     () =>
@@ -29,7 +31,6 @@ const defaultUtenlandsopphold = {
 export default {
     title: 'steps/Inntektsinformasjon',
     component: Inntektsinformasjon,
-    decorators: [withRouter],
 };
 
 interface Props {
@@ -45,6 +46,7 @@ const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
     utenlandsopphold = defaultUtenlandsopphold,
 }) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
             200,
@@ -57,38 +59,40 @@ const Template: StoryFn<Props> = ({
     };
 
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: {
-                        situasjon: 'fødsel',
-                        rolle: 'mor',
-                    },
-                    [ContextDataType.OM_BARNET]: {
-                        type: BarnType.FØDT,
-                        fødselsdatoer: [new Date()],
-                        antallBarn: 1,
-                    },
-                    [ContextDataType.SØKER]: {
-                        erAleneOmOmsorg: false,
-                        // @ts-ignore FIX
-                        harJobbetSomFrilansSiste10Mnd: undefined,
-                        // @ts-ignore FIX
-                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
-                        // @ts-ignore FIX
-                        harHattAnnenInntektSiste10Mnd: undefined,
-                    },
-                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                }}
-            >
-                <Inntektsinformasjon
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={action('button-click')}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.INNTEKTSINFORMASJON]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            situasjon: 'fødsel',
+                            rolle: 'mor',
+                        },
+                        [ContextDataType.OM_BARNET]: {
+                            type: BarnType.FØDT,
+                            fødselsdatoer: [new Date()],
+                            antallBarn: 1,
+                        },
+                        [ContextDataType.SØKER]: {
+                            erAleneOmOmsorg: false,
+                            // @ts-ignore FIX
+                            harJobbetSomFrilansSiste10Mnd: undefined,
+                            // @ts-ignore FIX
+                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
+                            // @ts-ignore FIX
+                            harHattAnnenInntektSiste10Mnd: undefined,
+                        },
+                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    }}
+                >
+                    <Inntektsinformasjon
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={action('button-click')}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 

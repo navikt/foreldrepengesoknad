@@ -22,9 +22,9 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Du må velge landet du oppholder deg i')).toHaveLength(2);
-        expect(screen.getAllByText('Du må velge en fra og med dato')).toHaveLength(2);
-        expect(screen.getAllByText('Du må velge en til og med dato')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi landet du oppholder deg i')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi en fra og med dato')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi en til og med dato')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
@@ -32,9 +32,9 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Du må velge landet du oppholder deg i')).toHaveLength(3);
-        expect(screen.getAllByText('Du må velge en fra og med dato')).toHaveLength(3);
-        expect(screen.getAllByText('Du må velge en til og med dato')).toHaveLength(3);
+        expect(screen.getAllByText('Du må oppgi landet du oppholder deg i')).toHaveLength(3);
+        expect(screen.getAllByText('Du må oppgi en fra og med dato')).toHaveLength(3);
+        expect(screen.getAllByText('Du må oppgi en til og med dato')).toHaveLength(3);
     });
 
     it('skal fylle ut to perioder og så gå videre', async () => {

@@ -1,6 +1,6 @@
 import { BodyShort, Link, ReadMore } from '@navikt/ds-react';
 import { Block, intlUtils } from '@navikt/fp-common';
-import links from 'app/links/links';
+import { links } from '@navikt/fp-constants';
 
 import { FormattedMessage, useIntl } from 'react-intl';
 

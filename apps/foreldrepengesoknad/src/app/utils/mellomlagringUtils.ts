@@ -5,7 +5,6 @@ const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     switch (route) {
         case SøknadRoutes.UTTAKSPLAN:
         case SøknadRoutes.OPPSUMMERING:
-        case SøknadRoutes.SØKNAD_SENDT:
             return true;
         default:
             return false;

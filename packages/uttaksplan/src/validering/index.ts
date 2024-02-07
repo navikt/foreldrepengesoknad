@@ -8,10 +8,9 @@ import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOp
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
 import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
 import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
-import { inneholderSenUtsettelsePgaFerieTest } from './tester/inneholderSenUtsettelsePgaFerieTest';
+import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
 import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
 import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
-import { inneholderSenUtsettelsePgaArbeidTest } from './tester/inneholderSenUtsettelsePgaArbeidTest';
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
@@ -33,7 +32,6 @@ import { inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest } from './te
 import { farMedmorHarRettPåFlerbarnsdagerTest } from './tester/farMedmorHarRettPåFlerbarnsdagerTest';
 import { overstigerMinsterettVedToTette } from './tester/overstigerMinsterettVedToTette';
 import { harPerioderEtterFørsteStønadsdagNesteBarnDerToTette } from './tester/harPerioderEtterFørsteStønadsdagNesteBarnDerToTette';
-import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
 import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
 
 export enum UttaksplanRegelKey {
@@ -50,8 +48,7 @@ export enum UttaksplanRegelKey {
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
-    'inneholderSenUtsettelsePgaFerie' = 'inneholderSenUtsettelsePgaFerieTest',
-    'inneholderSenUtsettelsePgaArbeid' = 'inneholderSenUtsettelsePgaArbeidTest',
+    'perioderManglerVedlegg' = 'manglendeVedlegg',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'inneholderForMyeFerie' = 'inneholderForMyeFerie',
@@ -71,7 +68,6 @@ export enum UttaksplanRegelKey {
     'inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest' = 'inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest',
     'overstigerMinsterettVedToTette' = 'overstigerMinsterettVedToTette',
     'harPerioderEtterFørsteStønadsdagNesteBarnDerToTette' = 'harPerioderEtterFørsteStønadsdagNesteBarnDerToTette',
-    'perioderManglerVedlegg' = 'manglendeVedlegg',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -143,15 +139,9 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         test: inneholderUttaksplanDatoSomIkkeErUttaksdag,
     },
     {
-        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaFerie,
+        key: UttaksplanRegelKey.perioderManglerVedlegg,
         alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaFerieTest,
-        slåsSammenVedOppsummering: true,
-    },
-    {
-        key: UttaksplanRegelKey.inneholderSenUtsettelsePgaArbeid,
-        alvorlighet: RegelAlvorlighet.INFO,
-        test: inneholderSenUtsettelsePgaArbeidTest,
+        test: harPerioderManglendeVedleggTest,
         slåsSammenVedOppsummering: true,
     },
     {

@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button } from '@navikt/ds-react';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -10,7 +9,6 @@ import {
     Block,
     Forelder,
     ISOStringToDate,
-    StepButtonWrapper,
     Uttaksdagen,
     formaterDatoUtenDag,
     getErMorUfør,
@@ -18,8 +16,9 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
+import { StepButtons } from '@navikt/fp-ui';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import SøknadRoutes from 'app/routes/routes';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -28,7 +27,6 @@ import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoU
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
-import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import {
     FarMedmorAleneomsorgFødselFormComponents,
     FarMedmorAleneomsorgFødselFormData,
@@ -40,16 +38,14 @@ import {
     mapFarMedmorAleneomsorgFødselFormToState,
 } from './farMedmorAleneomsorgFødselUtils';
 import { validateStartdatoUttakFarMedmorAleneomsorgFødsel } from './validation/farMedmorAleneomsorgFødselValidation';
-import { getPreviousStepHref } from 'app/steps/stepsConfig';
-import BackButton from 'app/steps/BackButton';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => void;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -58,7 +54,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     erEndringssøknad,
     person,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const intl = useIntl();
@@ -67,6 +64,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
@@ -75,7 +73,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         ContextDataType.UTTAKSPLAN_INFO,
     ) as FarMedmorAleneomsorgFødselUttaksplanInfo;
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -83,6 +80,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const datoForAleneomsorg = annenForelder.kanIkkeOppgis ? familiehendelsesdatoDate : barn.datoForAleneomsorg;
+
+    const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
@@ -115,7 +114,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             situasjon: erFødsel ? 'fødsel' : 'adopsjon',
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
             uttaksplanSkjema: {
                 startdatoPermisjon: uttaksplanInfo.startdatoUttak,
             },
@@ -129,19 +128,16 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             førsteUttaksdagNesteBarnsSak,
         });
 
-        const kontoerForValgtDekningsgrad = tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)];
+        const kontoerForValgtDekningsgrad = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
 
         oppdaterUttaksplan(uttaksplan);
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
             antallUkerIUttaksplan: getAntallUker(kontoerForValgtDekningsgrad),
         });
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     const shouldRender = erFødsel && erFarEllerMedmor && (!!søker.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
@@ -153,15 +149,15 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const navnFar = erFarEllerMedmor
         ? person.fornavn
         : isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.fornavn
-        : '';
+          ? annenForelder.fornavn
+          : '';
 
     return (
         <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
             initialValues={getInitialFarMedmorAleneomsorgFødselValues(
                 uttaksplanInfo,
                 dateToISOString(datoForAleneomsorg),
-                uttaksplanMetadata?.dekningsgrad,
+                dekningsgrad,
             )}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
@@ -169,25 +165,14 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                     formValues as FarMedmorAleneomsorgFødselFormData,
                 );
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
 
                 return (
                     <FarMedmorAleneomsorgFødselFormComponents.Form
                         includeButtons={false}
                         includeValidationSummary={true}
                     >
-                        <Block
-                            padBottom="xl"
-                            visible={visibility.isVisible(FarMedmorAleneomsorgFødselFormField.dekningsgrad)}
-                        >
-                            <DekningsgradSpørsmål
-                                FormKomponent={FarMedmorAleneomsorgFødselFormComponents}
-                                dekningsgradFeltNavn={FarMedmorAleneomsorgFødselFormField.dekningsgrad}
-                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                erDeltUttak={false}
-                            />
-                        </Block>
-                        <Block visible={formValues.dekningsgrad !== ''}>
+                        <Block>
                             {valgtStønadskonto && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={false}
@@ -236,17 +221,11 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
-                                />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
+                            <StepButtons
+                                isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                goToPreviousStep={goToPreviousDefaultStep}
+                                isDisabledAndLoading={isSubmitting}
+                            />
                         </Block>
                     </FarMedmorAleneomsorgFødselFormComponents.Form>
                 );

@@ -8,7 +8,6 @@ import dayjs from 'dayjs';
 import { date4YearsAgo } from 'app/utils/dateUtils';
 import { QuestionVisibility } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
-import { Søker } from 'app/types/Søker';
 import { hasValue } from 'app/utils/validationUtils';
 
 export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date | undefined): boolean => {
@@ -75,14 +74,6 @@ export const getInitialEgenNæringFormValues = (næring: EgenNæring | undefined
         egenNæringVarigEndringDato: næring.varigEndringDato,
         egenNæringVarigEndringBeskrivelse: næring.varigEndringBeskrivelse,
         egenNæringVarigEndringInntektEtterEndring: næring.varigEndringInntektEtterEndring,
-    };
-};
-
-export const mapNæringDataToSøkerState = (søker: Søker, values: EgenNæringFormData): Søker => {
-    const næring = mapEgenNæringFormValuesToState(values);
-    return {
-        ...søker,
-        selvstendigNæringsdrivendeInformasjon: næring,
     };
 };
 

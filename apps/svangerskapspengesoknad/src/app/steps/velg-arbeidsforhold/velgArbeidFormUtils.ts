@@ -1,6 +1,4 @@
 import { VelgArbeidFormData } from './velgArbeidFormConfig';
-import { Søker } from 'app/types/Søker';
-import { intlUtils } from '@navikt/fp-common';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
@@ -8,18 +6,19 @@ import { IntlShape } from 'react-intl';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
 import { Frilans, frilansId } from 'app/types/Frilans';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 
 export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
     if (type === Arbeidsforholdstype.FRILANSER) {
         return capitalizeFirstLetter(navn);
     }
     if (type === Arbeidsforholdstype.SELVSTENDIG && navn.trim().length === 0) {
-        return intlUtils(intl, 'egenNæring');
+        return intl.formatMessage({ id: 'egenNæring' });
     }
     return navn;
 };
 
-export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[]): VelgArbeidFormData => {
+export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[] = []): VelgArbeidFormData => {
     return {
         arbeidMedTilrettelegging: tilretteleggingsBehov.map((t) => t.id),
     };
@@ -59,7 +58,7 @@ export const getNæringTilretteleggingOption = (
 
 export const getFrilansTilretteleggingOption = (
     tilrettelegginger: Tilrettelegging[],
-    frilans: Frilans,
+    oppstart: string,
 ): Tilrettelegging => {
     const frilansTilretteleggingFraState = tilrettelegginger.find((t) => t.id == frilansId);
     return {
@@ -68,8 +67,8 @@ export const getFrilansTilretteleggingOption = (
             arbeidsgiverId: frilansId,
             navn: frilansId,
             type: Arbeidsforholdstype.FRILANSER,
-            startdato: frilans.oppstart,
-            stillinger: [{ fom: frilans.oppstart, tom: undefined, stillingsprosent: 100 }],
+            startdato: oppstart,
+            stillinger: [{ fom: oppstart, tom: undefined, stillingsprosent: 100 }],
         },
         vedlegg: frilansTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: frilansTilretteleggingFraState?.behovForTilretteleggingFom || undefined!,
@@ -108,7 +107,7 @@ export const getArbeidsforholdTilretteleggingOptions = (
                 navn:
                     forhold.arbeidsgiverIdType === 'orgnr' || forhold.arbeidsgiverNavn
                         ? forhold.arbeidsgiverNavn
-                        : intlUtils(intl, 'privat.arbeidsgiver'),
+                        : intl.formatMessage({ id: 'privat.arbeidsgiver' }),
                 stillinger: forhold.stillinger,
                 startdato: forhold.fom,
                 sluttdato: forhold.tom,
@@ -132,15 +131,15 @@ export const getArbeidsforholdTilretteleggingOptions = (
 
 export const mapArbeidsforholdToVelgArbeidOptions = (
     tilrettelegginger: Tilrettelegging[],
-    søker: Søker,
+    inntektsinformasjon: Inntektsinformasjon,
     arbeidsforhold: Arbeidsforhold[],
     termindato: string,
     intl: IntlShape,
+    frilans?: Frilans,
+    egenNæring?: EgenNæring,
 ): Tilrettelegging[] => {
-    const harNæring = søker.harJobbetSomSelvstendigNæringsdrivende;
-    const erFrilanser = søker.harJobbetSomFrilans;
-    const næring = søker.selvstendigNæringsdrivendeInformasjon;
-    const frilans = søker.frilansInformasjon;
+    const harNæring = inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende;
+    const erFrilanser = inntektsinformasjon.harJobbetSomFrilans;
     const unikeArbeidsforhold = getArbeidsforholdTilretteleggingOptions(
         arbeidsforhold,
         tilrettelegginger,
@@ -148,16 +147,18 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
         intl,
     );
 
-    const næringValg = harNæring && næring ? [getNæringTilretteleggingOption(tilrettelegginger, næring)] : [];
+    const næringValg = harNæring && egenNæring ? [getNæringTilretteleggingOption(tilrettelegginger, egenNæring)] : [];
 
     const frilansValg =
-        erFrilanser && frilans !== undefined ? [getFrilansTilretteleggingOption(tilrettelegginger, frilans)] : [];
+        erFrilanser && frilans !== undefined
+            ? [getFrilansTilretteleggingOption(tilrettelegginger, frilans.oppstart)]
+            : [];
     return [...unikeArbeidsforhold, ...næringValg, ...frilansValg];
 };
 
 export const validateVelgArbeidIsAnswered = (value: string, intl: IntlShape) => {
     if (value.length === 0) {
-        return intlUtils(intl, 'valideringsfeil.tilrettelegging.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' });
     }
     return undefined;
 };

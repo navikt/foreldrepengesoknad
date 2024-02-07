@@ -4,7 +4,6 @@ import MockAdapter from 'axios-mock-adapter/types';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import withRouter from 'storybook/decorators/withRouter';
 import { Næringstype } from 'app/context/types/Næring';
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
@@ -14,6 +13,9 @@ import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContex
 import Søker from 'app/context/types/Søker';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import SøknadRoutes from 'app/routes/routes';
+import { MemoryRouter } from 'react-router-dom';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 const promiseAction =
     () =>
@@ -25,7 +27,6 @@ const promiseAction =
 export default {
     title: 'steps/Oppsummering',
     component: Oppsummering,
-    decorators: [withRouter],
 };
 
 const søkerinfo = _søkerinfo as SøkerinfoDTO;
@@ -127,39 +128,42 @@ const Template: StoryFn<Props> = ({
     avbrytSøknad = action('button-click'),
     sendSøknad = () => Promise.resolve(),
 }) => {
+    initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
     };
     return (
-        <AxiosMock mock={restMock}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.SØKER]: søker,
-                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                    [ContextDataType.UTTAKSPLAN_METADATA]: {
-                        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-                        ønskerJustertUttakVedFødsel: false,
-                        harUttaksplanBlittSlettet: false,
-                        antallUkerIUttaksplan: 1,
-                    },
-                    [ContextDataType.OM_BARNET]: barn,
-                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
-                    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                    [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
-                }}
-            >
-                <Oppsummering
-                    erEndringssøknad={erEndringssøknad}
-                    sendSøknad={sendSøknad}
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
-                    avbrytSøknad={avbrytSøknad}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />
-            </FpDataContext>
-        </AxiosMock>
+        <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
+            <AxiosMock mock={restMock}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKER]: søker,
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                        [ContextDataType.UTTAKSPLAN_METADATA]: {
+                            ønskerJustertUttakVedFødsel: false,
+                            harUttaksplanBlittSlettet: false,
+                            antallUkerIUttaksplan: 1,
+                        },
+                        [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
+                        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+                        [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
+                    }}
+                >
+                    <Oppsummering
+                        erEndringssøknad={erEndringssøknad}
+                        sendSøknad={sendSøknad}
+                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                        avbrytSøknad={avbrytSøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    />
+                </FpDataContext>
+            </AxiosMock>
+        </MemoryRouter>
     );
 };
 
@@ -250,8 +254,8 @@ FarMedMorSomHarRettIEØS.args = {
     søkerinfo,
 };
 
-export const FarMedMorSomHaroppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
-FarMedMorSomHarRettIEØS.args = {
+export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
+FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søker: {
         erAleneOmOmsorg: false,

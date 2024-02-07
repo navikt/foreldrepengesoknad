@@ -1,49 +1,36 @@
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
-import { BodyShort, Button } from '@navikt/ds-react';
-import { notEmpty } from '@navikt/fp-validation';
+import { BodyShort } from '@navikt/ds-react';
 import {
     Block,
+    ISOStringToDate,
+    Step,
+    Søkerinfo,
+    TidsperiodeMedValgfriSluttdato,
     getAktiveArbeidsforhold,
     intlUtils,
     isFarEllerMedmor,
-    ISOStringToDate,
-    Step,
-    StepButtonWrapper,
-    Søkerinfo,
-    TidsperiodeMedValgfriSluttdato,
 } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import stepConfig from '../stepsConfig';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
 import AndreInntekter from './components/andre-inntekter/AndreInntekter';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import EgenNæring from './components/egen-næring/EgenNæring';
 import Frilans from './components/frilans/Frilans';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
+import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
 import { InntektsinformasjonFormComponents, InntektsinformasjonFormData } from './inntektsinformasjonFormConfig';
 import {
     getInitialInntektsinformasjonFormValues,
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
-import inntektsinforMasjonQuestionsConfig from './inntektsInformasjonQuestionsConfig';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import BackButton from '../BackButton';
-import { Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
-import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
-
-const findPreviousUrl = (informasjonOmUtenlandsopphold: Opphold) => {
-    if (!informasjonOmUtenlandsopphold.iNorgeNeste12Mnd) {
-        return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
-    } else if (!informasjonOmUtenlandsopphold.iNorgeSiste12Mnd) {
-        return SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
-    }
-    return SøknadRoutes.UTENLANDSOPPHOLD;
-};
+import { Attachment, AttachmentMetadataType } from '@navikt/fp-types';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 const getPerioderSomDokumenteres = (andreInntekterInformasjon: AnnenInntekt[], type: AnnenInntektType) => {
     return andreInntekterInformasjon.reduce((res, info) => {
@@ -92,17 +79,18 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     avbrytSøknad,
 }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
+    const stepConfig = useStepConfig();
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
-    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -166,9 +154,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
             });
         }
 
-        oppdaterAppRoute(SøknadRoutes.OPPSUMMERING);
-
-        mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     return (
@@ -183,11 +169,9 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                 return (
                     <Step
                         bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="inntektsinformasjon"
-                        pageTitle={intlUtils(intl, 'søknad.inntektsinformasjon')}
                         onCancel={avbrytSøknad}
-                        onContinueLater={onFortsettSøknadSenere}
-                        steps={stepConfig(intl, false)}
+                        onContinueLater={navigator.fortsettSøknadSenere}
+                        steps={stepConfig}
                     >
                         <InntektsinformasjonFormComponents.Form includeButtons={false} includeValidationSummary={true}>
                             <Block padBottom="l">
@@ -239,17 +223,11 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                             </Block>
 
                             <Block margin="xl">
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={findPreviousUrl(utenlandsopphold)}
-                                    />
-                                    {visibility.areAllQuestionsAnswered() && (
-                                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                            {intlUtils(intl, 'søknad.gåVidere')}
-                                        </Button>
-                                    )}
-                                </StepButtonWrapper>
+                                <StepButtons
+                                    isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                                    isDisabledAndLoading={isSubmitting}
+                                />
                             </Block>
                         </InntektsinformasjonFormComponents.Form>
                     </Step>

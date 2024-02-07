@@ -7,6 +7,7 @@ import {
     Block,
     Forelder,
     formaterDatoKompakt,
+    getFiltrerteVelgbareStønadskontotyper,
     getFørsteUttaksdag2UkerFørFødsel,
     getIsValidStateForPerioder,
     getSisteUttaksdag6UkerEtterFødsel,
@@ -302,7 +303,11 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                         antallBarn,
                     },
                 } as PeriodeUttakFormQuestionsPayload);
-
+                const filtrerteValgbareStønadskontoer = getFiltrerteVelgbareStønadskontotyper(
+                    velgbareStønadskontoer,
+                    values.fom,
+                    familiehendelsesdato,
+                );
                 return (
                     <>
                         <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
@@ -371,7 +376,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.konto)}>
                                 <HvilkenKontoSpørsmål
                                     fieldName={PeriodeUttakFormField.konto}
-                                    velgbareStønadskontoer={velgbareStønadskontoer}
+                                    velgbareStønadskontoer={filtrerteValgbareStønadskontoer}
                                     erOppholdsperiode={søkerOppgirAnnenForeldersPeriode}
                                     navnPåForeldre={navnPåForeldre}
                                     erFarEllerMedmor={erFarEllerMedmor}

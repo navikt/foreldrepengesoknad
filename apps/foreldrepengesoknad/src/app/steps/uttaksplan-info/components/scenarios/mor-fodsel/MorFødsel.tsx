@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, GuidePanel } from '@navikt/ds-react';
+import { FormattedMessage } from 'react-intl';
+import { GuidePanel } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
@@ -9,12 +9,10 @@ import {
     EksisterendeSak,
     Forelder,
     ISOStringToDate,
-    StepButtonWrapper,
     Tidsperioden,
     Uttaksdagen,
     formaterNavn,
     getFlerbarnsuker,
-    intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     uttaksConstants,
@@ -30,17 +28,14 @@ import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
 import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { MorFødselQuestionsPayload, morFødselQuestionsConfig } from './morFødselQuestionsConfig';
-import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
-import { getPreviousStepHref } from 'app/steps/stepsConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
-import BackButton from 'app/steps/BackButton';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { StepButtons } from '@navikt/fp-ui';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -48,7 +43,8 @@ interface Props {
     eksisterendeSakFar: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
     person: Person;
-    mellomlagreSøknadOgNaviger: () => void;
+    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -58,26 +54,27 @@ const MorFødsel: FunctionComponent<Props> = ({
     eksisterendeSakFar,
     erEndringssøknad,
     person,
-    mellomlagreSøknadOgNaviger,
+    goToNextDefaultStep,
+    goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
-    const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
     const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO) as MorFødselUttaksplanInfo;
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const antallBarn = barn.antallBarn;
+    const { dekningsgrad } = periodeMedForeldrepenger;
 
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
@@ -129,7 +126,7 @@ const MorFødsel: FunctionComponent<Props> = ({
             situasjon: erFødsel ? 'fødsel' : 'adopsjon',
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(values.dekningsgrad)],
+            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
             uttaksplanSkjema: {
                 fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
                 startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin
@@ -173,24 +170,15 @@ const MorFødsel: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            dekningsgrad: getDekningsgradFromString(values.dekningsgrad),
-            antallUkerIUttaksplan: getAntallUker(
-                tilgjengeligeStønadskontoer[values.dekningsgrad! === '100' ? 100 : 80],
-            ),
+            antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
         });
 
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-
-        mellomlagreSøknadOgNaviger();
+        return goToNextDefaultStep();
     };
 
     return (
         <MorFødselFormComponents.FormikWrapper
-            initialValues={getInitialMorFødselValues(
-                defaultPermisjonStartdato,
-                uttaksplanInfo,
-                uttaksplanMetadata?.dekningsgrad,
-            )}
+            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, uttaksplanInfo)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues, setFieldValue }) => {
                 const visibility = morFødselQuestionsConfig.getVisbility({
@@ -199,19 +187,11 @@ const MorFødsel: FunctionComponent<Props> = ({
                     erAleneOmOmsorg: søker.erAleneOmOmsorg,
                 } as MorFødselQuestionsPayload);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[formValues.dekningsgrad === '100' ? 100 : 80];
+                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
 
                 return (
                     <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                        <Block padBottom="l">
-                            <DekningsgradSpørsmål
-                                FormKomponent={MorFødselFormComponents}
-                                dekningsgradFeltNavn={MorFødselFormField.dekningsgrad}
-                                tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
-                                erDeltUttak={erDeltUttak}
-                            />
-                        </Block>
-                        <Block padBottom="xl" visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
+                        <Block padBottom="xl">
                             {valgtStønadskonto && (
                                 <TilgjengeligeDagerGraf
                                     erDeltUttak={erDeltUttak}
@@ -237,7 +217,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             </GuidePanel>
                         </Block>
-                        <Block visible={visibility.isAnswered(MorFødselFormField.dekningsgrad)}>
+                        <Block>
                             <StartdatoPermisjonMor
                                 permisjonStartdato={formValues.permisjonStartdato!}
                                 skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
@@ -245,13 +225,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 barn={barn}
                             />
                         </Block>
-                        <Block
-                            visible={
-                                søker.erAleneOmOmsorg === false &&
-                                harRettPåForeldrepengerINorge &&
-                                visibility.isAnswered(MorFødselFormField.dekningsgrad)
-                            }
-                        >
+                        <Block visible={søker.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
                             <Block
                                 padBottom="xl"
                                 visible={
@@ -264,7 +238,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="uttaksplaninfo.veileder.flerbarnsInformasjon"
                                         values={{
-                                            uker: getFlerbarnsuker(formValues.dekningsgrad!, antallBarn),
+                                            uker: getFlerbarnsuker(dekningsgrad, antallBarn),
                                             navnFar: navnFarMedmor,
                                             navnMor: navnMor,
                                         }}
@@ -286,17 +260,11 @@ const MorFødsel: FunctionComponent<Props> = ({
                             </Block>
                         </Block>
                         <Block>
-                            <StepButtonWrapper>
-                                <BackButton
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    route={getPreviousStepHref('uttaksplanInfo')}
-                                />
-                                {visibility.areAllQuestionsAnswered() && (
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                )}
-                            </StepButtonWrapper>
+                            <StepButtons
+                                isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                goToPreviousStep={goToPreviousDefaultStep}
+                                isDisabledAndLoading={isSubmitting}
+                            />
                         </Block>
                     </MorFødselFormComponents.Form>
                 );

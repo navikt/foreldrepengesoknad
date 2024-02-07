@@ -3,6 +3,8 @@ import { composeStories } from '@storybook/react';
 import * as stories from './ArbeidIUtlandet.stories';
 import { render, screen } from '@testing-library/react';
 import dayjs from 'dayjs';
+import SøknadRoutes from 'app/routes/routes';
+import { ContextDataType } from 'app/context/SvpDataContext';
 
 const { Default } = composeStories(stories);
 
@@ -21,7 +23,9 @@ describe('<ArbeidIUtlandet>', () => {
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
-        render(<Default />);
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Hvilket land har du jobbet i?')).toBeInTheDocument();
 
@@ -55,6 +59,35 @@ describe('<ArbeidIUtlandet>', () => {
         expect(screen.queryByText('Du må oppgi navn på arbeidsgiver i utlandet.')).not.toBeInTheDocument();
         expect(screen.queryByText('Du må oppgi en startdato.')).not.toBeInTheDocument();
         expect(screen.queryByText('Du må svare på om du fortsatt jobber i utlandet.')).not.toBeInTheDocument();
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: [
+                {
+                    arbeidsgiverNavn: 'Arbeidsgiver',
+                    land: 'UA',
+                    pågående: false,
+                    tidsperiode: {
+                        fom: '2022-12-30',
+                        tom: '2023-12-30',
+                    },
+                    type: 'JOBB_I_UTLANDET',
+                },
+            ],
+            key: ContextDataType.ARBEID_I_UTLANDET,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: SøknadRoutes.VELG_ARBEID,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal vise feilmelding når dato er i feil format', async () => {

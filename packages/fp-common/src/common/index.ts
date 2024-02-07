@@ -36,6 +36,7 @@ export { default as allCommonMessages } from './i18n/allCommonMessages';
 export * from './types';
 
 export { default as uttaksConstants } from './constants/constants';
+export { capitalizeFirstLetter } from './utils/stringUtils';
 
 export { default as bemUtils } from './utils/bemUtils';
 export { default as useDocumentTitle } from './utils/useDocumentTitle';

@@ -28,7 +28,6 @@ export interface Props {
     onContinueLater?: () => void;
     goToPreviousStep: () => void;
     stepConfig: StepConfig[];
-    supportsTempSaving?: boolean;
 }
 
 const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
@@ -39,7 +38,6 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     goToPreviousStep,
     senereUtenlandsopphold,
     stepConfig,
-    supportsTempSaving = true,
 }) => {
     const defaultValues = useMemo(() => senereUtenlandsopphold || DEFAULT_FORM_VALUES, [senereUtenlandsopphold]);
     const formMethods = useForm<UtenlandsoppholdSenere>({
@@ -63,12 +61,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
 
     return (
         <UtenlandsoppholdIntlProvider>
-            <Step
-                onCancel={cancelApplication}
-                onContinueLater={onContinueLater}
-                steps={stepConfig}
-                supportsTempSaving={supportsTempSaving}
-            >
+            <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
                 <Form formMethods={formMethods} onSubmit={saveOnNext}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />

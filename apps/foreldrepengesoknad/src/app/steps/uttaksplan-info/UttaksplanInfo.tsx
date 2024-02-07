@@ -1,33 +1,22 @@
-import { useEffect, useMemo } from 'react';
-import { useIntl } from 'react-intl';
 import { Loader } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Step, Søkerinfo, intlUtils, isAnnenForelderOppgitt, isFarEllerMedmor, isFødtBarn } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
-import {
-    Dekningsgrad,
-    getFarMedmorErAleneOmOmsorg,
-    getMorErAleneOmOmsorg,
-    intlUtils,
-    isAnnenForelderOppgitt,
-    isFarEllerMedmor,
-    isFødtBarn,
-    Step,
-    Søkerinfo,
-} from '@navikt/fp-common';
-import stepConfig from '../stepsConfig';
-import Api from 'app/api/api';
-import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
+import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import { FpApiDataType } from 'app/api/context/FpApiDataContext';
+import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
-    getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { RequestStatus } from 'app/types/RequestState';
-import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
-import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { RequestStatus } from 'app/types/RequestState';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
+import { useEffect, useMemo } from 'react';
+import { useIntl } from 'react-intl';
+import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -43,7 +32,9 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
     avbrytSøknad,
 }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+
+    const stepConfig = useStepConfig();
+    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -58,10 +49,7 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
     const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const { erAleneOmOmsorg } = søker;
 
-    const familieHendelseDatoNesteSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
@@ -70,16 +58,20 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
     const eksisterendeSakAnnenPartRequestIsSuspended = annenPartFnr !== undefined && annenPartFnr !== '' ? false : true;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const barnFnr = isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
-    const { eksisterendeSakAnnenPartData, eksisterendeSakAnnenPartError, eksisterendeSakAnnenPartRequestStatus } =
-        Api.useGetAnnenPartsVedtak(
-            annenPartFnr,
-            barnFnr,
-            familiehendelsesdato,
-            eksisterendeSakAnnenPartRequestIsSuspended,
-        );
 
-    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
-    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+    const {
+        data: eksisterendeSakAnnenPartData,
+        error: eksisterendeSakAnnenPartError,
+        requestStatus: eksisterendeSakAnnenPartRequestStatus,
+    } = useApiPostData(
+        FpApiDataType.ANNEN_PART_VEDTAK,
+        {
+            annenPartFødselsnummer: annenPartFnr,
+            barnFødselsnummer: barnFnr,
+            familiehendelse: familiehendelsesdato,
+        },
+        eksisterendeSakAnnenPartRequestIsSuspended,
+    );
 
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
@@ -91,11 +83,6 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
                 førsteUttaksdagNesteBarnsSak,
             ),
         [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
-    );
-
-    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
-        eksisterendeSak?.grunnlag.termindato,
-        eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
 
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
@@ -133,38 +120,29 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
         });
     };
 
-    const { tilgjengeligeStønadskontoerData: stønadskontoer100, tilgjengeligeStønadskontoerError } =
-        Api.useGetUttakskontoer(
-            getStønadskontoParams(
-                Dekningsgrad.HUNDRE_PROSENT,
-                barn,
-                annenForelder,
-                søkersituasjon,
-                farMedmorErAleneOmOmsorg,
-                morErAleneOmOmsorg,
-                dateToISOString(familieHendelseDatoNesteSak),
-                saksgrunnlagsAntallBarn,
-                saksgrunnlagsTermindato,
-            ),
-            eksisterendeSakAnnenPartRequestIsSuspended
-                ? false
-                : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED,
-        );
-    const { tilgjengeligeStønadskontoerData: stønadskontoer80 } = Api.useGetUttakskontoer(
-        getStønadskontoParams(
-            Dekningsgrad.ÅTTI_PROSENT,
-            barn,
-            annenForelder,
-            søkersituasjon,
-            farMedmorErAleneOmOmsorg,
-            morErAleneOmOmsorg,
-            dateToISOString(familieHendelseDatoNesteSak),
-            saksgrunnlagsAntallBarn,
-            saksgrunnlagsTermindato,
-        ),
-        eksisterendeSakAnnenPartRequestIsSuspended
-            ? false
-            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED,
+    const { stønadskontoParams100, stønadskontoParams80 } = getStønadskontoParams(
+        barn,
+        annenForelder,
+        søkersituasjon,
+        søker,
+        barnFraNesteSak,
+        eksisterendeSakAnnenPartData,
+        eksisterendeSak,
+    );
+
+    const suspendRequest = eksisterendeSakAnnenPartRequestIsSuspended
+        ? false
+        : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED;
+
+    const { data: stønadskontoer80 } = useApiGetData(
+        FpApiDataType.STØNADSKONTOER_80,
+        stønadskontoParams80,
+        suspendRequest,
+    );
+    const { data: stønadskontoer100, error: tilgjengeligeStønadskontoerError } = useApiGetData(
+        FpApiDataType.STØNADSKONTOER_100,
+        stønadskontoParams100,
+        suspendRequest,
     );
 
     useEffect(() => {
@@ -198,11 +176,9 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
     return (
         <Step
             bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            activeStepId="uttaksplanInfo"
-            pageTitle={intlUtils(intl, 'søknad.uttaksplanInfo')}
             onCancel={avbrytSøknad}
-            onContinueLater={onFortsettSøknadSenere}
-            steps={stepConfig(intl, false)}
+            onContinueLater={navigator.fortsettSøknadSenere}
+            steps={stepConfig}
         >
             <UttaksplanInfoScenarios
                 tilgjengeligeStønadskontoer100DTO={stønadskontoer100}
@@ -213,7 +189,8 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
                 annenForelder={annenForelder}
                 erEndringssøknad={erEndringssøknad}
                 person={søkerInfo.person}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                goToNextDefaultStep={navigator.goToNextDefaultStep}
+                goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                 oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
             />
         </Step>

@@ -3,7 +3,6 @@ import * as countries from 'i18n-iso-countries';
 import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/context/types/AnnenInntekt';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import { useIntl } from 'react-intl';
-import { intlUtils } from '@navikt/fp-common';
 import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
@@ -17,10 +16,10 @@ const AnnenInntektDetaljer: FunctionComponent<Props> = ({ annenInntekt }) => {
         const jobbIUtlandetInntekt = annenInntekt as JobbIUtlandetInntekt;
         return (
             <>
-                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.arbeidsgiverNavn')}>
+                <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.arbeidsgiverNavn' })}>
                     <BodyShort>{jobbIUtlandetInntekt.arbeidsgiverNavn}</BodyShort>
                 </OppsummeringsPunkt>
-                <OppsummeringsPunkt title={intlUtils(intl, 'oppsummering.andreInntekter.arbeidsgiverLand')}>
+                <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.arbeidsgiverLand' })}>
                     <BodyShort>{countries.getName(jobbIUtlandetInntekt.land, 'nb')}</BodyShort>
                 </OppsummeringsPunkt>
             </>
