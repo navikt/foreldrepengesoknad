@@ -35,9 +35,9 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Du skal bo i Norge de neste 12 månadene')).toBeInTheDocument();
         expect(screen.getByText('På fødselstidspunktet bodde du i Norge')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Send søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
-        expect(screen.getByText('Du må bekrefte at du har oppgitt rigtige opplysninger')).toBeInTheDocument();
+        expect(screen.getByText('Du må bekrefte at du har oppgitt riktige opplysninger')).toBeInTheDocument();
 
         await userEvent.click(
             screen.getByText(
@@ -45,7 +45,7 @@ describe('<OppsummeringSteg>', () => {
             ),
         );
 
-        await userEvent.click(screen.getByText('Send søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
         const abortController = new AbortController();
 
@@ -75,7 +75,7 @@ describe('<OppsummeringSteg>', () => {
             ),
         );
 
-        await userEvent.click(screen.getByText('Send søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
         const abortController = new AbortController();
 
@@ -106,7 +106,7 @@ describe('<OppsummeringSteg>', () => {
             ),
         );
 
-        await userEvent.click(screen.getByText('Send søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
         const abortController = new AbortController();
 
@@ -148,7 +148,7 @@ describe('<OppsummeringSteg>', () => {
             ),
         );
 
-        await userEvent.click(screen.getByText('Send søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
         const abortController = new AbortController();
 

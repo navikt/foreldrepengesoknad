@@ -1,11 +1,10 @@
-import { LocaleAll } from '@navikt/fp-types';
+import { LocaleAll, Person } from '@navikt/fp-types';
 import { useRequest } from '@navikt/fp-api';
 import { erMyndig } from '@navikt/fp-utils';
 import { Umyndig, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { EsDataContext } from 'appData/EsDataContext';
-import Person from './types/Person';
 import EngangsstønadRoutes, { ApiErrorHandler, Spinner, esApi } from './EngangsstønadRoutes';
 import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import { useDocumentTitle } from '@navikt/fp-common';
