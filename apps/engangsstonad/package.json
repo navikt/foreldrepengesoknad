@@ -54,15 +54,15 @@
         "request": "^2.88.2"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "6.3.5",
+        "@formatjs/cli-lib": "6.3.6",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@storybook/addon-essentials": "^7.6.10",
-        "@storybook/cli": "^7.6.10",
-        "@storybook/react": "^7.6.10",
+        "@storybook/addon-essentials": "^7.6.13",
+        "@storybook/cli": "^7.6.13",
+        "@storybook/react": "^7.6.13",
         "@storybook/react-vite": "7.6.10",
-        "@testing-library/jest-dom": "^6.2.1",
-        "@testing-library/react": "^14.1.2",
+        "@testing-library/jest-dom": "^6.4.2",
+        "@testing-library/react": "^14.2.1",
         "@testing-library/user-event": "^14.5.2",
         "@types/react": "^18.2.48",
         "@types/react-document-title": "^2.0.9",
@@ -77,11 +77,11 @@
         "less": "^4.2.0",
         "multer": "1.4.5-lts.1",
         "mustache-loader": "^1.4.3",
-        "storybook": "7.6.10",
+        "storybook": "7.6.13",
         "tsconfig": "workspace:*",
         "typescript": "^5.3.3",
         "vite": "^4.4.9",
-        "vite-plugin-checker": "^0.6.1",
+        "vite-plugin-checker": "^0.6.4",
         "vitest": "^0.34.2"
     }
 }
