@@ -306,6 +306,7 @@ const getFordelingMor = (
     erAdopsjon: boolean,
     antallBarn: number,
     ekstraDagerGrunnetPrematurFødsel: number | undefined,
+    kunMorFårForeldrepenger: boolean,
     intl: IntlShape,
     navnFar?: string,
     dagerMorsKvoteBruktAvFar?: number,
@@ -325,7 +326,13 @@ const getFordelingMor = (
             antallDager: dagerFørFødsel,
             fargekode,
         });
-        fordelingInfo.push(getFormattedMessage('fordeling.info.mor.førFødsel', { varighetTekst }));
+        if (kunMorFårForeldrepenger) {
+            fordelingInfo.push(
+                getFormattedMessage('fordeling.info.mor.førFødsel.kunMorFårForeldrepenger', { varighetTekst }),
+            );
+        } else {
+            fordelingInfo.push(getFormattedMessage('fordeling.info.mor.førFødsel.deltUttak', { varighetTekst }));
+        }
     }
     if (dagerRettEtterFødsel > 0) {
         const varighetTekst = getVarighetString(dagerRettEtterFødsel, intl);
@@ -528,6 +535,7 @@ export const getFordelingFraKontoer = (
             erAdopsjon,
             antallBarn,
             undefined,
+            false,
             intl,
             navnFar,
             dagerMorsKvoteBruktAvFar,
@@ -608,6 +616,7 @@ export const getFordelingFraKontoer = (
                   erAdopsjon,
                   antallBarn,
                   ekstraDagerGrunnetPrematurFødsel,
+                  true,
                   intl,
               );
         fordelingsinformasjon.push(fordeling);

@@ -290,3 +290,30 @@ MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     uttaksplanAnnenPart: uttaksplanFar,
 };
+
+export const MorSøkerOgFarHarIkkeRett = Template.bind({});
+MorSøkerOgFarHarIkkeRett.args = {
+    stønadskonto100: stønadskonto100,
+    stønadskonto80: stønadskonto80,
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: [dayjs('2024-01-15').toDate()],
+        antallBarn: 1,
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '1212121313',
+        utenlandskFnr: false,
+        harRettPåForeldrepengerINorge: false,
+        kanIkkeOppgis: false,
+    },
+    søker: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    søkerinfo,
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+};
