@@ -11,7 +11,7 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
 import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import { BodyShort, GuidePanel } from '@navikt/ds-react';
+import { BodyLong, BodyShort, GuidePanel, ReadMore } from '@navikt/ds-react';
 
 interface Props {
     fieldName: PeriodeUttakFormField | PeriodeUtsettelseFormField;
@@ -129,6 +129,39 @@ const renderOptions = (intl: IntlShape) => {
         ));
 };
 
+const renderReadMore = () => {
+    return (
+        <ReadMore header="Hva mener NAV med at mor må være i aktivitet?">
+            <BodyShort>
+                <FormattedMessage id="uttaksplan.morsAktivitet.readMore.del1" />
+            </BodyShort>
+            <ul>
+                <li>
+                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt1" />
+                </li>
+                <li>
+                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt2" />
+                </li>
+                <li>
+                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt3" />
+                </li>
+                <li>
+                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt4" />
+                </li>
+                <li>
+                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt5" />
+                </li>
+                <li>
+                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt6" />
+                </li>
+            </ul>
+            <BodyLong>
+                <FormattedMessage id="uttaksplan.morsAktivitet.readMore.del2" />
+            </BodyLong>
+        </ReadMore>
+    );
+};
+
 const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
     fieldName,
     navnPåForeldre,
@@ -142,6 +175,7 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
             <Block padBottom="l">
                 <FormComponents.Select
                     name={fieldName}
+                    description="For at du skal kunne bruke fellesperioden må mor være i aktivitet"
                     label={intlUtils(intl, 'uttaksplan.aktivitetskrav', { navnMor: navnPåForeldre.mor })}
                     validate={(value: MorsAktivitet | '') => {
                         if (!hasValue(value)) {
@@ -154,6 +188,7 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({
                     <option value="" />
                     {renderOptions(intl)}
                 </FormComponents.Select>
+                <div style={{ padding: '1rem 0' }}>{renderReadMore()}</div>
             </Block>
             <Block padBottom="l" visible={hasValue(aktivitetskravMorValue)}>
                 <GuidePanel>
