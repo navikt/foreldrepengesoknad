@@ -27,7 +27,7 @@ describe('<Oppsummering>', () => {
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
         expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Send inn søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
         expect(screen.getByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).toBeInTheDocument();
 
@@ -39,7 +39,7 @@ describe('<Oppsummering>', () => {
 
         expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Send inn søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
         expect(sendSøknad).toHaveBeenCalledTimes(1);
     });

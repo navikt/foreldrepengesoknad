@@ -1,0 +1,16 @@
+export enum SivilstandType {
+    UOPPGITT = 'UOPPGITT',
+    UGIFT = 'UGIFT',
+    GIFT = 'GIFT',
+    ENKE_ELLER_ENKEMANN = 'ENKE_ELLER_ENKEMANN',
+    SKILT = 'SKILT',
+    SEPARERT = 'SEPARERT',
+    REGISTRERT_PARTNER = 'REGISTRERT_PARTNER',
+    SEPARERT_PARTNER = 'SEPARERT_PARTNER',
+    SKILT_PARTNER = 'SKILT_PARTNER',
+    GJENLEVENDE_PARTNER = 'GJENLEVENDE_PARTNER',
+}
+
+export interface Sivilstand {
+    type: SivilstandType;
+}

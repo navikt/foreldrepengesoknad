@@ -90,11 +90,9 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         periode: Uttaksperiode,
         periodeErNyEllerEndret = true,
     ): OppsummeringslisteelementProps => {
-        console.log(periode);
         const høyrestiltTekst = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode)
             ? intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' })
             : formatTidsperiode(periode.tidsperiode);
-        console.log('h', høyrestiltTekst);
         return {
             venstrestiltTekst: getUttaksperiodeNavn(periode),
             høyrestiltTekst,

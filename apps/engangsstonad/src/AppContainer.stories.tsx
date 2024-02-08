@@ -1,14 +1,14 @@
+import { attachmentApi } from '@navikt/fp-api';
+import { initAmplitude } from '@navikt/fp-metrics';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
-import { initAmplitude } from '@navikt/fp-metrics';
-import { attachmentApi } from '@navikt/fp-api';
 
-import Person, { Kjønn } from 'types/Person';
-import AppContainer from './AppContainer';
-import { esApi } from './EngangsstønadRoutes';
+import { Person } from '@navikt/fp-types';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
+import AppContainer from './AppContainer';
+import { esApi } from './EngangsstønadRoutes';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -74,9 +74,8 @@ SøkerErKvinne.args = {
         fnr: '11111111111',
         fornavn: 'Henrikke',
         etternavn: 'Ibsen',
-        kjønn: Kjønn.KVINNE,
+        kjønn: 'K',
         fødselsdato: '1979-01-28',
-        adresse: 'Oslo 123',
         bankkonto: {
             kontonummer: '49875234987',
             banknavn: 'Storebank',
@@ -98,9 +97,8 @@ SøkerErKvinneMedMellomlagretData.args = {
         fnr: '11111111111',
         fornavn: 'Henrikke',
         etternavn: 'Ibsen',
-        kjønn: Kjønn.KVINNE,
+        kjønn: 'K',
         fødselsdato: '1979-01-28',
-        adresse: 'Oslo 123',
         bankkonto: {
             kontonummer: '49875234987',
             banknavn: 'Storebank',
@@ -114,9 +112,8 @@ SøkerErMann.args = {
         fnr: '1231111111',
         fornavn: 'Espen',
         etternavn: 'Utvikler',
-        kjønn: Kjønn.MANN,
+        kjønn: 'M',
         fødselsdato: '1979-01-28',
-        adresse: 'Oslo 123',
         bankkonto: {
             kontonummer: '49875234987',
             banknavn: 'Storebank',
