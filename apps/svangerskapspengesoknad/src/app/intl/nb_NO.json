@@ -92,6 +92,8 @@
     "inntektsinformasjon.alert.ingenArbeidsforhold.forsettelse": "<a>ta kontakt med oss.</a>",
     "frilans.oppstart": "Når startet du som frilanser?",
     "frilans.jobberFremdelesSomFrilans": "Jobber du fortsatt som frilanser?",
+    "frilans.jobberFremdelesSomFrilans.ja": "Ja",
+    "frilans.jobberFremdelesSomFrilans.nei": "Nei",
     "egenNæring.visning.inntekt": "Næringsinntekt: {inntekt}kr",
     "egenNæring.visning.orgnr": "Org. nr: {orgnr}",
     "egenNæring.næringstype.annen": "Annen type virksomhet",

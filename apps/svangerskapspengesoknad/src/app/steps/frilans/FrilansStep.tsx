@@ -1,28 +1,19 @@
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
-import { Button } from '@navikt/ds-react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Radio } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
-import {
-    Block,
-    Step,
-    StepButtonWrapper,
-    convertYesOrNoOrUndefinedToBoolean,
-    date20YearsAgo,
-    dateToday,
-    intlUtils,
-    validateYesOrNoIsAnswered,
-} from '@navikt/fp-common';
+import { Block, Step, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { Søkerinfo } from 'app/types/Søkerinfo';
-import { getNextRouteForFrilans, getPreviousSetStepHref, useStepConfig } from 'app/steps/stepsConfig';
-import { FrilansFormComponents, FrilansFormData, FrilansFormField } from './frilansFormConfig';
-import { cleanupFrilansFormData, getInitialFrilansFormValues } from './frilansFormUtils';
-import frilansSubformQuestionsConfig from './frilansFormQuestionsConfig';
-import { validateFrilansStart } from './frilansValidation';
+import { getNextRouteForFrilans, useStepConfig } from 'app/steps/stepsConfig';
+import { FrilansFormData, FrilansFormField } from './frilansFormConfig';
+import { validateFrilansStart, validateJobberFortsattSomFrilanser } from './frilansValidation';
 import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import BackButton from '../BackButton';
+import { useForm } from 'react-hook-form';
+import { Datepicker, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import SøknadRoutes from 'app/routes/routes';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -34,7 +25,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const intl = useIntl();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
@@ -46,9 +37,14 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
-    const onSubmit = (values: Partial<FrilansFormData>) => {
-        setIsSubmitting(true);
+    const formMethods = useForm<FrilansFormData>({
+        defaultValues: {
+            frilansFom: frilans ? frilans.oppstart : undefined,
+            jobberFremdelesSomFrilanser: frilans ? frilans.jobberFremdelesSomFrilans : undefined,
+        },
+    });
 
+    const onSubmit = (values: Partial<FrilansFormData>) => {
         const harKunEtAktivtArbeid = søkerHarKunEtAktivtArbeid(
             barnet.termindato,
             søkerInfo.arbeidsforhold,
@@ -63,7 +59,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
         }
 
         oppdaterFrilans({
-            jobberFremdelesSomFrilans: !!convertYesOrNoOrUndefinedToBoolean(values.jobberFremdelesSomFrilanser),
+            jobberFremdelesSomFrilans: values.jobberFremdelesSomFrilanser!,
             oppstart: values.frilansFom!,
         });
 
@@ -79,67 +75,48 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     };
 
     return (
-        <FrilansFormComponents.FormikWrapper
-            initialValues={getInitialFrilansFormValues(frilans)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues }) => {
-                const visibility = frilansSubformQuestionsConfig.getVisbility(formValues as FrilansFormData);
-                return (
-                    <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="frilans"
-                        pageTitle={intlUtils(intl, 'steps.label.frilans')}
-                        onCancel={avbrytSøknad}
-                        steps={stepConfig}
-                        onContinueLater={onFortsettSøknadSenere}
+        <Step
+            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+            activeStepId="frilans"
+            pageTitle={intlUtils(intl, 'steps.label.frilans')}
+            onCancel={avbrytSøknad}
+            steps={stepConfig}
+            onContinueLater={onFortsettSøknadSenere}
+        >
+            <Form formMethods={formMethods} onSubmit={onSubmit}>
+                <Block padBottom="xxl">
+                    <Datepicker
+                        name={FrilansFormField.frilansFom}
+                        label={intlUtils(intl, 'frilans.oppstart')}
+                        validate={[validateFrilansStart(intl)]}
+                        maxDate={dateToday}
+                        minDate={date20YearsAgo}
+                    />
+                </Block>
+                <Block padBottom="xxl">
+                    <RadioGroup
+                        name={FrilansFormField.jobberFremdelesSomFrilanser}
+                        label={intlUtils(intl, 'frilans.jobberFremdelesSomFrilans')}
+                        validate={[validateJobberFortsattSomFrilanser(intl)]}
                     >
-                        <FrilansFormComponents.Form
-                            includeButtons={false}
-                            includeValidationSummary={true}
-                            cleanup={(values) => cleanupFrilansFormData(values, visibility)}
-                        >
-                            <Block padBottom="xxl" visible={visibility.isVisible(FrilansFormField.frilansFom)}>
-                                <FrilansFormComponents.DatePicker
-                                    name={FrilansFormField.frilansFom}
-                                    label={intlUtils(intl, 'frilans.oppstart')}
-                                    validate={validateFrilansStart(intl)}
-                                    maxDate={dateToday}
-                                    minDate={date20YearsAgo}
-                                    showYearSelector={true}
-                                    placeholder={'dd.mm.åååå'}
-                                />
-                            </Block>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(FrilansFormField.jobberFremdelesSomFrilanser)}
-                            >
-                                <FrilansFormComponents.YesOrNoQuestion
-                                    name={FrilansFormField.jobberFremdelesSomFrilanser}
-                                    legend={intlUtils(intl, 'frilans.jobberFremdelesSomFrilans')}
-                                    validate={(value) =>
-                                        validateYesOrNoIsAnswered(
-                                            value,
-                                            intlUtils(intl, 'valideringsfeil.jobberFremdelesSomFrilans.påkrevd'),
-                                        )
-                                    }
-                                />
-                            </Block>
-                            <Block padBottom="l">
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getPreviousSetStepHref('frilans')}
-                                    />
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                </StepButtonWrapper>
-                            </Block>
-                        </FrilansFormComponents.Form>
-                    </Step>
-                );
-            }}
-        />
+                        <Radio value={true}>
+                            <FormattedMessage id="frilans.jobberFremdelesSomFrilans.ja" />
+                        </Radio>
+                        <Radio value={false}>
+                            <FormattedMessage id="frilans.jobberFremdelesSomFrilans.nei" />
+                        </Radio>
+                    </RadioGroup>
+                </Block>
+                <Block padBottom="l">
+                    <StepButtonsHookForm<FrilansFormData>
+                        goToPreviousStep={() => {
+                            oppdaterAppRoute(SøknadRoutes.ARBEID);
+                            navigate(SøknadRoutes.ARBEID);
+                        }}
+                    />
+                </Block>
+            </Form>
+        </Step>
     );
 };
 
