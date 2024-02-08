@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Radio } from '@navikt/ds-react';
+import { Radio, VStack } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
-import { Block, Step, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
+import { Step, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { Søkerinfo } from 'app/types/Søkerinfo';
@@ -11,7 +11,7 @@ import { validateFrilansStart, validateJobberFortsattSomFrilanser } from './fril
 import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { useForm } from 'react-hook-form';
-import { Datepicker, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import SøknadRoutes from 'app/routes/routes';
 import { useNavigate } from 'react-router-dom';
 
@@ -84,7 +84,8 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
             onContinueLater={onFortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
-                <Block padBottom="xxl">
+                <VStack gap="10">
+                    <ErrorSummaryHookForm />
                     <Datepicker
                         name={FrilansFormField.frilansFom}
                         label={intlUtils(intl, 'frilans.oppstart')}
@@ -92,8 +93,6 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                         maxDate={dateToday}
                         minDate={date20YearsAgo}
                     />
-                </Block>
-                <Block padBottom="xxl">
                     <RadioGroup
                         name={FrilansFormField.jobberFremdelesSomFrilanser}
                         label={intlUtils(intl, 'frilans.jobberFremdelesSomFrilans')}
@@ -106,15 +105,13 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                             <FormattedMessage id="frilans.jobberFremdelesSomFrilans.nei" />
                         </Radio>
                     </RadioGroup>
-                </Block>
-                <Block padBottom="l">
                     <StepButtonsHookForm<FrilansFormData>
                         goToPreviousStep={() => {
                             oppdaterAppRoute(SøknadRoutes.ARBEID);
                             navigate(SøknadRoutes.ARBEID);
                         }}
                     />
-                </Block>
+                </VStack>
             </Form>
         </Step>
     );
