@@ -226,10 +226,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={false}
-                annenForeldrerHarRett={harAnnenForelderRett}
+                deltUttak={harAnnenForelderRett}
                 antallBarn={barn.antallBarn}
                 dekningsgrad={dekningsgrad}
                 familiehendelsesdato={familiehendelsesdatoDate!}
+                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFarAdopsjonFormComponents.FormikWrapper

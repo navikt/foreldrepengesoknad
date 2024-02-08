@@ -6,10 +6,10 @@ import './fordeling-påvirkninger.css';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
-    beggeHarRett: boolean;
+    deltUttak: boolean;
 }
 
-const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }) => {
+const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak }) => {
     const intl = useIntl();
     const bem = bemUtils('fordeling-påvirkninger');
     const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
@@ -28,7 +28,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }
                 <ExpansionCard.Title className={bem.element('heading')}>{heading}</ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                {beggeHarRett && (
+                {deltUttak && (
                     <>
                         <Block padBottom="l">
                             <div className={bem.element('påvirkning')}>
@@ -84,7 +84,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ beggeHarRett }
                         </VStack>
                     </div>
                 </Block>
-                {beggeHarRett && (
+                {deltUttak && (
                     <Block padBottom="l">
                         <div className={bem.element('påvirkning')}>
                             <div className={bem.element('ikon-frame')}>

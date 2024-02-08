@@ -41,10 +41,11 @@ interface Props {
     navnMor: string;
     erAdopsjon: boolean;
     erBarnetFødt: boolean;
-    annenForeldrerHarRett: boolean;
+    deltUttak: boolean;
     antallBarn: number;
     dekningsgrad: Dekningsgrad;
     familiehendelsesdato: Date;
+    annenForelderHarKunRettIEØS: boolean;
     fordelingScenario: DelInformasjon[];
 }
 
@@ -55,18 +56,21 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     navnMor,
     erAdopsjon,
     erBarnetFødt,
-    annenForeldrerHarRett,
+    deltUttak,
     antallBarn,
     dekningsgrad,
     familiehendelsesdato,
+    annenForelderHarKunRettIEØS,
     fordelingScenario,
 }) => {
     const [currentUthevet, setCurrentUthevet] = useState<FordelingEier | undefined>(undefined);
     const antallFlerbarnsdager = antallBarn > 1 ? getFlerbarnsuker(dekningsgrad, antallBarn) * 5 : undefined;
     const sumDager = getAntallUker(kontoer) * 5;
+    const visBeggeHarRettGraf = deltUttak && !annenForelderHarKunRettIEØS;
+    const visFlerbarnsdagerInformasjon = deltUttak && !!antallFlerbarnsdager && antallFlerbarnsdager > 0;
     return (
         <>
-            {annenForeldrerHarRett && (
+            {visBeggeHarRettGraf && (
                 <Block padBottom="l">
                     <BeggeHarRettGraf
                         kontoer={kontoer}
@@ -96,7 +100,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                     );
                 })}
             </Block>
-            {annenForeldrerHarRett && !!antallFlerbarnsdager && antallFlerbarnsdager > 0 && (
+            {visFlerbarnsdagerInformasjon && (
                 <FlerbarnsdagerInformasjon
                     flerbarnsDager={antallFlerbarnsdager}
                     antallBarn={antallBarn}
@@ -104,10 +108,10 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                 />
             )}
             {!førsteOktober2021ReglerGjelder(familiehendelsesdato) && (
-                <SammenhengendeUttakInformasjon annenForeldrerHarRett={annenForeldrerHarRett} />
+                <SammenhengendeUttakInformasjon annenForeldrerHarRett={deltUttak} />
             )}
             <Block padBottom="xl">
-                <FordelingPåvirkninger beggeHarRett={annenForeldrerHarRett} />
+                <FordelingPåvirkninger deltUttak={deltUttak} />
             </Block>
         </>
     );

@@ -198,10 +198,11 @@ const MorFødsel: FunctionComponent<Props> = ({
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
-                annenForeldrerHarRett={annenForeldrerHarRettiNorgeEllerEØS}
+                deltUttak={annenForeldrerHarRettiNorgeEllerEØS}
                 antallBarn={barn.antallBarn}
                 dekningsgrad={dekningsgrad}
                 familiehendelsesdato={familiehendelsesdatoDate!}
+                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFødselFormComponents.FormikWrapper

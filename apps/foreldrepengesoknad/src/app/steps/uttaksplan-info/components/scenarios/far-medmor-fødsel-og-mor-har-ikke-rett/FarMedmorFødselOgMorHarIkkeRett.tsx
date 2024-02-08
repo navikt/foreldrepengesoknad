@@ -198,10 +198,11 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
-                annenForeldrerHarRett={false}
+                deltUttak={false}
                 antallBarn={barn.antallBarn}
                 dekningsgrad={dekningsgrad}
                 familiehendelsesdato={familiehendelsesdatoDate!}
+                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             />
             <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper

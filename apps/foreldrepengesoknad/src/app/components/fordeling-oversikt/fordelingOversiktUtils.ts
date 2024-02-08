@@ -517,8 +517,12 @@ export const getFordelingFraKontoer = (
         familiehendelsesdato,
     );
     const annenPartNavn = erFarEllerMedmor ? navnMor : navnFar;
+    const skalViseMorsDel =
+        dagerMødrekvote > 0 && ((erFarEllerMedmor && !annenPartHarKunRettIEØS) || !erFarEllerMedmor);
+    const skalViseFarsDel =
+        dagerFedrekvote > 0 && (erFarEllerMedmor || (!erFarEllerMedmor && !annenPartHarKunRettIEØS));
 
-    if (dagerMødrekvote > 0) {
+    if (skalViseMorsDel) {
         const dagerMorsKvoteBruktAvFar = erFarEllerMedmor
             ? undefined
             : getAntallDagerSøkerensKvoteBruktAvAnnenPart(
@@ -562,7 +566,7 @@ export const getFordelingFraKontoer = (
         fordelingsinformasjon.push(fordelingFelles);
     }
 
-    if (dagerFedrekvote > 0) {
+    if (skalViseFarsDel) {
         const dagerFarsKvoteBruktAvMor = erFarEllerMedmor
             ? getAntallDagerSøkerensKvoteBruktAvAnnenPart(
                   uttaksplanAnnenPart,

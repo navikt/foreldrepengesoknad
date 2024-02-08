@@ -218,10 +218,11 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
-                annenForeldrerHarRett={true}
+                deltUttak={true}
                 antallBarn={barn.antallBarn}
                 dekningsgrad={dekningsgrad}
                 familiehendelsesdato={familiehendelsedatoDate!}
+                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper

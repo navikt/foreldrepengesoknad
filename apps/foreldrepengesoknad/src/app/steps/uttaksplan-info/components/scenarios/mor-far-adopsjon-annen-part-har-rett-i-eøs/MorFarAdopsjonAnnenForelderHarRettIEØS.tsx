@@ -194,10 +194,11 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={false}
-                annenForeldrerHarRett={true}
+                deltUttak={true}
                 antallBarn={barn.antallBarn}
                 dekningsgrad={dekningsgrad}
                 familiehendelsesdato={familiehendelsesdatoDate!}
+                annenForelderHarKunRettIEØS={true}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.FormikWrapper

@@ -170,10 +170,11 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                 navnMor={navnMor}
                 erAdopsjon={erAdopsjon}
                 erBarnetFødt={erBarnetFødt}
-                annenForeldrerHarRett={true}
+                deltUttak={true}
                 antallBarn={barn.antallBarn}
                 dekningsgrad={dekningsgrad}
                 familiehendelsesdato={familiehendelsesdatoDate!}
+                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper
