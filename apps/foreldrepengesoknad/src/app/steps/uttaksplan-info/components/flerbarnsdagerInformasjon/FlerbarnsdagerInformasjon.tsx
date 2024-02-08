@@ -12,7 +12,7 @@ interface Props {
 const getBarnTekst = (antallBarn: number, erAdopsjon: boolean, intl: IntlShape) => {
     if (erAdopsjon) {
         return antallBarn === 2
-            ? intlUtils(intl, 'oppsummering.barn.antallBarn.toBarn')
+            ? intlUtils(intl, 'oppsummering.barn.antallBarn.toBarn').toLowerCase()
             : intlUtils(intl, 'oppsummering.barn.antallBarn.flere', { antallBarn });
     }
     return getTekstForAntallBarn(antallBarn, intl).toLowerCase();

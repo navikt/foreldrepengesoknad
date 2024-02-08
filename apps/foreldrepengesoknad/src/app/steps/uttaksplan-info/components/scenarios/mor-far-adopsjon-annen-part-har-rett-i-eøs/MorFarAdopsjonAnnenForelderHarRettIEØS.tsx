@@ -12,7 +12,6 @@ import {
     ISOStringToDate,
     Uttaksdagen,
     formaterNavn,
-    getFlerbarnsuker,
     isAdoptertAnnetBarn,
     isAdoptertBarn,
     isAdoptertStebarn,
@@ -165,7 +164,6 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
     const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;
     const ankomstdato = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
-    const antallBarn = barn.antallBarn;
     const latestDate =
         ankomstdato !== undefined && barn.adopsjonsdato !== undefined
             ? dateToISOString(findEldsteDato([ankomstdato, barn.adopsjonsdato]))
@@ -254,21 +252,6 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                                 ? 'uttaksplaninfo.info.ikkeAdoptertIUtlandet'
                                                 : 'uttaksplaninfo.info.adoptertIUtlandet'
                                         }
-                                    />
-                                </GuidePanel>
-                            </Block>
-                            <Block
-                                padBottom="xl"
-                                visible={antallBarn > 1 && formValues.startdatoAdopsjonValg !== undefined}
-                            >
-                                <GuidePanel>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon.annenForelderHarRettIEØS"
-                                        values={{
-                                            uker: getFlerbarnsuker(dekningsgrad, antallBarn),
-                                            navnFar: navnFarMedmor,
-                                            navnMor: navnMor,
-                                        }}
                                     />
                                 </GuidePanel>
                             </Block>

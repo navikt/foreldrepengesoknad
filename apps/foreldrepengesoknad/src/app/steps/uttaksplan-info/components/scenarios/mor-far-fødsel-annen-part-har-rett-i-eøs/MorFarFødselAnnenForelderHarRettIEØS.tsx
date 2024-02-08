@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { GuidePanel, VStack } from '@navikt/ds-react';
+import { useIntl } from 'react-intl';
+import { VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
@@ -10,7 +10,6 @@ import {
     ISOStringToDate,
     Uttaksdagen,
     formaterNavn,
-    getFlerbarnsuker,
     hasValue,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
@@ -161,7 +160,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const navnSøker = formaterNavn(person.fornavn, person.etternavn, false, person.mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
-    const antallBarn = barn.antallBarn;
 
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = erFarEllerMedmor
@@ -249,25 +247,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                     situasjon={søkersituasjon.situasjon}
                                     morHarRettTilForeldrepengerIEØS={true}
                                 />
-                            </Block>
-                            <Block
-                                padBottom="xl"
-                                visible={
-                                    antallBarn > 1 &&
-                                    (formValues.permisjonStartdato !== undefined ||
-                                        formValues.skalIkkeHaUttakFørTermin === true)
-                                }
-                            >
-                                <GuidePanel>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon.annenForelderHarRettIEØS"
-                                        values={{
-                                            uker: getFlerbarnsuker(dekningsgrad, antallBarn),
-                                            navnFar: navnFarMedmor,
-                                            navnMor: navnMor,
-                                        }}
-                                    />
-                                </GuidePanel>
                             </Block>
                             <Block>
                                 <StepButtons

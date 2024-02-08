@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { GuidePanel, VStack } from '@navikt/ds-react';
+import { useIntl } from 'react-intl';
+import { VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
@@ -11,7 +11,6 @@ import {
     ISOStringToDate,
     Uttaksdagen,
     formaterNavn,
-    getFlerbarnsuker,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
@@ -72,7 +71,6 @@ const MorFødsel: FunctionComponent<Props> = ({
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const antallBarn = barn.antallBarn;
     const { dekningsgrad } = periodeMedForeldrepenger;
 
     const termindato = getTermindato(barn);
@@ -227,25 +225,6 @@ const MorFødsel: FunctionComponent<Props> = ({
                                 />
                             </Block>
                             <Block visible={søker.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
-                                <Block
-                                    padBottom="xl"
-                                    visible={
-                                        antallBarn > 1 &&
-                                        (formValues.permisjonStartdato !== undefined ||
-                                            formValues.skalIkkeHaUttakFørTermin === true)
-                                    }
-                                >
-                                    <GuidePanel>
-                                        <FormattedMessage
-                                            id="uttaksplaninfo.veileder.flerbarnsInformasjon"
-                                            values={{
-                                                uker: getFlerbarnsuker(dekningsgrad, antallBarn),
-                                                navnFar: navnFarMedmor,
-                                                navnMor: navnMor,
-                                            }}
-                                        />
-                                    </GuidePanel>
-                                </Block>
                                 <Block
                                     padBottom="xl"
                                     visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}

@@ -20,7 +20,7 @@ interface Props {
     label: string;
     hjelpetekst?: React.ReactNode;
     ariaLabelText: string;
-    hjelpetekstApneLabel: string;
+    hjelpetekstApneLabel?: string;
     value: number;
     min: number;
     max: number;
@@ -165,7 +165,9 @@ class RangeInput extends Component<Props, State> {
                         {valueLabelPlacement === 'below' && labelRenderer({ value, min, max })}
                     </div>
                     {bottomRenderer({ value, min, max })}
-                    <ReadMore header={hjelpetekstApneLabel}>{hjelpetekst}</ReadMore>
+                    {hjelpetekstApneLabel && hjelpetekst && (
+                        <ReadMore header={hjelpetekstApneLabel}>{hjelpetekst}</ReadMore>
+                    )}
                 </Fieldset>
             </div>
         );

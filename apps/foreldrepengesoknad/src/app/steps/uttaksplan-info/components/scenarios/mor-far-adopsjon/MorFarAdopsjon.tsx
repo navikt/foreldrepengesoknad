@@ -11,7 +11,6 @@ import {
     ISOStringToDate,
     Uttaksdagen,
     formaterNavn,
-    getFlerbarnsuker,
     intlUtils,
     isAdoptertAnnetBarn,
     isAdoptertBarn,
@@ -193,7 +192,6 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
 
     const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;
     const ankomstdato = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
-    const antallBarn = barn.antallBarn;
     const latestDate =
         ankomstdato !== undefined && barn.adopsjonsdato !== undefined
             ? dateToISOString(findEldsteDato([ankomstdato, barn.adopsjonsdato])) // todo - sjekk logikk her
@@ -352,25 +350,6 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                             <Block
                                 visible={søker.erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}
                             >
-                                <Block
-                                    padBottom="xl"
-                                    visible={
-                                        antallBarn > 1 &&
-                                        formValues.startdatoAdopsjonValg !== undefined &&
-                                        formValues.harAnnenForelderSøktFP !== YesOrNo.YES
-                                    }
-                                >
-                                    <GuidePanel>
-                                        <FormattedMessage
-                                            id="uttaksplaninfo.veileder.flerbarnsInformasjon"
-                                            values={{
-                                                uker: getFlerbarnsuker(dekningsgrad, antallBarn),
-                                                navnFar: navnFarMedmor,
-                                                navnMor: navnMor,
-                                            }}
-                                        />
-                                    </GuidePanel>
-                                </Block>
                                 <Block
                                     padBottom="xl"
                                     visible={visibility.isIncluded(MorFarAdopsjonFormField.fellesperiodeukerMor)}

@@ -50,7 +50,11 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         await userEvent.tab();
 
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
-        expect(screen.getByText('uker med flerbarnsuker', { exact: false }));
+        expect(
+            screen.getByText('Av ukene deres har dere 17 uker hvor dere kan ta foreldrepenger samtidig', {
+                exact: false,
+            }),
+        );
     });
     it('Skal fungere for fødsel der mor søker, far har rett i EØS og det er prematur fødsel', async () => {
         render(<FødselMorSøkerFarHarRettIEOSPrematurEtterWLB />);

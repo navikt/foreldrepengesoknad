@@ -133,7 +133,7 @@ AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-    adopsjonsdato: dayjs('2021-11-15').toDate(),
+    adopsjonsdato: dayjs('2022-06-15').toDate(),
     antallBarn: 1,
 };
 
