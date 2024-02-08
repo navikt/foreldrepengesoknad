@@ -16,7 +16,6 @@ import {
     getMorHarRettPåForeldrepengerINorgeEllerEØS,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    isFødtBarn,
     isInfoPeriode,
 } from '@navikt/fp-common';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
@@ -71,7 +70,6 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
-    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     // TODO (TOR) fjern as
     const uttaksplanInfo = useContextGetData(
         ContextDataType.UTTAKSPLAN_INFO,
@@ -80,13 +78,11 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const { dekningsgrad } = periodeMedForeldrepenger;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const familiehendelsedatoDate = ISOStringToDate(familiehendelsedato);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const erBarnetFødt = isFødtBarn(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const bareFarHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
         søkersituasjon.rolle,
@@ -213,16 +209,9 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtMengdeStønadskonto}
-                erFarEllerMedmor={true}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
-                erAdopsjon={erAdopsjon}
-                erBarnetFødt={erBarnetFødt}
                 deltUttak={true}
-                antallBarn={barn.antallBarn}
-                dekningsgrad={dekningsgrad}
-                familiehendelsesdato={familiehendelsedatoDate!}
-                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper

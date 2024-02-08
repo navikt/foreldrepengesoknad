@@ -13,7 +13,6 @@ import {
     formaterNavn,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    isFødtBarn,
     uttaksConstants,
 } from '@navikt/fp-common';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -74,7 +73,6 @@ const MorFødsel: FunctionComponent<Props> = ({
     const { dekningsgrad } = periodeMedForeldrepenger;
 
     const termindato = getTermindato(barn);
-    const erBarnetFødt = isFødtBarn(barn);
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -193,16 +191,9 @@ const MorFødsel: FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={false}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
-                erAdopsjon={erAdopsjon}
-                erBarnetFødt={erBarnetFødt}
                 deltUttak={annenForeldrerHarRettiNorgeEllerEØS}
-                antallBarn={barn.antallBarn}
-                dekningsgrad={dekningsgrad}
-                familiehendelsesdato={familiehendelsesdatoDate!}
-                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFødselFormComponents.FormikWrapper

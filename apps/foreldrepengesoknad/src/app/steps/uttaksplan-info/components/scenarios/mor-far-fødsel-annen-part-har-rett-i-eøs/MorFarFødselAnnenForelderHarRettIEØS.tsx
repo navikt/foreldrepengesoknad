@@ -13,7 +13,6 @@ import {
     hasValue,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    isFødtBarn,
     uttaksConstants,
 } from '@navikt/fp-common';
 import { StepButtons } from '@navikt/fp-ui';
@@ -83,8 +82,6 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const termindato = getTermindato(barn);
     const erDeltUttak = true;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
-    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const erBarnetFødt = isFødtBarn(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
@@ -184,16 +181,9 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={erFarEllerMedmor}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
-                erAdopsjon={erAdopsjon}
-                erBarnetFødt={erBarnetFødt}
                 deltUttak={true}
-                antallBarn={barn.antallBarn}
-                dekningsgrad={dekningsgrad}
-                familiehendelsesdato={familiehendelsesdatoDate!}
-                annenForelderHarKunRettIEØS={true}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFarFødselAnnenForelderHarRettIEØSFormComponents.FormikWrapper

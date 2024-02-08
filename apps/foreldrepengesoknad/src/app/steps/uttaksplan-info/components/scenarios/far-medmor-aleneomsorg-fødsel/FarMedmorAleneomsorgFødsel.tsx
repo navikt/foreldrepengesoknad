@@ -16,7 +16,6 @@ import {
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    isFødtBarn,
 } from '@navikt/fp-common';
 import { StepButtons } from '@navikt/fp-ui';
 import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
@@ -86,8 +85,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
-    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const erBarnetFødt = isFødtBarn(barn);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
@@ -176,16 +173,9 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={true}
                 navnFarMedmor={navnFar}
                 navnMor={navnMor}
-                erAdopsjon={erAdopsjon}
-                erBarnetFødt={erBarnetFødt}
                 deltUttak={false}
-                antallBarn={barn.antallBarn}
-                dekningsgrad={dekningsgrad}
-                familiehendelsesdato={familiehendelsesdatoDate!}
-                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper

@@ -14,7 +14,6 @@ import {
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    isFødtBarn,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
@@ -99,8 +98,6 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
-    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const erBarnetFødt = isFødtBarn(barn);
     const annenForelderHarIkkeRett = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge === false && annenForelder.harRettPåForeldrepengerIEØS === false
         : false;
@@ -193,16 +190,9 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={true}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
-                erAdopsjon={erAdopsjon}
-                erBarnetFødt={erBarnetFødt}
                 deltUttak={false}
-                antallBarn={barn.antallBarn}
-                dekningsgrad={dekningsgrad}
-                familiehendelsesdato={familiehendelsesdatoDate!}
-                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             />
             <FarMedmorFødselOgMorHarIkkeRettFormComponents.FormikWrapper

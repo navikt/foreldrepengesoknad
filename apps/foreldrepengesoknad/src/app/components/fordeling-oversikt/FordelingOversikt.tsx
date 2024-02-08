@@ -2,11 +2,14 @@ import { FormattedMessage } from 'react-intl';
 import OversiktPerDel from './oversikt-per-del/OversiktPerDel';
 import {
     Block,
-    Dekningsgrad,
+    ISOStringToDate,
     TilgjengeligStønadskonto,
     førsteOktober2021ReglerGjelder,
     getFlerbarnsuker,
     guid,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    isFødtBarn,
 } from '@navikt/fp-common';
 import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 import { useState } from 'react';
@@ -15,6 +18,9 @@ import SammenhengendeUttakInformasjon from 'app/steps/uttaksplan-info/components
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 import FordelingPåvirkninger from './fordeling-påvirkninger/FordelingPåvirkninger';
+import { notEmpty } from '@navikt/fp-validation';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
     return (
@@ -36,33 +42,33 @@ export const getFormattedMessage = (id: string, values?: any, link?: string): Re
 
 interface Props {
     kontoer: TilgjengeligStønadskonto[];
-    erFarEllerMedmor: boolean;
     navnFarMedmor: string;
     navnMor: string;
-    erAdopsjon: boolean;
-    erBarnetFødt: boolean;
     deltUttak: boolean;
-    antallBarn: number;
-    dekningsgrad: Dekningsgrad;
-    familiehendelsesdato: Date;
-    annenForelderHarKunRettIEØS: boolean;
     fordelingScenario: DelInformasjon[];
 }
 
 const FordelingOversikt: React.FunctionComponent<Props> = ({
     kontoer,
-    erFarEllerMedmor,
     navnFarMedmor,
     navnMor,
-    erAdopsjon,
-    erBarnetFødt,
     deltUttak,
-    antallBarn,
-    dekningsgrad,
-    familiehendelsesdato,
-    annenForelderHarKunRettIEØS,
     fordelingScenario,
 }) => {
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+    const { antallBarn } = barn;
+    const erBarnetFødt = isFødtBarn(barn);
+    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const { dekningsgrad } = periodeMedForeldrepenger;
+    const annenForelderHarKunRettIEØS = isAnnenForelderOppgitt(annenForelder)
+        ? annenForelder.harRettPåForeldrepengerIEØS
+        : false;
+
     const [currentUthevet, setCurrentUthevet] = useState<FordelingEier | undefined>(undefined);
     const antallFlerbarnsdager = antallBarn > 1 ? getFlerbarnsuker(dekningsgrad, antallBarn) * 5 : undefined;
     const sumDager = getAntallUker(kontoer) * 5;

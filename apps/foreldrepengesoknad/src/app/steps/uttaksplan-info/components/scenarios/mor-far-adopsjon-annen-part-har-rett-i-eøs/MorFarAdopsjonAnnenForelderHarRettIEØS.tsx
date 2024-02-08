@@ -189,16 +189,9 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={erFarEllerMedmor}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
-                erAdopsjon={erAdopsjon}
-                erBarnetFødt={false}
                 deltUttak={true}
-                antallBarn={barn.antallBarn}
-                dekningsgrad={dekningsgrad}
-                familiehendelsesdato={familiehendelsesdatoDate!}
-                annenForelderHarKunRettIEØS={true}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <MorFarAdopsjonAnnenForelderHarRettIEØSFormComponents.FormikWrapper

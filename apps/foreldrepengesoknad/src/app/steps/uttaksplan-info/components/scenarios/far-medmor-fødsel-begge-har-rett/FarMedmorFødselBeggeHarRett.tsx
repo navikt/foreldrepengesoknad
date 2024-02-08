@@ -13,7 +13,6 @@ import {
     getErMorUfør,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    isFødtBarn,
 } from '@navikt/fp-common';
 import {
     FarMedmorFødselBeggeHarRettFormComponents,
@@ -82,8 +81,6 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
-    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const erBarnetFødt = isFødtBarn(barn);
     const navnFarMedmor = erFarEllerMedmor
         ? person.fornavn
         : isAnnenForelderOppgitt(annenForelder)
@@ -165,16 +162,9 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
         <VStack gap="5">
             <FordelingOversikt
                 kontoer={valgtStønadskonto}
-                erFarEllerMedmor={true}
                 navnFarMedmor={navnFarMedmor}
                 navnMor={navnMor}
-                erAdopsjon={erAdopsjon}
-                erBarnetFødt={erBarnetFødt}
                 deltUttak={true}
-                antallBarn={barn.antallBarn}
-                dekningsgrad={dekningsgrad}
-                familiehendelsesdato={familiehendelsesdatoDate!}
-                annenForelderHarKunRettIEØS={false}
                 fordelingScenario={fordelingScenario}
             ></FordelingOversikt>
             <FarMedmorFødselBeggeHarRettFormComponents.FormikWrapper
