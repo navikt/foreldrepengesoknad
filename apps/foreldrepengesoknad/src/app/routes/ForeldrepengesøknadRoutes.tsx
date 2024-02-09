@@ -1,8 +1,8 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-dom';
-import { Sak, Søkerinfo } from '@navikt/fp-common';
+import { Sak } from '@navikt/fp-common';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
-import { LocaleNo } from '@navikt/fp-types';
+import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import Velkommen from 'app/pages/velkommen/Velkommen';
 import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
@@ -22,11 +22,11 @@ import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
 import PeriodeMedForeldrepengerSteg from 'app/steps/periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
 import isAvailable from './isAvailable';
 import SøknadRoutes from './routes';
+import { erMyndig } from '@navikt/fp-utils';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
     erEndringssøknad: boolean,
-    søkerErMyndig: boolean,
     søkerInfo: Søkerinfo,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>,
@@ -37,7 +37,7 @@ const renderSøknadRoutes = (
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
 
-    if (!søkerErMyndig) {
+    if (!erMyndig(søkerInfo.person.fødselsdato)) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
     }
 
@@ -166,7 +166,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.INNTEKTSINFORMASJON}
                 element={
                     <Inntektsinformasjon
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -243,10 +243,13 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
 
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
-    const erMyndig = søkerInfo.person.erMyndig;
-
     useEffect(() => {
-        if (currentRoute && erMyndig && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
+        if (
+            currentRoute &&
+            erMyndig(søkerInfo.person.fødselsdato) &&
+            lagretHarGodkjentVilkår &&
+            isFirstTimeLoadingApp
+        ) {
             setIsFirstTimeLoadingApp(false);
             if (isAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);
@@ -258,7 +261,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
         }
     }, [
         currentRoute,
-        erMyndig,
+        søkerInfo.person.fødselsdato,
         lagretHarGodkjentVilkår,
         navigate,
         isFirstTimeLoadingApp,
@@ -301,7 +304,6 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
             {renderSøknadRoutes(
                 harGodkjentVilkår,
                 erEndringssøknad,
-                erMyndig,
                 søkerInfo,
                 mellomlagreSøknadOgNaviger,
                 sendSøknad,

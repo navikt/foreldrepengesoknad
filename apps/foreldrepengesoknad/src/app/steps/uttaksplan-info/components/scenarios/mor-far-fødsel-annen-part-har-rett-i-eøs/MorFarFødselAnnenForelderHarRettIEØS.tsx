@@ -13,7 +13,6 @@ import {
     isFarEllerMedmor,
     uttaksConstants,
 } from '@navikt/fp-common';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
@@ -42,6 +41,7 @@ import {
     getInitialMorFarFødselAnnenForelderHarRettIEØSValues,
     mapMorFarFødselAnnenForelderHarRettIEØSFormToState,
 } from './morFarFødselAnnenForelderHarRettIEØSUtils';
+import { Person } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

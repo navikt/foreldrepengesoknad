@@ -47,7 +47,7 @@ export const doesTidsperiodeMedValgfriSluttdatoContainDate = (
     return dayjs(date).isBetween(tidsperiode.fom, tidsperiode.tom, 'day', '[]');
 };
 
-export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
 
     return (

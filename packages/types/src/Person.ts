@@ -7,20 +7,23 @@ type PersonBase = {
     fornavn: string;
     mellomnavn?: string;
     etternavn: string;
-    fødselsdato: string;
 };
 
-export type PersonAnnenForelder = PersonBase;
+export type RegistrertAnnenForelder = {
+    fødselsdato?: string;
+} & PersonBase;
 
-export type PersonBarn = {
+export type RegistrertBarn = {
     kjønn: Kjønn;
+    fødselsdato: string;
     dødsdato?: string;
-    annenForelder?: PersonAnnenForelder;
+    annenForelder?: RegistrertAnnenForelder;
 } & PersonBase;
 
 export type Person = {
+    fødselsdato: string;
     kjønn: Kjønn;
     bankkonto?: Bankkonto;
     sivilstand?: Sivilstand;
-    barn?: PersonBarn;
+    barn?: RegistrertBarn[];
 } & PersonBase;

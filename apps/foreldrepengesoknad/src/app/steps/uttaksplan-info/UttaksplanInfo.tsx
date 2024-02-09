@@ -1,5 +1,5 @@
 import { Loader } from '@navikt/ds-react';
-import { Step, Søkerinfo, intlUtils, isAnnenForelderOppgitt, isFarEllerMedmor, isFødtBarn } from '@navikt/fp-common';
+import { Step, intlUtils, isAnnenForelderOppgitt, isFarEllerMedmor, isFødtBarn } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
@@ -17,6 +17,7 @@ import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUt
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
+import { Søkerinfo } from '@navikt/fp-types';
 
 type Props = {
     søkerInfo: Søkerinfo;

@@ -1,7 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { notEmpty } from '@navikt/fp-validation';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import { GuidePanel } from '@navikt/ds-react';
 import {
     Block,
@@ -42,6 +41,7 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { StepButtons } from '@navikt/fp-ui';
+import { Person } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

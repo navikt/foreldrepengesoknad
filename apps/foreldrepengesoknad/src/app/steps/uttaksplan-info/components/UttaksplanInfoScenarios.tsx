@@ -6,8 +6,7 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { SøkersituasjonFp } from '@navikt/fp-types';
-import Person from '@navikt/fp-common/src/common/types/Person';
+import { Person, SøkersituasjonFp } from '@navikt/fp-types';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import Søker from 'app/context/types/Søker';
 import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';

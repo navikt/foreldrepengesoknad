@@ -1,10 +1,11 @@
-import { DekningsgradDTO, RegistrertBarn, Sak } from '@navikt/fp-common';
+import { DekningsgradDTO, Sak } from '@navikt/fp-common';
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
+import { RegistrertBarn } from '@navikt/fp-types';
 
 const fødselsdato = '2022-01-01';
-const fødselsdatoDate = new Date(fødselsdato);
+const fødselsdatoDate = fødselsdato;
 const sak = {
     dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
     familiehendelse: {
@@ -38,20 +39,20 @@ describe('velkommenUtils - getSelectableBarnOptions', () => {
     const barnFraPDL2 = {
         fornavn: 'Svart',
         etternavn: 'Edderkopp',
-        fødselsdato: new Date('2022-03-01'),
+        fødselsdato: '2022-03-01',
         fnr: '123456780',
     };
     const barnTvilling = {
         fornavn: 'Blå',
         etternavn: 'Dinosaur',
-        fødselsdato: new Date('2022-01-02'),
+        fødselsdato: '2022-01-02',
         fnr: '123456788',
         kjønn: 'K',
     };
     const barnMerEnn3ÅrOg3Mnd = {
         fornavn: 'Blå',
         etternavn: 'Dinosaur',
-        fødselsdato: new Date('2019-09-21'),
+        fødselsdato: '2019-09-21',
         fnr: '123456788',
         kjønn: 'K',
     };

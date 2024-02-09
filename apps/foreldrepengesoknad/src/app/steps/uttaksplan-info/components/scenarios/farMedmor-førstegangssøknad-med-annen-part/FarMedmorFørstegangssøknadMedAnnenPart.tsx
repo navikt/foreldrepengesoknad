@@ -32,9 +32,9 @@ import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMe
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { StepButtons } from '@navikt/fp-ui';
+import { Person } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

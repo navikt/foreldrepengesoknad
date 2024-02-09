@@ -2,7 +2,6 @@ import { FunctionComponent } from 'react';
 import {
     AnnenForelder,
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
-    Arbeidsforhold,
     finnesPeriodeIOpprinneligPlan,
     formatDate,
     getPeriodeTittel,
@@ -26,6 +25,7 @@ import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeri
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];

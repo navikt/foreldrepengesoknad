@@ -6,11 +6,16 @@ import './oppsummeringspunkt.css';
 
 interface Props {
     tittel: string;
+    hide?: boolean;
     children: ReactNode;
 }
 
-const Oppsummeringspunkt = ({ tittel, children }: Props) => {
+const Oppsummeringspunkt = ({ tittel, hide = false, children }: Props) => {
     const [isOpen, toggleOpen] = useState(false);
+
+    if (hide) {
+        return null;
+    }
 
     return (
         <Accordion.Item>

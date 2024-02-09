@@ -1,8 +1,9 @@
-import { AnnenForelder, Arbeidsforhold, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UttaksplanOppsummeringsliste from './UttaksplanOppsummeringsliste';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface Props {
     perioder: Periode[];

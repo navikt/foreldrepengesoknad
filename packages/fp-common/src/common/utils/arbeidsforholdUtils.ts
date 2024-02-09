@@ -2,7 +2,8 @@ import dayjs from 'dayjs';
 import { getFørsteUttaksdag2UkerFørFødsel } from './wlbUtils';
 import { dateIsBetween, getFørsteUttaksdagForeldrepengerFørFødsel } from './dateUtils';
 import uniqBy from 'lodash/uniqBy';
-import { Arbeidsforhold, TidsperiodeDate } from '../types';
+import { TidsperiodeDate } from '../types';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 const getArbeidsforholdFromOrgnummer = (
     orgnummer: string,

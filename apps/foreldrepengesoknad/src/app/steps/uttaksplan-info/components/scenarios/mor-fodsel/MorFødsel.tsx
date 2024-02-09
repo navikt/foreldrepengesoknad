@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl';
 import { GuidePanel } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
     EksisterendeSak,
@@ -36,6 +35,7 @@ import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaks
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { StepButtons } from '@navikt/fp-ui';
+import { Person } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

@@ -1,9 +1,8 @@
-import { Arbeidsforhold, ISOStringToDate, Søkerinfo, erMyndig } from '@navikt/fp-common';
 import { SøkerinfoDTO, SøkerinfoDTOArbeidsforhold, SøkerinfoDTOBarn, SøkerinfoDTOSøker } from 'app/types/SøkerinfoDTO';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import Person, { RegistrertAnnenForelder, RegistrertBarn } from '@navikt/fp-common/src/common/types/Person';
+import { Arbeidsforhold, Person, RegistrertAnnenForelder, RegistrertBarn, Søkerinfo } from '@navikt/fp-types';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -20,23 +19,22 @@ const mapArbeidsforholdDTOToArbeidsforhold = (
             arbeidsgiverId: arbforhold.arbeidsgiverId,
             arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
             arbeidsgiverNavn: arbforhold.arbeidsgiverNavn,
-            fom: dayjs.utc(arbforhold.fom).toDate(),
+            fom: arbforhold.fom,
             stillingsprosent: arbforhold.stillingsprosent,
-            tom: arbforhold.tom ? dayjs.utc(arbforhold.tom).toDate() : undefined,
+            tom: arbforhold.tom,
         };
     });
 };
 
 const mapSøkerinfoDTOSøkerToPerson = (personDTO: SøkerinfoDTOSøker): Person => {
     return {
-        erMyndig: erMyndig(personDTO.fødselsdato),
         etternavn: personDTO.etternavn,
         fornavn: personDTO.fornavn,
         fnr: personDTO.fnr,
-        fødselsdato: dayjs.utc(personDTO.fødselsdato).toDate(),
+        fødselsdato: personDTO.fødselsdato,
         kjønn: personDTO.kjønn,
         bankkonto: personDTO.bankkonto,
-        sivilstand: personDTO.sivilstand ? { type: personDTO.sivilstand.type } : undefined,
+        sivilstand: personDTO.sivilstand,
     };
 };
 
@@ -60,10 +58,10 @@ const mapSøkerinfoDTOBarnToRegistrertBarn = (registrerteBarn: SøkerinfoDTOBarn
             fnr: barn.fnr,
             fornavn: barn.fornavn,
             mellomnavn: barn.mellomnavn,
-            fødselsdato: dayjs.utc(barn.fødselsdato).toDate(),
+            fødselsdato: barn.fødselsdato,
             kjønn: barn.kjønn,
             annenForelder: oppgittAnnenForelder,
-            dødsdato: ISOStringToDate(barn.dødsdato),
+            dødsdato: barn.dødsdato,
         };
     });
 };

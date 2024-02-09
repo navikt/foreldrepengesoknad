@@ -1,13 +1,6 @@
 import { BodyShort } from '@navikt/ds-react';
-import {
-    Block,
-    ISOStringToDate,
-    Step,
-    Søkerinfo,
-    getAktiveArbeidsforhold,
-    intlUtils,
-    isFarEllerMedmor,
-} from '@navikt/fp-common';
+import { Block, ISOStringToDate, Step, getAktiveArbeidsforhold, intlUtils, isFarEllerMedmor } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -29,13 +22,13 @@ import {
 } from './inntektsinformasjonFormUtils';
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
 const Inntektsinformasjon: React.FunctionComponent<Props> = ({
-    søkerInfo,
+    arbeidsforhold,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }) => {
@@ -102,7 +95,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 
                             <ArbeidsforholdInformasjon
                                 arbeidsforhold={getAktiveArbeidsforhold(
-                                    søkerInfo.arbeidsforhold,
+                                    arbeidsforhold,
                                     erAdopsjon,
                                     erFarEllerMedmor,
                                     ISOStringToDate(familiehendelsesdato),

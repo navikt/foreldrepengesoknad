@@ -11,7 +11,6 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -44,6 +43,7 @@ import {
     getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues,
     mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState,
 } from './morFarAdopsjonAnnenForelderHarRettIEØSUtils';
+import { Person } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

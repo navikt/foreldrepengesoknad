@@ -36,6 +36,7 @@ interface Props {
     utenlandsopphold: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
+    hide?: boolean;
 }
 
 const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
@@ -44,8 +45,13 @@ const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
     utenlandsopphold,
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
+    hide = false,
 }) => {
     const intl = useIntl();
+
+    if (hide) {
+        return null;
+    }
 
     return (
         <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utenlandsopphold' })}>

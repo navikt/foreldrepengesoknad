@@ -8,7 +8,6 @@ import {
     BarnFraNesteSak,
     ISOStringToDate,
     RegistrertAnnenForelder,
-    RegistrertBarn,
     Sak,
     Uttaksdagen,
     erEldreEnn3ÅrOg3Måneder,
@@ -17,6 +16,12 @@ import {
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
 import { getRelevantFamiliehendelseDato } from '../../utils/dateUtils';
 import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
+import { RegistrertBarn } from '@navikt/fp-types';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],
@@ -44,7 +49,7 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return ValgtBarnType.UFØDT;
 };
 
-export const getErDatoInnenEnDagFraAnnenDato = (dato1: Date | undefined, dato2: Date | undefined): boolean => {
+export const getErDatoInnenEnDagFraAnnenDato = (dato1: string | undefined, dato2: Date | undefined): boolean => {
     if (dato1 === undefined || dato2 === undefined) {
         return false;
     }
@@ -128,10 +133,10 @@ const getSelectableBarnFraPDL = (
         id: guid(),
         type: ValgtBarnType.IKKE_UTFYLT,
         antallBarn: 1,
-        fødselsdatoer: [registrertBarn.fødselsdato],
+        fødselsdatoer: [dayjs.utc(registrertBarn.fødselsdato).toDate()],
         fornavn: navn !== undefined ? [navn] : undefined,
         fnr: [registrertBarn.fnr],
-        sortableDato: registrertBarn.fødselsdato,
+        sortableDato: dayjs.utc(registrertBarn.fødselsdato).toDate(),
         alleBarnaLever: getLeverBarnet(registrertBarn),
         annenForelder,
     };
@@ -154,10 +159,10 @@ const getSelectableFlerlingerFraPDL = (
         id: guid(),
         type: ValgtBarnType.IKKE_UTFYLT,
         antallBarn: alleBarna.length,
-        fødselsdatoer: alleBarna.map((b) => b.fødselsdato),
+        fødselsdatoer: alleBarna.map((b) => dayjs.utc(b.fødselsdato).toDate()),
         fornavn: alleBarna.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
         fnr: alleBarna.map((b) => b.fnr),
-        sortableDato: alleBarna[0].fødselsdato,
+        sortableDato: dayjs.utc(alleBarna[0].fødselsdato).toDate(),
         alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
         annenForelder,
     };

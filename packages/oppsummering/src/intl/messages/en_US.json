@@ -1,5 +1,6 @@
 {
-    "OppsummeringPanel.Samtykke": "The information I have provided is correct and I have not withheld information that is of importance to my entitlement to the lump-sum grant.",
+    "OppsummeringPanel.SamtykkeEs": "The information I have provided is correct and I have not withheld information that is of importance to my entitlement to the lump-sum grant.",
+    "OppsummeringPanel.SamtykkeFp": "The information I have provided is correct and I have not withheld information that is of importance to my entitlement to the parental allowance.",
     "OppsummeringPanel.Validering.BekrefteOpplysninger": "You must confirm that you have provided correct information",
     "BoIUtlandetOppsummeringspunkt.Utenlandsopphold": "Stay abroad",
     "BoIUtlandetOppsummeringspunkt.Norge": "Norway",

@@ -1,29 +1,63 @@
-import { useAbortSignal } from '@navikt/fp-api';
+import { Heading } from '@navikt/ds-react';
 import {
     ISOStringToDate,
-    Step,
-    Søkerinfo,
     getErSøkerFarEllerMedmor,
     getFarMedmorErAleneOmOmsorg,
     getNavnPåForeldre,
     isAnnenForelderOppgitt,
+    isFødtBarn,
+    isUfødtBarn,
 } from '@navikt/fp-common';
+import { BoIUtlandetOppsummeringspunkt, DegOppsummeringspunkt, OppsummeringIndex } from '@navikt/fp-oppsummering';
+import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { ContentWrapper } from '@navikt/fp-ui';
+import { formatDateIso } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { FunctionComponent, useState } from 'react';
-import { useIntl } from 'react-intl';
-import OppsummeringsPanel from './components/OppsummeringsPanel';
-import Personalia from './components/Personalia';
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
 import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
 import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
-import UtenlandsoppholdOppsummering from './components/utenlandsopphold-oppsummering/UtenlandsoppholdOppsummering';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { ConfirmationPanel, VStack, Accordion } from '@navikt/ds-react';
-import { StepButtons } from '@navikt/fp-ui';
-import useFpNavigator from 'app/appData/useFpNavigator';
-import useStepConfig from 'app/appData/useStepConfig';
+import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+
+// TODO (TOR) Bruk same typar i dei forskjellige appane
+const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({
+    harBoddUtenforNorgeSiste12Mnd: !utenlandsopphold.iNorgeSiste12Mnd,
+    skalBoUtenforNorgeNeste12Mnd: !utenlandsopphold.iNorgeNeste12Mnd,
+});
+// TODO (TOR) Bruk same typar i dei forskjellige appane
+const tempMappingSenere = (utenlandsopphold?: SenereOpphold): UtenlandsoppholdSenere | undefined => {
+    if (!utenlandsopphold) {
+        return undefined;
+    }
+
+    return {
+        utenlandsoppholdNeste12Mnd: utenlandsopphold.senereOpphold.map((o) => ({
+            fom: o.tidsperiode.fom,
+            tom: o.tidsperiode.tom,
+            landkode: o.land,
+        })),
+    };
+};
+// TODO (TOR) Bruk same typar i dei forskjellige appane
+const tempMappingTidligere = (utenlandsopphold?: TidligereOpphold): UtenlandsoppholdTidligere | undefined => {
+    if (!utenlandsopphold) {
+        return undefined;
+    }
+
+    return {
+        utenlandsoppholdSiste12Mnd: utenlandsopphold.tidligereOpphold.map((o) => ({
+            fom: o.tidsperiode.fom,
+            tom: o.tidsperiode.tom,
+            landkode: o.land,
+        })),
+    };
+};
 
 export interface Props {
     søkerInfo: Søkerinfo;
@@ -45,9 +79,6 @@ const Oppsummering: FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(erEndringssøknad);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const abortSignal = useAbortSignal();
-
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
@@ -59,9 +90,9 @@ const Oppsummering: FunctionComponent<Props> = ({
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
+
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, søkerErFarEllerMedmor, intl);
-
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
         søkerErFarEllerMedmor,
         søker.erAleneOmOmsorg,
@@ -71,7 +102,7 @@ const Oppsummering: FunctionComponent<Props> = ({
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
         erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
-    const erklæringOmAnnenForelderInformert = erEndringssøknadOgAnnenForelderHarRett
+    const ekstraSamtykketekst = erEndringssøknadOgAnnenForelderHarRett
         ? intl.formatMessage(
               { id: 'oppsummering.harGodkjentOppsummering.endringssøknadMedAnnenForelder' },
               {
@@ -79,107 +110,70 @@ const Oppsummering: FunctionComponent<Props> = ({
               },
           )
         : '';
-    const egenerklæringTekst = intl
-        .formatMessage({ id: 'oppsummering.harGodkjentOppsummering' })
-        .concat(erklæringOmAnnenForelderInformert);
-
-    const [isChecked, setChecked] = useState(false);
-    const [isError, setIsError] = useState(false);
-
-    const sendInn = () => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
-            setIsSubmitting(true);
-            sendSøknad(abortSignal);
-        }
-    };
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <VStack gap="10">
-                <Accordion indent={false}>
-                    <OppsummeringsPanel title="Deg">
-                        <Personalia søkerinfo={søkerInfo} />
-                    </OppsummeringsPanel>
-                    {!erEndringssøknad && (
-                        <OppsummeringsPanel title="Barnet">
-                            <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
-                        </OppsummeringsPanel>
-                    )}
-                    {!erEndringssøknad && (
-                        <OppsummeringsPanel title="Den andre forelderen">
-                            <AnnenForelderOppsummering
-                                annenForelder={annenForelder}
-                                søker={søker}
-                                søkerrolle={søkersituasjon.rolle}
-                                barn={barn}
-                                farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
-                            />
-                        </OppsummeringsPanel>
-                    )}
-                    {!erEndringssøknad && (
-                        <OppsummeringsPanel title="Utenlandsopphold">
-                            <UtenlandsoppholdOppsummering
-                                utenlandsopphold={notEmpty(utenlandsopphold)}
-                                tidligereUtenlandsopphold={tidligereUtenlandsopphold?.tidligereOpphold}
-                                senereUtenlandsopphold={senereUtenlandsopphold?.senereOpphold}
-                                barn={barn}
-                            />
-                        </OppsummeringsPanel>
-                    )}
-                    {!erEndringssøknad && (
-                        <OppsummeringsPanel title="Arbeidsforhold og andre inntektskilder">
-                            <ArbeidsforholdOgAndreInntekterOppsummering
-                                arbeidsforhold={søkerInfo.arbeidsforhold}
-                                barn={barn}
-                                søkersituasjon={søkersituasjon}
-                                søker={søker}
-                            />
-                        </OppsummeringsPanel>
-                    )}
-                    <OppsummeringsPanel title={intl.formatMessage({ id: 'oppsummering.uttak' })}>
-                        <UttaksplanOppsummering
-                            perioder={uttaksplan}
-                            navnPåForeldre={navnPåForeldre}
-                            annenForelder={annenForelder}
-                            erFarEllerMedmor={søkerErFarEllerMedmor}
-                            registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
-                            dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
-                            antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
-                            eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
-                            familiehendelsesdato={familiehendelsesdato!}
-                            termindato={termindato}
-                            situasjon={søkersituasjon.situasjon}
-                            erAleneOmOmsorg={søker.erAleneOmOmsorg}
-                            antallBarn={barn.antallBarn}
-                            ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
-                        />
-                    </OppsummeringsPanel>
-                </Accordion>
-                <ConfirmationPanel
-                    label={egenerklæringTekst}
-                    onChange={() => setChecked((state) => !state)}
-                    checked={isChecked}
-                    error={
-                        isError &&
-                        !isChecked &&
-                        intl.formatMessage({ id: 'valideringsfeil.oppsummering.harGodkjentOppsummering.påkrevd' })
-                    }
+        <ContentWrapper>
+            <Heading size="large">
+                <FormattedMessage id="Søknad.Pageheading" />
+            </Heading>
+            <OppsummeringIndex
+                appName="Foreldrepenger"
+                stepConfig={stepConfig}
+                sendSøknad={sendSøknad}
+                cancelApplication={avbrytSøknad}
+                goToPreviousStep={navigator.goToPreviousDefaultStep}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                ekstraSamtykketekst={ekstraSamtykketekst}
+            >
+                <DegOppsummeringspunkt person={søkerInfo.person} />
+                <OppsummeringIndex.Punkt tittel="Barnet" hide={erEndringssøknad}>
+                    <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
+                </OppsummeringIndex.Punkt>
+                <OppsummeringIndex.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
+                    <AnnenForelderOppsummering
+                        annenForelder={annenForelder}
+                        søker={søker}
+                        søkerrolle={søkersituasjon.rolle}
+                        barn={barn}
+                        farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
+                    />
+                </OppsummeringIndex.Punkt>
+                <BoIUtlandetOppsummeringspunkt
+                    fødselsdato={isFødtBarn(barn) ? barn.fødselsdato : undefined}
+                    termindato={isUfødtBarn(barn) ? formatDateIso(barn.termindato) : undefined}
+                    utenlandsopphold={tempMappingOpphold(notEmpty(utenlandsopphold))}
+                    tidligereUtenlandsopphold={tempMappingTidligere(tidligereUtenlandsopphold)}
+                    senereUtenlandsopphold={tempMappingSenere(senereUtenlandsopphold)}
+                    hide={erEndringssøknad}
                 />
-                <StepButtons
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonOnClick={sendInn}
-                    isDisabledAndLoading={isSubmitting}
-                    isSendButton
-                />
-            </VStack>
-        </Step>
+                <OppsummeringIndex.Punkt tittel="Arbeidsforhold og andre inntektskilder" hide={erEndringssøknad}>
+                    <ArbeidsforholdOgAndreInntekterOppsummering
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        barn={barn}
+                        søkersituasjon={søkersituasjon}
+                        søker={søker}
+                    />
+                </OppsummeringIndex.Punkt>
+                <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
+                    <UttaksplanOppsummering
+                        perioder={uttaksplan}
+                        navnPåForeldre={navnPåForeldre}
+                        annenForelder={annenForelder}
+                        erFarEllerMedmor={søkerErFarEllerMedmor}
+                        registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
+                        dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
+                        antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
+                        eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
+                        familiehendelsesdato={familiehendelsesdato!}
+                        termindato={termindato}
+                        situasjon={søkersituasjon.situasjon}
+                        erAleneOmOmsorg={søker.erAleneOmOmsorg}
+                        antallBarn={barn.antallBarn}
+                        ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
+                    />
+                </OppsummeringIndex.Punkt>
+            </OppsummeringIndex>
+        </ContentWrapper>
     );
 };
 

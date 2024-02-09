@@ -20,6 +20,7 @@ import { SakerOppslag } from 'app/types/SakerOppslag';
 import SøknadRoutes from 'app/routes/routes';
 import { Søknad } from 'app/context/types/Søknad';
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
+import { Søkerinfo } from '@navikt/fp-types';
 
 export interface TilgjengeligeStønadskontoerParams {
     antallBarn: string;
@@ -48,7 +49,7 @@ const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
 const useSøkerinfo = () => {
-    const { data, error } = useGetRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
+    const { data, error } = useGetRequest<Søkerinfo>('/sokerinfo', { config: { withCredentials: true } });
 
     return {
         søkerinfoData: data,

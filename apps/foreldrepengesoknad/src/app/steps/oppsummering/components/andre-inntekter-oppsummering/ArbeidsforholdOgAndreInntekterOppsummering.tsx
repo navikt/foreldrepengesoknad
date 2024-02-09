@@ -1,4 +1,4 @@
-import { Arbeidsforhold, Barn, ISOStringToDate, getAktiveArbeidsforhold, isFarEllerMedmor } from '@navikt/fp-common';
+import { Barn, ISOStringToDate, getAktiveArbeidsforhold, isFarEllerMedmor } from '@navikt/fp-common';
 import HarArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarArbeidsforhold';
 import HarIkkeArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';
 import { FunctionComponent } from 'react';
@@ -8,7 +8,7 @@ import AndreInntekterOppsummering from './AndreInntekterOppsummering';
 import FrilansOppsummering from './FrilansOppsummering';
 import SelvstendigNæringsdrivendeOppsummering from './SelvstendigNæringsdrivendeOppsummering';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 import Søker from 'app/context/types/Søker';
 import { VStack } from '@navikt/ds-react';
 

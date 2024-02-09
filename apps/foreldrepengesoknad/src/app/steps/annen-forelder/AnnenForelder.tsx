@@ -22,7 +22,6 @@ import {
     SivilstandType,
     Skjemanummer,
     Step,
-    Søkerinfo,
 } from '@navikt/fp-common';
 import { StepButtons } from '@navikt/fp-ui';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
@@ -44,6 +43,7 @@ import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenFor
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
+import { Søkerinfo } from '@navikt/fp-types';
 
 type Props = {
     søkerInfo: Søkerinfo;

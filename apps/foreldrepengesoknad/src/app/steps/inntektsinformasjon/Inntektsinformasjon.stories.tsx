@@ -1,18 +1,15 @@
-import { StoryFn } from '@storybook/react';
-import MockAdapter from 'axios-mock-adapter/types';
-import { action } from '@storybook/addon-actions';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import _context from 'storybook/storyData/soknad/soknadMedEttBarn.json';
-import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
-import Inntektsinformasjon from './Inntektsinformasjon';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { BarnType } from '@navikt/fp-common';
-import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Arbeidsforhold } from '@navikt/fp-types';
+import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import SøknadRoutes from 'app/routes/routes';
+import MockAdapter from 'axios-mock-adapter/types';
+import { MemoryRouter } from 'react-router-dom';
+import AxiosMock from 'storybook/utils/AxiosMock';
+import Inntektsinformasjon from './Inntektsinformasjon';
 
 const promiseAction =
     () =>
@@ -20,8 +17,6 @@ const promiseAction =
         action('button-click')(...args);
         return Promise.resolve();
     };
-
-const søkerinfo = _søkerinfo as any;
 
 const defaultUtenlandsopphold = {
     iNorgeNeste12Mnd: false,
@@ -34,14 +29,14 @@ export default {
 };
 
 interface Props {
-    søkerinfo: SøkerinfoDTO;
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
     utenlandsopphold: Opphold;
 }
 
 const Template: StoryFn<Props> = ({
-    søkerinfo,
+    arbeidsforhold,
     gåTilNesteSide,
     mellomlagreSøknadOgNaviger = promiseAction(),
     utenlandsopphold = defaultUtenlandsopphold,
@@ -86,7 +81,7 @@ const Template: StoryFn<Props> = ({
                     }}
                 >
                     <Inntektsinformasjon
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                        arbeidsforhold={arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={action('button-click')}
                     />
@@ -98,31 +93,34 @@ const Template: StoryFn<Props> = ({
 
 export const HarIkkeArbeidsforhold = Template.bind({});
 HarIkkeArbeidsforhold.args = {
-    søkerinfo,
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '896929119',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'SAUEFABRIKK',
+            stillingsprosent: 100,
+            fom: '2018-03-01',
+        },
+    ],
 };
 
 export const HarArbeidsforhold = Template.bind({});
 HarArbeidsforhold.args = {
-    søkerinfo: {
-        søker: {
-            ...søkerinfo,
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '1',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Auto Joachim Bilpleie',
+            stillingsprosent: 80,
+            fom: '2015-01-01',
         },
-        arbeidsforhold: [
-            {
-                arbeidsgiverId: '1',
-                arbeidsgiverIdType: 'orgnr',
-                arbeidsgiverNavn: 'Auto Joachim Bilpleie',
-                stillingsprosent: 80,
-                fom: '2015-01-01',
-            },
-            {
-                arbeidsgiverId: '2',
-                arbeidsgiverIdType: 'orgnr',
-                arbeidsgiverNavn: 'Taco Express',
-                stillingsprosent: 20,
-                fom: '2019-01-01',
-                tom: '2021-01-01',
-            },
-        ],
-    } as SøkerinfoDTO,
+        {
+            arbeidsgiverId: '2',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Taco Express',
+            stillingsprosent: 20,
+            fom: '2019-01-01',
+            tom: '2021-01-01',
+        },
+    ],
 };

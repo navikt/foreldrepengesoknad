@@ -22,7 +22,6 @@ import {
     SaksperiodeDTO,
     Situasjon,
     StønadskontoType,
-    Søkerinfo,
     Søkerrolle,
     Søkersituasjon,
     Tidsperioden,
@@ -39,9 +38,9 @@ import { IntlShape } from 'react-intl';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
-import Person, { RegistrertAnnenForelder, RegistrertBarn } from '@navikt/fp-common/src/common/types/Person';
 import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { ValgtBarn } from 'app/types/ValgtBarn';
+import { Person, RegistrertAnnenForelder, RegistrertBarn, Søkerinfo } from '@navikt/fp-types';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {

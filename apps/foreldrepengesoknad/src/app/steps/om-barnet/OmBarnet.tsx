@@ -10,9 +10,7 @@ import {
     isFødtBarn,
     ISOStringToDate,
     isUfødtBarn,
-    RegistrertBarn,
     Step,
-    Søkerinfo,
 } from '@navikt/fp-common';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -30,6 +28,7 @@ import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig, { OmBarnetQuestionPayload } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
 import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
+import { RegistrertBarn, Søkerinfo } from '@navikt/fp-types';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -72,7 +71,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
             ? registrerteBarn.filter(
-                  (barn: RegistrertBarn) =>
+                  (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
             : [];

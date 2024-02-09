@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { AnnenForelder, Kjønn, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from '../types';
-import Person from '../types/Person';
 import intlUtils from './intlUtils';
+import { Person } from '@navikt/fp-types';
 
 export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
     if (visEtternavn) {
@@ -109,6 +109,6 @@ export const getNavnPåForeldre = (
 export const getErSøkerFarEllerMedmor = (søkerRolle: Søkerrolle): boolean =>
     søkerRolle === 'far' || søkerRolle === 'medmor';
 
-export const erEldreEnn3ÅrOg3Måneder = (fødselsdato: Date) => {
+export const erEldreEnn3ÅrOg3Måneder = (fødselsdato: string) => {
     return dayjs(fødselsdato).add(3, 'year').add(3, 'month').isBefore(dayjs(), 'day');
 };

@@ -1,7 +1,5 @@
 import {
-    Arbeidsforhold,
     ISOStringToDate,
-    RegistrertBarn,
     Situasjon,
     Søkerrolle,
     andreAugust2022ReglerGjelder,
@@ -14,6 +12,7 @@ import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { getEldsteRegistrerteBarn } from '../../utils/dateUtils';
+import { Arbeidsforhold, RegistrertBarn } from '@navikt/fp-types';
 
 export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     situasjon: Situasjon;
@@ -23,7 +22,7 @@ export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     søknadGjelderEtNyttBarn: boolean;
 }
 
-const erDatoInnenforDeSiste12Ukene = (dato: Date) => {
+const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
     return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
 };
@@ -50,7 +49,7 @@ const includeTermindato = (
         return false;
     }
 
-    const relevantFødselsdato = eldsteBarnFødselsdato || ISOStringToDate(fødselsdato);
+    const relevantFødselsdato = eldsteBarnFødselsdato || fødselsdato;
 
     if (isFarEllerMedmor(rolle)) {
         if (andreAugust2022ReglerGjelder(relevantFødselsdato!)) {

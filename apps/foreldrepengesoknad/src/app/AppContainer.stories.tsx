@@ -1,21 +1,19 @@
+import { initAmplitude } from '@navikt/fp-metrics';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
-
-import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
-import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
-import søkerinfo from 'storybook/storyData/sokerinfo/sokerinfoMannMedArbeidsforhold.json';
 import annenPartVedtak from 'storybook/storyData/annenPartVedtak/annenPartVedtak.json';
-import saker from 'storybook/storyData/saker/saker.json';
 import storageKvittering from 'storybook/storyData/kvittering/storage_kvittering.json';
+import saker from 'storybook/storyData/saker/saker.json';
+import søkerinfo from 'storybook/storyData/sokerinfo/sokerinfoMannMedArbeidsforhold.json';
+import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoer from 'storybook/storyData/stonadskontoer/stønadskontoer.json';
-
 import AppContainer from './AppContainer';
 import { AxiosInstance } from './api/apiInterceptor';
+import { RequestStatus } from './types/RequestState';
 
 import '@navikt/ds-css';
 import './styles/app.less';
-import { RequestStatus } from './types/RequestState';
-import { initAmplitude } from '@navikt/fp-metrics';
 
 export default {
     title: 'AppContainer',
