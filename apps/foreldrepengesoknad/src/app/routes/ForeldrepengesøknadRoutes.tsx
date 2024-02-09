@@ -98,7 +98,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.ANNEN_FORELDER}
                 element={
                     <AnnenForelder
-                        søkerInfo={søkerInfo}
+                        person={søkerInfo.person}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -117,7 +117,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.UTTAKSPLAN_INFO}
                 element={
                     <UttaksplanInfo
-                        søkerInfo={søkerInfo}
+                        person={søkerInfo.person}
                         erEndringssøknad={erEndringssøknad}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -291,7 +291,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                         onChangeLocale={onChangeLocale}
                         fnr={søkerInfo.person.fnr}
                         harGodkjentVilkår={harGodkjentVilkår}
-                        søkerInfo={søkerInfo}
+                        person={søkerInfo.person}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
                         setErEndringssøknad={setErEndringssøknad}
                         setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}

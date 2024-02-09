@@ -127,16 +127,13 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om utenlandsopphold', async () => {
         render(<MedUtenlandsopphold />);
 
-        await userEvent.click(await screen.findByText('Utenlandsopphold'));
+        await userEvent.click(await screen.findByText('Bo i utlandet'));
 
-        expect(screen.getByText('De siste 12 månedene har jeg')).toBeInTheDocument();
-        expect(screen.getByText('Bodd i Sverige')).toBeInTheDocument();
+        expect(screen.getByText('Du har bodd i Sverige i løpet av de forrige 12 månedene')).toBeInTheDocument();
         expect(screen.getByText('01.01.2020 - 31.12.2020')).toBeInTheDocument();
-        expect(screen.getByText('De neste 12 månedene skal jeg')).toBeInTheDocument();
-        expect(screen.getByText('Bo i Sverige')).toBeInTheDocument();
+        expect(screen.getByText('Du har bodd i Sverige i løpet av de forrige 12 månedene')).toBeInTheDocument();
         expect(screen.getByText('01.01.2021 - 31.12.2021')).toBeInTheDocument();
-        expect(screen.getByText('Jeg er i Norge på fødselstidspunktet')).toBeInTheDocument();
-        expect(screen.getAllByText('Nei')[0]).toBeInTheDocument();
+        expect(screen.getByText('På fødselstidspunktet bodde du i utlandet')).toBeInTheDocument();
     });
 
     it('skal vise informasjon om arbeidsforhold og andre inntekter', async () => {
@@ -158,7 +155,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Oppstartsdato som frilans')).toBeInTheDocument();
         expect(screen.getByText('01.01.2019')).toBeInTheDocument();
         expect(screen.getByText('Jeg jobber fremdeles som frilans')).toBeInTheDocument();
-        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')).toHaveLength(1);
     });
     it('skal vise informasjon om uttaksplan', async () => {
         render(<FarMedUførMor />);

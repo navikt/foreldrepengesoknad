@@ -3,15 +3,12 @@ import { action } from '@storybook/addon-actions';
 import MockAdapter from 'axios-mock-adapter/types';
 import { AnnenForelder, Attachment, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
 import AxiosMock from 'storybook/utils/AxiosMock';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Næringstype } from 'app/context/types/Næring';
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import Oppsummering from './Oppsummering';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import Søker from 'app/context/types/Søker';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { Person, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import SøknadRoutes from 'app/routes/routes';
 import { MemoryRouter } from 'react-router-dom';
@@ -24,12 +21,39 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'steps/Oppsummering',
-    component: Oppsummering,
+const defaultSøkerinfo = {
+    person: {
+        fnr: '19047815714',
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+        kjønn: 'K',
+        fødselsdato: '1978-04-19',
+        barn: [
+            {
+                fnr: '21091981146',
+                fødselsdato: '2021-03-15',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+        ],
+    } as Person,
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '896929119',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'SAUEFABRIKK',
+            stillingsprosent: 100,
+            fom: '2018-03-01',
+        },
+    ],
 };
-
-const søkerinfo = _søkerinfo as SøkerinfoDTO;
 
 const defaultBarn = {
     type: BarnType.FØDT,
@@ -97,8 +121,13 @@ const defaultUttaksplan = [
     },
 ] as Periode[];
 
+export default {
+    title: 'steps/Oppsummering',
+    component: Oppsummering,
+};
+
 interface Props {
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo?: Søkerinfo;
     søker?: Søker;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
@@ -114,7 +143,7 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({
-    søkerinfo,
+    søkerinfo = defaultSøkerinfo,
     søkersituasjon = defaultSøkersituasjon,
     søker = defaultSøker,
     annenForelder = defaultAnnenForelder,
@@ -157,7 +186,7 @@ const Template: StoryFn<Props> = ({
                     <Oppsummering
                         erEndringssøknad={erEndringssøknad}
                         sendSøknad={sendSøknad}
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                        søkerInfo={søkerinfo}
                         avbrytSøknad={avbrytSøknad}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     />
@@ -168,9 +197,6 @@ const Template: StoryFn<Props> = ({
 };
 
 export const Default = Template.bind({});
-Default.args = {
-    søkerinfo,
-};
 
 export const MedAnnenForelder = Template.bind({});
 MedAnnenForelder.args = {
@@ -187,7 +213,6 @@ MedAnnenForelder.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søkerinfo,
 };
 
 export const MedAleneOmsorg = Template.bind({});
@@ -208,7 +233,6 @@ MedAleneOmsorg.args = {
         fnr: '1212121313',
         kanIkkeOppgis: false,
     },
-    søkerinfo,
 };
 
 export const FarMedUførMor = Template.bind({});
@@ -229,8 +253,6 @@ FarMedUførMor.args = {
         kanIkkeOppgis: false,
         erUfør: true,
     },
-
-    søkerinfo,
 };
 
 export const FarMedMorSomHarRettIEØS = Template.bind({});
@@ -251,7 +273,6 @@ FarMedMorSomHarRettIEØS.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søkerinfo,
 };
 
 export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
@@ -272,7 +293,6 @@ FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
         harRettPåForeldrepengerIEØS: false,
         kanIkkeOppgis: false,
     },
-    søkerinfo,
 };
 
 export const FarMedMorSomHarRettINorge = Template.bind({});
@@ -291,7 +311,6 @@ FarMedMorSomHarRettINorge.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søkerinfo,
 };
 
 export const MedAdoptertBarn = Template.bind({});
@@ -308,7 +327,6 @@ MedAdoptertBarn.args = {
         adoptertIUtlandet: false,
         omsorgsovertakelse: [],
     } as Barn,
-    søkerinfo,
 };
 
 export const MedUtenlandsopphold = Template.bind({});
@@ -339,7 +357,6 @@ MedUtenlandsopphold.args = {
             },
         ],
     },
-    søkerinfo,
 };
 
 export const MedArbeidsforholdOgAndreInntekter = Template.bind({});
@@ -355,9 +372,7 @@ MedArbeidsforholdOgAndreInntekter.args = {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
     søkerinfo: {
-        søker: {
-            ...søkerinfo.søker,
-        },
+        person: defaultSøkerinfo.person,
         arbeidsforhold: [
             {
                 arbeidsgiverId: '1',
@@ -375,7 +390,7 @@ MedArbeidsforholdOgAndreInntekter.args = {
                 tom: '2021-01-01',
             },
         ],
-    } as SøkerinfoDTO,
+    },
 };
 
 export const MedSelvstendigNæringsdrivende = Template.bind({});
@@ -407,7 +422,6 @@ MedSelvstendigNæringsdrivende.args = {
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
     },
-    søkerinfo,
 };
 
 export const MedSelvstendigNæringsdrivendeUtenDiverse = Template.bind({});
@@ -433,7 +447,6 @@ MedSelvstendigNæringsdrivendeUtenDiverse.args = {
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
     },
-    søkerinfo,
 };
 
 export const MedAndreInntekterJobbIUtlandet = Template.bind({});
@@ -457,7 +470,6 @@ MedAndreInntekterJobbIUtlandet.args = {
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
-    søkerinfo,
 };
 
 export const MedAndreInntekterMilitærtjeneste = Template.bind({});
@@ -485,7 +497,6 @@ MedAndreInntekterMilitærtjeneste.args = {
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
-    søkerinfo,
 };
 
 export const ErEndringssøknad = Template.bind({});
@@ -504,5 +515,4 @@ ErEndringssøknad.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søkerinfo,
 };

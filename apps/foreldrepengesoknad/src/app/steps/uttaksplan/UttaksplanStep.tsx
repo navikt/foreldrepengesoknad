@@ -24,7 +24,6 @@ import {
     Periodene,
     Step,
     StepButtonWrapper,
-    Søkerinfo,
 } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -66,21 +65,19 @@ import {
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
-import { Arbeidsforhold, Person } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
 type Props = {
-    person: Person;
-    arbeidsforhold: Arbeidsforhold[];
+    søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
 const UttaksplanStep: React.FunctionComponent<Props> = ({
-    person,
-    arbeidsforhold,
+    søkerInfo,
     erEndringssøknad,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
@@ -133,7 +130,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
     const morHarRett = getMorHarRettPåForeldrepengerINorgeEllerEØS(rolle, erFarEllerMedmor, annenForelder);
@@ -437,7 +434,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     };
 
     const foreldreSituasjon = getForeldreparSituasjon(
-        person.kjønn,
+        søkerInfo.person.kjønn,
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,
@@ -591,7 +588,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                 erIUttaksplanenSteg={true}
                                 tilgjengeligeStønadskontoer={valgteStønadskontoer}
                                 minsterettUkerToTette={minsterettUkerToTette}
-                                person={person}
+                                person={søkerInfo.person}
                             />
                         </Block>
                         <Uttaksplan
@@ -605,7 +602,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             navnPåForeldre={navnPåForeldre}
                             annenForelder={annenForelder}
                             arbeidsforhold={getAktiveArbeidsforhold(
-                                arbeidsforhold,
+                                søkerInfo.arbeidsforhold,
                                 erAdopsjon,
                                 erFarEllerMedmor,
                                 ISOStringToDate(familiehendelsesdato),

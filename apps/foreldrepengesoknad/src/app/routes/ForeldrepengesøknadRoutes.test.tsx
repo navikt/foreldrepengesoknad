@@ -1,13 +1,13 @@
-import { BrowserRouter } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
 import { allCommonMessages } from '@navikt/fp-common';
-import Person from '@navikt/fp-common/src/common/types/Person';
-import { IntlProvider } from '@navikt/fp-ui';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import SøknadRoutes from './routes';
-import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
-import nbMessages from '../intl/nb_NO.json';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Person, RegistrertBarn } from '@navikt/fp-types';
+import { IntlProvider } from '@navikt/fp-ui';
+import { render, screen } from '@testing-library/react';
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import { BrowserRouter } from 'react-router-dom';
+import nbMessages from '../intl/nb_NO.json';
+import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
+import SøknadRoutes from './routes';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
@@ -32,8 +32,8 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                                 arbeidsforhold: [],
                                 person: {
                                     fornavn: 'Ola',
+                                    barn: [] as RegistrertBarn[],
                                 } as Person,
-                                registrerteBarn: [],
                             }}
                             saker={[]}
                             lagretErEndringssøknad={false}
@@ -73,11 +73,10 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                             currentRoute={SøknadRoutes.OM_BARNET}
                             søkerInfo={{
                                 person: {
-                                    erMyndig: true,
                                     fornavn: 'Ola',
+                                    barn: [] as RegistrertBarn[],
                                 } as Person,
                                 arbeidsforhold: [],
-                                registrerteBarn: [],
                             }}
                             saker={[]}
                             lagretErEndringssøknad={false}

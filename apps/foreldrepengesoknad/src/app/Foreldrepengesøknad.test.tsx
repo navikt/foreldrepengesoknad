@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import Api, { FpMellomlagretData } from './api/api';
 import Foreldrepengesøknad from './Foreldrepengesøknad';
-import { SøkerinfoDTO } from './types/SøkerinfoDTO';
 import { allCommonMessages } from '@navikt/fp-common';
 import MockAdapter from 'axios-mock-adapter';
 import { AxiosInstance } from './api/apiInterceptor';
@@ -9,6 +8,7 @@ import { IntlProvider } from '@navikt/fp-ui';
 import nbMessages from './intl/nb_NO.json';
 import { RequestStatus } from './types/RequestState';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo } from '@navikt/fp-types';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
@@ -48,7 +48,7 @@ describe('<Foreldrepengesøknad>', () => {
         initAmplitude();
         const søkerinfoData = {
             søkerinfoData: {
-                søker: {
+                person: {
                     fornavn: 'Olga',
                     fnr: '12117212090',
                 },
@@ -57,7 +57,7 @@ describe('<Foreldrepengesøknad>', () => {
                         arbeidsgiverId: '',
                     },
                 ],
-            } as SøkerinfoDTO,
+            } as Søkerinfo,
             søkerinfoError: null,
         };
         const storageData = {

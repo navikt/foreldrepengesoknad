@@ -9,6 +9,7 @@
     "BoIUtlandetOppsummeringspunkt.BoNesteTolv": "You will live in {country} for the next 12 months",
     "BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet": "At the time of birth you will live in {country}",
     "BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet": "At the time of birth you lived in {country}",
+    "BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet": "At the date of taking over care you lived in {country}",
     "LandOppsummering.IDag": "today",
     "LandOppsummering.HarBodd": "You have lived in {country} during the previous 12 months",
     "LandOppsummering.SkalBo": "You will be living in {country} during the next 12 months",

@@ -9,6 +9,7 @@
     "BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet": "På fødselstidspunktet kommer du til å bo i {country}",
     "BoIUtlandetOppsummeringspunkt.Utlandet": "utlandet",
     "BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet": "På fødselstidspunktet bodde du i {country}",
+    "BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet": "Ved omsorgsovertakelse bodde du i {country}",
     "LandOppsummering.IDag": "i dag",
     "LandOppsummering.HarBodd": "Du har bodd i {country} i løpet av de forrige 12 månedene",
     "LandOppsummering.SkalBo": "Du skal bo i {country} i løpet av de neste 12 månedene",

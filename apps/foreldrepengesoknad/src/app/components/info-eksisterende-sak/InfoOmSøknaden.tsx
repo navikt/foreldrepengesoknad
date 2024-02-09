@@ -37,9 +37,9 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { Person } from '@navikt/fp-types';
 
 import './infoOmSøknaden.less';
-import { Person } from '@navikt/fp-types';
 
 const getHvem = (
     intl: IntlShape,

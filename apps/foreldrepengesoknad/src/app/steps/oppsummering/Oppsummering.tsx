@@ -1,14 +1,21 @@
 import { Heading } from '@navikt/ds-react';
 import {
+    Barn,
     ISOStringToDate,
     getErSøkerFarEllerMedmor,
     getFarMedmorErAleneOmOmsorg,
     getNavnPåForeldre,
+    isAdoptertBarn,
     isAnnenForelderOppgitt,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { BoIUtlandetOppsummeringspunkt, DegOppsummeringspunkt, OppsummeringIndex } from '@navikt/fp-oppsummering';
+import {
+    BoIUtlandetOppsummeringspunkt,
+    DegOppsummeringspunkt,
+    HendelseType,
+    OppsummeringIndex,
+} from '@navikt/fp-oppsummering';
 import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { formatDateIso } from '@navikt/fp-utils';
@@ -16,6 +23,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -23,7 +31,19 @@ import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-innte
 import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
 import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+
+const getDatoOgHendelsetype = (barn: Barn): [string, HendelseType] => {
+    if (isFødtBarn(barn)) {
+        return [formatDateIso(barn.fødselsdatoer[0]), HendelseType.FØDSEL];
+    }
+    if (isAdoptertBarn(barn)) {
+        return [formatDateIso(barn.adopsjonsdato), HendelseType.ADOPSJON];
+    }
+    if (isUfødtBarn(barn)) {
+        return [formatDateIso(barn.termindato), HendelseType.TERMIN];
+    }
+    throw new Error('Informasjon om barn er feil!');
+};
 
 // TODO (TOR) Bruk same typar i dei forskjellige appane
 const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({
@@ -111,6 +131,8 @@ const Oppsummering: FunctionComponent<Props> = ({
           )
         : '';
 
+    const datoOgHendelsetype = getDatoOgHendelsetype(barn);
+
     return (
         <ContentWrapper>
             <Heading size="large">
@@ -139,8 +161,8 @@ const Oppsummering: FunctionComponent<Props> = ({
                     />
                 </OppsummeringIndex.Punkt>
                 <BoIUtlandetOppsummeringspunkt
-                    fødselsdato={isFødtBarn(barn) ? barn.fødselsdato : undefined}
-                    termindato={isUfødtBarn(barn) ? formatDateIso(barn.termindato) : undefined}
+                    familiehendelseDato={datoOgHendelsetype[0]}
+                    hendelseType={datoOgHendelsetype[1]}
                     utenlandsopphold={tempMappingOpphold(notEmpty(utenlandsopphold))}
                     tidligereUtenlandsopphold={tempMappingTidligere(tidligereUtenlandsopphold)}
                     senereUtenlandsopphold={tempMappingSenere(senereUtenlandsopphold)}

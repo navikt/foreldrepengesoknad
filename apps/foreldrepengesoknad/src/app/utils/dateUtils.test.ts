@@ -18,7 +18,6 @@ import {
     Periode,
     PeriodeHull,
     Periodetype,
-    RegistrertBarn,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
@@ -37,6 +36,7 @@ import {
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { RegistrertBarn } from '@navikt/fp-types';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -326,7 +326,7 @@ describe('dateUtils', () => {
             etternavn: 'test',
             fnr: '123123',
             fornavn: 'test',
-            fødselsdato: new Date('2020-01-01'),
+            fødselsdato: '2020-01-01',
             kjønn: 'K',
         };
 
@@ -334,7 +334,7 @@ describe('dateUtils', () => {
             etternavn: 'test',
             fnr: '234234',
             fornavn: 'test',
-            fødselsdato: new Date('2021-01-01'),
+            fødselsdato: '2021-01-01',
             kjønn: 'K',
         };
 

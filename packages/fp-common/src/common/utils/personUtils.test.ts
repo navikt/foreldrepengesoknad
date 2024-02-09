@@ -7,8 +7,7 @@ import {
     getNavnGenitivEierform,
     getNavnPåForeldre,
 } from './personUtils';
-
-import Person from 'common/types/Person';
+import { Person } from '@navikt/fp-types';
 
 describe('personUtils', () => {
     it('skal formatere navn med mellomnavn', () => {

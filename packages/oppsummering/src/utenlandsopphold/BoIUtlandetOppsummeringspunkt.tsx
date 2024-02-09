@@ -30,9 +30,15 @@ const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
     );
 };
 
+export enum HendelseType {
+    ADOPSJON = 'ADOPSJON',
+    FØDSEL = 'FØDSEL',
+    TERMIN = 'TERMIN',
+}
+
 interface Props {
-    fødselsdato?: string;
-    termindato?: string;
+    familiehendelseDato: string;
+    hendelseType: HendelseType;
     utenlandsopphold: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
@@ -40,8 +46,8 @@ interface Props {
 }
 
 const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
-    fødselsdato,
-    termindato,
+    familiehendelseDato,
+    hendelseType,
     utenlandsopphold,
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
@@ -84,14 +90,14 @@ const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
                         />
                     </BodyShort>
                 )}
-                {termindato && (
+                {hendelseType === HendelseType.TERMIN && (
                     <HStack gap="2">
                         <BodyShort>
                             <FormattedMessage
-                                id={'BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet'}
+                                id="BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet"
                                 values={{
                                     country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                        termindato,
+                                        familiehendelseDato,
                                         tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
                                         senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                                     )
@@ -102,13 +108,29 @@ const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
                         </BodyShort>
                     </HStack>
                 )}
-                {fødselsdato && (
+                {hendelseType === HendelseType.FØDSEL && (
                     <BodyShort>
                         <FormattedMessage
-                            id={'BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet'}
+                            id="BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet"
                             values={{
                                 country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                    fødselsdato,
+                                    familiehendelseDato,
+                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
+                                )
+                                    ? intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utlandet' })
+                                    : intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }),
+                            }}
+                        />
+                    </BodyShort>
+                )}
+                {hendelseType === HendelseType.ADOPSJON && (
+                    <BodyShort>
+                        <FormattedMessage
+                            id="BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet"
+                            values={{
+                                country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                    familiehendelseDato,
                                     tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
                                     senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
                                 )

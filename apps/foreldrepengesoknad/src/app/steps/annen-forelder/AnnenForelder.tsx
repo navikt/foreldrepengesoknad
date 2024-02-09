@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
 import { Alert, BodyLong, BodyShort, ReadMore } from '@navikt/ds-react';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { notEmpty } from '@navikt/fp-validation';
 import {
     AttachmentType,
     Barn,
     Block,
+    ISOStringToDate,
+    SivilstandType,
+    Skjemanummer,
+    Step,
     convertYesOrNoOrUndefinedToBoolean,
     getKjønnFromFnrString,
     hasValue,
@@ -16,42 +14,44 @@ import {
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    ISOStringToDate,
     isUfødtBarn,
     links,
-    SivilstandType,
-    Skjemanummer,
-    Step,
 } from '@navikt/fp-common';
+import { Person } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import Søker from 'app/context/types/Søker';
-import useStepConfig from 'app/appData/useStepConfig';
+import { notEmpty } from '@navikt/fp-validation';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import useFpNavigator from 'app/appData/useFpNavigator';
-import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
+import useStepConfig from 'app/appData/useStepConfig';
+import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
+import Søker from 'app/context/types/Søker';
+import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
+import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
 import {
     cleanAnnenForelderFormData,
     getAnnenForelderFormInitialValues,
     mapAnnenForelderFormToState,
 } from './annenForelderFormUtils';
-import { annenForelderQuestionsConfig, AnnenForelderQuestionsPayload } from './annenForelderQuestionsConfig';
+import { AnnenForelderQuestionsPayload, annenForelderQuestionsConfig } from './annenForelderQuestionsConfig';
+import { AnnenForelderFormComponents, AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import AvtaleAtFarTarUtForeldrepengerVeileder from './components/AvtaleAtFarTarUtForeldrepengerVeileder';
 import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAleneomsorgVeileder';
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
-import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
-import { Søkerinfo } from '@navikt/fp-types';
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    person: Person;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const AnnenForelder: React.FunctionComponent<Props> = ({ person, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig();
@@ -71,11 +71,11 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
 
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
-    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søkerInfo.registrerteBarn);
+    const funnetRegistrerteBarn = getRegistrerteBarnOmDeFinnes(barn, person.barn);
     const registrertBarnMedAnnenForelder =
-        registrerteBarn === undefined || registrerteBarn.length === 0
+        funnetRegistrerteBarn === undefined || funnetRegistrerteBarn.length === 0
             ? undefined
-            : registrerteBarn.find((barn) => barn.annenForelder !== undefined);
+            : funnetRegistrerteBarn.find((barn) => barn.annenForelder !== undefined);
     const annenForelderFraRegistrertBarn =
         registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
 
@@ -86,8 +86,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
             annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
     const søkerErFar = rolle === 'far';
     const søkerErMor = rolle === 'mor';
-    const søkerErIkkeGift =
-        søkerInfo.person.sivilstand === undefined || søkerInfo.person.sivilstand.type !== SivilstandType.GIFT;
+    const søkerErIkkeGift = person.sivilstand === undefined || person.sivilstand.type !== SivilstandType.GIFT;
     const barnetErIkkeFødt = isUfødtBarn(barn);
     let tekstOmFarskapsportalId = '';
     if (søkerErFar && barnetErIkkeFødt) {
@@ -183,7 +182,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                                         kanIkkeOppgis={formValues.kanIkkeOppgis}
                                         visibility={visibility}
                                         gjelderAdopsjon={false}
-                                        søkersFødselsnummer={søkerInfo.person.fnr}
+                                        søkersFødselsnummer={person.fnr}
                                     />
                                 </Block>
                             )}

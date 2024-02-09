@@ -1,14 +1,13 @@
-import { StoryFn } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
-import { SøkerinfoDTO, SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { Action, FpDataContext } from 'app/context/FpDataContext';
-import Velkommen from './Velkommen';
+import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { MemoryRouter } from 'react-router-dom';
+import { Person, RegistrertBarn } from '@navikt/fp-types';
+import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { Action, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
+import { MemoryRouter } from 'react-router-dom';
+import Velkommen from './Velkommen';
 
 const promiseAction =
     () =>
@@ -22,29 +21,27 @@ export default {
     component: Velkommen,
 };
 
+const defaultPerson = {
+    fnr: '19047815714',
+    fornavn: 'TALENTFULL',
+    etternavn: 'MYGG',
+    kjønn: 'K',
+    fødselsdato: '1978-04-19',
+    barn: [],
+} as Person;
+
 interface Props {
     harGodkjentVilkår: boolean;
     saker: Sak[];
-    søkerinfo: SøkerinfoDTO;
+    person?: Person;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     onDispatch?: (action: Action) => void;
 }
 
-const søkerInfo = {
-    søker: {
-        fnr: '19047815714',
-        fornavn: 'TALENTFULL',
-        etternavn: 'MYGG',
-        kjønn: 'K',
-        fødselsdato: '1978-04-19',
-        barn: [],
-    },
-} as SøkerinfoDTO;
-
 const Template: StoryFn<Props> = ({
     harGodkjentVilkår,
     saker,
-    søkerinfo,
+    person = defaultPerson,
     mellomlagreSøknadOgNaviger = promiseAction(),
     onDispatch,
 }) => {
@@ -59,7 +56,7 @@ const Template: StoryFn<Props> = ({
                     saker={saker}
                     fnr={'123'}
                     harGodkjentVilkår={harGodkjentVilkår}
-                    søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                    person={person}
                     setErEndringssøknad={action('button-click')}
                     setHarGodkjentVilkår={action('button-click')}
                     setSøknadGjelderNyttBarn={action('button-click')}
@@ -121,8 +118,8 @@ const getSak = (sakinfo: SakInfo): Sak => {
     };
 };
 
-const getSøkerinfoMedBarn = (barna: SøkerinfoDTOBarn[]): SøkerinfoDTO => {
-    return { ...søkerInfo, søker: { ...søkerInfo.søker, barn: barna } };
+const getSøkerinfoMedBarn = (barna: RegistrertBarn[]): Person => {
+    return { ...defaultPerson, barn: barna };
 };
 
 const dato = '2022-12-06';
@@ -134,23 +131,23 @@ const levendeBarn = {
     etternavn: 'Bokhylle',
     fødselsdato: dato,
     kjønn: 'K',
-} as SøkerinfoDTOBarn;
+} as RegistrertBarn;
 
 const dødtBarn = {
     ...levendeBarn,
     dødsdato: '2022-12-07',
-} as SøkerinfoDTOBarn;
+} as RegistrertBarn;
 
 const levendeTvilling = {
     fnr: '2',
     fornavn: 'Vakker',
     etternavn: 'Bokhylle',
     fødselsdato: dato,
-} as SøkerinfoDTOBarn;
+} as RegistrertBarn;
 
 const dødTvilling = { ...levendeTvilling, dødsdato: '2022-12-07' };
 
-const dødfødtBarn = { fødselsdato: dato, dødsdato: dato } as SøkerinfoDTOBarn;
+const dødfødtBarn = { fødselsdato: dato, dødsdato: dato } as RegistrertBarn;
 
 const sakErIkkeAvsluttet = false;
 
@@ -162,7 +159,7 @@ const ettBarn = {
     etternavn: 'Vår',
     fødselsdato: dato,
     kjønn: 'M',
-} as SøkerinfoDTOBarn;
+} as RegistrertBarn;
 
 const annetBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '4', fornavn: 'Grønn' };
 const tredjeBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '5', fornavn: 'Sommerlig' };
@@ -245,74 +242,70 @@ export const Default = Template.bind({});
 Default.args = {
     harGodkjentVilkår: false,
     saker: ingenSaker,
-    søkerinfo: søkerInfo,
 };
 
 export const HarAlleredeLestOgForstått = Template.bind({});
 HarAlleredeLestOgForstått.args = {
     harGodkjentVilkår: true,
     saker: ingenSaker,
-    søkerinfo: søkerInfo,
 };
 
 export const HarOpprettetFPSakFødselMedBarnetIPDL = Template.bind({});
 HarOpprettetFPSakFødselMedBarnetIPDL.args = {
     saker: [sakOpprettetFødsel],
-    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
+    person: getSøkerinfoMedBarn([ettBarn]),
 };
 
 export const HarFPSakUnderBehandlingTermin = Template.bind({});
 HarFPSakUnderBehandlingTermin.args = {
     saker: [sakUnderBehandlingTermin],
-    søkerinfo: søkerInfo,
 };
 
 export const HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL = Template.bind({});
 HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL.args = {
     saker: [erEndringssøknadUnderBehandlingAdopsjon],
-    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
+    person: getSøkerinfoMedBarn([ettBarn]),
 };
 
 export const HarAvsluttetFPSak = Template.bind({});
 HarAvsluttetFPSak.args = {
     saker: [sakAvsluttet],
-    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
+    person: getSøkerinfoMedBarn([ettBarn]),
 };
 
 export const HarFlereSaker = Template.bind({});
 HarFlereSaker.args = {
     saker: flereSaker,
-    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
+    person: getSøkerinfoMedBarn([ettBarn]),
 };
 
 export const HarSakFødselUtenBarnIPDL = Template.bind({});
 HarSakFødselUtenBarnIPDL.args = {
     saker: [sakUtenBarnFødsel],
-    søkerinfo: søkerInfo,
 };
 
 export const HarSakAdopsjonUtenBarnIPDL = Template.bind({});
 HarSakAdopsjonUtenBarnIPDL.args = {
     saker: [sakEttBarnAdopsjon],
-    søkerinfo: søkerInfo,
+    person: defaultPerson,
 };
 
 export const HarSakAdopsjonMedBarnIPDL = Template.bind({});
 HarSakAdopsjonMedBarnIPDL.args = {
     saker: [sakEttBarnAdopsjon],
-    søkerinfo: getSøkerinfoMedBarn([ettBarn]),
+    person: getSøkerinfoMedBarn([ettBarn]),
 };
 
 export const HarSakFødselTvillinger = Template.bind({});
 HarSakFødselTvillinger.args = {
     saker: [sakMedTvillinger],
-    søkerinfo: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato]),
+    person: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato]),
 };
 
 export const HarSakFødselTrillinger = Template.bind({});
 HarSakFødselTrillinger.args = {
     saker: [sakMedTrillinger],
-    søkerinfo: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, tredjeBarnSammeDato]),
+    person: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, tredjeBarnSammeDato]),
 };
 
 const søkerinfoMedEtLevendeBarn = getSøkerinfoMedBarn([levendeBarn]);
@@ -327,82 +320,82 @@ const søkerinfoMedEnLevendeOgEnDødTvilling = getSøkerinfoMedBarn([levendeBarn
 export const HarIngenSakerOgEttBarn = Template.bind({});
 HarIngenSakerOgEttBarn.args = {
     saker: [],
-    søkerinfo: søkerinfoMedEtLevendeBarn,
+    person: søkerinfoMedEtLevendeBarn,
 };
 
 export const HarIngenSakerOgTvillinger = Template.bind({});
 HarIngenSakerOgTvillinger.args = {
     saker: [],
-    søkerinfo: søkerinfoMedLevendeTvillinger,
+    person: søkerinfoMedLevendeTvillinger,
 };
 
 export const HarIngenSakerOgEttDødtBarn = Template.bind({});
 HarIngenSakerOgEttDødtBarn.args = {
     saker: [],
-    søkerinfo: søkerinfoMedEtDødtBarn,
+    person: søkerinfoMedEtDødtBarn,
 };
 
 export const HarIngenSakerOgToDødeTvillinger = Template.bind({});
 HarIngenSakerOgToDødeTvillinger.args = {
     saker: [],
-    søkerinfo: søkerinfoMedToDødeTvillinger,
+    person: søkerinfoMedToDødeTvillinger,
 };
 export const HarIngenSakerOgEtDødfødtBarn = Template.bind({});
 HarIngenSakerOgEtDødfødtBarn.args = {
     saker: [],
-    søkerinfo: søkerinfoMedEtDødfødtBarn,
+    person: søkerinfoMedEtDødfødtBarn,
 };
 
 export const HarIngenSakerOgToDødfødteBarn = Template.bind({});
 HarIngenSakerOgToDødfødteBarn.args = {
     saker: [],
-    søkerinfo: søkerinfoMedToDødfødteBarn,
+    person: søkerinfoMedToDødfødteBarn,
 };
 
 export const HarIngenSakerMedEnLevendeOgEnDødfødtTvilling = Template.bind({});
 HarIngenSakerMedEnLevendeOgEnDødfødtTvilling.args = {
     saker: [],
-    søkerinfo: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
+    person: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
 };
 
 export const HarIngenSakerMedEnLevendeOgEnDødTvilling = Template.bind({});
 HarIngenSakerMedEnLevendeOgEnDødTvilling.args = {
     saker: [],
-    søkerinfo: søkerinfoMedEnLevendeOgEnDødTvilling,
+    person: søkerinfoMedEnLevendeOgEnDødTvilling,
 };
 
 export const HarSakMedEnLevendeOgEnDødfødtTvilling = Template.bind({});
 HarSakMedEnLevendeOgEnDødfødtTvilling.args = {
     saker: [sakMedTvillinger],
-    søkerinfo: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
+    person: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
 };
 
 export const HarSakMedEtDødtBarn = Template.bind({});
 HarSakMedEtDødtBarn.args = {
     saker: [sakOpprettetFødsel],
-    søkerinfo: søkerinfoMedEtDødtBarn,
+    person: søkerinfoMedEtDødtBarn,
 };
 
 export const HarSakAdopsjonMedEtDødtBarn = Template.bind({});
 HarSakAdopsjonMedEtDødtBarn.args = {
     saker: [sakEttBarnAdopsjon],
-    søkerinfo: søkerinfoMedEtDødtBarn,
+    person: søkerinfoMedEtDødtBarn,
 };
 
 export const HarSakMedOppgittBarnTvillingerAlleLever = Template.bind({});
 HarSakMedOppgittBarnTvillingerAlleLever.args = {
     saker: [sakMedTvillingerMedFnrPåSaken],
-    søkerinfo: søkerinfoMedLevendeTvillinger,
+    person: søkerinfoMedLevendeTvillinger,
 };
 
 export const HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling = Template.bind({});
 HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling.args = {
     saker: [sakMedTvillingerMedEnDødfødt],
-    søkerinfo: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
+    person: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
 };
 
 export const HarSakMedTrillingerEnErDød = Template.bind({});
 HarSakMedTrillingerEnErDød.args = {
     saker: [sakMedTrillinger],
-    søkerinfo: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, dødfødtBarn]),
+    person: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, dødfødtBarn]),
 };

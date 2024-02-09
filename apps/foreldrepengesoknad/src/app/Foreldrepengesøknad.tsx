@@ -7,7 +7,6 @@ import Api from './api/api';
 import { sendErrorMessageToSentry } from './api/apiUtils';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 import SøknadRoutes from './routes/routes';
-import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import { shouldApplyStorage } from './utils/mellomlagringUtils';
 import { RequestStatus } from './types/RequestState';
 import { FpDataContext } from './context/FpDataContext';

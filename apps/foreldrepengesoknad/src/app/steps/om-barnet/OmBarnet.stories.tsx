@@ -1,18 +1,14 @@
-import { StoryFn } from '@storybook/react';
-import MockAdapter from 'axios-mock-adapter/types';
-import { action } from '@storybook/addon-actions';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedTreBarn.json';
-import _søkerinfoMedDødTrilling from 'storybook/storyData/sokerinfo/søkerinfoMedDødTrilling.json';
-import OmBarnet from './OmBarnet';
 import { Barn, BarnType } from '@navikt/fp-common';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import { SøkersituasjonFp } from '@navikt/fp-types';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
-import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import MockAdapter from 'axios-mock-adapter/types';
+import { MemoryRouter } from 'react-router-dom';
+import AxiosMock from 'storybook/utils/AxiosMock';
+import OmBarnet from './OmBarnet';
 
 const promiseAction =
     () =>
@@ -21,8 +17,57 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const søkerinfo = _søkerinfo as any;
-const søkerinfoMedDødTrilling = _søkerinfoMedDødTrilling as any;
+const søkerinfo = {
+    person: {
+        fnr: '19047815714',
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+        kjønn: 'K',
+        fødselsdato: '1978-04-19',
+        barn: [
+            {
+                fnr: '21091981146',
+                fødselsdato: '2021-03-15',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+            {
+                fnr: '31091981146',
+                fødselsdato: '2022-08-02',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
+                fornavn: 'SNILT',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+            {
+                fnr: '31091981147',
+                fødselsdato: '2022-08-02',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
+                fornavn: 'LYST',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+        ],
+    },
+    arbeidsforhold: [],
+} as Søkerinfo;
 
 export default {
     title: 'steps/OmBarnet',
@@ -30,7 +75,7 @@ export default {
 };
 
 interface Props {
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
     barn?: Barn;
     søknadGjelderEtNyttBarn?: boolean;
@@ -71,7 +116,7 @@ const Template: StoryFn<Props> = ({
                     }}
                 >
                     <OmBarnet
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                        søkerInfo={søkerinfo}
                         søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={action('button-click')}
@@ -95,7 +140,7 @@ FarFødsel.args = {
         rolle: 'far',
     },
     barn: undefined,
-    søkerinfo: { ...søkerinfo, kjønn: 'M' },
+    søkerinfo: { ...søkerinfo, person: { ...søkerinfo.person, kjønn: 'M' } },
 };
 
 export const MedmorFødsel = Template.bind({});
@@ -178,7 +223,74 @@ RegistrertBarnTrillingerDerEnErDød.args = {
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
-    søkerinfo: søkerinfoMedDødTrilling,
+    søkerinfo: {
+        person: {
+            fnr: '21430354032',
+            fornavn: 'Hes',
+            etternavn: 'Mandagsbil',
+            kjønn: 'K',
+            fødselsdato: '2003-03-21',
+            bankkonto: { kontonummer: '', banknavn: '' },
+            barn: [
+                {
+                    fnr: '21091981146',
+                    fødselsdato: '2023-03-01',
+                    annenForelder: {
+                        fnr: '12038517080',
+                        fødselsdato: '1985-03-12',
+                        fornavn: 'LEALAUS',
+                        etternavn: 'BÆREPOSE',
+                    },
+                    fornavn: 'KLØKTIG',
+                    etternavn: 'MIDTPUNKT',
+                    kjønn: 'M',
+                },
+                {
+                    fnr: '31091981147',
+                    fødselsdato: '2023-03-02',
+                    annenForelder: {
+                        fnr: '12038517080',
+                        fødselsdato: '1985-03-12',
+                        fornavn: 'LEALAUS',
+                        etternavn: 'BÆREPOSE',
+                    },
+                    fornavn: 'SNILT',
+                    etternavn: 'MIDTPUNKT',
+                    kjønn: 'M',
+                },
+                {
+                    fnr: '31091981148',
+                    fødselsdato: '2023-03-01',
+                    dødsdato: '2023-03-02',
+                    annenForelder: {
+                        fnr: '12038517080',
+                        fødselsdato: '1985-03-12',
+                        fornavn: 'LEALAUS',
+                        etternavn: 'BÆREPOSE',
+                    },
+                    fornavn: 'LYST',
+                    etternavn: 'MIDTPUNKT',
+                    kjønn: 'M',
+                },
+            ],
+        },
+        arbeidsforhold: [
+            {
+                arbeidsgiverId: '896929119',
+                arbeidsgiverIdType: 'orgnr',
+                arbeidsgiverNavn: 'SAUEFABRIKK',
+                stillingsprosent: 100.0,
+                fom: '2017-03-24',
+            },
+            {
+                arbeidsgiverId: '896929119',
+                arbeidsgiverIdType: 'orgnr',
+                arbeidsgiverNavn: 'SAUEFABRIKK',
+                stillingsprosent: 100.0,
+                fom: '2017-03-24',
+            },
+        ],
+    },
 };
 
 export const SøknadPåUregistrertBarnSomErFødt = Template.bind({});
@@ -194,5 +306,5 @@ SøknadPåUregistrertBarnSomErFødt.args = {
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
-    søkerinfo: { ...søkerinfo, registrerteBarn: [] },
+    søkerinfo: { ...søkerinfo, person: { ...søkerinfo.person, barn: [] } },
 };

@@ -4,21 +4,30 @@ import MockAdapter from 'axios-mock-adapter/types';
 import { BarnType, Dekningsgrad } from '@navikt/fp-common';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
-import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-aleneomsorg/søkerinfo.json';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import UttaksplanInfo from './UttaksplanInfo';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import SøknadRoutes from 'app/routes/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo } from '@navikt/fp-types';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = 'test/konto';
 
-const søkerinfo = _søkerinfo as any;
+const søkerinfo = {
+    person: {
+        fnr: '19047815714',
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+        kjønn: 'M',
+        fødselsdato: '1978-04-19',
+        barn: [],
+    },
+    arbeidsforhold: [],
+} as Søkerinfo;
 
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselAleneomsorg',
@@ -69,7 +78,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
                     }}
                 >
                     <UttaksplanInfo
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        person={søkerinfo.person}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -84,7 +93,6 @@ export const UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100 = Template
 UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad100.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
-    søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -92,6 +100,5 @@ export const UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad80 = Template.
 UttaksplanInfoFarMedmorFødselAleneomsorgDekningsgrad80.args = {
     stønadskonto100: stønadskontoDeltUttak100,
     stønadskonto80: stønadskontoDeltUttak80,
-    søkerinfo,
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };

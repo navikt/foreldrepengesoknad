@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
 import {
     andreAugust2022ReglerGjelder,
     Block,
@@ -12,23 +10,25 @@ import {
     isUfødtBarn,
     Step,
 } from '@navikt/fp-common';
+import { RegistrertBarn, Søkerinfo } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import useStepConfig from 'app/appData/useStepConfig';
 import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
 import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
 import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
 import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
 import Fødsel from './components/Fødsel';
 import Termin from './components/Termin';
+import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig, { OmBarnetQuestionPayload } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
-import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
-import { RegistrertBarn, Søkerinfo } from '@navikt/fp-types';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -55,7 +55,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, registrerteBarn } = søkerInfo;
+    const { arbeidsforhold, person } = søkerInfo;
 
     const [erForTidligTilÅSøkePåTermin, setErForTidligTilÅSøkePåTermin] = useState(false);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -70,7 +70,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? registrerteBarn.filter(
+            ? person.barn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -78,7 +78,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
+            ? person.barn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;
     const barnSøktOmFørMenIkkeRegistrert =
         !søknadGjelderNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);

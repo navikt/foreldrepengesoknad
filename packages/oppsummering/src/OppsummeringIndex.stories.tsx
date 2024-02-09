@@ -1,9 +1,10 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import OppsummeringIndex from './OppsummeringIndex';
-import BoIUtlandetOppsummeringspunkt from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
+import BoIUtlandetOppsummeringspunkt, { HendelseType } from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
 import { Utenlandsopphold, UtenlandsoppholdTidligere, UtenlandsoppholdSenere } from '@navikt/fp-types';
 import DegOppsummeringspunkt from './deg/DegOppsummeringspunkt';
+import { notEmpty } from '@navikt/fp-validation';
 
 const promiseAction =
     () =>
@@ -61,11 +62,12 @@ const Template: StoryFn<{
                     etternavn: 'Ibsen',
                     kjønn: 'K',
                     fødselsdato: '1988-01-01',
+                    barn: [],
                 }}
             />
             <BoIUtlandetOppsummeringspunkt
-                fødselsdato={fødselsdato}
-                termindato={termindato}
+                familiehendelseDato={notEmpty(fødselsdato || termindato)}
+                hendelseType={fødselsdato ? HendelseType.FØDSEL : HendelseType.TERMIN}
                 utenlandsopphold={utenlandsopphold}
                 senereUtenlandsopphold={senereUtenlandsopphold}
                 tidligereUtenlandsopphold={tidligereUtenlandsopphold}

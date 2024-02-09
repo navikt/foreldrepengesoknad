@@ -40,7 +40,7 @@ import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { ValgtBarn } from 'app/types/ValgtBarn';
-import { Person, RegistrertAnnenForelder, RegistrertBarn, Søkerinfo } from '@navikt/fp-types';
+import { Person, RegistrertAnnenForelder, RegistrertBarn } from '@navikt/fp-types';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -497,7 +497,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
     grunnlag: Saksgrunnlag,
-    søkerinfo: Søkerinfo,
+    barn: RegistrertBarn[],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
 ): AnnenForelder => {
@@ -515,7 +515,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
         erUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
     };
     const annenForelderFraSak = finnAnnenForelderForSaken(
-        søkerinfo.registrerteBarn,
+        barn,
         ISOStringToDate(grunnlag.fødselsdato),
         grunnlag,
         situasjon,
@@ -529,7 +529,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
 export const opprettSøknadFraValgteBarnMedSak = (
     valgteBarn: ValgtBarn,
     intl: IntlShape,
-    søkerinfo: Søkerinfo,
+    registrerteBarn: RegistrertBarn[],
 ): Partial<Søknad> | undefined => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined);
     const { grunnlag } = eksisterendeSak!;
@@ -539,7 +539,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
         intl,
         valgteBarn.sak?.annenPart,
         grunnlag,
-        søkerinfo,
+        registrerteBarn,
         situasjon,
         valgteBarn.fnr,
     );
@@ -560,7 +560,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
 };
 
 export const opprettSøknadFraEksisterendeSak = (
-    søkerinfo: Søkerinfo,
+    person: Person,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
@@ -577,7 +577,7 @@ export const opprettSøknadFraEksisterendeSak = (
     const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
 
-    const rolle = getSøkerrolleFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
+    const rolle = getSøkerrolleFromSaksgrunnlag(person, situasjon, grunnlag);
 
     if (!barn || !rolle) {
         return undefined;
@@ -587,7 +587,7 @@ export const opprettSøknadFraEksisterendeSak = (
         intl,
         annenPartFraSak,
         grunnlag,
-        søkerinfo,
+        person.barn,
         situasjon,
         valgteBarn?.fnr,
     );

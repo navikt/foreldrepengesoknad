@@ -187,7 +187,7 @@ export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolea
     return true;
 };
 
-export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
+export const dateIsBetween = (date: DateValue, fom: DateValue | string, tom: DateValue | string): boolean =>
     dayjs(date).isBetween(fom, tom, 'day', '[]');
 
 export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {

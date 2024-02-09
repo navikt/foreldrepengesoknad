@@ -25,5 +25,5 @@ export type Person = {
     kjønn: Kjønn;
     bankkonto?: Bankkonto;
     sivilstand?: Sivilstand;
-    barn?: RegistrertBarn[];
+    barn: RegistrertBarn[];
 } & PersonBase;

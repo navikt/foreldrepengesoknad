@@ -20,9 +20,7 @@ export default defineConfig({
             storybook: path.resolve(__dirname, './src/storybook'),
         },
     },
-    build: {
-        sourcemap: true,
-    },
+
     test: {
         globals: true,
         environment: 'jsdom',

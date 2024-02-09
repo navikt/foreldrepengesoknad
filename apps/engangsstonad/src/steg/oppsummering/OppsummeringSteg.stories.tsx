@@ -29,6 +29,7 @@ const person = {
         kontonummer: '49875234987',
         banknavn: 'Storebank',
     },
+    barn: [],
 } as Person;
 
 const barnet = {

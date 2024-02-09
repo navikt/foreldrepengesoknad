@@ -1,5 +1,6 @@
 import { Loader } from '@navikt/ds-react';
 import { Step, intlUtils, isAnnenForelderOppgitt, isFarEllerMedmor, isFødtBarn } from '@navikt/fp-common';
+import { Person } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
@@ -17,17 +18,16 @@ import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUt
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
-import { Søkerinfo } from '@navikt/fp-types';
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    person: Person;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
 const UttaksplanInfo: React.FunctionComponent<Props> = ({
-    søkerInfo,
+    person,
     erEndringssøknad,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
@@ -189,7 +189,7 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
                 søker={søker}
                 annenForelder={annenForelder}
                 erEndringssøknad={erEndringssøknad}
-                person={søkerInfo.person}
+                person={person}
                 goToNextDefaultStep={navigator.goToNextDefaultStep}
                 goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                 oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}

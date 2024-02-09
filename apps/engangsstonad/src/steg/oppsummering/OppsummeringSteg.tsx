@@ -1,4 +1,9 @@
-import { BoIUtlandetOppsummeringspunkt, DegOppsummeringspunkt, OppsummeringIndex } from '@navikt/fp-oppsummering';
+import {
+    BoIUtlandetOppsummeringspunkt,
+    DegOppsummeringspunkt,
+    HendelseType,
+    OppsummeringIndex,
+} from '@navikt/fp-oppsummering';
 import { Person } from '@navikt/fp-types';
 import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -29,6 +34,9 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad,
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
+    const fødselsdato = erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined;
+    const termindato = erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined;
+
     return (
         <ContentWrapper>
             <Heading size="large">
@@ -47,8 +55,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad,
                     <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                 </OppsummeringIndex.Punkt>
                 <BoIUtlandetOppsummeringspunkt
-                    fødselsdato={erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined}
-                    termindato={erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined}
+                    familiehendelseDato={notEmpty(fødselsdato || termindato)}
+                    hendelseType={fødselsdato ? HendelseType.FØDSEL : HendelseType.TERMIN}
                     utenlandsopphold={utenlandsopphold}
                     tidligereUtenlandsopphold={tidligereUtenlandsopphold}
                     senereUtenlandsopphold={senereUtenlandsopphold}

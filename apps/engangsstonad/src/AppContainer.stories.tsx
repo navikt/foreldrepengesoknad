@@ -80,6 +80,7 @@ SøkerErKvinne.args = {
             kontonummer: '49875234987',
             banknavn: 'Storebank',
         },
+        barn: [],
     },
 };
 
@@ -103,6 +104,7 @@ SøkerErKvinneMedMellomlagretData.args = {
             kontonummer: '49875234987',
             banknavn: 'Storebank',
         },
+        barn: [],
     },
 };
 
@@ -118,5 +120,6 @@ SøkerErMann.args = {
             kontonummer: '49875234987',
             banknavn: 'Storebank',
         },
+        barn: [],
     },
 };

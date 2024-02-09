@@ -4,19 +4,16 @@ import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
 
-import _søkerinfoMorSøker from 'storybook/storyData/sokerinfo/søkerinfoMorSøker.json';
-import _søkerinfoFarSøker from 'storybook/storyData/sokerinfo/søkerinfoFarSøker.json';
 import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
 import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
 
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import Søker from 'app/context/types/Søker';
 import dayjs from 'dayjs';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
 import { MemoryRouter } from 'react-router-dom';
 import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -24,8 +21,30 @@ import { initAmplitude } from '@navikt/fp-metrics';
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
-const søkerinfoMorSøker = _søkerinfoMorSøker as any;
-const søkerinfoFarSøker = _søkerinfoFarSøker as any;
+const søkerinfoFar = {
+    person: {
+        fnr: '1212121313',
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        kjønn: 'M',
+        fødselsdato: '1978-04-12',
+        barn: [
+            {
+                fnr: '19047815714',
+                fødselsdato: '2021-03-15',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'TALENTFULL',
+                    etternavn: 'MYGG',
+                },
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+        ],
+    },
+} as Søkerinfo;
 
 export default {
     title: 'steps/uttaksplan-info/MorFarAnnenForelderHarRettIEØS',
@@ -62,7 +81,7 @@ const Template: StoryFn<
                     }}
                 >
                     <UttaksplanInfo
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        person={args.søkerinfo.person}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -104,7 +123,31 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo: søkerinfoMorSøker,
+    søkerinfo: {
+        person: {
+            fnr: '19047815714',
+            fornavn: 'TALENTFULL',
+            etternavn: 'MYGG',
+            kjønn: 'K',
+            fødselsdato: '1978-04-19',
+            barn: [
+                {
+                    fnr: '21091981146',
+                    fødselsdato: '2021-03-15',
+                    annenForelder: {
+                        fnr: '12038517080',
+                        fødselsdato: '1985-03-12',
+                        fornavn: 'LEALAUS',
+                        etternavn: 'BÆREPOSE',
+                    },
+                    fornavn: 'KLØKTIG',
+                    etternavn: 'MIDTPUNKT',
+                    kjønn: 'M',
+                },
+            ],
+        },
+        arbeidsforhold: [],
+    },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -139,7 +182,7 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo: søkerinfoFarSøker,
+    søkerinfo: søkerinfoFar,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -174,7 +217,7 @@ UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo: søkerinfoFarSøker,
+    søkerinfo: søkerinfoFar,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -210,6 +253,6 @@ UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo: søkerinfoFarSøker,
+    søkerinfo: søkerinfoFar,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
