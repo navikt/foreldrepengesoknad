@@ -117,7 +117,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                 <SammenhengendeUttakInformasjon annenForeldrerHarRett={deltUttak} />
             )}
             <Block padBottom="xl">
-                <FordelingPåvirkninger deltUttak={deltUttak} />
+                <FordelingPåvirkninger deltUttak={deltUttak} erAdopsjon={erAdopsjon} />
             </Block>
         </>
     );

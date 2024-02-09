@@ -7,12 +7,14 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     deltUttak: boolean;
+    erAdopsjon: boolean;
 }
 
-const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak }) => {
+const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak, erAdopsjon }) => {
     const intl = useIntl();
     const bem = bemUtils('fordeling-påvirkninger');
     const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
+    const visInfoMorSykFørsteSeksUker = deltUttak && !erAdopsjon;
     const onToggleHandler = (open: boolean) => {
         if (open) {
             logAmplitudeEvent('applikasjon-hendelse', {
@@ -29,34 +31,34 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak }) =
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 {deltUttak && (
-                    <>
-                        <Block padBottom="l">
-                            <div className={bem.element('påvirkning')}>
-                                <div className={bem.element('ikon-frame')}>
-                                    <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
-                                </div>
-                                <VStack>
-                                    <BodyShort className={bem.element('undertittel')}>
-                                        <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.tittel" />
-                                    </BodyShort>
-                                    <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.info" />
-                                </VStack>
+                    <Block padBottom="l">
+                        <div className={bem.element('påvirkning')}>
+                            <div className={bem.element('ikon-frame')}>
+                                <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
                             </div>
-                        </Block>
-                        <Block padBottom="l">
-                            <div className={bem.element('påvirkning')}>
-                                <div className={bem.element('ikon-frame')}>
-                                    <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
-                                </div>
-                                <VStack>
-                                    <BodyShort className={bem.element('undertittel')}>
-                                        <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.tittel" />
-                                    </BodyShort>
-                                    <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.info" />
-                                </VStack>
+                            <VStack>
+                                <BodyShort className={bem.element('undertittel')}>
+                                    <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.tittel" />
+                                </BodyShort>
+                                <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.info" />
+                            </VStack>
+                        </div>
+                    </Block>
+                )}
+                {visInfoMorSykFørsteSeksUker && (
+                    <Block padBottom="l">
+                        <div className={bem.element('påvirkning')}>
+                            <div className={bem.element('ikon-frame')}>
+                                <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
                             </div>
-                        </Block>
-                    </>
+                            <VStack>
+                                <BodyShort className={bem.element('undertittel')}>
+                                    <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.tittel" />
+                                </BodyShort>
+                                <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.info" />
+                            </VStack>
+                        </div>
+                    </Block>
                 )}
                 <Block padBottom="l">
                     <div className={bem.element('påvirkning')}>
