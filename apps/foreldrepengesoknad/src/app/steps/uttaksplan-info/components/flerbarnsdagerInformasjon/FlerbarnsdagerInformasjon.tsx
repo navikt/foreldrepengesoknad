@@ -7,6 +7,8 @@ interface Props {
     flerbarnsDager: number;
     antallBarn: number;
     erAdopsjon: boolean;
+    morTekst: string;
+    farTekst: string;
 }
 
 const getBarnTekst = (antallBarn: number, erAdopsjon: boolean, intl: IntlShape) => {
@@ -18,7 +20,13 @@ const getBarnTekst = (antallBarn: number, erAdopsjon: boolean, intl: IntlShape) 
     return getTekstForAntallBarn(antallBarn, intl).toLowerCase();
 };
 
-const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({ flerbarnsDager, antallBarn, erAdopsjon }) => {
+const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
+    flerbarnsDager,
+    antallBarn,
+    erAdopsjon,
+    morTekst,
+    farTekst,
+}) => {
     const intl = useIntl();
     const varighetTekst = getVarighetString(flerbarnsDager, intl);
     const barnTekst = getBarnTekst(antallBarn, erAdopsjon, intl);
@@ -34,7 +42,7 @@ const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({ flerbarnsDa
                         }}
                     />
                 </Block>
-                <FormattedMessage id="fordeling.flerbarnsuker.info.del2" />
+                <FormattedMessage id="fordeling.flerbarnsuker.info.del2" values={{ morTekst, farTekst }} />
             </Alert>
         </Block>
     );

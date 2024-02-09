@@ -7,9 +7,11 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     deltUttak: boolean;
+    morTekst: string;
+    farTekst: string;
 }
 
-const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak }) => {
+const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak, morTekst, farTekst }) => {
     const intl = useIntl();
     const bem = bemUtils('fordeling-påvirkninger');
     const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
@@ -50,9 +52,15 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak }) =
                                 </div>
                                 <VStack>
                                     <BodyShort className={bem.element('undertittel')}>
-                                        <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.tittel" />
+                                        <FormattedMessage
+                                            id="fordeling.påvirkninger.morSykFørste6Uker.tittel"
+                                            values={{ morTekst }}
+                                        />
                                     </BodyShort>
-                                    <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.info" />
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.morSykFørste6Uker.info"
+                                        values={{ morTekst, farTekst }}
+                                    />
                                 </VStack>
                             </div>
                         </Block>

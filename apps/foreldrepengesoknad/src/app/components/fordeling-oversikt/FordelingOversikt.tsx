@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import OversiktPerDel from './oversikt-per-del/OversiktPerDel';
 import {
     Block,
@@ -21,6 +21,7 @@ import FordelingPåvirkninger from './fordeling-påvirkninger/FordelingPåvirkni
 import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
 
 export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
     return (
@@ -55,6 +56,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     deltUttak,
     fordelingScenario,
 }) => {
+    const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -64,6 +66,8 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
+    const farTekst = getFarTekst(erFarEllerMedmor, navnFarMedmor, intl);
     const { dekningsgrad } = periodeMedForeldrepenger;
     const annenForelderHarKunRettIEØS = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerIEØS
@@ -111,13 +115,15 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                     flerbarnsDager={antallFlerbarnsdager}
                     antallBarn={antallBarn}
                     erAdopsjon={erAdopsjon}
+                    morTekst={morTekst}
+                    farTekst={farTekst}
                 />
             )}
             {!førsteOktober2021ReglerGjelder(familiehendelsesdato) && (
                 <SammenhengendeUttakInformasjon annenForeldrerHarRett={deltUttak} />
             )}
             <Block padBottom="xl">
-                <FordelingPåvirkninger deltUttak={deltUttak} />
+                <FordelingPåvirkninger deltUttak={deltUttak} morTekst={morTekst} farTekst={farTekst} />
             </Block>
         </>
     );
