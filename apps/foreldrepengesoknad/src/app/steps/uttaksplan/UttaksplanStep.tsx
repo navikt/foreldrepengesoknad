@@ -66,18 +66,21 @@ import {
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
+import { Arbeidsforhold, Person } from '@navikt/fp-types';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    person: Person;
+    arbeidsforhold: Arbeidsforhold[];
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
 const UttaksplanStep: React.FunctionComponent<Props> = ({
-    søkerInfo,
+    person,
+    arbeidsforhold,
     erEndringssøknad,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
@@ -115,7 +118,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         uttaksplanMetadata.perioderSomSkalSendesInn || [],
     );
 
-    const { person, arbeidsforhold } = søkerInfo;
     const { erAleneOmOmsorg } = søker;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
@@ -589,7 +591,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                 erIUttaksplanenSteg={true}
                                 tilgjengeligeStønadskontoer={valgteStønadskontoer}
                                 minsterettUkerToTette={minsterettUkerToTette}
-                                person={søkerInfo.person}
+                                person={person}
                             />
                         </Block>
                         <Uttaksplan

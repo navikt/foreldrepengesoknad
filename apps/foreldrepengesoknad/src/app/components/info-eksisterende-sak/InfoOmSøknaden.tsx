@@ -39,7 +39,7 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 
 import './infoOmSøknaden.less';
-import Person from '@navikt/fp-common/src/common/types/Person';
+import { Person } from '@navikt/fp-types';
 
 const getHvem = (
     intl: IntlShape,

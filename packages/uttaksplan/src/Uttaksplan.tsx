@@ -1,7 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import {
     AnnenForelder,
-    Arbeidsforhold,
     Attachment,
     Barn,
     BarnFraNesteSak,
@@ -38,6 +37,7 @@ import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttak
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;

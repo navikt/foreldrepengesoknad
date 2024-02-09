@@ -6,9 +6,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import SøknadRoutes from 'app/routes/routes';
-import MockAdapter from 'axios-mock-adapter/types';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
 import Inntektsinformasjon from './Inntektsinformasjon';
 
 const promiseAction =
@@ -29,80 +27,57 @@ export default {
 };
 
 interface Props {
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold?: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
     utenlandsopphold: Opphold;
 }
 
 const Template: StoryFn<Props> = ({
-    arbeidsforhold,
+    arbeidsforhold = [],
     gåTilNesteSide,
     mellomlagreSøknadOgNaviger = promiseAction(),
     utenlandsopphold = defaultUtenlandsopphold,
 }) => {
     initAmplitude();
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
-            200,
-            { data: {} },
-            {
-                location: '',
-            },
-        );
-        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
-    };
 
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.INNTEKTSINFORMASJON]}>
-            <AxiosMock mock={restMock}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: {
-                            situasjon: 'fødsel',
-                            rolle: 'mor',
-                        },
-                        [ContextDataType.OM_BARNET]: {
-                            type: BarnType.FØDT,
-                            fødselsdatoer: [new Date()],
-                            antallBarn: 1,
-                        },
-                        [ContextDataType.SØKER]: {
-                            erAleneOmOmsorg: false,
-                            // @ts-ignore FIX
-                            harJobbetSomFrilansSiste10Mnd: undefined,
-                            // @ts-ignore FIX
-                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
-                            // @ts-ignore FIX
-                            harHattAnnenInntektSiste10Mnd: undefined,
-                        },
-                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    }}
-                >
-                    <Inntektsinformasjon
-                        arbeidsforhold={arbeidsforhold}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={action('button-click')}
-                    />
-                </FpDataContext>
-            </AxiosMock>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: {
+                        situasjon: 'fødsel',
+                        rolle: 'mor',
+                    },
+                    [ContextDataType.OM_BARNET]: {
+                        type: BarnType.FØDT,
+                        fødselsdatoer: [new Date()],
+                        antallBarn: 1,
+                    },
+                    [ContextDataType.SØKER]: {
+                        erAleneOmOmsorg: false,
+                        // @ts-ignore FIX
+                        harJobbetSomFrilansSiste10Mnd: undefined,
+                        // @ts-ignore FIX
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
+                        // @ts-ignore FIX
+                        harHattAnnenInntektSiste10Mnd: undefined,
+                    },
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                }}
+            >
+                <Inntektsinformasjon
+                    arbeidsforhold={arbeidsforhold}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={action('button-click')}
+                />
+            </FpDataContext>
         </MemoryRouter>
     );
 };
 
 export const HarIkkeArbeidsforhold = Template.bind({});
-HarIkkeArbeidsforhold.args = {
-    arbeidsforhold: [
-        {
-            arbeidsgiverId: '896929119',
-            arbeidsgiverIdType: 'orgnr',
-            arbeidsgiverNavn: 'SAUEFABRIKK',
-            stillingsprosent: 100,
-            fom: '2018-03-01',
-        },
-    ],
-};
 
 export const HarArbeidsforhold = Template.bind({});
 HarArbeidsforhold.args = {
