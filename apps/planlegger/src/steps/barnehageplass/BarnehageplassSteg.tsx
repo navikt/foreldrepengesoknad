@@ -36,7 +36,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
             if (dayjs(dato).month() === 11)
                 return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM YYYY');
         }
-        return 'undefined';
+        return undefined;
     };
 
     return (

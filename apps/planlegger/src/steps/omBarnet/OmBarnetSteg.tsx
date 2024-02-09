@@ -19,15 +19,28 @@ import { PlanleggerRoutes } from 'appData/routes';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
 import { isAlene } from 'types/HvemPlanlegger';
 import { OmBarnet } from 'types/Barnet';
+import Foreldrepengeinfo from './Foreldrepengeinfo';
+import { isSameOrAfterToday } from '@navikt/fp-utils';
 
 const OmBarnetSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
-    const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
-    const formMethods = useForm({ defaultValues: omBarnet });
+    const formMethods = useForm<OmBarnet>();
     const intl = useIntl();
 
     const erFødsel = formMethods.watch('erFødsel');
     const erFødt = formMethods.watch('erBarnetFødt');
+    const termindato = formMethods.watch('termindato');
+
+    const isLessThanThreeMonthsLeft = () => {
+        const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
+        if (termindato === undefined) {
+            return false;
+        }
+        if (isSameOrAfterToday(termindato) && dayjs(termindato).isBefore(DATO_3_MND_FRAM)) {
+            return true;
+        }
+        return false;
+    };
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const lagreOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
@@ -65,7 +78,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     ),
                                 ]}
                             >
-                                <Radio value={true}>
+                                <Radio value={true} className="margin-bottom-2 panel green">
                                     <FormattedMessage id="barnet.fødsel" />
                                 </Radio>
                                 <Radio value={false} disabled>
@@ -87,10 +100,10 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     ),
                                 ]}
                             >
-                                <Radio value={true}>
+                                <Radio value={true} className="margin-bottom-2 panel green">
                                     <FormattedMessage id="ja" />
                                 </Radio>
-                                <Radio value={false}>
+                                <Radio value={false} className="margin-bottom-2 panel green">
                                     <FormattedMessage id="nei" />
                                 </Radio>
                             </RadioGroup>
@@ -98,60 +111,71 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     )}
                     {erFødt && (
                         <VStack gap="1">
-                            <Heading size="small">
-                                <FormattedMessage id="barnet.fødselsdato" />
-                            </Heading>
-                            <Datepicker
-                                name="fødselsdato"
-                                minDate={dayjs().subtract(6, 'month').toDate()}
-                                maxDate={dayjs().toDate()}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.duMåOppgi' }),
-                                    ),
-                                    isValidDate(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.gyldig' }),
-                                    ),
-                                    isBeforeTodayOrToday(
-                                        intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.fødselsdato.måVæreIdagEllerTidligere',
-                                        }),
-                                    ),
-                                    isAfterOrSameAsSixMonthsAgo(
-                                        intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.fødselsdato.ikkeMerEnn6MånederTilbake',
-                                        }),
-                                    ),
-                                ]}
-                            />
+                            <div className="margin-bottom-2 panel green">
+                                <Heading size="small">
+                                    <FormattedMessage id="barnet.fødselsdato" />
+                                </Heading>
+                                <Datepicker
+                                    name="fødselsdato"
+                                    minDate={dayjs().subtract(6, 'month').toDate()}
+                                    maxDate={dayjs().toDate()}
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.duMåOppgi' }),
+                                        ),
+                                        isValidDate(
+                                            intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.gyldig' }),
+                                        ),
+                                        isBeforeTodayOrToday(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.fødselPanel.fødselsdato.måVæreIdagEllerTidligere',
+                                            }),
+                                        ),
+                                        isAfterOrSameAsSixMonthsAgo(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.fødselPanel.fødselsdato.ikkeMerEnn6MånederTilbake',
+                                            }),
+                                        ),
+                                    ]}
+                                />
+                            </div>
                         </VStack>
                     )}
                     {erFødt === false && (
-                        <VStack gap="1">
-                            <Heading size="small">
-                                <FormattedMessage id="barnet.termin" />
-                            </Heading>
-                            <Datepicker
-                                name="termindato"
-                                minDate={dayjs().subtract(3, 'week').toDate()}
-                                maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.duMåOppgi' }),
-                                    ),
-                                    isValidDate(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' }),
-                                    ),
-                                    isLessThanThreeWeeksAgo(
-                                        intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.termindato.termindatoKanIkkeVære3UkerFraIdag',
-                                        }),
-                                    ),
-                                    erI22SvangerskapsukeEllerSenere(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.duMåVæreIUke22' }),
-                                    ),
-                                ]}
-                            />
+                        <VStack gap="10">
+                            <div className="margin-bottom-2 panel green">
+                                <Heading size="small">
+                                    <FormattedMessage id="barnet.termin" />
+                                </Heading>
+                                <Datepicker
+                                    name="termindato"
+                                    minDate={dayjs().subtract(3, 'week').toDate()}
+                                    maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.duMåOppgi' }),
+                                        ),
+                                        isValidDate(
+                                            intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' }),
+                                        ),
+                                        isLessThanThreeWeeksAgo(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.fødselPanel.termindato.termindatoKanIkkeVære3UkerFraIdag',
+                                            }),
+                                        ),
+                                        erI22SvangerskapsukeEllerSenere(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.fødselPanel.termindato.duMåVæreIUke22',
+                                            }),
+                                        ),
+                                    ]}
+                                />
+                            </div>
+                            {isLessThanThreeMonthsLeft() && (
+                                <VStack gap="10">
+                                    <Foreldrepengeinfo />
+                                </VStack>
+                            )}
                         </VStack>
                     )}
                     <VStack gap="20">
