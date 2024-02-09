@@ -123,7 +123,12 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                 <SammenhengendeUttakInformasjon annenForeldrerHarRett={deltUttak} />
             )}
             <Block padBottom="xl">
-                <FordelingPåvirkninger deltUttak={deltUttak} morTekst={morTekst} farTekst={farTekst} />
+                <FordelingPåvirkninger
+                    deltUttak={deltUttak}
+                    erAdopsjon={erAdopsjon}
+                    morTekst={morTekst}
+                    farTekst={farTekst}
+                />
             </Block>
         </>
     );
