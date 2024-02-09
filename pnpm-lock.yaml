@@ -1936,6 +1936,9 @@ importers:
       '@navikt/fp-metrics':
         specifier: workspace:*
         version: link:../metrics
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
       '@navikt/sif-common-formik-ds':
         specifier: ^0.25.0
         version: 0.25.0(@navikt/ds-css@5.15.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.15.1)(@types/react@18.2.48)(formik@2.4.5)(react-intl@6.6.1)(react@18.2.0)
