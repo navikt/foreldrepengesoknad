@@ -194,3 +194,36 @@ export const validateEgenNæringLand = (intl: IntlShape) => (value: string) => {
     }
     return undefined;
 };
+
+export const validateRegistrertINorge = (intl: IntlShape) => (registrertINorge: string | number) => {
+    if (registrertINorge === undefined) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringRegistrertINorge.påkrevd');
+    }
+
+    return null;
+};
+
+export const validateNæringPågående = (intl: IntlShape) => (næringPågående: string | number) => {
+    if (næringPågående === undefined) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringPågående.påkrevd');
+    }
+
+    return null;
+};
+
+export const validateBlittYrkesaktivDe3SisteÅrene =
+    (intl: IntlShape) => (blittYrkesaktivDe3SisteÅrene: string | number) => {
+        if (blittYrkesaktivDe3SisteÅrene === undefined) {
+            return intlUtils(intl, 'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd');
+        }
+
+        return null;
+    };
+
+export const validateNæringstype = (intl: IntlShape) => (næringstype: string | number) => {
+    if (!hasValue(næringstype)) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringType.påkrevd');
+    }
+
+    return null;
+};

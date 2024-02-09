@@ -1,43 +1,35 @@
-import { EgenNæringFormComponents, EgenNæringFormData, EgenNæringFormField } from './egenNæringFormConfig';
-import {
-    cleanupEgenNæringFormData,
-    getInitialEgenNæringFormValues,
-    mapEgenNæringFormValuesToState,
-} from './egenNæringFormUtils';
+import { EgenNæringFormData, EgenNæringFormField } from './egenNæringFormConfig';
+import { getInitialEgenNæringFormValues, mapEgenNæringFormValuesToState } from './egenNæringFormUtils';
 import { Næringstype } from 'app/types/EgenNæring';
-import { egenNæringFormQuestionsConfig } from './egenNæringFormQuestions';
-import {
-    Block,
-    Step,
-    StepButtonWrapper,
-    date20YearsAgo,
-    date5MonthsAgo,
-    intlUtils,
-    validateYesOrNoIsAnswered,
-} from '@navikt/fp-common';
-import { getMinInputTilOgMedValue, hasValue } from 'app/utils/validationUtils';
+import { Step, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
+import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
 
 import dayjs from 'dayjs';
-import { Alert, BodyShort, Button, ReadMore } from '@navikt/ds-react';
+import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 import {
+    validateBlittYrkesaktivDe3SisteÅrene,
     validateEgenNæringFom,
     validateEgenNæringNavn,
     validateEgenNæringResultat,
     validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
+    validateNæringPågående,
+    validateNæringstype,
+    validateRegistrertINorge,
 } from './egenNæringValidation';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
-import { useState } from 'react';
 import { Søkerinfo } from 'app/types/Søkerinfo';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import BackButton from '../BackButton';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
+import { useForm } from 'react-hook-form';
+import { Datepicker, Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -49,7 +41,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
     const intl = useIntl();
     const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
@@ -62,8 +54,6 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: Partial<EgenNæringFormData>) => {
-        setIsSubmitting(true);
-
         const næringsdata = mapEgenNæringFormValuesToState(values as EgenNæringFormData);
 
         if (
@@ -93,221 +83,148 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
         mellomlagreSøknadOgNaviger();
     };
 
-    const navnPåNæringSpm = intlUtils(intl, 'egenNæring.navnPåNæring');
-    return (
-        <EgenNæringFormComponents.FormikWrapper
-            initialValues={getInitialEgenNæringFormValues(egenNæring)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues }) => {
-                const visibility = egenNæringFormQuestionsConfig.getVisbility(formValues as EgenNæringFormData);
-                const navnPåNæringLabel =
-                    formValues.egenNæringType === Næringstype.FISKER
-                        ? `${navnPåNæringSpm} ${intlUtils(intl, 'valgfritt')}`
-                        : navnPåNæringSpm;
-                return (
-                    <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-                        activeStepId="næring"
-                        pageTitle={intlUtils(intl, 'steps.label.næring')}
-                        onCancel={avbrytSøknad}
-                        steps={stepConfig}
-                        onContinueLater={onFortsettSøknadSenere}
-                    >
-                        <EgenNæringFormComponents.Form
-                            includeButtons={false}
-                            includeValidationSummary={true}
-                            cleanup={(values) => cleanupEgenNæringFormData(values, visibility)}
-                        >
-                            <Block padBottom="xl">
-                                <BodyShort>
-                                    <FormattedMessage id="harValgfrieFelt" />
-                                </BodyShort>
-                            </Block>
-                            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringType)}>
-                                <EgenNæringFormComponents.RadioGroup
-                                    name={EgenNæringFormField.egenNæringType}
-                                    legend={intlUtils(intl, 'egenNæring.næringstype')}
-                                    radios={[
-                                        {
-                                            label: intlUtils(intl, 'egenNæring.næringstype.dagmamma'),
-                                            value: Næringstype.DAGMAMMA,
-                                        },
-                                        {
-                                            label: intlUtils(intl, 'egenNæring.næringstype.fiske'),
-                                            value: Næringstype.FISKER,
-                                        },
-                                        {
-                                            label: intlUtils(intl, 'egenNæring.næringstype.jordbrukSkogbruk'),
-                                            value: Næringstype.JORDBRUK,
-                                        },
-                                        {
-                                            label: intlUtils(intl, 'egenNæring.næringstype.annen'),
-                                            value: Næringstype.ANNET,
-                                        },
-                                    ]}
-                                    validate={(value) => {
-                                        if (!hasValue(value)) {
-                                            return intlUtils(intl, 'valideringsfeil.egenNæringType.påkrevd');
-                                        }
-                                        return undefined;
-                                    }}
-                                />
-                            </Block>
-                            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringNavn)}>
-                                <EgenNæringFormComponents.TextField
-                                    name={EgenNæringFormField.egenNæringNavn}
-                                    label={navnPåNæringLabel}
-                                    style={{ width: 'var(--app-text-input-width)' }}
-                                    maxLength={100}
-                                    validate={validateEgenNæringNavn(
-                                        intl,
-                                        navnPåNæringLabel,
-                                        formValues.egenNæringType === Næringstype.FISKER,
-                                    )}
-                                />
-                            </Block>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(EgenNæringFormField.egenNæringRegistrertINorge)}
-                            >
-                                <EgenNæringFormComponents.YesOrNoQuestion
-                                    name={EgenNæringFormField.egenNæringRegistrertINorge}
-                                    legend={intlUtils(intl, 'egenNæring.erNæringenRegistrertINorge', {
-                                        navnPåNæringen: formValues.egenNæringNavn,
-                                    })}
-                                    validate={(value) =>
-                                        validateYesOrNoIsAnswered(
-                                            value,
-                                            intlUtils(intl, 'valideringsfeil.egenNæringRegistrertINorge.påkrevd'),
-                                        )
-                                    }
-                                />
-                            </Block>
-                            <OrgnummerEllerLand
-                                visibility={visibility}
-                                orgNummerErValgfritt={formValues.egenNæringType === Næringstype.FISKER}
-                            />
-                            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringFom)}>
-                                <EgenNæringFormComponents.DatePicker
-                                    name={EgenNæringFormField.egenNæringFom}
-                                    label={intlUtils(intl, 'egenNæring.næring.fom', {
-                                        navnPåNæringen: formValues.egenNæringNavn,
-                                    })}
-                                    placeholder={'dd.mm.åååå'}
-                                    fullscreenOverlay={true}
-                                    showYearSelector={true}
-                                    validate={validateEgenNæringFom(intl, formValues.egenNæringTom!)}
-                                    maxDate={dayjs().toDate()}
-                                    minDate={date20YearsAgo}
-                                />
-                            </Block>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(EgenNæringFormField.egenNæringPågående)}
-                            >
-                                <EgenNæringFormComponents.YesOrNoQuestion
-                                    name={EgenNæringFormField.egenNæringPågående}
-                                    legend={intlUtils(intl, 'egenNæring.næring.pågående', {
-                                        navnPåNæringen: formValues.egenNæringNavn,
-                                    })}
-                                    validate={(value) =>
-                                        validateYesOrNoIsAnswered(
-                                            value,
-                                            intlUtils(intl, 'valideringsfeil.egenNæringPågående.påkrevd'),
-                                        )
-                                    }
-                                />
-                            </Block>
-                            <Block padBottom="xxl" visible={visibility.isVisible(EgenNæringFormField.egenNæringTom)}>
-                                <EgenNæringFormComponents.DatePicker
-                                    name={EgenNæringFormField.egenNæringTom}
-                                    label={intlUtils(intl, 'egenNæring.næring.tom', {
-                                        navnPåNæringen: formValues.egenNæringNavn,
-                                    })}
-                                    description={intlUtils(intl, 'egenNæring.næring.tom.description')}
-                                    placeholder={'dd.mm.åååå'}
-                                    fullscreenOverlay={true}
-                                    showYearSelector={true}
-                                    validate={validateEgenNæringTom(intl, formValues.egenNæringFom!)}
-                                    maxDate={dayjs().add(9, 'month').toDate()}
-                                    minDate={getMinInputTilOgMedValue(formValues.egenNæringFom, date5MonthsAgo)}
-                                />
-                            </Block>
-                            <VarigEndringSpørsmål
-                                visibility={visibility}
-                                formValues={formValues}
-                            ></VarigEndringSpørsmål>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(EgenNæringFormField.egenNæringResultat)}
-                            >
-                                <EgenNæringFormComponents.TextField
-                                    style={{ width: 'var(--app-text-input-width)' }}
-                                    name={EgenNæringFormField.egenNæringResultat}
-                                    label={intlUtils(intl, 'egenNæring.næringsinntekt')}
-                                    description={intlUtils(intl, 'egenNæring.næringsinntekt.description')}
-                                    validate={validateEgenNæringResultat(intl)}
-                                />
+    const formMethods = useForm<EgenNæringFormData>({
+        defaultValues: getInitialEgenNæringFormValues(egenNæring),
+    });
 
-                                <ReadMore header={intlUtils(intl, 'egenNæring.næringsinntekt.info.apneLabel')}>
-                                    <BodyShort>
-                                        <FormattedMessage id="egenNæring.næringsinntekt.info" />
-                                    </BodyShort>
-                                </ReadMore>
-                            </Block>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(
-                                    EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene,
-                                )}
-                            >
-                                <EgenNæringFormComponents.YesOrNoQuestion
-                                    name={EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene}
-                                    legend={intlUtils(intl, 'egenNæring.blittYrkesaktivSiste3År')}
-                                    validate={(value) =>
-                                        validateYesOrNoIsAnswered(
-                                            value,
-                                            intlUtils(
-                                                intl,
-                                                'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd',
-                                            ),
-                                        )
-                                    }
-                                />
-                            </Block>
-                            <Block
-                                padBottom="xxl"
-                                visible={visibility.isVisible(EgenNæringFormField.egenNæringYrkesAktivDato)}
-                            >
-                                <EgenNæringFormComponents.DatePicker
-                                    name={EgenNæringFormField.egenNæringYrkesAktivDato}
-                                    label={intlUtils(intl, 'egenNæring.yrkesaktivDato')}
-                                    placeholder={'dd.mm.åååå'}
-                                    fullscreenOverlay={true}
-                                    showYearSelector={true}
-                                    validate={validateEgenNæringYrkesAktivDatoDato(intl)}
-                                    maxDate={dayjs().toDate()}
-                                />
-                            </Block>
-                            <Block padBottom="xxl">
-                                <Alert variant="info">{intlUtils(intl, 'egenNæring.veileder')}</Alert>
-                            </Block>
-                            <Block padBottom="l">
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getBackLinkForNæringSteg(inntektsinformasjon)}
-                                    />
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        {intlUtils(intl, 'søknad.gåVidere')}
-                                    </Button>
-                                </StepButtonWrapper>
-                            </Block>
-                        </EgenNæringFormComponents.Form>
-                    </Step>
-                );
-            }}
-        />
+    const navnPåNæringSpm = intlUtils(intl, 'egenNæring.navnPåNæring');
+
+    const næringsType = formMethods.watch(EgenNæringFormField.egenNæringType);
+    const navnPåNæring = formMethods.watch(EgenNæringFormField.egenNæringNavn);
+    const næringFom = formMethods.watch(EgenNæringFormField.egenNæringFom);
+    const næringTom = formMethods.watch(EgenNæringFormField.egenNæringTom);
+
+    const navnPåNæringLabel =
+        næringsType === Næringstype.FISKER ? `${navnPåNæringSpm} ${intlUtils(intl, 'valgfritt')}` : navnPåNæringSpm;
+
+    return (
+        <Step
+            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+            activeStepId="næring"
+            pageTitle={intlUtils(intl, 'steps.label.næring')}
+            onCancel={avbrytSøknad}
+            steps={stepConfig}
+            onContinueLater={onFortsettSøknadSenere}
+        >
+            <Form formMethods={formMethods} onSubmit={onSubmit}>
+                <VStack gap="10">
+                    <BodyShort>
+                        <FormattedMessage id="harValgfrieFelt" />
+                    </BodyShort>
+                    <RadioGroup
+                        name={EgenNæringFormField.egenNæringType}
+                        label={intlUtils(intl, 'egenNæring.næringstype')}
+                        validate={[validateNæringstype(intl)]}
+                    >
+                        <Radio value={Næringstype.DAGMAMMA}>
+                            <FormattedMessage id="egenNæring.næringstype.dagmamma" />
+                        </Radio>
+                        <Radio value={Næringstype.FISKER}>
+                            <FormattedMessage id="egenNæring.næringstype.fiske" />
+                        </Radio>
+                        <Radio value={Næringstype.JORDBRUK}>
+                            <FormattedMessage id="egenNæring.næringstype.jordbrukSkogbruk" />
+                        </Radio>
+                        <Radio value={Næringstype.ANNET}>
+                            <FormattedMessage id="egenNæring.næringstype.annen" />
+                        </Radio>
+                    </RadioGroup>
+                    <TextField
+                        name={EgenNæringFormField.egenNæringNavn}
+                        label={navnPåNæringLabel}
+                        maxLength={100}
+                        validate={[validateEgenNæringNavn(intl, navnPåNæringLabel, næringsType === Næringstype.FISKER)]}
+                    />
+                    <RadioGroup
+                        name={EgenNæringFormField.egenNæringRegistrertINorge}
+                        label={intlUtils(intl, 'egenNæring.erNæringenRegistrertINorge', {
+                            navnPåNæringen: navnPåNæring,
+                        })}
+                        validate={[validateRegistrertINorge(intl)]}
+                    >
+                        <Radio value={true}>
+                            <FormattedMessage id="ja" />
+                        </Radio>
+                        <Radio value={false}>
+                            <FormattedMessage id="nei" />
+                        </Radio>
+                    </RadioGroup>
+                    <OrgnummerEllerLand orgNummerErValgfritt={næringsType === Næringstype.FISKER} />
+                    <Datepicker
+                        name={EgenNæringFormField.egenNæringFom}
+                        label={intlUtils(intl, 'egenNæring.næring.fom', {
+                            navnPåNæringen: navnPåNæring,
+                        })}
+                        validate={[validateEgenNæringFom(intl, næringTom)]}
+                        maxDate={dayjs().toDate()}
+                        minDate={date20YearsAgo}
+                    />
+                    <RadioGroup
+                        name={EgenNæringFormField.egenNæringPågående}
+                        label={intlUtils(intl, 'egenNæring.næring.pågående', {
+                            navnPåNæringen: navnPåNæring,
+                        })}
+                        validate={[validateNæringPågående(intl)]}
+                    >
+                        <Radio value={true}>
+                            <FormattedMessage id="ja" />
+                        </Radio>
+                        <Radio value={false}>
+                            <FormattedMessage id="nei" />
+                        </Radio>
+                    </RadioGroup>
+                    <Datepicker
+                        name={EgenNæringFormField.egenNæringTom}
+                        label={intlUtils(intl, 'egenNæring.næring.tom', {
+                            navnPåNæringen: navnPåNæring,
+                        })}
+                        description={intlUtils(intl, 'egenNæring.næring.tom.description')}
+                        validate={[validateEgenNæringTom(intl, næringFom)]}
+                        maxDate={dayjs().add(9, 'month').toDate()}
+                        minDate={getMinInputTilOgMedValue(næringFom, date5MonthsAgo)}
+                    />
+                    <VarigEndringSpørsmål egenNæringFom={næringFom} egenNæringTom={næringTom} />
+                    <TextField
+                        name={EgenNæringFormField.egenNæringResultat}
+                        label={intlUtils(intl, 'egenNæring.næringsinntekt')}
+                        description={intlUtils(intl, 'egenNæring.næringsinntekt.description')}
+                        validate={[validateEgenNæringResultat(intl)]}
+                    />
+
+                    <ReadMore header={intlUtils(intl, 'egenNæring.næringsinntekt.info.apneLabel')}>
+                        <BodyShort>
+                            <FormattedMessage id="egenNæring.næringsinntekt.info" />
+                        </BodyShort>
+                    </ReadMore>
+                    <RadioGroup
+                        name={EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene}
+                        label={intlUtils(intl, 'egenNæring.blittYrkesaktivSiste3År')}
+                        validate={[validateBlittYrkesaktivDe3SisteÅrene(intl)]}
+                    >
+                        <Radio value={true}>
+                            <FormattedMessage id="ja" />
+                        </Radio>
+                        <Radio value={false}>
+                            <FormattedMessage id="nei" />
+                        </Radio>
+                    </RadioGroup>
+                    <Datepicker
+                        name={EgenNæringFormField.egenNæringYrkesAktivDato}
+                        label={intlUtils(intl, 'egenNæring.yrkesaktivDato')}
+                        validate={[validateEgenNæringYrkesAktivDatoDato(intl)]}
+                        maxDate={dayjs().toDate()}
+                    />
+                    <Alert variant="info">{intlUtils(intl, 'egenNæring.veileder')}</Alert>
+                    <StepButtonsHookForm<EgenNæringFormData>
+                        goToPreviousStep={() => {
+                            const backRoute = getBackLinkForNæringSteg(inntektsinformasjon);
+                            oppdaterAppRoute(backRoute);
+                            navigate(backRoute);
+                        }}
+                    />
+                </VStack>
+            </Form>
+        </Step>
     );
 };
 
