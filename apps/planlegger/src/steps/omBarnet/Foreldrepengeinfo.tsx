@@ -8,7 +8,6 @@ import { isAlene } from 'types/HvemPlanlegger';
 
 const Foreldrepengeinfo: FunctionComponent = () => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const navn = finnNavn(hvemPlanlegger);
 
     return (
         <VStack gap="10">
@@ -32,7 +31,10 @@ const Foreldrepengeinfo: FunctionComponent = () => {
                             </Heading>
 
                             <BodyLong>
-                                <FormattedMessage id="barnet.foreldrepengerInfoTekstMor" values={{ navn: navn[0] }} />
+                                <FormattedMessage
+                                    id="barnet.foreldrepengerInfoTekstMor"
+                                    values={{ navn: finnNavn(hvemPlanlegger)[0] }}
+                                />
                             </BodyLong>
                             <BodyLong>
                                 <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />
