@@ -173,9 +173,9 @@ const Oppsummering: FunctionComponent<Props> = ({
                 />
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonText={intl.formatMessage({ id: 'oppsummering.sendInnSøknad' })}
                     nextButtonOnClick={sendInn}
                     isDisabledAndLoading={isSubmitting}
+                    isSendButton
                 />
             </VStack>
         </Step>

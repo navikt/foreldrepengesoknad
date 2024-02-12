@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -49,6 +53,9 @@ importers:
       '@navikt/fp-metrics':
         specifier: workspace:*
         version: link:../../packages/metrics
+      '@navikt/fp-oppsummering':
+        specifier: workspace:*
+        version: link:../../packages/oppsummering
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -1486,6 +1493,109 @@ importers:
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
+
+  packages/oppsummering:
+    dependencies:
+      '@navikt/ds-css':
+        specifier: 5.15.1
+        version: 5.15.1
+      '@navikt/ds-react':
+        specifier: 5.15.1
+        version: 5.15.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/fp-api':
+        specifier: workspace:*
+        version: link:../api
+      '@navikt/fp-common':
+        specifier: workspace:*
+        version: link:../fp-common
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@navikt/fp-validation':
+        specifier: workspace:*
+        version: link:../validation
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
+      i18n-iso-countries:
+        specifier: ^7.8.0
+        version: 7.8.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-intl:
+        specifier: ^6.6.1
+        version: 6.6.1(react@18.2.0)(typescript@5.3.3)
+    devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 6.3.5
+        version: 6.3.5
+      '@navikt/eslint-config-fp-selvbetjening':
+        specifier: workspace:*
+        version: link:../eslint-config-custom
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
+      '@storybook/addon-essentials':
+        specifier: ^7.6.10
+        version: 7.6.10(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-interactions':
+        specifier: ^7.6.10
+        version: 7.6.10
+      '@storybook/addon-links':
+        specifier: ^7.6.10
+        version: 7.6.10(react@18.2.0)
+      '@storybook/builder-vite':
+        specifier: ^7.6.10
+        version: 7.6.10(typescript@5.3.3)(vite@4.5.1)
+      '@storybook/react':
+        specifier: ^7.6.10
+        version: 7.6.10(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
+      '@testing-library/jest-dom':
+        specifier: ^6.2.1
+        version: 6.2.1(vitest@0.34.6)
+      '@testing-library/react':
+        specifier: ^14.1.2
+        version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
+      '@testing-library/user-event':
+        specifier: ^14.5.2
+        version: 14.5.2(@testing-library/dom@9.3.4)
+      '@types/react':
+        specifier: ^18.2.48
+        version: 18.2.48
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@4.5.1)
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
+      storybook:
+        specifier: 7.6.10
+        version: 7.6.10
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vite:
+        specifier: ^4.4.9
+        version: 4.5.1(@types/node@20.11.6)(less@4.2.0)(sass@1.70.0)
+      vite-plugin-checker:
+        specifier: ^0.6.1
+        version: 0.6.2(eslint@8.56.0)(typescript@5.3.3)(vite@4.5.1)
+      vitest:
+        specifier: ^0.34.2
+        version: 0.34.6(jsdom@23.0.1)(less@4.2.0)
 
   packages/tsconfig: {}
 
@@ -14998,7 +15108,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false

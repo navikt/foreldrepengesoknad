@@ -1,4 +1,3 @@
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Næringstype } from 'app/types/EgenNæring';
 
 export enum EgenNæringFormField {
@@ -22,37 +21,17 @@ export enum EgenNæringFormField {
 export interface EgenNæringFormData {
     [EgenNæringFormField.egenNæringType]: Næringstype;
     [EgenNæringFormField.egenNæringNavn]: string;
-    [EgenNæringFormField.egenNæringRegistrertINorge]: YesOrNo;
+    [EgenNæringFormField.egenNæringRegistrertINorge]: boolean | undefined;
     [EgenNæringFormField.egenNæringOrgnr]: string;
     [EgenNæringFormField.egenNæringLand]: string;
     [EgenNæringFormField.egenNæringFom]: string;
     [EgenNæringFormField.egenNæringTom]: string;
-    [EgenNæringFormField.egenNæringPågående]: YesOrNo;
+    [EgenNæringFormField.egenNæringPågående]: boolean | undefined;
     [EgenNæringFormField.egenNæringYrkesAktivDato]: string;
     [EgenNæringFormField.egenNæringResultat]: string;
-    [EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo;
-    [EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene]: YesOrNo;
+    [EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: boolean | undefined;
+    [EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene]: boolean | undefined;
     [EgenNæringFormField.egenNæringVarigEndringDato]: string | undefined;
     [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: string | undefined;
     [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: string | undefined;
 }
-
-export const initialEgenNæringFormData: EgenNæringFormData = {
-    [EgenNæringFormField.egenNæringType]: undefined!,
-    [EgenNæringFormField.egenNæringNavn]: '',
-    [EgenNæringFormField.egenNæringRegistrertINorge]: YesOrNo.UNANSWERED,
-    [EgenNæringFormField.egenNæringOrgnr]: '',
-    [EgenNæringFormField.egenNæringLand]: '',
-    [EgenNæringFormField.egenNæringTom]: '',
-    [EgenNæringFormField.egenNæringFom]: '',
-    [EgenNæringFormField.egenNæringPågående]: YesOrNo.UNANSWERED,
-    [EgenNæringFormField.egenNæringResultat]: '',
-    [EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: YesOrNo.UNANSWERED,
-    [EgenNæringFormField.egenNæringYrkesAktivDato]: '',
-    [EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene]: YesOrNo.UNANSWERED,
-    [EgenNæringFormField.egenNæringVarigEndringDato]: '',
-    [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: '',
-    [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: '',
-};
-
-export const EgenNæringFormComponents = getTypedFormComponents<EgenNæringFormField, EgenNæringFormData>();

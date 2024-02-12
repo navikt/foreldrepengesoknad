@@ -1,6 +1,6 @@
 import { Loader } from '@navikt/ds-react';
 import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
-import { Kvittering, LocaleAll } from '@navikt/fp-types';
+import { Kvittering, LocaleAll, Person } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect, redirectToLogin } from '@navikt/fp-utils';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,6 @@ import SøkersituasjonSteg from './steg/sokersituasjon/SøkersituasjonSteg';
 import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
 import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import Person from './types/Person';
 import Velkommen from './velkommen/Velkommen';
 
 export const esApi = createApi(Environment.REST_API_URL);

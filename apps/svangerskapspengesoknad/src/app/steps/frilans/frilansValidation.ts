@@ -51,3 +51,12 @@ export const validateFrilansSlutt = (intl: IntlShape, pågående: YesOrNo, fom: 
 
     return undefined;
 };
+
+export const validateJobberFortsattSomFrilanser =
+    (intl: IntlShape) => (jobberFremdelesSomFrilanser: string | number) => {
+        if (jobberFremdelesSomFrilanser === undefined) {
+            return intlUtils(intl, 'valideringsfeil.jobberFremdelesSomFrilans.påkrevd');
+        }
+
+        return null;
+    };
