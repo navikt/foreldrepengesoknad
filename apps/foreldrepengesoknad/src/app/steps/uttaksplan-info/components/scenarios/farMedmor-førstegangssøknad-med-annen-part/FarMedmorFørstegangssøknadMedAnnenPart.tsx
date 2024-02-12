@@ -1,7 +1,3 @@
-import { FunctionComponent, useState } from 'react';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import { notEmpty } from '@navikt/fp-validation';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import {
     Block,
     EksisterendeSak,
@@ -14,14 +10,23 @@ import {
     isFarEllerMedmor,
     isInfoPeriode,
 } from '@navikt/fp-common';
+import { Søker } from '@navikt/fp-types';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import { FunctionComponent, useState } from 'react';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import {
     FarMedmorFørstegangssøknadMedAnnenPartFormComponents,
@@ -30,11 +35,6 @@ import {
 } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
-import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import Person from '@navikt/fp-common/src/common/types/Person';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { StepButtons } from '@navikt/fp-ui';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -43,7 +43,7 @@ interface Props {
     erEndringssøknad: boolean;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
-    person: Person;
+    søker: Søker;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
 }
 
@@ -54,7 +54,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     erEndringssøknad,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
-    person,
+    søker,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -198,7 +198,7 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                                 eksisterendeSak={eksisterendeSakAnnenPart}
                                 erIUttaksplanenSteg={false}
                                 tilgjengeligeStønadskontoer={valgtMengdeStønadskonto}
-                                person={person}
+                                søker={søker}
                             />
                         </Block>
                         <Block padBottom="xl">

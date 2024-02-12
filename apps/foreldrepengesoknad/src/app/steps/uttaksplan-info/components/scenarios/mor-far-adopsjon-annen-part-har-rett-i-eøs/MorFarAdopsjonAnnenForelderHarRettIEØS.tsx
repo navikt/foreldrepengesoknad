@@ -11,7 +11,6 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -44,12 +43,13 @@ import {
     getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues,
     mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState,
 } from './morFarAdopsjonAnnenForelderHarRettIEØSUtils';
+import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
-    person: Person;
+    søker: Søker;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
@@ -59,7 +59,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     tilgjengeligeStønadskontoer100DTO,
     erEndringssøknad,
-    person,
+    søker,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
@@ -150,7 +150,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
         : '';
 
-    const navnSøker = formaterNavn(person.fornavn, person.etternavn, true, person.mellomnavn);
+    const navnSøker = formaterNavn(søker.fornavn, søker.etternavn, true, søker.mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
     const erAdoptertIUtlandet = isAdoptertAnnetBarn(barn) ? barn.adoptertIUtlandet : false;

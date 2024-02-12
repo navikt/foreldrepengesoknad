@@ -1,7 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import {
     AnnenForelder,
-    Arbeidsforhold,
     Attachment,
     Barn,
     BarnFraNesteSak,
@@ -25,6 +24,7 @@ import {
     isUtsettelsesperiode,
     tidperiodeOverlapperDato,
     NavnPåForeldre,
+    Arbeidsforhold as OldArbeidsforhold,
 } from '@navikt/fp-common';
 import Planlegger from './components/planlegger/Planlegger';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
@@ -38,6 +38,26 @@ import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttak
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { Arbeidsforhold } from '@navikt/fp-types';
+import dayjs from 'dayjs';
+
+//TODO (TOR) temp-mapping. Fjern
+const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[] | undefined): OldArbeidsforhold[] => {
+    if (!arbeidsforhold) {
+        return [];
+    }
+
+    return arbeidsforhold.map((arbforhold) => {
+        return {
+            arbeidsgiverId: arbforhold.arbeidsgiverId,
+            arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
+            arbeidsgiverNavn: arbforhold.arbeidsgiverNavn,
+            fom: dayjs.utc(arbforhold.fom).toDate(),
+            stillingsprosent: arbforhold.stillingsprosent,
+            tom: arbforhold.tom ? dayjs.utc(arbforhold.tom).toDate() : undefined,
+        };
+    });
+};
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -220,9 +240,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
         }
     };
 
+    const oldFormatArbeidsforhold = mapNewToOldArbeidsforhold(arbeidsforhold);
+
     const uttaksplanValidering = validerUttaksplan({
         søkersituasjon: søkersituasjon,
-        arbeidsforhold: arbeidsforhold,
+        arbeidsforhold: oldFormatArbeidsforhold,
         dekningsgrad: dekningsgrad,
         erEndringssøknad: erEndringssøknad,
         antallBarn: antallBarn,
@@ -294,7 +316,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     stønadskontoer={stønadskontoer}
                     navnPåForeldre={navnPåForeldre}
                     annenForelder={annenForelder}
-                    arbeidsforhold={arbeidsforhold}
+                    arbeidsforhold={oldFormatArbeidsforhold}
                     handleDeletePeriode={handleDeletePeriode}
                     handleAddPeriode={handleAddPeriode}
                     erFarEllerMedmor={erFarEllerMedmor}

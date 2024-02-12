@@ -5,7 +5,6 @@ import { Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 import { RequestStatus } from 'app/types/RequestState';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
@@ -15,11 +14,35 @@ import AxiosMock from 'storybook/utils/AxiosMock';
 import UttaksplanInfo from './UttaksplanInfo';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo } from '@navikt/fp-types';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
-const søkerinfo = _søkerinfo as any;
+const søkerinfo = {
+    søker: {
+        fnr: '19047815714',
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+        kjønn: 'M',
+        fødselsdato: '1978-04-19',
+        barn: [
+            {
+                fnr: '21091981146',
+                fødselsdato: '2021-03-15',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+        ],
+    },
+} as Søkerinfo;
 
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselBeggeHarRett',
@@ -46,7 +69,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
                         },
-                        [ContextDataType.SØKER]: {
+                        [ContextDataType.SØKER_DATA]: {
                             erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -64,7 +87,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                     }}
                 >
                     <UttaksplanInfo
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        søker={søkerinfo.søker}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}

@@ -1,7 +1,4 @@
-import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { DatepickerDateRange } from '@navikt/ds-datepicker';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { GuidePanel } from '@navikt/ds-react';
 import {
     Block,
@@ -17,34 +14,37 @@ import {
     isFarEllerMedmor,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import Person from '@navikt/fp-common/src/common/types/Person';
+import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
+import { FunctionComponent, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
+import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
 import {
     FarMedmorFødselOgMorHarIkkeRettFormComponents,
     FarMedmorFødselOgMorHarIkkeRettFormData,
     FarMedmorFødselOgMorHarIkkeRettFormField,
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
-import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import {
-    getInitialFarMedmorFødselOgMorHarIkkeRettValues,
-    mapFarMedmorFødselOgMorHarIkkeRettFormToState,
-} from './farMedmorFødselOgMorHarIkkeRettUtils';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import {
     FarMedmorFødselOgMorHarIkkeRettQuestionsPayload,
     farMedmorFødselOgMorHarIkkeRettQuestionsConfig,
 } from './farMedmorFødselOgMorHarIkkeRettQuestionsConfig';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
+import {
+    getInitialFarMedmorFødselOgMorHarIkkeRettValues,
+    mapFarMedmorFødselOgMorHarIkkeRettFormToState,
+} from './farMedmorFødselOgMorHarIkkeRettUtils';
 import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
-import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { StepButtons } from '@navikt/fp-ui';
+import { Søker } from '@navikt/fp-types';
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {
     if (!invalidDateRanges) {
@@ -61,7 +61,7 @@ export interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
-    person: Person;
+    søker: Søker;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
@@ -71,7 +71,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     tilgjengeligeStønadskontoer100DTO,
     erEndringssøknad,
-    person,
+    søker,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
@@ -93,7 +93,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const { fornavn, mellomnavn, etternavn } = person;
+    const { fornavn, mellomnavn, etternavn } = søker;
     const { dekningsgrad } = perioderMedForeldrepenger;
 
     const førsteUttaksdagNesteBarnsSak =

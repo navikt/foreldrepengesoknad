@@ -1,6 +1,6 @@
 import { BodyShort } from '@navikt/ds-react';
 import { ISOStringToDate, formatDate } from '@navikt/fp-common';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
@@ -8,13 +8,13 @@ import AnnenInntektDetaljer from './AnnenInntektDetaljer';
 import InntekterTabell from './InntekterTabell';
 
 interface Props {
-    søker: Søker;
+    søkerData: SøkerData;
 }
 
-const AndreInntekterOppsummering: FunctionComponent<Props> = ({ søker }) => {
+const AndreInntekterOppsummering: FunctionComponent<Props> = ({ søkerData }) => {
     const intl = useIntl();
 
-    if (!søker.harHattAnnenInntektSiste10Mnd || !søker.andreInntekterSiste10Mnd) {
+    if (!søkerData.harHattAnnenInntektSiste10Mnd || !søkerData.andreInntekterSiste10Mnd) {
         return (
             <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.tittel' })}>
                 <BodyShort>
@@ -27,7 +27,7 @@ const AndreInntekterOppsummering: FunctionComponent<Props> = ({ søker }) => {
     return (
         <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.tittel' })}>
             <InntekterTabell
-                list={søker.andreInntekterSiste10Mnd.map((annenInntekt) => ({
+                list={søkerData.andreInntekterSiste10Mnd.map((annenInntekt) => ({
                     key: annenInntekt.type + annenInntekt.tidsperiode,
                     headerVenstre: intl.formatMessage({ id: `inntektstype.${annenInntekt.type.toLowerCase()}` }),
                     headerHøyre: intl.formatMessage(

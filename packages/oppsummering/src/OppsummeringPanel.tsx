@@ -7,9 +7,16 @@ import { ReactElement, useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 
-const getSamtykkeTekst = (intl: IntlShape, appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger') => {
+const getSamtykkeTekst = (
+    intl: IntlShape,
+    appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger',
+    ekstraSamtykketekst?: string,
+) => {
     if (appName === 'Engangsstønad') {
-        return intl.formatMessage({ id: 'OppsummeringPanel.Samtykke' });
+        return intl.formatMessage({ id: 'OppsummeringPanel.SamtykkeEs' });
+    }
+    if (appName === 'Foreldrepenger' && ekstraSamtykketekst !== undefined) {
+        return intl.formatMessage({ id: 'OppsummeringPanel.SamtykkeFp' }).concat(ekstraSamtykketekst);
     }
     throw new Error('Function not implemented.');
 };
@@ -22,6 +29,7 @@ export interface Props {
     stepConfig: StepConfig[];
     children: ReactElement[] | ReactElement;
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
+    ekstraSamtykketekst?: string;
 }
 
 interface StaticFunctions {
@@ -36,6 +44,7 @@ const OppsummeringPanel: React.FunctionComponent<Props> & StaticFunctions = ({
     stepConfig,
     children,
     appName,
+    ekstraSamtykketekst,
 }) => {
     const intl = useIntl();
     const abortSignal = useAbortSignal();
@@ -58,7 +67,7 @@ const OppsummeringPanel: React.FunctionComponent<Props> & StaticFunctions = ({
             <VStack gap="10">
                 <Accordion indent={false}>{children}</Accordion>
                 <ConfirmationPanel
-                    label={getSamtykkeTekst(intl, appName)}
+                    label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
                     onChange={() => setChecked((state) => !state)}
                     checked={isChecked}
                     error={

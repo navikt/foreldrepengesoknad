@@ -1,8 +1,7 @@
-import Feilside, { FeilsideProps } from './Feilside';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { StoryFn } from '@storybook/react';
 import { links } from '@navikt/fp-common';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
+import { Søker } from '@navikt/fp-types';
+import { StoryFn } from '@storybook/react';
+import Feilside, { FeilsideProps } from './Feilside';
 
 const defaultExport = {
     title: 'pages/Feilside',
@@ -11,19 +10,17 @@ const defaultExport = {
 
 export default defaultExport;
 
-const søkerInfo = {
-    søker: {
-        fnr: '19047815714',
-        fornavn: 'TALENTFULL',
-        etternavn: 'MYGG',
-        kjønn: 'K',
-        fødselsdato: '1978-04-19',
-        barn: [],
-    },
-} as SøkerinfoDTO;
+const søker = {
+    fnr: '19047815714',
+    fornavn: 'TALENTFULL',
+    etternavn: 'MYGG',
+    kjønn: 'K',
+    fødselsdato: '1978-04-19',
+    barn: [],
+} as Søker;
 
 const Template: StoryFn<FeilsideProps> = (args: FeilsideProps) => {
-    return <Feilside {...args} søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerInfo)}></Feilside>;
+    return <Feilside {...args} søker={søker}></Feilside>;
 };
 export const Default = Template.bind({}) as any;
 Default.args = {

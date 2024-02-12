@@ -1,7 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { notEmpty } from '@navikt/fp-validation';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import { GuidePanel } from '@navikt/ds-react';
 import {
     Block,
@@ -42,13 +41,14 @@ import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { StepButtons } from '@navikt/fp-ui';
+import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
-    person: Person;
+    søker: Søker;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
@@ -58,7 +58,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
     erEndringssøknad,
-    person,
+    søker,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
@@ -83,12 +83,12 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
 
     const navnFar = erFarEllerMedmor
-        ? person.fornavn
+        ? søker.fornavn
         : isAnnenForelderOppgitt(annenForelder)
           ? annenForelder.fornavn
           : '';
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const navnMor = erFarEllerMedmor && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : person.fornavn;
+    const navnMor = erFarEllerMedmor && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : søker.fornavn;
 
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(

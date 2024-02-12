@@ -1,18 +1,18 @@
-import * as React from 'react';
+import { Label } from '@navikt/ds-react';
+import { Block, intlUtils } from '@navikt/fp-common';
+import { SøkerBarn } from '@navikt/fp-types';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
-import { Block, RegistrertBarn, intlUtils } from '@navikt/fp-common';
+import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
+import { formaterFødselsdatoerPåBarn, getLeverBarnet, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
+import dayjs from 'dayjs';
+import * as React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetFormComponents, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateTermindatoFødsel } from '../validation/omBarnetValidering';
-import { FormattedMessage, useIntl } from 'react-intl';
-import dayjs from 'dayjs';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { formaterFødselsdatoerPåBarn, getLeverBarnet, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
-import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
-import { Label } from '@navikt/ds-react';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
-    valgteBarn: RegistrertBarn[];
+    valgteBarn: SøkerBarn[];
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
 }
 
@@ -33,7 +33,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                         </Label>
                     </Block>
                     {alleBarnaLever ? (
-                        valgteBarn.map((barn: RegistrertBarn) => (
+                        valgteBarn.map((barn) => (
                             <Block padBottom="s" key={barn.fnr}>
                                 <RegistrertePersonalia
                                     person={barn}
@@ -64,12 +64,12 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     name={OmBarnetFormField.termindato}
                     label={intlUtils(intl, 'omBarnet.termindato.født')}
                     dayPickerProps={{
-                        defaultMonth: fødselsdato,
+                        defaultMonth: dayjs.utc(fødselsdato).toDate(),
                     }}
-                    minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
-                    maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}
+                    minDate={dayjs.utc(fødselsdato).subtract(1, 'months').toDate()}
+                    maxDate={dayjs.utc(fødselsdato).add(6, 'months').toDate()}
                     placeholder={'dd.mm.åååå'}
-                    validate={validateTermindatoFødsel(dateToISOString(fødselsdato), intl)}
+                    validate={validateTermindatoFødsel(fødselsdato, intl)}
                 />
             </Block>
         </>

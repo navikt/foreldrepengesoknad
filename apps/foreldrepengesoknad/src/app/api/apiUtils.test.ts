@@ -66,7 +66,7 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
         if (type === ContextDataType.UTTAKSPLAN) {
             return uttaksplanInput;
         }
-        if (type === ContextDataType.SØKER) {
+        if (type === ContextDataType.SØKER_DATA) {
             return {
                 erAleneOmOmsorg: false,
                 harHattAnnenInntektSiste10Mnd: false,

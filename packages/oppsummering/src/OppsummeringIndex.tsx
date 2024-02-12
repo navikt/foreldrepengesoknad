@@ -12,6 +12,7 @@ export interface Props {
     stepConfig: StepConfig[];
     children: ReactElement[] | ReactElement;
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
+    ekstraSamtykketekst?: string;
 }
 
 interface StaticFunctions {
@@ -26,6 +27,7 @@ const OppsummeringIndex: React.FunctionComponent<Props> & StaticFunctions = ({
     stepConfig,
     children,
     appName,
+    ekstraSamtykketekst,
 }) => {
     return (
         <OppsummeringIntlProvider>
@@ -36,6 +38,7 @@ const OppsummeringIndex: React.FunctionComponent<Props> & StaticFunctions = ({
                 goToPreviousStep={goToPreviousStep}
                 stepConfig={stepConfig}
                 appName={appName}
+                ekstraSamtykketekst={ekstraSamtykketekst}
             >
                 {children}
             </OppsummeringPanel>

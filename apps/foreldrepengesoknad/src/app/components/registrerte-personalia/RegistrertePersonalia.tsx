@@ -1,13 +1,14 @@
 import * as React from 'react';
 
 import { FormattedMessage } from 'react-intl';
-import { RegistrertAnnenForelder, RegistrertBarn, bemUtils, formaterNavn } from '@navikt/fp-common';
+import { bemUtils, formaterNavn } from '@navikt/fp-common';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import './registrertePersonalia.less';
+import { SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 
 interface Props {
-    person: RegistrertAnnenForelder | RegistrertBarn;
+    person: SøkerAnnenForelder | SøkerBarn;
     visEtternavn: boolean;
     fødselsnummerForVisning?: string;
     fødselsdatoForVisning?: string;

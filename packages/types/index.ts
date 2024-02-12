@@ -6,10 +6,12 @@ export type { Søkersituasjon, SøkersituasjonFp } from './src/Søkersituasjon';
 export type { Situasjon } from './src/Situasjon';
 export type { Søkerrolle } from './src/Søkerrolle';
 export type { StepConfig } from './src/StepConfig';
-export type { Person } from './src/Person';
 export type { default as Bankkonto } from './src/Bankkonto';
 export type { Sivilstand } from './src/Sivilstand';
 export { SivilstandType } from './src/Sivilstand';
+export type { Søker, SøkerBarn, SøkerAnnenForelder } from './src/Søker';
+export type { Arbeidsforhold } from './src/Arbeidsforhold';
+export type { Søkerinfo } from './src/Søkerinfo';
 export type {
     Utenlandsopphold,
     UtenlandsoppholdPeriode,

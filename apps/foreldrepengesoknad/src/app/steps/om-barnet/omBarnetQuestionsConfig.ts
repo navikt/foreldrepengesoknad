@@ -1,7 +1,5 @@
 import {
-    Arbeidsforhold,
     ISOStringToDate,
-    RegistrertBarn,
     Situasjon,
     Søkerrolle,
     andreAugust2022ReglerGjelder,
@@ -14,16 +12,17 @@ import dayjs from 'dayjs';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { getEldsteRegistrerteBarn } from '../../utils/dateUtils';
+import { Arbeidsforhold, SøkerBarn } from '@navikt/fp-types';
 
 export interface OmBarnetQuestionPayload extends OmBarnetFormData {
     situasjon: Situasjon;
     rolle: Søkerrolle;
     arbeidsforhold: Arbeidsforhold[];
-    valgteRegistrerteBarn: RegistrertBarn[] | undefined;
+    valgteRegistrerteBarn: SøkerBarn[] | undefined;
     søknadGjelderEtNyttBarn: boolean;
 }
 
-const erDatoInnenforDeSiste12Ukene = (dato: Date) => {
+const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
     return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
 };
@@ -31,7 +30,7 @@ const erDatoInnenforDeSiste12Ukene = (dato: Date) => {
 const includeTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
-    valgteRegistrerteBarn: RegistrertBarn[] | undefined,
+    valgteRegistrerteBarn: SøkerBarn[] | undefined,
     situasjon: Situasjon,
 ): boolean => {
     if (situasjon === 'adopsjon') {
@@ -50,7 +49,7 @@ const includeTermindato = (
         return false;
     }
 
-    const relevantFødselsdato = eldsteBarnFødselsdato || ISOStringToDate(fødselsdato);
+    const relevantFødselsdato = eldsteBarnFødselsdato || fødselsdato;
 
     if (isFarEllerMedmor(rolle)) {
         if (andreAugust2022ReglerGjelder(relevantFødselsdato!)) {
