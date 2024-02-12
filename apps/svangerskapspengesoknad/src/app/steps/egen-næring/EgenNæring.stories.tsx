@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 import EgenNæringStep from './EgenNæringStep';
 import _context from 'storybook/storydata/soknad/soknad.json';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { MemoryRouter } from 'react-router-dom';
 
 const defaultExport = {
     title: 'steps/EgenNæringStep',
@@ -27,24 +28,26 @@ interface Props {
 
 const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.INNTEKTSINFORMASJON]: {
-                    harJobbetSomSelvstendigNæringsdrivende: true,
-                    harHattAnnenInntekt: false,
-                    harJobbetSomFrilans: false,
-                },
-                [ContextDataType.TILRETTELEGGINGER]: context.søknad.tilrettelegging,
-                [ContextDataType.OM_BARNET]: context.søknad.barn,
-            }}
-        >
-            <EgenNæringStep
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={promiseAction()}
-                søkerInfo={context.søkerinfo}
-            />
-        </SvpDataContext>
+        <MemoryRouter>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.INNTEKTSINFORMASJON]: {
+                        harJobbetSomSelvstendigNæringsdrivende: true,
+                        harHattAnnenInntekt: false,
+                        harJobbetSomFrilans: false,
+                    },
+                    [ContextDataType.TILRETTELEGGINGER]: context.søknad.tilrettelegging,
+                    [ContextDataType.OM_BARNET]: context.søknad.barn,
+                }}
+            >
+                <EgenNæringStep
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={promiseAction()}
+                    søkerInfo={context.søkerinfo}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 export const Default = Template.bind({});
