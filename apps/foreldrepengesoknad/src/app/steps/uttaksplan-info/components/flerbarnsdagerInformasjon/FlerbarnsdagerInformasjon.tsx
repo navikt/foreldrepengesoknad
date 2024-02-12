@@ -20,29 +20,21 @@ const getBarnTekst = (antallBarn: number, erAdopsjon: boolean, intl: IntlShape) 
     return getTekstForAntallBarn(antallBarn, intl).toLowerCase();
 };
 
-const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
-    flerbarnsDager,
-    antallBarn,
-    erAdopsjon,
-    morTekst,
-    farTekst,
-}) => {
+const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({ flerbarnsDager, antallBarn, erAdopsjon }) => {
     const intl = useIntl();
     const varighetTekst = getVarighetString(flerbarnsDager, intl);
     const barnTekst = getBarnTekst(antallBarn, erAdopsjon, intl);
     return (
-        <Block padBottom="xl">
+        <Block padBottom="l">
             <Alert variant="info">
-                <Block padBottom="l">
-                    <FormattedMessage
-                        id="fordeling.flerbarnsuker.info.del1"
-                        values={{
-                            varighetTekst,
-                            barnTekst,
-                        }}
-                    />
-                </Block>
-                <FormattedMessage id="fordeling.flerbarnsuker.info.del2" values={{ morTekst, farTekst }} />
+                <FormattedMessage
+                    id="fordeling.flerbarnsuker.info.del1"
+                    values={{
+                        varighetTekst,
+                        barnTekst,
+                    }}
+                />
+                <FormattedMessage id="fordeling.flerbarnsuker.info.del2" />
             </Alert>
         </Block>
     );

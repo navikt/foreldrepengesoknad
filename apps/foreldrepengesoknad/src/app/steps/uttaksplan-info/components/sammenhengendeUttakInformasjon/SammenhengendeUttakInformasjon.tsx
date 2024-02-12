@@ -7,12 +7,10 @@ interface Props {
 }
 const SammenhengendeUttakInformasjon: React.FunctionComponent<Props> = ({ annenForeldrerHarRett }) => {
     return (
-        <Block padBottom="xl">
+        <Block padBottom="l">
             <Alert variant="info">
-                <Block padBottom="l">
-                    {annenForeldrerHarRett && <FormattedMessage id="fordeling.sammenhengendeUttak.info.beggeHarRett" />}
-                    {!annenForeldrerHarRett && <FormattedMessage id="fordeling.sammenhengendeUttak.info.enHarRett" />}
-                </Block>
+                {annenForeldrerHarRett && <FormattedMessage id="fordeling.sammenhengendeUttak.info.beggeHarRett" />}
+                {!annenForeldrerHarRett && <FormattedMessage id="fordeling.sammenhengendeUttak.info.enHarRett" />}
             </Alert>
         </Block>
     );

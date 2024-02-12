@@ -1030,7 +1030,7 @@
     "fordeling.info.far.medAktivitetskrav": "<b>{varighetTekst}</b> kan brukes av deg hvis mor er i aktivitet. <a>Les mer om hva som er godkjent aktivitet her</a>.",
     "fordeling.info.far.opphold": "<b>Periode uten foreldrepenger/opphold</b> vil gjøre at du taper dager med foreldrepenger hvis ikke mor er i aktivitet. Hvis mor er i aktivitet når du har opphold i foreldrepengene mister du ikke dager.",
     "fordeling.flerbarnsuker.info.del1": "Av ukene deres har dere {varighetTekst} hvor dere kan ta foreldrepenger samtidig fordi dere har fått {barnTekst}. Disse ukene kalles flerbarnsuker. Det er ikke krav til hva mor gjør når far bruker flerbarnsuker.",
-    "fordeling.flerbarnsuker.info.del2": "For eksempel kan {farTekst} bruke fem av sine uker samtidig som {morTekst} etter fødsel. Da vil disse tas fra kvoten til {farTekst} og man vil ha 5 færre uker man kan ta samtidig.",
+    "fordeling.flerbarnsuker.info.del2": "For eksempel kan far/medmor bruke fem av sine uker samtidig som mor etter fødsel. Da vil disse tas fra kvoten til far/medmor og man vil ha 5 færre uker man kan ta samtidig.",
     "fordeling.sammenhengendeUttak.info.beggeHarRett": "Siden dere har fått barn før 1. oktober 2021, må dere bruke foreldrepengeperioden deres sammenhengende. Man må senest starte å bruke ukene sine når den andre forelderens periode med foreldrepenger er ferdig, eller søke om utsettelse.",
     "fordeling.sammenhengendeUttak.info.enHarRett": "Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.",
     "fordeling.påvirkninger.tittel": "Situasjoner som kan påvirke perioden med foreldrepenger",
