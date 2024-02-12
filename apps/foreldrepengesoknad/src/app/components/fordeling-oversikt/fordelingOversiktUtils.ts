@@ -289,11 +289,14 @@ const getFordelingFedrekvote = (
 
     if (dagerRundtFødsel > 0) {
         const terminEllerFødsel = erBarnetFødt ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
+        const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
+        const morEllerDeg = morTekst === intlUtils(intl, 'mor') ? intlUtils(intl, 'deg') : morTekst;
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', {
                 terminEllerFødsel,
                 farTekst,
                 farTekstCapitalized: capitalizeFirstLetter(farTekst),
+                morEllerDeg,
             }),
         );
     }
@@ -458,6 +461,7 @@ const getFordelingForeldrepengerFar = (
     antallBarn: number,
     ekstraDagerGrunnetPrematurFødsel: number | undefined,
     farTekst: string,
+    morTekst: string,
     intl: IntlShape,
 ): DelInformasjon => {
     const fordelingDager = [];
@@ -483,11 +487,13 @@ const getFordelingForeldrepengerFar = (
     }
     if (dagerRundtFødsel > 0) {
         const terminEllerFødsel = erBarnetFødt ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
+        const morEllerDeg = morTekst === intlUtils(intl, 'du') ? intlUtils(intl, 'deg') : morTekst;
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', {
                 terminEllerFødsel,
                 farTekst,
                 farTekstCapitalized: capitalizeFirstLetter(farTekst),
+                morEllerDeg,
             }),
         );
     }
@@ -662,6 +668,7 @@ export const getFordelingFraKontoer = (
                   antallBarn,
                   ekstraDagerGrunnetPrematurFødsel,
                   farTekst,
+                  morTekst,
                   intl,
               )
             : getFordelingMor(
