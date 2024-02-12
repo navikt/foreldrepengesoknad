@@ -9,7 +9,6 @@ import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasj
 import OmBarnet from 'app/steps/om-barnet/OmBarnet';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import SøkersituasjonSteg from 'app/steps/søkersituasjon/SøkersituasjonSteg';
-import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
 import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
@@ -22,6 +21,7 @@ import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
 import PeriodeMedForeldrepengerSteg from 'app/steps/periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
 import isAvailable from './isAvailable';
 import SøknadRoutes from './routes';
+import FordelingSteg from 'app/steps/fordeling/FordelingSteg';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
@@ -116,9 +116,8 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.UTTAKSPLAN_INFO}
                 element={
-                    <UttaksplanInfo
+                    <FordelingSteg
                         søkerInfo={søkerInfo}
-                        erEndringssøknad={erEndringssøknad}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

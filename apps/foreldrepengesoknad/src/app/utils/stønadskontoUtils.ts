@@ -44,3 +44,16 @@ export const getValgtStønadskontoFor80Og100Prosent = (
         [Dekningsgrad.HUNDRE_PROSENT]: hundreProsent,
     };
 };
+
+export const getValgtMinsterett = (
+    dekningsgrad: Dekningsgrad,
+    tilgjengeligeStønadskontoer100: TilgjengeligeStønadskontoerDTO | undefined,
+    tilgjengeligeStønadskontoer80: TilgjengeligeStønadskontoerDTO | undefined,
+) => {
+    if (!tilgjengeligeStønadskontoer100 || !tilgjengeligeStønadskontoer80) {
+        return undefined;
+    }
+    return dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+        ? tilgjengeligeStønadskontoer100.minsteretter
+        : tilgjengeligeStønadskontoer80.minsteretter;
+};

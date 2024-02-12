@@ -23,7 +23,8 @@ import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPan
 import useStepConfig from 'app/appData/useStepConfig';
 import useFpNavigator from 'app/appData/useFpNavigator';
 
-const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
+//TODO GR: Move if reused in next step
+export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
     const annenPartFødselsnummer =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr === false ? annenForelder.fnr : undefined;
     const barnFødselsnummer =
@@ -35,7 +36,8 @@ const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
     };
 };
 
-const shouldSuspendAnnenPartVedtakApiRequest = (annenForelder: AnnenForelder) => {
+//TODO GR: Move if reused in next step
+export const shouldSuspendAnnenPartVedtakApiRequest = (annenForelder: AnnenForelder) => {
     const annenPartFnr =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
     return annenPartFnr !== undefined && annenPartFnr !== '' ? false : true;

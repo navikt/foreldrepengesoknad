@@ -40,6 +40,7 @@ import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 
 import './infoOmSøknaden.less';
 import Person from '@navikt/fp-common/src/common/types/Person';
+import { getIsDeltUttak } from '../fordeling-oversikt/fordelingOversiktUtils';
 
 const getHvem = (
     intl: IntlShape,
@@ -87,9 +88,8 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const annenForelderNavn = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
-        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
-        : false;
+    const erDeltUttak = getIsDeltUttak(annenForelder);
+
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerINorge;
     const erAleneOmOmsorg = søker.erAleneOmOmsorg;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);

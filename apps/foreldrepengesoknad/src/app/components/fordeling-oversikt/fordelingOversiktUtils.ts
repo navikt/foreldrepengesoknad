@@ -7,6 +7,7 @@ import {
     getAntallUkerMødrekvote,
 } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import {
+    AnnenForelder,
     Barn,
     ISOStringToDate,
     Periode,
@@ -17,6 +18,7 @@ import {
     getNavnGenitivEierform,
     getVarighetString,
     intlUtils,
+    isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
     uttaksConstants,
@@ -30,6 +32,12 @@ import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/For
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { getBrukteDager } from '@navikt/uttaksplan/src/utils/brukteDagerUtils';
+
+export const getIsDeltUttak = (annenForelder: AnnenForelder): boolean => {
+    return isAnnenForelderOppgitt(annenForelder)
+        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
+        : false;
+};
 
 const getBarnetTekst = (antallBarn: number, intl: IntlShape) => {
     return antallBarn === 1 ? intlUtils(intl, 'barnet') : intlUtils(intl, 'barna');
