@@ -1,7 +1,11 @@
 import { EgenNæringFormData, EgenNæringFormField } from './egenNæringFormConfig';
-import { getInitialEgenNæringFormValues, mapEgenNæringFormValuesToState } from './egenNæringFormUtils';
+import {
+    erVirksomhetRegnetSomNyoppstartet,
+    getInitialEgenNæringFormValues,
+    mapEgenNæringFormValuesToState,
+} from './egenNæringFormUtils';
 import { Næringstype } from 'app/types/EgenNæring';
-import { Step, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
+import { ISOStringToDate, Step, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
@@ -28,7 +32,14 @@ import { Søkerinfo } from 'app/types/Søkerinfo';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import { useForm } from 'react-hook-form';
-import { Datepicker, Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
+import {
+    Datepicker,
+    ErrorSummaryHookForm,
+    Form,
+    RadioGroup,
+    StepButtonsHookForm,
+    TextField,
+} from '@navikt/fp-form-hooks';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
@@ -70,6 +81,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
             oppdaterTilrettelegginger(automatiskValgtTilrettelegging);
         }
 
+        console.log('oppdater næring');
         oppdaterEgenNæring(næringsdata);
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteForNæring(
@@ -77,7 +89,9 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
             barnet.termindato,
             søkerInfo.arbeidsforhold,
         );
+        console.log('oppdater tilrettelegging');
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
+        console.log('oppdater route');
         oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();
@@ -93,6 +107,10 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
     const navnPåNæring = formMethods.watch(EgenNæringFormField.egenNæringNavn);
     const næringFom = formMethods.watch(EgenNæringFormField.egenNæringFom);
     const næringTom = formMethods.watch(EgenNæringFormField.egenNæringTom);
+    const registrertINorge = formMethods.watch(EgenNæringFormField.egenNæringRegistrertINorge);
+    const pågående = formMethods.watch(EgenNæringFormField.egenNæringPågående);
+    const varigEndring = formMethods.watch(EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene);
+    const yrkesaktivSiste3År = formMethods.watch(EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene);
 
     const navnPåNæringLabel =
         næringsType === Næringstype.FISKER ? `${navnPåNæringSpm} ${intlUtils(intl, 'valgfritt')}` : navnPåNæringSpm;
@@ -108,6 +126,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
+                    <ErrorSummaryHookForm />
                     <BodyShort>
                         <FormattedMessage id="harValgfrieFelt" />
                     </BodyShort>
@@ -149,7 +168,10 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                             <FormattedMessage id="nei" />
                         </Radio>
                     </RadioGroup>
-                    <OrgnummerEllerLand orgNummerErValgfritt={næringsType === Næringstype.FISKER} />
+                    <OrgnummerEllerLand
+                        orgNummerErValgfritt={næringsType === Næringstype.FISKER}
+                        registrertINorge={registrertINorge}
+                    />
                     <Datepicker
                         name={EgenNæringFormField.egenNæringFom}
                         label={intlUtils(intl, 'egenNæring.næring.fom', {
@@ -159,6 +181,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                         maxDate={dayjs().toDate()}
                         minDate={date20YearsAgo}
                     />
+
                     <RadioGroup
                         name={EgenNæringFormField.egenNæringPågående}
                         label={intlUtils(intl, 'egenNæring.næring.pågående', {
@@ -173,17 +196,27 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                             <FormattedMessage id="nei" />
                         </Radio>
                     </RadioGroup>
-                    <Datepicker
-                        name={EgenNæringFormField.egenNæringTom}
-                        label={intlUtils(intl, 'egenNæring.næring.tom', {
-                            navnPåNæringen: navnPåNæring,
-                        })}
-                        description={intlUtils(intl, 'egenNæring.næring.tom.description')}
-                        validate={[validateEgenNæringTom(intl, næringFom)]}
-                        maxDate={dayjs().add(9, 'month').toDate()}
-                        minDate={getMinInputTilOgMedValue(næringFom, date5MonthsAgo)}
-                    />
-                    <VarigEndringSpørsmål egenNæringFom={næringFom} egenNæringTom={næringTom} />
+
+                    {pågående === false && (
+                        <Datepicker
+                            name={EgenNæringFormField.egenNæringTom}
+                            label={intlUtils(intl, 'egenNæring.næring.tom', {
+                                navnPåNæringen: navnPåNæring,
+                            })}
+                            description={intlUtils(intl, 'egenNæring.næring.tom.description')}
+                            validate={[validateEgenNæringTom(intl, næringFom)]}
+                            maxDate={dayjs().add(9, 'month').toDate()}
+                            minDate={getMinInputTilOgMedValue(næringFom, date5MonthsAgo)}
+                        />
+                    )}
+                    {!erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næringFom)) && (
+                        <VarigEndringSpørsmål
+                            varigEndring={varigEndring}
+                            egenNæringFom={næringFom}
+                            egenNæringTom={næringTom}
+                        />
+                    )}
+
                     <TextField
                         name={EgenNæringFormField.egenNæringResultat}
                         label={intlUtils(intl, 'egenNæring.næringsinntekt')}
@@ -208,12 +241,14 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
                             <FormattedMessage id="nei" />
                         </Radio>
                     </RadioGroup>
-                    <Datepicker
-                        name={EgenNæringFormField.egenNæringYrkesAktivDato}
-                        label={intlUtils(intl, 'egenNæring.yrkesaktivDato')}
-                        validate={[validateEgenNæringYrkesAktivDatoDato(intl)]}
-                        maxDate={dayjs().toDate()}
-                    />
+                    {erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næringFom)) && yrkesaktivSiste3År === true && (
+                        <Datepicker
+                            name={EgenNæringFormField.egenNæringYrkesAktivDato}
+                            label={intlUtils(intl, 'egenNæring.yrkesaktivDato')}
+                            validate={[validateEgenNæringYrkesAktivDatoDato(intl)]}
+                            maxDate={dayjs().toDate()}
+                        />
+                    )}
                     <Alert variant="info">{intlUtils(intl, 'egenNæring.veileder')}</Alert>
                     <StepButtonsHookForm<EgenNæringFormData>
                         goToPreviousStep={() => {

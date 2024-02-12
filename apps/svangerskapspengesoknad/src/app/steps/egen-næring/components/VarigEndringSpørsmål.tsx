@@ -15,9 +15,10 @@ import { Datepicker, RadioGroup, TextArea, TextField } from '@navikt/fp-form-hoo
 interface Props {
     egenNæringFom: string;
     egenNæringTom: string;
+    varigEndring: boolean | undefined;
 }
 
-const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egenNæringTom }) => {
+const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egenNæringTom, varigEndring }) => {
     const intl = useIntl();
     const egenNæringVarigEndringBeskrivelseLabel = intlUtils(intl, 'egenNæring.varigEndringBeskrivelse.label');
     return (
@@ -45,26 +46,35 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egen
                     <FormattedMessage id="egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info"></FormattedMessage>
                 </BodyShort>
             </ReadMore>
-            <Datepicker
-                name={EgenNæringFormField.egenNæringVarigEndringDato}
-                label={intlUtils(intl, 'egenNæring.egenNæringVarigEndringDato')}
-                validate={[validateEgenNæringVarigEndringDato(intl, egenNæringFom, egenNæringTom)]}
-                maxDate={dayjs().toDate()}
-                minDate={ISOStringToDate(egenNæringFom)}
-            />
-            <TextField
-                name={EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring}
-                label={intlUtils(intl, 'egenNæring.egenNæringVarigEndringInntektEtterEndring')}
-                description={intlUtils(intl, 'egenNæring.egenNæringVarigEndringInntektEtterEndring.description')}
-                validate={[validateEgenNæringVarigEndringInntekt(intl)]}
-            />
-            <TextArea
-                name={EgenNæringFormField.egenNæringVarigEndringBeskrivelse}
-                label={egenNæringVarigEndringBeskrivelseLabel}
-                minLength={TEXT_INPUT_MIN_LENGTH}
-                maxLength={TEXT_INPUT_MAX_LENGTH}
-                validate={[validateEgenNæringVarigEndringBeskrivelse(intl, egenNæringVarigEndringBeskrivelseLabel)]}
-            />
+            {varigEndring && (
+                <>
+                    <Datepicker
+                        name={EgenNæringFormField.egenNæringVarigEndringDato}
+                        label={intlUtils(intl, 'egenNæring.egenNæringVarigEndringDato')}
+                        validate={[validateEgenNæringVarigEndringDato(intl, egenNæringFom, egenNæringTom)]}
+                        maxDate={dayjs().toDate()}
+                        minDate={ISOStringToDate(egenNæringFom)}
+                    />
+                    <TextField
+                        name={EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring}
+                        label={intlUtils(intl, 'egenNæring.egenNæringVarigEndringInntektEtterEndring')}
+                        description={intlUtils(
+                            intl,
+                            'egenNæring.egenNæringVarigEndringInntektEtterEndring.description',
+                        )}
+                        validate={[validateEgenNæringVarigEndringInntekt(intl)]}
+                    />
+                    <TextArea
+                        name={EgenNæringFormField.egenNæringVarigEndringBeskrivelse}
+                        label={egenNæringVarigEndringBeskrivelseLabel}
+                        minLength={TEXT_INPUT_MIN_LENGTH}
+                        maxLength={TEXT_INPUT_MAX_LENGTH}
+                        validate={[
+                            validateEgenNæringVarigEndringBeskrivelse(intl, egenNæringVarigEndringBeskrivelseLabel),
+                        ]}
+                    />
+                </>
+            )}
         </>
     );
 };
