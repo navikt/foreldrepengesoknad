@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import { validateEgenNæringLand, validateEgenNæringOrgnr } from '../egenNæringValidation';
 import { EgenNæringFormField } from 'app/steps/egen-næring/egenNæringFormConfig';
 import { Select, TextField } from '@navikt/fp-form-hooks';
+import { createCountryOptions } from '@navikt/fp-utils';
 
 interface Props {
     orgNummerErValgfritt: boolean;
@@ -30,8 +31,11 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ orgNummerErValgfritt, re
                     label={intlUtils(intl, 'egenNæring.registrertILand')}
                     validate={[validateEgenNæringLand(intl)]}
                 >
-                    <option>Test</option>
-                    <option>Test 2</option>
+                    {createCountryOptions().map((o: Record<string, any>) => (
+                        <option key={o[0]} value={o[0]}>
+                            {o[1]}
+                        </option>
+                    ))}
                 </Select>
             ) : null}
         </>
