@@ -18,7 +18,7 @@ import { IntlShape } from 'react-intl';
 
 export const validateEgenNæringFom =
     (intl: IntlShape, tom: string) =>
-    (fom: string): SkjemaelementFeil => {
+    (fom: string | undefined): SkjemaelementFeil => {
         if (!hasValue(fom)) {
             return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
         }
@@ -40,7 +40,7 @@ export const validateEgenNæringFom =
 
 export const validateEgenNæringTom =
     (intl: IntlShape, fom: string) =>
-    (tom: string): SkjemaelementFeil => {
+    (tom: string | undefined): SkjemaelementFeil => {
         if (!hasValue(tom)) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
         }
@@ -65,8 +65,9 @@ export const validateEgenNæringTom =
 
 export const validateEgenNæringOrgnr =
     (intl: IntlShape, erValgfri: boolean) =>
-    (orgnr: string): SkjemaelementFeil => {
-        const trimmedOrgNr = orgnr.trim();
+    (orgnr: string | undefined): SkjemaelementFeil => {
+        const trimmedOrgNr = (orgnr || '').trim();
+
         if (!erValgfri && !hasValue(trimmedOrgNr)) {
             return intlUtils(intl, 'valideringsfeil.egenNæringOrgnr.påkrevd');
         }
@@ -80,7 +81,7 @@ export const validateEgenNæringOrgnr =
         return undefined;
     };
 
-export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato: string) => {
+export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato: string | undefined) => {
     if (!hasValue(dato)) {
         return intlUtils(intl, 'valideringsfeil.yrkesaktiv.påkrevd');
     }
@@ -96,11 +97,11 @@ export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato:
     return undefined;
 };
 
-export const validateEgenNæringResultat = (intl: IntlShape) => (value: string) => {
+export const validateEgenNæringResultat = (intl: IntlShape) => (value: string | undefined) => {
     if (!hasValue(value)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringInntekt.påkrevd');
     } else {
-        if (value.length > 9) {
+        if (value!.length > 9) {
             return intlUtils(intl, 'valideringsfeil.næringsinntekt.forLang');
         }
         const valueNumber = getNumberFromNumberInputValue(value);
@@ -116,7 +117,7 @@ export const validateEgenNæringResultat = (intl: IntlShape) => (value: string) 
 };
 
 export const validateEgenNæringVarigEndringDato =
-    (intl: IntlShape, fom: string, tom: string | undefined) =>
+    (intl: IntlShape, fom: string | undefined, tom: string | undefined) =>
     (endringDato: string): SkjemaelementFeil => {
         if (!hasValue(endringDato)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.påkrevd');
@@ -133,7 +134,7 @@ export const validateEgenNæringVarigEndringDato =
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.mindreEnn4ÅrSiden');
         }
 
-        if (isDateABeforeDateB(endringDato, fom)) {
+        if (isDateABeforeDateB(endringDato, fom!)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.førFraDato');
         }
         if (tom && hasValue(tom) && isDateABeforeDateB(tom, endringDato)) {
@@ -145,47 +146,52 @@ export const validateEgenNæringVarigEndringDato =
 
 export const validateEgenNæringVarigEndringInntekt =
     (intl: IntlShape) =>
-    (value: string): SkjemaelementFeil => {
+    (value: string | undefined): SkjemaelementFeil => {
         if (!hasValue(value)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.påkrevd');
         }
-        if (value.length > 9) {
+        if (value!.length > 9) {
             return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.forLang');
         }
         const valueNumber = getNumberFromNumberInputValue(value);
         if (valueNumber && valueNumber < 0) {
             return intlUtils(intl, 'valideringsfeil.varigEndringInntekt.mindreEnnNull');
         }
-        return validateStringAsNumberInput(value, intlUtils(intl, 'valideringsfeil.varigEndringInntekt.ugyldigFormat'));
+        return validateStringAsNumberInput(
+            value!,
+            intlUtils(intl, 'valideringsfeil.varigEndringInntekt.ugyldigFormat'),
+        );
     };
 
-export const validateEgenNæringVarigEndringBeskrivelse = (intl: IntlShape, label: string) => (value: string) => {
-    if (!hasValue(value) || value.trim() === '') {
-        return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.påkrevd');
-    }
+export const validateEgenNæringVarigEndringBeskrivelse =
+    (intl: IntlShape, label: string) => (value: string | undefined) => {
+        if (!hasValue(value) || (value && value.trim() === '')) {
+            return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.påkrevd');
+        }
 
-    if (value.length > TEXT_INPUT_MAX_LENGTH) {
-        return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.forLang');
-    }
+        if (value!.length > TEXT_INPUT_MAX_LENGTH) {
+            return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.forLang');
+        }
 
-    if (value.length < TEXT_INPUT_MIN_LENGTH) {
-        return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.forKort');
-    }
+        if (value!.length < TEXT_INPUT_MIN_LENGTH) {
+            return intlUtils(intl, 'valideringsfeil.egenNæringVarigEndringBeskrivelse.forKort');
+        }
 
-    return validateTextInputField(value, label, intl);
-};
+        return validateTextInputField(value, label, intl);
+    };
 
-export const validateEgenNæringNavn = (intl: IntlShape, label: string, erValgfri: boolean) => (value: string) => {
-    if (!erValgfri && !hasValue(value)) {
-        return intlUtils(intl, 'valideringsfeil.egenNæringNavn.påkrevd');
-    }
-    if (value.length > 100) {
-        return intlUtils(intl, 'valideringsfeil.egenNæringNavn.forLang');
-    }
-    return validateTextInputField(value, label, intl);
-};
+export const validateEgenNæringNavn =
+    (intl: IntlShape, label: string, erValgfri: boolean) => (value: string | undefined) => {
+        if (!erValgfri && !hasValue(value)) {
+            return intlUtils(intl, 'valideringsfeil.egenNæringNavn.påkrevd');
+        }
+        if (value && value.length > 100) {
+            return intlUtils(intl, 'valideringsfeil.egenNæringNavn.forLang');
+        }
+        return validateTextInputField(value, label, intl);
+    };
 
-export const validateEgenNæringLand = (intl: IntlShape) => (value: string) => {
+export const validateEgenNæringLand = (intl: IntlShape) => (value: string | undefined) => {
     if (!hasValue(value)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringLand.påkrevd');
     }
@@ -195,7 +201,7 @@ export const validateEgenNæringLand = (intl: IntlShape) => (value: string) => {
     return undefined;
 };
 
-export const validateRegistrertINorge = (intl: IntlShape) => (registrertINorge: string | number) => {
+export const validateRegistrertINorge = (intl: IntlShape) => (registrertINorge: string | number | undefined) => {
     if (registrertINorge === undefined) {
         return intlUtils(intl, 'valideringsfeil.egenNæringRegistrertINorge.påkrevd');
     }
@@ -203,7 +209,7 @@ export const validateRegistrertINorge = (intl: IntlShape) => (registrertINorge: 
     return null;
 };
 
-export const validateNæringPågående = (intl: IntlShape) => (næringPågående: string | number) => {
+export const validateNæringPågående = (intl: IntlShape) => (næringPågående: string | number | undefined) => {
     if (næringPågående === undefined) {
         return intlUtils(intl, 'valideringsfeil.egenNæringPågående.påkrevd');
     }
@@ -212,7 +218,7 @@ export const validateNæringPågående = (intl: IntlShape) => (næringPågående
 };
 
 export const validateBlittYrkesaktivDe3SisteÅrene =
-    (intl: IntlShape) => (blittYrkesaktivDe3SisteÅrene: string | number) => {
+    (intl: IntlShape) => (blittYrkesaktivDe3SisteÅrene: string | number | undefined) => {
         if (blittYrkesaktivDe3SisteÅrene === undefined) {
             return intlUtils(intl, 'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd');
         }
@@ -220,7 +226,7 @@ export const validateBlittYrkesaktivDe3SisteÅrene =
         return null;
     };
 
-export const validateNæringstype = (intl: IntlShape) => (næringstype: string | number) => {
+export const validateNæringstype = (intl: IntlShape) => (næringstype: string | number | undefined) => {
     if (!hasValue(næringstype)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringType.påkrevd');
     }
@@ -228,7 +234,7 @@ export const validateNæringstype = (intl: IntlShape) => (næringstype: string |
     return null;
 };
 
-export const validateVarigEndring = (intl: IntlShape) => (varigEndring: string | number) => {
+export const validateVarigEndring = (intl: IntlShape) => (varigEndring: string | number | undefined) => {
     if (!hasValue(varigEndring)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringHattVarigEndringDeSiste4Årene.påkrevd');
     }
