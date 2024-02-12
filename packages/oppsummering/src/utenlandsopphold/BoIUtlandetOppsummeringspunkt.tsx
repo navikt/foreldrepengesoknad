@@ -1,4 +1,4 @@
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
 import {
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
@@ -7,12 +7,29 @@ import {
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
-import { FormattedMessage, useIntl } from 'react-intl';
-import LandOppsummering from './LandOppsummering';
+import { FormattedMessage, IntlShape, PrimitiveType, useIntl } from 'react-intl';
 import Oppsummeringspunkt from '../Oppsummeringspunkt';
+import LandOppsummering from './LandOppsummering';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
     return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
+};
+
+const finnDatotekst = (
+    intl: IntlShape,
+    hendelseType: HendelseType,
+    values: Record<string, PrimitiveType>,
+): string | undefined => {
+    if (hendelseType === HendelseType.TERMIN) {
+        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet' }, values);
+    }
+    if (hendelseType === HendelseType.FØDSEL) {
+        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet' }, values);
+    }
+    if (hendelseType === HendelseType.ADOPSJON) {
+        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet' }, values);
+    }
+    throw new Error('Function not implemented.');
 };
 
 const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
@@ -90,56 +107,17 @@ const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
                         />
                     </BodyShort>
                 )}
-                {hendelseType === HendelseType.TERMIN && (
-                    <HStack gap="2">
-                        <BodyShort>
-                            <FormattedMessage
-                                id="BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet"
-                                values={{
-                                    country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                        familiehendelseDato,
-                                        tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                                        senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
-                                    )
-                                        ? intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utlandet' })
-                                        : intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }),
-                                }}
-                            />
-                        </BodyShort>
-                    </HStack>
-                )}
-                {hendelseType === HendelseType.FØDSEL && (
-                    <BodyShort>
-                        <FormattedMessage
-                            id="BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet"
-                            values={{
-                                country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                    familiehendelseDato,
-                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
-                                )
-                                    ? intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utlandet' })
-                                    : intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }),
-                            }}
-                        />
-                    </BodyShort>
-                )}
-                {hendelseType === HendelseType.ADOPSJON && (
-                    <BodyShort>
-                        <FormattedMessage
-                            id="BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet"
-                            values={{
-                                country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                                    familiehendelseDato,
-                                    tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                                    senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
-                                )
-                                    ? intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utlandet' })
-                                    : intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }),
-                            }}
-                        />
-                    </BodyShort>
-                )}
+                <BodyShort>
+                    {finnDatotekst(intl, hendelseType, {
+                        country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                            familiehendelseDato,
+                            tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                            senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
+                        )
+                            ? intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utlandet' })
+                            : intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }),
+                    })}
+                </BodyShort>
             </VStack>
         </Oppsummeringspunkt>
     );
