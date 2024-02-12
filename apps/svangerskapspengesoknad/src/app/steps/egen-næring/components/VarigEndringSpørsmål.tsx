@@ -5,6 +5,7 @@ import {
     validateEgenNæringVarigEndringBeskrivelse,
     validateEgenNæringVarigEndringDato,
     validateEgenNæringVarigEndringInntekt,
+    validateVarigEndring,
 } from '../egenNæringValidation';
 import { EgenNæringFormField } from 'app/steps/egen-næring/egenNæringFormConfig';
 import dayjs from 'dayjs';
@@ -26,13 +27,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egen
             <RadioGroup
                 name={EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene}
                 label={intlUtils(intl, 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene')}
-                // validate={[
-                //     (value) =>
-                //         validateYesOrNoIsAnswered(
-                //             value,
-                //             intlUtils(intl, 'valideringsfeil.egenNæringHattVarigEndringDeSiste4Årene.påkrevd'),
-                //         ),
-                // ]}
+                validate={[validateVarigEndring(intl)]}
             >
                 <Radio value={true}>
                     <FormattedMessage id="ja" />

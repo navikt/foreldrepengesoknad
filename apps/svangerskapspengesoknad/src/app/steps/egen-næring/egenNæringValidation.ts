@@ -227,3 +227,11 @@ export const validateNæringstype = (intl: IntlShape) => (næringstype: string |
 
     return null;
 };
+
+export const validateVarigEndring = (intl: IntlShape) => (varigEndring: string | number) => {
+    if (!hasValue(varigEndring)) {
+        return intlUtils(intl, 'valideringsfeil.egenNæringHattVarigEndringDeSiste4Årene.påkrevd');
+    }
+
+    return null;
+};
