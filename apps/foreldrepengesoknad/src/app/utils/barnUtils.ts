@@ -49,7 +49,8 @@ export const getFødselsdato = (barn: Barn): Date | undefined => {
 export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: SøkerBarn) => {
     const dato3MånederTilbake = dayjs(new Date()).subtract(3, 'month');
     return (
-        registrerteBarn.dødsdato !== undefined && dayjs(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
+        registrerteBarn.dødsdato !== undefined &&
+        dayjs.utc(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
     );
 };
 
