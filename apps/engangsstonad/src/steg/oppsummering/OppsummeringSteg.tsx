@@ -1,3 +1,4 @@
+import { Heading } from '@navikt/ds-react';
 import {
     BoIUtlandetOppsummeringspunkt,
     DegOppsummeringspunkt,
@@ -11,10 +12,22 @@ import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import React from 'react';
-import { erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
-import OmBarnetOppsummering from './OmBarnetOppsummering';
-import { Heading } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
+import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+import OmBarnetOppsummering from './OmBarnetOppsummering';
+
+const getDatoOgHendelsetype = (barn: OmBarnet): [string, HendelseType] => {
+    if (erBarnetFødt(barn)) {
+        return [barn.fødselsdato, HendelseType.FØDSEL];
+    }
+    if (erAdopsjon(barn)) {
+        return [barn.adopsjonsdato, HendelseType.ADOPSJON];
+    }
+    if (erBarnetIkkeFødt(barn)) {
+        return [barn.termindato, HendelseType.TERMIN];
+    }
+    throw new Error('Informasjon om barn er feil!');
+};
 
 export interface Props {
     person: Person;
@@ -34,8 +47,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad,
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
-    const fødselsdato = erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined;
-    const termindato = erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined;
+    const barnData = getDatoOgHendelsetype(omBarnet);
 
     return (
         <ContentWrapper>
@@ -55,8 +67,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad,
                     <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                 </OppsummeringIndex.Punkt>
                 <BoIUtlandetOppsummeringspunkt
-                    familiehendelseDato={notEmpty(fødselsdato || termindato)}
-                    hendelseType={fødselsdato ? HendelseType.FØDSEL : HendelseType.TERMIN}
+                    familiehendelseDato={barnData[0]}
+                    hendelseType={barnData[1]}
                     utenlandsopphold={utenlandsopphold}
                     tidligereUtenlandsopphold={tidligereUtenlandsopphold}
                     senereUtenlandsopphold={senereUtenlandsopphold}

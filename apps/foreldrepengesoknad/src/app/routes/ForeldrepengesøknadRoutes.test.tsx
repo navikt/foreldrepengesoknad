@@ -75,6 +75,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                                 person: {
                                     fornavn: 'Ola',
                                     barn: [] as RegistrertBarn[],
+                                    fødselsdato: '2000-01-01',
                                 } as Person,
                                 arbeidsforhold: [],
                             }}

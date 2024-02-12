@@ -136,7 +136,7 @@ const Oppsummering: FunctionComponent<Props> = ({
     return (
         <ContentWrapper>
             <Heading size="large">
-                <FormattedMessage id="Søknad.Pageheading" />
+                <FormattedMessage id="søknad.pageheading" />
             </Heading>
             <OppsummeringIndex
                 appName="Foreldrepenger"

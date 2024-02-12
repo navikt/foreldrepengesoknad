@@ -1,6 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import MockAdapter from 'axios-mock-adapter/types';
+import dayjs from 'dayjs';
 import { AnnenForelder, Attachment, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { Næringstype } from 'app/context/types/Næring';
@@ -13,6 +14,7 @@ import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/Info
 import SøknadRoutes from 'app/routes/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const promiseAction =
     () =>
@@ -44,15 +46,7 @@ const defaultSøkerinfo = {
             },
         ],
     } as Person,
-    arbeidsforhold: [
-        {
-            arbeidsgiverId: '896929119',
-            arbeidsgiverIdType: 'orgnr',
-            arbeidsgiverNavn: 'SAUEFABRIKK',
-            stillingsprosent: 100,
-            fom: '2018-03-01',
-        },
-    ],
+    arbeidsforhold: [],
 };
 
 const defaultBarn = {
@@ -340,8 +334,8 @@ MedUtenlandsopphold.args = {
             {
                 land: 'SE',
                 tidsperiode: {
-                    fom: '2021-01-01',
-                    tom: '2021-12-31',
+                    fom: dayjs().format(ISO_DATE_FORMAT),
+                    tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
                 },
             },
         ],
@@ -351,8 +345,8 @@ MedUtenlandsopphold.args = {
             {
                 land: 'SE',
                 tidsperiode: {
-                    fom: '2020-01-01',
-                    tom: '2020-12-31',
+                    fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
+                    tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
                 },
             },
         ],
