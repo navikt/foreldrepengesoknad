@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import SøknadRoutes from 'app/routes/routes';
 import { RequestStatus } from 'app/types/RequestState';
 import { MemoryRouter } from 'react-router-dom';
@@ -21,7 +21,7 @@ const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
 const søkerinfoFar = {
-    person: {
+    søker: {
         fnr: '1212121313',
         fornavn: 'Espen',
         etternavn: 'Utvikler',
@@ -46,7 +46,7 @@ const søkerinfoFar = {
 } as Søkerinfo;
 
 const søkerinfoMor = {
-    person: {
+    søker: {
         fnr: '19047815714',
         fornavn: 'TALENTFULL',
         etternavn: 'MYGG',
@@ -76,7 +76,12 @@ export default {
 };
 
 const Template: StoryFn<
-    UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; annenForelder: AnnenForelder; erMor: boolean; søker: Søker }
+    UttaksplanInfoTestData & {
+        dekningsgrad: Dekningsgrad;
+        annenForelder: AnnenForelder;
+        erMor: boolean;
+        søkerData: SøkerData;
+    }
 > = (args) => {
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
@@ -105,12 +110,12 @@ const Template: StoryFn<
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
                         },
-                        [ContextDataType.SØKER]: args.søker,
+                        [ContextDataType.SØKER_DATA]: args.søkerData,
                         [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                     }}
                 >
                     <UttaksplanInfo
-                        person={args.søkerinfo.person}
+                        søker={args.søkerinfo.søker}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -130,7 +135,7 @@ UttaksplanMedAleneomsorgDekningsgrad100.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -148,7 +153,7 @@ UttaksplanMedAleneomsorgDekningsgrad80.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -169,7 +174,7 @@ UttaksplanMedDeltUttakDerMorSøker.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -191,7 +196,7 @@ UttaksplanMedDeltUttakDerFarSøker100.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -213,7 +218,7 @@ UttaksplanMedDeltUttakDerFarSøker80.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

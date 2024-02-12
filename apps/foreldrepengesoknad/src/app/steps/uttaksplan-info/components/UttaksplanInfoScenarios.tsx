@@ -6,9 +6,9 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { Person, SøkersituasjonFp } from '@navikt/fp-types';
+import { Søker, SøkersituasjonFp } from '@navikt/fp-types';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import FarMedmorFødselFørsteganggsøknadBeggeHarRett from './scenarios/far-medmor-fødsel-begge-har-rett/FarMedmorFødselBeggeHarRett';
 import MorFødsel from './scenarios/mor-fodsel/MorFødsel';
 import MorFarAdopsjon from './scenarios/mor-far-adopsjon/MorFarAdopsjon';
@@ -25,10 +25,10 @@ interface Props {
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     søkersituasjon: SøkersituasjonFp;
-    søker: Søker;
+    søkerData: SøkerData;
     annenForelder: AnnenForelder;
     erEndringssøknad: boolean;
-    person: Person;
+    søker: Søker;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
@@ -39,10 +39,10 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     eksisterendeSakAnnenPart,
     søkersituasjon,
-    søker,
+    søkerData,
     annenForelder,
     erEndringssøknad,
-    person,
+    søker,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
@@ -61,7 +61,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     const scenario = getUttaksplanScenario({
         erFødsel,
         erFarEllerMedmor,
-        søkerErAleneOmOmsorg: !!søker.erAleneOmOmsorg,
+        søkerErAleneOmOmsorg: !!søkerData.erAleneOmOmsorg,
         annenForelderKanIkkeOppgis: annenForelder.kanIkkeOppgis,
         annenForelderHarRett: annenForelderHarRett,
         erAdopsjon,
@@ -77,7 +77,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
-                    person={person}
+                    søker={søker}
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
@@ -90,7 +90,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
-                    person={person}
+                    søker={søker}
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
@@ -102,7 +102,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
-                    person={person}
+                    søker={søker}
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
@@ -117,7 +117,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
-                    person={person}
+                    søker={søker}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
                 />
             );
@@ -127,7 +127,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
-                    person={person}
+                    søker={søker}
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
@@ -140,7 +140,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     eksisterendeSakFar={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
-                    person={person}
+                    søker={søker}
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
@@ -152,7 +152,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
-                    person={person}
+                    søker={søker}
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}
@@ -164,7 +164,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
                     erEndringssøknad={erEndringssøknad}
-                    person={person}
+                    søker={søker}
                     goToNextDefaultStep={goToNextDefaultStep}
                     goToPreviousDefaultStep={goToPreviousDefaultStep}
                     oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}

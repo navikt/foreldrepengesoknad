@@ -3,7 +3,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
-import { Person } from '@navikt/fp-types';
+import { Søker } from '@navikt/fp-types';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
@@ -22,8 +22,8 @@ export default {
     component: AppContainer,
 };
 
-const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndMetaData; doLogging?: boolean }> = ({
-    person,
+const Template: StoryFn<{ søker: Søker; mellomlagretData?: EsDataMapAndMetaData; doLogging?: boolean }> = ({
+    søker,
     mellomlagretData,
     doLogging = true,
 }) => {
@@ -34,7 +34,7 @@ const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndMetaDat
         if (doLogging) {
             console.log('network request: get /personinfo');
         }
-        return [200, person];
+        return [200, søker];
     });
     apiMock.onGet('/storage/engangsstonad').reply(() => {
         if (doLogging) {
@@ -70,7 +70,7 @@ const Template: StoryFn<{ person: Person; mellomlagretData?: EsDataMapAndMetaDat
 
 export const SøkerErKvinne = Template.bind({});
 SøkerErKvinne.args = {
-    person: {
+    søker: {
         fnr: '11111111111',
         fornavn: 'Henrikke',
         etternavn: 'Ibsen',
@@ -94,7 +94,7 @@ SøkerErKvinneMedMellomlagretData.args = {
         },
         [ContextDataType.CURRENT_PATH]: Path.SØKERSITUASJON,
     },
-    person: {
+    søker: {
         fnr: '11111111111',
         fornavn: 'Henrikke',
         etternavn: 'Ibsen',
@@ -110,7 +110,7 @@ SøkerErKvinneMedMellomlagretData.args = {
 
 export const SøkerErMann = Template.bind({});
 SøkerErMann.args = {
-    person: {
+    søker: {
         fnr: '1231111111',
         fornavn: 'Espen',
         etternavn: 'Utvikler',

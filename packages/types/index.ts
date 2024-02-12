@@ -9,7 +9,7 @@ export type { StepConfig } from './src/StepConfig';
 export type { default as Bankkonto } from './src/Bankkonto';
 export type { Sivilstand } from './src/Sivilstand';
 export { SivilstandType } from './src/Sivilstand';
-export type { Person, RegistrertBarn, RegistrertAnnenForelder } from './src/Person';
+export type { Søker, SøkerBarn, SøkerAnnenForelder } from './src/Søker';
 export type { Arbeidsforhold } from './src/Arbeidsforhold';
 export type { Søkerinfo } from './src/Søkerinfo';
 export type {

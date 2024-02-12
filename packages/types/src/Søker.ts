@@ -9,21 +9,21 @@ type PersonBase = {
     etternavn: string;
 };
 
-export type RegistrertAnnenForelder = {
+export type SøkerAnnenForelder = {
     fødselsdato?: string;
 } & PersonBase;
 
-export type RegistrertBarn = {
+export type SøkerBarn = {
     kjønn: Kjønn;
     fødselsdato: string;
     dødsdato?: string;
-    annenForelder?: RegistrertAnnenForelder;
+    annenForelder?: SøkerAnnenForelder;
 } & PersonBase;
 
-export type Person = {
+export type Søker = {
     fødselsdato: string;
     kjønn: Kjønn;
     bankkonto?: Bankkonto;
     sivilstand?: Sivilstand;
-    barn: RegistrertBarn[];
+    barn: SøkerBarn[];
 } & PersonBase;

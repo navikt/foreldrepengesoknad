@@ -1,6 +1,6 @@
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Person, RegistrertBarn, SivilstandType, SøkersituasjonFp } from '@navikt/fp-types';
+import { Søker, SøkerBarn, SivilstandType, SøkersituasjonFp } from '@navikt/fp-types';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
@@ -18,7 +18,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const person = {
+const søker = {
     fnr: '19047815714',
     fornavn: 'TALENTFULL',
     etternavn: 'MYGG',
@@ -39,7 +39,7 @@ const person = {
             kjønn: 'M',
         },
     ],
-} as Person;
+} as Søker;
 
 export default {
     title: 'steps/AnnenForelder',
@@ -47,7 +47,7 @@ export default {
 };
 
 interface Props {
-    person: Person;
+    søker: Søker;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelderType;
     barn?: Barn;
@@ -57,7 +57,7 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({
-    person,
+    søker,
     søkersituasjon = {
         situasjon: 'fødsel',
         rolle: 'mor',
@@ -96,7 +96,7 @@ const Template: StoryFn<Props> = ({
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.SØKER]: {
+                        [ContextDataType.SØKER_DATA]: {
                             // @ts-ignore TODO (TOR) Fiks Søker-typen
                             harHattAnnenInntektSiste10Mnd: undefined,
                             // @ts-ignore TODO (TOR) Fiks Søker-typen
@@ -109,7 +109,7 @@ const Template: StoryFn<Props> = ({
                     }}
                 >
                     <AnnenForelder
-                        person={person}
+                        søker={søker}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -129,7 +129,7 @@ Default.args = {
         dokumentasjonAvAleneomsorg: [],
         fnr: ['21091981146'],
     },
-    person,
+    søker,
 };
 
 export const SkalOppgiPersonalia = Template.bind({});
@@ -137,8 +137,8 @@ SkalOppgiPersonalia.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    person: {
-        ...person,
+    søker: {
+        ...søker,
         barn: [],
     },
 };
@@ -149,8 +149,8 @@ SkalOppgiPersonaliaNavnMangler.args = {
         fornavn: 'annen forelder',
         kanIkkeOppgis: false,
     },
-    person: {
-        ...person,
+    søker: {
+        ...søker,
         barn: [],
     },
 };
@@ -162,8 +162,8 @@ SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike.args = {
         fnr: '123456789',
         kanIkkeOppgis: false,
     },
-    person: {
-        ...person,
+    søker: {
+        ...søker,
 
         barn: [
             {
@@ -175,7 +175,7 @@ SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike.args = {
                     etternavn: 'BÆREPOSE',
                 },
             },
-        ] as RegistrertBarn[],
+        ] as SøkerBarn[],
     },
 };
 
@@ -193,8 +193,8 @@ ForFar.args = {
         situasjon: 'fødsel',
         rolle: 'far',
     },
-    person: {
-        ...person,
+    søker: {
+        ...søker,
         fornavn: 'LEALAUS',
         etternavn: 'BÆREPOSE',
         kjønn: 'M',
@@ -230,8 +230,8 @@ MorUfødtBarn.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    person: {
-        ...person,
+    søker: {
+        ...søker,
         barn: [],
     },
 };
@@ -250,8 +250,8 @@ MedmorUfødtBarn.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    person: {
-        ...person,
+    søker: {
+        ...søker,
         kjønn: 'K',
         barn: [],
     },
@@ -271,8 +271,8 @@ FarUfødtBarn.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    person: {
-        ...person,
+    søker: {
+        ...søker,
         fornavn: 'LEALAUS',
         etternavn: 'BÆREPOSE',
         kjønn: 'M',
@@ -294,8 +294,8 @@ FarGiftUfødtBarn.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    person: {
-        ...person,
+    søker: {
+        ...søker,
         fornavn: 'LEALAUS',
         etternavn: 'BÆREPOSE',
         kjønn: 'M',

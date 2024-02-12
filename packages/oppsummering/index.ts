@@ -3,4 +3,4 @@ export {
     default as BoIUtlandetOppsummeringspunkt,
     HendelseType,
 } from './src/utenlandsopphold/BoIUtlandetOppsummeringspunkt';
-export { default as DegOppsummeringspunkt } from './src/deg/DegOppsummeringspunkt';
+export { default as SøkerOppsummeringspunkt } from './src/søker/SøkerOppsummeringspunkt';

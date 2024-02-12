@@ -16,7 +16,7 @@ import '@navikt/ds-css';
 import './styles/app.less';
 
 const søkerinfo = {
-    person: {
+    søker: {
         fnr: '06499121154',
         fornavn: 'Tapper',
         etternavn: 'Konvolutt',

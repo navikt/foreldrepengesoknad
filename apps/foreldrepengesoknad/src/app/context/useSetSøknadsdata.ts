@@ -9,7 +9,7 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.SØKERSITUASJON, søknad.søkersituasjon);
         oppdaterData(ContextDataType.OM_BARNET, søknad.barn);
         oppdaterData(ContextDataType.ANNEN_FORELDER, søknad.annenForelder);
-        oppdaterData(ContextDataType.SØKER, søknad.søker);
+        oppdaterData(ContextDataType.SØKER_DATA, søknad.søker);
         oppdaterData(
             ContextDataType.UTENLANDSOPPHOLD,
             søknad.informasjonOmUtenlandsopphold

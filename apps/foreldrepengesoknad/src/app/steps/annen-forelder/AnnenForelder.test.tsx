@@ -61,7 +61,7 @@ describe('<AnnenForelder>', () => {
                 harJobbetSomFrilansSiste10Mnd: undefined,
                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
             },
-            key: ContextDataType.SØKER,
+            key: ContextDataType.SØKER_DATA,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {

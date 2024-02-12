@@ -41,9 +41,9 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
 
-    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';

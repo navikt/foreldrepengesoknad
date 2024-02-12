@@ -1,6 +1,6 @@
 import { Barn, formatDate, intlUtils, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { RegistrertBarn } from '@navikt/fp-types';
+import { SøkerBarn } from '@navikt/fp-types';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -28,10 +28,7 @@ const barnFødselsdatoLikSakFødselsdato = (
         : false;
 };
 
-export const getRegistrerteBarnOmDeFinnes = (
-    barn: Barn,
-    registrerteBarn: RegistrertBarn[],
-): RegistrertBarn[] | undefined => {
+export const getRegistrerteBarnOmDeFinnes = (barn: Barn, registrerteBarn: SøkerBarn[]): SøkerBarn[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
         ? registrerteBarn.filter(
               (regBarn) =>
@@ -49,7 +46,7 @@ export const getFødselsdato = (barn: Barn): Date | undefined => {
     return isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
 };
 
-export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: RegistrertBarn) => {
+export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: SøkerBarn) => {
     const dato3MånederTilbake = dayjs(new Date()).subtract(3, 'month');
     return (
         registrerteBarn.dødsdato !== undefined && dayjs(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
@@ -67,14 +64,14 @@ export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): stri
     return intlUtils(intl, 'flerlinger');
 };
 
-export const getLeverBarnet = (barn: RegistrertBarn) => {
+export const getLeverBarnet = (barn: SøkerBarn) => {
     return !barn.dødsdato;
 };
 
 export const getAndreBarnFødtSammenMedBarnet = (
     barnFnr: string | undefined,
     barnFødselsdato: string,
-    registrerteBarn: RegistrertBarn[],
+    registrerteBarn: SøkerBarn[],
 ) => {
     const dagenFørFødsel = dayjs(barnFødselsdato).subtract(1, 'day');
     const dagenEtterFødsel = dayjs(barnFødselsdato).add(1, 'day');

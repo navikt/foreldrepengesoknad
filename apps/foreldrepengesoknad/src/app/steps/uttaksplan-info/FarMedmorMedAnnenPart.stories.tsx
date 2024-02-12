@@ -20,7 +20,7 @@ const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
 const søkerinfo = {
-    person: {
+    søker: {
         fnr: '19047815714',
         fornavn: 'TALENTFULL',
         etternavn: 'MYGG',
@@ -101,7 +101,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
                         },
-                        [ContextDataType.SØKER]: {
+                        [ContextDataType.SØKER_DATA]: {
                             erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -119,7 +119,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                     }}
                 >
                     <UttaksplanInfo
-                        person={søkerinfo.person}
+                        søker={søkerinfo.søker}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}

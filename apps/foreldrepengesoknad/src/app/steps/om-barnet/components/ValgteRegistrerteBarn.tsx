@@ -1,6 +1,6 @@
 import { Label } from '@navikt/ds-react';
 import { Block, intlUtils } from '@navikt/fp-common';
-import { RegistrertBarn } from '@navikt/fp-types';
+import { SøkerBarn } from '@navikt/fp-types';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
 import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
@@ -12,7 +12,7 @@ import { OmBarnetFormComponents, OmBarnetFormField } from '../omBarnetFormConfig
 import { validateTermindatoFødsel } from '../validation/omBarnetValidering';
 
 interface Props {
-    valgteBarn: RegistrertBarn[];
+    valgteBarn: SøkerBarn[];
     visibility: QuestionVisibility<OmBarnetFormField, undefined>;
 }
 
@@ -33,7 +33,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                         </Label>
                     </Block>
                     {alleBarnaLever ? (
-                        valgteBarn.map((barn: RegistrertBarn) => (
+                        valgteBarn.map((barn) => (
                             <Block padBottom="s" key={barn.fnr}>
                                 <RegistrertePersonalia
                                     person={barn}

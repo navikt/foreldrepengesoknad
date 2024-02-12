@@ -8,8 +8,8 @@ import { Næringstype } from 'app/context/types/Næring';
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import Oppsummering from './Oppsummering';
 import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import Søker from 'app/context/types/Søker';
-import { Person, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+import SøkerData from 'app/context/types/SøkerData';
+import { Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import SøknadRoutes from 'app/routes/routes';
 import { MemoryRouter } from 'react-router-dom';
@@ -24,7 +24,7 @@ const promiseAction =
     };
 
 const defaultSøkerinfo = {
-    person: {
+    søker: {
         fnr: '19047815714',
         fornavn: 'TALENTFULL',
         etternavn: 'MYGG',
@@ -45,7 +45,7 @@ const defaultSøkerinfo = {
                 kjønn: 'M',
             },
         ],
-    } as Person,
+    } as Søker,
     arbeidsforhold: [],
 };
 
@@ -71,7 +71,7 @@ const defaultUtenlandsopphold = {
     iNorgeSiste12Mnd: true,
 };
 
-const defaultSøker = {} as Søker;
+const defaultSøker = {} as SøkerData;
 
 const defaultUttaksplan = [
     {
@@ -122,7 +122,7 @@ export default {
 
 interface Props {
     søkerinfo?: Søkerinfo;
-    søker?: Søker;
+    søkerData?: SøkerData;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
     utenlandsopphold?: Opphold;
@@ -139,7 +139,7 @@ interface Props {
 const Template: StoryFn<Props> = ({
     søkerinfo = defaultSøkerinfo,
     søkersituasjon = defaultSøkersituasjon,
-    søker = defaultSøker,
+    søkerData = defaultSøker,
     annenForelder = defaultAnnenForelder,
     barn = defaultBarn,
     utenlandsopphold = defaultUtenlandsopphold,
@@ -161,7 +161,7 @@ const Template: StoryFn<Props> = ({
                 <FpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.SØKER]: søker,
+                        [ContextDataType.SØKER_DATA]: søkerData,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.UTTAKSPLAN_METADATA]: {
@@ -194,7 +194,7 @@ export const Default = Template.bind({});
 
 export const MedAnnenForelder = Template.bind({});
 MedAnnenForelder.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -211,7 +211,7 @@ MedAnnenForelder.args = {
 
 export const MedAleneOmsorg = Template.bind({});
 MedAleneOmsorg.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: true,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -232,7 +232,7 @@ MedAleneOmsorg.args = {
 export const FarMedUførMor = Template.bind({});
 FarMedUførMor.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -252,7 +252,7 @@ FarMedUførMor.args = {
 export const FarMedMorSomHarRettIEØS = Template.bind({});
 FarMedMorSomHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -272,7 +272,7 @@ FarMedMorSomHarRettIEØS.args = {
 export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
 FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -292,7 +292,7 @@ FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
 export const FarMedMorSomHarRettINorge = Template.bind({});
 FarMedMorSomHarRettINorge.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -355,7 +355,7 @@ MedUtenlandsopphold.args = {
 
 export const MedArbeidsforholdOgAndreInntekter = Template.bind({});
 MedArbeidsforholdOgAndreInntekter.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: true,
         frilansInformasjon: {
@@ -366,7 +366,7 @@ MedArbeidsforholdOgAndreInntekter.args = {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
     søkerinfo: {
-        person: defaultSøkerinfo.person,
+        søker: defaultSøkerinfo.søker,
         arbeidsforhold: [
             {
                 arbeidsgiverId: '1',
@@ -389,7 +389,7 @@ MedArbeidsforholdOgAndreInntekter.args = {
 
 export const MedSelvstendigNæringsdrivende = Template.bind({});
 MedSelvstendigNæringsdrivende.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
         selvstendigNæringsdrivendeInformasjon: [
@@ -420,7 +420,7 @@ MedSelvstendigNæringsdrivende.args = {
 
 export const MedSelvstendigNæringsdrivendeUtenDiverse = Template.bind({});
 MedSelvstendigNæringsdrivendeUtenDiverse.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
         selvstendigNæringsdrivendeInformasjon: [
@@ -445,7 +445,7 @@ MedSelvstendigNæringsdrivendeUtenDiverse.args = {
 
 export const MedAndreInntekterJobbIUtlandet = Template.bind({});
 MedAndreInntekterJobbIUtlandet.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: true,
         andreInntekterSiste10Mnd: [
@@ -468,7 +468,7 @@ MedAndreInntekterJobbIUtlandet.args = {
 
 export const MedAndreInntekterMilitærtjeneste = Template.bind({});
 MedAndreInntekterMilitærtjeneste.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: true,
         andreInntekterSiste10Mnd: [
@@ -496,7 +496,7 @@ MedAndreInntekterMilitærtjeneste.args = {
 export const ErEndringssøknad = Template.bind({});
 ErEndringssøknad.args = {
     erEndringssøknad: true,
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,

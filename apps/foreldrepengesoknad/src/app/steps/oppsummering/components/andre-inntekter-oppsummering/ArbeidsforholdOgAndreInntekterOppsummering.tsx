@@ -9,21 +9,21 @@ import FrilansOppsummering from './FrilansOppsummering';
 import SelvstendigNæringsdrivendeOppsummering from './SelvstendigNæringsdrivendeOppsummering';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import { VStack } from '@navikt/ds-react';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    søker: Søker;
+    søkerData: SøkerData;
 }
 
 const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent<Props> = ({
     arbeidsforhold,
     barn,
     søkersituasjon,
-    søker,
+    søkerData,
 }) => {
     const intl = useIntl();
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
@@ -44,9 +44,9 @@ const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent<Props> = ({
                 <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={aktiveArbeidsForhold} />
             </OppsummeringsPunkt>
             <VStack gap="4">
-                <FrilansOppsummering søker={søker} />
-                <SelvstendigNæringsdrivendeOppsummering søker={søker} />
-                <AndreInntekterOppsummering søker={søker} />
+                <FrilansOppsummering søkerData={søkerData} />
+                <SelvstendigNæringsdrivendeOppsummering søkerData={søkerData} />
+                <AndreInntekterOppsummering søkerData={søkerData} />
             </VStack>
         </>
     );

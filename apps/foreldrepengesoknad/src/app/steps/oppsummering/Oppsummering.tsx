@@ -12,7 +12,7 @@ import {
 } from '@navikt/fp-common';
 import {
     BoIUtlandetOppsummeringspunkt,
-    DegOppsummeringspunkt,
+    SøkerOppsummeringspunkt,
     HendelseType,
     OppsummeringIndex,
 } from '@navikt/fp-oppsummering';
@@ -101,7 +101,7 @@ const Oppsummering: FunctionComponent<Props> = ({
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
@@ -112,10 +112,10 @@ const Oppsummering: FunctionComponent<Props> = ({
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, søkerErFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, søkerErFarEllerMedmor, intl);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
         søkerErFarEllerMedmor,
-        søker.erAleneOmOmsorg,
+        søkerData.erAleneOmOmsorg,
         annenForelder,
     );
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
@@ -147,14 +147,14 @@ const Oppsummering: FunctionComponent<Props> = ({
                 onContinueLater={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
-                <DegOppsummeringspunkt person={søkerInfo.person} />
+                <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
                 <OppsummeringIndex.Punkt tittel="Barnet" hide={erEndringssøknad}>
                     <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
                 </OppsummeringIndex.Punkt>
                 <OppsummeringIndex.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
                     <AnnenForelderOppsummering
                         annenForelder={annenForelder}
-                        søker={søker}
+                        søkerData={søkerData}
                         søkerrolle={søkersituasjon.rolle}
                         barn={barn}
                         farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
@@ -173,7 +173,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         barn={barn}
                         søkersituasjon={søkersituasjon}
-                        søker={søker}
+                        søkerData={søkerData}
                     />
                 </OppsummeringIndex.Punkt>
                 <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
@@ -189,7 +189,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                         familiehendelsesdato={familiehendelsesdato!}
                         termindato={termindato}
                         situasjon={søkersituasjon.situasjon}
-                        erAleneOmOmsorg={søker.erAleneOmOmsorg}
+                        erAleneOmOmsorg={søkerData.erAleneOmOmsorg}
                         antallBarn={barn.antallBarn}
                         ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
                     />

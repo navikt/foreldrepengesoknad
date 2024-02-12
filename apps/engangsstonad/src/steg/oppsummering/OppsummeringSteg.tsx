@@ -1,11 +1,11 @@
 import { Heading } from '@navikt/ds-react';
 import {
     BoIUtlandetOppsummeringspunkt,
-    DegOppsummeringspunkt,
+    SøkerOppsummeringspunkt,
     HendelseType,
     OppsummeringIndex,
 } from '@navikt/fp-oppsummering';
-import { Person } from '@navikt/fp-types';
+import { Søker } from '@navikt/fp-types';
 import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
@@ -30,12 +30,12 @@ const getDatoOgHendelsetype = (barn: OmBarnet): [string, HendelseType] => {
 };
 
 export interface Props {
-    person: Person;
+    søker: Søker;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad, mellomlagreOgNaviger }) => {
+const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad, mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
@@ -62,7 +62,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad,
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
-                <DegOppsummeringspunkt person={person} />
+                <SøkerOppsummeringspunkt søker={søker} />
                 <OppsummeringIndex.Punkt tittel={i18n('OppsummeringSteg.OmBarnet')}>
                     <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                 </OppsummeringIndex.Punkt>

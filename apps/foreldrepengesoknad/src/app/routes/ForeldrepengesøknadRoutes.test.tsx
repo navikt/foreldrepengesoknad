@@ -1,6 +1,6 @@
 import { allCommonMessages } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Person, RegistrertBarn } from '@navikt/fp-types';
+import { Søker, SøkerBarn } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 import { render, screen } from '@testing-library/react';
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
@@ -30,10 +30,10 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                             currentRoute={SøknadRoutes.VELKOMMEN}
                             søkerInfo={{
                                 arbeidsforhold: [],
-                                person: {
+                                søker: {
                                     fornavn: 'Ola',
-                                    barn: [] as RegistrertBarn[],
-                                } as Person,
+                                    barn: [] as SøkerBarn[],
+                                } as Søker,
                             }}
                             saker={[]}
                             lagretErEndringssøknad={false}
@@ -59,7 +59,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                                 situasjon: 'fødsel',
                                 rolle: 'mor',
                             },
-                            [ContextDataType.SØKER]: {
+                            [ContextDataType.SØKER_DATA]: {
                                 erAleneOmOmsorg: false,
                                 harHattAnnenInntektSiste10Mnd: false,
                                 harJobbetSomFrilansSiste10Mnd: false,
@@ -72,11 +72,11 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                             onChangeLocale={() => ({})}
                             currentRoute={SøknadRoutes.OM_BARNET}
                             søkerInfo={{
-                                person: {
+                                søker: {
                                     fornavn: 'Ola',
-                                    barn: [] as RegistrertBarn[],
+                                    barn: [] as SøkerBarn[],
                                     fødselsdato: '2000-01-01',
-                                } as Person,
+                                } as Søker,
                                 arbeidsforhold: [],
                             }}
                             saker={[]}

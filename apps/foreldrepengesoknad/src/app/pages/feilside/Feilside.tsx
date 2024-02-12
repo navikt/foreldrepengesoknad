@@ -1,6 +1,6 @@
 import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
 import { Block, LanguageToggle, Sidebanner, bemUtils } from '@navikt/fp-common';
-import { LocaleNo, Person } from '@navikt/fp-types';
+import { LocaleNo, Søker } from '@navikt/fp-types';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Api from 'app/api/api';
 import { useContextReset } from 'app/context/FpDataContext';
@@ -23,7 +23,7 @@ export interface FeilsideProps {
     skalKunneGåTilbakeTilSøknad: boolean;
     språkkode?: LocaleNo;
     setLanguage?: (languageCode: string) => void;
-    person?: Person;
+    søker?: Søker;
 }
 
 const Feilside: React.FunctionComponent<FeilsideProps> = ({
@@ -34,13 +34,13 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
     skalKunneGåTilbakeTilSøknad,
     språkkode,
     setLanguage,
-    person,
+    søker,
 }) => {
     const bem = bemUtils('feilside');
     const reset = useContextReset();
 
     const avbrytSøknadHandler = async () => {
-        if (!person) {
+        if (!søker) {
             return;
         }
 
@@ -53,7 +53,7 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
         reset();
 
         try {
-            await Api.deleteMellomlagretSøknad(person.fnr);
+            await Api.deleteMellomlagretSøknad(søker.fnr);
         } catch (error) {
             // Vi bryr oss ikke om feil her. Logges bare i backend
         }
@@ -94,14 +94,14 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
                 <Block padBottom="l">
                     <BodyShort>{ingress}</BodyShort>
                 </Block>
-                {person !== undefined && !skalKunneGåTilbakeTilSøknad && (
+                {søker !== undefined && !skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Button variant="primary" onClick={avbrytSøknadHandler}>
                             Start søknaden på nytt
                         </Button>
                     </div>
                 )}
-                {person !== undefined && skalKunneGåTilbakeTilSøknad && (
+                {søker !== undefined && skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Button variant="primary" onClick={gåTilbakeTilSøknadenHandler}>
                             Gå tilbake til søknaden

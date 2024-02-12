@@ -1,7 +1,7 @@
 import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 import { LanguageToggle, Sak, links } from '@navikt/fp-common';
 import { ConfirmationPanel, Form } from '@navikt/fp-form-hooks';
-import { LocaleNo, Person } from '@navikt/fp-types';
+import { LocaleNo, Søker } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import DinePlikter from 'app/components/dine-plikter/DinePlikter';
@@ -34,7 +34,7 @@ export interface Props {
     saker: Sak[];
     fnr: string;
     harGodkjentVilkår: boolean;
-    person: Person;
+    søker: Søker;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     setErEndringssøknad: (erEndringssøknad: boolean) => void;
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn: boolean) => void;
@@ -46,7 +46,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
     saker,
     onChangeLocale,
     harGodkjentVilkår,
-    person,
+    søker,
     setHarGodkjentVilkår,
     setErEndringssøknad,
     setSøknadGjelderNyttBarn,
@@ -61,7 +61,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
-    const selectableBarn = useMemo(() => getSelectableBarnOptions(saker, person.barn), [saker, person.barn]);
+    const selectableBarn = useMemo(() => getSelectableBarnOptions(saker, søker.barn), [saker, søker.barn]);
     const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
     const onSubmit = (values: VelkommenFormData) => {
@@ -108,7 +108,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
             nextRoute = SøknadRoutes.UTTAKSPLAN;
 
             const søknad = opprettSøknadFraEksisterendeSak(
-                person,
+                søker,
                 eksisterendeSak!,
                 intl,
                 valgtEksisterendeSak.annenPart,
@@ -116,7 +116,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
             ) as Søknad;
             oppdaterSøknadIState(søknad, eksisterendeSak);
         } else if (nySøknadPåAlleredeSøktBarn) {
-            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, person.barn) as Søknad;
+            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, søker.barn) as Søknad;
             oppdaterSøknadIState(søknad);
         } else if (nySøknadPåValgteRegistrerteBarn) {
             const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;

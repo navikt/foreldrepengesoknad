@@ -11,7 +11,7 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import dayjs from 'dayjs';
 import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
 import { MemoryRouter } from 'react-router-dom';
@@ -22,7 +22,7 @@ const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
 const søkerinfoFar = {
-    person: {
+    søker: {
         fnr: '1212121313',
         fornavn: 'Espen',
         etternavn: 'Utvikler',
@@ -56,7 +56,7 @@ const Template: StoryFn<
         søkersituasjon: SøkersituasjonFp;
         annenForelder: AnnenForelder;
         barn: Barn;
-        søker: Søker;
+        søkerData: SøkerData;
         dekningsgrad: Dekningsgrad;
     }
 > = (args) => {
@@ -73,7 +73,7 @@ const Template: StoryFn<
                     initialState={{
                         [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
                         [ContextDataType.OM_BARNET]: args.barn,
-                        [ContextDataType.SØKER]: args.søker,
+                        [ContextDataType.SØKER_DATA]: args.søkerData,
                         [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
@@ -81,7 +81,7 @@ const Template: StoryFn<
                     }}
                 >
                     <UttaksplanInfo
-                        person={args.søkerinfo.person}
+                        søker={args.søkerinfo.søker}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -117,14 +117,14 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
     søkerinfo: {
-        person: {
+        søker: {
             fnr: '19047815714',
             fornavn: 'TALENTFULL',
             etternavn: 'MYGG',
@@ -176,7 +176,7 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -211,7 +211,7 @@ UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -247,7 +247,7 @@ UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

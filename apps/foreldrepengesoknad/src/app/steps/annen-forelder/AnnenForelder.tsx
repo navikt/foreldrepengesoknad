@@ -17,7 +17,7 @@ import {
     isUfødtBarn,
     links,
 } from '@navikt/fp-common';
-import { Person } from '@navikt/fp-types';
+import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
@@ -25,7 +25,7 @@ import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -46,12 +46,12 @@ import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
 
 type Props = {
-    person: Person;
+    søker: Søker;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const AnnenForelder: React.FunctionComponent<Props> = ({ person, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig();
@@ -64,14 +64,14 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ person, mellomlagreSøk
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER) || {
         kanIkkeOppgis: false,
     };
-    const søker = useContextGetData(ContextDataType.SØKER);
+    const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
-    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
 
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
-    const funnetRegistrerteBarn = getRegistrerteBarnOmDeFinnes(barn, person.barn);
+    const funnetRegistrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
     const registrertBarnMedAnnenForelder =
         funnetRegistrerteBarn === undefined || funnetRegistrerteBarn.length === 0
             ? undefined
@@ -86,7 +86,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ person, mellomlagreSøk
             annenForelder.fnr !== annenForelderFraRegistrertBarn.fnr);
     const søkerErFar = rolle === 'far';
     const søkerErMor = rolle === 'mor';
-    const søkerErIkkeGift = person.sivilstand === undefined || person.sivilstand.type !== SivilstandType.GIFT;
+    const søkerErIkkeGift = søker.sivilstand === undefined || søker.sivilstand.type !== SivilstandType.GIFT;
     const barnetErIkkeFødt = isUfødtBarn(barn);
     let tekstOmFarskapsportalId = '';
     if (søkerErFar && barnetErIkkeFødt) {
@@ -100,8 +100,8 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ person, mellomlagreSøk
         setIsSubmitting(true);
 
         // @ts-ignore TODO (TOR) Søker er dårleg typa. Her skal den kunne innehalda kun erAleneOmsorg, og så blir den utvida seinare
-        const newSøker: Søker = {
-            ...(søker || {}),
+        const newSøker: SøkerData = {
+            ...(søkerData || {}),
             erAleneOmOmsorg: values.kanIkkeOppgis ? true : !!convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
         };
         const newBarn: Barn = {
@@ -129,7 +129,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ person, mellomlagreSøk
                 barn,
                 annenForelderFraRegistrertBarn,
                 intl,
-                søker,
+                søkerData,
             )}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
@@ -182,7 +182,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ person, mellomlagreSøk
                                         kanIkkeOppgis={formValues.kanIkkeOppgis}
                                         visibility={visibility}
                                         gjelderAdopsjon={false}
-                                        søkersFødselsnummer={person.fnr}
+                                        søkersFødselsnummer={søker.fnr}
                                     />
                                 </Block>
                             )}

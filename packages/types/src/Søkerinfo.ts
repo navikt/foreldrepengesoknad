@@ -1,7 +1,7 @@
 import { Arbeidsforhold } from './Arbeidsforhold';
-import { Person } from './Person';
+import { Søker } from './Søker';
 
 export type Søkerinfo = {
-    person: Person;
+    søker: Søker;
     arbeidsforhold: Arbeidsforhold[];
 };

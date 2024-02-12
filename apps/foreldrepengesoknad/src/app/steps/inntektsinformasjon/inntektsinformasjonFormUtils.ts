@@ -1,7 +1,7 @@
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { Frilans, FrilansOppdrag } from 'app/context/types/Frilans';
 import { Næring } from 'app/context/types/Næring';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
@@ -59,10 +59,10 @@ export const cleanupInvisibleCharsFromAndreInntekter = (andreInntekter: AnnenInn
 
 export const mapInntektsinformasjonFormDataToState = (
     values: Partial<InntektsinformasjonFormData>,
-    søker: Søker,
+    søkerData: SøkerData,
     andreInntekter?: AnnenInntekt[],
     næringer?: Næring[],
-): Søker => {
+): SøkerData => {
     let frilansInformasjon: Frilans | undefined = undefined;
 
     if (values.hattInntektSomFrilans === YesOrNo.YES) {
@@ -73,7 +73,7 @@ export const mapInntektsinformasjonFormDataToState = (
     }
 
     return {
-        erAleneOmOmsorg: søker.erAleneOmOmsorg,
+        erAleneOmOmsorg: søkerData.erAleneOmOmsorg,
         harHattAnnenInntektSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattAndreInntekter)!,
         harJobbetSomFrilansSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(values.hattInntektSomFrilans)!,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: convertYesOrNoOrUndefinedToBoolean(
@@ -89,17 +89,19 @@ export const mapInntektsinformasjonFormDataToState = (
     };
 };
 
-export const getInitialInntektsinformasjonFormValues = (søker: Søker): InntektsinformasjonFormData => {
+export const getInitialInntektsinformasjonFormValues = (søkerData: SøkerData): InntektsinformasjonFormData => {
     return {
         ...initialInntektsinformasjonFormValues,
-        hattAndreInntekter: convertBooleanOrUndefinedToYesOrNo(søker.harHattAnnenInntektSiste10Mnd),
+        hattAndreInntekter: convertBooleanOrUndefinedToYesOrNo(søkerData.harHattAnnenInntektSiste10Mnd),
         hattInntektSomNæringsdrivende: convertBooleanOrUndefinedToYesOrNo(
-            søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+            søkerData.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
         ),
-        hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søker.harJobbetSomFrilansSiste10Mnd),
-        frilansOppstartsDato: søker.frilansInformasjon ? dateToISOString(søker.frilansInformasjon.oppstart) : '',
-        jobberFremdelesSomFrilanser: søker.frilansInformasjon
-            ? convertBooleanOrUndefinedToYesOrNo(søker.frilansInformasjon.jobberFremdelesSomFrilans)
+        hattInntektSomFrilans: convertBooleanOrUndefinedToYesOrNo(søkerData.harJobbetSomFrilansSiste10Mnd),
+        frilansOppstartsDato: søkerData.frilansInformasjon
+            ? dateToISOString(søkerData.frilansInformasjon.oppstart)
+            : '',
+        jobberFremdelesSomFrilanser: søkerData.frilansInformasjon
+            ? convertBooleanOrUndefinedToYesOrNo(søkerData.frilansInformasjon.jobberFremdelesSomFrilans)
             : YesOrNo.UNANSWERED,
     };
 };

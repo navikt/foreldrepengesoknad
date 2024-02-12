@@ -37,7 +37,7 @@ const renderSøknadRoutes = (
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
 
-    if (!erMyndig(søkerInfo.person.fødselsdato)) {
+    if (!erMyndig(søkerInfo.søker.fødselsdato)) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
     }
 
@@ -77,7 +77,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.SØKERSITUASJON}
                 element={
                     <SøkersituasjonSteg
-                        kjønn={søkerInfo.person.kjønn}
+                        kjønn={søkerInfo.søker.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -98,7 +98,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.ANNEN_FORELDER}
                 element={
                     <AnnenForelder
-                        person={søkerInfo.person}
+                        søker={søkerInfo.søker}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -117,7 +117,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.UTTAKSPLAN_INFO}
                 element={
                     <UttaksplanInfo
-                        person={søkerInfo.person}
+                        søker={søkerInfo.søker}
                         erEndringssøknad={erEndringssøknad}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -219,23 +219,18 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(
-        søkerInfo.person.fnr,
-        erEndringssøknad,
-        setKvittering,
-        locale,
-    );
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.søker.fnr, erEndringssøknad, setKvittering, locale);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         locale,
-        søkerInfo.person.fnr,
+        søkerInfo.søker.fnr,
         erEndringssøknad,
         harGodkjentVilkår,
         søknadGjelderNyttBarn,
     );
 
     const avbrytSøknad = useAvbrytSøknad(
-        søkerInfo.person.fnr,
+        søkerInfo.søker.fnr,
         setErEndringssøknad,
         setHarGodkjentVilkår,
         setSøknadGjelderNyttBarn,
@@ -244,12 +239,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
     useEffect(() => {
-        if (
-            currentRoute &&
-            erMyndig(søkerInfo.person.fødselsdato) &&
-            lagretHarGodkjentVilkår &&
-            isFirstTimeLoadingApp
-        ) {
+        if (currentRoute && erMyndig(søkerInfo.søker.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
             setIsFirstTimeLoadingApp(false);
             if (isAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);
@@ -261,7 +251,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
         }
     }, [
         currentRoute,
-        søkerInfo.person.fødselsdato,
+        søkerInfo.søker.fødselsdato,
         lagretHarGodkjentVilkår,
         navigate,
         isFirstTimeLoadingApp,
@@ -285,13 +275,13 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                 path={SøknadRoutes.VELKOMMEN}
                 element={
                     <Velkommen
-                        fornavn={søkerInfo.person.fornavn}
+                        fornavn={søkerInfo.søker.fornavn}
                         locale={locale}
                         saker={saker}
                         onChangeLocale={onChangeLocale}
-                        fnr={søkerInfo.person.fnr}
+                        fnr={søkerInfo.søker.fnr}
                         harGodkjentVilkår={harGodkjentVilkår}
-                        person={søkerInfo.person}
+                        søker={søkerInfo.søker}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
                         setErEndringssøknad={setErEndringssøknad}
                         setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}

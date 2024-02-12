@@ -3,7 +3,8 @@ import { AnnenInntekt } from './AnnenInntekt';
 import { Frilans } from './Frilans';
 import { Næring } from './Næring';
 
-interface Søker {
+// TODO (TOR) Denne bør fjernast. Data bør ligga i typane som er knytta til dei ulike formene
+interface SøkerData {
     erAleneOmOmsorg: boolean;
     harJobbetSomFrilansSiste10Mnd: boolean;
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
@@ -14,4 +15,4 @@ interface Søker {
     språkkode?: LocaleNo;
 }
 
-export default Søker;
+export default SøkerData;

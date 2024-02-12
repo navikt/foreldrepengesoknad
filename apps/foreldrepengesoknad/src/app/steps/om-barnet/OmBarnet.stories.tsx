@@ -18,7 +18,7 @@ const promiseAction =
     };
 
 const søkerinfo = {
-    person: {
+    søker: {
         fnr: '19047815714',
         fornavn: 'TALENTFULL',
         etternavn: 'MYGG',
@@ -140,7 +140,7 @@ FarFødsel.args = {
         rolle: 'far',
     },
     barn: undefined,
-    søkerinfo: { ...søkerinfo, person: { ...søkerinfo.person, kjønn: 'M' } },
+    søkerinfo: { ...søkerinfo, søker: { ...søkerinfo.søker, kjønn: 'M' } },
 };
 
 export const MedmorFødsel = Template.bind({});
@@ -224,7 +224,7 @@ RegistrertBarnTrillingerDerEnErDød.args = {
     },
     søknadGjelderEtNyttBarn: false,
     søkerinfo: {
-        person: {
+        søker: {
             fnr: '21430354032',
             fornavn: 'Hes',
             etternavn: 'Mandagsbil',
@@ -306,5 +306,5 @@ SøknadPåUregistrertBarnSomErFødt.args = {
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
-    søkerinfo: { ...søkerinfo, person: { ...søkerinfo.person, barn: [] } },
+    søkerinfo: { ...søkerinfo, søker: { ...søkerinfo.søker, barn: [] } },
 };

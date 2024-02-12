@@ -10,7 +10,7 @@ import {
     isUfødtBarn,
     Step,
 } from '@navikt/fp-common';
-import { RegistrertBarn, Søkerinfo } from '@navikt/fp-types';
+import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -55,11 +55,11 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, person } = søkerInfo;
+    const { arbeidsforhold, søker } = søkerInfo;
 
     const [erForTidligTilÅSøkePåTermin, setErForTidligTilÅSøkePåTermin] = useState(false);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
+    const findBarnetIRegistrerteBarn = (regBarn: SøkerBarn) => {
         if (omBarnet && !isUfødtBarn(omBarnet) && omBarnet.fnr !== undefined && omBarnet.fnr.length > 0) {
             return omBarnet.fnr.includes(regBarn.fnr);
         }
@@ -70,7 +70,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? person.barn.filter(
+            ? søker.barn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -78,7 +78,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? person.barn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
+            ? søker.barn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;
     const barnSøktOmFørMenIkkeRegistrert =
         !søknadGjelderNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);

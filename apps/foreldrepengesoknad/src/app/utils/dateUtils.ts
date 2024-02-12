@@ -19,7 +19,7 @@ import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'ap
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { isISODateString } from '@navikt/ds-datepicker';
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
-import { RegistrertBarn } from '@navikt/fp-types';
+import { SøkerBarn } from '@navikt/fp-types';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -41,7 +41,7 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
     return false;
 };
 
-export const getEldsteRegistrerteBarn = (registrerteBarn: RegistrertBarn[]): RegistrertBarn => {
+export const getEldsteRegistrerteBarn = (registrerteBarn: SøkerBarn[]): SøkerBarn => {
     return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1))[
         registrerteBarn.length - 1
     ];

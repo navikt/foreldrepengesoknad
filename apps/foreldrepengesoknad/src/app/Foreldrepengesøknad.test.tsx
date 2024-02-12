@@ -8,7 +8,7 @@ import { IntlProvider } from '@navikt/fp-ui';
 import nbMessages from './intl/nb_NO.json';
 import { RequestStatus } from './types/RequestState';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { RegistrertBarn, Søkerinfo } from '@navikt/fp-types';
+import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
@@ -48,10 +48,10 @@ describe('<Foreldrepengesøknad>', () => {
         initAmplitude();
         const søkerinfoData = {
             søkerinfoData: {
-                person: {
+                søker: {
                     fornavn: 'Olga',
                     fnr: '12117212090',
-                    barn: [] as RegistrertBarn[],
+                    barn: [] as SøkerBarn[],
                 },
                 arbeidsforhold: [
                     {

@@ -3,10 +3,10 @@ import Feilside from 'app/pages/feilside/Feilside';
 import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
 import { Component, ReactElement } from 'react';
 import { links } from '@navikt/fp-common';
-import { Person } from '@navikt/fp-types';
+import { Søker } from '@navikt/fp-types';
 
 interface Props {
-    person?: Person;
+    søker?: Søker;
     children: ReactElement;
 }
 
@@ -44,7 +44,7 @@ class ErrorBoundary extends Component<Props, State> {
                     dokumenttittel="NAV Foreldrepengesøknad"
                     ingress={`${this.state.error?.message}`}
                     tittel={feilsideTittel}
-                    person={this.props.person}
+                    søker={this.props.søker}
                     illustrasjon={{
                         tittel: 'Hei!',
                         tekst: 'Noe har gått galt med søknaden.',

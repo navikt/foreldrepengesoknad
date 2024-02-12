@@ -86,7 +86,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     }
 
     return (
-        <ErrorBoundary person={søkerinfoData.person}>
+        <ErrorBoundary søker={søkerinfoData.søker}>
             <FpDataContext initialState={initialState}>
                 <BrowserRouter>
                     <ForeldrepengesøknadRoutes

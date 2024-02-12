@@ -1,8 +1,8 @@
+import { Søker } from '@navikt/fp-types';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { AnnenForelder, Kjønn, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from '../types';
 import intlUtils from './intlUtils';
-import { Person } from '@navikt/fp-types';
 
 export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
     if (visEtternavn) {
@@ -87,12 +87,12 @@ export const getFarMedmorErAleneOmOmsorg = (
 };
 
 export const getNavnPåForeldre = (
-    person: Person,
+    søker: Søker,
     annenForelder: AnnenForelder,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): NavnPåForeldre => {
-    const navnSøker = person.fornavn;
+    const navnSøker = søker.fornavn;
     const navnAnnenForelder =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn

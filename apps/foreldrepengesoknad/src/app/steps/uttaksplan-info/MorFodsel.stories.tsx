@@ -17,7 +17,7 @@ import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import SøknadRoutes from 'app/routes/routes';
@@ -32,7 +32,12 @@ export default {
 };
 
 const Template: StoryFn<
-    UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; annenForelder: AnnenForelder; barn: Barn; søker: Søker }
+    UttaksplanInfoTestData & {
+        dekningsgrad: Dekningsgrad;
+        annenForelder: AnnenForelder;
+        barn: Barn;
+        søkerData: SøkerData;
+    }
 > = (args) => {
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
@@ -51,7 +56,7 @@ const Template: StoryFn<
                             rolle: 'mor',
                         },
                         [ContextDataType.OM_BARNET]: args.barn,
-                        [ContextDataType.SØKER]: args.søker,
+                        [ContextDataType.SØKER_DATA]: args.søkerData,
                         [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
@@ -59,7 +64,7 @@ const Template: StoryFn<
                     }}
                 >
                     <UttaksplanInfo
-                        person={{
+                        søker={{
                             fnr: '19047815714',
                             fornavn: 'TALENTFULL',
                             etternavn: 'MYGG',
@@ -105,7 +110,7 @@ UttaksplanMedAleneomsorgDekningsgrad100.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -128,7 +133,7 @@ UttaksplanMedAleneomsorgDekningsgrad80.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -152,7 +157,7 @@ UttaksplanMedPrematurFødselDekningsgrad100.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -179,7 +184,7 @@ UttaksplanMedDeltUttakDekningsgrad100.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -206,7 +211,7 @@ UttaksplanMedFlerbarnsukerTvillingerDekningsgrad100.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

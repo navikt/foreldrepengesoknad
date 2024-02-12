@@ -55,7 +55,7 @@ const Template: StoryFn<Props> = ({
                         fødselsdatoer: [new Date()],
                         antallBarn: 1,
                     },
-                    [ContextDataType.SØKER]: {
+                    [ContextDataType.SØKER_DATA]: {
                         erAleneOmOmsorg: false,
                         // @ts-ignore FIX
                         harJobbetSomFrilansSiste10Mnd: undefined,

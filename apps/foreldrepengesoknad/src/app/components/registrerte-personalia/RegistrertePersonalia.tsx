@@ -5,10 +5,10 @@ import { bemUtils, formaterNavn } from '@navikt/fp-common';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import './registrertePersonalia.less';
-import { RegistrertAnnenForelder, RegistrertBarn } from '@navikt/fp-types';
+import { SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 
 interface Props {
-    person: RegistrertAnnenForelder | RegistrertBarn;
+    person: SøkerAnnenForelder | SøkerBarn;
     visEtternavn: boolean;
     fødselsnummerForVisning?: string;
     fødselsdatoForVisning?: string;

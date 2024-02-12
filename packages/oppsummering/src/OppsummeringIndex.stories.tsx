@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import OppsummeringIndex from './OppsummeringIndex';
 import BoIUtlandetOppsummeringspunkt, { HendelseType } from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
 import { Utenlandsopphold, UtenlandsoppholdTidligere, UtenlandsoppholdSenere } from '@navikt/fp-types';
-import DegOppsummeringspunkt from './deg/DegOppsummeringspunkt';
+import SøkerOppsummeringspunkt from './søker/SøkerOppsummeringspunkt';
 import { notEmpty } from '@navikt/fp-validation';
 
 const promiseAction =
@@ -55,8 +55,8 @@ const Template: StoryFn<{
             ]}
             appName="Engangsstønad"
         >
-            <DegOppsummeringspunkt
-                person={{
+            <SøkerOppsummeringspunkt
+                søker={{
                     fornavn: 'Henrikke',
                     fnr: '01018823234',
                     etternavn: 'Ibsen',

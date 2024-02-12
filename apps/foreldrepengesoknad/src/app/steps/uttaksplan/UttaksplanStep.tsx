@@ -96,7 +96,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
@@ -130,7 +130,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, erFarEllerMedmor, intl);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
     const morHarRett = getMorHarRettPåForeldrepengerINorgeEllerEØS(rolle, erFarEllerMedmor, annenForelder);
@@ -434,7 +434,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     };
 
     const foreldreSituasjon = getForeldreparSituasjon(
-        søkerInfo.person.kjønn,
+        søkerInfo.søker.kjønn,
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,
@@ -588,7 +588,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                 erIUttaksplanenSteg={true}
                                 tilgjengeligeStønadskontoer={valgteStønadskontoer}
                                 minsterettUkerToTette={minsterettUkerToTette}
-                                person={søkerInfo.person}
+                                søker={søkerInfo.søker}
                             />
                         </Block>
                         <Uttaksplan

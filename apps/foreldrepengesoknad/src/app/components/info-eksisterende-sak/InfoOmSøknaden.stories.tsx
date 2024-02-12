@@ -7,15 +7,15 @@ import {
     Periodetype,
     StønadskontoType,
 } from '@navikt/fp-common';
-import { Person, SøkersituasjonFp } from '@navikt/fp-types';
+import { Søker, SøkersituasjonFp } from '@navikt/fp-types';
 import { StoryFn } from '@storybook/react';
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import dayjs from 'dayjs';
 import withRouter from 'storybook/decorators/withRouter';
 import InfoOmSøknaden from './InfoOmSøknaden';
 
-const person = {
+const søker = {
     fnr: '19047815714',
     fornavn: 'TALENTFULL',
     etternavn: 'MYGG',
@@ -36,7 +36,7 @@ const person = {
             kjønn: 'M',
         },
     ],
-} as Person;
+} as Søker;
 
 export default {
     title: 'components/InfoOmSøknaden',
@@ -48,13 +48,13 @@ interface Props {
     erIUttaksplanenSteg: boolean;
     ekisterendeSak?: EksisterendeSak;
     annenForelder: AnnenForelderType;
-    søker: Søker;
+    søkerData: SøkerData;
     søkersituasjon: SøkersituasjonFp;
 }
 
 const Template: StoryFn<Props> = ({
     annenForelder,
-    søker,
+    søkerData,
     søkersituasjon,
     erIUttaksplanenSteg = true,
     ekisterendeSak,
@@ -70,7 +70,7 @@ const Template: StoryFn<Props> = ({
                     dokumentasjonAvAleneomsorg: [],
                 },
                 [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                [ContextDataType.SØKER]: søker,
+                [ContextDataType.SØKER_DATA]: søkerData,
                 [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                 [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
             }}
@@ -84,7 +84,7 @@ const Template: StoryFn<Props> = ({
                 ]}
                 eksisterendeSak={ekisterendeSak}
                 erIUttaksplanenSteg={erIUttaksplanenSteg}
-                person={person}
+                søker={søker}
             />
         </FpDataContext>
     );
@@ -99,12 +99,12 @@ Default.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {} as Søker,
+    søkerData: {} as SøkerData,
 };
 
 export const AnnenForelder = Template.bind({});
 AnnenForelder.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -125,7 +125,7 @@ AnnenForelder.args = {
 
 export const InfoOmMorsSak = Template.bind({});
 InfoOmMorsSak.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,

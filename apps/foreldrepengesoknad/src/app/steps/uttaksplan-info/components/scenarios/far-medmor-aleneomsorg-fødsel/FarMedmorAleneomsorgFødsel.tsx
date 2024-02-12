@@ -37,13 +37,13 @@ import {
     mapFarMedmorAleneomsorgFødselFormToState,
 } from './farMedmorAleneomsorgFødselUtils';
 import { validateStartdatoUttakFarMedmorAleneomsorgFødsel } from './validation/farMedmorAleneomsorgFødselValidation';
-import { Person } from '@navikt/fp-types';
+import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
-    person: Person;
+    søker: Søker;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
@@ -53,7 +53,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer100DTO,
     tilgjengeligeStønadskontoer80DTO,
     erEndringssøknad,
-    person,
+    søker,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
@@ -65,7 +65,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -140,14 +140,14 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         return goToNextDefaultStep();
     };
 
-    const shouldRender = erFødsel && erFarEllerMedmor && (!!søker.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
+    const shouldRender = erFødsel && erFarEllerMedmor && (!!søkerData.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
 
     if (!shouldRender) {
         return null;
     }
 
     const navnFar = erFarEllerMedmor
-        ? person.fornavn
+        ? søker.fornavn
         : isAnnenForelderOppgitt(annenForelder)
           ? annenForelder.fornavn
           : '';
