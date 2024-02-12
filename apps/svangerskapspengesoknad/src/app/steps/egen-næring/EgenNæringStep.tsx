@@ -81,7 +81,6 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
             oppdaterTilrettelegginger(automatiskValgtTilrettelegging);
         }
 
-        console.log('oppdater næring');
         oppdaterEgenNæring(næringsdata);
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteForNæring(
@@ -89,9 +88,8 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
             barnet.termindato,
             søkerInfo.arbeidsforhold,
         );
-        console.log('oppdater tilrettelegging');
+
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
-        console.log('oppdater route');
         oppdaterAppRoute(nextRoute);
 
         mellomlagreSøknadOgNaviger();

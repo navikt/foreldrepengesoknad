@@ -1,4 +1,4 @@
-import { EgenNæringFormData, initialEgenNæringFormData } from './egenNæringFormConfig';
+import { EgenNæringFormData } from './egenNæringFormConfig';
 import { EgenNæring } from 'app/types/EgenNæring';
 import dayjs from 'dayjs';
 import { date4YearsAgo } from 'app/utils/dateUtils';
@@ -41,13 +41,12 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData)
     };
 };
 
-export const getInitialEgenNæringFormValues = (næring: EgenNæring | undefined): EgenNæringFormData => {
+export const getInitialEgenNæringFormValues = (næring: EgenNæring | undefined): EgenNæringFormData | undefined => {
     if (næring === undefined) {
-        return initialEgenNæringFormData;
+        return undefined;
     }
 
     return {
-        ...initialEgenNæringFormData,
         egenNæringType: næring.næringstype,
         egenNæringNavn: næring.navnPåNæringen || '',
         egenNæringRegistrertINorge: næring.registrertINorge,

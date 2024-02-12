@@ -35,21 +35,3 @@ export interface EgenNæringFormData {
     [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: string | undefined;
     [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: string | undefined;
 }
-
-export const initialEgenNæringFormData: EgenNæringFormData = {
-    [EgenNæringFormField.egenNæringType]: undefined!,
-    [EgenNæringFormField.egenNæringNavn]: '',
-    [EgenNæringFormField.egenNæringRegistrertINorge]: undefined,
-    [EgenNæringFormField.egenNæringOrgnr]: '',
-    [EgenNæringFormField.egenNæringLand]: '',
-    [EgenNæringFormField.egenNæringTom]: '',
-    [EgenNæringFormField.egenNæringFom]: '',
-    [EgenNæringFormField.egenNæringPågående]: undefined,
-    [EgenNæringFormField.egenNæringResultat]: '',
-    [EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene]: undefined,
-    [EgenNæringFormField.egenNæringYrkesAktivDato]: '',
-    [EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene]: undefined,
-    [EgenNæringFormField.egenNæringVarigEndringDato]: '',
-    [EgenNæringFormField.egenNæringVarigEndringInntektEtterEndring]: '',
-    [EgenNæringFormField.egenNæringVarigEndringBeskrivelse]: '',
-};
