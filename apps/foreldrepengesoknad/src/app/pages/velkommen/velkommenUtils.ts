@@ -54,8 +54,8 @@ export const getErDatoInnenEnDagFraAnnenDato = (dato1: string | undefined, dato2
         return false;
     }
     return (
-        dayjs(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
-        dayjs(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
+        dayjs.utc(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
+        dayjs.utc(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
     );
 };
 
@@ -87,7 +87,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): Valgt
 
     let fødselsdatoer;
     if (pdlBarn && pdlBarn.length > 0) {
-        fødselsdatoer = pdlBarn.map((barn) => barn.fødselsdato);
+        fødselsdatoer = pdlBarn.map((barn) => dayjs.utc(barn.fødselsdato).toDate());
     } else if (fødselsdatoFraSak !== undefined) {
         fødselsdatoer = Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak);
     }
@@ -212,7 +212,7 @@ const getSelectableBarnOptionsFraPDL = (
         (b) =>
             !(
                 b.dødsdato !== undefined &&
-                !!fødselsdatoPåBarnFraSaker.find((dato) => dayjs(dato).isSame(dayjs(b.fødselsdato), 'day'))
+                !!fødselsdatoPåBarnFraSaker.find((dato) => dayjs(dato).isSame(dayjs.utc(b.fødselsdato), 'day'))
             ),
     );
     registrerteBarnUtenDødeBarnMedSak.forEach((regBarn) => {

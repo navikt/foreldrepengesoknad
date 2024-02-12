@@ -66,8 +66,8 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteBarn, vis
                     dayPickerProps={{
                         defaultMonth: dayjs.utc(fødselsdato).toDate(),
                     }}
-                    minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
-                    maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}
+                    minDate={dayjs.utc(fødselsdato).subtract(1, 'months').toDate()}
+                    maxDate={dayjs.utc(fødselsdato).add(6, 'months').toDate()}
                     placeholder={'dd.mm.åååå'}
                     validate={validateTermindatoFødsel(fødselsdato, intl)}
                 />

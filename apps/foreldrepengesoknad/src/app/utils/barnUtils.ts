@@ -24,7 +24,7 @@ const barnFødselsdatoLikSakFødselsdato = (
     regBarnFødselsdato: string | undefined,
 ) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
-        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
+        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(dayjs.utc(regBarnFødselsdato))) !== undefined
         : false;
 };
 
@@ -74,13 +74,13 @@ export const getAndreBarnFødtSammenMedBarnet = (
     barnFødselsdato: string,
     registrerteBarn: SøkerBarn[],
 ) => {
-    const dagenFørFødsel = dayjs(barnFødselsdato).subtract(1, 'day');
-    const dagenEtterFødsel = dayjs(barnFødselsdato).add(1, 'day');
+    const dagenFørFødsel = dayjs.utc(barnFødselsdato).subtract(1, 'day');
+    const dagenEtterFødsel = dayjs.utc(barnFødselsdato).add(1, 'day');
     return registrerteBarn.filter(
         (b) =>
             b.fnr !== barnFnr &&
-            dayjs(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
-            dayjs(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day'),
+            dayjs.utc(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
+            dayjs.utc(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day'),
     );
 };
 
