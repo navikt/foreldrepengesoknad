@@ -5,11 +5,10 @@ import { VStack } from '@navikt/ds-react';
 import { AttachmentType, Step } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { FileUploader } from '@navikt/fp-ui';
-import { Attachment } from '@navikt/fp-types';
+import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import SøknadRoutes from 'app/routes/routes';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
@@ -29,19 +28,19 @@ export interface SkjemaFormData {
 export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
     maxAntallVedlegg?: number;
 }
 
 const SkjemaSteg: FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
-    søkerInfo,
+    arbeidsforhold,
     maxAntallVedlegg = MAX_ANTALL_VEDLEGG,
 }) => {
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(intl, arbeidsforhold);
 
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
@@ -150,7 +149,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                         goToPreviousStep={() => {
                             const linkData = getBackLinkForSkjemaSteg(
                                 barnet.termindato,
-                                søkerInfo.arbeidsforhold,
+                                arbeidsforhold,
                                 inntektsinformasjon,
                                 tilrettelegginger,
                                 valgtTilrettelegging.id,

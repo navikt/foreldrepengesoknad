@@ -1,33 +1,33 @@
-import { useState } from 'react';
-import dayjs from 'dayjs';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
 import { BodyShort, Button, ReadMore } from '@navikt/ds-react';
-import { niMånederFremITid, halvannetÅrSiden } from 'app/utils/dateUtils';
+import { Block, Step, StepButtonWrapper, validateYesOrNoIsAnswered } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import { Søkerinfo } from 'app/types/Søkerinfo';
+import { halvannetÅrSiden, niMånederFremITid } from 'app/utils/dateUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { useStepConfig } from '../stepsConfig';
 import { BarnetFormComponents, BarnetFormData, BarnetFormField } from './barnetFormConfig';
+import barnetQuestionsConfig from './barnetQuestionsConfig';
 import {
     cleanupOmBarnetFormData,
     getBarnetInitialValues,
     getMinDatoTermin,
     mapOmBarnetFormDataToState,
 } from './barnetUtils';
-import barnetQuestionsConfig from './barnetQuestionsConfig';
-import { useStepConfig } from '../stepsConfig';
 import { validateFødselsdato, validateTermindato } from './barnetValidering';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
-const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
+const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(intl, arbeidsforhold);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 

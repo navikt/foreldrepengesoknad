@@ -1,12 +1,13 @@
 import { VelgArbeidFormData } from './velgArbeidFormConfig';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
+import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
 import { Frilans, frilansId } from 'app/types/Frilans';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
     if (type === Arbeidsforholdstype.FRILANSER) {

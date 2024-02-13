@@ -854,6 +854,9 @@ importers:
       '@navikt/fp-metrics':
         specifier: workspace:*
         version: link:../../packages/metrics
+      '@navikt/fp-oppsummering':
+        specifier: workspace:*
+        version: link:../../packages/oppsummering
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../../packages/ui

@@ -18,7 +18,10 @@ const getSamtykkeTekst = (
     if (appName === 'Foreldrepenger' && ekstraSamtykketekst !== undefined) {
         return intl.formatMessage({ id: 'OppsummeringPanel.SamtykkeFp' }).concat(ekstraSamtykketekst);
     }
-    throw new Error('Function not implemented.');
+    if (appName === 'Svangerskapspenger') {
+        return intl.formatMessage({ id: 'OppsummeringPanel.SamtykkeSvp' });
+    }
+    throw new Error(`appName ${appName} not supported`);
 };
 
 export interface Props {

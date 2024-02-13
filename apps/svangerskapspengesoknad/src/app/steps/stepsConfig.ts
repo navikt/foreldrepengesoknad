@@ -4,7 +4,6 @@ import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrette
 import { IntlShape } from 'react-intl';
 import { InntektsinformasjonFormData } from './inntektsinformasjon/inntektsinformasjonFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 import {
@@ -18,6 +17,7 @@ import { getPeriodeSideTittel } from './perioder/perioderStepUtils';
 import { getTilretteleggingSideTittel } from './tilrettelegging/tilretteleggingStepUtils';
 import { ContextDataType, useContextGetData } from 'app/context/SvpDataContext';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';

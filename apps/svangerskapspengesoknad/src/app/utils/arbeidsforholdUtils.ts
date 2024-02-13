@@ -5,11 +5,12 @@ import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { isISODateString } from '@navikt/ds-datepicker';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
-import Arbeidsforhold, { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
+import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
 import Tilrettelegging, { Stilling } from 'app/types/Tilrettelegging';
 import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
 import { hasValue } from './validationUtils';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {

@@ -1,11 +1,11 @@
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
-import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
-import HarArbeidsforhold from './HarArbeidsforhold';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
+import HarArbeidsforhold from './HarArbeidsforhold';
+import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
 
-import './arbeidsforholdInformasjon.css';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { intlUtils } from '@navikt/fp-common';
+import { FormattedMessage, useIntl } from 'react-intl';
+import './arbeidsforholdInformasjon.css';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];

@@ -31,28 +31,28 @@ import {
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import './arbeidIUtlandet.css';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 import { useState } from 'react';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import BackButton from '../BackButton';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
 const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
-    søkerInfo,
+    arbeidsforhold,
 }) => {
     const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(intl, arbeidsforhold);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
@@ -71,7 +71,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteValgAvArbeidEllerSkjema(
             barnet.termindato,
-            søkerInfo.arbeidsforhold,
+            arbeidsforhold,
             inntektsinformasjon,
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
