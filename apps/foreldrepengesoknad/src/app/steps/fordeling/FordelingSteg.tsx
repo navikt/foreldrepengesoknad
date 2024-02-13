@@ -1,5 +1,5 @@
 import { Loader, VStack } from '@navikt/ds-react';
-import { Step, Søkerinfo, getNavnPåForeldre, isAnnenForelderOppgitt, isFarEllerMedmor } from '@navikt/fp-common';
+import { Step, getNavnPåForeldre, isAnnenForelderOppgitt, isFarEllerMedmor } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
 import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
@@ -20,33 +20,33 @@ import {
 import { RequestStatus } from 'app/types/RequestState';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { Søker } from '@navikt/fp-types';
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    søker: Søker;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const FordelingSteg: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig();
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
-    const { person } = søkerInfo;
     const { dekningsgrad } = periodeMedForeldrepenger;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
     const navnMor = navnPåForeldre.mor;
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const annenForeldrerHarKunRettiEØS = !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
@@ -63,7 +63,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
         barn,
         annenForelder,
         søkersituasjon,
-        søker,
+        søkerData,
         barnFraNesteSak,
         annenPartsVedtak,
         eksisterendeSak,
@@ -114,7 +114,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagre
                   minsterett,
                   søkersituasjon,
                   barn,
-                  søker.erAleneOmOmsorg,
+                  søkerData.erAleneOmOmsorg,
                   navnMor,
                   navnFarMedmor,
                   intl,

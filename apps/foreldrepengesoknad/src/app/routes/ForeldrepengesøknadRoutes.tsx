@@ -117,7 +117,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.UTTAKSPLAN_INFO}
                 element={
                     <FordelingSteg
-                        søkerInfo={søkerInfo}
+                        søker={søkerInfo.søker}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
