@@ -1,14 +1,15 @@
-import { useIntl, IntlShape, FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
-import { notEmpty } from '@navikt/fp-validation';
-import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
-import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
 import {
-    bemUtils,
     Block,
     EksisterendeSak,
     Forelder,
+    ISOStringToDate,
+    InfoPeriode,
+    Periodene,
+    Periodetype,
+    TilgjengeligStønadskonto,
+    Uttaksdagen,
+    bemUtils,
     formatDate,
     formaterDato,
     getFarMedmorErAleneOmOmsorg,
@@ -20,26 +21,25 @@ import {
     getToTetteReglerGjelder,
     getVarighetString,
     hasValue,
-    InfoPeriode,
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isInfoPeriode,
-    ISOStringToDate,
     links,
-    Periodene,
-    Periodetype,
-    TilgjengeligStønadskonto,
-    Uttaksdagen,
 } from '@navikt/fp-common';
 import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import InfoEksisterendePerioder from './InfoEksisterendePerioder';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
+import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
+import { Søker } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import classNames from 'classnames';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 
 import './infoOmSøknaden.less';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import { getIsDeltUttak } from '../fordeling-oversikt/fordelingOversiktUtils';
 
 const getHvem = (
@@ -64,7 +64,7 @@ export interface Props {
     eksisterendeSak: EksisterendeSak | undefined;
     erIUttaksplanenSteg: boolean;
     minsterettUkerToTette?: number;
-    person: Person;
+    søker: Søker;
 }
 
 const InfoOmSøknaden: React.FunctionComponent<Props> = ({
@@ -72,14 +72,14 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     eksisterendeSak,
     erIUttaksplanenSteg,
     minsterettUkerToTette,
-    person,
+    søker,
 }) => {
     const bem = bemUtils('infoOmSøknaden');
     const intl = useIntl();
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
@@ -91,12 +91,12 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const erDeltUttak = getIsDeltUttak(annenForelder);
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerINorge;
-    const erAleneOmOmsorg = søker.erAleneOmOmsorg;
+    const erAleneOmOmsorg = søkerData.erAleneOmOmsorg;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const { rolle } = søkersituasjon;
     const situasjon = getForeldreparSituasjon(
-        person.kjønn,
+        søker.kjønn,
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,
@@ -113,7 +113,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
         annenForelderNavn,
         eksisterendeSak ? eksisterendeSak.erAnnenPartsSak : false,
     );
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsedatoNesteBarn =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));

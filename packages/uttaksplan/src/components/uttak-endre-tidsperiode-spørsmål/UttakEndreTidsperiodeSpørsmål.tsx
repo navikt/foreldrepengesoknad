@@ -16,6 +16,7 @@ import {
 } from '@navikt/fp-common';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 import { Modal } from '@navikt/ds-react';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     periode: Periode;
@@ -105,6 +106,11 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         min: 0,
                         max: 100,
                         onChange: (nyUker: number) => {
+                            logAmplitudeEvent('applikasjon-hendelse', {
+                                app: 'foreldrepengesoknad',
+                                team: 'foreldrepenger',
+                                hendelse: 'ukeStepperKlikk',
+                            });
                             const date = tidsperiode.fom;
                             if (date) {
                                 changeTidsperiode({
@@ -122,9 +128,13 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         min: uker === 0 ? 1 : 0,
                         max: 5,
                         onChange: (nyDager: number) => {
+                            logAmplitudeEvent('applikasjon-hendelse', {
+                                app: 'foreldrepengesoknad',
+                                team: 'foreldrepenger',
+                                hendelse: 'dagStepperKlikk',
+                            });
                             const date = tidsperiode.fom;
                             const ekstraUke = nyDager === 5 ? 1 : 0;
-
                             if (date) {
                                 changeTidsperiode({
                                     fom: date,

@@ -9,7 +9,8 @@
             "kontonummer": "",
             "banknavn": ""
         },
-        "sivilstand": { "type": "UGIFT" }
+        "sivilstand": { "type": "UGIFT" },
+        "barn": []
     },
     "arbeidsforhold": [
         {

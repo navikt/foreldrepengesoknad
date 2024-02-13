@@ -5,16 +5,19 @@ import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import InntekterTabell from './InntekterTabell';
 import Næringsdetaljer from './Næringsdetaljer';
 import { BodyShort } from '@navikt/ds-react';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 
 interface Props {
-    søker: Søker;
+    søkerData: SøkerData;
 }
 
-const SelvstendigNæringsdrivendeOppsummering: FunctionComponent<Props> = ({ søker }) => {
+const SelvstendigNæringsdrivendeOppsummering: FunctionComponent<Props> = ({ søkerData }) => {
     const intl = useIntl();
 
-    if (!søker.selvstendigNæringsdrivendeInformasjon || !søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
+    if (
+        !søkerData.selvstendigNæringsdrivendeInformasjon ||
+        !søkerData.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+    ) {
         return (
             <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.tittel' })}>
                 <BodyShort>
@@ -29,7 +32,7 @@ const SelvstendigNæringsdrivendeOppsummering: FunctionComponent<Props> = ({ sø
     return (
         <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.tittel' })}>
             <InntekterTabell
-                list={søker.selvstendigNæringsdrivendeInformasjon.map((næring) => ({
+                list={søkerData.selvstendigNæringsdrivendeInformasjon.map((næring) => ({
                     key: næring.navnPåNæringen + næring.tidsperiode,
                     headerVenstre: næring.navnPåNæringen,
                     headerHøyre: intl.formatMessage(

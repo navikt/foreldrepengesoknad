@@ -1,8 +1,8 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-dom';
-import { Sak, Søkerinfo } from '@navikt/fp-common';
+import { Sak } from '@navikt/fp-common';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
-import { LocaleNo } from '@navikt/fp-types';
+import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import Velkommen from 'app/pages/velkommen/Velkommen';
 import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
@@ -22,11 +22,11 @@ import PeriodeMedForeldrepengerSteg from 'app/steps/periodeMedForeldrepenger/Per
 import isAvailable from './isAvailable';
 import SøknadRoutes from './routes';
 import FordelingSteg from 'app/steps/fordeling/FordelingSteg';
+import { erMyndig } from '@navikt/fp-utils';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
     erEndringssøknad: boolean,
-    søkerErMyndig: boolean,
     søkerInfo: Søkerinfo,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>,
@@ -37,7 +37,7 @@ const renderSøknadRoutes = (
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
 
-    if (!søkerErMyndig) {
+    if (!erMyndig(søkerInfo.søker.fødselsdato)) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
     }
 
@@ -77,7 +77,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.SØKERSITUASJON}
                 element={
                     <SøkersituasjonSteg
-                        kjønn={søkerInfo.person.kjønn}
+                        kjønn={søkerInfo.søker.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -98,7 +98,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.ANNEN_FORELDER}
                 element={
                     <AnnenForelder
-                        søkerInfo={søkerInfo}
+                        søker={søkerInfo.søker}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -165,7 +165,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.INNTEKTSINFORMASJON}
                 element={
                     <Inntektsinformasjon
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -218,23 +218,18 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(
-        søkerInfo.person.fnr,
-        erEndringssøknad,
-        setKvittering,
-        locale,
-    );
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.søker.fnr, erEndringssøknad, setKvittering, locale);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         locale,
-        søkerInfo.person.fnr,
+        søkerInfo.søker.fnr,
         erEndringssøknad,
         harGodkjentVilkår,
         søknadGjelderNyttBarn,
     );
 
     const avbrytSøknad = useAvbrytSøknad(
-        søkerInfo.person.fnr,
+        søkerInfo.søker.fnr,
         setErEndringssøknad,
         setHarGodkjentVilkår,
         setSøknadGjelderNyttBarn,
@@ -242,10 +237,8 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
 
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
-    const erMyndig = søkerInfo.person.erMyndig;
-
     useEffect(() => {
-        if (currentRoute && erMyndig && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
+        if (currentRoute && erMyndig(søkerInfo.søker.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
             setIsFirstTimeLoadingApp(false);
             if (isAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);
@@ -257,7 +250,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
         }
     }, [
         currentRoute,
-        erMyndig,
+        søkerInfo.søker.fødselsdato,
         lagretHarGodkjentVilkår,
         navigate,
         isFirstTimeLoadingApp,
@@ -281,13 +274,13 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                 path={SøknadRoutes.VELKOMMEN}
                 element={
                     <Velkommen
-                        fornavn={søkerInfo.person.fornavn}
+                        fornavn={søkerInfo.søker.fornavn}
                         locale={locale}
                         saker={saker}
                         onChangeLocale={onChangeLocale}
-                        fnr={søkerInfo.person.fnr}
+                        fnr={søkerInfo.søker.fnr}
                         harGodkjentVilkår={harGodkjentVilkår}
-                        søkerInfo={søkerInfo}
+                        søker={søkerInfo.søker}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
                         setErEndringssøknad={setErEndringssøknad}
                         setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}
@@ -300,7 +293,6 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
             {renderSøknadRoutes(
                 harGodkjentVilkår,
                 erEndringssøknad,
-                erMyndig,
                 søkerInfo,
                 mellomlagreSøknadOgNaviger,
                 sendSøknad,

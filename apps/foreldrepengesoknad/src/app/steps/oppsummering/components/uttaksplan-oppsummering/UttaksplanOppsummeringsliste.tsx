@@ -2,7 +2,6 @@ import { FunctionComponent } from 'react';
 import {
     AnnenForelder,
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
-    Arbeidsforhold,
     finnesPeriodeIOpprinneligPlan,
     formatDate,
     getPeriodeTittel,
@@ -26,6 +25,7 @@ import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeri
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -90,11 +90,9 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         periode: Uttaksperiode,
         periodeErNyEllerEndret = true,
     ): OppsummeringslisteelementProps => {
-        console.log(periode);
         const høyrestiltTekst = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode)
             ? intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' })
             : formatTidsperiode(periode.tidsperiode);
-        console.log('h', høyrestiltTekst);
         return {
             venstrestiltTekst: getUttaksperiodeNavn(periode),
             høyrestiltTekst,

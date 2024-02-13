@@ -1,11 +1,10 @@
-import { LocaleAll } from '@navikt/fp-types';
+import { LocaleAll, Søker } from '@navikt/fp-types';
 import { useRequest } from '@navikt/fp-api';
 import { erMyndig } from '@navikt/fp-utils';
 import { Umyndig, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { EsDataContext } from 'appData/EsDataContext';
-import Person from './types/Person';
 import EngangsstønadRoutes, { ApiErrorHandler, Spinner, esApi } from './EngangsstønadRoutes';
 import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import { useDocumentTitle } from '@navikt/fp-common';
@@ -19,7 +18,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     const { i18n } = useCustomIntl();
     useDocumentTitle(i18n('Søknad.Pagetitle'));
 
-    const { data: person, error: errorHentPerson } = useRequest<Person>(esApi, '/personinfo');
+    const { data: søker, error: errorHentSøker } = useRequest<Søker>(esApi, '/personinfo');
 
     const {
         data: mellomlagretData,
@@ -27,15 +26,15 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
         error: errorMellomlagretData,
     } = useRequest<EsDataMapAndMetaData>(esApi, '/storage/engangsstonad');
 
-    if (errorHentPerson || errorMellomlagretData) {
-        return <ApiErrorHandler error={notEmpty(errorHentPerson || errorMellomlagretData)} />;
+    if (errorHentSøker || errorMellomlagretData) {
+        return <ApiErrorHandler error={notEmpty(errorHentSøker || errorMellomlagretData)} />;
     }
 
-    if (!person || loadingMellomlagretData) {
+    if (!søker || loadingMellomlagretData) {
         return <Spinner />;
     }
 
-    if (!erMyndig(person.fødselsdato)) {
+    if (!erMyndig(søker.fødselsdato)) {
         return <Umyndig appnavn="Engangsstønad" />;
     }
 
@@ -46,7 +45,7 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
             <EngangsstønadRoutes
                 locale={locale}
                 onChangeLocale={onChangeLocale}
-                person={person}
+                søker={søker}
                 mellomlagretData={mellomlagretState}
             />
         </EsDataContext>

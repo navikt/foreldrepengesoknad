@@ -1,12 +1,6 @@
-import {
-    Barn,
-    RegistrertBarn,
-    formatDate,
-    intlUtils,
-    isFødtBarn,
-    isIkkeUtfyltTypeBarn,
-    isUfødtBarn,
-} from '@navikt/fp-common';
+import { Barn, formatDate, intlUtils, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { SøkerBarn } from '@navikt/fp-types';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -25,16 +19,16 @@ export const getFamiliehendelsedato = (barn: Barn): string => {
     return dateToISOString(barn.adopsjonsdato);
 };
 
-const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: Date[] | undefined, regBarnFødselsdato: Date | undefined) => {
+const barnFødselsdatoLikSakFødselsdato = (
+    fødselsdatoer: Date[] | undefined,
+    regBarnFødselsdato: string | undefined,
+) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
-        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
+        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(dayjs.utc(regBarnFødselsdato))) !== undefined
         : false;
 };
 
-export const getRegistrerteBarnOmDeFinnes = (
-    barn: Barn,
-    registrerteBarn: RegistrertBarn[],
-): RegistrertBarn[] | undefined => {
+export const getRegistrerteBarnOmDeFinnes = (barn: Barn, registrerteBarn: SøkerBarn[]): SøkerBarn[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
         ? registrerteBarn.filter(
               (regBarn) =>
@@ -52,10 +46,11 @@ export const getFødselsdato = (barn: Barn): Date | undefined => {
     return isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
 };
 
-export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: RegistrertBarn) => {
+export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: SøkerBarn) => {
     const dato3MånederTilbake = dayjs(new Date()).subtract(3, 'month');
     return (
-        registrerteBarn.dødsdato !== undefined && dayjs(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
+        registrerteBarn.dødsdato !== undefined &&
+        dayjs.utc(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
     );
 };
 
@@ -70,28 +65,28 @@ export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): stri
     return intlUtils(intl, 'flerlinger');
 };
 
-export const getLeverBarnet = (barn: RegistrertBarn) => {
+export const getLeverBarnet = (barn: SøkerBarn) => {
     return !barn.dødsdato;
 };
 
 export const getAndreBarnFødtSammenMedBarnet = (
     barnFnr: string | undefined,
-    barnFødselsdato: Date,
-    registrerteBarn: RegistrertBarn[],
+    barnFødselsdato: string,
+    registrerteBarn: SøkerBarn[],
 ) => {
-    const dagenFørFødsel = dayjs(barnFødselsdato).subtract(1, 'day');
-    const dagenEtterFødsel = dayjs(barnFødselsdato).add(1, 'day');
+    const dagenFørFødsel = dayjs.utc(barnFødselsdato).subtract(1, 'day');
+    const dagenEtterFødsel = dayjs.utc(barnFødselsdato).add(1, 'day');
     return registrerteBarn.filter(
         (b) =>
             b.fnr !== barnFnr &&
-            dayjs(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
-            dayjs(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day'),
+            dayjs.utc(b.fødselsdato).isSameOrAfter(dagenFørFødsel, 'day') &&
+            dayjs.utc(b.fødselsdato).isSameOrBefore(dagenEtterFødsel, 'day'),
     );
 };
 
 export const getTittelBarnNårNavnSkalIkkeVises = (
     omsorgsovertagelsesdato: Date | undefined,
-    fødselsdatoer: Date[] | undefined,
+    fødselsdatoer: string[] | Date[] | undefined,
     antallBarn: number,
     intl: IntlShape,
 ): string => {
@@ -114,7 +109,7 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
 
 export const formaterNavnPåBarn = (
     fornavn: string[] | undefined,
-    fødselsdatoer: Date[] | undefined,
+    fødselsdatoer: string[] | Date[] | undefined,
     omsorgsovertagelsesdato: Date | undefined,
     alleBarnaLever: boolean,
     antallBarn: number,
@@ -132,15 +127,16 @@ export const formaterNavnPåBarn = (
     return `${fornavn[0]}`;
 };
 
-export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
+export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }
-    const unikeFødselsdatoer = [] as Date[];
+    const unikeFødselsdatoer = [] as string[];
     fødselsdatoer.forEach((f) => {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
         if (finnesIUnikeFødselsdatoer === undefined) {
-            unikeFødselsdatoer.push(f);
+            const dateString = dayjs(f).format(ISO_DATE_FORMAT);
+            unikeFødselsdatoer.push(dateString);
         }
     });
 

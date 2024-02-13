@@ -1,11 +1,9 @@
-import { useState, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
-import { LanguageToggle, Sak, Søkerinfo, links } from '@navikt/fp-common';
-import { LocaleNo } from '@navikt/fp-types';
-import { Form, ConfirmationPanel } from '@navikt/fp-form-hooks';
+import { LanguageToggle, Sak, links } from '@navikt/fp-common';
+import { ConfirmationPanel, Form } from '@navikt/fp-form-hooks';
+import { LocaleNo, Søker } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
+import useFpNavigator from 'app/appData/useFpNavigator';
 import DinePlikter from 'app/components/dine-plikter/DinePlikter';
 import { ContextDataType, useContextSaveAnyData } from 'app/context/FpDataContext';
 import { Søknad } from 'app/context/types/Søknad';
@@ -17,7 +15,9 @@ import {
     opprettSøknadFraValgteBarn,
     opprettSøknadFraValgteBarnMedSak,
 } from 'app/utils/eksisterendeSakUtils';
-import useFpNavigator from 'app/appData/useFpNavigator';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
 import DinePersonopplysningerModal from '../modaler/DinePersonopplysningerModal';
 import BarnVelger, { SelectableBarnOptions } from './BarnVelger';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './velkommenUtils';
@@ -34,7 +34,7 @@ export interface Props {
     saker: Sak[];
     fnr: string;
     harGodkjentVilkår: boolean;
-    søkerInfo: Søkerinfo;
+    søker: Søker;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     setErEndringssøknad: (erEndringssøknad: boolean) => void;
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn: boolean) => void;
@@ -46,7 +46,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
     saker,
     onChangeLocale,
     harGodkjentVilkår,
-    søkerInfo,
+    søker,
     setHarGodkjentVilkår,
     setErEndringssøknad,
     setSøknadGjelderNyttBarn,
@@ -61,10 +61,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
     const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
-    const selectableBarn = useMemo(
-        () => getSelectableBarnOptions(saker, søkerInfo.registrerteBarn),
-        [saker, søkerInfo.registrerteBarn],
-    );
+    const selectableBarn = useMemo(() => getSelectableBarnOptions(saker, søker.barn), [saker, søker.barn]);
     const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
     const onSubmit = (values: VelkommenFormData) => {
@@ -111,7 +108,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
             nextRoute = SøknadRoutes.UTTAKSPLAN;
 
             const søknad = opprettSøknadFraEksisterendeSak(
-                søkerInfo,
+                søker,
                 eksisterendeSak!,
                 intl,
                 valgtEksisterendeSak.annenPart,
@@ -119,7 +116,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
             ) as Søknad;
             oppdaterSøknadIState(søknad, eksisterendeSak);
         } else if (nySøknadPåAlleredeSøktBarn) {
-            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, søkerInfo) as Søknad;
+            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, søker.barn) as Søknad;
             oppdaterSøknadIState(søknad);
         } else if (nySøknadPåValgteRegistrerteBarn) {
             const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;

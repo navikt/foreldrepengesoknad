@@ -26,6 +26,7 @@ import { Button, Heading } from '@navikt/ds-react';
 
 import './planlegger.less';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     uttaksplan: Periode[];
@@ -192,6 +193,11 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
+                                logAmplitudeEvent('applikasjon-hendelse', {
+                                    app: 'foreldrepengesoknad',
+                                    team: 'foreldrepenger',
+                                    hendelse: 'leggTilPeriodeKlikk',
+                                });
                                 setNyPeriodeFormIsVisible(true);
                                 setIsUtsettelse(false);
                             }}
@@ -202,6 +208,11 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
+                                logAmplitudeEvent('applikasjon-hendelse', {
+                                    app: 'foreldrepengesoknad',
+                                    team: 'foreldrepenger',
+                                    hendelse: 'leggTilUtsettelseKlikk',
+                                });
                                 setNyPeriodeFormIsVisible(true);
                                 setIsUtsettelse(true);
                             }}

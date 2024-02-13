@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
 import './resetUttaksplanModal.less';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     isOpen: boolean;
@@ -13,6 +14,15 @@ interface Props {
 
 const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handleResetUttaksplanModalBekreft }) => {
     const bem = bemUtils('resetUttaksplanModal');
+
+    const onBekreft = () => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'foreldrepengesoknad',
+            team: 'foreldrepenger',
+            hendelse: 'tilbakestillPlan',
+        });
+        handleResetUttaksplanModalBekreft();
+    };
 
     return (
         <Modal className={bem.block} open={isOpen} onClose={onClose} aria-label="Tilbakestill uttaksplanen din">
@@ -27,7 +37,7 @@ const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handl
                         </BodyShort>
                     </Block>
                     <div className={bem.element('knappWrapper')}>
-                        <Button onClick={handleResetUttaksplanModalBekreft}>
+                        <Button onClick={onBekreft}>
                             <FormattedMessage id="uttaksplan.resetPlan.slett" />
                         </Button>
                         <Button variant="secondary" onClick={onClose}>

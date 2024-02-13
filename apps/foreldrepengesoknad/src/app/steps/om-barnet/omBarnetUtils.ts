@@ -1,6 +1,5 @@
 import {
     AdoptertBarn,
-    Arbeidsforhold,
     AttachmentType,
     Barn,
     BarnType,
@@ -21,6 +20,7 @@ import {
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,

@@ -3,7 +3,7 @@ import { SøkersituasjonFp } from '@navikt/fp-types';
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { Opphold, SenereOpphold, TidligereOpphold } from './types/InformasjonOmUtenlandsopphold';
 import SøknadRoutes from 'app/routes/routes';
-import Søker from './types/Søker';
+import SøkerData from './types/SøkerData';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import UttaksplanInfo from './types/UttaksplanInfo';
 import PeriodeMedForeldrepenger from './types/PeriodeMedForeldrepenger';
@@ -15,7 +15,7 @@ export enum ContextDataType {
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
     ANNEN_FORELDER = 'ANNEN_FORELDER',
-    SØKER = 'SØKER',
+    SØKER_DATA = 'SØKER',
     UTENLANDSOPPHOLD = 'UTENLANDSOPPHOLD',
     UTENLANDSOPPHOLD_SENERE = 'UTENLANDSOPPHOLD_SENERE',
     UTENLANDSOPPHOLD_TIDLIGERE = 'UTENLANDSOPPHOLD_TIDLIGERE',
@@ -32,7 +32,7 @@ export type ContextDataMap = {
     [ContextDataType.SØKERSITUASJON]?: SøkersituasjonFp;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.ANNEN_FORELDER]?: AnnenForelder;
-    [ContextDataType.SØKER]?: Søker;
+    [ContextDataType.SØKER_DATA]?: SøkerData;
     [ContextDataType.UTENLANDSOPPHOLD]?: Opphold;
     [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: SenereOpphold;
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;

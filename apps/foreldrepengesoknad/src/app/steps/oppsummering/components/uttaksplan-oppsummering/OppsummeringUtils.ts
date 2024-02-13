@@ -1,11 +1,11 @@
 import {
-    Arbeidsforhold,
     Arbeidsform,
     Overføringsperiode,
     PeriodeUtenUttakUtsettelse,
     Periodetype,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { IntlShape } from 'react-intl';
 
 type MessageValue = string | number | boolean | Date | null | undefined;

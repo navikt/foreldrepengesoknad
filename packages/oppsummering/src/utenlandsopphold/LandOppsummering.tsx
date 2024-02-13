@@ -1,14 +1,13 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import dayjs from 'dayjs';
 import * as countries from 'i18n-iso-countries';
-import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
-import { useCustomIntl, I18nFn } from '@navikt/fp-ui';
+import { BodyLong, BodyShort, Box, VStack } from '@navikt/ds-react';
 import { formatDate, isBeforeToday, isToday } from '@navikt/fp-utils';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
-const formaterDato = (dato: string, i18n: I18nFn) => {
+const formaterDato = (dato: string, intl: IntlShape) => {
     if (isToday(dato)) {
-        return i18n('LandOppsummering.IDag');
+        return intl.formatMessage({ id: 'LandOppsummering.IDag' });
     }
     return formatDate(dato);
 };
@@ -22,14 +21,15 @@ interface Props {
 }
 
 const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdListe }) => {
-    const { i18n } = useCustomIntl();
-    //TODO Bytt ut div under med Box når aksel-dep blir oppdatert
+    const intl = useIntl();
     return (
         <>
             {utenlandsoppholdListe.sort(sortOpphold).map((opphold) => (
-                <div
+                <Box
                     key={`${opphold.landkode}${opphold.fom}`}
-                    style={{ backgroundColor: 'var(--a-blue-100)', padding: '16px', borderRadius: '2px' }}
+                    padding="4"
+                    background="surface-alt-3-subtle"
+                    borderRadius="medium"
                 >
                     <VStack gap="1">
                         <BodyShort style={{ fontWeight: 'bold' }}>
@@ -47,10 +47,10 @@ const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdList
                             )}
                         </BodyShort>
                         <BodyLong>
-                            {formaterDato(opphold.fom, i18n)} - {formaterDato(opphold.tom, i18n)}
+                            {formaterDato(opphold.fom, intl)} - {formaterDato(opphold.tom, intl)}
                         </BodyLong>
                     </VStack>
-                </div>
+                </Box>
             ))}
         </>
     );

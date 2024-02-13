@@ -2,6 +2,7 @@ import { ActionLink, InfoPeriode, bemUtils, getSlettPeriodeTekst } from '@navikt
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import './slettbarAvslåttPeriode.less';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     periode: InfoPeriode;
@@ -11,6 +12,11 @@ interface Props {
 const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDeletePeriode }) => {
     const bem = bemUtils('slettbarAvslåttPeriode');
     const onSlettPeriode = () => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'foreldrepengesoknad',
+            team: 'foreldrepenger',
+            hendelse: 'slettPeriodeKlikk',
+        });
         handleDeletePeriode(periode.id);
     };
     return (

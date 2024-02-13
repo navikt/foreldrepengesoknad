@@ -1,24 +1,18 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
-
-import _søkerinfoMorSøker from 'storybook/storyData/sokerinfo/søkerinfoMorSøker.json';
-import _søkerinfoFarSøker from 'storybook/storyData/sokerinfo/søkerinfoFarSøker.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
 import stønadskontoDeltUttak100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Adopsjon.json';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80Adopsjon.json';
-
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import dayjs from 'dayjs';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
 import { MemoryRouter } from 'react-router-dom';
 import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -26,8 +20,30 @@ import { initAmplitude } from '@navikt/fp-metrics';
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
-const søkerinfoMorSøker = _søkerinfoMorSøker as any;
-const søkerinfoFarSøker = _søkerinfoFarSøker as any;
+const søkerinfoFar = {
+    søker: {
+        fnr: '1212121313',
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        kjønn: 'M',
+        fødselsdato: '1978-04-12',
+        barn: [
+            {
+                fnr: '19047815714',
+                fødselsdato: '2021-03-15',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'TALENTFULL',
+                    etternavn: 'MYGG',
+                },
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+        ],
+    },
+} as Søkerinfo;
 
 export default {
     title: 'steps/uttaksplan-info/MorFarAnnenForelderHarRettIEØS',
@@ -39,7 +55,7 @@ const Template: StoryFn<
         søkersituasjon: SøkersituasjonFp;
         annenForelder: AnnenForelder;
         barn: Barn;
-        søker: Søker;
+        søkerData: SøkerData;
         dekningsgrad: Dekningsgrad;
     }
 > = (args) => {
@@ -56,7 +72,7 @@ const Template: StoryFn<
                     initialState={{
                         [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
                         [ContextDataType.OM_BARNET]: args.barn,
-                        [ContextDataType.SØKER]: args.søker,
+                        [ContextDataType.SØKER_DATA]: args.søkerData,
                         [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
@@ -64,7 +80,7 @@ const Template: StoryFn<
                     }}
                 >
                     <UttaksplanInfo
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        søker={args.søkerinfo.søker}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -100,13 +116,37 @@ AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo: søkerinfoMorSøker,
+    søkerinfo: {
+        søker: {
+            fnr: '19047815714',
+            fornavn: 'TALENTFULL',
+            etternavn: 'MYGG',
+            kjønn: 'K',
+            fødselsdato: '1978-04-19',
+            barn: [
+                {
+                    fnr: '21091981146',
+                    fødselsdato: '2021-03-15',
+                    annenForelder: {
+                        fnr: '12038517080',
+                        fødselsdato: '1985-03-12',
+                        fornavn: 'LEALAUS',
+                        etternavn: 'BÆREPOSE',
+                    },
+                    fornavn: 'KLØKTIG',
+                    etternavn: 'MIDTPUNKT',
+                    kjønn: 'M',
+                },
+            ],
+        },
+        arbeidsforhold: [],
+    },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -135,13 +175,13 @@ AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo: søkerinfoFarSøker,
+    søkerinfo: søkerinfoFar,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -170,13 +210,13 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo: søkerinfoFarSøker,
+    søkerinfo: søkerinfoFar,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -206,12 +246,12 @@ FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo: søkerinfoFarSøker,
+    søkerinfo: søkerinfoFar,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };

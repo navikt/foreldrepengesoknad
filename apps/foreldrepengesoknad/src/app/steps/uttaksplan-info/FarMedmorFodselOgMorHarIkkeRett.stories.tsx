@@ -4,7 +4,6 @@ import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import FarMedmorFødselOgMorHarIkkeRett from 'app/steps/uttaksplan-info/components/scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
 import { RequestStatus } from 'app/types/RequestState';
-import _søkerinfoFarSøker from 'storybook/storyData/uttaksplan/far-medmor-fødsel-mor-har-ikke-rett/søkerinfoFarSøker.json';
 import stønadskonto80MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto80MorHarIkkeRett.json';
 import stønadskonto100MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRett.json';
 import stønadskonto100MorHarIkkeRettPrematur from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettPrematur.json';
@@ -13,16 +12,39 @@ import stønadskonto100MorHarIkkeRettErUførFør1okt2021 from 'storybook/storyDa
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import { MemoryRouter } from 'react-router-dom';
 import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo } from '@navikt/fp-types';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
-const søkerinfoFarSøker = _søkerinfoFarSøker as any;
+const søkerinfoFarSøker = {
+    søker: {
+        fnr: '1212121313',
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        kjønn: 'M',
+        fødselsdato: '1978-04-12',
+        barn: [
+            {
+                fnr: '19047815714',
+                fødselsdato: '2021-03-15',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'TALENTFULL',
+                    etternavn: 'MYGG',
+                },
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+        ],
+    },
+} as Søkerinfo;
 
 export default {
     title: 'steps/uttaksplan-info/FarMedmorFødselOgMorHarIkkeRett',
@@ -56,7 +78,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
                         },
-                        [ContextDataType.SØKER]: {
+                        [ContextDataType.SØKER_DATA]: {
                             erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -66,7 +88,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
                     }}
                 >
                     <UttaksplanInfo
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        søker={søkerinfoFarSøker.søker}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -81,7 +103,6 @@ export const BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB = Template.bind({
 BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB.args = {
     stønadskonto100: stønadskonto100MorHarIkkeRett,
     stønadskonto80: stønadskonto80MorHarIkkeRett,
-    søkerinfo: søkerinfoFarSøker,
     annenForelder: {
         etternavn: 'Hanne',
         fornavn: 'dsgdfg',
@@ -101,7 +122,6 @@ export const BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB = Template.bind({}
 BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB.args = {
     stønadskonto100: stønadskonto100MorHarIkkeRett,
     stønadskonto80: stønadskonto80MorHarIkkeRett,
-    søkerinfo: søkerinfoFarSøker,
     annenForelder: {
         etternavn: 'Hanne',
         fornavn: 'dsgdfg',

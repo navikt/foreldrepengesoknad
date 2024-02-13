@@ -1,6 +1,6 @@
 import { Loader } from '@navikt/ds-react';
 import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
-import { Kvittering, LocaleAll } from '@navikt/fp-types';
+import { Kvittering, LocaleAll, Søker } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect, redirectToLogin } from '@navikt/fp-utils';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,6 @@ import SøkersituasjonSteg from './steg/sokersituasjon/SøkersituasjonSteg';
 import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
 import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import Person from './types/Person';
 import Velkommen from './velkommen/Velkommen';
 
 export const esApi = createApi(Environment.REST_API_URL);
@@ -40,11 +39,11 @@ export const ApiErrorHandler: React.FunctionComponent<{ error: ApiAccessError | 
 interface Props {
     locale: LocaleAll;
     onChangeLocale: (locale: LocaleAll) => void;
-    person: Person;
+    søker: Søker;
     mellomlagretData?: EsDataMapAndMetaData;
 }
 
-const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChangeLocale, person, mellomlagretData }) => {
+const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChangeLocale, søker, mellomlagretData }) => {
     const navigate = useNavigate();
 
     const [erVelkommen, setVelkommen] = useState(false);
@@ -103,7 +102,7 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
                     />
                     <Route
                         path={Path.OM_BARNET}
-                        element={<OmBarnetSteg kjønn={person.kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        element={<OmBarnetSteg kjønn={søker.kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />}
                     />
                     <Route
                         path={Path.TERMINBEKREFTELSE}
@@ -129,7 +128,7 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
                         path={Path.OPPSUMMERING}
                         element={
                             <OppsummeringSteg
-                                person={person}
+                                søker={søker}
                                 sendSøknad={sendSøknad}
                                 mellomlagreOgNaviger={mellomlagreOgNaviger}
                             />

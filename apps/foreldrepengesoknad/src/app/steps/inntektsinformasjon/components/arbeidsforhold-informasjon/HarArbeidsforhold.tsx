@@ -1,7 +1,8 @@
+import { BodyShort } from '@navikt/ds-react';
+import { Block, bemUtils, formatDateUtc, intlUtils } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { Arbeidsforhold, Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
-import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -45,8 +46,8 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                         </Block>
                         <BodyShort>
                             {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.periode', {
-                                fom: formatDate(arbforhold.fom),
-                                tom: arbforhold.tom ? formatDate(arbforhold.tom) : intlUtils(intl, 'pågående'),
+                                fom: formatDateUtc(arbforhold.fom),
+                                tom: arbforhold.tom ? formatDateUtc(arbforhold.tom) : intlUtils(intl, 'pågående'),
                             })}
                         </BodyShort>
                     </div>

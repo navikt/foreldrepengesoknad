@@ -8,7 +8,6 @@ import {
     BarnFraNesteSak,
     ISOStringToDate,
     RegistrertAnnenForelder,
-    RegistrertBarn,
     Sak,
     Uttaksdagen,
     erEldreEnn3ÅrOg3Måneder,
@@ -17,6 +16,12 @@ import {
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
 import { getRelevantFamiliehendelseDato } from '../../utils/dateUtils';
 import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
+import { SøkerBarn } from '@navikt/fp-types';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const getSortableBarnDato = (
     fødselsdatoer: Date[],
@@ -44,17 +49,17 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return ValgtBarnType.UFØDT;
 };
 
-export const getErDatoInnenEnDagFraAnnenDato = (dato1: Date | undefined, dato2: Date | undefined): boolean => {
+export const getErDatoInnenEnDagFraAnnenDato = (dato1: string | undefined, dato2: Date | undefined): boolean => {
     if (dato1 === undefined || dato2 === undefined) {
         return false;
     }
     return (
-        dayjs(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
-        dayjs(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
+        dayjs.utc(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
+        dayjs.utc(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
     );
 };
 
-const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): ValgtBarn => {
+const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): ValgtBarn => {
     const barnFnrFraSaken = sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
 
@@ -82,7 +87,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): V
 
     let fødselsdatoer;
     if (pdlBarn && pdlBarn.length > 0) {
-        fødselsdatoer = pdlBarn.map((barn) => barn.fødselsdato);
+        fødselsdatoer = pdlBarn.map((barn) => dayjs.utc(barn.fødselsdato).toDate());
     } else if (fødselsdatoFraSak !== undefined) {
         fødselsdatoer = Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak);
     }
@@ -117,7 +122,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: RegistrertBarn[]): V
 };
 
 const getSelectableBarnFraPDL = (
-    registrertBarn: RegistrertBarn,
+    registrertBarn: SøkerBarn,
     annenForelder: RegistrertAnnenForelder | undefined,
 ): ValgtBarn => {
     const navn =
@@ -128,18 +133,18 @@ const getSelectableBarnFraPDL = (
         id: guid(),
         type: ValgtBarnType.IKKE_UTFYLT,
         antallBarn: 1,
-        fødselsdatoer: [registrertBarn.fødselsdato],
+        fødselsdatoer: [dayjs.utc(registrertBarn.fødselsdato).toDate()],
         fornavn: navn !== undefined ? [navn] : undefined,
         fnr: [registrertBarn.fnr],
-        sortableDato: registrertBarn.fødselsdato,
+        sortableDato: dayjs.utc(registrertBarn.fødselsdato).toDate(),
         alleBarnaLever: getLeverBarnet(registrertBarn),
         annenForelder,
     };
 };
 
 const getSelectableFlerlingerFraPDL = (
-    registrertBarn: RegistrertBarn,
-    barnFødtISammePeriode: RegistrertBarn[],
+    registrertBarn: SøkerBarn,
+    barnFødtISammePeriode: SøkerBarn[],
     annenForelder: RegistrertAnnenForelder | undefined,
 ): ValgtBarn | undefined => {
     const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterRegistrerteBarnEtterEldstOgNavn);
@@ -154,16 +159,16 @@ const getSelectableFlerlingerFraPDL = (
         id: guid(),
         type: ValgtBarnType.IKKE_UTFYLT,
         antallBarn: alleBarna.length,
-        fødselsdatoer: alleBarna.map((b) => b.fødselsdato),
+        fødselsdatoer: alleBarna.map((b) => dayjs.utc(b.fødselsdato).toDate()),
         fornavn: alleBarna.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
         fnr: alleBarna.map((b) => b.fnr),
-        sortableDato: alleBarna[0].fødselsdato,
+        sortableDato: dayjs.utc(alleBarna[0].fødselsdato).toDate(),
         alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
         annenForelder,
     };
 };
 
-const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
+const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: SøkerBarn[]) => {
     return saker
         .filter(
             (sak) =>
@@ -176,7 +181,7 @@ const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: Regist
 };
 
 const getSelectableBarnOptionsFraPDL = (
-    registrerteBarn: RegistrertBarn[],
+    registrerteBarn: SøkerBarn[],
     barnFraSaker: ValgtBarn[],
     avsluttedeSaker: Sak[],
 ): ValgtBarn[] => {
@@ -207,7 +212,7 @@ const getSelectableBarnOptionsFraPDL = (
         (b) =>
             !(
                 b.dødsdato !== undefined &&
-                !!fødselsdatoPåBarnFraSaker.find((dato) => dayjs(dato).isSame(dayjs(b.fødselsdato), 'day'))
+                !!fødselsdatoPåBarnFraSaker.find((dato) => dayjs(dato).isSame(dayjs.utc(b.fødselsdato), 'day'))
             ),
     );
     registrerteBarnUtenDødeBarnMedSak.forEach((regBarn) => {
@@ -254,7 +259,7 @@ const getSelectableBarnOptionsFraPDL = (
     return selectableBarn;
 };
 
-export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: RegistrertBarn[]) => {
+export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: SøkerBarn[]) => {
     const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
     const avsluttedeSaker = saker.filter((sak) => sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);
@@ -284,7 +289,7 @@ export const getBarnFraNesteSak = (valgteBarn: ValgtBarn, selectableBarn: ValgtB
     };
 };
 
-export const sorterRegistrerteBarnEtterEldstOgNavn = (b1: RegistrertBarn, b2: RegistrertBarn) => {
+export const sorterRegistrerteBarnEtterEldstOgNavn = (b1: SøkerBarn, b2: SøkerBarn) => {
     if (dayjs(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')) {
