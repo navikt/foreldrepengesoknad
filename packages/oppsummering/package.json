@@ -13,8 +13,8 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/ds-css": "5.15.1",
-        "@navikt/ds-react": "5.15.1",
+        "@navikt/ds-css": "5.18.1",
+        "@navikt/ds-react": "5.18.1",
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -22,10 +22,10 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "dayjs": "^1.11.10",
-        "i18n-iso-countries": "^7.8.0",
+        "i18n-iso-countries": "^7.10.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-intl": "^6.6.1"
+        "react-intl": "^6.6.2"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.3.5",
@@ -39,7 +39,7 @@
         "@testing-library/jest-dom": "^6.2.1",
         "@testing-library/react": "^14.1.2",
         "@testing-library/user-event": "^14.5.2",
-        "@types/react": "^18.2.48",
+        "@types/react": "^18.2.55",
         "@vitejs/plugin-react": "^4.2.1",
         "fast-glob": "^3.3.2",
         "storybook": "7.6.10",
