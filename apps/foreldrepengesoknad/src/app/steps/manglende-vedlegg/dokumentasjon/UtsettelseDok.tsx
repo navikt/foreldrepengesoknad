@@ -34,7 +34,7 @@ const UtsettelseDok: React.FunctionComponent<Props> = ({
         <Block padBottom="xl">
             <UtsettelseUploader
                 attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE)}
+                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_BARN)}
                 perioder={utsettelsePerioderSomManglerVedlegg}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}

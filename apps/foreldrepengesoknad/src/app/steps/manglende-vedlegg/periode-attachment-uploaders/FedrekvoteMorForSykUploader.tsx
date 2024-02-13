@@ -37,11 +37,11 @@ const FedrekvoteMorForSykUploader: FunctionComponent<Props> = ({
     const bem = bemUtils('periode-attachment-uploader');
 
     const { watch } = useFormContext<ManglendeVedleggFormData>();
-    const formAttachments = watch(Skjemanummer.DOK_INNLEGGELSE);
+    const formAttachments = watch(Skjemanummer.DOK_INNLEGGELSE_MOR);
 
     useEffect(() => {
         if (formAttachments.length === 0) {
-            const init = lagSendSenereDokument(AttachmentType.UTSETTELSE_SYKDOM, Skjemanummer.DOK_INNLEGGELSE);
+            const init = lagSendSenereDokument(AttachmentType.UTSETTELSE_SYKDOM, Skjemanummer.DOK_INNLEGGELSE_MOR);
             const sendSenereVedlegg = addMetadata(init, {
                 type: AttachmentMetadataType.UTTAK,
                 perioder: perioder.map((p) => ({
@@ -82,7 +82,7 @@ const FedrekvoteMorForSykUploader: FunctionComponent<Props> = ({
             </BodyLong>
             <FileUploader
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                skjemanummer={Skjemanummer.DOK_INNLEGGELSE}
+                skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
                 existingAttachments={attachments}
                 updateAttachments={(attachments) => {
                     const attachmentsMedMetadata = attachments.map((a) =>

@@ -7,10 +7,12 @@ import MorsAktivitetSykdomUtdanningEllerArbeidUploader from '../periode-attachme
 import {
     grupperteFellesperioderIntroduksjonsprogram,
     grupperteFellesperioderKvalifiseringsprogram,
+    grupperteFellesperioderMorInnlagt,
     grupperteFellesperioderMorsAktivitetArbeidUtdanningEllerSykdom,
     isArbeidUtdanningEllerSykdomVedlegg,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
+    isMorInnlagtVedlegg,
 } from '../util';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
@@ -49,10 +51,12 @@ const FellesperiodeDok: React.FunctionComponent<Props> = ({
     const grupperteFellesperioderKvalprogram = grupperteFellesperioderKvalifiseringsprogram(
         fellesperioderSomManglerVedlegg,
     );
+    const grupperteFellesperioderInnlagtMor = grupperteFellesperioderMorInnlagt(fellesperioderSomManglerVedlegg);
 
     const kvalifiseringsprogramVedlegg = attachments.filter(isKvalifiseringsprogramVedlegg);
     const introduksjonsprogramVedlegg = attachments.filter(isIntroduksjonsprogramVedlegg);
     const arbeidUtdanningEllerSykdomVedlegg = attachments.filter(isArbeidUtdanningEllerSykdomVedlegg);
+    const morInnlagtVedlegg = attachments.filter(isMorInnlagtVedlegg);
 
     return (
         <div>
@@ -88,6 +92,19 @@ const FellesperiodeDok: React.FunctionComponent<Props> = ({
                         attachments={kvalifiseringsprogramVedlegg}
                         updateAttachments={updateAttachments(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
                         perioder={grupperteFellesperioderKvalprogram}
+                        navnPåForeldre={navnPåForeldre}
+                        familiehendelsesdato={familiehendelsesdato}
+                        termindato={termindato}
+                        situasjon={situasjon}
+                    />
+                </Block>
+            )}
+            {grupperteFellesperioderInnlagtMor.length > 0 && (
+                <Block padBottom="xl">
+                    <MorsAktivitetKvalprogramUploader
+                        attachments={morInnlagtVedlegg}
+                        updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
+                        perioder={grupperteFellesperioderInnlagtMor}
                         navnPåForeldre={navnPåForeldre}
                         familiehendelsesdato={familiehendelsesdato}
                         termindato={termindato}

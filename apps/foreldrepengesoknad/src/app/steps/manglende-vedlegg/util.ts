@@ -19,6 +19,14 @@ export const grupperteFellesperioderKvalifiseringsprogram = (perioder: Periode[]
     );
 };
 
+export const grupperteFellesperioderMorInnlagt = (perioder: Periode[]) => {
+    return perioder.filter((p) => isUttaksperiode(p) && p.morsAktivitetIPerioden === MorsAktivitet.Innlagt);
+};
+
+export const isMorInnlagtVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
+};
+
 export const isKvalifiseringsprogramVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
 };
@@ -112,19 +120,19 @@ export const isEtterlønnVedlegg = (attachment: Attachment) => {
 };
 
 export const isFedrekvoteMorForSykVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE;
+    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
 };
 
 export const getFedrekvoteMorForSykVedlegg = (vedlegg: VedleggDataType) => {
-    const fedrekvoteMorForSykVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE]
-        ? vedlegg[Skjemanummer.DOK_INNLEGGELSE]
+    const fedrekvoteMorForSykVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
+        ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
         : [];
 
     return fedrekvoteMorForSykVedlegg;
 };
 
 export const isUtsettelseVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE;
+    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
 };
 
 const morsAktivitetErArbeidUtdanningEllerSykdom = (periode: Periode) => {
@@ -136,7 +144,6 @@ const morsAktivitetErArbeidUtdanningEllerSykdom = (periode: Periode) => {
         periode.morsAktivitetIPerioden === MorsAktivitet.Arbeid ||
         periode.morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning ||
         periode.morsAktivitetIPerioden === MorsAktivitet.Utdanning ||
-        periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
         periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
     );
 };

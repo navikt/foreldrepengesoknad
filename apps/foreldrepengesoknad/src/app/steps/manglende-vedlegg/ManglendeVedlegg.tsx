@@ -79,7 +79,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
                 formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET],
             [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: formValues[Skjemanummer.DOK_OVERFØRING_FOR_SYK],
-            [Skjemanummer.DOK_INNLEGGELSE]: formValues[Skjemanummer.DOK_INNLEGGELSE],
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]: formValues[Skjemanummer.DOK_INNLEGGELSE_MOR],
+            [Skjemanummer.DOK_INNLEGGELSE_BARN]: formValues[Skjemanummer.DOK_INNLEGGELSE_BARN],
         };
 
         saveVedlegg(alleVedlegg);
@@ -97,7 +98,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
                 vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET] || [],
             [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: vedlegg[Skjemanummer.DOK_OVERFØRING_FOR_SYK] || [],
-            [Skjemanummer.DOK_INNLEGGELSE]: vedlegg[Skjemanummer.DOK_INNLEGGELSE] || [],
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]: vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR] || [],
+            [Skjemanummer.DOK_INNLEGGELSE_BARN]: vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN] || [],
         },
     });
 

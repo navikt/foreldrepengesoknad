@@ -127,14 +127,22 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (
-                        periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
-                        periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet
-                    ) {
+                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
-                                Skjemanummer.DOK_INNLEGGELSE,
+                                Skjemanummer.DOK_INNLEGGELSE_BARN,
+                                AttachmentType.UTSETTELSE_SYKDOM,
+                                periode.id,
+                            ),
+                        );
+                    }
+
+                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonSøker) {
+                        missingAttachments.push(
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.DOK_INNLEGGELSE_MOR,
                                 AttachmentType.UTSETTELSE_SYKDOM,
                                 periode.id,
                             ),

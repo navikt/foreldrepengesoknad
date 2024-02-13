@@ -34,7 +34,7 @@ const FedrekvoteMorForSykDok: React.FunctionComponent<Props> = ({
         <Block padBottom="xl">
             <FedrekvoteMorForSykUploader
                 attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE)}
+                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
                 perioder={fedrekvoteMorForSykPerioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}

@@ -21,7 +21,7 @@ export const aktivitetskravMorUtil = {
 export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skjemanummer => {
     switch (morsAktivitet) {
         case MorsAktivitet.Innlagt:
-            return Skjemanummer.DOK_INNLEGGELSE;
+            return Skjemanummer.DOK_INNLEGGELSE_MOR;
         case MorsAktivitet.Kvalifiseringsprogrammet:
             return Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
         case MorsAktivitet.Introduksjonsprogrammet:

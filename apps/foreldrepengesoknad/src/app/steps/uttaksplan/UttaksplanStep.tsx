@@ -220,7 +220,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
             [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: [],
-            [Skjemanummer.DOK_INNLEGGELSE]: [],
+            [Skjemanummer.DOK_INNLEGGELSE_BARN]: [],
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]: [],
         };
 
         oppdaterUttaksplanMetadata({
