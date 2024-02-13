@@ -1,4 +1,4 @@
-import { Arbeidsforhold, BarnType } from '@navikt/fp-common';
+import { BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
@@ -9,6 +9,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import dayjs from 'dayjs';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 const promiseAction =
     () =>

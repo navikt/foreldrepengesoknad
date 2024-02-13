@@ -120,9 +120,9 @@ const Oppsummering: FunctionComponent<Props> = ({
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const inneholderIkkeVedlegg = søknadInneholderIngenVedlegg(vedlegg);
 
+    const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, søkerErFarEllerMedmor, intl);
-
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -162,6 +162,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                         søkerData={søkerData}
                         søkerrolle={søkersituasjon.rolle}
                     />
+                    <AnnenForelderOppsummering annenForelder={annenForelder} søkerrolle={søkersituasjon.rolle} />
                 </OppsummeringIndex.Punkt>
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={datoOgHendelsetype[0]}
@@ -192,7 +193,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                         familiehendelsesdato={familiehendelsesdato!}
                         termindato={termindato}
                         situasjon={søkersituasjon.situasjon}
-                        erAleneOmOmsorg={søkerData.erAleneOmOmsorg}
+                        erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
                         antallBarn={barn.antallBarn}
                         ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
                     />

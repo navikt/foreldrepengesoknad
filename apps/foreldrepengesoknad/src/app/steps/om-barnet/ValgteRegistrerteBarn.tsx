@@ -1,6 +1,6 @@
 import { Label, VStack } from '@navikt/ds-react';
-import { RegistrertBarn } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
+import { SøkerBarn } from '@navikt/fp-types';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
 import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
@@ -15,7 +15,7 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    valgteRegistrerteBarn: RegistrertBarn[];
+    valgteRegistrerteBarn: SøkerBarn[];
     skalInkludereTermindato: boolean;
 }
 
@@ -34,7 +34,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrer
                     <FormattedMessage id="omBarnet.valgteBarn.tittel" values={{ antallBarn: sorterteBarn.length }} />
                 </Label>
                 {alleBarnaLever ? (
-                    sorterteBarn.map((barn: RegistrertBarn) => (
+                    sorterteBarn.map((barn) => (
                         <RegistrertePersonalia
                             key={barn.fnr}
                             person={barn}

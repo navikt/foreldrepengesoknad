@@ -123,7 +123,7 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
                             rolle={rolle}
                             barn={barn}
                             annenForelder={annenForelder}
-                            søkerInfo={søkerInfo}
+                            søker={søker}
                         />
                     )}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />

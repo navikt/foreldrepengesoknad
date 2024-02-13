@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
+import { VStack } from '@navikt/ds-react';
+
 import {
-    RegistrertBarn,
+    Barn,
     Situasjon,
     Step,
-    Søkerinfo,
     Søkerrolle,
     andreAugust2022ReglerGjelder,
     isFarEllerMedmor,
@@ -14,6 +16,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -22,22 +25,19 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getEldsteRegistrerteBarn } from 'app/utils/dateUtils';
-import dayjs from 'dayjs';
-import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
-import AdopsjonPanel from './adopsjon/AdopsjonPanel';
-import FødselPanel from './fødsel/FødselPanel';
+
 import { BarnetFormValues } from './OmBarnetFormValues';
 import ValgteRegistrerteBarn from './ValgteRegistrerteBarn';
+import AdopsjonPanel from './adopsjon/AdopsjonPanel';
+import FødselPanel from './fødsel/FødselPanel';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetContextFormMapping';
-import { useMemo } from 'react';
 
 const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
     return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
 };
 
-const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn, barnet: Barn) => {
+const findBarnetIRegistrerteBarn = (regBarn: SøkerBarn, barnet: Barn) => {
     if (barnet && !isUfødtBarn(barnet) && barnet.fnr !== undefined && barnet.fnr.length > 0) {
         return barnet.fnr.includes(regBarn.fnr);
     }
@@ -47,7 +47,7 @@ const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn, barnet: Barn) => {
 const skalViseTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
-    valgteRegistrerteBarn: RegistrertBarn[] | undefined,
+    valgteRegistrerteBarn: SøkerBarn[] | undefined,
     situasjon: Situasjon,
 ): boolean => {
     if (situasjon === 'adopsjon') {
@@ -100,13 +100,13 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, registrerteBarn } = søkerInfo;
+    const { arbeidsforhold, søker } = søkerInfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = omBarnet ? getFamiliehendelsedato(omBarnet) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? registrerteBarn.filter(
+            ? søker.barn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -114,7 +114,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? registrerteBarn
+            ? søker.barn
                   .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
                   .concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;

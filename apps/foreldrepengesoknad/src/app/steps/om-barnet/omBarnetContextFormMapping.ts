@@ -2,7 +2,6 @@ import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 import {
     AdoptertBarn,
-    Arbeidsforhold,
     Barn,
     BarnType,
     FødtBarn,
@@ -21,6 +20,7 @@ import BarnetFormValues, {
     erFødtBarn,
     erUfødtBarn,
 } from './OmBarnetFormValues';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 const mapOmDetValgteBarnetFormDataToState = (
     valgtRegistrertBarn: FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,

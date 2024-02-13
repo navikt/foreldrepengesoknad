@@ -8,7 +8,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
             kanIkkeOppgis: false,
             harRettPåForeldrepengerINorge: false,
             harRettPåForeldrepengerIEØS: false,
-            erUfør: false,
+            erMorUfør: false,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             true,
@@ -21,7 +21,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
             harRettPåForeldrepengerINorge: false,
-            erUfør: true,
+            erMorUfør: true,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             false,
@@ -34,7 +34,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
             harRettPåForeldrepengerINorge: true,
-            erUfør: true,
+            erMorUfør: true,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             true,

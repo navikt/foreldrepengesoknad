@@ -3,7 +3,6 @@ import {
     AnnenForelder,
     Barn,
     SivilstandType,
-    Søkerinfo,
     getKjønnFromFnrString,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
@@ -11,7 +10,7 @@ import {
     links,
 } from '@navikt/fp-common';
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
-import { Søkerrolle } from '@navikt/fp-types';
+import { Søker, Søkerrolle } from '@navikt/fp-types';
 import { isBefore, isRequired, isValidDate } from '@navikt/fp-validation';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import dayjs from 'dayjs';
@@ -21,7 +20,7 @@ import { Link } from 'react-router-dom';
 import { AnnenForelderErOppgitt, AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
 
 const skalViseInfoOmFarskapsportal = (
-    søkerInfo: Søkerinfo,
+    søker: Søker,
     rolle: Søkerrolle,
     formValues: AnnenForelderErOppgitt,
     annenForelder?: AnnenForelder,
@@ -33,8 +32,7 @@ const skalViseInfoOmFarskapsportal = (
     const annenForelderErFarEllerUtenlandsk =
         (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') || formValues.utenlandskFnr;
     const annenForelderHarRettErBesvart = formValues.harRettPåForeldrepengerINorge !== undefined;
-    const søkerErIkkeGift =
-        søkerInfo.person.sivilstand === undefined || søkerInfo.person.sivilstand.type !== SivilstandType.GIFT;
+    const søkerErIkkeGift = søker.sivilstand === undefined || søker.sivilstand.type !== SivilstandType.GIFT;
     return (
         ((rolle === 'far' && annenForelderHarRettErBesvart) ||
             (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
@@ -54,13 +52,13 @@ const getTekstOmFarskapsportal = (rolle: Søkerrolle, barnetErIkkeFødt: boolean
 };
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    søker: Søker;
     rolle: Søkerrolle;
     barn: Barn;
     annenForelder?: AnnenForelder;
 };
 
-const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo, rolle, barn, annenForelder }) => {
+const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søker, rolle, barn, annenForelder }) => {
     const intl = useIntl();
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
@@ -76,7 +74,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søkerInfo,
     }
 
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
-        søkerInfo,
+        søker,
         rolle,
         formValues,
         annenForelder,

@@ -33,13 +33,13 @@ import {
 import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
 import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
+import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
-import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import './infoOmSøknaden.less';
 
 const getHvem = (

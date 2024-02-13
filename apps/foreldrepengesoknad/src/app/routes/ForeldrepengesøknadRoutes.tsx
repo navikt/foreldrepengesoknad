@@ -113,7 +113,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.ANNEN_FORELDER}
                 element={
                     <AnnenForelderSteg
-                        søkerInfo={søkerInfo}
+                        søker={søkerInfo.søker}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

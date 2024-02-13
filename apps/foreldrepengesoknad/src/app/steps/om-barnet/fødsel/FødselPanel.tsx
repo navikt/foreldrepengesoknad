@@ -1,5 +1,5 @@
 import { Radio, ReadMore, VStack } from '@navikt/ds-react';
-import { Arbeidsforhold, Søkersituasjon, isFarEllerMedmor } from '@navikt/fp-common';
+import { Søkersituasjon, isFarEllerMedmor } from '@navikt/fp-common';
 import { RadioGroup, Select } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -8,6 +8,7 @@ import ErFødtPanel from './ErFødtPanel';
 import { BarnetFormValues } from '../OmBarnetFormValues';
 import TerminPanel from './TerminPanel';
 import { isRequired } from '@navikt/fp-validation';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 const finnAntallBarnLabel = (intl: IntlShape, søkerErFarMedmor: boolean, erBarnetFødt?: boolean) => {
     if (erBarnetFødt !== false) {

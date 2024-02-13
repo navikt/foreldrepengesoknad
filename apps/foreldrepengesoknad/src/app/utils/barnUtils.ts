@@ -1,5 +1,6 @@
-import { Barn, RegistrertBarn, intlUtils, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
-import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { Barn, intlUtils, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
+import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { SøkerBarn } from '@navikt/fp-types';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
@@ -84,7 +85,7 @@ export const getAndreBarnFødtSammenMedBarnet = (
 
 export const getTittelBarnNårNavnSkalIkkeVises = (
     omsorgsovertagelsesdato: Date | undefined,
-    fødselsdatoer: Date[] | undefined,
+    fødselsdatoer: string[] | Date[] | undefined,
     antallBarn: number,
     intl: IntlShape,
 ): string => {
@@ -125,11 +126,11 @@ export const formaterNavnPåBarn = (
     return `${fornavn[0]}`;
 };
 
-export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
+export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }
-    const unikeFødselsdatoer = [] as Date[];
+    const unikeFødselsdatoer = [] as string[];
     fødselsdatoer.forEach((f) => {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
         if (finnesIUnikeFødselsdatoer === undefined) {

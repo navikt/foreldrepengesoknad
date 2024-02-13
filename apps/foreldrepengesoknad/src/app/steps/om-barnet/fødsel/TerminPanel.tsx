@@ -1,6 +1,5 @@
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 import {
-    Arbeidsforhold,
     Block,
     Søkersituasjon,
     andreAugust2022ReglerGjelder,
@@ -12,7 +11,7 @@ import {
     isFarEllerMedmor,
 } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { Søkerrolle } from '@navikt/fp-types';
+import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
