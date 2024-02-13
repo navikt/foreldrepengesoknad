@@ -1,5 +1,12 @@
 import { Loader, VStack } from '@navikt/ds-react';
-import { Step, getNavnPåForeldre, isAnnenForelderOppgitt, isFarEllerMedmor } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    Step,
+    Uttaksdagen,
+    getNavnPåForeldre,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
 import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
@@ -21,6 +28,8 @@ import { RequestStatus } from 'app/types/RequestState';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { Søker } from '@navikt/fp-types';
+import FordelingForm from './FordelingForm';
+import { getAntallUkerFellesperiode } from '../uttaksplan-info/utils/stønadskontoer';
 
 type Props = {
     søker: Søker;
@@ -122,7 +131,14 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                   eksisterendeVedtakAnnenPart?.uttaksplan,
               )
             : [];
-
+    const dagerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) * 5 : 0;
+    //TODO GR: Må finnes siste uttaksperiode, filtrere bort på kun de og kun invilgede:
+    const sisteDagAnnenForelder = annenPartsVedtak
+        ? Uttaksdagen(
+              ISOStringToDate(annenPartsVedtak.perioder[annenPartsVedtak.perioder.length - 1].tom)!,
+          ).denneEllerForrige()
+        : undefined;
+    const førsteDagEtterAnnenForelder = sisteDagAnnenForelder ? Uttaksdagen(sisteDagAnnenForelder).neste() : undefined;
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -143,6 +159,14 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                     deltUttak={deltUttak}
                     fordelingScenario={fordelingScenario}
                 ></FordelingOversikt>
+                <FordelingForm
+                    deltUttak={deltUttak}
+                    navnPåForeldre={navnPåForeldre}
+                    dagerMedFellesperiode={dagerMedFellesperiode}
+                    goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
+                    goToNextDefaultStep={navigator.goToNextDefaultStep}
+                    førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
+                ></FordelingForm>
             </VStack>
         </Step>
     );
