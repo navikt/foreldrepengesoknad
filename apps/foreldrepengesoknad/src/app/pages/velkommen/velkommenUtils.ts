@@ -259,7 +259,7 @@ const getSelectableBarnOptionsFraPDL = (
     return selectableBarn;
 };
 
-export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: SøkerBarn[]) => {
+export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: SøkerBarn[] = []) => {
     const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
     const avsluttedeSaker = saker.filter((sak) => sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);

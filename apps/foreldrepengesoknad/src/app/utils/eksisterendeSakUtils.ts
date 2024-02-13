@@ -497,7 +497,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
     grunnlag: Saksgrunnlag,
-    barn: SøkerBarn[],
+    barn: SøkerBarn[] = [],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
 ): AnnenForelder => {
@@ -529,7 +529,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
 export const opprettSøknadFraValgteBarnMedSak = (
     valgteBarn: ValgtBarn,
     intl: IntlShape,
-    registrerteBarn: SøkerBarn[],
+    registrerteBarn: SøkerBarn[] = [],
 ): Partial<Søknad> | undefined => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined);
     const { grunnlag } = eksisterendeSak!;

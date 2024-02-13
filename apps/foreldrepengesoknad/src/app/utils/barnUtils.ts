@@ -28,7 +28,10 @@ const barnFødselsdatoLikSakFødselsdato = (
         : false;
 };
 
-export const getRegistrerteBarnOmDeFinnes = (barn: Barn, registrerteBarn: SøkerBarn[]): SøkerBarn[] | undefined => {
+export const getRegistrerteBarnOmDeFinnes = (
+    barn: Barn,
+    registrerteBarn: SøkerBarn[] = [],
+): SøkerBarn[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
         ? registrerteBarn.filter(
               (regBarn) =>
