@@ -1,10 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
-
-import _søkerinfo from 'storybook/storyData/uttaksplan/mor-fødsel/søkerinfo.json';
 import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
 import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
 import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
@@ -12,23 +9,19 @@ import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/st�
 import stønadskontoDeltUttak100PrematurWLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100PrematurWLB.json';
 import stønadskontoFlerbarnsuker80 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker80.json';
 import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker100.json';
-
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
-import Søker from 'app/context/types/Søker';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import SøkerData from 'app/context/types/SøkerData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
-
-const søkerinfo = _søkerinfo as any;
 
 const uttaksplanFar = [
     {
@@ -62,7 +55,12 @@ export default {
 };
 
 const Template: StoryFn<
-    UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; annenForelder: AnnenForelder; barn: Barn; søker: Søker }
+    UttaksplanInfoTestData & {
+        dekningsgrad: Dekningsgrad;
+        annenForelder: AnnenForelder;
+        barn: Barn;
+        søkerData: SøkerData;
+    }
 > = (args) => {
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
@@ -92,7 +90,7 @@ const Template: StoryFn<
                             rolle: 'mor',
                         },
                         [ContextDataType.OM_BARNET]: args.barn,
-                        [ContextDataType.SØKER]: args.søker,
+                        [ContextDataType.SØKER_DATA]: args.søkerData,
                         [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
@@ -100,7 +98,28 @@ const Template: StoryFn<
                     }}
                 >
                     <UttaksplanInfo
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        søker={{
+                            fnr: '19047815714',
+                            fornavn: 'TALENTFULL',
+                            etternavn: 'MYGG',
+                            kjønn: 'K',
+                            fødselsdato: '1978-04-19',
+                            barn: [
+                                {
+                                    fnr: '21091981146',
+                                    fødselsdato: '2021-03-15',
+                                    annenForelder: {
+                                        fnr: '12038517080',
+                                        fødselsdato: '1985-03-12',
+                                        fornavn: 'LEALAUS',
+                                        etternavn: 'BÆREPOSE',
+                                    },
+                                    fornavn: 'KLØKTIG',
+                                    etternavn: 'MIDTPUNKT',
+                                    kjønn: 'M',
+                                },
+                            ],
+                        }}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -115,7 +134,6 @@ export const MorAleneomsorgDekningsgrad100Før1Okt2021 = Template.bind({});
 MorAleneomsorgDekningsgrad100Før1Okt2021.args = {
     stønadskonto100,
     stønadskonto80,
-    søkerinfo,
     barn: {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
@@ -126,7 +144,7 @@ MorAleneomsorgDekningsgrad100Før1Okt2021.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -139,7 +157,6 @@ export const MorAleneomsorgDekningsgrad80Før1Okt2021 = Template.bind({});
 MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
     stønadskonto100,
     stønadskonto80,
-    søkerinfo,
     barn: {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
@@ -150,8 +167,8 @@ MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {
-        erAleneOmOmsorg: true,
+    søkerData: {
+        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -163,7 +180,6 @@ export const MorAleneomsorgPrematurFødsel = Template.bind({});
 MorAleneomsorgPrematurFødsel.args = {
     stønadskonto100,
     stønadskonto80,
-    søkerinfo,
     barn: {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2023-01-25').toDate()],
@@ -175,8 +191,8 @@ MorAleneomsorgPrematurFødsel.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {
-        erAleneOmOmsorg: true,
+    søkerData: {
+        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -200,13 +216,12 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -226,13 +241,12 @@ MorDeltUttakDekningsgrad100EtterWLB.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -252,13 +266,12 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -280,13 +293,12 @@ MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args = {
         kanIkkeOppgis: false,
         erInformertOmSøknaden: true,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     uttaksplanAnnenPart: uttaksplanFar,
 };
@@ -308,12 +320,11 @@ MorSøkerOgFarHarIkkeRett.args = {
         harRettPåForeldrepengerINorge: false,
         kanIkkeOppgis: false,
     },
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
-    søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };

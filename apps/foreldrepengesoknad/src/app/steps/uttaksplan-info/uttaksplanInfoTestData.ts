@@ -1,11 +1,11 @@
 import { Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { Søkerinfo } from '@navikt/fp-types';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 
 interface UttaksplanInfoTestData {
     stønadskonto100: TilgjengeligeStønadskontoerDTO;
     stønadskonto80: TilgjengeligeStønadskontoerDTO;
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
     fødselsdatoer: Date[];

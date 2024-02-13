@@ -7,7 +7,6 @@ import Api from './api/api';
 import { sendErrorMessageToSentry } from './api/apiUtils';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 import SøknadRoutes from './routes/routes';
-import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
 import { shouldApplyStorage } from './utils/mellomlagringUtils';
 import { RequestStatus } from './types/RequestState';
 import { FpDataContext } from './context/FpDataContext';
@@ -63,11 +62,6 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         [storageData],
     );
 
-    const søkerInfo = useMemo(
-        () => (søkerinfoData ? mapSøkerinfoDTOToSøkerinfo(søkerinfoData) : undefined),
-        [søkerinfoData],
-    );
-
     useEffect(() => {
         if (storageData?.søknad?.søker?.språkkode && storageData.søknad.søker.språkkode !== locale) {
             onChangeLocale(storageData.søknad?.søker?.språkkode);
@@ -87,18 +81,18 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         return <div>Redirected to Innsyn</div>;
     }
 
-    if (!sakerData || !søkerInfo || storageStatus === RequestStatus.IN_PROGRESS) {
+    if (!sakerData || !søkerinfoData || storageStatus === RequestStatus.IN_PROGRESS) {
         return <Spinner />;
     }
 
     return (
-        <ErrorBoundary søkerInfo={søkerInfo}>
+        <ErrorBoundary søker={søkerinfoData.søker}>
             <FpDataContext initialState={initialState}>
                 <BrowserRouter>
                     <ForeldrepengesøknadRoutes
                         locale={locale}
                         onChangeLocale={onChangeLocale}
-                        søkerInfo={søkerInfo}
+                        søkerInfo={søkerinfoData}
                         saker={sakerData.foreldrepenger}
                         currentRoute={storageData ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
                         lagretErEndringssøknad={storageData?.søknad?.erEndringssøknad}

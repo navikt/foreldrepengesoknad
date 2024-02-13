@@ -5,11 +5,10 @@ import { AttachmentType, Skjemanummer, ISO_DATE_FORMAT } from '@navikt/fp-consta
 import { initAmplitude } from '@navikt/fp-metrics';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 import { EsDataContext, ContextDataType } from 'appData/EsDataContext';
-import { Kjønn } from 'types/Person';
 import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
 import OppsummeringSteg from './OppsummeringSteg';
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { Søker, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { MemoryRouter } from 'react-router-dom';
 
 const promiseAction =
@@ -19,18 +18,19 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const person = {
+const søker = {
     fnr: '11111111111',
     fornavn: 'Henrikke',
     etternavn: 'Ibsen',
-    kjønn: Kjønn.KVINNE,
+    kjønn: 'K',
     fødselsdato: '1979-01-28',
     adresse: 'Testadresse',
     bankkonto: {
         kontonummer: '49875234987',
         banknavn: 'Storebank',
     },
-};
+    barn: [],
+} as Søker;
 
 const barnet = {
     erBarnetFødt: true,
@@ -71,19 +71,25 @@ const Template: StoryFn<{
 }) => {
     initAmplitude();
     return (
-        <MemoryRouter initialEntries={[Path.OPPSUMMERING]}>
-            <EsDataContext
-                initialState={{
-                    [ContextDataType.OM_BARNET]: omBarnet,
-                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    [ContextDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
-                    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
-                    [ContextDataType.DOKUMENTASJON]: dokumentasjon,
-                }}
-            >
-                <OppsummeringSteg person={person} sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
-            </EsDataContext>
-        </MemoryRouter>
+        <div id="app">
+            <MemoryRouter initialEntries={[Path.OPPSUMMERING]}>
+                <EsDataContext
+                    initialState={{
+                        [ContextDataType.OM_BARNET]: omBarnet,
+                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
+                        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
+                        [ContextDataType.DOKUMENTASJON]: dokumentasjon,
+                    }}
+                >
+                    <OppsummeringSteg
+                        søker={søker}
+                        sendSøknad={sendSøknad}
+                        mellomlagreOgNaviger={mellomlagreOgNaviger}
+                    />
+                </EsDataContext>
+            </MemoryRouter>
+        </div>
     );
 };
 

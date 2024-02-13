@@ -1,6 +1,5 @@
 import {
     AnnenForelder,
-    Arbeidsforhold,
     AttachmentType,
     PeriodeUtenUttakUtsettelse,
     Utsettelsesperiode,
@@ -13,6 +12,7 @@ import OppsummeringAvDokumentasjon from '../oppsummering-av-dokumentasjon/Oppsum
 import { getÅrsakTekst } from '../OppsummeringUtils';
 import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
 import { shouldPeriodeHaveAttachment } from '@navikt/uttaksplan';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface UtsettelsesperiodedetaljerProps {
     periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse;

@@ -21,7 +21,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 
@@ -96,7 +96,7 @@ const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
-    søker: Søker,
+    søkerData: SøkerData,
     barnFraNesteSak?: BarnFraNesteSak,
     annenPartsVedtak?: AnnenPartVedtakDTO,
     eksisterendeSak?: EksisterendeSak,
@@ -104,11 +104,11 @@ const getStønadskontoParams = (
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
         erFarEllerMedmor,
-        søker.erAleneOmOmsorg,
+        søkerData.erAleneOmOmsorg,
         annenForelder,
     );
 
-    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, søker.erAleneOmOmsorg, annenForelder);
+    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, søkerData.erAleneOmOmsorg, annenForelder);
 
     const familieHendelseDatoNesteSak = barnFraNesteSak?.familiehendelsesdato;
 

@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
     Dekningsgrad,
@@ -33,13 +32,14 @@ import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { StepButtons } from '@navikt/fp-ui';
+import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakFar: EksisterendeSak | undefined;
     erEndringssøknad: boolean;
-    person: Person;
+    søker: Søker;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
@@ -50,7 +50,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     eksisterendeSakFar,
     erEndringssøknad,
-    person,
+    søker,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
@@ -61,7 +61,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -85,7 +85,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, false)
         : '';
 
-    const navnMor = formaterNavn(person.fornavn, person.etternavn, false, person.mellomnavn);
+    const navnMor = formaterNavn(søker.fornavn, søker.etternavn, false, søker.mellomnavn);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
@@ -112,7 +112,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         minsterett,
         søkersituasjon,
         barn,
-        søker.erAleneOmOmsorg,
+        søkerData.erAleneOmOmsorg,
         navnMor,
         navnFarMedmor,
         intl,
@@ -203,7 +203,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                     const visibility = morFødselQuestionsConfig.getVisbility({
                         ...formValues,
                         harRettPåForeldrepengerINorge,
-                        erAleneOmOmsorg: søker.erAleneOmOmsorg,
+                        erAleneOmOmsorg: søkerData.erAleneOmOmsorg,
                     } as MorFødselQuestionsPayload);
 
                     return (
@@ -216,7 +216,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                                     barn={barn}
                                 />
                             </Block>
-                            <Block visible={søker.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
+                            <Block visible={søkerData.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
                                 <Block
                                     padBottom="xl"
                                     visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}

@@ -1,0 +1,17 @@
+{
+    "OppsummeringPanel.SamtykkeEs": "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
+    "OppsummeringPanel.SamtykkeFp": "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.",
+    "OppsummeringPanel.Validering.BekrefteOpplysninger": "Du må bekrefte at du har oppgitt riktige opplysninger",
+    "BoIUtlandetOppsummeringspunkt.Utenlandsopphold": "Bo i utlandet",
+    "BoIUtlandetOppsummeringspunkt.BoddSisteTolv": "Du har bodd i {country} de siste 12 månedene",
+    "BoIUtlandetOppsummeringspunkt.Norge": "Norge",
+    "BoIUtlandetOppsummeringspunkt.BoNesteTolv": "Du skal bo i {country} de neste 12 månadene",
+    "BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet": "På fødselstidspunktet kommer du til å bo i {country}",
+    "BoIUtlandetOppsummeringspunkt.Utlandet": "utlandet",
+    "BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet": "På fødselstidspunktet bodde du i {country}",
+    "BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet": "Ved omsorgsovertakelse bodde du i {country}",
+    "LandOppsummering.IDag": "i dag",
+    "LandOppsummering.HarBodd": "Du har bodd i {country} i løpet av de forrige 12 månedene",
+    "LandOppsummering.SkalBo": "Du skal bo i {country} i løpet av de neste 12 månedene",
+    "DegOppsummeringspunkt.OmDeg": "Deg"
+}

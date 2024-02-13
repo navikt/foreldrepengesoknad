@@ -15,6 +15,7 @@
     "FailedAttachment.Vedlegg.Feilmelding.Timeout": "{filename} - Det tok for lang tid å lasta opp dokumentet ditt. Sjekk nettverket ditt eller prøv å last opp færre dokument på ein gong",
     "StepButtons.Forrige": "Forrige steg",
     "StepButtons.Neste": "Neste steg",
+    "StepButtons.Send": "Send søknaden",
     "ErrorPage.Engangsstønad": "Eingongsstønad",
     "ErrorPage.Foreldrepenger": "Foreldrepenger",
     "ErrorPage.Svangerskapspenger": "Svangerskapspenger",

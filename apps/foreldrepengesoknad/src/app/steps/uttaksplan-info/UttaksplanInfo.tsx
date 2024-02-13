@@ -1,5 +1,5 @@
 import { Loader } from '@navikt/ds-react';
-import { Step, Søkerinfo, intlUtils, isAnnenForelderOppgitt, isFarEllerMedmor, isFødtBarn } from '@navikt/fp-common';
+import { Step, intlUtils, isAnnenForelderOppgitt, isFarEllerMedmor, isFødtBarn } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
@@ -17,16 +17,17 @@ import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUt
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import UttaksplanInfoScenarios from './components/UttaksplanInfoScenarios';
+import { Søker } from '@navikt/fp-types';
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    søker: Søker;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
 const UttaksplanInfo: React.FunctionComponent<Props> = ({
-    søkerInfo,
+    søker,
     erEndringssøknad,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
@@ -39,7 +40,7 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
@@ -124,7 +125,7 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
         barn,
         annenForelder,
         søkersituasjon,
-        søker,
+        søkerData,
         barnFraNesteSak,
         eksisterendeSakAnnenPartData,
         eksisterendeSak,
@@ -185,10 +186,10 @@ const UttaksplanInfo: React.FunctionComponent<Props> = ({
                 tilgjengeligeStønadskontoer80DTO={stønadskontoer80}
                 eksisterendeSakAnnenPart={eksisterendeVedtakAnnenPart}
                 søkersituasjon={søkersituasjon}
-                søker={søker}
+                søkerData={søkerData}
                 annenForelder={annenForelder}
                 erEndringssøknad={erEndringssøknad}
-                person={søkerInfo.person}
+                søker={søker}
                 goToNextDefaultStep={navigator.goToNextDefaultStep}
                 goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                 oppdaterBarnOgLagreUttaksplandata={oppdaterBarnOgLagreUttaksplandata}

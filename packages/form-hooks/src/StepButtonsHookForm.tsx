@@ -5,7 +5,6 @@ import { StepButtons } from '@navikt/fp-ui';
 interface Props<DATA_TYPE extends FieldValues> {
     goToPreviousStep: () => void;
     saveDataOnPreviousClick?: (data: DATA_TYPE) => void;
-    nextButtonText?: string;
     nextButtonOnClick?: () => void;
     isDisabledAndLoading?: boolean;
 }
@@ -13,7 +12,6 @@ interface Props<DATA_TYPE extends FieldValues> {
 const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
     goToPreviousStep,
     saveDataOnPreviousClick,
-    nextButtonText,
     nextButtonOnClick,
     isDisabledAndLoading = false,
 }: Props<DATA_TYPE>) => {
@@ -32,7 +30,6 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
     return (
         <StepButtons
             goToPreviousStep={onBackButtonClick}
-            nextButtonText={nextButtonText}
             nextButtonOnClick={nextButtonOnClick}
             isDisabledAndLoading={isDisabledAndLoading || isSubmitting}
         />

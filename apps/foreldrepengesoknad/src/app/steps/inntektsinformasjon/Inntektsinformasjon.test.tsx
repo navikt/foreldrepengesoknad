@@ -55,7 +55,7 @@ describe('<Inntektsinformasjon>', () => {
                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                 selvstendigNæringsdrivendeInformasjon: [],
             },
-            key: ContextDataType.SØKER,
+            key: ContextDataType.SØKER_DATA,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {

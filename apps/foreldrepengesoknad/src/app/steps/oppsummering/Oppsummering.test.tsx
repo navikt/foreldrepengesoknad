@@ -1,9 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import dayjs from 'dayjs';
+
 import { composeStories } from '@storybook/react';
 import * as stories from './Oppsummering.stories';
 import SøknadRoutes from 'app/routes/routes';
 import { ContextDataType } from 'app/context/FpDataContext';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 const {
     Default,
@@ -25,11 +28,11 @@ describe('<Oppsummering>', () => {
         render(<Default sendSøknad={sendSøknad} />);
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
-        expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Send inn søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
-        expect(screen.getByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).toBeInTheDocument();
+        expect(screen.getByText('Du må bekrefte at du har oppgitt riktige opplysninger')).toBeInTheDocument();
 
         await userEvent.click(
             screen.getByText(
@@ -37,9 +40,9 @@ describe('<Oppsummering>', () => {
             ),
         );
 
-        expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Send inn søknad'));
+        await userEvent.click(screen.getByText('Send søknaden'));
 
         expect(sendSøknad).toHaveBeenCalledTimes(1);
     });
@@ -81,7 +84,7 @@ describe('<Oppsummering>', () => {
                 'Har Espen arbeidet eller mottatt pengestøtte i et EØS-land i minst seks av de siste ti månedene før barnet ble født?',
             ),
         ).not.toBeInTheDocument();
-        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
+        expect(screen.getByText('Ja')).toBeInTheDocument();
         expect(screen.queryByText('Mottar Espen uføretrygd?')).not.toBeInTheDocument();
     });
     it('Skal vise riktig informasjon om aleneomsorg', async () => {
@@ -106,7 +109,7 @@ describe('<Oppsummering>', () => {
         await userEvent.click(await screen.findByText('Den andre forelderen'));
 
         expect(screen.getByText('Mottar Eline uføretrygd?')).toBeInTheDocument();
-        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
+        expect(screen.getByText('Ja')).toBeInTheDocument();
     });
 
     it('skal vise informasjon om adoptert barn', async () => {
@@ -119,7 +122,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('01.01.2021')).toBeInTheDocument();
         expect(screen.getByText('Gjelder søknaden stebarnsadopsjon?')).toBeInTheDocument();
-        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
+        expect(screen.getByText('Ja')).toBeInTheDocument();
         expect(screen.getByText('Adopsjonsdato')).toBeInTheDocument();
         expect(screen.getByText('01.10.2021')).toBeInTheDocument();
     });
@@ -127,16 +130,21 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om utenlandsopphold', async () => {
         render(<MedUtenlandsopphold />);
 
-        await userEvent.click(await screen.findByText('Utenlandsopphold'));
+        await userEvent.click(await screen.findByText('Bo i utlandet'));
 
-        expect(screen.getByText('De siste 12 månedene har jeg')).toBeInTheDocument();
-        expect(screen.getByText('Bodd i Sverige')).toBeInTheDocument();
-        expect(screen.getByText('01.01.2020 - 31.12.2020')).toBeInTheDocument();
-        expect(screen.getByText('De neste 12 månedene skal jeg')).toBeInTheDocument();
-        expect(screen.getByText('Bo i Sverige')).toBeInTheDocument();
-        expect(screen.getByText('01.01.2021 - 31.12.2021')).toBeInTheDocument();
-        expect(screen.getByText('Jeg er i Norge på fødselstidspunktet')).toBeInTheDocument();
-        expect(screen.getAllByText('Nei')[0]).toBeInTheDocument();
+        expect(screen.getByText('Du har bodd i Sverige i løpet av de forrige 12 månedene')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                dayjs().subtract(10, 'months').format(DDMMYYYY_DATE_FORMAT) +
+                    ' - ' +
+                    dayjs().subtract(1, 'days').format(DDMMYYYY_DATE_FORMAT),
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Du skal bo i Sverige i løpet av de neste 12 månedene')).toBeInTheDocument();
+        expect(
+            screen.getByText('i dag - ' + dayjs().add(100, 'days').format(DDMMYYYY_DATE_FORMAT)),
+        ).toBeInTheDocument();
+        expect(screen.getByText('På fødselstidspunktet bodde du i Norge')).toBeInTheDocument();
     });
 
     it('skal vise informasjon om arbeidsforhold og andre inntekter', async () => {
@@ -158,7 +166,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Oppstartsdato som frilans')).toBeInTheDocument();
         expect(screen.getByText('01.01.2019')).toBeInTheDocument();
         expect(screen.getByText('Jeg jobber fremdeles som frilans')).toBeInTheDocument();
-        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')).toHaveLength(1);
     });
     it('skal vise informasjon om uttaksplan', async () => {
         render(<FarMedUførMor />);

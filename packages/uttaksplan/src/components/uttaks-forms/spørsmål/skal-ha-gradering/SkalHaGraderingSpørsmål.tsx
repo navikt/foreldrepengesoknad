@@ -5,8 +5,9 @@ import {
     TidsperiodeDate,
     Arbeidsforhold,
     Arbeidsform,
-    getKunArbeidsforholdForValgtTidsperiode,
+    dateIsBetween,
 } from '@navikt/fp-common';
+
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
@@ -14,6 +15,54 @@ import { BodyShort, ReadMore } from '@navikt/ds-react';
 import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { prosentValideringGradering } from '../../../../utils/prosentValidering';
+import dayjs from 'dayjs';
+import { uniqBy } from 'lodash';
+
+const containsDuplicates = (arbeidsforhold: Arbeidsforhold[]): boolean => {
+    if (arbeidsforhold.length > 1) {
+        const arbeidsgiverIds = arbeidsforhold.map((a) => a.arbeidsgiverId);
+        const uniqueIds = new Set(arbeidsgiverIds);
+
+        return uniqueIds.size !== arbeidsgiverIds.length;
+    }
+
+    return false;
+};
+
+const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
+    return arbeidsforhold.arbeidsgiverId;
+};
+
+const getKunArbeidsforholdForValgtTidsperiode = (
+    arbeidsforhold: Arbeidsforhold[],
+    tidsperiode: TidsperiodeDate,
+): Arbeidsforhold[] => {
+    if (tidsperiode.tom && tidsperiode.fom) {
+        const kunArbeidsforholdForValgtTidsperiode = arbeidsforhold.filter((a) => {
+            if (a.tom === undefined) {
+                if (dayjs(tidsperiode.fom).isSameOrAfter(dayjs(a.fom), 'day')) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (dateIsBetween(tidsperiode.fom, a.fom, a.tom) || dateIsBetween(tidsperiode.tom, a.fom, a.tom)) {
+                return true;
+            }
+
+            return false;
+        });
+
+        if (containsDuplicates(kunArbeidsforholdForValgtTidsperiode)) {
+            return uniqBy(kunArbeidsforholdForValgtTidsperiode, getArbeidsgiverId);
+        }
+
+        return kunArbeidsforholdForValgtTidsperiode;
+    }
+
+    return arbeidsforhold;
+};
 
 interface Props {
     graderingsprosentVisible: boolean;

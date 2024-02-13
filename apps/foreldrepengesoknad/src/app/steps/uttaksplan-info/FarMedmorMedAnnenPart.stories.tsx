@@ -2,25 +2,47 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import AxiosMock from 'storybook/utils/AxiosMock';
 import { RequestStatus } from 'app/types/RequestState';
-import _søkerinfo from 'storybook/storyData/uttaksplan/far-medmor-fødsel-begge-har-rett/søkerinfo.json';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
 import stønadskontoDeltUttak100Tvillinger from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Tvillinger.json';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
 import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import SøknadRoutes from 'app/routes/routes';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo } from '@navikt/fp-types';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
 
-const søkerinfo = _søkerinfo as any;
+const søkerinfo = {
+    søker: {
+        fnr: '19047815714',
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+        kjønn: 'M',
+        fødselsdato: '1978-04-19',
+        barn: [
+            {
+                fnr: '21091981146',
+                fødselsdato: '2021-03-15',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'M',
+            },
+        ],
+    },
+} as Søkerinfo;
 
 const uttaksperiodeFedrekvote = {
     fom: '2022-12-07',
@@ -91,7 +113,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
                         },
-                        [ContextDataType.SØKER]: {
+                        [ContextDataType.SØKER_DATA]: {
                             erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -109,7 +131,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                     }}
                 >
                     <UttaksplanInfo
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(args.søkerinfo)}
+                        søker={søkerinfo.søker}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -130,7 +152,6 @@ FarSøkerEtterMorFør1Okt2021.args = {
         antallBarn: 1,
         dokumentasjonAvAleneomsorg: [],
     },
-    søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     uttaksplanAnnenPart: [uttaksperiodeFellesperiode],
 };

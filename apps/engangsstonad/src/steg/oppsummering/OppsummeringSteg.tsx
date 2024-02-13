@@ -1,28 +1,41 @@
-import { useState } from 'react';
-import { Step } from '@navikt/fp-common';
-import { Accordion, BodyShort, ConfirmationPanel, VStack } from '@navikt/ds-react';
-import { useAbortSignal } from '@navikt/fp-api';
+import { Heading } from '@navikt/ds-react';
+import {
+    BoIUtlandetOppsummeringspunkt,
+    SøkerOppsummeringspunkt,
+    HendelseType,
+    OppsummeringIndex,
+} from '@navikt/fp-oppsummering';
+import { Søker } from '@navikt/fp-types';
+import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { StepButtons, useCustomIntl } from '@navikt/fp-ui';
-import Person from 'types/Person';
+import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
-import Oppsummeringspunkt from './Oppsummeringspunkt';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
-import UtenlandsoppholdOppsummering from './UtenlandsoppholdOppsummering';
 
-const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
-    return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
+const getDatoOgHendelsetype = (barn: OmBarnet): [string, HendelseType] => {
+    if (erBarnetFødt(barn)) {
+        return [barn.fødselsdato, HendelseType.FØDSEL];
+    }
+    if (erAdopsjon(barn)) {
+        return [barn.adopsjonsdato, HendelseType.ADOPSJON];
+    }
+    if (erBarnetIkkeFødt(barn)) {
+        return [barn.termindato, HendelseType.TERMIN];
+    }
+    throw new Error('Informasjon om barn er feil!');
 };
 
 export interface Props {
-    person: Person;
+    søker: Søker;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad, mellomlagreOgNaviger }) => {
+const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad, mellomlagreOgNaviger }) => {
     const { i18n } = useCustomIntl();
 
     const stepConfig = useStepConfig();
@@ -33,62 +46,35 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ person, sendSøknad,
     const dokumentasjon = useContextGetData(ContextDataType.DOKUMENTASJON);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
-    const abortSignal = useAbortSignal();
 
-    const [isChecked, setChecked] = useState(false);
-    const [isSubmitting, setSubmitting] = useState(false);
-    const [isError, setIsError] = useState(false);
-
-    const send = () => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
-            setSubmitting(true);
-            sendSøknad(abortSignal);
-        }
-    };
+    const barnData = getDatoOgHendelsetype(omBarnet);
 
     return (
-        <Step
-            bannerTitle={i18n('Søknad.Pageheading')}
-            onCancel={navigator.avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <VStack gap="10">
-                <Accordion indent={false}>
-                    <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.OmDeg')}>
-                        <VStack gap="4">
-                            <BodyShort>{fullNameFormat(person.fornavn, person.etternavn, person.mellomnavn)}</BodyShort>
-                            <BodyShort>{person.fnr}</BodyShort>
-                        </VStack>
-                    </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.OmBarnet')}>
-                        <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
-                    </Oppsummeringspunkt>
-                    <Oppsummeringspunkt tittel={i18n('OppsummeringSteg.Utenlandsopphold')}>
-                        <UtenlandsoppholdOppsummering
-                            omBarnet={omBarnet}
-                            utenlandsopphold={utenlandsopphold}
-                            tidligereUtenlandsopphold={tidligereUtenlandsopphold}
-                            senereUtenlandsopphold={senereUtenlandsopphold}
-                        />
-                    </Oppsummeringspunkt>
-                </Accordion>
-                <ConfirmationPanel
-                    label={i18n('OppsummeringSteg.Samtykke')}
-                    onChange={() => setChecked((state) => !state)}
-                    checked={isChecked}
-                    error={isError && !isChecked && i18n('OppsummeringSteg.Validering.BekrefteOpplysninger')}
+        <ContentWrapper>
+            <Heading size="large">
+                <FormattedMessage id="Søknad.Pageheading" />
+            </Heading>
+            <OppsummeringIndex
+                appName="Engangsstønad"
+                stepConfig={stepConfig}
+                sendSøknad={sendSøknad}
+                cancelApplication={navigator.avbrytSøknad}
+                goToPreviousStep={navigator.goToPreviousDefaultStep}
+                onContinueLater={navigator.fortsettSøknadSenere}
+            >
+                <SøkerOppsummeringspunkt søker={søker} />
+                <OppsummeringIndex.Punkt tittel={i18n('OppsummeringSteg.OmBarnet')}>
+                    <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
+                </OppsummeringIndex.Punkt>
+                <BoIUtlandetOppsummeringspunkt
+                    familiehendelseDato={barnData[0]}
+                    hendelseType={barnData[1]}
+                    utenlandsopphold={utenlandsopphold}
+                    tidligereUtenlandsopphold={tidligereUtenlandsopphold}
+                    senereUtenlandsopphold={senereUtenlandsopphold}
                 />
-                <StepButtons
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonText={i18n('OppsummeringSteg.Button.SendSøknad')}
-                    nextButtonOnClick={send}
-                    isDisabledAndLoading={isSubmitting}
-                />
-            </VStack>
-        </Step>
+            </OppsummeringIndex>
+        </ContentWrapper>
     );
 };
 

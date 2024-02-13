@@ -1,6 +1,6 @@
 import { BodyShort, Button, Heading, Link } from '@navikt/ds-react';
-import { LocaleNo } from '@navikt/fp-types';
-import { bemUtils, Block, LanguageToggle, Sidebanner, Søkerinfo } from '@navikt/fp-common';
+import { Block, LanguageToggle, Sidebanner, bemUtils } from '@navikt/fp-common';
+import { LocaleNo, Søker } from '@navikt/fp-types';
 import { logAmplitudeEvent } from 'app/amplitude/amplitude';
 import Api from 'app/api/api';
 import { useContextReset } from 'app/context/FpDataContext';
@@ -23,7 +23,7 @@ export interface FeilsideProps {
     skalKunneGåTilbakeTilSøknad: boolean;
     språkkode?: LocaleNo;
     setLanguage?: (languageCode: string) => void;
-    søkerInfo?: Søkerinfo;
+    søker?: Søker;
 }
 
 const Feilside: React.FunctionComponent<FeilsideProps> = ({
@@ -34,13 +34,13 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
     skalKunneGåTilbakeTilSøknad,
     språkkode,
     setLanguage,
-    søkerInfo,
+    søker,
 }) => {
     const bem = bemUtils('feilside');
     const reset = useContextReset();
 
     const avbrytSøknadHandler = async () => {
-        if (!søkerInfo) {
+        if (!søker) {
             return;
         }
 
@@ -53,7 +53,7 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
         reset();
 
         try {
-            await Api.deleteMellomlagretSøknad(søkerInfo.person.fnr);
+            await Api.deleteMellomlagretSøknad(søker.fnr);
         } catch (error) {
             // Vi bryr oss ikke om feil her. Logges bare i backend
         }
@@ -94,14 +94,14 @@ const Feilside: React.FunctionComponent<FeilsideProps> = ({
                 <Block padBottom="l">
                     <BodyShort>{ingress}</BodyShort>
                 </Block>
-                {søkerInfo !== undefined && !skalKunneGåTilbakeTilSøknad && (
+                {søker !== undefined && !skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Button variant="primary" onClick={avbrytSøknadHandler}>
                             Start søknaden på nytt
                         </Button>
                     </div>
                 )}
-                {søkerInfo !== undefined && skalKunneGåTilbakeTilSøknad && (
+                {søker !== undefined && skalKunneGåTilbakeTilSøknad && (
                     <div className={bem.element('avbrytKnapp')}>
                         <Button variant="primary" onClick={gåTilbakeTilSøknadenHandler}>
                             Gå tilbake til søknaden

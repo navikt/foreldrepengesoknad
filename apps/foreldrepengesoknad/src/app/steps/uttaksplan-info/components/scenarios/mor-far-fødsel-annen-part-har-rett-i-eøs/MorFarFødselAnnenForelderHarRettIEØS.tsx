@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import {
     Block,
     Dekningsgrad,
@@ -42,12 +41,13 @@ import {
 import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
-    person: Person;
+    søker: Søker;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
@@ -57,7 +57,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     tilgjengeligeStønadskontoer100DTO,
     erEndringssøknad,
-    person,
+    søker,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
@@ -65,7 +65,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const intl = useIntl();
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -154,7 +154,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, false)
         : '';
 
-    const navnSøker = formaterNavn(person.fornavn, person.etternavn, false, person.mellomnavn);
+    const navnSøker = formaterNavn(søker.fornavn, søker.etternavn, false, søker.mellomnavn);
     const navnMor = erSøkerMor ? navnSøker : navnAnnenPart;
     const navnFarMedmor = erSøkerMor ? navnAnnenPart : navnSøker;
 
@@ -171,7 +171,7 @@ const MorFarFødselAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         minsterett,
         søkersituasjon,
         barn,
-        søker.erAleneOmOmsorg,
+        søkerData.erAleneOmOmsorg,
         navnMor,
         navnFarMedmor,
         intl,

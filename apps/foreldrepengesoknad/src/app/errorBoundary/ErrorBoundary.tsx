@@ -2,10 +2,11 @@ import * as Sentry from '@sentry/browser';
 import Feilside from 'app/pages/feilside/Feilside';
 import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
 import { Component, ReactElement } from 'react';
-import { Søkerinfo, links } from '@navikt/fp-common';
+import { links } from '@navikt/fp-common';
+import { Søker } from '@navikt/fp-types';
 
 interface Props {
-    søkerInfo?: Søkerinfo;
+    søker?: Søker;
     children: ReactElement;
 }
 
@@ -43,7 +44,7 @@ class ErrorBoundary extends Component<Props, State> {
                     dokumenttittel="NAV Foreldrepengesøknad"
                     ingress={`${this.state.error?.message}`}
                     tittel={feilsideTittel}
-                    søkerInfo={this.props.søkerInfo}
+                    søker={this.props.søker}
                     illustrasjon={{
                         tittel: 'Hei!',
                         tekst: 'Noe har gått galt med søknaden.',

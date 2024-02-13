@@ -8,12 +8,21 @@ export interface Props {
     name: string;
     label: string | ReactNode;
     maxLength?: number;
+    minLength?: number;
     validate?: Array<(value: string) => any>;
     className?: string;
     description?: string;
 }
 
-const TextArea: FunctionComponent<Props> = ({ name, label, maxLength, validate = [], className, description }) => {
+const TextArea: FunctionComponent<Props> = ({
+    name,
+    label,
+    maxLength,
+    minLength,
+    validate = [],
+    className,
+    description,
+}) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -35,6 +44,7 @@ const TextArea: FunctionComponent<Props> = ({ name, label, maxLength, validate =
             value={field.value ? field.value : ''}
             error={getError(errors, name)}
             maxLength={maxLength}
+            minLength={minLength}
         />
     );
 };

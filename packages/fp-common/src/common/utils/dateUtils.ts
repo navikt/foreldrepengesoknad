@@ -20,6 +20,7 @@ const dateFormat = 'DD.MM.YYYY';
 const dateFormatExtended = 'DD. MMM YYYY';
 
 export const formatDate = (date: Date | string) => dayjs(date).format(dateFormat);
+export const formatDateUtc = (date: Date | string) => dayjs.utc(date).format(dateFormat);
 export const formatDateExtended = (date: Date | string) => dayjs(date).format(dateFormatExtended);
 
 export const formatTidsperiode = (tidsperiode: Tidsperiode) => {
@@ -47,7 +48,7 @@ export const doesTidsperiodeMedValgfriSluttdatoContainDate = (
     return dayjs(date).isBetween(tidsperiode.fom, tidsperiode.tom, 'day', '[]');
 };
 
-export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
 
     return (
@@ -187,7 +188,7 @@ export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolea
     return true;
 };
 
-export const dateIsBetween = (date: DateValue, fom: DateValue, tom: DateValue): boolean =>
+export const dateIsBetween = (date: DateValue, fom: DateValue | string, tom: DateValue | string): boolean =>
     dayjs(date).isBetween(fom, tom, 'day', '[]');
 
 export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {
