@@ -42,7 +42,7 @@ export const getFraDatoForAktiveArbeidsforhold = (
 };
 
 export const getAktiveArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: Arbeidsforhold[] = [],
     erAdopsjon: boolean,
     erFarEllerMedmor: boolean,
     familiehendelsesdato?: Date,

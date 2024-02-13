@@ -27,11 +27,13 @@ import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
+const EMPTY_ARRAY = [] as Arbeidsforhold[];
+
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    registrerteArbeidsforhold: Arbeidsforhold[];
+    registrerteArbeidsforhold?: Arbeidsforhold[];
     annenForelder: AnnenForelder;
     eksisterendeUttaksplan?: Periode[];
     familiehendelsesdato: Date;
@@ -45,7 +47,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     perioder,
     navnPåForeldre,
     erFarEllerMedmor,
-    registrerteArbeidsforhold,
+    registrerteArbeidsforhold = EMPTY_ARRAY,
     annenForelder,
     eksisterendeUttaksplan,
     familiehendelsesdato,

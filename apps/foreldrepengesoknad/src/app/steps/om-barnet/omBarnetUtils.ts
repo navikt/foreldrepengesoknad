@@ -108,7 +108,7 @@ export const mapOmDetValgteBarnetFormDataToState = (
 
 export const mapOmBarnetFormDataToState = (
     values: Partial<OmBarnetFormData>,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: Arbeidsforhold[] = [],
     valgtRegistrertBarn: Barn | undefined,
     situasjon: Situasjon,
     barnSøktOmFørMenIkkeRegistrert: boolean,
@@ -185,7 +185,7 @@ export const mapOmBarnetFormDataToState = (
     };
 };
 
-export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?: Barn): OmBarnetFormData => {
+export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[] = [], barn?: Barn): OmBarnetFormData => {
     const initialOmBarnetValues = getInitValues();
 
     if (!barn) {
