@@ -12,17 +12,15 @@ import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 import SøkerData from 'app/context/types/SøkerData';
 import { VStack } from '@navikt/ds-react';
 
-const EMPTY_ARRAY = [] as Arbeidsforhold[];
-
 interface Props {
-    arbeidsforhold?: Arbeidsforhold[];
+    arbeidsforhold: Arbeidsforhold[];
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
     søkerData: SøkerData;
 }
 
 const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent<Props> = ({
-    arbeidsforhold = EMPTY_ARRAY,
+    arbeidsforhold,
     barn,
     søkersituasjon,
     søkerData,

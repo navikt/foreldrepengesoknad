@@ -69,7 +69,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
     const familiehendelsesdato = omBarnet ? ISOStringToDate(getFamiliehendelsedato(omBarnet)) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
-        omBarnet && isFødtBarn(omBarnet) && søker.barn
+        omBarnet && isFødtBarn(omBarnet)
             ? søker.barn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
@@ -77,7 +77,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
             : [];
 
     const valgteRegistrerteBarn =
-        !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet) && søker.barn
+        !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
             ? søker.barn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;
     const barnSøktOmFørMenIkkeRegistrert =

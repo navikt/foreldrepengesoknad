@@ -21,16 +21,14 @@ import {
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 
-const EMPTY_ARRAY = [] as Arbeidsforhold[];
-
 type Props = {
-    arbeidsforhold?: Arbeidsforhold[];
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
 const Inntektsinformasjon: React.FunctionComponent<Props> = ({
-    arbeidsforhold = EMPTY_ARRAY,
+    arbeidsforhold,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }) => {

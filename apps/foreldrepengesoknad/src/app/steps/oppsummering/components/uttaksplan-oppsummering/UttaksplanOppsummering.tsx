@@ -9,7 +9,7 @@ interface Props {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    registrerteArbeidsforhold?: Arbeidsforhold[];
+    registrerteArbeidsforhold: Arbeidsforhold[];
     dekningsgrad: Dekningsgrad;
     antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;
