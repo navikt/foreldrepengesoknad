@@ -22,7 +22,6 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
     const { watch } = useFormContext<FordelingFormValues>();
 
     const valgtFordeling = watch('fordelingValg');
-    const valgtAntallUkerFellesperiode = watch('antallUkerFellesperiodeTilSøker');
     const liktFordeling = getVarighetString(dagerMedFellesperiode / 2, intl);
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     return (
@@ -62,15 +61,13 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                     <FormattedMessage id="fordeling.fordelingsvalg.option.senere" />
                 </Radio>
             </RadioGroup>
-            <TextField
-                name="antallUkerFellesperiodeTilSøker"
-                label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
-                description={intl.formatMessage({ id: 'fordeling.antallUker.description' }, { navnAnnenForelder })}
-                validate={[isRequired(intl.formatMessage({ id: 'fordeling.antallUker.måOppgis' }))]}
-            ></TextField>
-            {valgtFordeling === FellesperiodeFordelingValg.LIKT && <p>Du valgte å fordele likt- Visning TODO </p>}
-            {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && valgtAntallUkerFellesperiode && (
-                <p>Du valgte å fordele ulikt- Visning TODO </p>
+            {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
+                <TextField
+                    name="antallUkerFellesperiodeTilSøker"
+                    label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
+                    description={intl.formatMessage({ id: 'fordeling.antallUker.description' }, { navnAnnenForelder })}
+                    validate={[isRequired(intl.formatMessage({ id: 'fordeling.antallUker.måOppgis' }))]}
+                ></TextField>
             )}
             {valgtFordeling === FellesperiodeFordelingValg.VIL_IKKE_FORDELE_NÅ && (
                 <Alert variant="info">
