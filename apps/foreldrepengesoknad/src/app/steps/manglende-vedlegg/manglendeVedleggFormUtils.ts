@@ -9,6 +9,8 @@ import {
     isFarForSykVedlegg,
     isBarnInnleggelseVedlegg,
     isMorStudererVedlegg,
+    isMorJobberVedlegg,
+    isMorJobberOgStudererVedlegg,
 } from './util';
 
 export interface ManglendeVedleggFormData {
@@ -33,6 +35,6 @@ export const getInitValues = (vedlegg: Attachment[]): Readonly<ManglendeVedleggF
     [Skjemanummer.DOK_SYKDOM_MOR]: vedlegg.filter(isMorForSykVedlegg),
     [Skjemanummer.DOK_SYKDOM_FAR]: vedlegg.filter(isFarForSykVedlegg),
     [Skjemanummer.DOK_ARBEID_MOR]: vedlegg.filter(isMorStudererVedlegg),
-    [Skjemanummer.DOK_UTDANNING_MOR]: [],
-    [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [],
+    [Skjemanummer.DOK_UTDANNING_MOR]: vedlegg.filter(isMorJobberVedlegg),
+    [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: vedlegg.filter(isMorJobberOgStudererVedlegg),
 });

@@ -4,6 +4,7 @@ import {
     isFellesperiodeMorInnlagt,
     isForeldrepengerMedAktivitetskravMorForSyk,
     isForeldrepengerMedAktivitetskravMorInnlagt,
+    isMorJobberOgStuderer,
     isMorStuderer,
     isOverføringFarForSyk,
     isOverføringFarInnlagt,
@@ -72,6 +73,10 @@ export const isPeriodeMedMorStuderer = (periode: Periode) => {
 
 export const isPeriodeMedMorJobber = (periode: Periode) => {
     return isMorStuderer(periode);
+};
+
+export const isPeriodeMedMorJobberOgStuderer = (periode: Periode) => {
+    return isMorJobberOgStuderer(periode);
 };
 
 export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
@@ -166,6 +171,14 @@ export const isMorStudererVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_UTDANNING_MOR;
 };
 
+export const isMorJobberVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_ARBEID_MOR;
+};
+
+export const isMorJobberOgStudererVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR;
+};
+
 export const getMorInnlagtVedlegg = (vedlegg: VedleggDataType) => {
     const morInnlagtVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
         ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
@@ -210,6 +223,14 @@ export const getMorStudererVedlegg = (vedlegg: VedleggDataType) => {
 
 export const getMorJobberVedlegg = (vedlegg: VedleggDataType) => {
     const morJobberVedlegg = vedlegg[Skjemanummer.DOK_ARBEID_MOR] ? vedlegg[Skjemanummer.DOK_ARBEID_MOR] : [];
+
+    return morJobberVedlegg;
+};
+
+export const getMorJobberOgStudererVedlegg = (vedlegg: VedleggDataType) => {
+    const morJobberVedlegg = vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]
+        ? vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]
+        : [];
 
     return morJobberVedlegg;
 };

@@ -20,6 +20,7 @@ import {
     getFarInnlagtVedlegg,
     getMorForSykVedlegg,
     getMorInnlagtVedlegg,
+    getMorJobberOgStudererVedlegg,
     getMorJobberVedlegg,
     getMorStudererVedlegg,
     isSendSenereVedlegg,
@@ -41,6 +42,7 @@ import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
 import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
 import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
 import MorJobberDokumentasjon from './dokumentasjon/MorJobberDokumentasjon';
+import MorJobberOgStudererDokumentasjon from './dokumentasjon/MorJobberOgStudererDokumentasjon';
 
 type Props = {
     person: Person;
@@ -73,6 +75,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const barnInnlagtVedlegg = getBarnInnlagtVedlegg(vedlegg);
     const morStudererVedlegg = getMorStudererVedlegg(vedlegg);
     const morJobberVedlegg = getMorJobberVedlegg(vedlegg);
+    const morJobberOgStudererVedlegg = getMorJobberOgStudererVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
@@ -190,6 +193,15 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorJobberDokumentasjon
                     attachments={morJobberVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <MorJobberOgStudererDokumentasjon
+                    attachments={morJobberOgStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}
