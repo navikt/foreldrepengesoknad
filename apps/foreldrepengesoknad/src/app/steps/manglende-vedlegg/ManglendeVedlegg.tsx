@@ -20,6 +20,7 @@ import {
     getFarInnlagtVedlegg,
     getMorForSykVedlegg,
     getMorInnlagtVedlegg,
+    getMorJobberVedlegg,
     getMorStudererVedlegg,
     isSendSenereVedlegg,
 } from './util';
@@ -39,6 +40,7 @@ import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
 import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
 import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
 import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
+import MorJobberDokumentasjon from './dokumentasjon/MorJobberDokumentasjon';
 
 type Props = {
     person: Person;
@@ -70,6 +72,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const farForSykvedlegg = getFarForSykVedlegg(vedlegg);
     const barnInnlagtVedlegg = getBarnInnlagtVedlegg(vedlegg);
     const morStudererVedlegg = getMorStudererVedlegg(vedlegg);
+    const morJobberVedlegg = getMorJobberVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
@@ -178,6 +181,15 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorStudererDokumentasjon
                     attachments={morStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <MorJobberDokumentasjon
+                    attachments={morJobberVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}

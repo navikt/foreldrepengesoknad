@@ -70,6 +70,10 @@ export const isPeriodeMedMorStuderer = (periode: Periode) => {
     return isMorStuderer(periode);
 };
 
+export const isPeriodeMedMorJobber = (periode: Periode) => {
+    return isMorStuderer(periode);
+};
+
 export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.OMSORGSOVERTAKELSE;
 };
@@ -202,6 +206,12 @@ export const getMorStudererVedlegg = (vedlegg: VedleggDataType) => {
     const morStudererVedlegg = vedlegg[Skjemanummer.DOK_UTDANNING_MOR] ? vedlegg[Skjemanummer.DOK_UTDANNING_MOR] : [];
 
     return morStudererVedlegg;
+};
+
+export const getMorJobberVedlegg = (vedlegg: VedleggDataType) => {
+    const morJobberVedlegg = vedlegg[Skjemanummer.DOK_ARBEID_MOR] ? vedlegg[Skjemanummer.DOK_ARBEID_MOR] : [];
+
+    return morJobberVedlegg;
 };
 
 export const lagSendSenereDokumentOmPåkrevd = (

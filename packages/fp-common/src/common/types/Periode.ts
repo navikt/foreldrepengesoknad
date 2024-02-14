@@ -211,6 +211,10 @@ export const isMorStuderer = (periode: Periode) => {
     return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Utdanning;
 };
 
+export const isMorJobber = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Arbeid;
+};
+
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
     return (
         isUttaksperiode(periode) &&
