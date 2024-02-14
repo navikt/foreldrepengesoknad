@@ -119,7 +119,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
             return 'Dokumentasjon på at mor er innlagt må sendes inn senere';
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.fedrekvoteMorForSyk', {
+        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morInnlagt', {
             perioder: tidsperioder.length,
             tidsperiode: getTidsperiodeString(tidsperioder),
         });

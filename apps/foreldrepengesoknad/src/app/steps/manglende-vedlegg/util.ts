@@ -15,15 +15,10 @@ import {
     isUtsettelseMorForSyk,
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
-    lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import { VedleggDataType } from 'app/types/VedleggDataType';
-
-export const isMorInnlagtVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
-};
 
 export const isKvalifiseringsprogramVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
@@ -118,13 +113,6 @@ export const getTerminbekreftelseVedlegg = (vedlegg: VedleggDataType) => {
         : [];
 
     return terminbekreftelseVedlegg;
-};
-
-export const isAndreInntekterVedlegg = (attachment: Attachment) => {
-    return (
-        attachment.skjemanummer === Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE ||
-        attachment.skjemanummer === Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
-    );
 };
 
 export const getAndreInntekterVedlegg = (vedlegg: VedleggDataType) => {
@@ -254,19 +242,6 @@ export const getMorKvalprogramVedlegg = (vedlegg: VedleggDataType) => {
         : [];
 
     return morJobberVedlegg;
-};
-
-export const lagSendSenereDokumentOmPåkrevd = (
-    attachments: Attachment[],
-    required: boolean,
-    skjemanummer: Skjemanummer,
-    attachmentType: AttachmentType,
-) => {
-    if (required) {
-        return lagSendSenereDokumentNårIngenAndreFinnes(attachments, attachmentType, skjemanummer);
-    }
-
-    return attachments;
 };
 
 export const isSendSenereVedlegg = (attachment: Attachment) => {
