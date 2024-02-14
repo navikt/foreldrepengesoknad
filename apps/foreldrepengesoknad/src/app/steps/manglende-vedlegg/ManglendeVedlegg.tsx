@@ -20,6 +20,7 @@ import {
     getFarInnlagtVedlegg,
     getMorForSykVedlegg,
     getMorInnlagtVedlegg,
+    getMorStudererVedlegg,
     isSendSenereVedlegg,
 } from './util';
 import { Skjemanummer } from '@navikt/fp-constants';
@@ -37,6 +38,7 @@ import { ManglendeVedleggFormData } from './manglendeVedleggFormUtils';
 import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
 import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
 import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
+import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
 
 type Props = {
     person: Person;
@@ -67,6 +69,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const farInnlagtVedlegg = getFarInnlagtVedlegg(vedlegg);
     const farForSykvedlegg = getFarForSykVedlegg(vedlegg);
     const barnInnlagtVedlegg = getBarnInnlagtVedlegg(vedlegg);
+    const morStudererVedlegg = getMorStudererVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
@@ -87,6 +90,9 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_INNLEGGELSE_FAR]: formValues[Skjemanummer.DOK_INNLEGGELSE_FAR],
             [Skjemanummer.DOK_SYKDOM_MOR]: formValues[Skjemanummer.DOK_SYKDOM_MOR],
             [Skjemanummer.DOK_SYKDOM_FAR]: formValues[Skjemanummer.DOK_SYKDOM_FAR],
+            [Skjemanummer.DOK_UTDANNING_MOR]: formValues[Skjemanummer.DOK_UTDANNING_MOR],
+            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: formValues[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR],
+            [Skjemanummer.DOK_ARBEID_MOR]: formValues[Skjemanummer.DOK_ARBEID_MOR],
         };
 
         saveVedlegg(alleVedlegg);
@@ -106,6 +112,9 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_INNLEGGELSE_FAR]: vedlegg[Skjemanummer.DOK_INNLEGGELSE_FAR] || [],
             [Skjemanummer.DOK_SYKDOM_FAR]: vedlegg[Skjemanummer.DOK_SYKDOM_FAR] || [],
             [Skjemanummer.DOK_SYKDOM_MOR]: vedlegg[Skjemanummer.DOK_SYKDOM_MOR] || [],
+            [Skjemanummer.DOK_UTDANNING_MOR]: vedlegg[Skjemanummer.DOK_UTDANNING_MOR] || [],
+            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR] || [],
+            [Skjemanummer.DOK_ARBEID_MOR]: vedlegg[Skjemanummer.DOK_ARBEID_MOR] || [],
         },
     });
 
@@ -160,6 +169,15 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <BarnInnlagtDokumentasjon
                     attachments={barnInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <MorStudererDokumentasjon
+                    attachments={morStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}

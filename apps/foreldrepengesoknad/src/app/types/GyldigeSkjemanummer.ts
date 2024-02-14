@@ -10,7 +10,10 @@ export type GyldigeSkjemanummer =
     | Skjemanummer.DOK_INNLEGGELSE_MOR
     | Skjemanummer.DOK_INNLEGGELSE_FAR
     | Skjemanummer.DOK_SYKDOM_MOR
-    | Skjemanummer.DOK_SYKDOM_FAR;
+    | Skjemanummer.DOK_SYKDOM_FAR
+    | Skjemanummer.DOK_UTDANNING_MOR
+    | Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+    | Skjemanummer.DOK_ARBEID_MOR;
 
 export type GyldigeSkjemanummerUttak =
     | Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
@@ -19,4 +22,7 @@ export type GyldigeSkjemanummerUttak =
     | Skjemanummer.DOK_INNLEGGELSE_MOR
     | Skjemanummer.DOK_INNLEGGELSE_FAR
     | Skjemanummer.DOK_SYKDOM_MOR
-    | Skjemanummer.DOK_SYKDOM_FAR;
+    | Skjemanummer.DOK_SYKDOM_FAR
+    | Skjemanummer.DOK_UTDANNING_MOR
+    | Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+    | Skjemanummer.DOK_ARBEID_MOR;

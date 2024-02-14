@@ -207,6 +207,10 @@ export const isUtsettelseBarnInnlagt = (periode: Periode) => {
     return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
 };
 
+export const isMorStuderer = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Utdanning;
+};
+
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
     return (
         isUttaksperiode(periode) &&

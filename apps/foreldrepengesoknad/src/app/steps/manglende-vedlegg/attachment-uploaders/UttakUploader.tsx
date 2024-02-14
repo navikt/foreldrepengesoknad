@@ -8,13 +8,13 @@ import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodelis
 import Environment from 'app/Environment';
 import { FunctionComponent, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-
-import './periode-attachment-uploader.css';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { useFormContext } from 'react-hook-form';
 import { ManglendeVedleggFormData } from '../manglendeVedleggFormUtils';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+
+import './periode-attachment-uploader.css';
 
 interface Props {
     attachments: Attachment[];

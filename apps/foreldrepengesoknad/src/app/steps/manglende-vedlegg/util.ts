@@ -1,10 +1,10 @@
 import {
-    MorsAktivitet,
     Periode,
     isFellesperiodeMorForSyk,
     isFellesperiodeMorInnlagt,
     isForeldrepengerMedAktivitetskravMorForSyk,
     isForeldrepengerMedAktivitetskravMorInnlagt,
+    isMorStuderer,
     isOverføringFarForSyk,
     isOverføringFarInnlagt,
     isOverføringMorForSyk,
@@ -13,32 +13,11 @@ import {
     isUtsettelseMorForSyk,
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
-    isUttaksperiode,
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import { VedleggDataType } from 'app/types/VedleggDataType';
-
-export const grupperteFellesperioderMorsAktivitetArbeidUtdanningEllerSykdom = (perioder: Periode[]) => {
-    return perioder.filter(morsAktivitetErArbeidUtdanningEllerSykdom);
-};
-
-export const grupperteFellesperioderIntroduksjonsprogram = (perioder: Periode[]) => {
-    return perioder.filter(
-        (p) => isUttaksperiode(p) && p.morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet,
-    );
-};
-
-export const grupperteFellesperioderKvalifiseringsprogram = (perioder: Periode[]) => {
-    return perioder.filter(
-        (p) => isUttaksperiode(p) && p.morsAktivitetIPerioden === MorsAktivitet.Kvalifiseringsprogrammet,
-    );
-};
-
-export const grupperteFellesperioderMorInnlagt = (perioder: Periode[]) => {
-    return perioder.filter((p) => isUttaksperiode(p) && p.morsAktivitetIPerioden === MorsAktivitet.Innlagt);
-};
 
 export const isMorInnlagtVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
@@ -83,12 +62,16 @@ export const isPeriodeMedFarForSyk = (periode: Periode) => {
     return isOverføringFarForSyk(periode);
 };
 
-export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.OMSORGSOVERTAKELSE;
-};
-
 export const isPeriodeMedBarnInnleggelse = (periode: Periode) => {
     return isUtsettelseBarnInnlagt(periode);
+};
+
+export const isPeriodeMedMorStuderer = (periode: Periode) => {
+    return isMorStuderer(periode);
+};
+
+export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.OMSORGSOVERTAKELSE;
 };
 
 export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {
@@ -175,6 +158,10 @@ export const isBarnInnleggelseVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_BARN;
 };
 
+export const isMorStudererVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_UTDANNING_MOR;
+};
+
 export const getMorInnlagtVedlegg = (vedlegg: VedleggDataType) => {
     const morInnlagtVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
         ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
@@ -204,48 +191,17 @@ export const getFarForSykVedlegg = (vedlegg: VedleggDataType) => {
 };
 
 export const getBarnInnlagtVedlegg = (vedlegg: VedleggDataType) => {
-    const farInnlagtVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN]
+    const barnInnlagtVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN]
         ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN]
         : [];
 
-    return farInnlagtVedlegg;
+    return barnInnlagtVedlegg;
 };
 
-const morsAktivitetErArbeidUtdanningEllerSykdom = (periode: Periode) => {
-    if (!isUttaksperiode(periode)) {
-        return false;
-    }
+export const getMorStudererVedlegg = (vedlegg: VedleggDataType) => {
+    const morStudererVedlegg = vedlegg[Skjemanummer.DOK_UTDANNING_MOR] ? vedlegg[Skjemanummer.DOK_UTDANNING_MOR] : [];
 
-    return (
-        periode.morsAktivitetIPerioden === MorsAktivitet.Arbeid ||
-        periode.morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning ||
-        periode.morsAktivitetIPerioden === MorsAktivitet.Utdanning ||
-        periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
-    );
-};
-
-export const isFellesperiodeAttachment = (attachment: Attachment) => {
-    return (
-        attachment.skjemanummer === Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET ||
-        attachment.skjemanummer === Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
-    );
-};
-
-export const getFellesperiodeVedlegg = (vedlegg: VedleggDataType) => {
-    const fellesperiodeVedlegg = [];
-
-    const aktivitetskravIntro = vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET];
-    const aktivitetskravKval = vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM];
-
-    if (aktivitetskravIntro) {
-        fellesperiodeVedlegg.push(...aktivitetskravIntro);
-    }
-
-    if (aktivitetskravKval) {
-        fellesperiodeVedlegg.push(...aktivitetskravKval);
-    }
-
-    return fellesperiodeVedlegg;
+    return morStudererVedlegg;
 };
 
 export const lagSendSenereDokumentOmPåkrevd = (
