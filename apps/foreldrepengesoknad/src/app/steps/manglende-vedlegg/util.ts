@@ -5,6 +5,7 @@ import {
     isFellesperiodeMorInnlagt,
     isForeldrepengerMedAktivitetskravMorForSyk,
     isForeldrepengerMedAktivitetskravMorInnlagt,
+    isOverføringFarForSyk,
     isOverføringFarInnlagt,
     isOverføringMorForSyk,
     isOverføringMorInnlagt,
@@ -75,6 +76,10 @@ export const isPeriodeMedMorForSyk = (periode: Periode) => {
 
 export const isPeriodeMedFarInnleggelse = (periode: Periode) => {
     return isOverføringFarInnlagt(periode);
+};
+
+export const isPeriodeMedFarForSyk = (periode: Periode) => {
+    return isOverføringFarForSyk(periode);
 };
 
 export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
@@ -163,8 +168,18 @@ export const getMorForSykVedlegg = (vedlegg: VedleggDataType) => {
     return morForSykVedlegg;
 };
 
-export const isUtsettelseVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
+export const getFarInnlagtVedlegg = (vedlegg: VedleggDataType) => {
+    const farInnlagtVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_FAR]
+        ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_FAR]
+        : [];
+
+    return farInnlagtVedlegg;
+};
+
+export const getFarForSykVedlegg = (vedlegg: VedleggDataType) => {
+    const farForSykVedlegg = vedlegg[Skjemanummer.DOK_SYKDOM_FAR] ? vedlegg[Skjemanummer.DOK_SYKDOM_FAR] : [];
+
+    return farForSykVedlegg;
 };
 
 const morsAktivitetErArbeidUtdanningEllerSykdom = (periode: Periode) => {

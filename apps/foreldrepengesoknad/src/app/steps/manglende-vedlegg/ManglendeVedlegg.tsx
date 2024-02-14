@@ -14,7 +14,13 @@ import { perioderSomKreverVedlegg } from '@navikt/uttaksplan';
 import { useNavigate } from 'react-router-dom';
 import { Attachment } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { getMorForSykVedlegg, getMorInnlagtVedlegg, isSendSenereVedlegg } from './util';
+import {
+    getFarForSykVedlegg,
+    getFarInnlagtVedlegg,
+    getMorForSykVedlegg,
+    getMorInnlagtVedlegg,
+    isSendSenereVedlegg,
+} from './util';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
@@ -28,6 +34,7 @@ import MorInnlagtDokumentasjon from './dokumentasjon/MorInnlagtDokumentasjon';
 import MorForSykDokumentasjon from './dokumentasjon/MorForSykDokumentasjon';
 import { ManglendeVedleggFormData } from './manglendeVedleggFormUtils';
 import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
+import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
 
 type Props = {
     person: Person;
@@ -55,7 +62,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
     const morInnlagtVedlegg = getMorInnlagtVedlegg(vedlegg);
     const morForSykVedlegg = getMorForSykVedlegg(vedlegg);
-    const farInnlagtVedlegg = getMorForSykVedlegg(vedlegg);
+    const farInnlagtVedlegg = getFarInnlagtVedlegg(vedlegg);
+    const farForSykvedlegg = getFarForSykVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
@@ -131,6 +139,15 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <FarInnlagtDokumentasjon
                     attachments={farInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <FarForSykDokumentasjon
+                    attachments={farForSykvedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}

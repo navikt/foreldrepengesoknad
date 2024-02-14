@@ -25,7 +25,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const FarInnlagtUploader: FunctionComponent<Props> = ({
+const FarForSykUploader: FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -37,11 +37,11 @@ const FarInnlagtUploader: FunctionComponent<Props> = ({
     const bem = bemUtils('periode-attachment-uploader');
 
     const { watch } = useFormContext<ManglendeVedleggFormData>();
-    const formAttachments = watch(Skjemanummer.DOK_INNLEGGELSE_FAR);
+    const formAttachments = watch(Skjemanummer.DOK_SYKDOM_FAR);
 
     useEffect(() => {
         if (formAttachments.length === 0) {
-            const init = lagSendSenereDokument(AttachmentType.UTSETTELSE_SYKDOM, Skjemanummer.DOK_INNLEGGELSE_FAR);
+            const init = lagSendSenereDokument(AttachmentType.UTSETTELSE_SYKDOM, Skjemanummer.DOK_SYKDOM_FAR);
             const sendSenereVedlegg = addMetadata(init, {
                 type: AttachmentMetadataType.UTTAK,
                 perioder: perioder.map((p) => ({
@@ -57,8 +57,8 @@ const FarInnlagtUploader: FunctionComponent<Props> = ({
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon på at far er innlagt</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at far er innlagt på sykehus</BodyLong>
+                <Label>Dokumentasjon på at far er for syk</Label>
+                <BodyLong>Du må laste opp dokumentasjon på at far er for syk</BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>
@@ -82,7 +82,7 @@ const FarInnlagtUploader: FunctionComponent<Props> = ({
             </BodyLong>
             <FileUploader
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                skjemanummer={Skjemanummer.DOK_INNLEGGELSE_FAR}
+                skjemanummer={Skjemanummer.DOK_SYKDOM_FAR}
                 existingAttachments={attachments}
                 updateAttachments={(attachments) => {
                     const attachmentsMedMetadata = attachments.map((a) =>
@@ -103,4 +103,4 @@ const FarInnlagtUploader: FunctionComponent<Props> = ({
     );
 };
 
-export default FarInnlagtUploader;
+export default FarForSykUploader;

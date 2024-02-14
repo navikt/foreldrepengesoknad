@@ -10,7 +10,6 @@ import {
     isMilitærVedlegg,
     isOmsorgsovertakelseVedlegg,
     isTerminbekreftelseVedlegg,
-    isUtsettelseVedlegg,
 } from 'app/steps/manglende-vedlegg/util';
 import { IntlShape } from 'react-intl';
 
@@ -136,17 +135,6 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.fedrekvoteMorForSyk', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
-    }
-
-    if (isUtsettelseVedlegg(singleAttachment)) {
-        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at mor er for syk må sendes inn senere';
-        }
-
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.utsettelse', {
             perioder: tidsperioder.length,
             tidsperiode: getTidsperiodeString(tidsperioder),
         });
