@@ -501,7 +501,7 @@
     "oppsummering.dokumentasjon.perioder.kvalifiseringsprogram": "Dokumentasjon på at mor deltar i kvalifiseringsprogrammet i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",
     "oppsummering.dokumentasjon.perioder.overføring": "Dokumentasjon på overføring av kvote i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",
     "oppsummering.dokumentasjon.perioder.overføring.sendSenere": "Dokumentasjon på overføring av kvote i {perioder, plural, one {perioden} other {periodene}} {tidsperiode} har ikke blitt lastet opp og må sendes inn i løpet av 3 uker",
-    "oppsummering.dokumentasjon.perioder.fedrekvoteMorForSyk": "Dokumentasjon på overføring av kvote i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",
+    "oppsummering.dokumentasjon.perioder.fedrekvoteMorForSyk": "Dokumentasjon på at mor er innlagt på sykehus i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",
     "oppsummering.dokumentasjon.perioder.utsettelse": "Dokumentasjon på utsettelse grunnet sykdom i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.militær_eller_siviltjeneste": "Førstegangstjeneste i forsvaret eller sivilforsvaret",

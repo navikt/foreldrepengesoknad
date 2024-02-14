@@ -1,9 +1,10 @@
-import { Block, NavnPåForeldre, Periode, Situasjon, isUttakAvFedrekvoteMorForSyk } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
 import React from 'react';
 import { Skjemanummer } from '@navikt/fp-constants';
-import FedrekvoteMorForSykUploader from '../periode-attachment-uploaders/FedrekvoteMorForSykUploader';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+import { isPeriodeMedMorForSyk } from '../util';
+import MorForSykUploader from '../periode-attachment-uploaders/MorForSykUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -15,7 +16,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const FedrekvoteMorForSykDok: React.FunctionComponent<Props> = ({
+const MorForSykDokumentasjon: React.FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -24,18 +25,18 @@ const FedrekvoteMorForSykDok: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
-    const fedrekvoteMorForSykPerioder = perioder.filter(isUttakAvFedrekvoteMorForSyk);
+    const morInnlagtPerioder = perioder.filter(isPeriodeMedMorForSyk);
 
-    if (fedrekvoteMorForSykPerioder.length === 0) {
+    if (morInnlagtPerioder.length === 0) {
         return null;
     }
 
     return (
         <Block padBottom="xl">
-            <FedrekvoteMorForSykUploader
+            <MorForSykUploader
                 attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
-                perioder={fedrekvoteMorForSykPerioder}
+                updateAttachments={updateAttachments(Skjemanummer.DOK_SYKDOM_MOR)}
+                perioder={morInnlagtPerioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}
@@ -45,4 +46,4 @@ const FedrekvoteMorForSykDok: React.FunctionComponent<Props> = ({
     );
 };
 
-export default FedrekvoteMorForSykDok;
+export default MorForSykDokumentasjon;

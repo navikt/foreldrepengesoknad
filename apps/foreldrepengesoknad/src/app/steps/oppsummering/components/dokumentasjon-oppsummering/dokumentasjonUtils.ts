@@ -4,12 +4,11 @@ import {
     isAleneOmOmsorgVedlegg,
     isArbeidUtdanningEllerSykdomVedlegg,
     isEtterlønnVedlegg,
-    isFedrekvoteMorForSykVedlegg,
+    isMorInnleggelseVedlegg,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
     isMilitærVedlegg,
     isOmsorgsovertakelseVedlegg,
-    isOverføringsVedlegg,
     isTerminbekreftelseVedlegg,
     isUtsettelseVedlegg,
 } from 'app/steps/manglende-vedlegg/util';
@@ -131,23 +130,9 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
         });
     }
 
-    if (isOverføringsVedlegg(singleAttachment)) {
+    if (isMorInnleggelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.overføring.sendSenere', {
-                perioder: tidsperioder.length,
-                tidsperiode: getTidsperiodeString(tidsperioder),
-            });
-        }
-
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.overføring', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
-    }
-
-    if (isFedrekvoteMorForSykVedlegg(singleAttachment)) {
-        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på overføring må sendes inn senere';
+            return 'Dokumentasjon på at mor er innlagt må sendes inn senere';
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.fedrekvoteMorForSyk', {

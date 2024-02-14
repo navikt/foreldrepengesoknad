@@ -60,8 +60,8 @@ const MorInnlagtUploader: FunctionComponent<Props> = ({
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon av at far tar ut fedrekvote første seks uker fordi mor er for syk</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at mor faktisk er for syk</BodyLong>
+                <Label>Dokumentasjon på at mor er innlagt</Label>
+                <BodyLong>Du må laste opp dokumentasjon på at mor er innlagt på sykehus</BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>

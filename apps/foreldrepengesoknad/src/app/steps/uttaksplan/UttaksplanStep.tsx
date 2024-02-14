@@ -216,10 +216,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         setGåTilbakeIsOpen(false);
 
         const nullstiltePeriodeVedlegg: VedleggDataType = {
-            [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]: [],
             [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
-            [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: [],
+            [Skjemanummer.DOK_SYKDOM_MOR]: [],
             [Skjemanummer.DOK_INNLEGGELSE_BARN]: [],
             [Skjemanummer.DOK_INNLEGGELSE_MOR]: [],
         };

@@ -1,17 +1,19 @@
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
-import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import Environment from 'app/Environment';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 import './periode-attachment-uploader.css';
+import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { useFormContext } from 'react-hook-form';
+import { ManglendeVedleggFormData } from '../manglendeVedleggFormConfig';
 
 interface Props {
     attachments: Attachment[];
@@ -23,7 +25,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const UtsettelseUploader: FunctionComponent<Props> = ({
+const MorForSykUploader: FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -34,15 +36,32 @@ const UtsettelseUploader: FunctionComponent<Props> = ({
 }) => {
     const bem = bemUtils('periode-attachment-uploader');
 
+    const { watch } = useFormContext<ManglendeVedleggFormData>();
+    const formAttachments = watch(Skjemanummer.DOK_SYKDOM_MOR);
+
+    useEffect(() => {
+        if (formAttachments.length === 0) {
+            const init = lagSendSenereDokument(
+                AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                Skjemanummer.DOK_SYKDOM_MOR,
+            );
+            const sendSenereVedlegg = addMetadata(init, {
+                type: AttachmentMetadataType.UTTAK,
+                perioder: perioder.map((p) => ({
+                    fom: dateToISOString(p.tidsperiode.fom),
+                    tom: dateToISOString(p.tidsperiode.tom),
+                })),
+            });
+
+            updateAttachments([sendSenereVedlegg]);
+        }
+    }, [updateAttachments, perioder, formAttachments]);
+
     return (
         <VStack gap="4">
             <div>
-                <Label>
-                    <FormattedMessage id="manglendeVedlegg.utsettelseMorForSyk.label" />
-                </Label>
-                <BodyLong>
-                    <FormattedMessage id="manglendeVedlegg.utsettelseMorForSyk.beskrivelse" />
-                </BodyLong>
+                <Label>Dokumentasjon på at mor er for syk</Label>
+                <BodyLong>Du må laste opp dokumentasjon på at mor er for syk</BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>
@@ -87,4 +106,4 @@ const UtsettelseUploader: FunctionComponent<Props> = ({
     );
 };
 
-export default UtsettelseUploader;
+export default MorForSykUploader;

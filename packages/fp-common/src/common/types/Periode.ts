@@ -179,11 +179,27 @@ export const isOverføringMorInnlagt = (periode: Periode) => {
     );
 };
 
+export const isOverføringMorForSyk = (periode: Periode) => {
+    return (
+        isOverføringsperiode(periode) &&
+        periode.forelder === Forelder.farMedmor &&
+        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+    );
+};
+
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
     return (
         isUttaksperiode(periode) &&
         periode.konto === StønadskontoType.Foreldrepenger &&
         periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+    );
+};
+
+export const isForeldrepengerMedAktivitetskravMorForSyk = (periode: Periode) => {
+    return (
+        isUttaksperiode(periode) &&
+        periode.konto === StønadskontoType.Foreldrepenger &&
+        periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
     );
 };
 
@@ -193,6 +209,14 @@ export const isUtsettelseMorInnlagt = (periode: Periode) => {
 
 export const isFellesperiodeMorInnlagt = (periode: Periode) => {
     return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt;
+};
+
+export const isFellesperiodeMorForSyk = (periode: Periode) => {
+    return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp;
+};
+
+export const isUtsettelseMorForSyk = (periode: Periode) => {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Sykdom;
 };
 
 export const isSkalIkkeHaForeldrepengerFørFødselPeriode = (periode: Periode): boolean => {

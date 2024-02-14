@@ -1,9 +1,13 @@
 import {
     MorsAktivitet,
     Periode,
+    isFellesperiodeMorForSyk,
     isFellesperiodeMorInnlagt,
+    isForeldrepengerMedAktivitetskravMorForSyk,
     isForeldrepengerMedAktivitetskravMorInnlagt,
+    isOverføringMorForSyk,
     isOverføringMorInnlagt,
+    isUtsettelseMorForSyk,
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
     isUttaksperiode,
@@ -49,18 +53,6 @@ export const isArbeidUtdanningEllerSykdomVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
 };
 
-export const isOverføringsVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_OVERFØRING_FOR_SYK;
-};
-
-export const getOverføringsVedlegg = (vedlegg: VedleggDataType) => {
-    const overføringsVedlegg = vedlegg[Skjemanummer.DOK_OVERFØRING_FOR_SYK]
-        ? vedlegg[Skjemanummer.DOK_OVERFØRING_FOR_SYK]
-        : [];
-
-    return overføringsVedlegg;
-};
-
 export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
     return (
         isOverføringMorInnlagt(periode) ||
@@ -68,6 +60,15 @@ export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
         isFellesperiodeMorInnlagt(periode) ||
         isForeldrepengerMedAktivitetskravMorInnlagt(periode) ||
         isUtsettelseMorInnlagt(periode)
+    );
+};
+
+export const isPeriodeMedMorForSyk = (periode: Periode) => {
+    return (
+        isFellesperiodeMorForSyk(periode) ||
+        isUtsettelseMorForSyk(periode) ||
+        isOverføringMorForSyk(periode) ||
+        isForeldrepengerMedAktivitetskravMorForSyk(periode)
     );
 };
 
@@ -139,16 +140,22 @@ export const isEtterlønnVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
 };
 
-export const isFedrekvoteMorForSykVedlegg = (attachment: Attachment) => {
+export const isMorInnleggelseVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
 };
 
-export const getFedrekvoteMorForSykVedlegg = (vedlegg: VedleggDataType) => {
-    const fedrekvoteMorForSykVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
+export const getMorInnlagtVedlegg = (vedlegg: VedleggDataType) => {
+    const morInnlagtVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
         ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
         : [];
 
-    return fedrekvoteMorForSykVedlegg;
+    return morInnlagtVedlegg;
+};
+
+export const getMorForSykVedlegg = (vedlegg: VedleggDataType) => {
+    const morForSykVedlegg = vedlegg[Skjemanummer.DOK_SYKDOM_MOR] ? vedlegg[Skjemanummer.DOK_SYKDOM_MOR] : [];
+
+    return morForSykVedlegg;
 };
 
 export const isUtsettelseVedlegg = (attachment: Attachment) => {
@@ -170,7 +177,6 @@ const morsAktivitetErArbeidUtdanningEllerSykdom = (periode: Periode) => {
 
 export const isFellesperiodeAttachment = (attachment: Attachment) => {
     return (
-        attachment.skjemanummer === Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM ||
         attachment.skjemanummer === Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET ||
         attachment.skjemanummer === Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
     );
@@ -179,13 +185,8 @@ export const isFellesperiodeAttachment = (attachment: Attachment) => {
 export const getFellesperiodeVedlegg = (vedlegg: VedleggDataType) => {
     const fellesperiodeVedlegg = [];
 
-    const aktivitetskravArbUtdSyk = vedlegg[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM];
     const aktivitetskravIntro = vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET];
     const aktivitetskravKval = vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM];
-
-    if (aktivitetskravArbUtdSyk) {
-        fellesperiodeVedlegg.push(...aktivitetskravArbUtdSyk);
-    }
 
     if (aktivitetskravIntro) {
         fellesperiodeVedlegg.push(...aktivitetskravIntro);

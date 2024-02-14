@@ -15,7 +15,7 @@ import { ManglendeVedleggFormData } from './manglendeVedleggFormConfig';
 import { useNavigate } from 'react-router-dom';
 import { Attachment } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { getFedrekvoteMorForSykVedlegg, isSendSenereVedlegg } from './util';
+import { getMorForSykVedlegg, getMorInnlagtVedlegg, isSendSenereVedlegg } from './util';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
@@ -26,6 +26,7 @@ import { GuidePanel } from '@navikt/ds-react';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import MorInnlagtDokumentasjon from './dokumentasjon/MorInnlagtDokumentasjon';
+import MorForSykDokumentasjon from './dokumentasjon/MorForSykDokumentasjon';
 
 type Props = {
     person: Person;
@@ -51,9 +52,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const navigate = useNavigate();
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
-    // const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
-    // const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
-    const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
+    const morInnlagtVedlegg = getMorInnlagtVedlegg(vedlegg);
+    const morForSykVedlegg = getMorForSykVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
@@ -65,14 +65,13 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
             ...vedlegg,
-            [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]: formValues[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM],
             [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:
                 formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM],
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
                 formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET],
-            [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: formValues[Skjemanummer.DOK_OVERFØRING_FOR_SYK],
             [Skjemanummer.DOK_INNLEGGELSE_MOR]: formValues[Skjemanummer.DOK_INNLEGGELSE_MOR],
             [Skjemanummer.DOK_INNLEGGELSE_BARN]: formValues[Skjemanummer.DOK_INNLEGGELSE_BARN],
+            [Skjemanummer.DOK_SYKDOM_MOR]: formValues[Skjemanummer.DOK_SYKDOM_MOR],
         };
 
         saveVedlegg(alleVedlegg);
@@ -83,15 +82,13 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
 
     const formMethods = useForm<ManglendeVedleggFormData>({
         defaultValues: {
-            [Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM]:
-                vedlegg[Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM] || [],
             [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:
                 vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM] || [],
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
                 vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET] || [],
-            [Skjemanummer.DOK_OVERFØRING_FOR_SYK]: vedlegg[Skjemanummer.DOK_OVERFØRING_FOR_SYK] || [],
             [Skjemanummer.DOK_INNLEGGELSE_MOR]: vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR] || [],
             [Skjemanummer.DOK_INNLEGGELSE_BARN]: vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN] || [],
+            [Skjemanummer.DOK_SYKDOM_MOR]: vedlegg[Skjemanummer.DOK_SYKDOM_MOR] || [],
         },
     });
 
@@ -108,8 +105,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             steps={stepConfig}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
-                {/* <FellesperiodeDok
-                    attachments={fellesperiodeVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                <MorInnlagtDokumentasjon
+                    attachments={morInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}
@@ -117,17 +114,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     termindato={termindato}
                     updateAttachments={updateAttachments}
                 />
-                <OverføringsDok
-                    attachments={overføringsVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                /> */}
-                <MorInnlagtDokumentasjon
-                    attachments={fedrekvoteMorForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                <MorForSykDokumentasjon
+                    attachments={morForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}
