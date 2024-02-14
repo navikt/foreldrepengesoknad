@@ -203,6 +203,10 @@ export const isOverføringFarForSyk = (periode: Periode) => {
     );
 };
 
+export const isUtsettelseBarnInnlagt = (periode: Periode) => {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
+};
+
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
     return (
         isUttaksperiode(periode) &&

@@ -9,6 +9,9 @@ export type VedleggDataType = {
     [Skjemanummer.DOK_INNLEGGELSE_FAR]?: Attachment[];
     [Skjemanummer.DOK_SYKDOM_MOR]?: Attachment[];
     [Skjemanummer.DOK_SYKDOM_FAR]?: Attachment[];
+    [Skjemanummer.DOK_ARBEID_MOR]?: Attachment[];
+    [Skjemanummer.DOK_UTDANNING_MOR]?: Attachment[];
+    [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]?: Attachment[];
     [Skjemanummer.OMSORGSOVERTAKELSE]?: Attachment[];
     [Skjemanummer.DOK_AV_ALENEOMSORG]?: Attachment[];
     [Skjemanummer.TERMINBEKREFTELSE]?: Attachment[];

@@ -4,7 +4,7 @@ import React from 'react';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 import { isPeriodeMedMorInnleggelse } from '../util';
-import MorInnlagtUploader from '../attachment-uploaders/MorInnlagtUploader';
+import UttakUploader from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -33,7 +33,7 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
 
     return (
         <Block padBottom="xl">
-            <MorInnlagtUploader
+            <UttakUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
                 perioder={morInnlagtPerioder}
@@ -41,6 +41,9 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}
                 situasjon={situasjon}
+                skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
+                labelText="Dokumentasjon på at mor er innlagt"
+                description="Du må laste opp dokumentasjon på at mor er innlagt på sykehus"
             />
         </Block>
     );

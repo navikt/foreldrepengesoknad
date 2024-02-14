@@ -9,6 +9,7 @@ import {
     isOverføringFarInnlagt,
     isOverføringMorForSyk,
     isOverføringMorInnlagt,
+    isUtsettelseBarnInnlagt,
     isUtsettelseMorForSyk,
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
@@ -86,6 +87,10 @@ export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.OMSORGSOVERTAKELSE;
 };
 
+export const isPeriodeMedBarnInnleggelse = (periode: Periode) => {
+    return isUtsettelseBarnInnlagt(periode);
+};
+
 export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {
     const omsorgsovertakelseVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE]
         ? vedlegg[Skjemanummer.OMSORGSOVERTAKELSE]
@@ -154,6 +159,22 @@ export const isMorInnleggelseVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
 };
 
+export const isMorForSykVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_SYKDOM_MOR;
+};
+
+export const isFarInnleggelseVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_FAR;
+};
+
+export const isFarForSykVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_SYKDOM_FAR;
+};
+
+export const isBarnInnleggelseVedlegg = (attachment: Attachment) => {
+    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_BARN;
+};
+
 export const getMorInnlagtVedlegg = (vedlegg: VedleggDataType) => {
     const morInnlagtVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
         ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
@@ -180,6 +201,14 @@ export const getFarForSykVedlegg = (vedlegg: VedleggDataType) => {
     const farForSykVedlegg = vedlegg[Skjemanummer.DOK_SYKDOM_FAR] ? vedlegg[Skjemanummer.DOK_SYKDOM_FAR] : [];
 
     return farForSykVedlegg;
+};
+
+export const getBarnInnlagtVedlegg = (vedlegg: VedleggDataType) => {
+    const farInnlagtVedlegg = vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN]
+        ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN]
+        : [];
+
+    return farInnlagtVedlegg;
 };
 
 const morsAktivitetErArbeidUtdanningEllerSykdom = (periode: Periode) => {

@@ -1,10 +1,9 @@
-import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Periode, Situasjon, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
 import React from 'react';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
-import { isPeriodeMedFarForSyk } from '../util';
-import BarnInnlagtUploader from '../attachment-uploaders/BarnInnlagtUploader';
+import UttakUploader from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -25,7 +24,7 @@ const BarnInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
-    const barnInnlagtPerioder = perioder.filter(isPeriodeMedFarForSyk);
+    const barnInnlagtPerioder = perioder.filter(isUtsettelseBarnInnlagt);
 
     if (barnInnlagtPerioder.length === 0) {
         return null;
@@ -33,7 +32,7 @@ const BarnInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
 
     return (
         <Block padBottom="xl">
-            <BarnInnlagtUploader
+            <UttakUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_BARN)}
                 perioder={barnInnlagtPerioder}
@@ -41,6 +40,9 @@ const BarnInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}
                 situasjon={situasjon}
+                skjemanummer={Skjemanummer.DOK_INNLEGGELSE_BARN}
+                labelText="Dokumentasjon på at barnet er innlagt"
+                description="Du må laste opp dokumentasjon på at barnet er innlagt på sykehus"
             />
         </Block>
     );

@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { Attachment } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import {
+    getBarnInnlagtVedlegg,
     getFarForSykVedlegg,
     getFarInnlagtVedlegg,
     getMorForSykVedlegg,
@@ -35,6 +36,7 @@ import MorForSykDokumentasjon from './dokumentasjon/MorForSykDokumentasjon';
 import { ManglendeVedleggFormData } from './manglendeVedleggFormUtils';
 import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
 import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
+import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
 
 type Props = {
     person: Person;
@@ -64,6 +66,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const morForSykVedlegg = getMorForSykVedlegg(vedlegg);
     const farInnlagtVedlegg = getFarInnlagtVedlegg(vedlegg);
     const farForSykvedlegg = getFarForSykVedlegg(vedlegg);
+    const barnInnlagtVedlegg = getBarnInnlagtVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
@@ -148,6 +151,15 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <FarForSykDokumentasjon
                     attachments={farForSykvedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <BarnInnlagtDokumentasjon
+                    attachments={barnInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}

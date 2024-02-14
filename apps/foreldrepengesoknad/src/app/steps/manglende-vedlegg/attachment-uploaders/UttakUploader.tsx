@@ -1,7 +1,7 @@
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
@@ -14,6 +14,7 @@ import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata'
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { useFormContext } from 'react-hook-form';
 import { ManglendeVedleggFormData } from '../manglendeVedleggFormUtils';
+import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
 interface Props {
     attachments: Attachment[];
@@ -23,9 +24,12 @@ interface Props {
     familiehendelsesdato: Date;
     termindato: Date | undefined;
     situasjon: Situasjon;
+    skjemanummer: GyldigeSkjemanummerUttak;
+    labelText: string;
+    description: string;
 }
 
-const FarForSykUploader: FunctionComponent<Props> = ({
+const UttakUploader: FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -33,15 +37,18 @@ const FarForSykUploader: FunctionComponent<Props> = ({
     familiehendelsesdato,
     termindato,
     situasjon,
+    skjemanummer,
+    labelText,
+    description,
 }) => {
     const bem = bemUtils('periode-attachment-uploader');
 
     const { watch } = useFormContext<ManglendeVedleggFormData>();
-    const formAttachments = watch(Skjemanummer.DOK_SYKDOM_FAR);
+    const formAttachments = watch(skjemanummer);
 
     useEffect(() => {
         if (formAttachments.length === 0) {
-            const init = lagSendSenereDokument(AttachmentType.UTSETTELSE_SYKDOM, Skjemanummer.DOK_SYKDOM_FAR);
+            const init = lagSendSenereDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, skjemanummer);
             const sendSenereVedlegg = addMetadata(init, {
                 type: AttachmentMetadataType.UTTAK,
                 perioder: perioder.map((p) => ({
@@ -57,8 +64,8 @@ const FarForSykUploader: FunctionComponent<Props> = ({
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon på at far er for syk</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at far er for syk</BodyLong>
+                <Label>{labelText}</Label>
+                <BodyLong>{description}</BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>
@@ -82,7 +89,7 @@ const FarForSykUploader: FunctionComponent<Props> = ({
             </BodyLong>
             <FileUploader
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                skjemanummer={Skjemanummer.DOK_SYKDOM_FAR}
+                skjemanummer={skjemanummer}
                 existingAttachments={attachments}
                 updateAttachments={(attachments) => {
                     const attachmentsMedMetadata = attachments.map((a) =>
@@ -103,4 +110,4 @@ const FarForSykUploader: FunctionComponent<Props> = ({
     );
 };
 
-export default FarForSykUploader;
+export default UttakUploader;

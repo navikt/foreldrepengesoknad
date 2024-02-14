@@ -4,7 +4,7 @@ import React from 'react';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 import { isPeriodeMedMorForSyk } from '../util';
-import MorForSykUploader from '../attachment-uploaders/MorForSykUploader';
+import UttakUploader from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -25,22 +25,25 @@ const MorForSykDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
-    const morInnlagtPerioder = perioder.filter(isPeriodeMedMorForSyk);
+    const morForSykPerioder = perioder.filter(isPeriodeMedMorForSyk);
 
-    if (morInnlagtPerioder.length === 0) {
+    if (morForSykPerioder.length === 0) {
         return null;
     }
 
     return (
         <Block padBottom="xl">
-            <MorForSykUploader
+            <UttakUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.DOK_SYKDOM_MOR)}
-                perioder={morInnlagtPerioder}
+                perioder={morForSykPerioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}
                 situasjon={situasjon}
+                skjemanummer={Skjemanummer.DOK_SYKDOM_MOR}
+                labelText="Dokumentasjon på at mor er for syk"
+                description="Du må laste opp dokumentasjon på at mor er for syk"
             />
         </Block>
     );
