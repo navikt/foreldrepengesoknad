@@ -20,8 +20,10 @@ import {
     getFarInnlagtVedlegg,
     getMorForSykVedlegg,
     getMorInnlagtVedlegg,
+    getMorIntroprogramVedlegg,
     getMorJobberOgStudererVedlegg,
     getMorJobberVedlegg,
+    getMorKvalprogramVedlegg,
     getMorStudererVedlegg,
     isSendSenereVedlegg,
 } from './util';
@@ -43,6 +45,8 @@ import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
 import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
 import MorJobberDokumentasjon from './dokumentasjon/MorJobberDokumentasjon';
 import MorJobberOgStudererDokumentasjon from './dokumentasjon/MorJobberOgStudererDokumentasjon';
+import MorIntroduksjonsprogrammetDokumentasjon from './dokumentasjon/MorIntroduksjonsprogrammetDokumentasjon';
+import MorKvalifiseringsprogrammetDokumentasjon from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
 
 type Props = {
     person: Person;
@@ -76,6 +80,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const morStudererVedlegg = getMorStudererVedlegg(vedlegg);
     const morJobberVedlegg = getMorJobberVedlegg(vedlegg);
     const morJobberOgStudererVedlegg = getMorJobberOgStudererVedlegg(vedlegg);
+    const morIntroprogramVedlegg = getMorIntroprogramVedlegg(vedlegg);
+    const morKvalprogramVedlegg = getMorKvalprogramVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
@@ -202,6 +208,24 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorJobberOgStudererDokumentasjon
                     attachments={morJobberOgStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <MorIntroduksjonsprogrammetDokumentasjon
+                    attachments={morIntroprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    navnPåForeldre={navnPåForeldre}
+                    perioder={perioderSomManglerVedlegg}
+                    situasjon={søkersituasjon.situasjon}
+                    termindato={termindato}
+                    updateAttachments={updateAttachments}
+                />
+                <MorKvalifiseringsprogrammetDokumentasjon
+                    attachments={morKvalprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
                     perioder={perioderSomManglerVedlegg}

@@ -4,6 +4,7 @@ import {
     isFellesperiodeMorInnlagt,
     isForeldrepengerMedAktivitetskravMorForSyk,
     isForeldrepengerMedAktivitetskravMorInnlagt,
+    isMorIntroprogram,
     isMorJobberOgStuderer,
     isMorStuderer,
     isOverføringFarForSyk,
@@ -30,10 +31,6 @@ export const isKvalifiseringsprogramVedlegg = (attachment: Attachment) => {
 
 export const isIntroduksjonsprogramVedlegg = (attachment: Attachment) => {
     return attachment.skjemanummer === Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET;
-};
-
-export const isArbeidUtdanningEllerSykdomVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
 };
 
 export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
@@ -77,6 +74,14 @@ export const isPeriodeMedMorJobber = (periode: Periode) => {
 
 export const isPeriodeMedMorJobberOgStuderer = (periode: Periode) => {
     return isMorJobberOgStuderer(periode);
+};
+
+export const isPeriodeMedMorIntroprogram = (periode: Periode) => {
+    return isMorIntroprogram(periode);
+};
+
+export const isPeriodeMedMorKvalprogram = (periode: Periode) => {
+    return isMorIntroprogram(periode);
 };
 
 export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
@@ -230,6 +235,22 @@ export const getMorJobberVedlegg = (vedlegg: VedleggDataType) => {
 export const getMorJobberOgStudererVedlegg = (vedlegg: VedleggDataType) => {
     const morJobberVedlegg = vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]
         ? vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]
+        : [];
+
+    return morJobberVedlegg;
+};
+
+export const getMorIntroprogramVedlegg = (vedlegg: VedleggDataType) => {
+    const morJobberVedlegg = vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]
+        ? vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]
+        : [];
+
+    return morJobberVedlegg;
+};
+
+export const getMorKvalprogramVedlegg = (vedlegg: VedleggDataType) => {
+    const morJobberVedlegg = vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]
+        ? vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]
         : [];
 
     return morJobberVedlegg;

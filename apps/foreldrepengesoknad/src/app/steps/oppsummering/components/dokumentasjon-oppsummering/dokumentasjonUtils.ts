@@ -2,7 +2,6 @@ import { Tidsperiode, formatDate, intlUtils } from '@navikt/fp-common';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import {
     isAleneOmOmsorgVedlegg,
-    isArbeidUtdanningEllerSykdomVedlegg,
     isEtterlønnVedlegg,
     isMorInnleggelseVedlegg,
     isIntroduksjonsprogramVedlegg,
@@ -92,20 +91,6 @@ export const getDokumentasjonStringBarn = (attachments: Attachment[], _intl: Int
 export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: IntlShape) => {
     const tidsperioder = attachments[0].dokumenterer!.perioder!;
     const singleAttachment = attachments[0];
-
-    if (isArbeidUtdanningEllerSykdomVedlegg(singleAttachment)) {
-        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.arbeidUtdanningSykdom.sendSenere', {
-                perioder: tidsperioder.length,
-                tidsperiode: getTidsperiodeString(tidsperioder),
-            });
-        }
-
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.arbeidUtdanningSykdom', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
-    }
 
     if (isIntroduksjonsprogramVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {

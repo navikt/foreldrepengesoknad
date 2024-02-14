@@ -4,7 +4,7 @@ import React from 'react';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 import UttakUploader from '../attachment-uploaders/UttakUploader';
-import { isPeriodeMedMorJobberOgStuderer } from '../util';
+import { isPeriodeMedMorKvalprogram } from '../util';
 
 interface Props {
     attachments: Attachment[];
@@ -16,7 +16,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const MorJobberOgStudererDokumentasjon: React.FunctionComponent<Props> = ({
+const MorKvalifiseringsprogrammetDokumentasjon: React.FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -25,9 +25,9 @@ const MorJobberOgStudererDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
-    const morJobberOgStudererPerioder = perioder.filter(isPeriodeMedMorJobberOgStuderer);
+    const morKvalPerioder = perioder.filter(isPeriodeMedMorKvalprogram);
 
-    if (morJobberOgStudererPerioder.length === 0) {
+    if (morKvalPerioder.length === 0) {
         return null;
     }
 
@@ -35,19 +35,19 @@ const MorJobberOgStudererDokumentasjon: React.FunctionComponent<Props> = ({
         <Block padBottom="xl">
             <UttakUploader
                 attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR)}
-                perioder={morJobberOgStudererPerioder}
+                updateAttachments={updateAttachments(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
+                perioder={morKvalPerioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}
                 situasjon={situasjon}
-                skjemanummer={Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR}
-                labelText="Dokumentasjon på at mor er i arbeid og studerer samtidig"
-                description="Du må laste opp dokumentasjon på at mor er i arbeid og studerer samtidig"
+                skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
+                labelText="Dokumentasjon på at mor deltar i introduksjonsprogrammet"
+                description="Du må laste opp dokumentasjon på at mor deltar i introduksjonsprogrammet"
                 attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
             />
         </Block>
     );
 };
 
-export default MorJobberOgStudererDokumentasjon;
+export default MorKvalifiseringsprogrammetDokumentasjon;

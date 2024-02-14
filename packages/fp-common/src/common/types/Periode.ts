@@ -219,6 +219,14 @@ export const isMorJobberOgStuderer = (periode: Periode) => {
     return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning;
 };
 
+export const isMorIntroprogram = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet;
+};
+
+export const isMorKvalprogram = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Kvalifiseringsprogrammet;
+};
+
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
     return (
         isUttaksperiode(periode) &&
