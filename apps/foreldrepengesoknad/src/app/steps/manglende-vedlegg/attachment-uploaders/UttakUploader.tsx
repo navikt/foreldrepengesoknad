@@ -27,6 +27,7 @@ interface Props {
     skjemanummer: GyldigeSkjemanummerUttak;
     labelText: string;
     description: string;
+    attachmentType: AttachmentType;
 }
 
 const UttakUploader: FunctionComponent<Props> = ({
@@ -40,6 +41,7 @@ const UttakUploader: FunctionComponent<Props> = ({
     skjemanummer,
     labelText,
     description,
+    attachmentType,
 }) => {
     const bem = bemUtils('periode-attachment-uploader');
 
@@ -48,7 +50,7 @@ const UttakUploader: FunctionComponent<Props> = ({
 
     useEffect(() => {
         if (formAttachments.length === 0) {
-            const init = lagSendSenereDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, skjemanummer);
+            const init = lagSendSenereDokument(attachmentType, skjemanummer);
             const sendSenereVedlegg = addMetadata(init, {
                 type: AttachmentMetadataType.UTTAK,
                 perioder: perioder.map((p) => ({
@@ -88,7 +90,7 @@ const UttakUploader: FunctionComponent<Props> = ({
                 <FormattedMessage id="manglendeVedlegg.størrelse" />
             </BodyLong>
             <FileUploader
-                attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                attachmentType={attachmentType}
                 skjemanummer={skjemanummer}
                 existingAttachments={attachments}
                 updateAttachments={(attachments) => {

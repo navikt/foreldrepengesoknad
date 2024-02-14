@@ -1,7 +1,7 @@
 import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
 import React from 'react';
-import { Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 import { isPeriodeMedFarForSyk } from '../util';
 import UttakUploader from '../attachment-uploaders/UttakUploader';
@@ -44,6 +44,7 @@ const FarForSykDokumentasjon: React.FunctionComponent<Props> = ({
                 skjemanummer={Skjemanummer.DOK_SYKDOM_FAR}
                 labelText="Dokumentasjon på at far er for syk"
                 description="Du må laste opp dokumentasjon på at far er for syk"
+                attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
             />
         </Block>
     );
