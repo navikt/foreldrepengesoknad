@@ -1,4 +1,14 @@
-import { MorsAktivitet, Periode, isUttaksperiode, lagSendSenereDokumentNårIngenAndreFinnes } from '@navikt/fp-common';
+import {
+    MorsAktivitet,
+    Periode,
+    isFellesperiodeMorInnlagt,
+    isForeldrepengerMedAktivitetskravMorInnlagt,
+    isOverføringMorInnlagt,
+    isUtsettelseMorInnlagt,
+    isUttakAvFedrekvoteMorForSyk,
+    isUttaksperiode,
+    lagSendSenereDokumentNårIngenAndreFinnes,
+} from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
 import { VedleggDataType } from 'app/types/VedleggDataType';
@@ -49,6 +59,16 @@ export const getOverføringsVedlegg = (vedlegg: VedleggDataType) => {
         : [];
 
     return overføringsVedlegg;
+};
+
+export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
+    return (
+        isOverføringMorInnlagt(periode) ||
+        isUttakAvFedrekvoteMorForSyk(periode) ||
+        isFellesperiodeMorInnlagt(periode) ||
+        isForeldrepengerMedAktivitetskravMorInnlagt(periode) ||
+        isUtsettelseMorInnlagt(periode)
+    );
 };
 
 export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {

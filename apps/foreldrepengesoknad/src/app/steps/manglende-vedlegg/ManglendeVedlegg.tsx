@@ -15,25 +15,17 @@ import { ManglendeVedleggFormData } from './manglendeVedleggFormConfig';
 import { useNavigate } from 'react-router-dom';
 import { Attachment } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import FellesperiodeDok from './dokumentasjon/FellesperiodeDok';
-import {
-    getFedrekvoteMorForSykVedlegg,
-    getFellesperiodeVedlegg,
-    getOverføringsVedlegg,
-    isSendSenereVedlegg,
-} from './util';
+import { getFedrekvoteMorForSykVedlegg, isSendSenereVedlegg } from './util';
 import { Skjemanummer } from '@navikt/fp-constants';
-import OverføringsDok from './dokumentasjon/OverføringDok';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 import Person from '@navikt/fp-common/src/common/types/Person';
-import FedrekvoteMorForSykDok from './dokumentasjon/FedrekvoteMorForSykDok';
-import UtsettelseDok from './dokumentasjon/UtsettelseDok';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 import { GuidePanel } from '@navikt/ds-react';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
+import MorInnlagtDokumentasjon from './dokumentasjon/MorInnlagtDokumentasjon';
 
 type Props = {
     person: Person;
@@ -59,8 +51,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const navigate = useNavigate();
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
-    const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
-    const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
+    // const fellesperiodeVedlegg = getFellesperiodeVedlegg(vedlegg);
+    // const overføringsVedlegg = getOverføringsVedlegg(vedlegg);
     const fedrekvoteMorForSykVedlegg = getFedrekvoteMorForSykVedlegg(vedlegg);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
@@ -116,7 +108,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             steps={stepConfig}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
-                <FellesperiodeDok
+                {/* <FellesperiodeDok
                     attachments={fellesperiodeVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
@@ -133,17 +125,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
-                />
-                <FedrekvoteMorForSykDok
-                    attachments={fedrekvoteMorForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                />
-                <UtsettelseDok
+                /> */}
+                <MorInnlagtDokumentasjon
                     attachments={fedrekvoteMorForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}

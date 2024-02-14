@@ -164,7 +164,35 @@ export const isUttakAvForeldrepengerFørFødsel = (periode: Periode): periode is
 };
 
 export const isUttakAvFedrekvoteMorForSyk = (periode: Periode): periode is Uttaksperiode => {
-    return periode.type === Periodetype.Uttak && periode.erMorForSyk === true;
+    return (
+        periode.type === Periodetype.Uttak &&
+        periode.erMorForSyk === true &&
+        periode.konto === StønadskontoType.Fedrekvote
+    );
+};
+
+export const isOverføringMorInnlagt = (periode: Periode) => {
+    return (
+        isOverføringsperiode(periode) &&
+        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
+        periode.forelder === Forelder.farMedmor
+    );
+};
+
+export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
+    return (
+        isUttaksperiode(periode) &&
+        periode.konto === StønadskontoType.Foreldrepenger &&
+        periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+    );
+};
+
+export const isUtsettelseMorInnlagt = (periode: Periode) => {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.InstitusjonSøker;
+};
+
+export const isFellesperiodeMorInnlagt = (periode: Periode) => {
+    return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt;
 };
 
 export const isSkalIkkeHaForeldrepengerFørFødselPeriode = (periode: Periode): boolean => {
