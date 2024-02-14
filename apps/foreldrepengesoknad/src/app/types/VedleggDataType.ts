@@ -7,11 +7,11 @@ export type VedleggDataType = {
     [Skjemanummer.DOK_INNLEGGELSE_BARN]?: Attachment[];
     [Skjemanummer.DOK_INNLEGGELSE_MOR]?: Attachment[];
     [Skjemanummer.DOK_INNLEGGELSE_FAR]?: Attachment[];
+    [Skjemanummer.DOK_SYKDOM_MOR]?: Attachment[];
+    [Skjemanummer.DOK_SYKDOM_FAR]?: Attachment[];
     [Skjemanummer.OMSORGSOVERTAKELSE]?: Attachment[];
     [Skjemanummer.DOK_AV_ALENEOMSORG]?: Attachment[];
     [Skjemanummer.TERMINBEKREFTELSE]?: Attachment[];
     [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]?: Attachment[];
     [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]?: Attachment[];
-    [Skjemanummer.DOK_SYKDOM_MOR]?: Attachment[];
-    [Skjemanummer.DOK_SYKDOM_FAR]?: Attachment[];
 };
