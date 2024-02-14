@@ -4,7 +4,7 @@ import React from 'react';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 import { isPeriodeMedMorForSyk } from '../util';
-import MorForSykUploader from '../periode-attachment-uploaders/MorForSykUploader';
+import MorForSykUploader from '../attachment-uploaders/MorForSykUploader';
 
 interface Props {
     attachments: Attachment[];

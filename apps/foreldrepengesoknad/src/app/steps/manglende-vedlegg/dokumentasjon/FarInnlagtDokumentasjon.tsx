@@ -3,8 +3,8 @@ import { Attachment } from '@navikt/fp-types';
 import React from 'react';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
-import { isPeriodeMedMorInnleggelse } from '../util';
-import MorInnlagtUploader from '../attachment-uploaders/MorInnlagtUploader';
+import { isPeriodeMedFarInnleggelse } from '../util';
+import FarInnlagtUploader from '../attachment-uploaders/FarInnlagtUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -16,7 +16,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
+const FarInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -25,18 +25,18 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
-    const morInnlagtPerioder = perioder.filter(isPeriodeMedMorInnleggelse);
+    const farInnlagtPerioder = perioder.filter(isPeriodeMedFarInnleggelse);
 
-    if (morInnlagtPerioder.length === 0) {
+    if (farInnlagtPerioder.length === 0) {
         return null;
     }
 
     return (
         <Block padBottom="xl">
-            <MorInnlagtUploader
+            <FarInnlagtUploader
                 attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
-                perioder={morInnlagtPerioder}
+                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_FAR)}
+                perioder={farInnlagtPerioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}
@@ -46,4 +46,4 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     );
 };
 
-export default MorInnlagtDokumentasjon;
+export default FarInnlagtDokumentasjon;

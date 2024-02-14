@@ -13,7 +13,7 @@ import './periode-attachment-uploader.css';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { useFormContext } from 'react-hook-form';
-import { ManglendeVedleggFormData } from '../manglendeVedleggFormConfig';
+import { ManglendeVedleggFormData } from '../manglendeVedleggFormUtils';
 
 interface Props {
     attachments: Attachment[];
@@ -25,7 +25,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const MorForSykUploader: FunctionComponent<Props> = ({
+const MorInnlagtUploader: FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -37,13 +37,13 @@ const MorForSykUploader: FunctionComponent<Props> = ({
     const bem = bemUtils('periode-attachment-uploader');
 
     const { watch } = useFormContext<ManglendeVedleggFormData>();
-    const formAttachments = watch(Skjemanummer.DOK_SYKDOM_MOR);
+    const formAttachments = watch(Skjemanummer.DOK_INNLEGGELSE_MOR);
 
     useEffect(() => {
         if (formAttachments.length === 0) {
             const init = lagSendSenereDokument(
                 AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                Skjemanummer.DOK_SYKDOM_MOR,
+                Skjemanummer.DOK_INNLEGGELSE_MOR,
             );
             const sendSenereVedlegg = addMetadata(init, {
                 type: AttachmentMetadataType.UTTAK,
@@ -60,8 +60,8 @@ const MorForSykUploader: FunctionComponent<Props> = ({
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon på at mor er for syk</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at mor er for syk</BodyLong>
+                <Label>Dokumentasjon på at mor er innlagt</Label>
+                <BodyLong>Du må laste opp dokumentasjon på at mor er innlagt på sykehus</BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>
@@ -106,4 +106,4 @@ const MorForSykUploader: FunctionComponent<Props> = ({
     );
 };
 
-export default MorForSykUploader;
+export default MorInnlagtUploader;

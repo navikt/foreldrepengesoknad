@@ -187,6 +187,22 @@ export const isOverføringMorForSyk = (periode: Periode) => {
     );
 };
 
+export const isOverføringFarInnlagt = (periode: Periode) => {
+    return (
+        isOverføringsperiode(periode) &&
+        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
+        periode.forelder === Forelder.mor
+    );
+};
+
+export const isOverføringFarForSyk = (periode: Periode) => {
+    return (
+        isOverføringsperiode(periode) &&
+        periode.forelder === Forelder.mor &&
+        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+    );
+};
+
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
     return (
         isUttaksperiode(periode) &&

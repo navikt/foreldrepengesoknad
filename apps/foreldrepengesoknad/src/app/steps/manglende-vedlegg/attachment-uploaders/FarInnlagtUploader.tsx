@@ -13,7 +13,7 @@ import './periode-attachment-uploader.css';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { useFormContext } from 'react-hook-form';
-import { ManglendeVedleggFormData } from '../manglendeVedleggFormConfig';
+import { ManglendeVedleggFormData } from '../manglendeVedleggFormUtils';
 
 interface Props {
     attachments: Attachment[];
@@ -25,7 +25,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
-const MorInnlagtUploader: FunctionComponent<Props> = ({
+const FarInnlagtUploader: FunctionComponent<Props> = ({
     attachments,
     updateAttachments,
     perioder,
@@ -37,14 +37,11 @@ const MorInnlagtUploader: FunctionComponent<Props> = ({
     const bem = bemUtils('periode-attachment-uploader');
 
     const { watch } = useFormContext<ManglendeVedleggFormData>();
-    const formAttachments = watch(Skjemanummer.DOK_INNLEGGELSE_MOR);
+    const formAttachments = watch(Skjemanummer.DOK_INNLEGGELSE_FAR);
 
     useEffect(() => {
         if (formAttachments.length === 0) {
-            const init = lagSendSenereDokument(
-                AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                Skjemanummer.DOK_INNLEGGELSE_MOR,
-            );
+            const init = lagSendSenereDokument(AttachmentType.UTSETTELSE_SYKDOM, Skjemanummer.DOK_INNLEGGELSE_FAR);
             const sendSenereVedlegg = addMetadata(init, {
                 type: AttachmentMetadataType.UTTAK,
                 perioder: perioder.map((p) => ({
@@ -60,8 +57,8 @@ const MorInnlagtUploader: FunctionComponent<Props> = ({
     return (
         <VStack gap="4">
             <div>
-                <Label>Dokumentasjon på at mor er innlagt</Label>
-                <BodyLong>Du må laste opp dokumentasjon på at mor er innlagt på sykehus</BodyLong>
+                <Label>Dokumentasjon på at mor er for syk</Label>
+                <BodyLong>Du må laste opp dokumentasjon på at mor er for syk</BodyLong>
                 {perioder.map((p) => {
                     return (
                         <div key={p.id} className={bem.block}>
@@ -85,7 +82,7 @@ const MorInnlagtUploader: FunctionComponent<Props> = ({
             </BodyLong>
             <FileUploader
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
+                skjemanummer={Skjemanummer.DOK_INNLEGGELSE_FAR}
                 existingAttachments={attachments}
                 updateAttachments={(attachments) => {
                     const attachmentsMedMetadata = attachments.map((a) =>
@@ -106,4 +103,4 @@ const MorInnlagtUploader: FunctionComponent<Props> = ({
     );
 };
 
-export default MorInnlagtUploader;
+export default FarInnlagtUploader;

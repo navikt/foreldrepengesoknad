@@ -5,6 +5,7 @@ import {
     isFellesperiodeMorInnlagt,
     isForeldrepengerMedAktivitetskravMorForSyk,
     isForeldrepengerMedAktivitetskravMorInnlagt,
+    isOverføringFarInnlagt,
     isOverføringMorForSyk,
     isOverføringMorInnlagt,
     isUtsettelseMorForSyk,
@@ -70,6 +71,10 @@ export const isPeriodeMedMorForSyk = (periode: Periode) => {
         isOverføringMorForSyk(periode) ||
         isForeldrepengerMedAktivitetskravMorForSyk(periode)
     );
+};
+
+export const isPeriodeMedFarInnleggelse = (periode: Periode) => {
+    return isOverføringFarInnlagt(periode);
 };
 
 export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
