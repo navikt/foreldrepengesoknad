@@ -13,15 +13,13 @@ import BlåSirkel from 'components/ikoner/BlåSirkel';
 import Hjerte from 'components/ikoner/Hjerte';
 import RosaSirkel from 'components/ikoner/RosaSirkel';
 import { PeriodeEnum } from 'types/Periode';
-import { erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import Kalender from './Kalender';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 dayjs.locale('nb');
 
-const barnehagestartDato = () => {
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-
+const barnehagestartDato = (barnet: OmBarnet) => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     if (erFødt || erIkkeFødt) {
@@ -41,6 +39,7 @@ const OversiktSteg = () => {
     const navigator = usePlanleggerNavigator();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const valgtPeriode = notEmpty(useContextGetData(ContextDataType.PERIODE));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     return (
         <ContentWrapper>
@@ -73,7 +72,10 @@ const OversiktSteg = () => {
                         <HStack gap="5" align="center">
                             <RosaSirkel />
                             <BodyShort>
-                                <FormattedMessage id="barnehagestartIkontekst" values={{ mnd: barnehagestartDato() }} />
+                                <FormattedMessage
+                                    id="barnehagestartIkontekst"
+                                    values={{ mnd: barnehagestartDato(barnet) }}
+                                />
                             </BodyShort>
                         </HStack>
                     </HStack>
