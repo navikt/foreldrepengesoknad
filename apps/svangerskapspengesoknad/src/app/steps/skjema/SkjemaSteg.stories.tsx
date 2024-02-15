@@ -3,7 +3,7 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
-import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import MockAdapter from 'axios-mock-adapter';
 import SkjemaSteg from './SkjemaSteg';
 
@@ -15,24 +15,22 @@ const defaultExport = {
 export default defaultExport;
 
 const defaultTilrettelegging = {
-    id: '263929546-6215-9868-5127-161910165730101',
+    id: '990322244',
     arbeidsforhold: {
         arbeidsgiverId: '990322244',
         type: Arbeidsforholdstype.VIRKSOMHET,
         navn: 'Omsorgspartner Vestfold AS',
-        opprinneligstillingsprosent: 100,
         stillinger: [],
         startdato: '2023-01-01',
     },
     varierendePerioder: [],
-    behovForTilretteleggingFom: '2023-01-01',
-    type: TilretteleggingstypeOptions.DELVIS,
+    behovForTilretteleggingFom: undefined!,
+    type: undefined!,
     vedlegg: [],
-};
+} as Tilrettelegging;
 
 const arbeidsforhold = [
     {
-        id: '1669400414-9409-3313-0700-3334116100409',
         arbeidsgiverId: '975326209',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -41,7 +39,6 @@ const arbeidsforhold = [
         tom: '2019-05-31T00:00:00.000Z',
     },
     {
-        id: '149599873-5769-19110-21897-6184606004018',
         arbeidsgiverId: '975326209',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -50,7 +47,6 @@ const arbeidsforhold = [
         tom: '2018-09-09T00:00:00.000Z',
     },
     {
-        id: '86832061-1118-9701-6179-20647729409710',
         arbeidsgiverId: '975326209',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -59,7 +55,6 @@ const arbeidsforhold = [
         tom: '2018-08-05T00:00:00.000Z',
     },
     {
-        id: '186699244-06994-0884-1562-860234771205',
         arbeidsgiverId: '975326209',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -67,7 +62,6 @@ const arbeidsforhold = [
         stillingsprosent: 85.09,
     },
     {
-        id: '263929546-6215-9868-5127-161910165730101',
         arbeidsgiverId: '990322244',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
@@ -75,7 +69,6 @@ const arbeidsforhold = [
         stillingsprosent: 100,
     },
     {
-        id: '0132715641-23932-19917-03900-809964087910',
         arbeidsgiverId: '995090910',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Re Kommune',
@@ -121,7 +114,7 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = ({
                     harJobbetSomSelvstendigNæringsdrivende: false,
                 },
                 [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
-                [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
+                [ContextDataType.VALGT_TILRETTELEGGING_ID]: '990322244',
                 [ContextDataType.OM_BARNET]: {
                     erBarnetFødt: false,
                     termindato: '2024-02-18',

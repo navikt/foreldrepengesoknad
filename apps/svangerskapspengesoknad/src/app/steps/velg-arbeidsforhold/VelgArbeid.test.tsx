@@ -64,7 +64,7 @@ describe('<Velg arbeid>', () => {
                     enPeriodeMedTilretteleggingStillingsprosent: undefined,
                     enPeriodeMedTilretteleggingTilbakeIJobbDato: undefined,
                     enPeriodeMedTilretteleggingTomType: undefined,
-                    id: '186699244-06994-0884-1562-860234771205',
+                    id: '975326209',
                     type: undefined,
                     varierendePerioder: [],
                     vedlegg: [],
@@ -74,7 +74,7 @@ describe('<Velg arbeid>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '186699244-06994-0884-1562-860234771205',
+            data: '975326209',
             key: ContextDataType.VALGT_TILRETTELEGGING_ID,
             type: 'update',
         });

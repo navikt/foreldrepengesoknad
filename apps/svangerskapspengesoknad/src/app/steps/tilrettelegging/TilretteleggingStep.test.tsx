@@ -57,8 +57,9 @@ describe('<Behov for tilrettelegging>', () => {
                     arbeidsforhold: {
                         arbeidsgiverId: '990322244',
                         navn: 'Omsorgspartner Vestfold AS',
-                        opprinneligstillingsprosent: 100,
                         type: 'virksomhet',
+                        stillinger: [],
+                        startdato: '2023-01-01',
                     },
                     behovForTilretteleggingFom: dayjs().format(ISO_DATE_FORMAT),
                     delvisTilretteleggingPeriodeType: 'VARIERTE_PERIODER',
@@ -66,7 +67,7 @@ describe('<Behov for tilrettelegging>', () => {
                     enPeriodeMedTilretteleggingStillingsprosent: undefined,
                     enPeriodeMedTilretteleggingTilbakeIJobbDato: undefined,
                     enPeriodeMedTilretteleggingTomType: undefined,
-                    id: '263929546-6215-9868-5127-161910165730101',
+                    id: '990322244',
                     risikofaktorer: undefined,
                     tilretteleggingstiltak: undefined,
                     type: 'delvis',
@@ -89,7 +90,7 @@ describe('<Behov for tilrettelegging>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '263929546-6215-9868-5127-161910165730101',
+            data: '990322244',
             key: ContextDataType.VALGT_TILRETTELEGGING_ID,
             type: 'update',
         });

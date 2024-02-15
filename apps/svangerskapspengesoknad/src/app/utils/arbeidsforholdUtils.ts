@@ -72,15 +72,14 @@ export const getUnikeArbeidsforhold = (
         const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
 
         const unike = uniqBy(aktiveArbeidsforhold, getArbeidsgiverId).map((forhold) => ({
-            id: forhold.id,
+            id: forhold.arbeidsgiverId,
             fom: forhold.fom,
             tom: forhold.tom,
-            guid: forhold.id,
             arbeidsgiverNavn: forhold.arbeidsgiverNavn,
             arbeidsgiverId: forhold.arbeidsgiverId,
             arbeidsgiverIdType: forhold.arbeidsgiverIdType,
             stillinger: [{ fom: forhold.fom, tom: forhold.tom, stillingsprosent: forhold.stillingsprosent }],
-        }));
+        })) as UnikArbeidsforhold[];
         const unikeMedStillinger = unike.map((arbeid) => {
             const likeArbeidsforhold = aktiveArbeidsforhold.filter(
                 (a) => getArbeidsgiverId(a) === arbeid.arbeidsgiverId,
