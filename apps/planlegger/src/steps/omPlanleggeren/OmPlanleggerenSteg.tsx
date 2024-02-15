@@ -7,6 +7,8 @@ import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
+import styles from './omPlanleggerenSteg.module.css';
+
 const OmPlanleggerenSteg = () => {
     const navigate = useNavigate();
 
@@ -52,7 +54,7 @@ const OmPlanleggerenSteg = () => {
                     <VStack gap="10" className="content-wrapper button-wrapper">
                         <Button
                             variant="secondary"
-                            className="planleggerKnapp"
+                            className={styles.planleggerKnapp}
                             onClick={() => navigate(PlanleggerRoutes.HVEM_PLANLEGGER)}
                         >
                             <FormattedMessage id="om.start.planlegger" />

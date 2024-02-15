@@ -1,8 +1,9 @@
-import { Heading, Radio, VStack } from '@navikt/ds-react';
+import { Heading, VStack } from '@navikt/ds-react';
 import { intlUtils } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import GreenRadio from 'components/radio/GreenRadio';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
@@ -53,7 +54,7 @@ const FlereForsørgere: FunctionComponent = () => {
                         isRequired(intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[0] })),
                     ]}
                 >
-                    <Radio
+                    <GreenRadio
                         value={true}
                         description={intl.formatMessage(
                             { id: 'arbeid.jobber.beskrivelse' },
@@ -61,12 +62,11 @@ const FlereForsørgere: FunctionComponent = () => {
                                 navn: navn[0],
                             },
                         )}
-                        className="panel green"
                     >
                         <FormattedMessage id="arbeid.jobber" />
-                    </Radio>
+                    </GreenRadio>
 
-                    <Radio
+                    <GreenRadio
                         value={false}
                         description={intl.formatMessage(
                             { id: 'arbeid.jobberIkke.beskrivelse' },
@@ -74,10 +74,9 @@ const FlereForsørgere: FunctionComponent = () => {
                                 navn: navn[0],
                             },
                         )}
-                        className="panel green"
                     >
                         <FormattedMessage id="arbeid.jobberIkke" />
-                    </Radio>
+                    </GreenRadio>
                 </RadioGroup>
             </VStack>
 
@@ -91,7 +90,7 @@ const FlereForsørgere: FunctionComponent = () => {
                         isRequired(intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[1] })),
                     ]}
                 >
-                    <Radio
+                    <GreenRadio
                         value={true}
                         description={intl.formatMessage(
                             { id: 'arbeid.jobber.beskrivelse' },
@@ -99,21 +98,19 @@ const FlereForsørgere: FunctionComponent = () => {
                                 navn: navn[1],
                             },
                         )}
-                        className="panel green"
                     >
                         <FormattedMessage id="arbeid.jobber" />
-                    </Radio>
-                    <Radio
+                    </GreenRadio>
+                    <GreenRadio
                         value={false}
                         description={intl.formatMessage(
                             { id: 'arbeid.jobberIkke.beskrivelse' },
 
                             { navn: navn[1] },
                         )}
-                        className="panel green"
                     >
                         <FormattedMessage id="arbeid.jobberIkke" />
-                    </Radio>
+                    </GreenRadio>
                 </RadioGroup>
             </VStack>
         </VStack>

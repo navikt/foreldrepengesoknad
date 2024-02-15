@@ -1,6 +1,7 @@
-import { Radio, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
+import GreenRadio from 'components/radio/GreenRadio';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -19,20 +20,12 @@ const Aleneforsørger: FunctionComponent = () => {
                     ),
                 ]}
             >
-                <Radio
-                    value={true}
-                    description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}
-                    className="panel green"
-                >
+                <GreenRadio value={true} description={intl.formatMessage({ id: 'arbeid.jobber.beskrivelseDeg' })}>
                     <FormattedMessage id="arbeid.jobber" />
-                </Radio>
-                <Radio
-                    value={false}
-                    description={intl.formatMessage({ id: 'arbeid.jobberIkke.beskrivelseDeg' })}
-                    className="panel green"
-                >
+                </GreenRadio>
+                <GreenRadio value={false} description={intl.formatMessage({ id: 'arbeid.jobberIkke.beskrivelseDeg' })}>
                     <FormattedMessage id="arbeid.jobberIkke" />
-                </Radio>
+                </GreenRadio>
             </RadioGroup>
         </VStack>
     );
