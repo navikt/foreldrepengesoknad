@@ -1,6 +1,10 @@
 import dayjs from 'dayjs';
 import { DATE_TODAY, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
-import { isDateRangesOverlapping, isDateWithinRange as isDateWithinRangeUtil } from '@navikt/fp-utils';
+import {
+    isDateRangesOverlapping,
+    halvannetÅrSiden,
+    isDateWithinRange as isDateWithinRangeUtil,
+} from '@navikt/fp-utils';
 import isBetween from 'dayjs/plugin/isBetween';
 import { FormValidationResult, isEmpty } from './generalFormValidation';
 
@@ -52,6 +56,11 @@ export const erI22SvangerskapsukeEllerSenere =
     (i18nText: string) =>
     (date: string): FormValidationResult =>
         dayjs(date).isAfter(ATTEN_UKER_TRE_DAGER) ? i18nText : null;
+
+export const isLessThanOneAndHalfYearsAgo =
+    (i18nText: string) =>
+    (date: string): FormValidationResult =>
+        dayjs(date).isBefore(halvannetÅrSiden(new Date()), 'day') ? i18nText : null;
 
 export const isMaxOneYearIntoTheFuture =
     (i18nText: string) =>
