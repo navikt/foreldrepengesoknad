@@ -1,4 +1,4 @@
-import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,29 @@ import BlåSirkel from 'components/ikoner/BlåSirkel';
 import Hjerte from 'components/ikoner/Hjerte';
 import RosaSirkel from 'components/ikoner/RosaSirkel';
 import { PeriodeEnum } from 'types/Periode';
+import { erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import Kalender from './Kalender';
+import dayjs from 'dayjs';
+import 'dayjs/locale/nb';
+dayjs.locale('nb');
 
+const barnehagestartDato = () => {
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const erFødt = erBarnetFødt(barnet);
+    const erIkkeFødt = erBarnetIkkeFødt(barnet);
+    if (erFødt || erIkkeFødt) {
+        const dato = erIkkeFødt ? barnet.termindato : barnet.fødselsdato;
+
+        if (dayjs(dato).month() < 8) return dayjs(dato).format('MMMM');
+
+        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM');
+
+        if (dayjs(dato).month() === 11)
+            return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM');
+    }
+    return undefined;
+};
 const OversiktSteg = () => {
     const navigate = useNavigate();
     const navigator = usePlanleggerNavigator();
@@ -51,28 +73,14 @@ const OversiktSteg = () => {
                         <HStack gap="5" align="center">
                             <RosaSirkel />
                             <BodyShort>
-                                <FormattedMessage id="barnehagestartIkontekst" />
+                                <FormattedMessage id="barnehagestartIkontekst" values={{ mnd: barnehagestartDato() }} />
                             </BodyShort>
                         </HStack>
                     </HStack>
                 </VStack>
                 <VStack gap="10">
                     <VStack gap="2">
-                        <Heading size="small" spacing>
-                            <FormattedMessage id="oversikt.2024" />
-                        </Heading>
-                        <Box padding="4" borderRadius="large" background="surface-alt-3-subtle">
-                            <BodyShort>Kalenderoversikt</BodyShort>
-                        </Box>
-                    </VStack>
-
-                    <VStack gap="2">
-                        <Heading size="small" spacing>
-                            <FormattedMessage id="oversikt.2025" />
-                        </Heading>
-                        <Box padding="4" borderRadius="large" background="surface-alt-3-subtle">
-                            <BodyShort>Kalenderoversikt</BodyShort>
-                        </Box>
+                        <Kalender />
                     </VStack>
                 </VStack>
 

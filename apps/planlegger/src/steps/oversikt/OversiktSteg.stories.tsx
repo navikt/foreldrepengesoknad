@@ -8,6 +8,7 @@ import OversiktSteg from './OversiktSteg';
 import { Periode, PeriodeEnum } from 'types/Periode';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { OmBarnet } from 'types/Barnet';
 
 export default {
     title: 'OversiktSteg',
@@ -17,14 +18,19 @@ export default {
 const Template: StoryFn<{
     hvemPlanlegger: HvemPlanlegger;
     periode: Periode;
+    omBarnet: OmBarnet;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ gåTilNesteSide = action('button-click'), hvemPlanlegger, periode }) => {
+}> = ({ gåTilNesteSide = action('button-click'), hvemPlanlegger, periode, omBarnet }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.OVERSIKT]}>
             <PlanleggerDataContext
                 onDispatch={gåTilNesteSide}
-                initialState={{ [ContextDataType.PERIODE]: periode, [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger }}
+                initialState={{
+                    [ContextDataType.PERIODE]: periode,
+                    [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                    [ContextDataType.OM_BARNET]: omBarnet,
+                }}
             >
                 <OversiktSteg />
             </PlanleggerDataContext>
@@ -41,6 +47,9 @@ PeriodeFlereForsørgereHundreProsent.args = {
     },
     periode: {
         periode: PeriodeEnum.HUNDRE,
+    },
+    omBarnet: {
+        termindato: '2022-10-24',
     },
 };
 
