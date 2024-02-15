@@ -1,19 +1,33 @@
-import { FunctionComponent, useState } from 'react';
-import dayjs from 'dayjs';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyLong, BodyShort, Button, ExpansionCard, ReadMore } from '@navikt/ds-react';
 import { Block, ISOStringToDate, Step, StepButtonWrapper, intlUtils } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import {
-    getSisteDagForSvangerskapspenger,
-    getKanHaSvpFremTilTreUkerFørTermin,
-    tiMånederSidenDato,
     getDefaultMonth,
+    getKanHaSvpFremTilTreUkerFørTermin,
+    getSisteDagForSvangerskapspenger,
+    tiMånederSidenDato,
 } from 'app/utils/dateUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
+import dayjs from 'dayjs';
+import { FunctionComponent, useState } from 'react';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import BackButton from '../BackButton';
+import { getNextRouteAndTilretteleggingIdForTilretteleggingSteg, useStepConfig } from '../stepsConfig';
+import {
+    DelivisTilretteleggingPeriodeType,
+    TilretteleggingFormComponents,
+    TilretteleggingFormData,
+    TilretteleggingFormField,
+} from './tilretteleggingStepFormConfig';
+import tilretteleggingQuestionsConfig, {
+    TilretteleggingFormQuestionsPayload,
+} from './tilretteleggingStepQuestionsConfig';
 import {
     cleanUpTilretteleggingStepFormValues,
     getBehovForTilretteleggingFomLabel,
@@ -28,31 +42,17 @@ import {
     getTilretteleggingTypeLabel,
     mapOmTilretteleggingFormDataToState,
 } from './tilretteleggingStepUtils';
-import tilretteleggingQuestionsConfig, {
-    TilretteleggingFormQuestionsPayload,
-} from './tilretteleggingStepQuestionsConfig';
 import {
-    TilretteleggingFormComponents,
-    TilretteleggingFormData,
-    TilretteleggingFormField,
-    DelivisTilretteleggingPeriodeType,
-} from './tilretteleggingStepFormConfig';
-import { getNextRouteAndTilretteleggingIdForTilretteleggingSteg, useStepConfig } from '../stepsConfig';
-import {
+    validateBehovForTilretteleggingFom,
     validateRisikofaktorer,
     validateSammePeriodeFremTilTerminFom,
     validateSammePeriodeFremTilTerminTilbakeIJobbDato,
     validateStillingsprosentEnDelvisPeriode,
-    validateTilretteleggingstiltak,
-    validateBehovForTilretteleggingFom,
     validateTilrettelagtArbeidType,
     validateTilretteleggingPeriodetype,
+    validateTilretteleggingstiltak,
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import BackButton from '../BackButton';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import SøknadRoutes from 'app/routes/routes';
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
@@ -65,12 +65,16 @@ const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype)
 export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
-const TilretteleggingStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
+const TilretteleggingStep: FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    arbeidsforhold,
+}) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(intl, arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 

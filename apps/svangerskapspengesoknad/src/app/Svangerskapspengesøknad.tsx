@@ -1,21 +1,18 @@
-import { useMemo } from 'react';
+import { useRequest } from '@navikt/fp-api';
+import { erKvinne, erMyndig, useDocumentTitle } from '@navikt/fp-common';
+import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { Umyndig } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 import { useIntl } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
-import { erMyndig, erKvinne, useDocumentTitle } from '@navikt/fp-common';
-import { LocaleNo } from '@navikt/fp-types';
-import { Umyndig } from '@navikt/fp-ui';
-import { useRequest } from '@navikt/fp-api';
-import { notEmpty } from '@navikt/fp-validation';
+import { SvpDataContext } from './context/SvpDataContext';
+import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './context/useMellomlagreSøknad';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
 import SvangerskapspengesøknadRoutes, {
     ApiErrorHandler,
     Spinner,
     svpApi,
 } from './routes/SvangerskapspengesøknadRoutes';
-import { SvpDataContext } from './context/SvpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from './utils/mapSøkerinfoDTO';
-import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './context/useMellomlagreSøknad';
-import { SøkerinfoDTO } from './types/SøkerinfoDTO';
 
 import './styles/app.css';
 
@@ -28,7 +25,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
-    const { data: søkerinfoData, error: søkerinfoError } = useRequest<SøkerinfoDTO>(svpApi, '/sokerinfo');
+    const { data: søkerinfoData, error: søkerinfoError } = useRequest<Søkerinfo>(svpApi, '/sokerinfo');
 
     const {
         data: mellomlagretData,
@@ -36,26 +33,21 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
         error: errorMellomlagretData,
     } = useRequest<SvpDataMapAndMetaData>(svpApi, '/storage/svangerskapspenger');
 
-    const søkerInfo = useMemo(
-        () => (søkerinfoData ? mapSøkerinfoDTOToSøkerinfo(søkerinfoData) : undefined),
-        [søkerinfoData],
-    );
-
     if (søkerinfoError || errorMellomlagretData) {
         return <ApiErrorHandler error={notEmpty(søkerinfoError || errorMellomlagretData)} />;
     }
 
-    if (!søkerInfo || loadingMellomlagretData) {
+    if (!søkerinfoData || loadingMellomlagretData) {
         return <Spinner />;
     }
 
-    const erPersonKvinne = erKvinne(søkerInfo.person.kjønn);
+    const erPersonKvinne = erKvinne(søkerinfoData.søker.kjønn);
 
     if (!erPersonKvinne) {
         return <IkkeKvinne />;
     }
 
-    const erPersonMyndig = erMyndig(søkerInfo.person.fødselsdato);
+    const erPersonMyndig = erMyndig(søkerinfoData.søker.fødselsdato);
 
     const mellomlagretState = mellomlagretData?.version === VERSJON_MELLOMLAGRING ? mellomlagretData : undefined;
 
@@ -69,7 +61,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
                         <SvangerskapspengesøknadRoutes
                             locale={locale}
                             onChangeLocale={onChangeLocale}
-                            søkerInfo={søkerInfo}
+                            søkerInfo={søkerinfoData}
                             mellomlagretData={mellomlagretState}
                         />
                     </SvpDataContext>

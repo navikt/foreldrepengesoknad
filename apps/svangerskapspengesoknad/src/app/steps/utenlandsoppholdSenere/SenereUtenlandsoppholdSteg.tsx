@@ -1,28 +1,27 @@
-import { FormattedMessage, useIntl } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
-import { SenereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
-import { UtenlandsoppholdSenere } from '@navikt/fp-types';
+import { Arbeidsforhold, UtenlandsoppholdSenere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
+import { SenereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import SøknadRoutes from 'app/routes/routes';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useStepConfig } from '../stepsConfig';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
 const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
-    søkerInfo,
+    arbeidsforhold,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold).map((config) => ({
+    const stepConfig = useStepConfig(intl, arbeidsforhold).map((config) => ({
         ...config,
         isSelected: config.id === 'boIUtlandetIFremtid',
     }));

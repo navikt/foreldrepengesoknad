@@ -28,7 +28,6 @@ import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import { useForm } from 'react-hook-form';
@@ -41,16 +40,21 @@ import {
     TextField,
 } from '@navikt/fp-form-hooks';
 import { useNavigate } from 'react-router-dom';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
-const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
+const EgenNæringStep: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    arbeidsforhold,
+}) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(intl, arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const navigate = useNavigate();
 
@@ -70,7 +74,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
         if (
             søkerHarKunEtAktivtArbeid(
                 barnet.termindato,
-                søkerInfo.arbeidsforhold,
+                arbeidsforhold,
                 inntektsinformasjon.harJobbetSomFrilans,
                 inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
             )
@@ -86,7 +90,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgN
         const { nextRoute, nextTilretteleggingId } = getNextRouteForNæring(
             inntektsinformasjon,
             barnet.termindato,
-            søkerInfo.arbeidsforhold,
+            arbeidsforhold,
         );
 
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);

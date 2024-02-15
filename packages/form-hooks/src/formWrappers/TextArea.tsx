@@ -41,7 +41,7 @@ const TextArea: FunctionComponent<Props> = ({
             className={className}
             autoComplete="off"
             {...field}
-            value={field.value ? field.value : ''}
+            value={field.value || ''}
             error={getError(errors, name)}
             maxLength={maxLength}
             minLength={minLength}

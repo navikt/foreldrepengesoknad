@@ -26,7 +26,6 @@ import {
     InntektsinformasjonFormData,
     InntektsinformasjonFormField,
 } from './inntektsinformasjonFormConfig';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
@@ -34,20 +33,21 @@ import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkke
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
 import BackButton from '../BackButton';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
 const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
-    søkerInfo,
+    arbeidsforhold,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(intl, arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -64,7 +64,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
 
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, termindato);
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
 
     const onSubmit = (values: Partial<InntektsinformasjonFormData>) => {
         setIsSubmitting(true);
@@ -129,7 +129,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const kanIkkeSøke =
-                    søkerInfo.arbeidsforhold.length === 0 &&
+                    arbeidsforhold.length === 0 &&
                     formValues.hattInntektSomFrilans === YesOrNo.NO &&
                     formValues.hattInntektSomNæringsdrivende === YesOrNo.NO;
                 return (
