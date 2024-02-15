@@ -7,8 +7,7 @@ import {
     getNavnGenitivEierform,
     getNavnPåForeldre,
 } from './personUtils';
-
-import Person from 'common/types/Person';
+import { Søker } from '@navikt/fp-types';
 
 describe('personUtils', () => {
     it('skal formatere navn med mellomnavn', () => {
@@ -103,7 +102,7 @@ describe('personUtils', () => {
     it.skip('skal returnere navn på foreldre der far er søker', () => {
         const person = {
             fornavn: 'Espen',
-        } as Person;
+        } as Søker;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Olga',
@@ -119,7 +118,7 @@ describe('personUtils', () => {
     it.skip('skal returnere navn på foreldre der mor er søker', () => {
         const person = {
             fornavn: 'Olga',
-        } as Person;
+        } as Søker;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Espen',

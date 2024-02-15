@@ -11,7 +11,7 @@ import {
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import { IntlShape } from 'react-intl';
 import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
@@ -121,7 +121,7 @@ export const getAnnenForelderFormInitialValues = (
     barn: Barn,
     annenForelderFraRegistrertBarn: RegistrertAnnenForelder | undefined,
     intl: IntlShape,
-    søker?: Søker,
+    søkerData?: SøkerData,
 ): AnnenForelderFormData => {
     if (isAnnenForelderOppgitt(annenForelder) && hasValue(annenForelder.fornavn)) {
         return {
@@ -138,7 +138,7 @@ export const getAnnenForelderFormInitialValues = (
             fornavn: annenForelder.fornavn === intlUtils(intl, 'annen.forelder') ? '' : annenForelder.fornavn,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,
             fnr: annenForelder.fnr,
-            aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søker?.erAleneOmOmsorg),
+            aleneOmOmsorg: convertBooleanOrUndefinedToYesOrNo(søkerData?.erAleneOmOmsorg),
             datoForAleneomsorg: dateToISOString(barn.datoForAleneomsorg) || '',
             utenlandskFnr: annenForelder.utenlandskFnr || false,
         };

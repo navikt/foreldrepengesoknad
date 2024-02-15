@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { LocaleNo } from '@navikt/fp-types';
-import Søker from './types/Søker';
+import SøkerData from './types/SøkerData';
 
 const mellomlagre = (
     locale: LocaleNo,
@@ -21,7 +21,7 @@ const mellomlagre = (
     const søkersituasjon = getDataFromState(ContextDataType.SØKERSITUASJON);
     const barn = getDataFromState(ContextDataType.OM_BARNET);
     const annenForelder = getDataFromState(ContextDataType.ANNEN_FORELDER);
-    const søker = getDataFromState(ContextDataType.SØKER);
+    const søker = getDataFromState(ContextDataType.SØKER_DATA);
     const utenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD);
     const senereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
@@ -47,7 +47,7 @@ const mellomlagre = (
             søker: {
                 ...søker,
                 språkkode: locale,
-            } as Søker,
+            } as SøkerData,
             informasjonOmUtenlandsopphold: utenlandsopphold
                 ? {
                       ...utenlandsopphold,

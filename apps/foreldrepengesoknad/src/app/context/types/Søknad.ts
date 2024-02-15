@@ -1,7 +1,7 @@
 import Barn from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
-import Søker from './Søker';
 import { VedleggDataType } from 'app/types/VedleggDataType';
+import SøkerData from './SøkerData';
 import { AnnenForelder, Dekningsgrad, Periode, Søkersituasjon } from '@navikt/fp-common';
 
 export interface Søknad {
@@ -10,7 +10,7 @@ export interface Søknad {
     søkersituasjon: Søkersituasjon;
     barn: Barn;
     annenForelder: AnnenForelder;
-    søker: Søker;
+    søker: SøkerData;
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;

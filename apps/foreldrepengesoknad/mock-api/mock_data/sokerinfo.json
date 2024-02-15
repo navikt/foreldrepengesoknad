@@ -11,7 +11,8 @@
         },
         "sivilstand": {
             "type": "UGIFT"
-        }
+        },
+        "barn": []
     },
     "arbeidsforhold": [
         {

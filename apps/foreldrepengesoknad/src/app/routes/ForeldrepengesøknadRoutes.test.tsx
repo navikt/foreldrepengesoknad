@@ -1,13 +1,13 @@
-import { BrowserRouter } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
 import { allCommonMessages } from '@navikt/fp-common';
-import Person from '@navikt/fp-common/src/common/types/Person';
-import { IntlProvider } from '@navikt/fp-ui';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import SøknadRoutes from './routes';
-import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
-import nbMessages from '../intl/nb_NO.json';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søker, SøkerBarn } from '@navikt/fp-types';
+import { IntlProvider } from '@navikt/fp-ui';
+import { render, screen } from '@testing-library/react';
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import { BrowserRouter } from 'react-router-dom';
+import nbMessages from '../intl/nb_NO.json';
+import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
+import SøknadRoutes from './routes';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
@@ -30,10 +30,10 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                             currentRoute={SøknadRoutes.VELKOMMEN}
                             søkerInfo={{
                                 arbeidsforhold: [],
-                                person: {
+                                søker: {
                                     fornavn: 'Ola',
-                                } as Person,
-                                registrerteBarn: [],
+                                    barn: [] as SøkerBarn[],
+                                } as Søker,
                             }}
                             saker={[]}
                             lagretErEndringssøknad={false}
@@ -59,7 +59,7 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                                 situasjon: 'fødsel',
                                 rolle: 'mor',
                             },
-                            [ContextDataType.SØKER]: {
+                            [ContextDataType.SØKER_DATA]: {
                                 erAleneOmOmsorg: false,
                                 harHattAnnenInntektSiste10Mnd: false,
                                 harJobbetSomFrilansSiste10Mnd: false,
@@ -72,12 +72,12 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                             onChangeLocale={() => ({})}
                             currentRoute={SøknadRoutes.OM_BARNET}
                             søkerInfo={{
-                                person: {
-                                    erMyndig: true,
+                                søker: {
                                     fornavn: 'Ola',
-                                } as Person,
+                                    barn: [] as SøkerBarn[],
+                                    fødselsdato: '2000-01-01',
+                                } as Søker,
                                 arbeidsforhold: [],
-                                registrerteBarn: [],
                             }}
                             saker={[]}
                             lagretErEndringssøknad={false}

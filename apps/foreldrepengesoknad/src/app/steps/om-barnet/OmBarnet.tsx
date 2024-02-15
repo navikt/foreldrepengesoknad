@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
 import {
     andreAugust2022ReglerGjelder,
     BarnType,
@@ -12,30 +10,30 @@ import {
     ISOStringToDate,
     isUfødtBarn,
     lagSendSenereDokumentNårIngenAndreFinnes,
-    RegistrertBarn,
     Step,
-    Søkerinfo,
 } from '@navikt/fp-common';
+import { SøkerBarn, Søkerinfo, AttachmentMetadataType } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import useStepConfig from 'app/appData/useStepConfig';
 import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
 import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
 import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
 import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
 import Fødsel from './components/Fødsel';
 import Termin from './components/Termin';
+import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig, { OmBarnetQuestionPayload } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
-import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { AttachmentMetadataType } from '@navikt/fp-types';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -64,11 +62,11 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, registrerteBarn } = søkerInfo;
+    const { arbeidsforhold, søker } = søkerInfo;
 
     const [erForTidligTilÅSøkePåTermin, setErForTidligTilÅSøkePåTermin] = useState(false);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const findBarnetIRegistrerteBarn = (regBarn: RegistrertBarn) => {
+    const findBarnetIRegistrerteBarn = (regBarn: SøkerBarn) => {
         if (omBarnet && !isUfødtBarn(omBarnet) && omBarnet.fnr !== undefined && omBarnet.fnr.length > 0) {
             return omBarnet.fnr.includes(regBarn.fnr);
         }
@@ -79,15 +77,15 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? registrerteBarn.filter(
-                  (barn: RegistrertBarn) =>
+            ? søker.barn.filter(
+                  (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
             : [];
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
+            ? søker.barn.filter((b) => findBarnetIRegistrerteBarn(b)).concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;
     const barnSøktOmFørMenIkkeRegistrert =
         !søknadGjelderNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);

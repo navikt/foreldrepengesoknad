@@ -5,7 +5,7 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
@@ -13,11 +13,11 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 interface Props {
     annenForelder: AnnenForelder;
-    søker: Søker;
+    søkerData: SøkerData;
     søkerrolle: Søkerrolle;
 }
 
-const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søker, søkerrolle }) => {
+const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søkerData, søkerrolle }) => {
     const intl = useIntl();
     const erFarEllerMedmor = isFarEllerMedmor(søkerrolle);
 
@@ -36,7 +36,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
                         title={
-                            !søker.erAleneOmOmsorg
+                            !søkerData.erAleneOmOmsorg
                                 ? intl.formatMessage({ id: 'oppsummering.annenForelder.fellesOmsorg.tittel' })
                                 : intl.formatMessage({ id: 'oppsummering.annenForelder.aleneOmOmsorg.tittel' })
                         }
@@ -44,14 +44,14 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                         <BodyShort>
                             <FormattedMessage
                                 id={
-                                    !søker.erAleneOmOmsorg
+                                    !søkerData.erAleneOmOmsorg
                                         ? 'oppsummering.annenForelder.fellesOmsorg.tekst'
                                         : 'oppsummering.annenForelder.aleneOmOmsorg.tekst'
                                 }
                             />
                         </BodyShort>
                     </OppsummeringsPunkt>
-                    {!søker.erAleneOmOmsorg && (
+                    {!søkerData.erAleneOmOmsorg && (
                         <OppsummeringsPunkt
                             title={intl.formatMessage(
                                 { id: 'oppsummering.annenForelder.rettPåForeldrepengerINorge' },
@@ -65,7 +65,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                             </BodyShort>
                         </OppsummeringsPunkt>
                     )}
-                    {!søker.erAleneOmOmsorg && !annenForelder.harRettPåForeldrepengerINorge && (
+                    {!søkerData.erAleneOmOmsorg && !annenForelder.harRettPåForeldrepengerINorge && (
                         <OppsummeringsPunkt
                             title={intl.formatMessage(
                                 { id: 'oppsummering.annenForelder.harOppholdtSegIEØS' },
@@ -79,7 +79,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                             </BodyShort>
                         </OppsummeringsPunkt>
                     )}
-                    {!søker.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS === true && (
+                    {!søkerData.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS === true && (
                         <OppsummeringsPunkt
                             title={intl.formatMessage(
                                 { id: 'oppsummering.annenForelder.rettPåForeldrepengerIEØS' },
@@ -94,7 +94,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                         </OppsummeringsPunkt>
                     )}
                     {erFarEllerMedmor &&
-                        !søker.erAleneOmOmsorg &&
+                        !søkerData.erAleneOmOmsorg &&
                         !annenForelder.harRettPåForeldrepengerINorge &&
                         !annenForelder.harRettPåForeldrepengerIEØS && (
                             <OppsummeringsPunkt

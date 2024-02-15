@@ -2,7 +2,7 @@ import { getFamiliehendelseType } from './getFamiliehendelseType';
 import { getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 import { Søknad } from 'app/context/types/Søknad';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import {
     AnnenForelder,
@@ -22,7 +22,6 @@ import {
     SaksperiodeDTO,
     Situasjon,
     StønadskontoType,
-    Søkerinfo,
     Søkerrolle,
     Søkersituasjon,
     Tidsperioden,
@@ -39,9 +38,9 @@ import { IntlShape } from 'react-intl';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
-import Person, { RegistrertAnnenForelder, RegistrertBarn } from '@navikt/fp-common/src/common/types/Person';
 import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { ValgtBarn } from 'app/types/ValgtBarn';
+import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -287,19 +286,19 @@ const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: Familiehendelse
     return 'adopsjon';
 };
 
-const getSøkerFromSaksgrunnlag = (grunnlag: Saksgrunnlag, erFarEllerMedmor: boolean): Partial<Søker> => {
+const getSøkerFromSaksgrunnlag = (grunnlag: Saksgrunnlag, erFarEllerMedmor: boolean): Partial<SøkerData> => {
     return {
         erAleneOmOmsorg: erFarEllerMedmor ? grunnlag.farMedmorErAleneOmOmsorg : grunnlag.morErAleneOmOmsorg,
     };
 };
 
 const getSøkerrolleFromSaksgrunnlag = (
-    person: Person,
+    søker: Søker,
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
 ): Søkerrolle | undefined => {
     const { søkerErFarEllerMedmor } = grunnlag;
-    const søkerErKvinne = person.kjønn === 'K';
+    const søkerErKvinne = søker.kjønn === 'K';
     switch (situasjon) {
         case 'fødsel':
         case 'adopsjon':
@@ -359,7 +358,7 @@ const getBarnFromSaksgrunnlag = (
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
-    annenPart: RegistrertAnnenForelder,
+    annenPart: SøkerAnnenForelder,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): AnnenForelder | undefined => {
@@ -399,7 +398,7 @@ const getAnnenForelderFromSaksgrunnlag = (
 };
 
 const finnAnnenForelderForSaken = (
-    barn: RegistrertBarn[],
+    barn: SøkerBarn[],
     fødselsdato: Date | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
@@ -428,7 +427,7 @@ const finnAnnenForelderForSaken = (
         const { fornavn } = annenForelder;
         const fornavnAnnenForelder =
             fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intlUtils(intl, 'annen.forelder');
-        const annenPart: RegistrertAnnenForelder = { ...annenForelder, fornavn: fornavnAnnenForelder };
+        const annenPart: SøkerAnnenForelder = { ...annenForelder, fornavn: fornavnAnnenForelder };
         return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
 
@@ -496,7 +495,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
     grunnlag: Saksgrunnlag,
-    søkerinfo: Søkerinfo,
+    barn: SøkerBarn[],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
 ): AnnenForelder => {
@@ -514,7 +513,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
         erUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
     };
     const annenForelderFraSak = finnAnnenForelderForSaken(
-        søkerinfo.registrerteBarn,
+        barn,
         ISOStringToDate(grunnlag.fødselsdato),
         grunnlag,
         situasjon,
@@ -528,7 +527,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
 export const opprettSøknadFraValgteBarnMedSak = (
     valgteBarn: ValgtBarn,
     intl: IntlShape,
-    søkerinfo: Søkerinfo,
+    registrerteBarn: SøkerBarn[],
 ): Partial<Søknad> | undefined => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined);
     const { grunnlag } = eksisterendeSak!;
@@ -538,7 +537,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
         intl,
         valgteBarn.sak?.annenPart,
         grunnlag,
-        søkerinfo,
+        registrerteBarn,
         situasjon,
         valgteBarn.fnr,
     );
@@ -559,7 +558,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
 };
 
 export const opprettSøknadFraEksisterendeSak = (
-    søkerinfo: Søkerinfo,
+    søker: Søker,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
@@ -573,10 +572,10 @@ export const opprettSøknadFraEksisterendeSak = (
         return undefined;
     }
 
-    const søker = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
+    const søkerData = getSøkerFromSaksgrunnlag(grunnlag, søkerErFarEllerMedmor);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
 
-    const rolle = getSøkerrolleFromSaksgrunnlag(søkerinfo.person, situasjon, grunnlag);
+    const rolle = getSøkerrolleFromSaksgrunnlag(søker, situasjon, grunnlag);
 
     if (!barn || !rolle) {
         return undefined;
@@ -586,13 +585,13 @@ export const opprettSøknadFraEksisterendeSak = (
         intl,
         annenPartFraSak,
         grunnlag,
-        søkerinfo,
+        søker.barn,
         situasjon,
         valgteBarn?.fnr,
     );
 
     const søknad: Partial<Søknad> = {
-        søker: søker as Søker,
+        søker: søkerData as SøkerData,
         søkersituasjon: {
             situasjon,
             rolle,

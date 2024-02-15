@@ -1,5 +1,3 @@
-import { StoryFn } from '@storybook/react';
-import dayjs from 'dayjs';
 import {
     AnnenForelder as AnnenForelderType,
     BarnType,
@@ -9,38 +7,36 @@ import {
     Periodetype,
     StønadskontoType,
 } from '@navikt/fp-common';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { Søker, SøkersituasjonFp } from '@navikt/fp-types';
+import { StoryFn } from '@storybook/react';
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøkerData from 'app/context/types/SøkerData';
+import dayjs from 'dayjs';
 import withRouter from 'storybook/decorators/withRouter';
-import Søker from 'app/context/types/Søker';
 import InfoOmSøknaden from './InfoOmSøknaden';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import { SøkersituasjonFp } from '@navikt/fp-types';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 
-const søkerinfo = {
-    søker: {
-        fnr: '19047815714',
-        fornavn: 'TALENTFULL',
-        etternavn: 'MYGG',
-        kjønn: 'K',
-        fødselsdato: '1978-04-19',
-        barn: [
-            {
-                fnr: '21091981146',
-                fødselsdato: '2021-03-15',
-                annenForelder: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
-                },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
-                kjønn: 'M',
+const søker = {
+    fnr: '19047815714',
+    fornavn: 'TALENTFULL',
+    etternavn: 'MYGG',
+    kjønn: 'K',
+    fødselsdato: '1978-04-19',
+    barn: [
+        {
+            fnr: '21091981146',
+            fødselsdato: '2021-03-15',
+            annenForelder: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                fornavn: 'LEALAUS',
+                etternavn: 'BÆREPOSE',
             },
-        ],
-    },
-} as SøkerinfoDTO;
+            fornavn: 'KLØKTIG',
+            etternavn: 'MIDTPUNKT',
+            kjønn: 'M',
+        },
+    ],
+} as Søker;
 
 export default {
     title: 'components/InfoOmSøknaden',
@@ -49,19 +45,17 @@ export default {
 };
 
 interface Props {
-    søkerinfo: SøkerinfoDTO;
     erIUttaksplanenSteg: boolean;
     ekisterendeSak?: EksisterendeSak;
     annenForelder: AnnenForelderType;
-    søker: Søker;
+    søkerData: SøkerData;
     søkersituasjon: SøkersituasjonFp;
 }
 
 const Template: StoryFn<Props> = ({
     annenForelder,
-    søker,
+    søkerData,
     søkersituasjon,
-    søkerinfo,
     erIUttaksplanenSteg = true,
     ekisterendeSak,
 }) => {
@@ -75,7 +69,7 @@ const Template: StoryFn<Props> = ({
                     datoForAleneomsorg: undefined,
                 },
                 [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                [ContextDataType.SØKER]: søker,
+                [ContextDataType.SØKER_DATA]: søkerData,
                 [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                 [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
             }}
@@ -89,7 +83,7 @@ const Template: StoryFn<Props> = ({
                 ]}
                 eksisterendeSak={ekisterendeSak}
                 erIUttaksplanenSteg={erIUttaksplanenSteg}
-                person={mapSøkerinfoDTOToSøkerinfo(søkerinfo).person}
+                søker={søker}
             />
         </FpDataContext>
     );
@@ -104,13 +98,12 @@ Default.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    søker: {} as Søker,
-    søkerinfo,
+    søkerData: {} as SøkerData,
 };
 
 export const AnnenForelder = Template.bind({});
 AnnenForelder.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -127,12 +120,11 @@ AnnenForelder.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søkerinfo,
 };
 
 export const InfoOmMorsSak = Template.bind({});
 InfoOmMorsSak.args = {
-    søker: {
+    søkerData: {
         erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
@@ -149,7 +141,6 @@ InfoOmMorsSak.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    søkerinfo,
     ekisterendeSak: {
         erAnnenPartsSak: true,
         grunnlag: {

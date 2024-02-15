@@ -1,8 +1,3 @@
-import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import dayjs from 'dayjs';
-import { notEmpty } from '@navikt/fp-validation';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { GuidePanel } from '@navikt/ds-react';
 import {
     Block,
@@ -18,40 +13,45 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getInitialMorFarAdopsjonValues, mapMorFarAdopsjonFormToState } from './morFarAdopsjonUtils';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { dateIsSameOrAfter, findEldsteDato } from 'app/utils/dateUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+import dayjs from 'dayjs';
+import { FunctionComponent, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
+import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
+import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
+import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
+import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
+import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
+import StartdatoAdopsjon, { finnStartdatoAdopsjon } from './StartdatoAdopsjon';
+import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 import {
     MorFarAdopsjonFormComponents,
     MorFarAdopsjonFormData,
     MorFarAdopsjonFormField,
 } from './morFarAdopsjonFormConfig';
 import { MorFarAdopsjonQuestionsPayload, morFarAdopsjonQuestionsConfig } from './morFarAdopsjonQuestionsConfig';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
-import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
-import StartdatoAdopsjon, { finnStartdatoAdopsjon } from './StartdatoAdopsjon';
-import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
-import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
-import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
-import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import Person from '@navikt/fp-common/src/common/types/Person';
-import { MorFarAdopsjonUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import { StepButtons } from '@navikt/fp-ui';
+import { getInitialMorFarAdopsjonValues, mapMorFarAdopsjonFormToState } from './morFarAdopsjonUtils';
+import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     erEndringssøknad: boolean;
-    person: Person;
+    søker: Søker;
     goToNextDefaultStep: () => Promise<void>;
     goToPreviousDefaultStep: () => Promise<void>;
     oppdaterBarnOgLagreUttaksplandata: (metadata: UttaksplanMetaData) => void;
@@ -61,7 +61,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     tilgjengeligeStønadskontoer100DTO,
     erEndringssøknad,
-    person,
+    søker,
     goToNextDefaultStep,
     goToPreviousDefaultStep,
     oppdaterBarnOgLagreUttaksplandata,
@@ -73,7 +73,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
+    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -82,11 +82,11 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const { fornavn, mellomnavn, etternavn } = person;
+    const { fornavn, mellomnavn, etternavn } = søker;
     const { dekningsgrad } = periodeMedForeldrepenger;
 
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const søkerErAleneOmOmsorg = !!søker.erAleneOmOmsorg;
+    const søkerErAleneOmOmsorg = !!søkerData.erAleneOmOmsorg;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined ||
           annenForelder.harRettPåForeldrepengerIEØS !== undefined
@@ -208,7 +208,7 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                 const visibility = morFarAdopsjonQuestionsConfig.getVisbility({
                     ...formValues,
                     harAnnenForelderRettPåForeldrepengerINorge,
-                    erAleneOmOmsorg: søker.erAleneOmOmsorg,
+                    erAleneOmOmsorg: søkerData.erAleneOmOmsorg,
                 } as MorFarAdopsjonQuestionsPayload);
 
                 const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
@@ -321,7 +321,9 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                 />
                             </GuidePanel>
                         </Block>
-                        <Block visible={søker.erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}>
+                        <Block
+                            visible={søkerData.erAleneOmOmsorg === false && harAnnenForelderRettPåForeldrepengerINorge}
+                        >
                             <Block
                                 padBottom="xl"
                                 visible={

@@ -1,5 +1,5 @@
 import { Søknad } from 'app/context/types/Søknad';
-import Søker from 'app/context/types/Søker';
+import SøkerData from 'app/context/types/SøkerData';
 import dayjs from 'dayjs';
 import { getTermindato } from 'app/utils/barnUtils';
 import { AxiosError } from 'axios';
@@ -72,7 +72,7 @@ interface BarnPropsForAPI {
 
 export type BarnForInnsending = Omit<Barn, 'datoForAleneomsorg' | 'type'> & BarnPropsForAPI;
 
-export interface SøkerForInnsending extends Omit<Søker, 'andreInntekterSiste10Mnd' | 'språkkode'> {
+export interface SøkerForInnsending extends Omit<SøkerData, 'andreInntekterSiste10Mnd' | 'språkkode'> {
     språkkode: LocaleForInnsending;
     rolle: SøkerrolleInnsending;
 }
@@ -377,7 +377,7 @@ export const cleanSøknad = (
 ): SøknadForInnsending => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const søker = notEmpty(hentData(ContextDataType.SØKER));
+    const søker = notEmpty(hentData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const utenlandsopphold = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD));
     const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
@@ -424,10 +424,10 @@ export const cleanSøknad = (
     return cleanedSøknad;
 };
 
-const cleanSøker = (søker: Søker, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
+const cleanSøker = (søkerData: SøkerData, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
     const rolle = konverterRolle(søkersituasjon.rolle);
     return {
-        ...søker,
+        ...søkerData,
         rolle: rolle,
         språkkode: locale,
     };
@@ -458,7 +458,7 @@ export const cleanEndringssøknad = (
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const søker = notEmpty(hentData(ContextDataType.SØKER));
+    const søker = notEmpty(hentData(ContextDataType.SØKER_DATA));
     const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));

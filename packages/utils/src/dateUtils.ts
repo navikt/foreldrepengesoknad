@@ -3,11 +3,13 @@ import { DATE_TODAY, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-co
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
+import utc from 'dayjs/plugin/utc';
 import { TIME_FORMAT } from '@navikt/fp-constants/src/dates';
 
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
+dayjs.extend(utc);
 
 type Period = { from: Date; to: Date };
 
@@ -28,8 +30,8 @@ export const isDateWithinRange = (date: Date, minDate: Date, maxDate: Date): boo
     dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
 
 export const erMyndig = (fødselsdato: string) => {
-    const now = dayjs();
-    const momentDate = dayjs(fødselsdato);
+    const now = dayjs.utc();
+    const momentDate = dayjs.utc(fødselsdato);
     return now.diff(momentDate, 'years') >= 18;
 };
 

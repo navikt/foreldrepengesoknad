@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { perioderSomKreverVedlegg } from '@navikt/uttaksplan';
 import { useNavigate } from 'react-router-dom';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, Søker } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import {
     getBarnInnlagtVedlegg,
@@ -30,7 +30,6 @@ import {
 import { Skjemanummer } from '@navikt/fp-constants';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
-import Person from '@navikt/fp-common/src/common/types/Person';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 import { GuidePanel } from '@navikt/ds-react';
@@ -49,7 +48,7 @@ import MorIntroduksjonsprogrammetDokumentasjon from './dokumentasjon/MorIntroduk
 import MorKvalifiseringsprogrammetDokumentasjon from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
 
 type Props = {
-    person: Person;
+    søker: Søker;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -58,7 +57,7 @@ type Props = {
 const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
-    person,
+    søker,
     erEndringssøknad,
 }) => {
     const intl = useIntl();
@@ -86,7 +85,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
 
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
 

@@ -34,6 +34,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
+        "@navikt/fp-oppsummering": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utenlandsopphold": "workspace:*",

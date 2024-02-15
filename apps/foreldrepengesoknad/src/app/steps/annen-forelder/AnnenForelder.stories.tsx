@@ -1,18 +1,15 @@
-import { StoryFn } from '@storybook/react';
-import MockAdapter from 'axios-mock-adapter/types';
-import { action } from '@storybook/addon-actions';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import _søkerinfo from 'storybook/storyData/sokerinfo/søkerinfoKvinneMedEttBarn.json';
-import AnnenForelder from './AnnenForelder';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import mapSøkerinfoDTOToSøkerinfo from 'app/utils/mapSøkerinfoDTO';
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
-import { SøkersituasjonFp } from '@navikt/fp-types';
-import dayjs from 'dayjs';
-import SøknadRoutes from 'app/routes/routes';
-import { MemoryRouter } from 'react-router-dom';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søker, SøkerBarn, SivilstandType, SøkersituasjonFp } from '@navikt/fp-types';
+import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import MockAdapter from 'axios-mock-adapter/types';
+import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
+import AxiosMock from 'storybook/utils/AxiosMock';
+import AnnenForelder from './AnnenForelder';
 
 const promiseAction =
     () =>
@@ -21,7 +18,28 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const søkerinfo = _søkerinfo as any;
+const søker = {
+    fnr: '19047815714',
+    fornavn: 'TALENTFULL',
+    etternavn: 'MYGG',
+    kjønn: 'K',
+    fødselsdato: '1978-04-19',
+    barn: [
+        {
+            fnr: '21091981146',
+            fødselsdato: '2021-03-15',
+            annenForelder: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                fornavn: 'LEALAUS',
+                etternavn: 'BÆREPOSE',
+            },
+            fornavn: 'KLØKTIG',
+            etternavn: 'MIDTPUNKT',
+            kjønn: 'M',
+        },
+    ],
+} as Søker;
 
 export default {
     title: 'steps/AnnenForelder',
@@ -29,7 +47,7 @@ export default {
 };
 
 interface Props {
-    søkerinfo: SøkerinfoDTO;
+    søker: Søker;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelderType;
     barn?: Barn;
@@ -39,7 +57,7 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({
-    søkerinfo,
+    søker,
     søkersituasjon = {
         situasjon: 'fødsel',
         rolle: 'mor',
@@ -77,7 +95,7 @@ const Template: StoryFn<Props> = ({
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.SØKER]: {
+                        [ContextDataType.SØKER_DATA]: {
                             // @ts-ignore TODO (TOR) Fiks Søker-typen
                             harHattAnnenInntektSiste10Mnd: undefined,
                             // @ts-ignore TODO (TOR) Fiks Søker-typen
@@ -90,7 +108,7 @@ const Template: StoryFn<Props> = ({
                     }}
                 >
                     <AnnenForelder
-                        søkerInfo={mapSøkerinfoDTOToSøkerinfo(søkerinfo)}
+                        søker={søker}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -109,7 +127,7 @@ Default.args = {
         datoForAleneomsorg: dayjs('2021-03-15').toDate(),
         fnr: ['21091981146'],
     },
-    søkerinfo,
+    søker,
 };
 
 export const SkalOppgiPersonalia = Template.bind({});
@@ -117,12 +135,10 @@ SkalOppgiPersonalia.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    søkerinfo: {
-        søker: {
-            ...søkerinfo,
-            barn: [],
-        },
-    } as SøkerinfoDTO,
+    søker: {
+        ...søker,
+        barn: [],
+    },
 };
 
 export const SkalOppgiPersonaliaNavnMangler = Template.bind({});
@@ -131,12 +147,10 @@ SkalOppgiPersonaliaNavnMangler.args = {
         fornavn: 'annen forelder',
         kanIkkeOppgis: false,
     },
-    søkerinfo: {
-        søker: {
-            ...søkerinfo,
-            barn: [],
-        },
-    } as SøkerinfoDTO,
+    søker: {
+        ...søker,
+        barn: [],
+    },
 };
 
 export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike = Template.bind({});
@@ -146,12 +160,21 @@ SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike.args = {
         fnr: '123456789',
         kanIkkeOppgis: false,
     },
-    søkerinfo: {
-        søker: {
-            ...søkerinfo,
-            barn: [{ fornavn: 'Ben', annenForelder: { fnr: '999999999' } }],
-        },
-    } as SøkerinfoDTO,
+    søker: {
+        ...søker,
+
+        barn: [
+            {
+                fornavn: 'Ben',
+                annenForelder: {
+                    fnr: '999999999',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
+            },
+        ] as SøkerBarn[],
+    },
 };
 
 export const ForFar = Template.bind({});
@@ -167,28 +190,26 @@ ForFar.args = {
         situasjon: 'fødsel',
         rolle: 'far',
     },
-    søkerinfo: {
-        søker: {
-            ...søkerinfo.søker,
-            fornavn: 'LEALAUS',
-            etternavn: 'BÆREPOSE',
-            kjønn: 'M',
-            barn: [
-                {
-                    fnr: '21091981146',
-                    fødselsdato: '2021-03-15',
-                    annenForelder: {
-                        fnr: '12038517080',
-                        fødselsdato: '1985-03-12',
-                        fornavn: 'TALENTFULL',
-                        etternavn: 'MYGG',
-                    },
-                    fornavn: 'KLØKTIG',
-                    etternavn: 'MIDTPUNKT',
-                    kjønn: 'K',
+    søker: {
+        ...søker,
+        fornavn: 'LEALAUS',
+        etternavn: 'BÆREPOSE',
+        kjønn: 'M',
+        barn: [
+            {
+                fnr: '21091981146',
+                fødselsdato: '2021-03-15',
+                annenForelder: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    fornavn: 'TALENTFULL',
+                    etternavn: 'MYGG',
                 },
-            ],
-        },
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+                kjønn: 'K',
+            },
+        ],
     },
 };
 
@@ -206,13 +227,10 @@ MorUfødtBarn.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    søkerinfo: {
-        ...søkerinfo,
-        søker: {
-            ...søkerinfo.søker,
-            barn: [],
-        },
-    } as SøkerinfoDTO,
+    søker: {
+        ...søker,
+        barn: [],
+    },
 };
 
 export const MedmorUfødtBarn = Template.bind({});
@@ -229,14 +247,11 @@ MedmorUfødtBarn.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    søkerinfo: {
-        ...søkerinfo,
-        søker: {
-            ...søkerinfo.søker,
-            kjønn: 'K',
-            barn: [],
-        },
-    } as SøkerinfoDTO,
+    søker: {
+        ...søker,
+        kjønn: 'K',
+        barn: [],
+    },
 };
 
 export const FarUfødtBarn = Template.bind({});
@@ -253,16 +268,13 @@ FarUfødtBarn.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    søkerinfo: {
-        ...søkerinfo,
-        søker: {
-            ...søkerinfo.søker,
-            fornavn: 'LEALAUS',
-            etternavn: 'BÆREPOSE',
-            kjønn: 'M',
-            barn: [],
-        },
-    } as SøkerinfoDTO,
+    søker: {
+        ...søker,
+        fornavn: 'LEALAUS',
+        etternavn: 'BÆREPOSE',
+        kjønn: 'M',
+        barn: [],
+    },
 };
 
 export const FarGiftUfødtBarn = Template.bind({});
@@ -279,15 +291,12 @@ FarGiftUfødtBarn.args = {
     annenForelder: {
         kanIkkeOppgis: false,
     },
-    søkerinfo: {
-        ...søkerinfo,
-        søker: {
-            ...søkerinfo.søker,
-            fornavn: 'LEALAUS',
-            etternavn: 'BÆREPOSE',
-            kjønn: 'M',
-            barn: [],
-            sivilstand: { type: 'GIFT' },
-        },
-    } as SøkerinfoDTO,
+    søker: {
+        ...søker,
+        fornavn: 'LEALAUS',
+        etternavn: 'BÆREPOSE',
+        kjønn: 'M',
+        barn: [],
+        sivilstand: { type: SivilstandType.GIFT },
+    },
 };

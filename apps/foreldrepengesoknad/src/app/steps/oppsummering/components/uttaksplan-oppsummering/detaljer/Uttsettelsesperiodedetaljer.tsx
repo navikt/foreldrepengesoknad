@@ -1,15 +1,10 @@
-import {
-    AnnenForelder,
-    Arbeidsforhold,
-    PeriodeUtenUttakUtsettelse,
-    Utsettelsesperiode,
-    UtsettelseÅrsakType,
-} from '@navikt/fp-common';
+import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode, UtsettelseÅrsakType } from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
 import { getÅrsakTekst } from '../OppsummeringUtils';
 import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface UtsettelsesperiodedetaljerProps {
     periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse;

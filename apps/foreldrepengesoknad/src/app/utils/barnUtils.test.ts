@@ -1,5 +1,6 @@
-import { Barn, BarnType, RegistrertBarn } from '@navikt/fp-common';
+import { Barn, BarnType } from '@navikt/fp-common';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
+import { SøkerBarn } from '@navikt/fp-types';
 
 describe('barnUtils', () => {
     it('skal returnere fødselsdato når barn er født', () => {
@@ -43,10 +44,10 @@ describe('barnUtils', () => {
         } as Barn;
         const registrerteBarn = [
             {
-                fødselsdato: new Date('2021-01-01'),
+                fødselsdato: '2021-01-01',
                 fnr: '123',
             },
-        ] as RegistrertBarn[];
+        ] as SøkerBarn[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -59,10 +60,10 @@ describe('barnUtils', () => {
         } as Barn;
         const registrerteBarn = [
             {
-                fødselsdato: new Date('2021-01-01'),
+                fødselsdato: '2021-01-01',
                 fnr: '123',
             },
-        ] as RegistrertBarn[];
+        ] as SøkerBarn[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -76,10 +77,10 @@ describe('barnUtils', () => {
         } as Barn;
         const registrerteBarn = [
             {
-                fødselsdato: new Date('2017-01-01'),
+                fødselsdato: '2017-01-01',
                 fnr: '123',
             },
-        ] as RegistrertBarn[];
+        ] as SøkerBarn[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -91,7 +92,7 @@ describe('barnUtils', () => {
             type: BarnType.FØDT,
             fødselsdatoer: [new Date('2021-01-01')],
         } as Barn;
-        const registrerteBarn = [] as RegistrertBarn[];
+        const registrerteBarn = [] as SøkerBarn[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 

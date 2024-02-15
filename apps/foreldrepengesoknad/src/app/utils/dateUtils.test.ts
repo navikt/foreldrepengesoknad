@@ -18,7 +18,6 @@ import {
     Periode,
     PeriodeHull,
     Periodetype,
-    RegistrertBarn,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
@@ -37,6 +36,7 @@ import {
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { SøkerBarn } from '@navikt/fp-types';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -322,19 +322,19 @@ describe('dateUtils', () => {
     });
 
     it('skal finne det eldste barnet', () => {
-        const eldsteBarn: RegistrertBarn = {
+        const eldsteBarn: SøkerBarn = {
             etternavn: 'test',
             fnr: '123123',
             fornavn: 'test',
-            fødselsdato: new Date('2020-01-01'),
+            fødselsdato: '2020-01-01',
             kjønn: 'K',
         };
 
-        const yngsteBarn: RegistrertBarn = {
+        const yngsteBarn: SøkerBarn = {
             etternavn: 'test',
             fnr: '234234',
             fornavn: 'test',
-            fødselsdato: new Date('2021-01-01'),
+            fødselsdato: '2021-01-01',
             kjønn: 'K',
         };
 

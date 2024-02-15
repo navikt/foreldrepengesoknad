@@ -41,7 +41,7 @@ describe('<AnnenForelder>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(5);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(4);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallBarn: 1,
@@ -55,16 +55,6 @@ describe('<AnnenForelder>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: {
-                erAleneOmOmsorg: true,
-                harHattAnnenInntektSiste10Mnd: undefined,
-                harJobbetSomFrilansSiste10Mnd: undefined,
-                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
-            },
-            key: ContextDataType.SØKER,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: {
                 bostedsland: undefined,
                 erInformertOmSøknaden: undefined,
@@ -81,7 +71,7 @@ describe('<AnnenForelder>', () => {
             key: ContextDataType.ANNEN_FORELDER,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: {
                 I000110: [],
             },
@@ -89,7 +79,7 @@ describe('<AnnenForelder>', () => {
             type: 'update',
         });
 
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(5, {
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
             data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',

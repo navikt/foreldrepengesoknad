@@ -8,7 +8,7 @@ import { EsDataContext, ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import Dokumentasjon from 'types/Dokumentasjon';
 import OppsummeringSteg from './OppsummeringSteg';
-import { Person, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { Søker, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { MemoryRouter } from 'react-router-dom';
 
 const promiseAction =
@@ -18,7 +18,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const person = {
+const søker = {
     fnr: '11111111111',
     fornavn: 'Henrikke',
     etternavn: 'Ibsen',
@@ -29,7 +29,8 @@ const person = {
         kontonummer: '49875234987',
         banknavn: 'Storebank',
     },
-} as Person;
+    barn: [],
+} as Søker;
 
 const barnet = {
     erBarnetFødt: true,
@@ -82,7 +83,7 @@ const Template: StoryFn<{
                     }}
                 >
                     <OppsummeringSteg
-                        person={person}
+                        søker={søker}
                         sendSøknad={sendSøknad}
                         mellomlagreOgNaviger={mellomlagreOgNaviger}
                     />

@@ -3,12 +3,12 @@ import {
     Block,
     ISOStringToDate,
     Step,
-    Søkerinfo,
     TidsperiodeMedValgfriSluttdato,
     getAktiveArbeidsforhold,
     intlUtils,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
+import { Arbeidsforhold, Attachment, AttachmentMetadataType } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -29,7 +29,6 @@ import {
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import { Attachment, AttachmentMetadataType } from '@navikt/fp-types';
 import { Skjemanummer } from '@navikt/fp-constants';
 
 const getPerioderSomDokumenteres = (andreInntekterInformasjon: AnnenInntekt[], type: AnnenInntektType) => {
@@ -68,13 +67,13 @@ const leggTilMetadataPåAndreInntekter = (
 };
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
 const Inntektsinformasjon: React.FunctionComponent<Props> = ({
-    søkerInfo,
+    arbeidsforhold,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }) => {
@@ -87,11 +86,11 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
+    const søker = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
 
-    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
@@ -182,7 +181,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 
                             <ArbeidsforholdInformasjon
                                 arbeidsforhold={getAktiveArbeidsforhold(
-                                    søkerInfo.arbeidsforhold,
+                                    arbeidsforhold,
                                     erAdopsjon,
                                     erFarEllerMedmor,
                                     ISOStringToDate(familiehendelsesdato),

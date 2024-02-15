@@ -39,7 +39,6 @@ export * from './Situasjon';
 export * from './SituasjonForelderSvg';
 export * from './Sivilstand';
 export * from './SivilstandType';
-export * from './Søkerinfo';
 export * from './Søkerrolle';
 export * from './Søkersituasjon';
 export * from './Søknadsinfo';
