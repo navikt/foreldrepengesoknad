@@ -23,7 +23,9 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData)
         },
         pågående: formValues.egenNæringPågående!,
         næringsinntekt: hasValue(formValues.egenNæringResultat) ? formValues.egenNæringResultat : undefined,
-        navnPåNæringen: replaceInvisibleCharsWithSpace(formValues.egenNæringNavn),
+        navnPåNæringen: formValues.egenNæringNavn
+            ? replaceInvisibleCharsWithSpace(formValues.egenNæringNavn)
+            : undefined!,
         organisasjonsnummer: hasValue(formValues.egenNæringOrgnr.trim())
             ? formValues.egenNæringOrgnr.trim()
             : undefined,
