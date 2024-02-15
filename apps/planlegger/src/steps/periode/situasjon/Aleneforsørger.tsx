@@ -1,6 +1,7 @@
-import { BodyLong, Box, Heading, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
+import GreenRadio from 'components/radio/GreenRadio';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PeriodeEnum } from 'types/Periode';
@@ -30,7 +31,7 @@ const Aleneforsørger: FunctionComponent = () => {
                         ),
                     ]}
                 >
-                    <Radio
+                    <GreenRadio
                         value={PeriodeEnum.HUNDRE}
                         description={intl.formatMessage(
                             { id: 'periode.hvaGjelder.beskrivelseDeg' },
@@ -38,11 +39,10 @@ const Aleneforsørger: FunctionComponent = () => {
                                 kr1: penger100,
                             },
                         )}
-                        className="margin-bottom-2 panel green"
                     >
                         <FormattedMessage id="periode.100" />
-                    </Radio>
-                    <Radio
+                    </GreenRadio>
+                    <GreenRadio
                         value={PeriodeEnum.ÅTTI}
                         description={intl.formatMessage(
                             { id: 'periode.hvaGjelder.beskrivelseDeg' },
@@ -50,10 +50,9 @@ const Aleneforsørger: FunctionComponent = () => {
                                 kr1: penger80,
                             },
                         )}
-                        className="margin-bottom-2 panel green"
                     >
                         <FormattedMessage id="periode.80" />
-                    </Radio>
+                    </GreenRadio>
                 </RadioGroup>
             </VStack>
             <VStack gap="10">

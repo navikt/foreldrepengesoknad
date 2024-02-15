@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { Heading, Radio, VStack } from '@navikt/ds-react';
+import { Heading, VStack } from '@navikt/ds-react';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import { useForm } from 'react-hook-form';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
@@ -21,6 +21,17 @@ import { isAlene } from 'types/HvemPlanlegger';
 import { OmBarnet } from 'types/Barnet';
 import Foreldrepengeinfo from './Foreldrepengeinfo';
 import { isSameOrAfterToday } from '@navikt/fp-utils';
+import GreenRadio from 'components/radio/GreenRadio';
+
+import styles from './omBarnetSteg.module.css';
+
+const isLessThanThreeMonthsLeft = (termindato?: string) => {
+    const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
+    if (termindato === undefined) {
+        return false;
+    }
+    return isSameOrAfterToday(termindato) && dayjs(termindato).isBefore(DATO_3_MND_FRAM);
+};
 
 const OmBarnetSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -31,20 +42,9 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const erFødt = formMethods.watch('erBarnetFødt');
     const termindato = formMethods.watch('termindato');
 
-    const isLessThanThreeMonthsLeft = () => {
-        const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
-        if (termindato === undefined) {
-            return false;
-        }
-        if (isSameOrAfterToday(termindato) && dayjs(termindato).isBefore(DATO_3_MND_FRAM)) {
-            return true;
-        }
-        return false;
-    };
-
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const lagreOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
-    const lagre = (formValues: any) => {
+    const lagre = (formValues: OmBarnet) => {
         lagreOmBarnet(formValues);
         navigator.goToNextStep(PlanleggerRoutes.BARNEHAGEPLASS);
     };
@@ -78,12 +78,12 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     ),
                                 ]}
                             >
-                                <Radio value={true} className="margin-bottom-2 panel green">
+                                <GreenRadio value={true}>
                                     <FormattedMessage id="barnet.fødsel" />
-                                </Radio>
-                                <Radio value={false} disabled>
+                                </GreenRadio>
+                                <GreenRadio value={false} disabled>
                                     <FormattedMessage id="barnet.adopsjon" />
-                                </Radio>
+                                </GreenRadio>
                             </RadioGroup>
                         </VStack>
                     </VStack>
@@ -100,18 +100,18 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     ),
                                 ]}
                             >
-                                <Radio value={true} className="margin-bottom-2 panel green">
+                                <GreenRadio value={true}>
                                     <FormattedMessage id="ja" />
-                                </Radio>
-                                <Radio value={false} className="margin-bottom-2 panel green">
+                                </GreenRadio>
+                                <GreenRadio value={false}>
                                     <FormattedMessage id="nei" />
-                                </Radio>
+                                </GreenRadio>
                             </RadioGroup>
                         </VStack>
                     )}
                     {erFødt && (
                         <VStack gap="1">
-                            <div className="margin-bottom-2 panel green">
+                            <div className={styles.greenPanel}>
                                 <Heading size="small">
                                     <FormattedMessage id="barnet.fødselsdato" />
                                 </Heading>
@@ -143,7 +143,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     )}
                     {erFødt === false && (
                         <VStack gap="10">
-                            <div className="margin-bottom-2 panel green">
+                            <div className={styles.greenPanel}>
                                 <Heading size="small">
                                     <FormattedMessage id="barnet.termin" />
                                 </Heading>
@@ -171,7 +171,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     ]}
                                 />
                             </div>
-                            {isLessThanThreeMonthsLeft() && (
+                            {isLessThanThreeMonthsLeft(termindato) && (
                                 <VStack gap="10">
                                     <Foreldrepengeinfo />
                                 </VStack>

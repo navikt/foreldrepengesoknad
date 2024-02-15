@@ -10,9 +10,29 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import dayjs from 'dayjs';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { isAlene } from 'types/HvemPlanlegger';
-import { erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import 'dayjs/locale/nb';
 dayjs.locale('nb');
+
+const BARNEHAGELOVEN_TEKST =
+    'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/';
+
+const barnehageStartdato = (barnet: OmBarnet) => {
+    const erFødt = erBarnetFødt(barnet);
+    const erIkkeFødt = erBarnetIkkeFødt(barnet);
+    if (erFødt || erIkkeFødt) {
+        const dato = erIkkeFødt ? barnet.termindato : barnet.fødselsdato;
+
+        if (dayjs(dato).month() < 8)
+            return dayjs(dato).startOf('year').add(1, 'year').add(7, 'months').format('MMMM YYYY');
+
+        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM YYYY');
+
+        if (dayjs(dato).month() === 11)
+            return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM YYYY');
+    }
+    return undefined;
+};
 
 const BarnehageplassSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -22,24 +42,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
 
-    const barnehagelovenTekst =
-        'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/';
-
-    const barnehageStartdato = () => {
-        if (erFødt || erIkkeFødt) {
-            const dato = erIkkeFødt ? barnet.termindato : barnet.fødselsdato;
-
-            if (dayjs(dato).month() < 8)
-                return dayjs(dato).startOf('year').add(1, 'year').add(7, 'months').format('MMMM YYYY');
-
-            if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11)
-                return dayjs(dato).add(1, 'year').format('MMMM YYYY');
-
-            if (dayjs(dato).month() === 11)
-                return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM YYYY');
-        }
-        return undefined;
-    };
+    //TODO Bytt ut <a href> med Link-komponent (Aksel)
 
     return (
         <ContentWrapper>
@@ -63,14 +66,14 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                                 <FormattedMessage
                                                     id="barnehageplass.dato"
                                                     values={{
-                                                        dato: barnehageStartdato(),
+                                                        dato: barnehageStartdato(barnet),
                                                     }}
                                                 />
                                             )}
                                             {erIkkeFødt && (
                                                 <FormattedMessage
                                                     id="barnehageplass.dato"
-                                                    values={{ dato: barnehageStartdato() }}
+                                                    values={{ dato: barnehageStartdato(barnet) }}
                                                 />
                                             )}
                                         </BodyLong>
@@ -82,7 +85,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                                 values={{
                                                     a: (msg: any) => (
                                                         <a
-                                                            href={barnehagelovenTekst}
+                                                            href={BARNEHAGELOVEN_TEKST}
                                                             className="lenke"
                                                             rel="noreferrer"
                                                             target="_blank"
@@ -100,7 +103,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                                 values={{
                                                     a: (msg: any) => (
                                                         <a
-                                                            href={barnehagelovenTekst}
+                                                            href={BARNEHAGELOVEN_TEKST}
                                                             className="lenke"
                                                             rel="noreferrer"
                                                             target="_blank"
@@ -169,14 +172,14 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                                 <FormattedMessage
                                                     id="barnehageplass.dato"
                                                     values={{
-                                                        dato: barnehageStartdato(),
+                                                        dato: barnehageStartdato(barnet),
                                                     }}
                                                 />
                                             )}
                                             {erIkkeFødt && (
                                                 <FormattedMessage
                                                     id="barnehageplass.dato"
-                                                    values={{ dato: barnehageStartdato() }}
+                                                    values={{ dato: barnehageStartdato(barnet) }}
                                                 />
                                             )}
                                         </BodyLong>
@@ -188,7 +191,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                                 values={{
                                                     a: (msg: any) => (
                                                         <a
-                                                            href={barnehagelovenTekst}
+                                                            href={BARNEHAGELOVEN_TEKST}
                                                             className="lenke"
                                                             rel="noreferrer"
                                                             target="_blank"
@@ -206,7 +209,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                                                 values={{
                                                     a: (msg: any) => (
                                                         <a
-                                                            href={barnehagelovenTekst}
+                                                            href={BARNEHAGELOVEN_TEKST}
                                                             className="lenke"
                                                             rel="noreferrer"
                                                             target="_blank"
