@@ -181,43 +181,45 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 <OppsummeringIndex.Punkt
                     tittel={intl.formatMessage({ id: 'oppsummering.periodeMedSvangerskapspenger' })}
                 >
-                    {tilretteleggingMedFrilans && (
-                        <VStack gap="2">
-                            <div>
-                                <BodyShort className={bem.element('label')}>
-                                    Risikofaktorer i jobben din som frilanser:
-                                </BodyShort>
-                                <BodyShort>{tilretteleggingMedFrilans.risikofaktorer}</BodyShort>
-                            </div>
-                            <div>
-                                <BodyShort className={bem.element('label')}>
-                                    Tilretteleggingstiltak i jobben din som frilanser:
-                                </BodyShort>
-                                <BodyShort>{tilretteleggingMedFrilans.tilretteleggingstiltak}</BodyShort>
-                            </div>
-                        </VStack>
-                    )}
-                    {tilretteleggingMedSN && (
-                        <VStack gap="2">
-                            <div>
-                                <BodyShort
-                                    className={bem.element('label')}
-                                >{`Risikofaktorer i ${tilretteleggingMedSN.arbeidsforhold.navn}`}</BodyShort>
-                                <BodyShort>{tilretteleggingMedSN.risikofaktorer}</BodyShort>
-                            </div>
-                            <div>
-                                <BodyShort className={bem.element('label')}>
-                                    {`Tilretteleggingstiltak i ${tilretteleggingMedSN.arbeidsforhold.navn}`}
-                                </BodyShort>
-                                <BodyShort>{tilretteleggingMedSN.tilretteleggingstiltak}</BodyShort>
-                            </div>
-                        </VStack>
-                    )}
-                    <PeriodeOppsummering
-                        perioder={allePerioderMedFomOgTom}
-                        sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
-                        barn={barn}
-                    />
+                    <VStack gap="2">
+                        {tilretteleggingMedFrilans && (
+                            <VStack gap="2">
+                                <div>
+                                    <BodyShort className={bem.element('label')}>
+                                        Risikofaktorer i jobben din som frilanser:
+                                    </BodyShort>
+                                    <BodyShort>{tilretteleggingMedFrilans.risikofaktorer}</BodyShort>
+                                </div>
+                                <div>
+                                    <BodyShort className={bem.element('label')}>
+                                        Tilretteleggingstiltak i jobben din som frilanser:
+                                    </BodyShort>
+                                    <BodyShort>{tilretteleggingMedFrilans.tilretteleggingstiltak}</BodyShort>
+                                </div>
+                            </VStack>
+                        )}
+                        {tilretteleggingMedSN && (
+                            <VStack gap="2">
+                                <div>
+                                    <BodyShort
+                                        className={bem.element('label')}
+                                    >{`Risikofaktorer i ${tilretteleggingMedSN.arbeidsforhold.navn}`}</BodyShort>
+                                    <BodyShort>{tilretteleggingMedSN.risikofaktorer}</BodyShort>
+                                </div>
+                                <div>
+                                    <BodyShort className={bem.element('label')}>
+                                        {`Tilretteleggingstiltak i ${tilretteleggingMedSN.arbeidsforhold.navn}`}
+                                    </BodyShort>
+                                    <BodyShort>{tilretteleggingMedSN.tilretteleggingstiltak}</BodyShort>
+                                </div>
+                            </VStack>
+                        )}
+                        <PeriodeOppsummering
+                            perioder={allePerioderMedFomOgTom}
+                            sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
+                            barn={barn}
+                        />
+                    </VStack>
                 </OppsummeringIndex.Punkt>
             </OppsummeringIndex>
         </ContentWrapper>

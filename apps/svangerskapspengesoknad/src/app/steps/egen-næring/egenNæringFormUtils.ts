@@ -26,9 +26,7 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData)
         navnPåNæringen: formValues.egenNæringNavn
             ? replaceInvisibleCharsWithSpace(formValues.egenNæringNavn)
             : undefined!,
-        organisasjonsnummer: hasValue(formValues.egenNæringOrgnr.trim())
-            ? formValues.egenNæringOrgnr.trim()
-            : undefined,
+        organisasjonsnummer: hasValue(formValues.egenNæringOrgnr) ? formValues.egenNæringOrgnr.trim() : undefined,
         registrertINorge: formValues.egenNæringRegistrertINorge!,
         registrertILand: hasValue(formValues.egenNæringLand) ? formValues.egenNæringLand : undefined,
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: formValues.egenNæringBlittYrkesaktivDe3SisteÅrene,
