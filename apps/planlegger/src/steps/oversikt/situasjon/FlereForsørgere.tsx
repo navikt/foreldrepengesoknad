@@ -24,7 +24,7 @@ const FlereForsørgere: FunctionComponent = () => {
                             <BodyShort>
                                 <FormattedMessage id="oversikt.valgtTittel" />
                             </BodyShort>
-                            <Button icon={<PencilIcon aria-hidden />} className="icon-right" />
+                            <Button icon={<PencilIcon aria-hidden />} iconPosition="right" />
                         </HStack>
                         <BodyShort weight="semibold">
                             {valgtPeriode.periode === PeriodeEnum.HUNDRE && <FormattedMessage id="oversikt.100" />}

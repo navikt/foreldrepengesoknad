@@ -1,16 +1,17 @@
-import { Heading, Radio, VStack } from '@navikt/ds-react';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { Heading, VStack } from '@navikt/ds-react';
 import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { useForm } from 'react-hook-form';
-import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
-import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
+import { ContentWrapper } from '@navikt/fp-ui';
+import { isRequired } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import GreenRadio from 'components/radio/GreenRadio';
+import { FunctionComponent } from 'react';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { isRequired } from '@navikt/fp-validation';
+import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
+import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
 
 const HvemPlanleggerSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
@@ -43,21 +44,21 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                 ),
                             ]}
                         >
-                            <Radio value={SøkersituasjonEnum.MOR_OG_FAR} className="margin-bottom-2 panel green">
+                            <GreenRadio value={SøkersituasjonEnum.MOR_OG_FAR}>
                                 <FormattedMessage id="hvem.morOgFar" />
-                            </Radio>
-                            <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR} className="margin-bottom-2 panel green">
+                            </GreenRadio>
+                            <GreenRadio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
                                 <FormattedMessage id="hvem.morOgMedmor" />
-                            </Radio>
-                            <Radio value={SøkersituasjonEnum.FAR_OG_FAR} className="margin-bottom-2 panel green">
+                            </GreenRadio>
+                            <GreenRadio value={SøkersituasjonEnum.FAR_OG_FAR}>
                                 <FormattedMessage id="hvem.farOgFar" />
-                            </Radio>
-                            <Radio value={SøkersituasjonEnum.MOR} className="margin-bottom-2 panel green">
+                            </GreenRadio>
+                            <GreenRadio value={SøkersituasjonEnum.MOR}>
                                 <FormattedMessage id="hvem.bareMor" />
-                            </Radio>
-                            <Radio value={SøkersituasjonEnum.FAR} className="margin-bottom-2 panel green">
+                            </GreenRadio>
+                            <GreenRadio value={SøkersituasjonEnum.FAR}>
                                 <FormattedMessage id="hvem.bareFar" />
-                            </Radio>
+                            </GreenRadio>
                         </RadioGroup>
                     </VStack>
                     {planleggerType === SøkersituasjonEnum.MOR_OG_FAR && (

@@ -1,59 +1,5 @@
-@app-max-width: 704px;
-
-@mobile-breakpoint: 576px;
-@tablet-breakpoint: 768px;
-
-.contentWrapper() {
-    max-width: 704px;
-    margin: 0 auto;
-    padding: 2rem;
-
-    @media (max-width: @tablet-breakpoint) {
-        max-width: 100%;
-    }
-
-    @media (max-width: @mobile-breakpoint) {
-        padding: 1rem;
-    }
-}
-
-
-
-.center {
-    text-align: center;
-}
-
-.center-media {
-    text-align: left;
-    @media (max-width: @tablet-breakpoint) {
-        text-align: center;
-    }
-}
-
-.planleggerKnapp {
-    --ac-button-secondary-bg: #007C2E;
-    --ac-button-secondary-text: white;
-    --ac-button-secondary-hover-bg: #CCF1D6;
-    --ac-button-secondary-hover-text:#007C2E;
-    --ac-button-secondary-border: none;
-    border-radius: 6.25rem !important;
-}
-
 .button-wrapper {
     align-items: center;
-}
-  
-.icon {
-    font-size: 3rem;
-    flex-shrink: 0;
-    display: grid;
-    place-content: center;
-    border-radius: 1.25rem;
-    background: var(--global-limegreen-300, #D9E366);
-}
-
-.icon-right {
-    place-content: flex-end;
 }
 
 .border {
@@ -75,7 +21,7 @@
     margin-bottom: 1rem;
 }
 .green {
-    background-color: #ECF399;
+    background-color: #ecf399;
 }
 
 .grey {
