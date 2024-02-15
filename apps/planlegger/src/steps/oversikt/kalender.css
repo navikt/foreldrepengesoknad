@@ -1,8 +1,25 @@
 .kalender__brukt {
-  background-color: aqua;
+  background-color: var(--Surface-Info, #66CBEC);
+  padding:4px;
+  margin-bottom: 4px;
+}
+
+.kalender__brukt:first-child {
+    border-radius: 1rem 0 0 1rem;
+}
+
+.kalender__brukt:last-child {
+   border-radius: 0 1rem 1rem 0;
+}
+
+.kalender__termin {
+    background-color: var(--Surface-Info, #C30000);
+    padding:4px;
+    margin-bottom: 4px;
+    border-radius: 100%;
 }
 
 .kalenderboks {
     width: 160px;
-    }
+}
     

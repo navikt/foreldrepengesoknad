@@ -36,31 +36,32 @@ const Kalender = () => {
     const treUkerFørTerminDato = dayjs(termindato).subtract(3, 'weeks').startOf('day').format('DD.MM.YYYY');
     const sluttdato49 = dayjs(treUkerFørTerminDato).add(46, 'weeks').format('DD.MM.YYYY');
     const year = dayjs(termindato).year();
-    console.log('termindato: ', termindato);
-    console.log('tre uker før: ', treUkerFørTerminDato);
-    console.log('sluttdato: ', sluttdato49);
 
     const alleMånederOgDager = [];
     for (let i = 0; i < 20; i++) {
         alleMånederOgDager.push(hentMånedOgDager(i, termindato));
     }
-    const brukt = (month: number, day: number) => {
-        const dato = dayjs(new Date(2022, month, day));
-        console.log('dato: ', dato);
 
-        if (dato.isBetween(treUkerFørTerminDato, sluttdato49, 'day', '[]')) {
+    const brukt = (month: number, day: number) => {
+        const dato = dayjs(new Date(year, month, day));
+        if (dato.isBetween(treUkerFørTerminDato, termindato, 'day', '[)')) {
             return bem.element('brukt');
         }
-
+        if (dato.isSame(termindato, 'day')) {
+            return bem.element('termin');
+        }
+        if (dato.isBetween(treUkerFørTerminDato, sluttdato49, 'day', '(]')) {
+            return bem.element('brukt');
+        }
         return undefined;
     };
 
     function getMånednummer(månednavn: string): number {
         switch (månednavn) {
             case 'Januar':
-                return 1;
+                return 0;
             case 'Februar':
-                return 2;
+                return 1;
             case 'Mars':
                 return 3;
             case 'April':
@@ -74,13 +75,13 @@ const Kalender = () => {
             case 'August':
                 return 8;
             case 'September':
-                return 9;
+                return 8;
             case 'Oktober':
-                return 10;
+                return 9;
             case 'November':
-                return 11;
+                return 10;
             case 'Desember':
-                return 12;
+                return 11;
             default:
                 return 0;
         }
@@ -94,7 +95,7 @@ const Kalender = () => {
                     {alleMånederOgDager.map((månedOgDager) => (
                         <Box className="kalenderboks">
                             <Heading size="small">{månedOgDager.månednavn}</Heading>
-                            <HStack gap="2">
+                            <HStack>
                                 {[...Array(månedOgDager.dager).keys()].map((dag) => (
                                     <div className={brukt(getMånednummer(månedOgDager.månednavn), dag + 1)}>
                                         {dag + 1}

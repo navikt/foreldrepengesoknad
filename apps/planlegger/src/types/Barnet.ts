@@ -9,6 +9,7 @@ export type BarnetErIkkeFødt = {
     erBarnetFødt: boolean;
     termindato: string;
 };
+
 export type BarnetErAdoptert = {
     erFødsel: boolean;
     adopsjonsdato: string;
