@@ -11,6 +11,8 @@ import dayjs from 'dayjs';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { isAlene } from 'types/HvemPlanlegger';
 import { erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import 'dayjs/locale/nb';
+dayjs.locale('nb');
 
 const BarnehageplassSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
