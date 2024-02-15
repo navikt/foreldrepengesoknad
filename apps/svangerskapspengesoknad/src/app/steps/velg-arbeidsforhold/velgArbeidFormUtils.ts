@@ -1,13 +1,12 @@
-import { VelgArbeidFormData } from './velgArbeidFormConfig';
-import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
-import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { IntlShape } from 'react-intl';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
 import { Frilans, frilansId } from 'app/types/Frilans';
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { IntlShape } from 'react-intl';
 
 export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
     if (type === Arbeidsforholdstype.FRILANSER) {
@@ -17,12 +16,6 @@ export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: Int
         return intl.formatMessage({ id: 'egenNæring' });
     }
     return navn;
-};
-
-export const getInitialVelgArbeidFormValues = (tilretteleggingsBehov: Tilrettelegging[] = []): VelgArbeidFormData => {
-    return {
-        arbeidMedTilrettelegging: tilretteleggingsBehov.map((t) => t.id),
-    };
 };
 
 export const getNæringTilretteleggingOption = (
@@ -155,21 +148,4 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
             ? [getFrilansTilretteleggingOption(tilrettelegginger, frilans.oppstart)]
             : [];
     return [...unikeArbeidsforhold, ...næringValg, ...frilansValg];
-};
-
-export const validateVelgArbeidIsAnswered = (value: string, intl: IntlShape) => {
-    if (value.length === 0) {
-        return intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' });
-    }
-    return undefined;
-};
-
-export const cleanupOmValgArbeidFormData = (
-    values: VelgArbeidFormData,
-    options: Tilrettelegging[],
-): VelgArbeidFormData => {
-    const filteredValues = values.arbeidMedTilrettelegging.filter((val) =>
-        options.find((tilrettelegging) => tilrettelegging.id === val),
-    );
-    return { arbeidMedTilrettelegging: filteredValues };
 };
