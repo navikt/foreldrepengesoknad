@@ -27,11 +27,13 @@ export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skj
         case MorsAktivitet.Introduksjonsprogrammet:
             return Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET;
         case MorsAktivitet.ArbeidOgUtdanning:
+            return Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR;
         case MorsAktivitet.Arbeid:
+            return Skjemanummer.DOK_ARBEID_MOR;
         case MorsAktivitet.TrengerHjelp:
-            return Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
+            return Skjemanummer.DOK_SYKDOM_MOR;
         case MorsAktivitet.Utdanning:
-            return Skjemanummer.BEKREFTELSE_FRA_STUDIESTED;
+            return Skjemanummer.DOK_UTDANNING_MOR;
         default:
             return Skjemanummer.ANNET;
     }
