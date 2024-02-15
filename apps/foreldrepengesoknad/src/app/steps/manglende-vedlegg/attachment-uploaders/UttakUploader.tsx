@@ -61,7 +61,7 @@ const UttakUploader: FunctionComponent<Props> = ({
 
             updateAttachments([sendSenereVedlegg]);
         }
-    }, [updateAttachments, perioder, formAttachments]);
+    }, [updateAttachments, perioder, formAttachments, attachmentType, skjemanummer]);
 
     return (
         <VStack gap="4">
