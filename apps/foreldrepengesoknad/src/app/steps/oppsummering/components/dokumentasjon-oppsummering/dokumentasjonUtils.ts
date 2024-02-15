@@ -9,6 +9,13 @@ import {
     isMilitærVedlegg,
     isOmsorgsovertakelseVedlegg,
     isTerminbekreftelseVedlegg,
+    isBarnInnleggelseVedlegg,
+    isFarInnleggelseVedlegg,
+    isMorForSykVedlegg,
+    isFarForSykVedlegg,
+    isMorJobberVedlegg,
+    isMorStudererVedlegg,
+    isMorJobberOgStudererVedlegg,
 } from 'app/steps/manglende-vedlegg/util';
 import { IntlShape } from 'react-intl';
 
@@ -120,6 +127,83 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morInnlagt', {
+            perioder: tidsperioder.length,
+            tidsperiode: getTidsperiodeString(tidsperioder),
+        });
+    }
+
+    if (isBarnInnleggelseVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på at barnet er innlagt må sendes inn senere';
+        }
+
+        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.barnInnlagt', {
+            perioder: tidsperioder.length,
+            tidsperiode: getTidsperiodeString(tidsperioder),
+        });
+    }
+
+    if (isFarInnleggelseVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på at far er innlagt må sendes inn senere';
+        }
+
+        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farInnlagt', {
+            perioder: tidsperioder.length,
+            tidsperiode: getTidsperiodeString(tidsperioder),
+        });
+    }
+
+    if (isMorForSykVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på at mor er for syk må sendes inn senere';
+        }
+
+        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morForSyk', {
+            perioder: tidsperioder.length,
+            tidsperiode: getTidsperiodeString(tidsperioder),
+        });
+    }
+
+    if (isFarForSykVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på at far er for syk må sendes inn senere';
+        }
+
+        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farForSyk', {
+            perioder: tidsperioder.length,
+            tidsperiode: getTidsperiodeString(tidsperioder),
+        });
+    }
+
+    if (isMorJobberVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på at mor jobber må sendes inn senere';
+        }
+
+        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobber', {
+            perioder: tidsperioder.length,
+            tidsperiode: getTidsperiodeString(tidsperioder),
+        });
+    }
+
+    if (isMorStudererVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på at mor studerer må sendes inn senere';
+        }
+
+        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morStuderer', {
+            perioder: tidsperioder.length,
+            tidsperiode: getTidsperiodeString(tidsperioder),
+        });
+    }
+
+    if (isMorJobberOgStudererVedlegg(singleAttachment)) {
+        if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
+            return 'Dokumentasjon på at mor jobber og er i studier må sendes inn senere';
+        }
+
+        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobberOgStuderer', {
             perioder: tidsperioder.length,
             tidsperiode: getTidsperiodeString(tidsperioder),
         });

@@ -5,6 +5,7 @@ import {
     isForeldrepengerMedAktivitetskravMorForSyk,
     isForeldrepengerMedAktivitetskravMorInnlagt,
     isMorIntroprogram,
+    isMorJobber,
     isMorJobberOgStuderer,
     isMorStuderer,
     isOverføringFarForSyk,
@@ -64,7 +65,7 @@ export const isPeriodeMedMorStuderer = (periode: Periode) => {
 };
 
 export const isPeriodeMedMorJobber = (periode: Periode) => {
-    return isMorStuderer(periode);
+    return isMorJobber(periode);
 };
 
 export const isPeriodeMedMorJobberOgStuderer = (periode: Periode) => {
