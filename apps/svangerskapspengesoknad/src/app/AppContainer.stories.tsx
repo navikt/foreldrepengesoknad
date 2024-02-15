@@ -2,13 +2,73 @@ import '@navikt/ds-css';
 import MockAdapter from 'axios-mock-adapter';
 import AppContainer from 'app/AppContainer';
 import { StoryFn } from '@storybook/react';
-import _søkerinfo from 'storybook/storydata/sokerinfo/sokerinfo.json';
 import { svpApi } from './routes/SvangerskapspengesøknadRoutes';
-import { Søkerinfo } from './types/Søkerinfo';
 import { SvpDataMapAndMetaData } from './context/useMellomlagreSøknad';
 import { attachmentApi } from '@navikt/fp-api';
+import { Søker, Søkerinfo } from '@navikt/fp-types';
 
-const søkerinfo = _søkerinfo as any;
+const søkerinfo = {
+    søker: {
+        fnr: '30088930610',
+        fornavn: 'ERLINGA-MASK',
+        etternavn: 'ORAVAKANGAS',
+        kjønn: 'K',
+        fødselsdato: '1989-08-30',
+        land: 'NO',
+        barn: [],
+        bankkonto: {
+            kontonummer: '10824223373',
+            banknavn: 'Din Bank',
+        },
+    } as Søker,
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '975326209',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'SYKEHUSET I VESTFOLD',
+            stillingsprosent: 32.63,
+            fom: '2014-05-22',
+            tom: '2019-05-31',
+        },
+        {
+            arbeidsgiverId: '975326209',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'SYKEHUSET I VESTFOLD',
+            stillingsprosent: 0,
+            fom: '2018-04-09',
+            tom: '2018-09-09',
+        },
+        {
+            arbeidsgiverId: '975326209',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'SYKEHUSET I VESTFOLD',
+            stillingsprosent: 80,
+            fom: '2018-06-25',
+            tom: '2018-08-05',
+        },
+        {
+            arbeidsgiverId: '975326209',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'SYKEHUSET I VESTFOLD',
+            stillingsprosent: 85.09,
+            fom: '2019-06-01',
+        },
+        {
+            arbeidsgiverId: '990322244',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'OMSORGSPARTNER VESTFOLD',
+            stillingsprosent: 100,
+            fom: '2017-04-05',
+        },
+        {
+            arbeidsgiverId: '995090910',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'RE KOMMUNE',
+            stillingsprosent: 0,
+            fom: '2018-06-01',
+        },
+    ],
+};
 
 export default {
     title: 'AppContainer',

@@ -12,4 +12,5 @@ export {
     isBeforeOrSame,
     isAfterOrSame,
     isPeriodNotOverlappingOthers,
+    isLessThanOneAndHalfYearsAgo,
 } from './src/form/dateFormValidation';

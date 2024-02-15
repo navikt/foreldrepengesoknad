@@ -15,7 +15,7 @@ describe('<Oppsummering>', () => {
 
         await userEvent.click(screen.getByText('Send søknaden'));
 
-        expect(screen.getAllByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')[0]).toBeInTheDocument();
+        expect(screen.getByText('Du må bekrefte at du har oppgitt riktige opplysninger')).toBeInTheDocument();
     });
     it('skal ikke vise feilmelding, vilkår er godkjent', async () => {
         const sendSøknad = vi.fn();
@@ -37,7 +37,7 @@ describe('<Oppsummering>', () => {
 
         await userEvent.click(screen.getByText('Send søknaden'));
 
-        expect(screen.queryByText('Du må bekrefte at du har gjort deg kjent med vilkårene.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 
         const abortController = new AbortController();
 

@@ -6,6 +6,6 @@ export interface Barn {
 
 export interface BarnDTO {
     erBarnetFødt: boolean;
-    termindato: Date;
-    fødselsdatoer?: Date[];
+    termindato: string;
+    fødselsdatoer?: string[];
 }

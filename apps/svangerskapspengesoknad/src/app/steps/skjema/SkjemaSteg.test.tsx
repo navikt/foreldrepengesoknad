@@ -44,11 +44,14 @@ describe('<SkjemaSteg>', () => {
                     arbeidsforhold: {
                         arbeidsgiverId: '990322244',
                         navn: 'Omsorgspartner Vestfold AS',
-                        opprinneligstillingsprosent: 100,
                         type: 'virksomhet',
+                        startdato: '2023-01-01',
+                        stillinger: [],
                     },
-                    id: '263929546-6215-9868-5127-161910165730101',
+                    id: '990322244',
                     varierendePerioder: [],
+                    behovForTilretteleggingFom: undefined,
+                    type: undefined,
                     vedlegg: [
                         expect.objectContaining({
                             filename: 'hello.png',
@@ -67,7 +70,7 @@ describe('<SkjemaSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '263929546-6215-9868-5127-161910165730101',
+            data: '990322244',
             key: ContextDataType.VALGT_TILRETTELEGGING_ID,
             type: 'update',
         });

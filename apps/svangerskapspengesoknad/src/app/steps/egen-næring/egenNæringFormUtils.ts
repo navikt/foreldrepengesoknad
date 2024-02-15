@@ -23,10 +23,10 @@ export const mapEgenNæringFormValuesToState = (formValues: EgenNæringFormData)
         },
         pågående: formValues.egenNæringPågående!,
         næringsinntekt: hasValue(formValues.egenNæringResultat) ? formValues.egenNæringResultat : undefined,
-        navnPåNæringen: replaceInvisibleCharsWithSpace(formValues.egenNæringNavn),
-        organisasjonsnummer: hasValue(formValues.egenNæringOrgnr.trim())
-            ? formValues.egenNæringOrgnr.trim()
-            : undefined,
+        navnPåNæringen: formValues.egenNæringNavn
+            ? replaceInvisibleCharsWithSpace(formValues.egenNæringNavn)
+            : undefined!,
+        organisasjonsnummer: hasValue(formValues.egenNæringOrgnr) ? formValues.egenNæringOrgnr.trim() : undefined,
         registrertINorge: formValues.egenNæringRegistrertINorge!,
         registrertILand: hasValue(formValues.egenNæringLand) ? formValues.egenNæringLand : undefined,
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: formValues.egenNæringBlittYrkesaktivDe3SisteÅrene,
