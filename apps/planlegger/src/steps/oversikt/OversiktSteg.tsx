@@ -14,7 +14,7 @@ import Hjerte from 'components/ikoner/Hjerte';
 import RosaSirkel from 'components/ikoner/RosaSirkel';
 import { PeriodeEnum } from 'types/Periode';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
-import Kalender from './Kalender';
+import Kalender from './kalender/Kalender';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 dayjs.locale('nb');

@@ -49,6 +49,8 @@ PeriodeFlereForsørgereHundreProsent.args = {
         periode: PeriodeEnum.HUNDRE,
     },
     omBarnet: {
+        erFødsel: false,
+        erBarnetFødt: false,
         termindato: '2022-10-24',
     },
 };
