@@ -1,10 +1,16 @@
 .foreldrepenger {
-    background-color: #ecf399;
+    background-color: #66cbec;
     padding-left: 2px;
     padding-right: 2px;
 }
 
 .none {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.termindato {
+    background-color: #c30000;
     padding-left: 2px;
     padding-right: 2px;
 }

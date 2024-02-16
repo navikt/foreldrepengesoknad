@@ -25,8 +25,19 @@ const findMonthsOfYear = (year: number, treUkerFørTerminDato: Dayjs, sluttdato4
     throw new Error('År er ikke gyldig');
 };
 
-const finnPeriodeType = (year: number, month: number, day: number, treUkerFørTerminDato: Dayjs, sluttdato49: Dayjs) => {
+const finnPeriodeType = (
+    year: number,
+    month: number,
+    day: number,
+    treUkerFørTerminDato: Dayjs,
+    sluttdato49: Dayjs,
+    termindato: Dayjs,
+) => {
     const date = dayjs().year(year).month(month).date(day);
+    if (date.isSame(termindato, 'date')) {
+        return PeriodType.TERMINDATO;
+    }
+
     if (date.isBetween(treUkerFørTerminDato, sluttdato49)) {
         return PeriodType.FORELDREPENGER;
     }
@@ -62,6 +73,7 @@ const Kalender = () => {
                                             day,
                                             treUkerFørTerminDato,
                                             sluttdato49,
+                                            dayjs(termindato),
                                         )}
                                     />
                                 ))}
