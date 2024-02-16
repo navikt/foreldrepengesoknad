@@ -52,13 +52,6 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
         append(DEFAULT_PERIODE);
     }, [append]);
 
-    const fjernOpphold = useCallback(
-        (index: number) => {
-            remove(index);
-        },
-        [remove],
-    );
-
     return (
         <UtenlandsoppholdIntlProvider>
             <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
@@ -68,7 +61,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                         <VStack gap="10" align="start">
                             {fields.map((field, index) => (
                                 <Fragment key={field.id}>
-                                    <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={fjernOpphold} />
+                                    <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={remove} />
                                     {fields.length > 1 && <hr style={{ width: '100%' }} color="#99C4DD" />}
                                 </Fragment>
                             ))}

@@ -4,7 +4,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from 'app/context/SvpDataContext';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
-import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
+import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO, ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
 import { AttachmentDTO } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
@@ -198,14 +198,15 @@ const mapFrilansForInnsending = (frilans: Frilans | undefined): FrilansDTO | und
     return undefined;
 };
 
-const mapArbeidIUtlandetForInnsending = (arbeid: ArbeidIUtlandet): ArbeidIUtlandetDTO => {
+const mapArbeidIUtlandetForInnsending = (arbeid: ArbeidIUtlandetInput): ArbeidIUtlandetDTO => {
     return {
         type: AnnenInntektType.JOBB_I_UTLANDET,
         arbeidsgiverNavn: arbeid.arbeidsgiverNavn,
         land: arbeid.land,
         tidsperiode: {
-            fom: ISOStringToDate(arbeid.tidsperiode.fom)!,
-            tom: ISOStringToDate(arbeid.tidsperiode.tom),
+            fom: arbeid.fom,
+            tom: arbeid.tom,
+            pågående: arbeid.pågående,
         },
     };
 };
@@ -215,11 +216,11 @@ const mapSøkerForInnsending = (
     inntektsinformasjon: Inntektsinformasjon,
     egenNæring?: EgenNæring,
     frilans?: Frilans,
-    arbeidIUtlandet?: ArbeidIUtlandet[],
+    arbeidIUtlandet?: ArbeidIUtlandet,
 ): SøkerDTO => {
     const mappedNæring = mapEgenNæringForInnsending(egenNæring);
     const mappedArbeidIUtlandet = arbeidIUtlandet
-        ? arbeidIUtlandet.map((inntekt) => mapArbeidIUtlandetForInnsending(inntekt))
+        ? arbeidIUtlandet.arbeidIUtlandet.map((inntekt) => mapArbeidIUtlandetForInnsending(inntekt))
         : undefined;
     const mappedSøker: SøkerDTO = {
         rolle: Søkerrolle.MOR,

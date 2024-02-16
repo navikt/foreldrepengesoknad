@@ -63,18 +63,17 @@ describe('<ArbeidIUtlandet>', () => {
         expect(screen.queryByText('Du må svare på om du fortsatt jobber i utlandet.')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: [
-                {
-                    arbeidsgiverNavn: 'Arbeidsgiver',
-                    land: 'UA',
-                    pågående: false,
-                    tidsperiode: {
+            data: {
+                arbeidIUtlandet: [
+                    {
+                        arbeidsgiverNavn: 'Arbeidsgiver',
+                        land: 'UA',
+                        pågående: false,
                         fom: '2022-12-30',
                         tom: '2023-12-30',
                     },
-                    type: 'JOBB_I_UTLANDET',
-                },
-            ],
+                ],
+            },
             key: ContextDataType.ARBEID_I_UTLANDET,
             type: 'update',
         });

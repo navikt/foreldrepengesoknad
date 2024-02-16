@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { TextField as DsTextField } from '@navikt/ds-react';
 
@@ -15,6 +15,7 @@ export interface Props {
     disabled?: boolean;
     type?: 'email' | 'password' | 'tel' | 'text' | 'url';
     className?: string;
+    style?: CSSProperties;
 }
 
 const TextField: FunctionComponent<Props> = ({
@@ -28,6 +29,7 @@ const TextField: FunctionComponent<Props> = ({
     maxLength,
     disabled,
     className,
+    style,
 }) => {
     const {
         formState: { errors },
@@ -64,6 +66,7 @@ const TextField: FunctionComponent<Props> = ({
             maxLength={maxLength}
             disabled={disabled}
             className={className}
+            style={style}
             onChange={onChangeFn}
         />
     );

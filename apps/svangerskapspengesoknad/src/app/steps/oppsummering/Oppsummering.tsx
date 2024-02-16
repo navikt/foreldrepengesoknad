@@ -165,7 +165,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                         )}
                         {inntektsinformasjon.harHattAnnenInntekt &&
                             arbeidIUtlandet &&
-                            arbeidIUtlandet.map((arbeid) => (
+                            arbeidIUtlandet.arbeidIUtlandet.map((arbeid) => (
                                 <ArbeidIUtlandetVisning key={guid()} arbeidIUtlandet={arbeid}></ArbeidIUtlandetVisning>
                             ))}
                         {(!inntektsinformasjon.harJobbetSomFrilans ||

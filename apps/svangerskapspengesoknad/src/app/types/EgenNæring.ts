@@ -1,5 +1,5 @@
 import { Tidsperiode } from '@navikt/fp-common';
-import { TidsperiodeDTOMedValgfriSluttdato } from './TidsperiodeDTO';
+import { TidsperiodeDTOMedValgfriSluttdatoDate } from './TidsperiodeDTO';
 
 export const egenNæringId = 'næring';
 
@@ -46,7 +46,7 @@ export interface EgenNæringDTO
         | 'næringstype'
         | 'navnPåNæringen'
     > {
-    tidsperiode: Partial<TidsperiodeDTOMedValgfriSluttdato>;
+    tidsperiode: Partial<TidsperiodeDTOMedValgfriSluttdatoDate>;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonDTO;
     næringsinntekt?: number;
     næringstyper: Næringstype[];

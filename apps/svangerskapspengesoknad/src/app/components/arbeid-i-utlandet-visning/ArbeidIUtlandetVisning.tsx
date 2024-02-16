@@ -1,20 +1,20 @@
+import { PencilWritingIcon, TrashIcon } from '@navikt/aksel-icons';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { Block, bemUtils, formatDate } from '@navikt/fp-common';
+import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
+import { ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
 import './arbeid-i-utlandet-visning.css';
-import { BodyShort, Button } from '@navikt/ds-react';
-import { PencilWritingIcon, TrashIcon } from '@navikt/aksel-icons';
-import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 
 interface Props {
-    arbeidIUtlandet: ArbeidIUtlandet;
-    setSelectedAnnenInntekt?: React.Dispatch<React.SetStateAction<ArbeidIUtlandet | undefined>>;
-    deleteAnnenInntekt?: (arbeidIUtlandet: ArbeidIUtlandet) => void;
+    arbeidIUtlandet: ArbeidIUtlandetInput;
+    setSelectedAnnenInntekt?: React.Dispatch<React.SetStateAction<ArbeidIUtlandetInput | undefined>>;
+    deleteAnnenInntekt?: (arbeidIUtlandet: ArbeidIUtlandetInput) => void;
 }
 
-const getTilTekst = (arbeid: ArbeidIUtlandet): string => {
-    return !arbeid.pågående && arbeid.tidsperiode.tom ? formatDate(arbeid.tidsperiode.tom) : 'Pågående';
+const getTilTekst = (arbeid: ArbeidIUtlandetInput): string => {
+    return !arbeid.pågående && arbeid.tom ? formatDate(arbeid.tom) : 'Pågående';
 };
 
 const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
@@ -36,7 +36,7 @@ const ArbeidIUtlandetVisning: FunctionComponent<Props> = ({
                     </BodyShort>
 
                     <BodyShort className={bem.element('dato')}>
-                        {formatDate(arbeidIUtlandet.tidsperiode.fom)} - {getTilTekst(arbeidIUtlandet)}
+                        {formatDate(arbeidIUtlandet.fom)} - {getTilTekst(arbeidIUtlandet)}
                     </BodyShort>
                     {setSelectedAnnenInntekt && (
                         <Button

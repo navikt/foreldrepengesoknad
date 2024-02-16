@@ -30,7 +30,7 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdTidligere;
     [ContextDataType.INNTEKTSINFORMASJON]?: Inntektsinformasjon;
     [ContextDataType.FRILANS]?: Frilans;
-    [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet[];
+    [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
     [ContextDataType.TILRETTELEGGINGER]?: Tilrettelegging[];
     [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;

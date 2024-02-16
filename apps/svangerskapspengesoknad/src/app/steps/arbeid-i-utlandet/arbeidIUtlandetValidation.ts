@@ -1,11 +1,11 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { intlUtils, isDateABeforeDateB, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
 import { isDateAAfterDateB } from '@navikt/fp-utils';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { femMånederSiden } from 'app/utils/dateUtils';
 import { hasValue } from 'app/utils/validationUtils';
-import { IntlShape } from 'react-intl';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
 
 export const validateArbeidIUtlandetFom = (intl: IntlShape, tom: string | undefined) => (fom: string) => {
     if (!hasValue(fom)) {
@@ -46,20 +46,6 @@ export const validateArbeidIUtlandetTom = (intl: IntlShape, fom: string | undefi
         return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
     }
 
-    return undefined;
-};
-
-export const validateArbeidIUtlandetPågående = (intl: IntlShape) => (pågående: YesOrNo) => {
-    if (!hasValue(pågående)) {
-        return intlUtils(intl, 'valideringsfeil.arbeidIUtlandetPågående.påkrevd');
-    }
-    return undefined;
-};
-
-export const validateArbeidIUtlandetLand = (intl: IntlShape) => (land: string) => {
-    if (!hasValue(land)) {
-        return intlUtils(intl, 'valideringsfeil.arbeidIUtlandetLand.påkrevd');
-    }
     return undefined;
 };
 
