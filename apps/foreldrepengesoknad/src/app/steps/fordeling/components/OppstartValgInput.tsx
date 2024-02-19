@@ -73,7 +73,7 @@ const getRadioOptionAdopsjon = (
     const radioOptions = [];
     radioOptions.push(getRadioOptionAdopsjonOmsorgsovertakelse(familiehendelsesdato));
     if (adoptertFraUtlandetDato) {
-        radioOptions.push(getRadioOptionAdopsjonAnkomstNorge(familiehendelsesdato));
+        radioOptions.push(getRadioOptionAdopsjonAnkomstNorge(adoptertFraUtlandetDato));
     }
     if (førsteDagEtterAnnenForelder) {
         radioOptions.push(getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder));
@@ -95,12 +95,10 @@ const getRadioOptionFarPåFødselWLB = (erBarnetFødt: boolean, intl: IntlShape)
 };
 
 const getRadioOptionFarRundtFødselWLB = (erBarnetFødt: boolean, intl: IntlShape): React.ReactElement => {
+    const tekstId = erBarnetFødt ? 'fordeling.oppstartValg.rundtFødsel' : 'fordeling.oppstartValg.rundtTermin';
     const description = erBarnetFødt
-        ? intlUtils(intl, 'fordeling.oppstartValg.rundtFødsel')
-        : intlUtils(intl, 'fordeling.oppstartValg.rundtTermin');
-    const tekstId = erBarnetFødt
-        ? 'fordeling.oppstartValg.rundtFødsel.description'
-        : 'fordeling.oppstartValg.rundtTermin.description';
+        ? intlUtils(intl, 'fordeling.oppstartValg.rundtFødsel.description')
+        : intlUtils(intl, 'fordeling.oppstartValg.rundtTermin.description');
     return (
         <Radio value={OppstartValg.RUNDT_FØDSEL} description={description}>
             <FormattedMessage id={tekstId} />
@@ -109,7 +107,7 @@ const getRadioOptionFarRundtFødselWLB = (erBarnetFødt: boolean, intl: IntlShap
 };
 
 const getRadioOptionFarSenereWLB = (): React.ReactElement => (
-    <Radio value={OppstartValg.RUNDT_FØDSEL}>
+    <Radio value={OppstartValg.ANNEN_DATO}>
         <FormattedMessage id="fordeling.oppstartValg.senereFar" />
     </Radio>
 );
