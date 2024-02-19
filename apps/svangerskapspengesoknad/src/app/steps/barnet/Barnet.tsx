@@ -1,6 +1,6 @@
 import { BodyShort, Button, Radio, ReadMore, VStack } from '@navikt/ds-react';
 import { Step, StepButtonWrapper } from '@navikt/fp-common';
-import { Datepicker, Form, RadioGroup } from '@navikt/fp-form-hooks';
+import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
 import { isBeforeTodayOrToday, isLessThanOneAndHalfYearsAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import SøknadRoutes from 'app/routes/routes';
@@ -95,6 +95,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
+                    <ErrorSummaryHookForm />
                     <div>
                         <RadioGroup
                             name="erBarnetFødt"

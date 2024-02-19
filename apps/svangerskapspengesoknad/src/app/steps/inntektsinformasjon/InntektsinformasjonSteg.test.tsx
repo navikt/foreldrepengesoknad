@@ -1,13 +1,13 @@
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
-import * as stories from './Inntektsinformasjon.stories';
+import * as stories from './InntektsinformasjonSteg.stories';
 import { render, screen } from '@testing-library/react';
 import { ContextDataType } from 'app/context/SvpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 
 const { Default } = composeStories(stories);
 
-describe('<Inntektsinformasjon>', () => {
+describe('<InntektsinformasjonSteg>', () => {
     it('skal vise feilmelding hvis spørsmål ikke er besvart', async () => {
         render(<Default />);
 
@@ -58,7 +58,7 @@ describe('<Inntektsinformasjon>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                harHattAnnenInntekt: true,
+                harHattArbeidIUtlandet: true,
                 harJobbetSomFrilans: false,
                 harJobbetSomSelvstendigNæringsdrivende: false,
             },

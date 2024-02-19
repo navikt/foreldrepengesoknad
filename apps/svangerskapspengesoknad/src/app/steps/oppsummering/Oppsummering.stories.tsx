@@ -129,7 +129,7 @@ const Template: StoryFn<Props> = ({
                     },
                 ],
                 [ContextDataType.INNTEKTSINFORMASJON]: {
-                    harHattAnnenInntekt: false,
+                    harHattArbeidIUtlandet: false,
                     harJobbetSomFrilans: false,
                     harJobbetSomSelvstendigNæringsdrivende: false,
                 },

@@ -1,7 +1,6 @@
-import { FormattedMessage } from 'react-intl';
-import { Block } from '@navikt/fp-common';
-import { BodyLong, BodyShort, ExpansionCard } from '@navikt/ds-react';
+import { BodyLong, BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
+import { FormattedMessage } from 'react-intl';
 
 const InfoTilFiskere = () => {
     return (
@@ -12,20 +11,18 @@ const InfoTilFiskere = () => {
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <Block padBottom="l">
+                <VStack gap="4">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />
                     </BodyLong>
-                </Block>
-                <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
-                    <FormattedMessage id="inntektsinformasjon.infoTilFiskere.hyre" />
-                </BodyShort>
-                <Block padBottom="l">
-                    <BodyLong>
-                        <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del2" />
-                    </BodyLong>
-                </Block>
-                <Block padBottom="l">
+                    <div>
+                        <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
+                            <FormattedMessage id="inntektsinformasjon.infoTilFiskere.hyre" />
+                        </BodyShort>
+                        <BodyLong>
+                            <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del2" />
+                        </BodyLong>
+                    </div>
                     <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del3"
@@ -43,16 +40,14 @@ const InfoTilFiskere = () => {
                             }}
                         />
                     </BodyLong>
-                </Block>
-                <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
-                    <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lott" />
-                </BodyShort>
-                <Block padBottom="l">
-                    <BodyLong>
-                        <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del4" />
-                    </BodyLong>
-                </Block>
-                <Block padBottom="l">
+                    <div>
+                        <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
+                            <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lott" />
+                        </BodyShort>
+                        <BodyLong>
+                            <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del4" />
+                        </BodyLong>
+                    </div>
                     <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del5"
@@ -65,34 +60,28 @@ const InfoTilFiskere = () => {
                             }}
                         />
                     </BodyLong>
-                </Block>
-                <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
-                    <FormattedMessage id="inntektsinformasjon.infoTilFiskere.egenBåt" />
-                </BodyShort>
-                <Block padBottom="l">
-                    <BodyLong>
-                        <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del6" />
-                    </BodyLong>
-                </Block>
-                <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
-                    <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lottOgHyre" />
-                </BodyShort>
-                <Block padBottom="l">
-                    <BodyLong>
-                        <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del7" />
-                    </BodyLong>
-                </Block>
-                <Block padBottom="l">
+                    <div>
+                        <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
+                            <FormattedMessage id="inntektsinformasjon.infoTilFiskere.egenBåt" />
+                        </BodyShort>
+                        <BodyLong>
+                            <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del6" />
+                        </BodyLong>
+                    </div>
+                    <div>
+                        <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
+                            <FormattedMessage id="inntektsinformasjon.infoTilFiskere.lottOgHyre" />
+                        </BodyShort>
+                        <BodyLong>
+                            <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del7" />
+                        </BodyLong>
+                    </div>
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del8" />
                     </BodyLong>
-                </Block>
-                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del9" />
                     </BodyLong>
-                </Block>
-                <Block margin="none">
                     <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del10"
@@ -105,7 +94,7 @@ const InfoTilFiskere = () => {
                             }}
                         />
                     </BodyLong>
-                </Block>
+                </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
     );

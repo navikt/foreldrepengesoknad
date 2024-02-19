@@ -13,7 +13,7 @@ import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep
 import Barnet from 'app/steps/barnet/Barnet';
 import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
 import FrilansStep from 'app/steps/frilans/FrilansStep';
-import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
+import InntektsinformasjonSteg from 'app/steps/inntektsinformasjon/InntektsinformasjonSteg';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import PerioderStep from 'app/steps/perioder/PerioderStep';
 import SkjemaSteg from 'app/steps/skjema/SkjemaSteg';
@@ -99,7 +99,7 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.ARBEID}
                 element={
-                    <Inntektsinformasjon
+                    <InntektsinformasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

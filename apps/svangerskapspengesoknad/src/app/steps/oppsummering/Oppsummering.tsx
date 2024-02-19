@@ -163,14 +163,14 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                         {inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende && egenNæring && (
                             <EgenNæringVisning næring={egenNæring}></EgenNæringVisning>
                         )}
-                        {inntektsinformasjon.harHattAnnenInntekt &&
+                        {inntektsinformasjon.harHattArbeidIUtlandet &&
                             arbeidIUtlandet &&
                             arbeidIUtlandet.arbeidIUtlandet.map((arbeid) => (
                                 <ArbeidIUtlandetVisning key={guid()} arbeidIUtlandet={arbeid}></ArbeidIUtlandetVisning>
                             ))}
                         {(!inntektsinformasjon.harJobbetSomFrilans ||
                             !inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ||
-                            !inntektsinformasjon.harHattAnnenInntekt) && (
+                            !inntektsinformasjon.harHattArbeidIUtlandet) && (
                             <BodyShort>{getTekstOmManglendeArbeidsforhold(inntektsinformasjon, intl)}</BodyShort>
                         )}
                     </VStack>

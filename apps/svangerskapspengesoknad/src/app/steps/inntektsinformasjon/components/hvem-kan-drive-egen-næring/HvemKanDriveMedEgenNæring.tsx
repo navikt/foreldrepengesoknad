@@ -1,5 +1,4 @@
-import { BodyShort, Link, ReadMore } from '@navikt/ds-react';
-import { Block, intlUtils } from '@navikt/fp-common';
+import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -8,13 +7,13 @@ const HvemKanDriveMedEgenNæring = () => {
     const intl = useIntl();
 
     return (
-        <ReadMore header={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel')}>
-            <div>
-                <Block padBottom="l">
-                    <BodyShort>
-                        <FormattedMessage id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del1" />
-                    </BodyShort>
-                </Block>
+        <ReadMore
+            header={intl.formatMessage({ id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel' })}
+        >
+            <VStack gap="2">
+                <BodyShort>
+                    <FormattedMessage id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del1" />
+                </BodyShort>
                 <BodyShort>
                     <FormattedMessage
                         id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2"
@@ -27,7 +26,7 @@ const HvemKanDriveMedEgenNæring = () => {
                         }}
                     />
                 </BodyShort>
-            </div>
+            </VStack>
         </ReadMore>
     );
 };

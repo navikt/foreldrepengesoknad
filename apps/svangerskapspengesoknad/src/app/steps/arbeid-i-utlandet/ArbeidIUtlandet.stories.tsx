@@ -83,7 +83,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
             onDispatch={gåTilNesteSide}
             initialState={{
                 [ContextDataType.INNTEKTSINFORMASJON]: {
-                    harHattAnnenInntekt: true,
+                    harHattArbeidIUtlandet: true,
                     harJobbetSomFrilans: false,
                     harJobbetSomSelvstendigNæringsdrivende: false,
                 },

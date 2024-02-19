@@ -1,7 +1,6 @@
-import { FormattedMessage } from 'react-intl';
-import { Block } from '@navikt/fp-common';
-import { BodyLong, ExpansionCard } from '@navikt/ds-react';
+import { BodyLong, ExpansionCard, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
+import { FormattedMessage } from 'react-intl';
 
 const InfoOmFørstegangstjeneste = () => {
     return (
@@ -12,12 +11,10 @@ const InfoOmFørstegangstjeneste = () => {
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <Block padBottom="l">
+                <VStack gap="4">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoOmFørstegangstjeneste.content.del1" />
                     </BodyLong>
-                </Block>
-                <Block padBottom="l">
                     <BodyLong>
                         <FormattedMessage
                             id="inntektsinformasjon.infoOmFørstegangstjeneste.content.del2"
@@ -40,7 +37,7 @@ const InfoOmFørstegangstjeneste = () => {
                             }}
                         />
                     </BodyLong>
-                </Block>
+                </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
     );

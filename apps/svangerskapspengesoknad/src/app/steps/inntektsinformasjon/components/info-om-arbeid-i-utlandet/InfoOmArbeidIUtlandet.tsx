@@ -1,12 +1,13 @@
 import { ReadMore } from '@navikt/ds-react';
-import { intlUtils } from '@navikt/fp-common';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const InfoOmArbeidIUtlandet = () => {
     const intl = useIntl();
     return (
-        <ReadMore header={intlUtils(intl, 'arbeidIUtlandet.apneLabel')}>
-            <div> {intlUtils(intl, 'arbeidIUtlandet.innhold')}</div>
+        <ReadMore header={intl.formatMessage({ id: 'arbeidIUtlandet.apneLabel' })}>
+            <div>
+                <FormattedMessage id="arbeidIUtlandet.innhold" />
+            </div>
         </ReadMore>
     );
 };

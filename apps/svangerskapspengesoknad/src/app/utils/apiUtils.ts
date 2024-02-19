@@ -9,7 +9,7 @@ import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
 import { AttachmentDTO } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
 import { EgenNæring, EgenNæringDTO, Næringstype } from 'app/types/EgenNæring';
-import { Frilans, FrilansDTO } from 'app/types/Frilans';
+import { Frilans } from 'app/types/Frilans';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { SøkerDTO, Søkerrolle } from 'app/types/Søker';
 import { SøknadDTO, Søknadstype } from 'app/types/Søknad';
@@ -188,16 +188,6 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
     return undefined;
 };
 
-const mapFrilansForInnsending = (frilans: Frilans | undefined): FrilansDTO | undefined => {
-    if (frilans) {
-        return {
-            ...frilans,
-            oppstart: ISOStringToDate(frilans.oppstart)!,
-        };
-    }
-    return undefined;
-};
-
 const mapArbeidIUtlandetForInnsending = (arbeid: ArbeidIUtlandetInput): ArbeidIUtlandetDTO => {
     return {
         type: AnnenInntektType.JOBB_I_UTLANDET,
@@ -225,7 +215,7 @@ const mapSøkerForInnsending = (
     const mappedSøker: SøkerDTO = {
         rolle: Søkerrolle.MOR,
         språkkode: locale,
-        frilansInformasjon: inntektsinformasjon.harJobbetSomFrilans ? mapFrilansForInnsending(frilans) : undefined,
+        frilansInformasjon: inntektsinformasjon.harJobbetSomFrilans ? frilans : undefined,
         selvstendigNæringsdrivendeInformasjon: mappedNæring ? [mappedNæring] : undefined,
         andreInntekterSiste10Mnd: mappedArbeidIUtlandet,
     };

@@ -1,16 +1,17 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import Inntektsinformasjon from './Inntektsinformasjon';
+import InntektsinformasjonSteg from './InntektsinformasjonSteg';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 const defaultExport = {
-    title: 'steps/Inntektsinformasjon',
-    component: Inntektsinformasjon,
+    title: 'steps/InntektsinformasjonSteg',
+    component: InntektsinformasjonSteg,
 };
 
 export default defaultExport;
 
-const arbeidsforhold = [
+const DEFAULT_ARBEIDSFORHOLD = [
     {
         id: '1669400414-9409-3313-0700-3334116100409',
         arbeidsgiverId: '975326209',
@@ -74,9 +75,14 @@ const promiseAction =
 interface Props {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide?: (action: Action) => void;
+    arbeidsforhold?: Arbeidsforhold[];
 }
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({
+    mellomlagreSøknadOgNaviger = promiseAction(),
+    gåTilNesteSide,
+    arbeidsforhold = DEFAULT_ARBEIDSFORHOLD,
+}) => {
     return (
         <SvpDataContext
             onDispatch={gåTilNesteSide}
@@ -92,7 +98,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
                 },
             }}
         >
-            <Inntektsinformasjon
+            <InntektsinformasjonSteg
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 avbrytSøknad={promiseAction()}
                 arbeidsforhold={arbeidsforhold}
@@ -102,3 +108,8 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
 };
 
 export const Default = Template.bind({});
+
+export const BrukerKanIkkeSøke = Template.bind({});
+BrukerKanIkkeSøke.args = {
+    arbeidsforhold: [],
+};
