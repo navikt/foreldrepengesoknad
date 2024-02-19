@@ -7,7 +7,7 @@ import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/f
 import { FEIL_VED_INNSENDING } from 'app/utils/errorUtils';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
-export const VERSJON_MELLOMLAGRING = 1;
+export const VERSJON_MELLOMLAGRING = 2;
 
 export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo } & ContextDataMap;
 

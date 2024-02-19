@@ -1,5 +1,5 @@
 export { notEmpty } from './src/other/validation';
-export { isRequired } from './src/form/generalFormValidation';
+export { isRequired, minLength, maxLength } from './src/form/generalFormValidation';
 export {
     erI22SvangerskapsukeEllerSenere,
     isAfterOrSameAsSixMonthsAgo,
@@ -10,8 +10,9 @@ export {
     isValidDate,
     isDateWithinRange,
     isBeforeOrSame,
-    isBefore,
+    isBeforeDate,
     isAfterOrSame,
+    isAfterDate,
     isPeriodNotOverlappingOthers,
     isLessThanOneAndHalfYearsAgo,
     isBeforeToday,

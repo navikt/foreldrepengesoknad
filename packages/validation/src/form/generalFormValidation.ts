@@ -9,3 +9,12 @@ export const isRequired =
     (i18nText: string) =>
     (value?: string | number | boolean): FormValidationResult =>
         isEmpty(value) ? i18nText : null;
+
+export const minLength =
+    (i18nText: string, length: number) =>
+    (text: string): FormValidationResult =>
+        isEmpty(text) || text.toString().trim().length >= length ? null : i18nText;
+export const maxLength =
+    (i18nText: string, length: number) =>
+    (text: string): FormValidationResult =>
+        isEmpty(text) || text.toString().trim().length <= length ? null : i18nText;

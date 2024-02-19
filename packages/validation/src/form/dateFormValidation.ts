@@ -1,11 +1,13 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+
 import { DATE_TODAY, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
 import {
-    isDateRangesOverlapping,
     halvannetÅrSiden,
+    isDateRangesOverlapping,
     isDateWithinRange as isDateWithinRangeUtil,
 } from '@navikt/fp-utils';
-import isBetween from 'dayjs/plugin/isBetween';
+
 import { FormValidationResult, isEmpty } from './generalFormValidation';
 
 dayjs.extend(isBetween);
@@ -32,14 +34,14 @@ export const isBeforeToday =
         dayjs(date).isBefore(DATE_TODAY) ? null : i18nText;
 
 export const isBeforeOrSame =
-    (i18nText: string, endDate?: string) =>
+    (i18nText: string, endDate: string | undefined) =>
     (startDate: string): FormValidationResult =>
         endDate && dayjs(startDate).isAfter(endDate, 'day') ? i18nText : null;
 
-export const isBefore =
-    (i18nText: string, date1: string) =>
-    (date2: string): FormValidationResult =>
-        date1 && dayjs(date2).isBefore(date1) ? i18nText : null;
+export const isBeforeDate =
+    (i18nText: string, endDate: string | Dayjs | undefined) =>
+    (startDate: string): FormValidationResult =>
+        !endDate || dayjs(startDate).isBefore(endDate, 'day') ? null : i18nText;
 
 export const isAfterOrSameAsSixMonthsAgo =
     (i18nText: string) =>
@@ -47,9 +49,14 @@ export const isAfterOrSameAsSixMonthsAgo =
         dayjs(date).isBefore(SIX_MONTHS_AGO) ? i18nText : null;
 
 export const isAfterOrSame =
-    (i18nText: string, fromDate: string) =>
+    (i18nText: string, fromDate: string | undefined) =>
     (endDate: string): FormValidationResult =>
         fromDate && dayjs(endDate).isBefore(fromDate, 'day') ? i18nText : null;
+
+export const isAfterDate =
+    (i18nText: string, fromDate: string | Dayjs | undefined) =>
+    (endDate: string): FormValidationResult =>
+        !fromDate || dayjs(endDate).isAfter(fromDate, 'day') ? null : i18nText;
 
 export const isDatesNotTheSame =
     (i18nText: string, date1?: string) =>

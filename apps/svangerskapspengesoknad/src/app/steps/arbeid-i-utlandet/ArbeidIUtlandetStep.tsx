@@ -9,12 +9,11 @@ import {
     getNextRouteValgAvArbeidEllerSkjema,
     useStepConfig,
 } from 'app/steps/stepsConfig';
+import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import ArbeidIUtlandetFieldArray from './ArbeidIUtlandetFieldArray';
-import { getInitialArbeidIUtlandetFormData } from './arbeidIUtlandetFormUtils';
-import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
+import ArbeidIUtlandetFieldArray, { NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
 
 import './arbeidIUtlandet.css';
 
@@ -50,13 +49,16 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
             inntektsinformasjon,
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
+
         oppdaterAppRoute(nextRoute);
 
         return mellomlagreSøknadOgNaviger();
     };
 
     const formMethods = useForm<ArbeidIUtlandet>({
-        defaultValues: getInitialArbeidIUtlandetFormData(arbeidIUtlandet),
+        defaultValues: arbeidIUtlandet || {
+            arbeidIUtlandet: [NEW_ARBEID_I_UTLANDET],
+        },
     });
 
     return (

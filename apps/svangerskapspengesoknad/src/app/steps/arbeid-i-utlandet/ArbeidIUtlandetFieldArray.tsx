@@ -1,23 +1,33 @@
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
-import { bemUtils, date20YearsAgo, date5MonthsAgo } from '@navikt/fp-common';
+import { bemUtils, date20YearsAgo, date5MonthsAgo, validateTextInputField } from '@navikt/fp-common';
 import { Datepicker, RadioGroup, Select, TextField } from '@navikt/fp-form-hooks';
 import { createCountryOptions } from '@navikt/fp-utils';
-import { isRequired } from '@navikt/fp-validation';
+import {
+    isAfterDate,
+    isBeforeDate,
+    isBeforeTodayOrToday,
+    isRequired,
+    isValidDate,
+    maxLength,
+} from '@navikt/fp-validation';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
+import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
+import { femMånederSidenDayjs } from 'app/utils/dateUtils';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getUferdigArbeidIUtlandetInput } from './arbeidIUtlandetFormUtils';
-import {
-    validateArbeidIUtlandetFom,
-    validateArbeidIUtlandetNavnArbeidsgiver,
-    validateArbeidIUtlandetTom,
-} from './arbeidIUtlandetValidation';
-import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 
 import './arbeidIUtlandet.css';
+
+export const NEW_ARBEID_I_UTLANDET = {
+    fom: '',
+    tom: '',
+    pågående: undefined!,
+    arbeidsgiverNavn: '',
+    land: '',
+};
 
 const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
     const bem = bemUtils('arbeidIUtlandet');
@@ -68,13 +78,27 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                         name={`arbeidIUtlandet.${index}.arbeidsgiverNavn`}
                         style={{ width: 'var(--app-text-input-width)' }}
                         label={navnPåArbeidsgiverLabel}
-                        validate={[validateArbeidIUtlandetNavnArbeidsgiver(intl, navnPåArbeidsgiverLabel)]}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetNavn.påkrevd' })),
+                            maxLength(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetNavn.forLang' }), 100),
+                            (navn: string) => validateTextInputField(navn, navnPåArbeidsgiverLabel, intl),
+                        ]}
                         maxLength={100}
                     />
                     <Datepicker
                         name={`arbeidIUtlandet.${index}.fom`}
                         label={intl.formatMessage({ id: 'arbeidIUtlandet.fom' })}
-                        validate={[validateArbeidIUtlandetFom(intl, alleArbeidIUtlandet[index].tom)]}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' })),
+                            isValidDate(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' })),
+                            isBeforeTodayOrToday(
+                                intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' }),
+                            ),
+                            isBeforeDate(
+                                intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' }),
+                                alleArbeidIUtlandet[index].tom,
+                            ),
+                        ]}
                         maxDate={dayjs().toDate()}
                         minDate={date20YearsAgo}
                     />
@@ -95,9 +119,26 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                             description={intl.formatMessage({
                                 id: 'egenNæring.arbeid.tom.description',
                             })}
-                            validate={[validateArbeidIUtlandetTom(intl, alleArbeidIUtlandet![index].fom)]}
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.påkrevd' })),
+                                isValidDate(intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' })),
+                                isBeforeDate(
+                                    intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.erIFremtiden' }),
+                                    dayjs().add(9, 'month'),
+                                ),
+                                isAfterDate(
+                                    intl.formatMessage({
+                                        id: 'valideringsfeil.tilOgMedDato.arbeidIUtlandet.merEnn5MånederSiden',
+                                    }),
+                                    femMånederSidenDayjs(),
+                                ),
+                                isAfterDate(
+                                    intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.etterFraDato' }),
+                                    alleArbeidIUtlandet[index].fom,
+                                ),
+                            ]}
                             maxDate={dayjs().add(9, 'month').toDate()}
-                            minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet![index].fom, date5MonthsAgo)}
+                            minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet[index].fom, date5MonthsAgo)}
                         />
                     )}
                     {index < fields.length - 1 && <HorizontalLine />}
@@ -108,9 +149,9 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                     icon={<PlusIcon aria-hidden />}
                     type="button"
                     variant="secondary"
-                    onClick={() => append(getUferdigArbeidIUtlandetInput())}
+                    onClick={() => append(NEW_ARBEID_I_UTLANDET)}
                 >
-                    {intl.formatMessage({ id: 'arbeidIUtlandet.tittel.ny' })}
+                    <FormattedMessage id="arbeidIUtlandet.tittel.ny" />
                 </Button>
             </HStack>
         </>
