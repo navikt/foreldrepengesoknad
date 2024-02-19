@@ -163,7 +163,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={datoOgHendelsetype[0]}
                     hendelseType={datoOgHendelsetype[1]}
-                    utenlandsopphold={tempMappingOpphold(notEmpty(utenlandsopphold))}
+                    utenlandsopphold={erEndringssøknad ? ({} as any) : tempMappingOpphold(notEmpty(utenlandsopphold))}
                     tidligereUtenlandsopphold={tempMappingTidligere(tidligereUtenlandsopphold)}
                     senereUtenlandsopphold={tempMappingSenere(senereUtenlandsopphold)}
                     hide={erEndringssøknad}
