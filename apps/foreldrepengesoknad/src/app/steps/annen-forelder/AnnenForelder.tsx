@@ -69,6 +69,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
+    const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
     const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
 
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
@@ -100,6 +101,12 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const onSubmit = (values: Partial<AnnenForelderFormData>) => {
         setIsSubmitting(true);
 
+        // @ts-ignore TODO (TOR) Søker er dårleg typa. Her skal den kunne innehalda kun erAleneOmsorg, og så blir den utvida seinare
+        const newSøker: SøkerData = {
+            ...(søkerData || {}),
+            erAleneOmOmsorg: values.kanIkkeOppgis ? true : !!convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
+        };
+
         const newBarn: Barn = {
             ...barn,
             datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
@@ -123,6 +130,7 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
         oppdaterOmBarnet(newBarn);
         oppdaterAnnenForeldre(mapAnnenForelderFormToState(values));
         oppdaterVedlegg(nyeVedlegg);
+        oppdaterSøker(newSøker);
 
         return navigator.goToNextDefaultStep();
     };
