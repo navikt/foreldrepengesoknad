@@ -41,7 +41,7 @@ describe('<AnnenForelder>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(4);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(5);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallBarn: 1,
@@ -80,6 +80,17 @@ describe('<AnnenForelder>', () => {
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
+            data: {
+                erAleneOmOmsorg: true,
+                harHattAnnenInntektSiste10Mnd: undefined,
+                harJobbetSomFrilansSiste10Mnd: undefined,
+                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
+            },
+            key: ContextDataType.SØKER_DATA,
+            type: 'update',
+        });
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(5, {
             data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
