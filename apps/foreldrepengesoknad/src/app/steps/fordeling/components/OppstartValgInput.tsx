@@ -1,13 +1,11 @@
 import { RadioGroup } from '@navikt/fp-form-hooks';
-import { Radio, VStack } from '@navikt/ds-react';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { Radio } from '@navikt/ds-react';
+import { isRequired } from '@navikt/fp-validation';
 import { FormattedMessage, useIntl, IntlShape } from 'react-intl';
-import FordelingFormValues, { OppstartValg } from 'app/steps/fordeling/FordelingFormValues';
-import { useFormContext } from 'react-hook-form';
+import { OppstartValg } from 'app/steps/fordeling/FordelingFormValues';
 import {
     Barn,
     ISOStringToDate,
-    NavnPåForeldre,
     andreAugust2022ReglerGjelder,
     formatDate,
     førsteOktober2021ReglerGjelder,
@@ -17,8 +15,8 @@ import {
     isFødtBarn,
 } from '@navikt/fp-common';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import React from 'react';
 
 const getRadioOptionFarFødsel = (
     erBarnetFødt: boolean,
@@ -36,7 +34,7 @@ const getRadioOptionFarFødsel = (
     if (førsteDagEtterAnnenForelder) {
         radioOptions.push(getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder));
     }
-    if (!førsteOktober2021ReglerGjelder) {
+    if (!førsteOktober2021ReglerGjelder(familiehendelsesDato)) {
         radioOptions.push(getRadioOptionAnnenDato());
     }
     return radioOptions;
@@ -154,7 +152,7 @@ const getRadioOptionTreUkerFørTermin = (erBarnetFødt: boolean): React.ReactEle
     );
 };
 
-const getRadioOptionsForSituasjon = (
+export const getRadioOptionsForSituasjon = (
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
     navnAnnenForelder: string,
@@ -189,46 +187,25 @@ const getRadioOptionsForSituasjon = (
 };
 
 interface Props {
-    navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor: boolean;
-    barn: Barn;
-    førsteDagEtterAnnenForelder: Date | undefined;
+    oppstartsValgOptions: React.ReactElement[];
 }
 
-const Oppstartsvalg: React.FunctionComponent<Props> = ({
-    barn,
-    erFarEllerMedmor,
-    navnPåForeldre,
-    førsteDagEtterAnnenForelder,
-}) => {
+const OppstartValgInput: React.FunctionComponent<Props> = ({ oppstartsValgOptions }) => {
     const intl = useIntl();
-    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const { watch } = useFormContext<FordelingFormValues>();
 
-    const oppstartValg = watch('oppstartAvForeldrepenger');
-    const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-    const radioOptions = getRadioOptionsForSituasjon(
-        søkersituasjon,
-        barn,
-        navnAnnenForelder,
-        intl,
-        førsteDagEtterAnnenForelder,
-    );
+    if (!oppstartsValgOptions || oppstartsValgOptions.length < 2) {
+        return null;
+    }
     return (
-        <VStack gap="5">
-            {radioOptions && radioOptions.length > 1 && (
-                <RadioGroup
-                    name="oppstartAvForeldrepenger"
-                    label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
-                    description={<FormattedMessage id="fordeling.oppstartValg.description" />}
-                    validate={[isRequired(intl.formatMessage({ id: 'fordeling.oppstartValg.måOppgis' }))]}
-                >
-                    {...radioOptions}
-                </RadioGroup>
-            )}
-            {oppstartValg && <p>Du valgte noe! - TODO</p>}
-        </VStack>
+        <RadioGroup
+            name="oppstartAvForeldrepengerValg"
+            label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
+            description={<FormattedMessage id="fordeling.oppstartValg.description" />}
+            validate={[isRequired(intl.formatMessage({ id: 'fordeling.oppstartValg.måOppgis' }))]}
+        >
+            {...oppstartsValgOptions}
+        </RadioGroup>
     );
 };
 
-export default Oppstartsvalg;
+export default OppstartValgInput;

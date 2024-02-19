@@ -1082,5 +1082,17 @@
     "fordeling.oppstartValg.dagenEtterAnnenForelder": "Første dag etter {morTekst}, {førsteDagEtterAnnenForelder}",
     "fordeling.oppstartValg.førsteDagEtterFarMedmor": "Første dag etter {farTekst}, {dato}",
     "fordeling.oppstartValg.omsorgsovertakelsen": "På omsorgsovertakelsen, {dato}",
-    "fordeling.oppstartValg.ankomstNorge": "På ankomstdagen til Norge, {dato}"
+    "fordeling.oppstartValg.ankomstNorge": "På ankomstdagen til Norge, {dato}",
+    "fordeling.oppstartDato.spørsmål": "Dato jeg vil starte mine foreldrepenger:",
+    "fordeling.oppstartDato.måOppgis": "Du må oppgi dato du vil starte dine foreldrepenger.",
+    "fordeling.oppstartDato.gyldig": "Dato du vil starte dine foreldrepenger må være en gyldig dato på formatet dd.mm.åååå.",
+    "fordeling.oppstartDato.description": "Dette kan endres.",
+    "fordeling.oppstartValg.førFødselEllerTerminInfo": "{varighetString} før {fødselEllerTermin}",
+    "fordeling.oppstartValg.misterDagerInfo": "Du mister {varighetString}.",
+    "fordeling.oppstartValg.taFraFellesperioden": "{varighetString} tas fra fellesperioden.",
+    "fordeling.oppstartValg.morFødsel.info": "Når du ikke starter foreldrepengerperioden 3 uker før termindato, mister du rett til foreldrepenger disse dagene. Hvis du starter tidligere enn 3 uker før, vil du bruke fra fellesperioden.",
+    "fordeling.oppstartValg.morFødsel.readmore.header": "Du kan få foreldrepenger opp til 12 uker før termin",
+    "fordeling.fellesperiodeVisning.sumUker": "Fellesperiode - {varighetString}",
+    "fordeling.fellesperiodeVisning.tilDeg": "{varighetString} til deg",
+    "fordeling.fellesperiodeVisning.resterende": "{varighetString} igjen"
 }

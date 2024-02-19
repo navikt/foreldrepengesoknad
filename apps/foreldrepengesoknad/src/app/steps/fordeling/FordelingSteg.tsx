@@ -67,7 +67,6 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
         suspendAnnenPartVedtakApiRequest,
     );
 
-    //TODO GR: Kan vi gjenbruke valgt stønadskonto fra forrige steg?
     const params = getStønadskontoParams(
         barn,
         annenForelder,
@@ -93,7 +92,6 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
         suspendStønadskontoApiRequests,
     );
 
-    //TODO GR: Kan vi gjenbruke dette fra forrige steg?
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
             mapAnnenPartsEksisterendeSakFromDTO(

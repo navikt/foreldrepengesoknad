@@ -5,8 +5,8 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
 import { NavnPåForeldre, isFarEllerMedmor } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
-import Oppstartsvalg from './components/OppstartsValg';
 import FellesperiodeFordeling from './components/FellesperiodeFordeling';
+import OppstartAvForeldrepenger from './components/OppstartAvForeldrepenger';
 
 type Props = {
     deltUttak: boolean;
@@ -26,7 +26,6 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     goToNextDefaultStep,
 }) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const fordelingAvForeldrepenger = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterFordeling = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
@@ -50,8 +49,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 )}
-                <Oppstartsvalg
-                    barn={barn}
+                <OppstartAvForeldrepenger
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                     førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}

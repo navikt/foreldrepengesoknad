@@ -1,0 +1,18 @@
+.fellesperiodeValgVisning__textTop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.fellesperiodeValgVisning__textBottom {
+    display: 'flex';
+    flex-direction: 'row';
+    text-align: 'center';
+}
+
+.fellesperiodeValgVisning__textElement {
+    height: '16rem';
+    display: flex;
+    justify-content: center;
+}
