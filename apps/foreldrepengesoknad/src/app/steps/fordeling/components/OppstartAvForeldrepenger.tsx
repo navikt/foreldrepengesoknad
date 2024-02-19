@@ -38,7 +38,6 @@ const OppstartAvForeldrepenger: React.FunctionComponent<Props> = ({
         oppstartsValgOptions &&
         (oppstartsValgOptions.length === 1 ||
             (oppstartValg && [OppstartValg.ANNEN_DATO, OppstartValg.RUNDT_FØDSEL].includes(oppstartValg)));
-    console.log(oppstartValg, visOppstartsDatoInput, erMorFødsel);
     return (
         <VStack gap="5">
             <OppstartValgInput oppstartsValgOptions={oppstartsValgOptions} />

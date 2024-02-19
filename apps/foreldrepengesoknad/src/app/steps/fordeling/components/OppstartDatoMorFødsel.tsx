@@ -15,7 +15,11 @@ const getMorInfoMistetDagerFørFødsel = (
     førsteUttaksdagForeldrepengerFørFødsel: Date,
     intl: IntlShape,
 ): string | undefined => {
-    if (!oppstartsdato || !isValidDate(oppstartsdato)) {
+    if (
+        !oppstartsdato ||
+        !isValidDate(oppstartsdato) ||
+        dayjs(oppstartsdato).isBefore(førsteUttaksdagForeldrepengerFørFødsel, 'd')
+    ) {
         return undefined;
     }
     const uttaksdager = Uttaksdagen(førsteUttaksdagForeldrepengerFørFødsel).getUttaksdagerFremTilDato(
@@ -29,7 +33,11 @@ const getMorInfoFellesperiodeFørFødsel = (
     førsteUttaksdagForeldrepengerFørFødsel: Date,
     intl: IntlShape,
 ): string | undefined => {
-    if (!oppstartsdato || !isValidDate(oppstartsdato)) {
+    if (
+        !oppstartsdato ||
+        !isValidDate(oppstartsdato) ||
+        dayjs(oppstartsdato).isAfter(førsteUttaksdagForeldrepengerFørFødsel, 'd')
+    ) {
         return undefined;
     }
     const uttaksdager = Uttaksdagen(new Date(oppstartsdato)).getUttaksdagerFremTilDato(
@@ -45,24 +53,23 @@ const OppstartDatoMorFødsel = () => {
     const førsteUttaksdagMorFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
     const { watch } = useFormContext<FordelingFormValues>();
     const oppstartDato = watch('oppstartDato');
-    const morVilMisteDagerFørFødsel =
-        oppstartDato !== undefined && dayjs(oppstartDato).isAfter(førsteUttaksdagMorFødsel, 'd');
-    const morVilTrekkesFellesperiodeFørFødsel =
-        oppstartDato !== undefined && dayjs(oppstartDato).isBefore(førsteUttaksdagMorFødsel, 'd');
+    const morStarterIkkePå3UkerFørFødsel =
+        oppstartDato !== undefined && !dayjs(oppstartDato).isSame(førsteUttaksdagMorFødsel, 'd');
+
     const fødselEllerTermin = isFødtBarn(barn) ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
     const varighetString = getVarighetString(dayjs(oppstartDato).diff(familiehendelsesdato, 'd'), intl);
-    const morInfoMistetDagerFørFødsel = morVilMisteDagerFørFødsel
-        ? getMorInfoMistetDagerFørFødsel(oppstartDato, førsteUttaksdagMorFødsel, intl)
-        : undefined;
-    const morVarighetFellesperiodeFørFødsel = morVilMisteDagerFørFødsel
-        ? getMorInfoFellesperiodeFørFødsel(oppstartDato, førsteUttaksdagMorFødsel, intl)
-        : undefined;
+    const morInfoMistetDagerFørFødsel = getMorInfoMistetDagerFørFødsel(oppstartDato, førsteUttaksdagMorFødsel, intl);
+    const morVarighetFellesperiodeFørFødsel = getMorInfoFellesperiodeFørFødsel(
+        oppstartDato,
+        førsteUttaksdagMorFødsel,
+        intl,
+    );
     return (
         <div>
             <VStack gap="2">
                 <HStack gap="1">
                     <OppstartDatoInput />
-                    {morVilMisteDagerFørFødsel && (
+                    {morStarterIkkePå3UkerFørFødsel && (
                         <div
                             style={{
                                 marginTop: '3.2rem',
@@ -77,17 +84,17 @@ const OppstartDatoMorFødsel = () => {
                                     fødselEllerTermin,
                                 })}
                             </BodyShort>
-                            {morVilMisteDagerFørFødsel && (
+                            {morInfoMistetDagerFørFødsel && (
                                 <BodyShort>
                                     {intlUtils(intl, 'fordeling.oppstartValg.misterDagerInfo', {
                                         varighetString: morInfoMistetDagerFørFødsel,
                                     })}
                                 </BodyShort>
                             )}
-                            {morVilTrekkesFellesperiodeFørFødsel && (
+                            {morVarighetFellesperiodeFørFødsel && (
                                 <BodyShort>
                                     {intlUtils(intl, 'fordeling.oppstartValg.taFraFellesperioden', {
-                                        varighetsString: morVarighetFellesperiodeFørFødsel,
+                                        varighetString: morVarighetFellesperiodeFørFødsel,
                                     })}
                                 </BodyShort>
                             )}
