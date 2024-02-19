@@ -7,6 +7,8 @@ import { useFormContext } from 'react-hook-form';
 import { NavnPåForeldre, getVarighetString } from '@navikt/fp-common';
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
 import FellesperiodeValgVisning from './FellesperiodeValgVisning';
+import { validateNumber } from 'app/steps/inntektsinformasjon/components/egen-næring/modal/validation/egenNæringValidation';
+import { validateAntallUkerFellesperiode } from '../fordelingFormUtils';
 
 const getValgtFellesperiodeFordeling = (
     erFarEllerMedmor: boolean,
@@ -64,12 +66,10 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
     erFarEllerMedmor,
 }) => {
     const intl = useIntl();
-
     const { watch } = useFormContext<FordelingFormValues>();
-
     const valgtFordeling = watch('fordelingValg');
     const antallUkerFellesperiodeTilSøker = watch('antallUkerFellesperiodeTilSøker');
-    const liktFordeling = getVarighetString(dagerMedFellesperiode / 2, intl);
+    const likFordeling = getVarighetString(dagerMedFellesperiode / 2, intl);
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const fordelingsdager = getValgtFellesperiodeFordeling(
         erFarEllerMedmor,
@@ -92,8 +92,8 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                             id: 'fordeling.fordelingsvalg.option.likt.description',
                         },
                         {
-                            ukerMor: liktFordeling,
-                            ukerFar: liktFordeling,
+                            ukerMor: likFordeling,
+                            ukerFar: likFordeling,
                             navnMor: navnPåForeldre.mor,
                             navnFar: navnPåForeldre.farMedmor,
                         },
@@ -119,7 +119,11 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                     name="antallUkerFellesperiodeTilSøker"
                     label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
                     description={intl.formatMessage({ id: 'fordeling.antallUker.description' }, { navnAnnenForelder })}
-                    validate={[isRequired(intl.formatMessage({ id: 'fordeling.antallUker.måOppgis' }))]}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'fordeling.antallUker.måOppgis' })),
+                        validateNumber(intl, 'fordeling.antallUker.ugyldigFormat'),
+                        validateAntallUkerFellesperiode(intl, dagerMedFellesperiode),
+                    ]}
                 ></TextField>
             )}
             {valgtFordeling === FellesperiodeFordelingValg.VIL_IKKE_FORDELE_NÅ && (

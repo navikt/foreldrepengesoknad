@@ -1,5 +1,13 @@
 import { Alert, BodyShort, HStack, VStack } from '@navikt/ds-react';
-import { ISOStringToDate, Uttaksdagen, getVarighetString, intlUtils, isFødtBarn } from '@navikt/fp-common';
+import {
+    ISOStringToDate,
+    Tidsperioden,
+    Uttaksdagen,
+    getValidTidsperiode,
+    getVarighetString,
+    intlUtils,
+    isFødtBarn,
+} from '@navikt/fp-common';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import OppstartDatoInput from './OppstartDatoInput';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
@@ -9,6 +17,22 @@ import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan
 import { useFormContext } from 'react-hook-form';
 import FordelingFormValues from '../FordelingFormValues';
 import dayjs from 'dayjs';
+
+const getVarighetFørFamiliehendelse = (
+    familiehendelsesdato: Date,
+    oppstartDato: string | undefined,
+    intl: IntlShape,
+): string => {
+    if (!oppstartDato) {
+        return '';
+    }
+    const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdato).forrige();
+    const tidsperiode = getValidTidsperiode({
+        fom: ISOStringToDate(oppstartDato)!,
+        tom: sisteUttaksdagFørTermin,
+    });
+    return tidsperiode ? getVarighetString(Tidsperioden(tidsperiode).getAntallUttaksdager(), intl) : '';
+};
 
 const getMorInfoMistetDagerFørFødsel = (
     oppstartsdato: string | undefined,
@@ -57,7 +81,7 @@ const OppstartDatoMorFødsel = () => {
         oppstartDato !== undefined && !dayjs(oppstartDato).isSame(førsteUttaksdagMorFødsel, 'd');
 
     const fødselEllerTermin = isFødtBarn(barn) ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
-    const varighetString = getVarighetString(dayjs(oppstartDato).diff(familiehendelsesdato, 'd'), intl);
+    const varighetString = getVarighetFørFamiliehendelse(familiehendelsesdato, oppstartDato, intl);
     const morInfoMistetDagerFørFødsel = getMorInfoMistetDagerFørFødsel(oppstartDato, førsteUttaksdagMorFødsel, intl);
     const morVarighetFellesperiodeFørFødsel = getMorInfoFellesperiodeFørFødsel(
         oppstartDato,

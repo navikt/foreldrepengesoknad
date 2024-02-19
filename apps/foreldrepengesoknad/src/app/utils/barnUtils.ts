@@ -8,15 +8,20 @@ import { IntlShape } from 'react-intl';
 
 dayjs.extend(utc);
 
-export const getFamiliehendelsedato = (barn: Barn): string => {
+export const getFamiliehendelsedatoDate = (barn: Barn): Date => {
     if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {
-        return dateToISOString(barn.fødselsdatoer[0]);
+        return barn.fødselsdatoer[0];
     }
     if (isUfødtBarn(barn)) {
-        return dateToISOString(barn.termindato);
+        return barn.termindato;
     }
 
-    return dateToISOString(barn.adopsjonsdato);
+    return barn.adopsjonsdato;
+};
+
+export const getFamiliehendelsedato = (barn: Barn): string => {
+    const familiehendelsedatoDate = getFamiliehendelsedatoDate(barn);
+    return dateToISOString(familiehendelsedatoDate);
 };
 
 const barnFødselsdatoLikSakFødselsdato = (

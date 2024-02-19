@@ -60,7 +60,7 @@ interface Props {
 
 const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon, barn }) => {
     const intl = useIntl();
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
 
     const radios = [];
     if (isAdoptertAnnetBarn(barn) && barn.ankomstdato) {

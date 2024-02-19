@@ -80,8 +80,8 @@ const ekstrauttakFørFødsel = (familiehendelsesdato: string): DatepickerLimitat
 };
 
 const startdatoPermisjonAleneomsorgFarMedmor = (
-    datoForAleneomsorg: string,
-    familiehendelsesdato: string,
+    datoForAleneomsorg: Date,
+    familiehendelsesdato: Date,
 ): DatepickerLimitations => {
     const minDato = Uttaksdagen(dayjs(datoForAleneomsorg).toDate()).denneEllerNeste();
     const maksDato = sisteMuligePermisjonsdag(dayjs(familiehendelsesdato).toDate());
@@ -91,7 +91,7 @@ const startdatoPermisjonAleneomsorgFarMedmor = (
     };
 };
 
-const startdatoPermisjonAdopsjon = (familiehendelsesdato: string): DatepickerLimitations => {
+const startdatoPermisjonAdopsjon = (familiehendelsesdato: Date): DatepickerLimitations => {
     return defaultPermisjonsperiodeAvgrensning(dayjs(familiehendelsesdato).toDate());
 };
 
