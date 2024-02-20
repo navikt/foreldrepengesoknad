@@ -1,4 +1,3 @@
-import { isISODateString } from '@navikt/ds-datepicker';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formatDate } from '@navikt/fp-utils';
 import {

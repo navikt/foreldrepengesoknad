@@ -9,7 +9,7 @@ import {
     isBeforeTodayOrToday,
     isRequired,
     isValidDate,
-    maxLength,
+    hasMaxLength,
 } from '@navikt/fp-validation';
 import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
@@ -80,7 +80,10 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                         label={navnPåArbeidsgiverLabel}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetNavn.påkrevd' })),
-                            maxLength(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetNavn.forLang' }), 100),
+                            hasMaxLength(
+                                intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetNavn.forLang' }),
+                                100,
+                            ),
                             (navn: string) => validateTextInputField(navn, navnPåArbeidsgiverLabel, intl),
                         ]}
                         maxLength={100}

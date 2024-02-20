@@ -1,9 +1,10 @@
+import dayjs from 'dayjs';
+
 import { ISOStringToDate } from '@navikt/fp-common';
 import { AttachmentMetadataType, LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from 'app/context/SvpDataContext';
-import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO, ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
 import { AttachmentDTO } from 'app/types/AttachmentDTO';
@@ -31,7 +32,7 @@ import {
     UtenlandsoppholdTidligere,
 } from 'app/types/Utenlandsopphold';
 
-import { getSisteDagForSvangerskapspenger } from './dateUtils';
+import { date4YearsAgo, getSisteDagForSvangerskapspenger } from './dateUtils';
 import { mapTilretteleggingTilPerioder } from './tilretteleggingUtils';
 
 const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegging): ArbeidsforholdDTO => {
@@ -139,25 +140,34 @@ const mapTilretteleggingerForInnsending = (
     });
 };
 
+const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
+    if (!oppstartsdato) {
+        return true;
+    }
+
+    return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
+};
+
 const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {
     if (næring) {
         const navn =
-            næring.næringstype === Næringstype.FISKER && næring.navnPåNæringen.trim().length === 0
+            næring.næringstype === Næringstype.FISKER &&
+            (!næring.navnPåNæringen || næring.navnPåNæringen.trim().length === 0)
                 ? undefined
                 : næring.navnPåNæringen;
-        const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næring.tidsperiode.fom));
+        const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(næring.fomDato);
 
         const mappedNæring = {
             næringstyper: [næring.næringstype],
             tidsperiode: {
-                fom: ISOStringToDate(næring.tidsperiode.fom),
-                tom: ISOStringToDate(næring.tidsperiode.tom),
+                fom: næring.fomDato,
+                tom: næring.tomDato,
             },
             næringsinntekt: næring.næringsinntekt ? parseInt(næring.næringsinntekt!, 10) : undefined,
             navnPåNæringen: navn,
-            organisasjonsnummer: næring.organisasjonsnummer ? næring.organisasjonsnummer : undefined,
+            organisasjonsnummer: næring.organisasjonsnummer,
             registrertINorge: næring.registrertINorge,
-            registrertILand: næring.registrertILand ? næring.registrertILand : undefined,
+            registrertILand: næring.registrertILand,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene:
                 næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         };
@@ -177,7 +187,7 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
                     næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                 endringAvNæringsinntektInformasjon: næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår
                     ? {
-                          dato: ISOStringToDate(næring.varigEndringDato)!,
+                          dato: næring.varigEndringDato!,
                           næringsinntektEtterEndring: parseInt(næring.varigEndringInntektEtterEndring!),
                           forklaring: næring.varigEndringBeskrivelse!,
                       }

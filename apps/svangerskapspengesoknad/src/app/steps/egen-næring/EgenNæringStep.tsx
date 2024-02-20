@@ -1,36 +1,5 @@
-import { EgenNæringFormData, EgenNæringFormField } from './egenNæringFormConfig';
-import {
-    erVirksomhetRegnetSomNyoppstartet,
-    getInitialEgenNæringFormValues,
-    mapEgenNæringFormValuesToState,
-} from './egenNæringFormUtils';
-import { Næringstype } from 'app/types/EgenNæring';
-import { ISOStringToDate, Step, date20YearsAgo, date5MonthsAgo, intlUtils } from '@navikt/fp-common';
-import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
-
-import dayjs from 'dayjs';
 import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
-import {
-    validateBlittYrkesaktivDe3SisteÅrene,
-    validateEgenNæringFom,
-    validateEgenNæringNavn,
-    validateEgenNæringResultat,
-    validateEgenNæringTom,
-    validateEgenNæringYrkesAktivDatoDato,
-    validateNæringPågående,
-    validateNæringstype,
-    validateRegistrertINorge,
-} from './egenNæringValidation';
-import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
-import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import { notEmpty } from '@navikt/fp-validation';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import OrgnummerEllerLand from './components/OrgnummerEllerLand';
-import { useForm } from 'react-hook-form';
+import { Step, date20YearsAgo, date5MonthsAgo, validateTextInputField } from '@navikt/fp-common';
 import {
     Datepicker,
     ErrorSummaryHookForm,
@@ -39,8 +8,46 @@ import {
     StepButtonsHookForm,
     TextField,
 } from '@navikt/fp-form-hooks';
-import { useNavigate } from 'react-router-dom';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import {
+    hasMaxLength,
+    hasMinValue,
+    isAfterOrSame,
+    isBeforeOrSame,
+    isBeforeTodayOrToday,
+    isRequired,
+    isValidDate,
+    isValidNumber,
+    notEmpty,
+} from '@navikt/fp-validation';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
+import { EgenNæring, Næringstype } from 'app/types/EgenNæring';
+import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
+import { date4YearsAgo, femMånederSiden } from 'app/utils/dateUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
+import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
+import OrgnummerEllerLand from './components/OrgnummerEllerLand';
+import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
+
+const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
+    return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
+};
+
+const validateEgenNæringNavn = (intl: IntlShape, label: string, erValgfri: boolean) => (value: string | undefined) => {
+    if (!erValgfri && !value) {
+        return intl.formatMessage({ id: 'valideringsfeil.egenNæringNavn.påkrevd' });
+    }
+    if (value && value.length > 100) {
+        return intl.formatMessage({ id: 'valideringsfeil.egenNæringNavn.forLang' });
+    }
+    return validateTextInputField(value, label, intl);
+};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -68,8 +75,8 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
-    const onSubmit = (values: Partial<EgenNæringFormData>) => {
-        const næringsdata = mapEgenNæringFormValuesToState(values as EgenNæringFormData);
+    const onSubmit = (values: EgenNæring) => {
+        oppdaterEgenNæring(values);
 
         if (
             søkerHarKunEtAktivtArbeid(
@@ -79,13 +86,9 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                 inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
             )
         ) {
-            const automatiskValgtTilrettelegging = [
-                getNæringTilretteleggingOption(tilrettelegginger || [], næringsdata),
-            ];
+            const automatiskValgtTilrettelegging = [getNæringTilretteleggingOption(tilrettelegginger || [], values)];
             oppdaterTilrettelegginger(automatiskValgtTilrettelegging);
         }
-
-        oppdaterEgenNæring(næringsdata);
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteForNæring(
             inntektsinformasjon,
@@ -99,30 +102,32 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
         mellomlagreSøknadOgNaviger();
     };
 
-    const formMethods = useForm<EgenNæringFormData>({
+    const formMethods = useForm<EgenNæring>({
         shouldUnregister: true,
-        defaultValues: getInitialEgenNæringFormValues(egenNæring),
+        defaultValues: egenNæring,
     });
 
-    const navnPåNæringSpm = intlUtils(intl, 'egenNæring.navnPåNæring');
+    const navnPåNæringSpm = intl.formatMessage({ id: 'egenNæring.navnPåNæring' });
 
-    const næringsType = formMethods.watch(EgenNæringFormField.egenNæringType);
-    const navnPåNæring = formMethods.watch(EgenNæringFormField.egenNæringNavn);
-    const næringFom = formMethods.watch(EgenNæringFormField.egenNæringFom);
-    const næringTom = formMethods.watch(EgenNæringFormField.egenNæringTom);
-    const registrertINorge = formMethods.watch(EgenNæringFormField.egenNæringRegistrertINorge);
-    const pågående = formMethods.watch(EgenNæringFormField.egenNæringPågående);
-    const varigEndring = formMethods.watch(EgenNæringFormField.egenNæringHattVarigEndringDeSiste4Årene);
-    const yrkesaktivSiste3År = formMethods.watch(EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene);
+    const næringsType = formMethods.watch('næringstype');
+    const navnPåNæring = formMethods.watch('navnPåNæringen');
+    const næringFom = formMethods.watch('fomDato');
+    const næringTom = formMethods.watch('tomDato');
+    const registrertINorge = formMethods.watch('registrertINorge');
+    const pågående = formMethods.watch('pågående');
+    const varigEndring = formMethods.watch('hattVarigEndringAvNæringsinntektSiste4Kalenderår');
+    const yrkesaktivSiste3År = formMethods.watch('harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene');
 
     const navnPåNæringLabel =
-        næringsType === Næringstype.FISKER ? `${navnPåNæringSpm} ${intlUtils(intl, 'valgfritt')}` : navnPåNæringSpm;
+        næringsType === Næringstype.FISKER
+            ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}`
+            : navnPåNæringSpm;
 
     return (
         <Step
-            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             activeStepId="næring"
-            pageTitle={intlUtils(intl, 'steps.label.næring')}
+            pageTitle={intl.formatMessage({ id: 'steps.label.næring' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={onFortsettSøknadSenere}
@@ -134,9 +139,9 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                         <FormattedMessage id="harValgfrieFelt" />
                     </BodyShort>
                     <RadioGroup
-                        name={EgenNæringFormField.egenNæringType}
-                        label={intlUtils(intl, 'egenNæring.næringstype')}
-                        validate={[validateNæringstype(intl)]}
+                        name="næringstype"
+                        label={intl.formatMessage({ id: 'egenNæring.næringstype' })}
+                        validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringType.påkrevd' }))]}
                     >
                         <Radio value={Næringstype.DAGMAMMA}>
                             <FormattedMessage id="egenNæring.næringstype.dagmamma" />
@@ -152,17 +157,24 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                         </Radio>
                     </RadioGroup>
                     <TextField
-                        name={EgenNæringFormField.egenNæringNavn}
+                        name="navnPåNæringen"
                         label={navnPåNæringLabel}
                         maxLength={100}
                         validate={[validateEgenNæringNavn(intl, navnPåNæringLabel, næringsType === Næringstype.FISKER)]}
                     />
                     <RadioGroup
-                        name={EgenNæringFormField.egenNæringRegistrertINorge}
-                        label={intlUtils(intl, 'egenNæring.erNæringenRegistrertINorge', {
-                            navnPåNæringen: navnPåNæring,
-                        })}
-                        validate={[validateRegistrertINorge(intl)]}
+                        name="registrertINorge"
+                        label={intl.formatMessage(
+                            { id: 'egenNæring.erNæringenRegistrertINorge' },
+                            {
+                                navnPåNæringen: navnPåNæring,
+                            },
+                        )}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({ id: 'valideringsfeil.egenNæringRegistrertINorge.påkrevd' }),
+                            ),
+                        ]}
                     >
                         <Radio value={true}>
                             <FormattedMessage id="ja" />
@@ -176,21 +188,39 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                         registrertINorge={registrertINorge}
                     />
                     <Datepicker
-                        name={EgenNæringFormField.egenNæringFom}
-                        label={intlUtils(intl, 'egenNæring.næring.fom', {
-                            navnPåNæringen: navnPåNæring,
-                        })}
-                        validate={[validateEgenNæringFom(intl, næringTom)]}
-                        maxDate={dayjs().toDate()}
+                        name="fomDato"
+                        label={intl.formatMessage(
+                            { id: 'egenNæring.næring.fom' },
+                            {
+                                navnPåNæringen: navnPåNæring,
+                            },
+                        )}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' })),
+                            isValidDate(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' })),
+                            isBeforeTodayOrToday(
+                                intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' }),
+                            ),
+                            isBeforeOrSame(
+                                intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' }),
+                                næringTom,
+                            ),
+                        ]}
+                        maxDate={dayjs()}
                         minDate={date20YearsAgo}
                     />
 
                     <RadioGroup
-                        name={EgenNæringFormField.egenNæringPågående}
-                        label={intlUtils(intl, 'egenNæring.næring.pågående', {
-                            navnPåNæringen: navnPåNæring,
-                        })}
-                        validate={[validateNæringPågående(intl)]}
+                        name="pågående"
+                        label={intl.formatMessage(
+                            { id: 'egenNæring.næring.pågående' },
+                            {
+                                navnPåNæringen: navnPåNæring,
+                            },
+                        )}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringPågående.påkrevd' })),
+                        ]}
                     >
                         <Radio value={true}>
                             <FormattedMessage id="ja" />
@@ -202,40 +232,69 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
 
                     {pågående === false && (
                         <Datepicker
-                            name={EgenNæringFormField.egenNæringTom}
-                            label={intlUtils(intl, 'egenNæring.næring.tom', {
-                                navnPåNæringen: navnPåNæring,
-                            })}
-                            description={intlUtils(intl, 'egenNæring.næring.tom.description')}
-                            validate={[validateEgenNæringTom(intl, næringFom)]}
-                            maxDate={dayjs().add(9, 'month').toDate()}
+                            name="tomDato"
+                            label={intl.formatMessage(
+                                { id: 'egenNæring.næring.tom' },
+                                {
+                                    navnPåNæringen: navnPåNæring,
+                                },
+                            )}
+                            description={intl.formatMessage({ id: 'egenNæring.næring.tom.description' })}
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.påkrevd' })),
+                                isValidDate(intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' })),
+                                isBeforeOrSame(
+                                    intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.erIFremtiden' }),
+                                    dayjs().add(9, 'month'),
+                                ),
+                                isAfterOrSame(
+                                    intl.formatMessage({
+                                        id: 'valideringsfeil.tilOgMedDato.egenNæring.merEnn5MånederSiden',
+                                    }),
+                                    femMånederSiden(),
+                                ),
+                                isAfterOrSame(
+                                    intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.etterFraDato' }),
+                                    næringFom,
+                                ),
+                            ]}
+                            maxDate={dayjs().add(9, 'month')}
                             minDate={getMinInputTilOgMedValue(næringFom, date5MonthsAgo)}
                         />
                     )}
-                    {!erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næringFom)) && (
+                    {!erVirksomhetRegnetSomNyoppstartet(næringFom) && (
                         <VarigEndringSpørsmål
                             varigEndring={varigEndring}
                             egenNæringFom={næringFom}
                             egenNæringTom={næringTom}
                         />
                     )}
-
                     <TextField
-                        name={EgenNæringFormField.egenNæringResultat}
-                        label={intlUtils(intl, 'egenNæring.næringsinntekt')}
-                        description={intlUtils(intl, 'egenNæring.næringsinntekt.description')}
-                        validate={[validateEgenNæringResultat(intl)]}
+                        name="næringsinntekt"
+                        label={intl.formatMessage({ id: 'egenNæring.næringsinntekt' })}
+                        description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' })),
+                            hasMaxLength(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' }), 9),
+                            isValidNumber(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' })),
+                            hasMinValue(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.mindreEnnNull' }), 0),
+                        ]}
                     />
-
-                    <ReadMore header={intlUtils(intl, 'egenNæring.næringsinntekt.info.apneLabel')}>
+                    <ReadMore header={intl.formatMessage({ id: 'egenNæring.næringsinntekt.info.apneLabel' })}>
                         <BodyShort>
                             <FormattedMessage id="egenNæring.næringsinntekt.info" />
                         </BodyShort>
                     </ReadMore>
                     <RadioGroup
-                        name={EgenNæringFormField.egenNæringBlittYrkesaktivDe3SisteÅrene}
-                        label={intlUtils(intl, 'egenNæring.blittYrkesaktivSiste3År')}
-                        validate={[validateBlittYrkesaktivDe3SisteÅrene(intl)]}
+                        name="harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene"
+                        label={intl.formatMessage({ id: 'egenNæring.blittYrkesaktivSiste3År' })}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd',
+                                }),
+                            ),
+                        ]}
                     >
                         <Radio value={true}>
                             <FormattedMessage id="ja" />
@@ -244,16 +303,22 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                             <FormattedMessage id="nei" />
                         </Radio>
                     </RadioGroup>
-                    {erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næringFom)) && yrkesaktivSiste3År === true && (
+                    {erVirksomhetRegnetSomNyoppstartet(næringFom) && yrkesaktivSiste3År === true && (
                         <Datepicker
-                            name={EgenNæringFormField.egenNæringYrkesAktivDato}
-                            label={intlUtils(intl, 'egenNæring.yrkesaktivDato')}
-                            validate={[validateEgenNæringYrkesAktivDatoDato(intl)]}
-                            maxDate={dayjs().toDate()}
+                            name="oppstartsdato"
+                            label={intl.formatMessage({ id: 'egenNæring.yrkesaktivDato' })}
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.påkrevd' })),
+                                isValidDate(intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.gyldigDato' })),
+                                isBeforeTodayOrToday(
+                                    intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.erIFremtiden' }),
+                                ),
+                            ]}
+                            maxDate={dayjs()}
                         />
                     )}
-                    <Alert variant="info">{intlUtils(intl, 'egenNæring.veileder')}</Alert>
-                    <StepButtonsHookForm<EgenNæringFormData>
+                    <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
+                    <StepButtonsHookForm
                         goToPreviousStep={() => {
                             const backRoute = getBackLinkForNæringSteg(inntektsinformasjon);
                             oppdaterAppRoute(backRoute);

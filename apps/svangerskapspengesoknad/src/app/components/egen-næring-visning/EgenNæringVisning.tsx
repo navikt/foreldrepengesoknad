@@ -1,11 +1,16 @@
-import { Block, ISOStringToDate, bemUtils, formatDate } from '@navikt/fp-common';
+import { BodyShort } from '@navikt/ds-react';
+import { Block, bemUtils, formatDate } from '@navikt/fp-common';
+import { getCountryName } from '@navikt/fp-utils';
 import { EgenNæring } from 'app/types/EgenNæring';
+import { date4YearsAgo } from 'app/utils/dateUtils';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import './egen-næring-visning.css';
-import { BodyShort } from '@navikt/ds-react';
-import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
-import { getCountryName } from '@navikt/fp-utils';
+
+const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
+    return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
+};
 
 interface Props {
     næring: EgenNæring;
@@ -16,8 +21,8 @@ interface Props {
 const EgenNæringVisning: FunctionComponent<Props> = ({ næring }) => {
     const intl = useIntl();
     const bem = bemUtils('egen-næring-visning');
-    const tilTekst = !næring.pågående && næring.tidsperiode.tom ? formatDate(næring.tidsperiode.tom) : 'Pågående';
-    const erNyoppstartetNæring = erVirksomhetRegnetSomNyoppstartet(ISOStringToDate(næring.tidsperiode.fom));
+    const tilTekst = !næring.pågående && næring.tomDato ? formatDate(næring.tomDato) : 'Pågående';
+    const erNyoppstartetNæring = erVirksomhetRegnetSomNyoppstartet(næring.fomDato);
     return (
         <div>
             <Block padBottom="l">
@@ -40,7 +45,7 @@ const EgenNæringVisning: FunctionComponent<Props> = ({ næring }) => {
                             </BodyShort>
                         )}
                         <BodyShort className={bem.element('dato')}>
-                            {formatDate(næring.tidsperiode.fom)} - {tilTekst}
+                            {formatDate(næring.fomDato)} - {tilTekst}
                         </BodyShort>
                         {næring.næringsinntekt && (
                             <BodyShort className={bem.element('inntekt')}>

@@ -1,4 +1,3 @@
-import { isISODateString } from '@navikt/ds-datepicker';
 import { SkjemaelementFeil, formatDate, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import {
     Arbeidsforholdstype,
@@ -78,17 +77,6 @@ export const validateSammePeriodeFremTilTerminFom =
     ) =>
     (value: string) => {
         const erDelvis = tilretteleggingstype === TilretteleggingstypeOptions.DELVIS;
-        if (!hasValue(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.ingen');
-        }
-        if (hasValue(value) && !isISODateString(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.ingen');
-        }
-
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -144,17 +132,6 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
     ) =>
     (value: string) => {
         const erDelvis = type === TilretteleggingstypeOptions.DELVIS;
-        if (!hasValue(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.ingen');
-        }
-        if (hasValue(value) && !isISODateString(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.ingen');
-        }
-
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -211,13 +188,6 @@ export const validateBehovForTilretteleggingFom =
         erFrilansTilrettelegging: boolean,
     ) =>
     (fom: string): SkjemaelementFeil => {
-        if (!hasValue(fom)) {
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.mangler');
-        }
-        if (!isISODateString(fom)) {
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.gyldigDato');
-        }
-
         if (dayjs(fom).isBefore(tiMånederSidenDato(termindato), 'd')) {
             return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.tiMndSidenTermin');
         }

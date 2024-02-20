@@ -10,7 +10,7 @@ import {
     TextField,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import SøknadRoutes from 'app/routes/routes';
@@ -222,6 +222,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                         minDate={minDatoBehovFom}
                         maxDate={maxDatoBehovFom}
                         validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.mangler' })),
+                            isValidDate(intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.gyldigDato' })),
                             validateBehovForTilretteleggingFom(
                                 intl,
                                 sisteDagForSvangerskapspenger,
@@ -380,6 +382,24 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                             minDate={minDatoPeriodeFom}
                             maxDate={maxDatoBehovFom}
                             validate={[
+                                isRequired(
+                                    type === TilretteleggingstypeOptions.DELVIS
+                                        ? intl.formatMessage({
+                                              id: 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.delvis',
+                                          })
+                                        : intl.formatMessage({
+                                              id: 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.ingen',
+                                          }),
+                                ),
+                                isValidDate(
+                                    type === TilretteleggingstypeOptions.DELVIS
+                                        ? intl.formatMessage({
+                                              id: 'valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.delvis',
+                                          })
+                                        : intl.formatMessage({
+                                              id: 'valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.ingen',
+                                          }),
+                                ),
                                 validateSammePeriodeFremTilTerminFom(
                                     intl,
                                     behovForTilretteleggingFom,
@@ -453,6 +473,24 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 minDate={minDatoTilbakeIJobb}
                                 maxDate={maxDatoBehovFom}
                                 validate={[
+                                    isRequired(
+                                        type === TilretteleggingstypeOptions.DELVIS
+                                            ? intl.formatMessage({
+                                                  id: 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.delvis',
+                                              })
+                                            : intl.formatMessage({
+                                                  id: 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.ingen',
+                                              }),
+                                    ),
+                                    isValidDate(
+                                        type === TilretteleggingstypeOptions.DELVIS
+                                            ? intl.formatMessage({
+                                                  id: 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis',
+                                              })
+                                            : intl.formatMessage({
+                                                  id: 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.ingen',
+                                              }),
+                                    ),
                                     validateSammePeriodeFremTilTerminTilbakeIJobbDato(
                                         intl,
                                         behovForTilretteleggingFom,

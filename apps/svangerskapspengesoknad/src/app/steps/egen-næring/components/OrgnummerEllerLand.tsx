@@ -1,10 +1,27 @@
-import { intlUtils } from '@navikt/fp-common';
-import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
-import { validateEgenNæringLand, validateEgenNæringOrgnr } from '../egenNæringValidation';
-import { EgenNæringFormField } from 'app/steps/egen-næring/egenNæringFormConfig';
+import { SkjemaelementFeil, containsWhiteSpace, erGyldigNorskOrgnummer } from '@navikt/fp-common';
 import { Select, TextField } from '@navikt/fp-form-hooks';
 import { createCountryOptions } from '@navikt/fp-utils';
+import { isEqualValue, isRequired } from '@navikt/fp-validation';
+import { FunctionComponent } from 'react';
+import { IntlShape, useIntl } from 'react-intl';
+
+const validateEgenNæringOrgnr =
+    (intl: IntlShape, erValgfri: boolean) =>
+    (orgnr: string | undefined): SkjemaelementFeil => {
+        const trimmedOrgNr = (orgnr || '').trim();
+
+        if (!erValgfri && !trimmedOrgNr) {
+            return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.påkrevd' });
+        }
+        if (trimmedOrgNr.length > 0 && containsWhiteSpace(trimmedOrgNr)) {
+            return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.inneholderMellomrom' });
+        }
+        if (trimmedOrgNr.length > 0 && !erGyldigNorskOrgnummer(trimmedOrgNr)) {
+            return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.ugyldigFormat' });
+        }
+
+        return undefined;
+    };
 
 interface Props {
     orgNummerErValgfritt: boolean;
@@ -13,23 +30,26 @@ interface Props {
 
 const OrgnummerEllerLand: FunctionComponent<Props> = ({ orgNummerErValgfritt, registrertINorge }) => {
     const intl = useIntl();
-    const orgNrSpm = intlUtils(intl, 'egenNæring.orgnr');
-    const orgNrLabel = orgNummerErValgfritt ? `${orgNrSpm} ${intlUtils(intl, 'valgfritt')}` : orgNrSpm;
+    const orgNrSpm = intl.formatMessage({ id: 'egenNæring.orgnr' });
+    const orgNrLabel = orgNummerErValgfritt ? `${orgNrSpm} ${intl.formatMessage({ id: 'valgfritt' })}` : orgNrSpm;
 
     return (
         <>
-            {registrertINorge ? (
+            {registrertINorge && (
                 <TextField
-                    name={EgenNæringFormField.egenNæringOrgnr}
+                    name="organisasjonsnummer"
                     label={orgNrLabel}
                     validate={[validateEgenNæringOrgnr(intl, orgNummerErValgfritt)]}
                 />
-            ) : null}
-            {registrertINorge === false ? (
+            )}
+            {registrertINorge === false && (
                 <Select
-                    name={EgenNæringFormField.egenNæringLand}
-                    label={intlUtils(intl, 'egenNæring.registrertILand')}
-                    validate={[validateEgenNæringLand(intl)]}
+                    name="registrertILand"
+                    label={intl.formatMessage({ id: 'egenNæring.registrertILand' })}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.påkrevd' })),
+                        isEqualValue(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.ikkeNorge' }), 'NO'),
+                    ]}
                 >
                     {createCountryOptions().map((o: Record<string, any>) => (
                         <option key={o[0]} value={o[0]}>
@@ -37,7 +57,7 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ orgNummerErValgfritt, re
                         </option>
                     ))}
                 </Select>
-            ) : null}
+            )}
         </>
     );
 };

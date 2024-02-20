@@ -1,5 +1,12 @@
 export { notEmpty } from './src/other/validation';
-export { isRequired, minLength, maxLength } from './src/form/generalFormValidation';
+export { isRequired, isEqualValue, hasMinLength, hasMaxLength } from './src/form/generalFormValidation';
+export {
+    isValidNumber,
+    isValidDecimal,
+    isValidInteger,
+    hasMaxValue,
+    hasMinValue,
+} from './src/form/numberFormValidation';
 export {
     erI22SvangerskapsukeEllerSenere,
     isAfterOrSameAsSixMonthsAgo,

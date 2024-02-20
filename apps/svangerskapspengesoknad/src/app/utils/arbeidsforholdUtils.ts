@@ -1,4 +1,3 @@
-import { isISODateString } from '@navikt/ds-datepicker';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';

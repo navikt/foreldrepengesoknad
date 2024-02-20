@@ -1,4 +1,3 @@
-import { isISODateString } from '@navikt/ds-datepicker';
 import { formatDate } from '@navikt/fp-utils';
 import { PeriodeMedVariasjon, TilOgMedDatoType } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
