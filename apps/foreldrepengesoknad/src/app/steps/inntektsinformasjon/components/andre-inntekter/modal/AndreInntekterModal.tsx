@@ -170,7 +170,11 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                    <Button type="submit">{intlUtils(intl, 'søknad.gåVidere')}</Button>
+                                    <Button type="submit">
+                                        {!selectedAnnenInntekt
+                                            ? intlUtils(intl, 'inntektsinformasjon.leggTilOppdrag')
+                                            : 'Lagre endringer'}
+                                    </Button>
                                 </Block>
                             </AndreInntekterModalFormComponents.Form>
                         </Modal.Body>
