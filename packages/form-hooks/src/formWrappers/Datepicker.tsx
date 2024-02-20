@@ -39,6 +39,7 @@ export interface Props {
     maxDate?: Date;
     defaultMonth?: Date;
     showMonthAndYearDropdowns?: boolean;
+    disableWeekends?: boolean;
 }
 
 const Datepicker: FunctionComponent<Props> = ({
@@ -51,6 +52,7 @@ const Datepicker: FunctionComponent<Props> = ({
     maxDate,
     defaultMonth,
     showMonthAndYearDropdowns,
+    disableWeekends,
 }): JSX.Element => {
     const {
         formState: { errors },
@@ -112,6 +114,7 @@ const Datepicker: FunctionComponent<Props> = ({
             dropdownCaption={showMonthAndYearDropdowns}
             fromDate={minDate}
             toDate={maxDate}
+            disableWeekends={disableWeekends}
         >
             <DatePicker.Input
                 {...inputProps}

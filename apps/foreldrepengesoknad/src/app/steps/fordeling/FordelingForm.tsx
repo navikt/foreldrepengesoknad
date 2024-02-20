@@ -54,8 +54,9 @@ const FordelingForm: React.FunctionComponent<Props> = ({
                     erFarEllerMedmor={erFarEllerMedmor}
                     førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
                 />
+
+                <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
             </VStack>
-            <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
         </Form>
     );
 };

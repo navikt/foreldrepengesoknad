@@ -63,6 +63,7 @@ const OppstartDatoInput = () => {
             minDate={minDato}
             maxDate={maksDato}
             defaultMonth={defaultDate}
+            disableWeekends={true}
             validate={[
                 isRequired(intlUtils(intl, 'fordeling.oppstartDato.måOppgis')),
                 isValidDate(intlUtils(intl, 'fordeling.oppstartDato.gyldig')),
