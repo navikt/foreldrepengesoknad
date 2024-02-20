@@ -189,10 +189,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                         ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
                     />
                 </OppsummeringIndex.Punkt>
-                <OppsummeringIndex.Punkt
-                    hide={vedlegg !== undefined}
-                    tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}
-                >
+                <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.dokumentasjon' })}>
                     <DokumentasjonOppsummering vedlegg={vedlegg!} />
                 </OppsummeringIndex.Punkt>
             </OppsummeringIndex>

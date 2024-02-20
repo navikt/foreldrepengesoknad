@@ -43,53 +43,53 @@ const getTidsperiodeString = (tidsperioder: Tidsperiode[]) => {
     return periodeString;
 };
 
-export const getDokumentasjonStringAndreInntekter = (attachments: Attachment[], _intl: IntlShape) => {
+export const getDokumentasjonStringAndreInntekter = (attachments: Attachment[], intl: IntlShape) => {
     const singleAttachment = attachments[0];
 
     if (isEtterlønnVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på etterlønn må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.etterlønn.sendSenere');
         }
 
-        return 'Dokumentasjon av etterlønn';
+        return intlUtils(intl, 'oppsummering.dokumentasjon.etterlønn');
     }
 
     if (isMilitærVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på militær må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.militær.sendSenere');
         }
 
-        return 'Dokumentasjon av militær';
+        return intlUtils(intl, 'oppsummering.dokumentasjon.militær');
     }
 
     return 'Dokumentasjon av andre inntekter';
 };
 
-export const getDokumentasjonStringBarn = (attachments: Attachment[], _intl: IntlShape) => {
+export const getDokumentasjonStringBarn = (attachments: Attachment[], intl: IntlShape) => {
     const singleAttachment = attachments[0];
 
     if (isOmsorgsovertakelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på overtakelse av omsorg må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.overtakelseAvOmsorg.sendSenere');
         }
 
-        return 'Dokumentasjon av overtakelse av omsorg';
+        return intlUtils(intl, 'oppsummering.dokumentasjon.overtakelseAvOmsorg');
     }
 
     if (isAleneOmOmsorgVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at du er alene om omsorgen må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.aleneOmOmsorg.sendSenere');
         }
 
-        return 'Dokumentasjon av alene om omsorg';
+        return intlUtils(intl, 'oppsummering.dokumentasjon.aleneOmOmsorg');
     }
 
     if (isTerminbekreftelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på terminbekreftelse må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.terminbekreftelse.sendSenere');
         }
 
-        return 'Dokumentasjon av terminbekreftelse';
+        return intlUtils(intl, 'oppsummering.dokumentasjon.terminbekreftelse');
     }
 
     return '';
@@ -101,7 +101,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isIntroduksjonsprogramVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på introduksjonsprogram må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.introduksjonsprogram.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.introduksjonsprogram', {
@@ -112,7 +112,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isKvalifiseringsprogramVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på kvalifiseringsprogram må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.kvalifiseringsprogram.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.kvalifiseringsprogram', {
@@ -123,7 +123,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isMorInnleggelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at mor er innlagt må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morInnlagt.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morInnlagt', {
@@ -134,7 +134,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isBarnInnleggelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at barnet er innlagt må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.barnInnlagt.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.barnInnlagt', {
@@ -145,7 +145,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isFarInnleggelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at far er innlagt må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farInnlagt.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farInnlagt', {
@@ -156,7 +156,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isMorForSykVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at mor er for syk må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morForSyk.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morForSyk', {
@@ -167,7 +167,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isFarForSykVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at far er for syk må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farForSyk.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farForSyk', {
@@ -178,7 +178,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isMorJobberVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at mor jobber må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobber.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobber', {
@@ -189,7 +189,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isMorStudererVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at mor studerer må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morStuderer.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morStuderer', {
@@ -200,7 +200,7 @@ export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: 
 
     if (isMorJobberOgStudererVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return 'Dokumentasjon på at mor jobber og er i studier må sendes inn senere';
+            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobberOgStuderer.sendSenere');
         }
 
         return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobberOgStuderer', {
