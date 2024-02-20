@@ -1,7 +1,6 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formatDate } from '@navikt/fp-utils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import {
     PeriodeMedVariasjon,
     TilOgMedDatoType,
@@ -109,7 +108,7 @@ const getNesteDagEtterSistePeriode = (
         });
 
     const maxTomDato = alleTomDatoer.length > 0 ? dayjs.max(alleTomDatoer) : undefined;
-    return maxTomDato ? dateToISOString(maxTomDato.add(1, 'd').toDate()) : '';
+    return maxTomDato ? maxTomDato.add(1, 'd').format(ISO_DATE_FORMAT) : '';
 };
 
 export const getUferdigPeriodeInput = (

@@ -1,5 +1,4 @@
 import { getFloatFromString } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import Tilrettelegging, {
     PeriodeMedVariasjon,
     Stilling,
@@ -10,6 +9,7 @@ import Tilrettelegging, {
 } from 'app/types/Tilrettelegging';
 import dayjs from 'dayjs';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from './arbeidsforholdUtils';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const mapTilretteleggingTilPeriode = (
     tilrettelegging: Tilrettelegging,
@@ -38,7 +38,7 @@ const getPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
     return {
         type: Tilretteleggingstype.HEL,
         behovForTilretteleggingFom: sistePeriode.behovForTilretteleggingFom,
-        fom: dateToISOString(dayjs(sistePeriode.tom).add(1, 'd').toDate()),
+        fom: dayjs(sistePeriode.tom).add(1, 'd').format(ISO_DATE_FORMAT),
         tom: sisteDagForSvangerskapspenger,
         arbeidsforhold: sistePeriode.arbeidsforhold,
         risikofaktorer: sistePeriode.risikofaktorer,

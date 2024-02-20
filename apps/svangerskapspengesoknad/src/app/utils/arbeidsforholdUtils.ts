@@ -1,6 +1,5 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { Stilling } from 'app/types/Tilrettelegging';
@@ -8,6 +7,7 @@ import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
 import { hasValue } from './validationUtils';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
@@ -85,10 +85,10 @@ export const getUnikeArbeidsforhold = (
                 const alleTom = likeArbeidsforhold.map((a) => a.tom);
                 return {
                     ...arbeid,
-                    fom: dateToISOString(dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.toDate()),
+                    fom: dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.format(ISO_DATE_FORMAT),
                     tom: alleTom.includes(undefined)
                         ? undefined
-                        : dateToISOString(dayjs.max(alleTom.map((tom) => dayjs(tom)))!.toDate()),
+                        : dayjs.max(alleTom.map((tom) => dayjs(tom)))!.format(ISO_DATE_FORMAT),
                     stillinger: getStillingerForLikeArbeidsforhold(likeArbeidsforhold),
                 };
             } else {
