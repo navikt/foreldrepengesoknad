@@ -56,6 +56,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     };
 
     const formMethods = useForm<PerioderFormData>({
+        shouldUnregister: true,
         defaultValues: {
             varierendePerioder:
                 valgtTilrettelegging.varierendePerioder && valgtTilrettelegging.varierendePerioder.length > 0

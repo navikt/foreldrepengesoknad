@@ -76,6 +76,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     };
 
     const formMethods = useForm<Barn>({
+        shouldUnregister: true,
         defaultValues: barnet,
     });
 

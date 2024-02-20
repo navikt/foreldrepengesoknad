@@ -1,10 +1,95 @@
 import { isISODateString } from '@navikt/ds-datepicker';
 import { formatDate } from '@navikt/fp-utils';
 import { PeriodeMedVariasjon, TilOgMedDatoType } from 'app/types/Tilrettelegging';
+import { getFloatFromString } from 'app/utils/numberUtils';
 import { getTidsperiode, overlapperTidsperioder } from 'app/utils/tidsperiodeUtils';
-import { getSlutteTekst, hasValue } from 'app/utils/validationUtils';
+import { getSlutteTekst } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
+
+const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
+    if (!value || value.trim() === '') {
+        return intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.required' });
+    }
+    const stillingsprosent = getFloatFromString(value);
+    return stillingsprosent === undefined
+        ? intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.måVæreEtTall' })
+        : undefined;
+};
+
+export const validateStillingsprosentPåPerioder =
+    (
+        intl: IntlShape,
+        måSøkeSendeNySøknad: boolean,
+        periodeDerTilbakeIFullJobb: PeriodeMedVariasjon | undefined,
+        allePerioder: PeriodeMedVariasjon[] | undefined,
+        opprinneligStillingsProsent: number,
+    ) =>
+    (value: string) => {
+        const valideringsFeil = validerStillingsprosentInput(intl, value);
+        if (valideringsFeil) {
+            return valideringsFeil;
+        }
+        const stillingsprosent = getFloatFromString(value);
+        if (stillingsprosent && opprinneligStillingsProsent > 0 && stillingsprosent > opprinneligStillingsProsent) {
+            return intl.formatMessage(
+                { id: 'valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent' },
+                {
+                    prosent: opprinneligStillingsProsent,
+                },
+            );
+        }
+
+        if (stillingsprosent && opprinneligStillingsProsent === 0 && stillingsprosent > 100) {
+            return intl.formatMessage(
+                { id: 'valideringsfeil.stillingsprosent.måVæreMindreEllerLik100Prosent' },
+                {
+                    prosent: opprinneligStillingsProsent,
+                },
+            );
+        }
+
+        if (
+            opprinneligStillingsProsent > 0 &&
+            allePerioder &&
+            allePerioder?.every(
+                (periode) =>
+                    periode.stillingsprosent &&
+                    getFloatFromString(periode.stillingsprosent) === opprinneligStillingsProsent,
+            )
+        ) {
+            return intl.formatMessage(
+                { id: 'valideringsfeil.periode.stillingsprosent.kunFullTilrettelegging' },
+                {
+                    prosent: opprinneligStillingsProsent,
+                },
+            );
+        }
+        if (
+            opprinneligStillingsProsent === 0 &&
+            allePerioder &&
+            allePerioder?.every(
+                (periode) => periode.stillingsprosent && getFloatFromString(periode.stillingsprosent) === 100,
+            )
+        ) {
+            return intl.formatMessage(
+                { id: 'valideringsfeil.periode.stillingsprosent.kun100Prosent' },
+                {
+                    prosent: opprinneligStillingsProsent,
+                },
+            );
+        }
+
+        if (måSøkeSendeNySøknad && periodeDerTilbakeIFullJobb) {
+            return intl.formatMessage(
+                { id: 'valideringsfeil.periode.stillingsprosent.nySøknad' },
+                {
+                    fom: formatDate(periodeDerTilbakeIFullJobb.fom),
+                },
+            );
+        }
+        return undefined;
+    };
 
 export const validatePeriodeFom =
     (
@@ -19,11 +104,7 @@ export const validatePeriodeFom =
     (fom: string) => {
         const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index].tom : undefined;
         const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index].tomType : undefined;
-        if (
-            hasValue(fom) &&
-            hasValue(behovForTilretteleggingFom) &&
-            dayjs(fom).isBefore(dayjs(behovForTilretteleggingFom), 'd')
-        ) {
+        if (fom && behovForTilretteleggingFom && dayjs(fom).isBefore(dayjs(behovForTilretteleggingFom), 'd')) {
             return intl.formatMessage({ id: 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom' });
         }
 
@@ -101,14 +182,14 @@ export const validateAtPeriodeIkkeOverlapper = (
     intl: IntlShape,
     sisteDagForSvangerskapspenger: string,
 ) => {
-    if ((hasValue(tom) || hasValue(tomType)) && hasValue(fom) && allePerioder && allePerioder.length > 0) {
+    if ((tom || tomType) && fom && allePerioder && allePerioder.length > 0) {
         const andrePerioderLagtTilEtter = allePerioder.filter((_p, i) => i > index);
         const overlappendePerioder = andrePerioderLagtTilEtter.filter((p) => {
             let periodeTom = undefined;
-            if (hasValue(p.tomType) && p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
+            if (p.tomType && p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
                 periodeTom = sisteDagForSvangerskapspenger;
             }
-            if (hasValue(p.tom)) {
+            if (p.tom) {
                 periodeTom = p.tom;
             }
             if (periodeTom) {

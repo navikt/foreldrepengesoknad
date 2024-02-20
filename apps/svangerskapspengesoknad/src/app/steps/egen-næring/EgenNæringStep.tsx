@@ -100,6 +100,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
     };
 
     const formMethods = useForm<EgenNæringFormData>({
+        shouldUnregister: true,
         defaultValues: getInitialEgenNæringFormValues(egenNæring),
     });
 

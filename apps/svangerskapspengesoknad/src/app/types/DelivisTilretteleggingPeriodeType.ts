@@ -1,0 +1,4 @@
+export enum DelivisTilretteleggingPeriodeType {
+    'SAMMME_PERIODE_FREM_TIL_TERMIN' = 'SAMMME_PERIODE_FREM_TIL_TERMIN',
+    'VARIERTE_PERIODER' = 'VARIERTE_PERIODER',
+}

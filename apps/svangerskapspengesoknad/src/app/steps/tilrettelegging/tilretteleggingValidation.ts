@@ -2,7 +2,6 @@ import { isISODateString } from '@navikt/ds-datepicker';
 import { SkjemaelementFeil, formatDate, intlUtils, validateTextInputField } from '@navikt/fp-common';
 import {
     Arbeidsforholdstype,
-    PeriodeMedVariasjon,
     Stilling,
     TilOgMedDatoType,
     TilretteleggingstypeOptions,
@@ -14,7 +13,7 @@ import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue 
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-export const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
+const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     if (!hasValue(value) || value.trim() === '') {
         return intlUtils(intl, 'valideringsfeil.stillingsprosent.required');
     }
@@ -26,65 +25,6 @@ export const validerStillingsprosentInput = (intl: IntlShape, value: string) => 
 
     return undefined;
 };
-
-export const validateStillingsprosentPåPerioder =
-    (
-        intl: IntlShape,
-        måSøkeSendeNySøknad: boolean,
-        periodeDerTilbakeIFullJobb: PeriodeMedVariasjon | undefined,
-        allePerioder: PeriodeMedVariasjon[] | undefined,
-        opprinneligStillingsProsent: number,
-    ) =>
-    (value: string) => {
-        const valideringsFeil = validerStillingsprosentInput(intl, value);
-        if (valideringsFeil) {
-            return valideringsFeil;
-        }
-        const stillingsprosent = getFloatFromString(value);
-        if (stillingsprosent && opprinneligStillingsProsent > 0 && stillingsprosent > opprinneligStillingsProsent) {
-            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent', {
-                prosent: opprinneligStillingsProsent,
-            });
-        }
-
-        if (stillingsprosent && opprinneligStillingsProsent === 0 && stillingsprosent > 100) {
-            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLik100Prosent', {
-                prosent: opprinneligStillingsProsent,
-            });
-        }
-
-        if (
-            opprinneligStillingsProsent > 0 &&
-            allePerioder &&
-            allePerioder?.every(
-                (periode) =>
-                    hasValue(periode.stillingsprosent) &&
-                    getFloatFromString(periode.stillingsprosent) === opprinneligStillingsProsent,
-            )
-        ) {
-            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kunFullTilrettelegging', {
-                prosent: opprinneligStillingsProsent,
-            });
-        }
-        if (
-            opprinneligStillingsProsent === 0 &&
-            allePerioder &&
-            allePerioder?.every(
-                (periode) => hasValue(periode.stillingsprosent) && getFloatFromString(periode.stillingsprosent) === 100,
-            )
-        ) {
-            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kun100Prosent', {
-                prosent: opprinneligStillingsProsent,
-            });
-        }
-
-        if (måSøkeSendeNySøknad && periodeDerTilbakeIFullJobb) {
-            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.nySøknad', {
-                fom: formatDate(periodeDerTilbakeIFullJobb.fom),
-            });
-        }
-        return undefined;
-    };
 
 export const validateStillingsprosentEnDelvisPeriode =
     (intl: IntlShape, fom: string | undefined, stillinger: Stilling[]) => (value: string) => {
@@ -130,7 +70,7 @@ export const validateSammePeriodeFremTilTerminFom =
     (
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
-        sisteDagForSvangerskapspenger: Date,
+        sisteDagForSvangerskapspenger: string,
         tilretteleggingstype: TilretteleggingstypeOptions,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
@@ -195,7 +135,7 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
     (
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
-        sisteDagForSvangerskapspenger: Date,
+        sisteDagForSvangerskapspenger: string,
         fom: string | undefined,
         type: TilretteleggingstypeOptions,
         arbeidNavn: string,
@@ -262,8 +202,8 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
 export const validateBehovForTilretteleggingFom =
     (
         intl: IntlShape,
-        sisteDagForSvangerskapspenger: Date,
-        termindato: Date,
+        sisteDagForSvangerskapspenger: string,
+        termindato: string,
         arbeidNavn: string,
         startDatoArbeid: string,
         sluttDatoArbeid: string | undefined,
@@ -306,26 +246,17 @@ export const validateBehovForTilretteleggingFom =
         return undefined;
     };
 
-export const validateTilrettelagtArbeidType =
-    (intl: IntlShape) =>
-    (type: TilretteleggingstypeOptions): SkjemaelementFeil => {
-        if (!hasValue(type)) {
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidType.mangler');
-        }
-        return undefined;
-    };
-
 export const validerTilretteleggingTomType =
     (
         intl: IntlShape,
         tilretteleggingType: TilretteleggingstypeOptions,
         behovForTilretteleggingFom: string | undefined,
-        sisteDagForSvangerskapspenger: Date,
+        sisteDagForSvangerskapspenger: string,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
-    (value: TilOgMedDatoType): SkjemaelementFeil => {
+    (value: string | number): SkjemaelementFeil => {
         const erDelvis = tilretteleggingType === TilretteleggingstypeOptions.DELVIS;
         if (!hasValue(value)) {
             if (erDelvis) {
@@ -355,15 +286,6 @@ export const validerTilretteleggingTomType =
                       slutteTekst,
                       navn: arbeidNavn,
                   });
-        }
-        return undefined;
-    };
-
-export const validateTilretteleggingPeriodetype =
-    (intl: IntlShape) =>
-    (type: TilretteleggingstypeOptions): SkjemaelementFeil => {
-        if (!hasValue(type)) {
-            return intlUtils(intl, 'valideringsfeil.tilretteleggingPeriodeType.mangler');
         }
         return undefined;
     };

@@ -2,6 +2,7 @@ import { assertUnreachable } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { ContextDataType, useContextGetData } from 'app/context/SvpDataContext';
 import SøknadRoutes from 'app/routes/routes';
+import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 import { egenNæringId } from 'app/types/EgenNæring';
 import { frilansId } from 'app/types/Frilans';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
@@ -9,10 +10,6 @@ import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrette
 import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
-import {
-    DelivisTilretteleggingPeriodeType,
-    TilretteleggingFormData,
-} from './tilrettelegging/tilretteleggingStepFormConfig';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -351,25 +348,6 @@ export const getNesteTilretteleggingId = (
         return undefined;
     }
     return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-};
-
-export const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
-    values: Partial<TilretteleggingFormData>,
-    tilrettelegging: Tilrettelegging[],
-    currentTilretteleggingId: string,
-): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
-    if (
-        values.tilretteleggingType === TilretteleggingstypeOptions.DELVIS &&
-        values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
-    ) {
-        return { nextRoute: SøknadRoutes.PERIODER, nextTilretteleggingId: currentTilretteleggingId };
-    }
-
-    const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegging, currentTilretteleggingId);
-    if (nesteTilretteleggingId) {
-        return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: nesteTilretteleggingId };
-    }
-    return { nextRoute: SøknadRoutes.OPPSUMMERING };
 };
 
 export const getNextRouteValgAvArbeidEllerSkjema = (

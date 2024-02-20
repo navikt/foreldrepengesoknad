@@ -2,10 +2,10 @@ import { Block, ISOStringToDate, bemUtils, formatDate } from '@navikt/fp-common'
 import { EgenNæring } from 'app/types/EgenNæring';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
 import './egen-næring-visning.css';
 import { BodyShort } from '@navikt/ds-react';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
+import { getCountryName } from '@navikt/fp-utils';
 
 interface Props {
     næring: EgenNæring;

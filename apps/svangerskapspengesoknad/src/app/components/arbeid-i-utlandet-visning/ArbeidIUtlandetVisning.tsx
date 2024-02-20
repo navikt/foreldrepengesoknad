@@ -1,11 +1,11 @@
 import { PencilWritingIcon, TrashIcon } from '@navikt/aksel-icons';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { Block, bemUtils, formatDate } from '@navikt/fp-common';
-import { getCountryName } from '@navikt/sif-common-formik-ds/lib';
 import { ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import './arbeid-i-utlandet-visning.css';
+import { getCountryName } from '@navikt/fp-utils';
 
 interface Props {
     arbeidIUtlandet: ArbeidIUtlandetInput;

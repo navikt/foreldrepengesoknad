@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
 import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import PerioderStep from './PerioderStep';
-import { DelivisTilretteleggingPeriodeType } from '../tilrettelegging/tilretteleggingStepFormConfig';
+import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 
 const defaultExport = {
     title: 'steps/PerioderStep',

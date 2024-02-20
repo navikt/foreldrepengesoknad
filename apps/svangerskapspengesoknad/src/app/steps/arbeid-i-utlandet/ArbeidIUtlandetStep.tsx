@@ -56,6 +56,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     };
 
     const formMethods = useForm<ArbeidIUtlandet>({
+        shouldUnregister: true,
         defaultValues: arbeidIUtlandet || {
             arbeidIUtlandet: [NEW_ARBEID_I_UTLANDET],
         },
