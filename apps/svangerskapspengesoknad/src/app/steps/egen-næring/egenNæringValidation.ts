@@ -9,8 +9,9 @@ import {
     validateTextInputField,
 } from '@navikt/fp-common';
 import { erGyldigNorskOrgnummer } from '@navikt/fp-common/src/common/utils/organisasjonUtils';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { isDateAAfterDateB } from '@navikt/fp-utils';
-import { getNumberFromNumberInputValue, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
 import { date4YearsAgo, femMånederSiden } from 'app/utils/dateUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
@@ -52,7 +53,7 @@ export const validateEgenNæringTom =
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
         }
 
-        if (isDateABeforeDateB(tom, dateToISOString(femMånederSiden()))) {
+        if (isDateABeforeDateB(tom, femMånederSiden().format(ISO_DATE_FORMAT))) {
             return intlUtils(intl, 'valideringsfeil.tilOgMedDato.egenNæring.merEnn5MånederSiden');
         }
 
@@ -130,7 +131,7 @@ export const validateEgenNæringVarigEndringDato =
         if (isDateInTheFuture(endringDato)) {
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.erIFremtiden');
         }
-        if (isDateABeforeDateB(endringDato, dateToISOString(date4YearsAgo))) {
+        if (isDateABeforeDateB(endringDato, date4YearsAgo.format(ISO_DATE_FORMAT))) {
             return intlUtils(intl, 'valideringsfeil.varigEndringDato.mindreEnn4ÅrSiden');
         }
 

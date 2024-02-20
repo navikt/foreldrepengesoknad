@@ -147,7 +147,7 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
 
         oppdaterAppRoute(neste);
 
-        mellomlagreSøknadOgNaviger();
+        return mellomlagreSøknadOgNaviger();
     };
 
     const formMethods = useForm<Inntektsinformasjon>({

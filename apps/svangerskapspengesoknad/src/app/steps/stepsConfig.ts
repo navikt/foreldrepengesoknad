@@ -9,12 +9,10 @@ import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrette
 import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { IntlShape } from 'react-intl';
-import { getPeriodeSideTittel } from './perioder/perioderStepUtils';
 import {
     DelivisTilretteleggingPeriodeType,
     TilretteleggingFormData,
 } from './tilrettelegging/tilretteleggingStepFormConfig';
-import { getTilretteleggingSideTittel } from './tilrettelegging/tilretteleggingStepUtils';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';
@@ -147,7 +145,9 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
             steps.push({
                 id: `tilrettelegging-${tilrettelegging.id}`,
                 index: steps.length,
-                label: getTilretteleggingSideTittel(erFlereTilrettelegginger, intl, navn),
+                label: erFlereTilrettelegginger
+                    ? intl.formatMessage({ id: 'steps.label.periode.flere' }, { navn })
+                    : intl.formatMessage({ id: 'steps.label.periode.en' }),
             });
             if (
                 tilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
@@ -156,7 +156,9 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
                 steps.push({
                     id: `periode-${tilrettelegging.id}`,
                     index: steps.length,
-                    label: getPeriodeSideTittel(erFlereTilrettelegginger, navn, intl),
+                    label: erFlereTilrettelegginger
+                        ? intl.formatMessage({ id: 'steps.label.periode.flere' }, { navn })
+                        : intl.formatMessage({ id: 'steps.label.periode.en' }),
                 });
             }
         });

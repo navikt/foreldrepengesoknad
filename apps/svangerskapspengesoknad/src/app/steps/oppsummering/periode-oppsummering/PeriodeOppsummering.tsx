@@ -6,7 +6,7 @@ import { FunctionComponent } from 'react';
 
 interface Props {
     perioder: TilretteleggingPeriode[];
-    sisteDagForSvangerskapspenger: Date;
+    sisteDagForSvangerskapspenger: string;
     barn: Barn;
 }
 

@@ -9,13 +9,13 @@ import { IntlShape, useIntl } from 'react-intl';
 
 interface Props {
     periode: TilretteleggingPeriode;
-    sisteDagForSvangerskapspenger: Date;
+    sisteDagForSvangerskapspenger: string;
     kanHaSvpFremTilTreUkerFørTermin: boolean;
 }
 
 const getDatoText = (
     intl: IntlShape,
-    sisteDagForSvangerskapspenger: Date,
+    sisteDagForSvangerskapspenger: string,
     periode: TilretteleggingPeriode,
     kanHaSvpFremTilTreUkerFørTermin: boolean,
 ) => {
