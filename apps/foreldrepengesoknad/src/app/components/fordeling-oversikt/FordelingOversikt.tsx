@@ -65,7 +65,9 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     const erBarnetFødt = isFødtBarn(barn);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const navnAnnenForelder = erFarEllerMedmor ? navnMor : navnFarMedmor;
     const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
     const farTekst = getFarTekst(erFarEllerMedmor, navnFarMedmor, intl);
     const { dekningsgrad } = periodeMedForeldrepenger;
@@ -105,7 +107,9 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                             erFarEllerMedmor={erFarEllerMedmor}
                             navnMor={navnMor}
                             navnFarMedmor={navnFarMedmor}
+                            erFødsel={erFødsel}
                             setCurrentUthevet={setCurrentUthevet}
+                            annenForelderKunRettIEØS={annenForelderHarKunRettIEØS}
                         />
                     );
                 })}
@@ -123,7 +127,14 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                 <SammenhengendeUttakInformasjon annenForeldrerHarRett={deltUttak} />
             )}
             <Block padBottom="xl">
-                <FordelingPåvirkninger deltUttak={deltUttak} erAdopsjon={erAdopsjon} />
+                <FordelingPåvirkninger
+                    deltUttak={deltUttak}
+                    erAdopsjon={erAdopsjon}
+                    navnAnnenForelder={navnAnnenForelder}
+                    morTekst={morTekst}
+                    farTekst={farTekst}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                />
             </Block>
         </>
     );

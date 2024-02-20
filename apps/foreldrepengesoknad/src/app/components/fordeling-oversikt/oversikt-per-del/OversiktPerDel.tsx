@@ -14,6 +14,8 @@ interface Props {
     erFarEllerMedmor: boolean;
     navnMor: string;
     navnFarMedmor: string;
+    erFødsel: boolean;
+    annenForelderKunRettIEØS: boolean | undefined;
     setCurrentUthevet: Dispatch<SetStateAction<FordelingEier | undefined>>;
 }
 
@@ -23,6 +25,8 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
     erFarEllerMedmor,
     navnMor,
     navnFarMedmor,
+    erFødsel,
+    annenForelderKunRettIEØS,
     setCurrentUthevet,
 }) => {
     const intl = useIntl();
@@ -35,7 +39,15 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
         setCurrentUthevet(undefined);
     };
 
-    const tittel = getFordelingDelTittel(delInformasjon, erFarEllerMedmor, intl, navnMor, navnFarMedmor);
+    const tittel = getFordelingDelTittel(
+        delInformasjon,
+        erFarEllerMedmor,
+        intl,
+        navnMor,
+        navnFarMedmor,
+        erFødsel,
+        annenForelderKunRettIEØS,
+    );
     return (
         <VStack
             className={classNames(bem.block, bem.modifier(`${hoverClass}`))}

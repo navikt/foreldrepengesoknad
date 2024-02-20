@@ -1,4 +1,11 @@
-import { StethoscopeIcon, PersonGroupIcon, PersonPregnantIcon, BriefcaseIcon } from '@navikt/aksel-icons';
+import {
+    StethoscopeIcon,
+    PersonGroupIcon,
+    PersonPregnantIcon,
+    BriefcaseIcon,
+    BabyWrappedIcon,
+    FirstAidKitIcon,
+} from '@navikt/aksel-icons';
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
@@ -8,9 +15,20 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 interface Props {
     deltUttak: boolean;
     erAdopsjon: boolean;
+    navnAnnenForelder: string;
+    morTekst: string;
+    farTekst: string;
+    erFarEllerMedmor: boolean;
 }
 
-const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak, erAdopsjon }) => {
+const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
+    deltUttak,
+    erAdopsjon,
+    navnAnnenForelder,
+    morTekst,
+    farTekst,
+    erFarEllerMedmor,
+}) => {
     const intl = useIntl();
     const bem = bemUtils('fordeling-påvirkninger');
     const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
@@ -24,12 +42,57 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak, erA
             });
         }
     };
+    const degEllerSegMor = erFarEllerMedmor ? intlUtils(intl, 'seg') : intlUtils(intl, 'deg');
+    const duEllerDere = deltUttak ? intlUtils(intl, 'dere') : intlUtils(intl, 'du');
+    const barnetEllerBarna = deltUttak ? intlUtils(intl, 'barnet') : intlUtils(intl, 'barna');
     return (
         <ExpansionCard size="small" title-size="small" aria-label={heading} onToggle={onToggleHandler}>
             <ExpansionCard.Header>
                 <ExpansionCard.Title className={bem.element('heading')}>{heading}</ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
+                {visInfoMorSykFørsteSeksUker && (
+                    <>
+                        <Block padBottom="l">
+                            <div className={bem.element('påvirkning')}>
+                                <div className={bem.element('ikon-frame')}>
+                                    <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
+                                </div>
+                                <VStack>
+                                    <BodyShort className={bem.element('undertittel')}>
+                                        <FormattedMessage
+                                            id="fordeling.påvirkninger.barnSyk.tittel"
+                                            values={{ barnetEllerBarna }}
+                                        />
+                                    </BodyShort>
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.barnSyk.info"
+                                        values={{ morTekst, barnetEllerBarna }}
+                                    />
+                                </VStack>
+                            </div>
+                        </Block>
+                        <Block padBottom="l">
+                            <div className={bem.element('påvirkning')}>
+                                <div className={bem.element('ikon-frame')}>
+                                    <FirstAidKitIcon className={bem.element('ikon')} aria-hidden={true} />
+                                </div>
+                                <VStack>
+                                    <BodyShort className={bem.element('undertittel')}>
+                                        <FormattedMessage
+                                            id="fordeling.påvirkninger.morSykFørste6Uker.tittel"
+                                            values={{ morTekst }}
+                                        />
+                                    </BodyShort>
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.morSykFørste6Uker.info"
+                                        values={{ morTekst, farTekst, degEllerSeg: degEllerSegMor }}
+                                    />
+                                </VStack>
+                            </div>
+                        </Block>
+                    </>
+                )}
                 {deltUttak && (
                     <Block padBottom="l">
                         <div className={bem.element('påvirkning')}>
@@ -40,22 +103,10 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak, erA
                                 <BodyShort className={bem.element('undertittel')}>
                                     <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.tittel" />
                                 </BodyShort>
-                                <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.info" />
-                            </VStack>
-                        </div>
-                    </Block>
-                )}
-                {visInfoMorSykFørsteSeksUker && (
-                    <Block padBottom="l">
-                        <div className={bem.element('påvirkning')}>
-                            <div className={bem.element('ikon-frame')}>
-                                <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
-                            </div>
-                            <VStack>
-                                <BodyShort className={bem.element('undertittel')}>
-                                    <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.tittel" />
-                                </BodyShort>
-                                <FormattedMessage id="fordeling.påvirkninger.morSykFørste6Uker.info" />
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.morSykISinPeriode.info"
+                                    values={{ navnAnnenForelder }}
+                                />
                             </VStack>
                         </div>
                     </Block>
@@ -67,9 +118,9 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak, erA
                         </div>
                         <VStack>
                             <BodyShort className={bem.element('undertittel')}>
-                                <FormattedMessage id="fordeling.påvirkninger.totette.tittel" />
+                                <FormattedMessage id="fordeling.påvirkninger.totette.tittel" values={{ duEllerDere }} />
                             </BodyShort>
-                            <FormattedMessage id="fordeling.påvirkninger.totette.info" />
+                            <FormattedMessage id="fordeling.påvirkninger.totette.info" values={{ duEllerDere }} />
                         </VStack>
                     </div>
                 </Block>
@@ -101,6 +152,26 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({ deltUttak, erA
                         </div>
                     </Block>
                 )}
+
+                <Block padBottom="l">
+                    <div className={bem.element('påvirkning')}>
+                        <div className={bem.element('ikon-frame')}>
+                            <BabyWrappedIcon className={bem.element('ikon')} aria-hidden={true} />
+                        </div>
+                        <VStack>
+                            <BodyShort className={bem.element('undertittel')}>
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.prematur.tittel"
+                                    values={{ barnetEllerBarna }}
+                                />
+                            </BodyShort>
+                            <FormattedMessage
+                                id="fordeling.påvirkninger.prematur.info"
+                                values={{ barnetEllerBarna, duEllerDere }}
+                            />
+                        </VStack>
+                    </div>
+                </Block>
             </ExpansionCard.Content>
         </ExpansionCard>
     );

@@ -18,7 +18,6 @@ import {
     getVarighetString,
     intlUtils,
     isFarEllerMedmor,
-    isFødtBarn,
     uttaksConstants,
 } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
@@ -59,8 +58,19 @@ export const getFordelingDelTittel = (
     intl: IntlShape,
     navnMor: string,
     navnFarMedmor: string,
+    erFødsel: boolean,
+    harAnnenForelderKunRettIEØS: boolean | undefined,
 ): string => {
-    const varighetTekst = getVarighetString(delInfo.sumDager, intl);
+    let varighetTekst = '';
+    const navnAnnenForelder = erFarEllerMedmor ? navnMor : navnFarMedmor;
+    if (delInfo.eier === FordelingEier.Mor && erFødsel) {
+        const dagerFørFødsel = uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5;
+        const varighetUkerEtterFødsel = (delInfo.sumDager - dagerFørFødsel) / 5;
+        varighetTekst = intlUtils(intl, 'fordeling.varighet.morFødsel', { varighetUker: varighetUkerEtterFødsel });
+    } else {
+        varighetTekst = getVarighetString(delInfo.sumDager, intl);
+    }
+
     switch (delInfo.eier) {
         case FordelingEier.Mor:
             return !erFarEllerMedmor
@@ -81,7 +91,9 @@ export const getFordelingDelTittel = (
                       navn: navnFarMedmor,
                   });
         case FordelingEier.Felles:
-            return intlUtils(intl, 'fordeling.antallUkerFelles', { varighetTekst });
+            return harAnnenForelderKunRettIEØS
+                ? intlUtils(intl, 'fordeling.antallUkerFelles.eøs', { varighetTekst, navnAnnenForelder })
+                : intlUtils(intl, 'fordeling.antallUkerFelles', { varighetTekst });
     }
 };
 
@@ -273,7 +285,6 @@ const getFordelingFedrekvote = (
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     erAdopsjon: boolean,
-    erBarnetFødt: boolean,
     antallBarn: number,
     navnMor: string,
     farTekst: string,
@@ -288,15 +299,15 @@ const getFordelingFedrekvote = (
     ];
 
     if (dagerRundtFødsel > 0) {
-        const terminEllerFødsel = erBarnetFødt ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
+        const dinEllerHans = erFarEllerMedmor ? intlUtils(intl, 'din') : intlUtils(intl, 'hans');
         const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
-        const morEllerDeg = morTekst === intlUtils(intl, 'mor') ? intlUtils(intl, 'deg') : morTekst;
+        const morEllerDeg = morTekst === intlUtils(intl, 'mor') ? morTekst : intlUtils(intl, 'deg');
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', {
-                terminEllerFødsel,
                 farTekst,
                 farTekstCapitalized: capitalizeFirstLetter(farTekst),
                 morEllerDeg,
+                dinEllerHans,
             }),
         );
     }
@@ -357,8 +368,9 @@ const getFordelingMor = (
                 getFormattedMessage('fordeling.info.mor.førFødsel.kunMorFårForeldrepenger', { varighetTekst }),
             );
         } else {
+            const dinEllerSin = erFarEllerMedmor ? intlUtils(intl, 'sin') : intlUtils(intl, 'din');
             fordelingInfo.push(
-                getFormattedMessage('fordeling.info.mor.førFødsel.deltUttak', { varighetTekst, morTekst }),
+                getFormattedMessage('fordeling.info.mor.førFødsel.deltUttak', { varighetTekst, morTekst, dinEllerSin }),
             );
         }
     }
@@ -457,12 +469,13 @@ const getFordelingForeldrepengerFar = (
     erAleneOmsorg: boolean,
     erAdopsjon: boolean,
     familiehendelsesdato: Date,
-    erBarnetFødt: boolean,
     antallBarn: number,
     ekstraDagerGrunnetPrematurFødsel: number | undefined,
     farTekst: string,
     morTekst: string,
+    erFarEllerMedmor: boolean,
     intl: IntlShape,
+    annenForelderHarRettIEØS: boolean | undefined,
 ): DelInformasjon => {
     const fordelingDager = [];
     const fordelingInfo = [];
@@ -486,16 +499,26 @@ const getFordelingForeldrepengerFar = (
         fordelingInfo.push(getFormattedMessage('fordeling.info.far.utenAktivitetskrav', { varighetTekst }));
     }
     if (dagerRundtFødsel > 0) {
-        const terminEllerFødsel = erBarnetFødt ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
         const morEllerDeg = morTekst === intlUtils(intl, 'du') ? intlUtils(intl, 'deg') : morTekst;
-        fordelingInfo.push(
-            getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', {
-                terminEllerFødsel,
-                farTekst,
-                farTekstCapitalized: capitalizeFirstLetter(farTekst),
-                morEllerDeg,
-            }),
-        );
+        const dinEllerHans = erFarEllerMedmor ? intlUtils(intl, 'din') : intlUtils(intl, 'hans');
+        if (annenForelderHarRettIEØS) {
+            fordelingInfo.push(
+                getFormattedMessage('fordeling.info.farMedmor.rundtFødsel.eøs', {
+                    farTekst,
+                    farTekstCapitalized: capitalizeFirstLetter(farTekst),
+                    dinEllerHans,
+                }),
+            );
+        } else {
+            fordelingInfo.push(
+                getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', {
+                    farTekst,
+                    farTekstCapitalized: capitalizeFirstLetter(farTekst),
+                    morEllerDeg,
+                    dinEllerHans,
+                }),
+            );
+        }
     }
     if (dagerMedAktivitetskrav > 0) {
         const varighetTekst = getVarighetString(dagerMedAktivitetskrav, intl);
@@ -550,7 +573,6 @@ export const getFordelingFraKontoer = (
     uttaksplanAnnenPart?: Periode[],
 ): DelInformasjon[] => {
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
-    const erBarnetFødt = isFødtBarn(barn);
     const termindato = getTermindato(barn);
     const fødselsdato = getFødselsdato(barn);
     const antallBarn = barn.antallBarn;
@@ -637,7 +659,6 @@ export const getFordelingFraKontoer = (
             erFarEllerMedmor,
             familiehendelsesdato,
             erAdopsjon,
-            erBarnetFødt,
             antallBarn,
             annenPartNavn,
             farTekst,
@@ -664,12 +685,13 @@ export const getFordelingFraKontoer = (
                   erAleneomsorg,
                   erAdopsjon,
                   familiehendelsesdato,
-                  erBarnetFødt,
                   antallBarn,
                   ekstraDagerGrunnetPrematurFødsel,
                   farTekst,
                   morTekst,
+                  erFarEllerMedmor,
                   intl,
+                  annenPartHarKunRettIEØS,
               )
             : getFordelingMor(
                   dagerForeldrepenger,
