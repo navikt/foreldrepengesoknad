@@ -1,30 +1,29 @@
-import { FunctionComponent, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
 import { Loader } from '@navikt/ds-react';
-import { redirect, redirectToLogin } from '@navikt/fp-utils';
+import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
+import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
-import { Kvittering, LocaleNo } from '@navikt/fp-types';
-import Forside from 'app/pages/forside/Forside';
-import Barnet from 'app/steps/barnet/Barnet';
-import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
-import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
-import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
-import Oppsummering from 'app/steps/oppsummering/Oppsummering';
-import SkjemaSteg from 'app/steps/skjema/SkjemaSteg';
-import FrilansStep from 'app/steps/frilans/FrilansStep';
-import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
-import VelgArbeid from 'app/steps/velg-arbeidsforhold/VelgArbeid';
-import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
-import PerioderStep from 'app/steps/perioder/PerioderStep';
-import { Søkerinfo } from 'app/types/Søkerinfo';
-import useMellomlagreSøknad, { SvpDataMapAndMetaData } from 'app/context/useMellomlagreSøknad';
-import useAvbrytSøknad from 'app/context/useAvbrytSøknad';
-import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
-import useSendSøknad from 'app/context/useSendSøknad';
+import { redirect, redirectToLogin } from '@navikt/fp-utils';
 import Environment from 'app/Environment';
 import { ContextDataType } from 'app/context/SvpDataContext';
+import useAvbrytSøknad from 'app/context/useAvbrytSøknad';
+import useMellomlagreSøknad, { SvpDataMapAndMetaData } from 'app/context/useMellomlagreSøknad';
+import useSendSøknad from 'app/context/useSendSøknad';
+import Forside from 'app/pages/forside/Forside';
+import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
+import Barnet from 'app/steps/barnet/Barnet';
+import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
+import FrilansStep from 'app/steps/frilans/FrilansStep';
+import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
+import Oppsummering from 'app/steps/oppsummering/Oppsummering';
+import PerioderStep from 'app/steps/perioder/PerioderStep';
+import SkjemaSteg from 'app/steps/skjema/SkjemaSteg';
+import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
+import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
+import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
+import VelgArbeid from 'app/steps/velg-arbeidsforhold/VelgArbeid';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import SøknadRoutes from './routes';
 
 export const Spinner: React.FunctionComponent = () => (
@@ -61,7 +60,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.BARNET}
                 element={
                     <Barnet
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -71,7 +70,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.UTENLANDSOPPHOLD}
                 element={
                     <UtenlandsoppholdSteg
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -81,7 +80,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.HAR_BODD_I_UTLANDET}
                 element={
                     <TidligereUtenlandsoppholdSteg
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -91,7 +90,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.SKAL_BO_I_UTLANDET}
                 element={
                     <SenereUtenlandsoppholdSteg
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -101,7 +100,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.ARBEID}
                 element={
                     <Inntektsinformasjon
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -111,7 +110,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.FRILANS}
                 element={
                     <FrilansStep
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -121,7 +120,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.NÆRING}
                 element={
                     <EgenNæringStep
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -131,7 +130,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.ARBEID_I_UTLANDET}
                 element={
                     <ArbeidIUtlandetStep
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -141,7 +140,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.VELG_ARBEID}
                 element={
                     <VelgArbeid
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -151,7 +150,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.SKJEMA}
                 element={
                     <SkjemaSteg
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -161,7 +160,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.TILRETTELEGGING}
                 element={
                     <TilretteleggingStep
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -171,7 +170,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.PERIODER}
                 element={
                     <PerioderStep
-                        søkerInfo={søkerInfo}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

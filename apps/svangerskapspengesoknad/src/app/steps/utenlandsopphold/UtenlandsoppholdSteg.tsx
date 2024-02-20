@@ -1,13 +1,12 @@
-import { FormattedMessage, useIntl } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
+import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
+import { ContentWrapper } from '@navikt/fp-ui';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import { getPreviousStep, useStepConfig } from '../stepsConfig';
-import { ContentWrapper } from '@navikt/fp-ui';
-import { Utenlandsopphold } from '@navikt/fp-types';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 import SøknadRoutes from 'app/routes/routes';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { getPreviousStep, useStepConfig } from '../stepsConfig';
 
 const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
     if (values.harBoddUtenforNorgeSiste12Mnd) {
@@ -21,16 +20,16 @@ const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
 const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
-    søkerInfo,
+    arbeidsforhold,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold).map((config) => ({
+    const stepConfig = useStepConfig(intl, arbeidsforhold).map((config) => ({
         ...config,
         isSelected: config.id === 'utenlandsopphold',
     }));

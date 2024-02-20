@@ -4,7 +4,6 @@ import { notEmpty } from '@navikt/fp-validation';
 import { Step, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 import { getNextRouteForFrilans, useStepConfig } from 'app/steps/stepsConfig';
 import { FrilansFormData, FrilansFormField } from './frilansFormConfig';
 import { validateFrilansStart, validateJobberFortsattSomFrilanser } from './frilansValidation';
@@ -14,16 +13,17 @@ import { useForm } from 'react-hook-form';
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import SøknadRoutes from 'app/routes/routes';
 import { useNavigate } from 'react-router-dom';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
-const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
+const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(intl, arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
     const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const onSubmit = (values: Partial<FrilansFormData>) => {
         const harKunEtAktivtArbeid = søkerHarKunEtAktivtArbeid(
             barnet.termindato,
-            søkerInfo.arbeidsforhold,
+            arbeidsforhold,
             inntektsinformasjon.harJobbetSomFrilans,
             inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
         );
@@ -66,7 +66,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
         const { nextRoute, nextTilretteleggingId } = getNextRouteForFrilans(
             inntektsinformasjon,
             barnet.termindato,
-            søkerInfo.arbeidsforhold,
+            arbeidsforhold,
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
         oppdaterAppRoute(nextRoute);

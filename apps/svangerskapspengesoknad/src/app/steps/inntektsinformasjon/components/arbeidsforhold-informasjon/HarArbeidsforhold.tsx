@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
 import { BodyShort } from '@navikt/ds-react';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -20,7 +20,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
 
     return (
         <ul className={bem.element('arbeidsforholdList')}>
-            {arbeidsforhold.map((arbforhold: Arbeidsforhold) => (
+            {arbeidsforhold.map((arbforhold) => (
                 <li key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.tom}>
                     <div className={bem.block}>
                         <div className={bem.element('topRow')}>

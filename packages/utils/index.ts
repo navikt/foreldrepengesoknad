@@ -23,4 +23,8 @@ export {
     isDateAAfterDateB,
     isDateASameOrBeforeDateB,
     erMyndig,
+    halvannetÅrSiden,
+    etÅrSiden,
+    enMånedSiden,
+    niMånederFremITid,
 } from './src/dateUtils';

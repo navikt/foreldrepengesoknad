@@ -28,16 +28,6 @@ export type ArbeidsforholdDTO =
     | ArbeidsforholdVirksomhetDTO
     | ArbeidsforholdPrivatDTO;
 
-interface Arbeidsforhold {
-    id: string;
-    arbeidsgiverNavn: string;
-    arbeidsgiverId: string;
-    arbeidsgiverIdType: string;
-    fom: string;
-    tom?: string;
-    stillingsprosent: number;
-}
-
 export interface UnikArbeidsforhold {
     id: string;
     arbeidsgiverNavn: string;
@@ -47,5 +37,3 @@ export interface UnikArbeidsforhold {
     tom?: string;
     stillinger: Stilling[];
 }
-
-export default Arbeidsforhold;

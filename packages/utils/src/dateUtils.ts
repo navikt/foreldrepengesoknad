@@ -35,6 +35,12 @@ export const erMyndig = (fødselsdato: string) => {
     return now.diff(momentDate, 'years') >= 18;
 };
 
+export const halvannetÅrSiden = (dato: Date) =>
+    dayjs(dato).startOf('day').subtract(1, 'year').subtract(6, 'months').toDate();
+export const etÅrSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(1, 'year').add(1, 'day').toDate();
+export const enMånedSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(1, 'month').toDate();
+export const niMånederFremITid = (dato: Date) => dayjs(dato).startOf('day').add(9, 'months').toDate();
+
 const sortDateRange = (d1: Period, d2: Period) => {
     return dayjs(d1.from).isSameOrBefore(d2.from) ? -1 : 1;
 };

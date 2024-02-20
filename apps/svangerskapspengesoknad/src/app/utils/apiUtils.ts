@@ -72,11 +72,12 @@ const mapUtenlandsOppholdForInnsending = (
     };
 };
 
+// TODO (TOR) Fjern denne når endepunkt er endra til å ta i mot kun ein fødselsdato
 const mapBarnForInnsending = (barn: Barn): BarnDTO => {
     return {
         erBarnetFødt: barn.erBarnetFødt,
-        termindato: ISOStringToDate(barn.termindato)!,
-        fødselsdatoer: barn.fødselsdato ? [ISOStringToDate(barn.fødselsdato)!] : undefined,
+        termindato: barn.termindato,
+        fødselsdatoer: barn.fødselsdato ? [barn.fødselsdato] : undefined,
     };
 };
 
