@@ -1,28 +1,27 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
-import { UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { Arbeidsforhold, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import SøknadRoutes from 'app/routes/routes';
 import { getPreviousStep, useStepConfig } from '../stepsConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
-import { Søkerinfo } from 'app/types/Søkerinfo';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
 const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
-    søkerInfo,
+    arbeidsforhold,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold).map((config) => ({
+    const stepConfig = useStepConfig(intl, arbeidsforhold).map((config) => ({
         ...config,
         isSelected: config.id === 'boIUtlandetIFortid',
     }));

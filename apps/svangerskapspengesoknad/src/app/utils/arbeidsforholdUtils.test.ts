@@ -1,4 +1,4 @@
-import Arbeidsforhold from 'app/types/Arbeidsforhold';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { getTotalStillingsprosentPåSkjæringstidspunktet, getUnikeArbeidsforhold } from './arbeidsforholdUtils';
 
 describe('getUnikeArbeidsforhold', () => {

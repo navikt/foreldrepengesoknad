@@ -1,35 +1,31 @@
-import { useState } from 'react';
-import { VelgArbeidFormComponents, VelgArbeidFormData, VelgArbeidFormField } from './velgArbeidFormConfig';
-import { Block, Step, StepButtonWrapper } from '@navikt/fp-common';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { getBackLinkForVelgArbeidSteg, useStepConfig } from 'app/steps/stepsConfig';
-import { Button } from '@navikt/ds-react';
-import SøknadRoutes from 'app/routes/routes';
-import {
-    cleanupOmValgArbeidFormData,
-    getInitialVelgArbeidFormValues,
-    getOptionNavn,
-    mapArbeidsforholdToVelgArbeidOptions,
-    validateVelgArbeidIsAnswered,
-} from './velgArbeidFormUtils';
-import FlereArbeidsforholdGuidePanel from './components/guidepanel/FlereArbeidsforholdGuidePanel';
+import { Checkbox, VStack } from '@navikt/ds-react';
+import { Step } from '@navikt/fp-common';
+import { CheckboxGroup, ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Arbeidsforhold } from '@navikt/fp-types';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import { notEmpty } from '@navikt/fp-validation';
-import { Søkerinfo } from 'app/types/Søkerinfo';
+import SøknadRoutes from 'app/routes/routes';
+import { getBackLinkForVelgArbeidSteg, useStepConfig } from 'app/steps/stepsConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import BackButton from '../BackButton';
+import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+import FlereArbeidsforholdGuidePanel from './FlereArbeidsforholdGuidePanel';
+import { getOptionNavn, mapArbeidsforholdToVelgArbeidOptions } from './velgArbeidFormUtils';
+
+type VelgArbeidFormData = {
+    arbeidMedTilrettelegging: string[];
+};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    arbeidsforhold: Arbeidsforhold[];
 };
 
-const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }) => {
+const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(intl, arbeidsforhold);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const frilans = useContextGetData(ContextDataType.FRILANS);
@@ -46,80 +42,67 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const tilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegginger || [],
         inntektsinformasjon,
-        søkerInfo.arbeidsforhold,
+        arbeidsforhold,
         termindato,
         intl,
         frilans,
         egenNæring,
     );
 
-    const onSubmit = (formValues: Partial<VelgArbeidFormData>) => {
-        setIsSubmitting(true);
-
+    const onSubmit = (formValues: VelgArbeidFormData) => {
         const valgteTilrettelegginger = tilretteleggingOptions.filter((o) =>
-            formValues.arbeidMedTilrettelegging!.some((t) => t === o.id),
+            formValues.arbeidMedTilrettelegging.some((t) => t === o.id),
         );
         oppdaterTilrettelegginger(valgteTilrettelegginger);
 
         oppdaterValgtTilretteleggingId(valgteTilrettelegginger[0].id);
         oppdaterAppRoute(SøknadRoutes.SKJEMA);
 
-        mellomlagreSøknadOgNaviger();
+        return mellomlagreSøknadOgNaviger();
     };
 
-    return (
-        <VelgArbeidFormComponents.FormikWrapper
-            initialValues={getInitialVelgArbeidFormValues(tilrettelegginger)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues }) => {
-                const visInfo = formValues.arbeidMedTilrettelegging && formValues.arbeidMedTilrettelegging.length > 1;
-                return (
-                    <Step
-                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-                        activeStepId="velgArbeid"
-                        pageTitle={intl.formatMessage({ id: 'steps.label.velgArbeid' })}
-                        onCancel={avbrytSøknad}
-                        steps={stepConfig}
-                        onContinueLater={onFortsettSøknadSenere}
-                    >
-                        <VelgArbeidFormComponents.Form
-                            includeButtons={false}
-                            includeValidationSummary={true}
-                            cleanup={(values) => cleanupOmValgArbeidFormData(values, tilretteleggingOptions)}
-                        >
-                            <Block padBottom="l">
-                                <VelgArbeidFormComponents.CheckboxGroup
-                                    name={VelgArbeidFormField.arbeidMedTilrettelegging}
-                                    legend={intl.formatMessage({ id: 'velgArbeid.hvor' })}
-                                    checkboxes={tilretteleggingOptions.map((option) => ({
-                                        label: getOptionNavn(
-                                            option.arbeidsforhold.type,
-                                            option.arbeidsforhold.navn,
-                                            intl,
-                                        ),
-                                        value: option.id,
-                                    }))}
-                                    validate={(value) => validateVelgArbeidIsAnswered(value, intl)}
-                                />
-                            </Block>
-                            {visInfo && <FlereArbeidsforholdGuidePanel />}
+    const formMethods = useForm<VelgArbeidFormData>({
+        defaultValues: {
+            arbeidMedTilrettelegging: tilrettelegginger ? tilrettelegginger.map((t) => t.id) : undefined,
+        },
+    });
 
-                            <Block padBottom="l">
-                                <StepButtonWrapper>
-                                    <BackButton
-                                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                        route={getBackLinkForVelgArbeidSteg(inntektsinformasjon)}
-                                    />
-                                    <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                        <FormattedMessage id="søknad.gåVidere" />
-                                    </Button>
-                                </StepButtonWrapper>
-                            </Block>
-                        </VelgArbeidFormComponents.Form>
-                    </Step>
-                );
-            }}
-        />
+    const arbeidMedTilrettelegging = formMethods.watch('arbeidMedTilrettelegging');
+    const visInfo = arbeidMedTilrettelegging && arbeidMedTilrettelegging.length > 1;
+
+    return (
+        <Step
+            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
+            activeStepId="velgArbeid"
+            pageTitle={intl.formatMessage({ id: 'steps.label.velgArbeid' })}
+            onCancel={avbrytSøknad}
+            steps={stepConfig}
+            onContinueLater={onFortsettSøknadSenere}
+        >
+            <Form formMethods={formMethods} onSubmit={onSubmit}>
+                <VStack gap="10">
+                    <ErrorSummaryHookForm />
+                    <CheckboxGroup
+                        name="arbeidMedTilrettelegging"
+                        label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
+                        validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' }))]}
+                    >
+                        {tilretteleggingOptions.map((option) => (
+                            <Checkbox key={option.id} value={option.id}>
+                                {getOptionNavn(option.arbeidsforhold.type, option.arbeidsforhold.navn, intl)}
+                            </Checkbox>
+                        ))}
+                    </CheckboxGroup>
+                    {visInfo && <FlereArbeidsforholdGuidePanel />}
+                    <StepButtonsHookForm
+                        goToPreviousStep={() => {
+                            oppdaterAppRoute(getBackLinkForVelgArbeidSteg(inntektsinformasjon));
+                            mellomlagreSøknadOgNaviger();
+                        }}
+                    />
+                </VStack>
+            </Form>
+        </Step>
     );
 };
 
