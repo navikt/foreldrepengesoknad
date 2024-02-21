@@ -30,7 +30,7 @@ const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const varighetTekst = getVarighetString(flerbarnsDager, intl);
     const barnTekst = getBarnTekst(antallBarn, erAdopsjon, intl);
-    const fødtEllerAdoptert = erAdopsjon ? intlUtils(intl, 'adoptert') : intlUtils(intl, 'født');
+    const fåttEllerAdoptert = erAdopsjon ? intlUtils(intl, 'adoptert') : intlUtils(intl, 'fått');
     return (
         <Block padBottom="l">
             <Alert variant="info">
@@ -39,7 +39,7 @@ const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
                     values={{
                         varighetTekst,
                         barnTekst,
-                        fødtEllerAdoptert,
+                        fåttEllerAdoptert,
                         morTekst,
                         farTekst,
                     }}

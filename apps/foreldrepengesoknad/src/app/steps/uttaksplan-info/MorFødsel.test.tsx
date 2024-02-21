@@ -25,7 +25,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
     it('skal vise info om at stønadsperioden er forlenget når en har prematur fødsel', async () => {
         render(<MorDeltUttakPrematurFødselDekningsgrad100 />);
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('18 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('15 + 3 uker til deg')).toBeInTheDocument();
         expect(screen.getByText('25 uker og 2 dager kan deles, fellesperiode')).toBeInTheDocument();
         expect(
             screen.getByText('av disse er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33.', {
@@ -47,7 +47,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('Din del')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('Espens del')).toBeInTheDocument();
-        expect(screen.getByText('18 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('15 + 3 uker til deg')).toBeInTheDocument();
         expect(screen.getByText('16 uker kan deles, fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('15 uker til Espen')).toBeInTheDocument();
 
@@ -87,12 +87,12 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('Din del')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('Espens del')).toBeInTheDocument();
-        expect(screen.getByText('18 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('15 + 3 uker til deg')).toBeInTheDocument();
         expect(screen.getByText('33 uker kan deles, fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('15 uker til Espen')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Av ukene deres har dere 17 uker hvor dere kan ta foreldrepenger samtidig fordi dere har fått tvillinger',
+                'Dere kan velge om dere vil ha foreldrepenger samtidig i opp til 17 uker fordi dere har fått tvillinger',
                 { exact: false },
             ),
         ).toBeInTheDocument();

@@ -152,7 +152,6 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                         </div>
                     </Block>
                 )}
-
                 <Block padBottom="l">
                     <div className={bem.element('påvirkning')}>
                         <div className={bem.element('ikon-frame')}>
