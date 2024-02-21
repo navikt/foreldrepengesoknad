@@ -1,6 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import ArbeidIUtlandetStep from '../arbeid-i-utlandet/ArbeidIUtlandetStep';
 import ArbeidIUtlandet from './ArbeidIUtlandetStep';
 

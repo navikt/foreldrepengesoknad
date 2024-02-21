@@ -11,9 +11,9 @@ import {
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
-import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import Bedriftsbanner from '../Bedriftsbanner';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import Tilrettelegging, {
     Arbeidsforholdstype,
     TilOgMedDatoType,

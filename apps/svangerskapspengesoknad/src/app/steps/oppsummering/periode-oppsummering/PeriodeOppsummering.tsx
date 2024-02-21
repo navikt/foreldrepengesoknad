@@ -1,4 +1,4 @@
-import PeriodeVisning from 'app/components/periode-visning/PeriodeVisning';
+import PeriodeVisning from './PeriodeVisning';
 import { Barn } from 'app/types/Barn';
 import { TilretteleggingPeriode } from 'app/types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'app/utils/dateUtils';

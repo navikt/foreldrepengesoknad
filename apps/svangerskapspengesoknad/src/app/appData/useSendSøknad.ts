@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/browser';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
 import { getSøknadForInnsending } from 'app/utils/apiUtils';
-import Environment from 'app/Environment';
+import Environment from './Environment';
 import { FEIL_VED_INNSENDING } from 'app/utils/errorUtils';
 import { useContextGetAnyData } from './SvpDataContext';
 

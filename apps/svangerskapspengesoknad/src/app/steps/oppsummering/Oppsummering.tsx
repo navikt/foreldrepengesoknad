@@ -8,29 +8,29 @@ import {
 } from '@navikt/fp-oppsummering';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import ArbeidIUtlandetVisning from 'app/components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
-import EgenNæringVisning from 'app/components/egen-næring-visning/EgenNæringVisning';
-import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import FrilansVisning from './frilans-visning/FrilansVisning';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 import {
     Utenlandsopphold as Opphold,
     UtenlandsoppholdSenere as SenereOpphold,
     UtenlandsoppholdTidligere as TidligereOpphold,
 } from 'app/types/Utenlandsopphold';
+import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 import { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getBackLinkAndIdForOppsummeringSteg, useStepConfig } from '../stepsConfig';
+import ArbeidIUtlandetVisning from './arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
+import EgenNæringVisning from './egen-næring-visning/EgenNæringVisning';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
 
-import './oppsummering.css';
 import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import './oppsummering.css';
 
 // TODO (TOR) Bruk same typar i dei forskjellige appane
 const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({

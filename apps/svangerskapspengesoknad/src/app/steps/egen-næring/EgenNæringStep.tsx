@@ -21,7 +21,7 @@ import {
     isValidNumber,
     notEmpty,
 } from '@navikt/fp-validation';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
 import { EgenNæring, Næringstype } from 'app/types/EgenNæring';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';

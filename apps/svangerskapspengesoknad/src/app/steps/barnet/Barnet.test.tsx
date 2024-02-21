@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './Barnet.stories';
 import dayjs from 'dayjs';
-import { ContextDataType } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const { Default } = composeStories(stories);

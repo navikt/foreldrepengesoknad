@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import InntektsinformasjonSteg from './InntektsinformasjonSteg';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 const defaultExport = {

@@ -1,5 +1,5 @@
 import { createContext, useReducer, FunctionComponent, ReactNode, useContext } from 'react';
-import SøknadRoutes from 'app/routes/routes';
+import SøknadRoutes from './routes';
 import { Barn } from 'app/types/Barn';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'app/types/Utenlandsopphold';
 import Tilrettelegging from 'app/types/Tilrettelegging';

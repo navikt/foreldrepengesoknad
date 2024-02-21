@@ -12,13 +12,13 @@ import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Environment from 'app/Environment';
-import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import Environment from 'app/appData/Environment';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
+import Bedriftsbanner from '../Bedriftsbanner';
 import { getBackLinkForSkjemaSteg, useStepConfig } from '../stepsConfig';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';

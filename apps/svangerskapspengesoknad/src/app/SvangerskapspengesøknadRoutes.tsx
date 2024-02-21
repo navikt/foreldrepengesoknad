@@ -3,11 +3,11 @@ import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
 import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect, redirectToLogin } from '@navikt/fp-utils';
-import Environment from 'app/Environment';
-import { ContextDataType } from 'app/context/SvpDataContext';
-import useAvbrytSøknad from 'app/context/useAvbrytSøknad';
-import useMellomlagreSøknad, { SvpDataMapAndMetaData } from 'app/context/useMellomlagreSøknad';
-import useSendSøknad from 'app/context/useSendSøknad';
+import Environment from 'app/appData/Environment';
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import useAvbrytSøknad from 'app/appData/useAvbrytSøknad';
+import useMellomlagreSøknad, { SvpDataMapAndMetaData } from 'app/appData/useMellomlagreSøknad';
+import useSendSøknad from 'app/appData/useSendSøknad';
 import Forside from 'app/pages/forside/Forside';
 import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
 import Barnet from 'app/steps/barnet/Barnet';
@@ -24,7 +24,7 @@ import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/T
 import VelgArbeid from 'app/steps/velg-arbeidsforhold/VelgArbeid';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import SøknadRoutes from './routes';
+import SøknadRoutes from './appData/routes';
 
 export const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>

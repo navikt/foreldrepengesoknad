@@ -1,7 +1,7 @@
 import { assertUnreachable } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { ContextDataType, useContextGetData } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { ContextDataType, useContextGetData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 import { egenNæringId } from 'app/types/EgenNæring';
 import { frilansId } from 'app/types/Frilans';

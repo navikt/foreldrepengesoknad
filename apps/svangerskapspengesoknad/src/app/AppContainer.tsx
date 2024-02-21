@@ -9,7 +9,7 @@ import { shouldChangeBrowser } from './utils/browserUtils';
 import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
-import { svpApi } from './routes/SvangerskapspengesøknadRoutes';
+import { svpApi } from './SvangerskapspengesøknadRoutes';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 

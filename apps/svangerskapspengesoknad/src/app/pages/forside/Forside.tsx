@@ -5,10 +5,10 @@ import { LanguageToggle, bemUtils } from '@navikt/fp-common';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { LocaleNo } from '@navikt/fp-types';
 import { links } from '@navikt/fp-constants';
+import { ContextDataType, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import './forside.css';
-import { ContextDataType, useContextSaveData } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 
 export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;

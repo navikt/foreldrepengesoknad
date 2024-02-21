@@ -3,8 +3,8 @@ import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
 import userEvent from '@testing-library/user-event';
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
-import SøknadRoutes from 'app/routes/routes';
-import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import { ContextDataType } from 'app/appData/SvpDataContext';
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const { Default } = composeStories(stories);

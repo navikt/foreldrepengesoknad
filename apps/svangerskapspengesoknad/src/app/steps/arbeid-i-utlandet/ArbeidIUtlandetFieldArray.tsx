@@ -11,7 +11,6 @@ import {
     isValidDate,
     hasMaxLength,
 } from '@navikt/fp-validation';
-import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { femMånederSidenDayjs } from 'app/utils/dateUtils';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
@@ -20,6 +19,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import './arbeidIUtlandet.css';
+import { HorizontalLine } from '@navikt/fp-ui';
 
 export const NEW_ARBEID_I_UTLANDET = {
     fom: '',

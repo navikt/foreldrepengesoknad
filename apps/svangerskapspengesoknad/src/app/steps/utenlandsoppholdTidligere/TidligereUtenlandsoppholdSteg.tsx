@@ -4,9 +4,9 @@ import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { Arbeidsforhold, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import SøknadRoutes from 'app/routes/routes';
+import SøknadRoutes from 'app/appData/routes';
 import { getPreviousStep, useStepConfig } from '../stepsConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {

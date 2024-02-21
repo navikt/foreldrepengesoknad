@@ -1,6 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import Oppsummering from './Oppsummering';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';

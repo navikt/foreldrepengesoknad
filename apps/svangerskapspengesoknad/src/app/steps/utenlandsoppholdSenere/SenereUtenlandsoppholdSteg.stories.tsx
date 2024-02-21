@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
-import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
+import { Action, SvpDataContext, ContextDataType } from 'app/appData/SvpDataContext';
 import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 
 const promiseAction =

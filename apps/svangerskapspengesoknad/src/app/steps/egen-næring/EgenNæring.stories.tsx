@@ -1,7 +1,7 @@
 import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import EgenNæringStep from './EgenNæringStep';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';

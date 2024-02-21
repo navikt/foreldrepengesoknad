@@ -2,8 +2,8 @@ import '@navikt/ds-css';
 import MockAdapter from 'axios-mock-adapter';
 import AppContainer from 'app/AppContainer';
 import { StoryFn } from '@storybook/react';
-import { svpApi } from './routes/SvangerskapspengesøknadRoutes';
-import { SvpDataMapAndMetaData } from './context/useMellomlagreSøknad';
+import { svpApi } from './SvangerskapspengesøknadRoutes';
+import { SvpDataMapAndMetaData } from './appData/useMellomlagreSøknad';
 import { attachmentApi } from '@navikt/fp-api';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
 

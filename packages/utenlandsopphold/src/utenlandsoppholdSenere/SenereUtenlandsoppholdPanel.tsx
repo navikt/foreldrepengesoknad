@@ -9,6 +9,7 @@ import { StepConfig, UtenlandsoppholdPeriode, UtenlandsoppholdSenere } from '@na
 
 import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
 import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
+import { HorizontalLine } from '../../../ui';
 
 const DEFAULT_PERIODE = {
     fom: '',
@@ -62,7 +63,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                             {fields.map((field, index) => (
                                 <Fragment key={field.id}>
                                     <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={remove} />
-                                    {fields.length > 1 && <hr style={{ width: '100%' }} color="#99C4DD" />}
+                                    {fields.length > 1 && <HorizontalLine />}
                                 </Fragment>
                             ))}
                             <Button

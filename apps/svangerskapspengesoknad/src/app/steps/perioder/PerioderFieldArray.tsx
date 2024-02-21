@@ -3,7 +3,6 @@ import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack
 import { bemUtils } from '@navikt/fp-common';
 import { Datepicker, RadioGroup, TextField } from '@navikt/fp-form-hooks';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
-import HorizontalLine from 'app/components/horizontal-line/HorizontalLine';
 import { Barn } from 'app/types/Barn';
 import Tilrettelegging, {
     PeriodeMedVariasjon,
@@ -30,6 +29,7 @@ import {
     validateStillingsprosentPåPerioder,
 } from './perioderValidation';
 import './perioderFieldArray.css';
+import { HorizontalLine } from '@navikt/fp-ui';
 
 export type PerioderFormData = {
     varierendePerioder: PeriodeMedVariasjon[];

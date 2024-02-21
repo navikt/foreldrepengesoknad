@@ -5,14 +5,10 @@ import { Umyndig } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { useIntl } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
-import { SvpDataContext } from './context/SvpDataContext';
-import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './context/useMellomlagreSøknad';
+import { SvpDataContext } from './appData/SvpDataContext';
+import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './appData/useMellomlagreSøknad';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
-import SvangerskapspengesøknadRoutes, {
-    ApiErrorHandler,
-    Spinner,
-    svpApi,
-} from './routes/SvangerskapspengesøknadRoutes';
+import SvangerskapspengesøknadRoutes, { ApiErrorHandler, Spinner, svpApi } from './SvangerskapspengesøknadRoutes';
 
 import './styles/app.css';
 
