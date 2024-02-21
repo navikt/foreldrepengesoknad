@@ -9,6 +9,7 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
+        "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "dayjs": "^1.11.10",
         "detect-browser": "^5.3.0",

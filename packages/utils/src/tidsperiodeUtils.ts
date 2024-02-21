@@ -9,10 +9,3 @@ export const overlapperTidsperioder = (t1: Tidsperiode, t2: Tidsperiode) => {
         dayjs(t2.tom).isBetween(t1.fom, t1.tom, 'day', '[]')
     );
 };
-
-export const getTidsperiode = (fom: string, tom: string): Tidsperiode => {
-    return {
-        fom,
-        tom,
-    };
-};

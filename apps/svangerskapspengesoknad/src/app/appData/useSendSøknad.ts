@@ -3,10 +3,12 @@ import { AxiosInstance } from 'axios';
 import * as Sentry from '@sentry/browser';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
-import { getSøknadForInnsending } from 'app/utils/apiUtils';
+import { getSøknadForInnsending } from './getSøknadForInnsending';
 import Environment from './Environment';
-import { FEIL_VED_INNSENDING } from 'app/utils/errorUtils';
 import { useContextGetAnyData } from './SvpDataContext';
+
+export const FEIL_VED_INNSENDING =
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
 const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvittering) => void, locale: LocaleNo) => {
     const hentData = useContextGetAnyData();

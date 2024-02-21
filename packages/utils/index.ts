@@ -7,7 +7,9 @@ export {
     getLocaleKey,
 } from './src/countryUtils';
 export { openPdfPreview } from './src/pdfUtils';
+export { shouldChangeBrowser } from './src/browserUtils';
 export { omitOne, omitMany } from './src/objectUtils';
+export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect, redirectToLogin } from './src/loginUtils';
 export {
     formatDate,

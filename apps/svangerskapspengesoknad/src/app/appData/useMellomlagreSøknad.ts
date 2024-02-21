@@ -4,10 +4,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/fp-api';
-import { FEIL_VED_INNSENDING } from 'app/utils/errorUtils';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
 export const VERSJON_MELLOMLAGRING = 2;
+
+const FEIL_VED_INNSENDING =
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
 export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo } & ContextDataMap;
 

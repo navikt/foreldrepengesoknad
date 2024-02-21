@@ -115,7 +115,7 @@ const mappedTilretteleggingMedVarierendePerioder = (
     return allePerioder;
 };
 
-export const sorterTilretteleggingsperioder = (
+const sorterTilretteleggingsperioder = (
     p1: TilretteleggingPeriode | PeriodeMedVariasjon,
     p2: TilretteleggingPeriode | PeriodeMedVariasjon,
 ) => {

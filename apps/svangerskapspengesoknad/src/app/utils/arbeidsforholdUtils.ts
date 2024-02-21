@@ -48,7 +48,7 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
     return 100;
 };
 
-export const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]): Stilling[] => {
+const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]): Stilling[] => {
     const perioderMedStillingsprosent = likeArbeidsforhold.map((p) => {
         return {
             fom: p.fom,

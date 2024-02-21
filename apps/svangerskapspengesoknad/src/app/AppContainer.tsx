@@ -5,11 +5,11 @@ import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStora
 import { LocaleNo } from '@navikt/fp-types';
 import { deleteData } from '@navikt/fp-api';
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
-import { shouldChangeBrowser } from './utils/browserUtils';
 import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 import { svpApi } from './SvangerskapspengesøknadRoutes';
+import { shouldChangeBrowser } from '@navikt/fp-utils';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 

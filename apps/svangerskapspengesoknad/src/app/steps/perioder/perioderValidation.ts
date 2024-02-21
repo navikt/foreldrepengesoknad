@@ -1,7 +1,6 @@
-import { formatDate } from '@navikt/fp-utils';
+import { formatDate, overlapperTidsperioder } from '@navikt/fp-utils';
 import { PeriodeMedVariasjon, TilOgMedDatoType } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
-import { getTidsperiode, overlapperTidsperioder } from 'app/utils/tidsperiodeUtils';
 import { getSlutteTekst } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
@@ -193,8 +192,8 @@ export const validateAtPeriodeIkkeOverlapper = (
             }
             if (periodeTom) {
                 return overlapperTidsperioder(
-                    getTidsperiode(fom!, tom || sisteDagForSvangerskapspenger),
-                    getTidsperiode(p.fom, periodeTom),
+                    { fom: fom!, tom: tom || sisteDagForSvangerskapspenger },
+                    { fom: p.fom, tom: periodeTom },
                 );
             }
             return false;

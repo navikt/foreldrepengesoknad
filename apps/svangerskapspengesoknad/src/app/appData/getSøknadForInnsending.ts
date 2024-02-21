@@ -32,8 +32,8 @@ import {
     UtenlandsoppholdTidligere,
 } from 'app/types/Utenlandsopphold';
 
-import { date4YearsAgo, getSisteDagForSvangerskapspenger } from './dateUtils';
-import { mapTilretteleggingTilPerioder } from './tilretteleggingUtils';
+import { date4YearsAgo, getSisteDagForSvangerskapspenger } from '../utils/dateUtils';
+import { mapTilretteleggingTilPerioder } from '../utils/tilretteleggingUtils';
 
 const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegging): ArbeidsforholdDTO => {
     if (
