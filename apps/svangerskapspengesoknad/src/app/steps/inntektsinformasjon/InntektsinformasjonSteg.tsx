@@ -11,7 +11,7 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import BackButton from '../BackButton';
+import BackButton from './BackButton';
 import { getBackLinkForArbeidSteg, useStepConfig } from '../stepsConfig';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';

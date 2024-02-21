@@ -7,8 +7,12 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import './egen-næring-visning.css';
+import { isStringAValidDate } from '@navikt/fp-validation';
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
+    if (!isStringAValidDate(oppstartsdato)) {
+        return true;
+    }
     return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
 };
 

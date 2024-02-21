@@ -14,7 +14,6 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
-import { FrilansFormData } from './frilansFormConfig';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -106,7 +105,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                             <FormattedMessage id="frilans.jobberFremdelesSomFrilans.nei" />
                         </Radio>
                     </RadioGroup>
-                    <StepButtonsHookForm<FrilansFormData>
+                    <StepButtonsHookForm
                         goToPreviousStep={() => {
                             oppdaterAppRoute(SøknadRoutes.ARBEID);
                             navigate(SøknadRoutes.ARBEID);

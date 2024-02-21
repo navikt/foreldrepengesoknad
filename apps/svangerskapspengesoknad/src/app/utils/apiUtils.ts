@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 import { ISOStringToDate } from '@navikt/fp-common';
 import { AttachmentMetadataType, LocaleNo } from '@navikt/fp-types';
-import { notEmpty } from '@navikt/fp-validation';
+import { isStringAValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from 'app/context/SvpDataContext';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO, ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
@@ -141,7 +141,7 @@ const mapTilretteleggingerForInnsending = (
 };
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
-    if (!oppstartsdato) {
+    if (!isStringAValidDate(oppstartsdato)) {
         return true;
     }
 

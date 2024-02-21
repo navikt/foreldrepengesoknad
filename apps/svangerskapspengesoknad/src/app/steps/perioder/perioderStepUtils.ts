@@ -11,6 +11,7 @@ import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { PerioderFormData } from './PerioderFieldArray';
+import { isStringAValidDate } from '@navikt/fp-validation';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,
@@ -67,7 +68,7 @@ export const getPeriodeDerSøkerErTilbakeIFullStilling = (
 };
 
 export const getMinDatoTom = (fom: string | undefined, minDatoFom: Date): Date => {
-    return fom ? dayjs(fom).toDate() : minDatoFom;
+    return fom && isStringAValidDate(fom) ? dayjs(fom).toDate() : minDatoFom;
 };
 
 export const getPeriodeInfoTekst = (
