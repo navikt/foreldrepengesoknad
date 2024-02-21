@@ -76,7 +76,6 @@ describe('<Perioder>', () => {
                         {
                             fom: '2023-10-30',
                             stillingsprosent: '20',
-                            tom: '',
                             tomType: 'SISTE_DAG_MED_SVP',
                             type: 'delvis',
                         },

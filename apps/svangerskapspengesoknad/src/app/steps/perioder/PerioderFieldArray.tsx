@@ -16,7 +16,6 @@ import dayjs from 'dayjs';
 import { Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import './perioderFieldArray.css';
 import {
     getMinDatoTom,
     getMåSendeNySøknad,
@@ -30,6 +29,7 @@ import {
     validatePeriodeTomType,
     validateStillingsprosentPåPerioder,
 } from './perioderValidation';
+import './perioderFieldArray.css';
 
 export type PerioderFormData = {
     varierendePerioder: PeriodeMedVariasjon[];

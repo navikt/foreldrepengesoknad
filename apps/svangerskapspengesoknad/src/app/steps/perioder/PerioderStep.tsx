@@ -55,6 +55,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
         return mellomlagreSøknadOgNaviger();
     };
 
+    // TODO (TOR) Denne typen er ikkje heilt korrekt for forma. Forma har ingen 'type' i periodane
     const formMethods = useForm<PerioderFormData>({
         shouldUnregister: true,
         defaultValues: {

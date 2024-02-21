@@ -36,7 +36,10 @@ export const mapPerioderFormDataToState = (
     const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
     const oppdatert = {
         ...tilretteleggingForOppdatering,
-        varierendePerioder: values.varierendePerioder,
+        varierendePerioder: values.varierendePerioder.map((p) => ({
+            ...p,
+            type: TilretteleggingstypeOptions.DELVIS,
+        })),
     } as Tilrettelegging;
 
     const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {
