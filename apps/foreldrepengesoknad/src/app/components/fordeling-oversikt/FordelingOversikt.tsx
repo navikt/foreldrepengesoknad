@@ -10,6 +10,7 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
+    isUfødtBarn,
 } from '@navikt/fp-common';
 import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 import { useState } from 'react';
@@ -63,6 +64,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const { antallBarn } = barn;
     const erBarnetFødt = isFødtBarn(barn);
+    const erIkkeFødtBarn = isUfødtBarn(barn);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -134,6 +136,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                     morTekst={morTekst}
                     farTekst={farTekst}
                     erFarEllerMedmor={erFarEllerMedmor}
+                    erIkkeFødtBarn={erIkkeFødtBarn}
                 />
             </Block>
         </>

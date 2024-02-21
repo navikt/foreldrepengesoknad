@@ -4,7 +4,6 @@ import {
     PersonPregnantIcon,
     BriefcaseIcon,
     BabyWrappedIcon,
-    FirstAidKitIcon,
 } from '@navikt/aksel-icons';
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -19,6 +18,7 @@ interface Props {
     morTekst: string;
     farTekst: string;
     erFarEllerMedmor: boolean;
+    erIkkeFødtBarn: boolean;
 }
 
 const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
@@ -28,6 +28,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     morTekst,
     farTekst,
     erFarEllerMedmor,
+    erIkkeFødtBarn,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('fordeling-påvirkninger');
@@ -75,7 +76,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                         <Block padBottom="l">
                             <div className={bem.element('påvirkning')}>
                                 <div className={bem.element('ikon-frame')}>
-                                    <FirstAidKitIcon className={bem.element('ikon')} aria-hidden={true} />
+                                    <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
                                 </div>
                                 <VStack>
                                     <BodyShort className={bem.element('undertittel')}>
@@ -152,25 +153,27 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                         </div>
                     </Block>
                 )}
-                <Block padBottom="l">
-                    <div className={bem.element('påvirkning')}>
-                        <div className={bem.element('ikon-frame')}>
-                            <BabyWrappedIcon className={bem.element('ikon')} aria-hidden={true} />
-                        </div>
-                        <VStack>
-                            <BodyShort className={bem.element('undertittel')}>
+                {erIkkeFødtBarn && (
+                    <Block padBottom="l">
+                        <div className={bem.element('påvirkning')}>
+                            <div className={bem.element('ikon-frame')}>
+                                <BabyWrappedIcon className={bem.element('ikon')} aria-hidden={true} />
+                            </div>
+                            <VStack>
+                                <BodyShort className={bem.element('undertittel')}>
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.prematur.tittel"
+                                        values={{ barnetEllerBarna }}
+                                    />
+                                </BodyShort>
                                 <FormattedMessage
-                                    id="fordeling.påvirkninger.prematur.tittel"
-                                    values={{ barnetEllerBarna }}
+                                    id="fordeling.påvirkninger.prematur.info"
+                                    values={{ barnetEllerBarna, duEllerDere }}
                                 />
-                            </BodyShort>
-                            <FormattedMessage
-                                id="fordeling.påvirkninger.prematur.info"
-                                values={{ barnetEllerBarna, duEllerDere }}
-                            />
-                        </VStack>
-                    </div>
-                </Block>
+                            </VStack>
+                        </div>
+                    </Block>
+                )}
             </ExpansionCard.Content>
         </ExpansionCard>
     );
