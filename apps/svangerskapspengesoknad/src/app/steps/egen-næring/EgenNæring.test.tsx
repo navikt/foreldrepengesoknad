@@ -71,22 +71,13 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-                hattVarigEndringAvNæringsinntektSiste4Kalenderår: undefined,
                 navnPåNæringen: 'Virksomhetsnavn AS',
                 næringsinntekt: '1000',
                 næringstype: 'JORDBRUK_SKOGBRUK',
-                oppstartsdato: undefined,
                 organisasjonsnummer: '997519485',
                 pågående: true,
-                registrertILand: undefined,
                 registrertINorge: true,
-                tidsperiode: {
-                    fom: '2023-04-30',
-                    tom: undefined,
-                },
-                varigEndringBeskrivelse: undefined,
-                varigEndringDato: undefined,
-                varigEndringInntektEtterEndring: undefined,
+                fomDato: '2023-04-30',
             },
             key: ContextDataType.EGEN_NÆRING,
             type: 'update',

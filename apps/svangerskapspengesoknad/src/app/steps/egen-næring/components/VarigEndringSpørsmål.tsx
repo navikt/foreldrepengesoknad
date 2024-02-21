@@ -42,10 +42,10 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egen
                 ]}
             >
                 <Radio value={true}>
-                    <FormattedMessage id="Ja" />
+                    <FormattedMessage id="ja" />
                 </Radio>
                 <Radio value={false}>
-                    <FormattedMessage id="Nei" />
+                    <FormattedMessage id="nei" />
                 </Radio>
             </RadioGroup>
             <ReadMore

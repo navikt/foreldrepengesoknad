@@ -143,8 +143,8 @@ export const useStepConfig = (intl: IntlShape, arbeidsforhold: Arbeidsforhold[])
                 id: `tilrettelegging-${tilrettelegging.id}`,
                 index: steps.length,
                 label: erFlereTilrettelegginger
-                    ? intl.formatMessage({ id: 'steps.label.periode.flere' }, { navn })
-                    : intl.formatMessage({ id: 'steps.label.periode.en' }),
+                    ? intl.formatMessage({ id: 'steps.label.tilrettelegging.flere' }, { navn })
+                    : intl.formatMessage({ id: 'steps.label.tilrettelegging.en' }),
             });
             if (
                 tilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&

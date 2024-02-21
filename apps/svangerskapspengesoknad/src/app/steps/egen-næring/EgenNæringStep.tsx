@@ -16,6 +16,7 @@ import {
     isBeforeOrSame,
     isBeforeTodayOrToday,
     isRequired,
+    isStringAValidDate,
     isValidDate,
     isValidNumber,
     notEmpty,
@@ -36,6 +37,9 @@ import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
+    if (!isStringAValidDate(oppstartsdato)) {
+        return true;
+    }
     return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
 };
 
@@ -123,10 +127,6 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
             ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}`
             : navnPåNæringSpm;
 
-    console.log('----------------------------------');
-    console.log(yrkesaktivSiste3År);
-    console.log(næringFom);
-    console.log(erVirksomhetRegnetSomNyoppstartet(næringFom));
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
