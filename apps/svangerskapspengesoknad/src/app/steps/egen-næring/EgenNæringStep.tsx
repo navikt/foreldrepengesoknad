@@ -9,6 +9,7 @@ import {
     TextField,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
     hasMaxLength,
     hasMinValue,
@@ -16,7 +17,6 @@ import {
     isBeforeOrSame,
     isBeforeTodayOrToday,
     isRequired,
-    isStringAValidDate,
     isValidDate,
     isValidNumber,
     notEmpty,
@@ -25,22 +25,22 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appD
 import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
 import { EgenNæring, Næringstype } from 'app/types/EgenNæring';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import { date4YearsAgo, femMånederSiden } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
+import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
+import { useNavigate } from 'react-router-dom';
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
     if (!isStringAValidDate(oppstartsdato)) {
         return true;
     }
-    return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
+    return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(DATE_4_YEARS_AGO, 'day');
 };
 
 const validateEgenNæringNavn = (intl: IntlShape, label: string, erValgfri: boolean) => (value: string | undefined) => {

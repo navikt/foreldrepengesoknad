@@ -12,14 +12,13 @@ import {
     hasMaxLength,
 } from '@navikt/fp-validation';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
-import { femMånederSidenDayjs } from 'app/utils/dateUtils';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-
-import './arbeidIUtlandet.css';
 import { HorizontalLine } from '@navikt/fp-ui';
+import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
+import './arbeidIUtlandet.css';
 
 export const NEW_ARBEID_I_UTLANDET = {
     fom: '',
@@ -133,7 +132,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                                     intl.formatMessage({
                                         id: 'valideringsfeil.tilOgMedDato.arbeidIUtlandet.merEnn5MånederSiden',
                                     }),
-                                    femMånederSidenDayjs(),
+                                    femMånederSiden(),
                                 ),
                                 isAfterDate(
                                     intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.etterFraDato' }),

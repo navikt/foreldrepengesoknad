@@ -1,19 +1,18 @@
 import { BodyShort } from '@navikt/ds-react';
 import { Block, bemUtils, formatDate } from '@navikt/fp-common';
-import { getCountryName } from '@navikt/fp-utils';
+import { getCountryName, isValidDate } from '@navikt/fp-utils';
 import { EgenNæring } from 'app/types/EgenNæring';
-import { date4YearsAgo } from 'app/utils/dateUtils';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import './egen-næring-visning.css';
-import { isStringAValidDate } from '@navikt/fp-validation';
+import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
-    if (!isStringAValidDate(oppstartsdato)) {
+    if (!isValidDate(oppstartsdato)) {
         return true;
     }
-    return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
+    return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(DATE_4_YEARS_AGO, 'day');
 };
 
 interface Props {

@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
-import { DATE_TODAY, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
+import { DATE_TODAY, ISO_DATE_REGEX, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
 import {
     halvannetÅrSiden,
     isDateRangesOverlapping,
@@ -15,8 +15,6 @@ dayjs.extend(isBetween);
 const ATTEN_UKER_TRE_DAGER = dayjs().add(18, 'week').add(3, 'day').startOf('day').toDate();
 const DATO_FOR_3_UKER_SIDEN = dayjs().startOf('day').subtract(21, 'days');
 const ONE_YEAR_AFTER_TODAY = dayjs().add(1, 'year').startOf('day').toDate();
-
-export const ISO_DATE_REGEX = /(19|20)\d{2}-(0?[1-9]|1[0-2])-(0?[1-9]|1\d|2\d|3[01])$/;
 
 export const isValidDate =
     (i18nText: string) =>

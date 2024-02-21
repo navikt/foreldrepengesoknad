@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
 
 import { ISOStringToDate } from '@navikt/fp-common';
-import { AttachmentMetadataType, LocaleNo } from '@navikt/fp-types';
-import { isStringAValidDate, notEmpty } from '@navikt/fp-validation';
+import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
+import { LocaleNo } from '@navikt/fp-types';
+import { isValidDate } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from 'app/appData/SvpDataContext';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO, ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
@@ -32,7 +34,7 @@ import {
     UtenlandsoppholdTidligere,
 } from 'app/types/Utenlandsopphold';
 
-import { date4YearsAgo, getSisteDagForSvangerskapspenger } from '../utils/dateUtils';
+import { getSisteDagForSvangerskapspenger } from '../utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from '../utils/tilretteleggingUtils';
 
 const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegging): ArbeidsforholdDTO => {
@@ -141,11 +143,11 @@ const mapTilretteleggingerForInnsending = (
 };
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
-    if (!isStringAValidDate(oppstartsdato)) {
+    if (!isValidDate(oppstartsdato)) {
         return true;
     }
 
-    return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo, 'day');
+    return dayjs(oppstartsdato).startOf('day').isAfter(DATE_4_YEARS_AGO, 'day');
 };
 
 const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNæringDTO | undefined => {

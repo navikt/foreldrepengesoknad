@@ -1,4 +1,4 @@
-export { notEmpty, isStringAValidDate } from './src/other/validation';
+export { notEmpty } from './src/other/validation';
 export { isRequired, isEqualValue, hasMinLength, hasMaxLength } from './src/form/generalFormValidation';
 export {
     isValidNumber,

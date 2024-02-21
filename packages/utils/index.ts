@@ -12,9 +12,15 @@ export { omitOne, omitMany } from './src/objectUtils';
 export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect, redirectToLogin } from './src/loginUtils';
 export {
+    isValidDate,
     formatDate,
     formatDateIso,
     formatTime,
+    dagenFør,
+    treUkerSiden,
+    femMånederSiden,
+    fireUkerSiden,
+    tiMånederSidenDato,
     isAfterToday,
     isBeforeToday,
     isSameOrAfterToday,

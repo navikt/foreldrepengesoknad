@@ -1,5 +1,5 @@
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { formatDate } from '@navikt/fp-utils';
+import { formatDate, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
     PeriodeMedVariasjon,
     TilOgMedDatoType,
@@ -11,7 +11,6 @@ import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { PerioderFormData } from './PerioderFieldArray';
-import { isStringAValidDate } from '@navikt/fp-validation';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,

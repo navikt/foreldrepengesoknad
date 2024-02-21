@@ -1,4 +1,5 @@
 import { SkjemaelementFeil, formatDate, intlUtils, validateTextInputField } from '@navikt/fp-common';
+import { dagenFør, tiMånederSidenDato } from '@navikt/fp-utils';
 import {
     Arbeidsforholdstype,
     Stilling,
@@ -6,7 +7,6 @@ import {
     TilretteleggingstypeOptions,
 } from 'app/types/Tilrettelegging';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'app/utils/arbeidsforholdUtils';
-import { dagenFør, tiMånederSidenDato } from 'app/utils/dateUtils';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';

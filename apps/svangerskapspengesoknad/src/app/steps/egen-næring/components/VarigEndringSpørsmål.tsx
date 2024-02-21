@@ -1,4 +1,5 @@
 import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
+import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { Datepicker, RadioGroup, TextArea, TextField } from '@navikt/fp-form-hooks';
 import {
     hasMaxLength,
@@ -12,7 +13,6 @@ import {
     isValidDate,
     isValidNumber,
 } from '@navikt/fp-validation';
-import { date4YearsAgo } from 'app/utils/dateUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -68,7 +68,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egen
                             ),
                             isAfterDate(
                                 intl.formatMessage({ id: 'valideringsfeil.varigEndringDato.mindreEnn4ÅrSiden' }),
-                                date4YearsAgo,
+                                DATE_4_YEARS_AGO,
                             ),
                             isAfterOrSame(
                                 intl.formatMessage({ id: 'valideringsfeil.varigEndringDato.førFraDato' }),

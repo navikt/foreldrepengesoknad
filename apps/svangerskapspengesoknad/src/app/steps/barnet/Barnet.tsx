@@ -5,19 +5,23 @@ import { isBeforeTodayOrToday, isLessThanOneAndHalfYearsAgo, isRequired, isValid
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { Barn } from 'app/types/Barn';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useStepConfig } from '../stepsConfig';
-import { halvannetÅrSiden, enMånedSiden, etÅrSiden, niMånederFremITid } from '@navikt/fp-utils';
+import {
+    isValidDate as isStringADate,
+    halvannetÅrSiden,
+    enMånedSiden,
+    etÅrSiden,
+    niMånederFremITid,
+} from '@navikt/fp-utils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
-const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Date =>
-    erBarnetFødt && fødselsdato && isValidDate(fødselsdato)
-        ? enMånedSiden(new Date(fødselsdato))
-        : enMånedSiden(new Date());
+const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
+    erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(new Date());
 
 const validerTermindato = (intl: IntlShape, fødselsdato?: string) => (termindato: string) => {
     if (dayjs(termindato).isSameOrAfter(niMånederFremITid(new Date()), 'day')) {

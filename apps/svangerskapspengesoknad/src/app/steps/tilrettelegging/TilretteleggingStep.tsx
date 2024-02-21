@@ -23,7 +23,6 @@ import {
     getDefaultMonth,
     getKanHaSvpFremTilTreUkerFørTermin,
     getSisteDagForSvangerskapspenger,
-    tiMånederSidenDato,
 } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
@@ -43,6 +42,7 @@ import {
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
+import { tiMånederSidenDato } from '@navikt/fp-utils';
 
 export const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     values: TilretteleggingFormData,
