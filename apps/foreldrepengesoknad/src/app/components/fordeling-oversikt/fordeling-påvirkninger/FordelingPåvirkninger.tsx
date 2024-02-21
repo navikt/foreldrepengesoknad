@@ -43,7 +43,8 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
             });
         }
     };
-    const degEllerSegMor = erFarEllerMedmor ? intlUtils(intl, 'seg') : intlUtils(intl, 'deg');
+    const degEllerSeg = erFarEllerMedmor ? intlUtils(intl, 'seg') : intlUtils(intl, 'deg');
+    const degEllerMor = erFarEllerMedmor ? navnAnnenForelder : intlUtils(intl, 'deg');
     const duEllerDere = deltUttak ? intlUtils(intl, 'dere') : intlUtils(intl, 'du');
     const barnetEllerBarna = deltUttak ? intlUtils(intl, 'barnet') : intlUtils(intl, 'barna');
     return (
@@ -87,7 +88,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                                     </BodyShort>
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.morSykFørste6Uker.info"
-                                        values={{ morTekst, farTekst, degEllerSeg: degEllerSegMor }}
+                                        values={{ morTekst, farTekst, degEllerSeg, degEllerMor }}
                                     />
                                 </VStack>
                             </div>
