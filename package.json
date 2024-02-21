@@ -23,9 +23,9 @@
         "gh-pages": "6.1.1",
         "glob": "10.3.10",
         "husky": "8.0.3",
-        "lint-staged": "15.2.0",
+        "lint-staged": "15.2.2",
         "shelljs": "0.8.5",
-        "turbo": "^1.11.3"
+        "turbo": "^1.12.4"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
