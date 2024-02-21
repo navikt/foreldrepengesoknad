@@ -3,8 +3,10 @@ import { action } from '@storybook/addon-actions';
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import Oppsummering from './Oppsummering';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { Søker } from '@navikt/fp-types';
+import { Næringstype } from 'app/types/EgenNæring';
+import dayjs from 'dayjs';
 
 const defaultExport = {
     title: 'steps/Oppsummering',
@@ -129,9 +131,9 @@ const Template: StoryFn<Props> = ({
                     },
                 ],
                 [ContextDataType.INNTEKTSINFORMASJON]: {
-                    harHattArbeidIUtlandet: false,
-                    harJobbetSomFrilans: false,
-                    harJobbetSomSelvstendigNæringsdrivende: false,
+                    harHattArbeidIUtlandet: true,
+                    harJobbetSomFrilans: true,
+                    harJobbetSomSelvstendigNæringsdrivende: true,
                 },
                 [ContextDataType.OM_BARNET]: {
                     erBarnetFødt: false,
@@ -141,6 +143,34 @@ const Template: StoryFn<Props> = ({
                 [ContextDataType.UTENLANDSOPPHOLD]: {
                     iNorgeNeste12Mnd: true,
                     iNorgeSiste12Mnd: true,
+                },
+                [ContextDataType.ARBEID_I_UTLANDET]: {
+                    arbeidIUtlandet: [
+                        {
+                            arbeidsgiverNavn: 'MUFC',
+                            fom: '2024-01-01',
+                            land: 'SE',
+                            pågående: true,
+                            tom: '',
+                        },
+                    ],
+                },
+                [ContextDataType.FRILANS]: {
+                    jobberFremdelesSomFrilans: false,
+                    oppstart: '2023-01-01',
+                },
+                [ContextDataType.EGEN_NÆRING]: {
+                    navnPåNæringen: 'Skitt fiske',
+                    fomDato: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),
+                    tomDato: '',
+                    næringstype: Næringstype.FISKER,
+                    pågående: true,
+                    registrertINorge: true,
+                    næringsinntekt: '700000',
+                    organisasjonsnummer: '12132323',
+                    hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
+                    varigEndringDato: '2024-01-01',
+                    varigEndringInntektEtterEndring: '500000',
                 },
             }}
         >

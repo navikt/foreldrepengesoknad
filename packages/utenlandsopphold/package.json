@@ -20,6 +20,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-types": "workspace:*",
+        "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "dayjs": "^1.11.10",

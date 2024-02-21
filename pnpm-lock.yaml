@@ -1715,6 +1715,9 @@ importers:
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../utils

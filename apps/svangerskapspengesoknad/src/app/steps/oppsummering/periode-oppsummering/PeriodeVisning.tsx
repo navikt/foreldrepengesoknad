@@ -1,11 +1,9 @@
-import { FunctionComponent } from 'react';
+import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
 import { Arbeidsforholdstype, TilretteleggingPeriode, Tilretteleggingstype } from 'app/types/Tilrettelegging';
-import { Block, bemUtils, formatDate } from '@navikt/fp-common';
-import { BodyShort } from '@navikt/ds-react';
-
-import './periodeVisning.css';
+import { FunctionComponent } from 'react';
 import dayjs from 'dayjs';
 import { IntlShape, useIntl } from 'react-intl';
+import { formatDate } from '@navikt/fp-utils';
 
 interface Props {
     periode: TilretteleggingPeriode;
@@ -70,24 +68,21 @@ const PeriodeVisning: FunctionComponent<Props> = ({
     const labelText = getDatoText(intl, sisteDagForSvangerskapspenger, periode, kanHaSvpFremTilTreUkerFørTermin);
 
     const stillingsprosentText = getStillingsprosentTekst(periode, intl);
-    const bem = bemUtils('periodeVisningInfoBox');
     const navnArbeidsgiver =
         periode.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
         periode.arbeidsforhold.navn.trim().length === 0
             ? intl.formatMessage({ id: 'egenNæring' })
             : periode.arbeidsforhold.navn;
     return (
-        <div className={bem.block}>
-            <div className={bem.element('topRow')}>
-                <BodyShort className={bem.element('label')}>{labelText}</BodyShort>
-                <div className={bem.element('arbeidsgiverNavn')}>
+        <Box padding="4" background="surface-action-subtle" borderRadius="medium">
+            <VStack gap="4">
+                <HStack justify="space-between">
+                    <BodyShort style={{ fontWeight: 'bold' }}>{labelText}</BodyShort>
                     <BodyShort>{navnArbeidsgiver.toUpperCase()}</BodyShort>
-                </div>
-            </div>
-            <Block padBottom="m">
-                <BodyShort className={bem.element('stillingsprosent')}>{stillingsprosentText}</BodyShort>
-            </Block>
-        </div>
+                </HStack>
+                <BodyShort>{stillingsprosentText}</BodyShort>
+            </VStack>
+        </Box>
     );
 };
 

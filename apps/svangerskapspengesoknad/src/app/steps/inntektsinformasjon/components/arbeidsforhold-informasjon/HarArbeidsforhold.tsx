@@ -21,7 +21,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
     const bem = bemUtils('arbeidsforholdInfoBox');
 
     return (
-        <VStack gap="4">
+        <VStack gap="2">
             {arbeidsforhold.map((arbforhold) => (
                 <Box
                     key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.tom}
@@ -29,7 +29,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                     background="surface-action-subtle"
                     borderRadius="medium"
                 >
-                    <VStack gap="3">
+                    <VStack gap="4">
                         <HStack justify="space-between">
                             <BodyShort className={bem.element('name')}>
                                 {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (

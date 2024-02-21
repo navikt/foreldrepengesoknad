@@ -5,11 +5,11 @@ import { PlusIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
 import { Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { HorizontalLine } from '@navikt/fp-ui';
 import { StepConfig, UtenlandsoppholdPeriode, UtenlandsoppholdSenere } from '@navikt/fp-types';
 
 import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
 import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
-import { HorizontalLine } from '../../../ui';
 
 const DEFAULT_PERIODE = {
     fom: '',

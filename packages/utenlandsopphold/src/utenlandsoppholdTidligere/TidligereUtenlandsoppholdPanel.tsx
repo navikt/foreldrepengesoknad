@@ -6,10 +6,9 @@ import { Button, VStack } from '@navikt/ds-react';
 import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, StepButtonsHookForm, Form } from '@navikt/fp-form-hooks';
 import { StepConfig, UtenlandsoppholdPeriode, UtenlandsoppholdTidligere } from '@navikt/fp-types';
-
+import { HorizontalLine } from '@navikt/fp-ui';
 import TidligereUtenlandsoppholdPeriode from './TidligereUtenlandsoppholdPeriode';
 import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
-import { HorizontalLine } from '../../../ui';
 
 const DEFAULT_PERIODE = {
     fom: '',
