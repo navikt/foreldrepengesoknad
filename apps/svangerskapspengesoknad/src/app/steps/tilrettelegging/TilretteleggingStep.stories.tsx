@@ -73,7 +73,10 @@ interface Props {
     gåTilNesteSide?: (action: Action) => void;
 }
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({
+    mellomlagreSøknadOgNaviger = promiseAction(),
+    gåTilNesteSide = action('button-click'),
+}) => {
     return (
         <SvpDataContext
             onDispatch={gåTilNesteSide}

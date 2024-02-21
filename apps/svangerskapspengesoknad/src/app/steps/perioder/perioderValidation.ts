@@ -221,16 +221,14 @@ export const validateSammenhengendePerioderFom = (
     sisteDagForSvangerskapspenger: string,
     intl: IntlShape,
 ) => {
-    const alleFom = allePerioder
-        ? allePerioder.filter((p) => p.fom && isISODateString(p.fom)).map((periode) => dayjs(periode.fom))
-        : undefined;
+    const alleFom = allePerioder ? allePerioder.filter((p) => p.fom).map((periode) => dayjs(periode.fom)) : undefined;
     const minstAvAlleFom = alleFom ? dayjs.min(alleFom) : undefined;
     if (minstAvAlleFom && dayjs(fom).isSameOrBefore(minstAvAlleFom, 'day')) {
         return undefined;
     }
     const alleTom = allePerioder
         ? allePerioder
-              .filter((p) => (p.tom && isISODateString(p.tom)) || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
+              .filter((p) => p.tom || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
               .map((periode) => {
                   return periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
                       ? dayjs(sisteDagForSvangerskapspenger)

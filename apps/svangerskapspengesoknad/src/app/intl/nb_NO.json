@@ -167,7 +167,6 @@
     "valideringsfeil.tilOgMedDato.påkrevd": "Du må oppgi en sluttdato.",
     "valideringsfeil.tilOgMedDato.erIFremtiden": "Sluttdatoen kan ikke være mer enn ni måneder frem i tid.",
     "valideringsfeil.tilOgMedDato.etterFraDato": "Sluttdatoen må være lik eller etter startdatoen.",
-    "valideringsfeil.tilOgMedDato.frilans.merEnn4UkerSiden": "Datoen er før 4 uker siden. Det er ikke relevant for svangerskapspenger dersom du ikke har jobbet de siste 4 ukene som frilanser.",
     "valideringsfeil.tilOgMedDato.egenNæring.merEnn5MånederSiden": "Datoen er før 5 måneder siden. Hvis du avsluttet virksomheten for mer enn 5 måneder siden, trenger du ikke å oppgi virksomheten til NAV.",
     "valideringsfeil.tilOgMedDato.arbeidIUtlandet.merEnn5MånederSiden": "Datoen er før 5 måneder siden. Hvis du sluttet i jobben for mer enn 5 måneder siden, trenger du ikke å oppgi arbeidsforholdet til NAV.",
     "valideringsfeil.tilrettelegging.påkrevd": "Du må velge hvilket arbeidsforhold du ønsker å søke svangerskapspenger for.",

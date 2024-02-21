@@ -64,7 +64,7 @@ export const getPeriodeDerSøkerErTilbakeIFullStilling = (
 };
 
 export const getMinDatoTom = (fom: string | undefined, minDatoFom: Date): Date => {
-    return fom && isISODateString(fom) ? dayjs(fom).toDate() : minDatoFom;
+    return fom ? dayjs(fom).toDate() : minDatoFom;
 };
 
 export const getPeriodeInfoTekst = (
@@ -76,9 +76,7 @@ export const getPeriodeInfoTekst = (
     if (
         varierendePerioder &&
         varierendePerioder[index]?.fom &&
-        isISODateString(varierendePerioder[index].fom) &&
-        (varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP ||
-            (varierendePerioder[index].tom && isISODateString(varierendePerioder[index].tom)))
+        (varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP || varierendePerioder[index].tom)
     ) {
         const tomDato =
             varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
@@ -97,7 +95,7 @@ const getNesteDagEtterSistePeriode = (
         return '';
     }
     const alleTomDatoer = alleVarierendePerioder
-        .filter((p) => isISODateString(p.tom) || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
+        .filter((p) => p.tom || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
         .map((periode) => {
             if (periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
                 return dayjs(sisteDagForSvangerskapspenger).add(1, 'd');

@@ -123,6 +123,10 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
             ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}`
             : navnPåNæringSpm;
 
+    console.log('----------------------------------');
+    console.log(yrkesaktivSiste3År);
+    console.log(næringFom);
+    console.log(erVirksomhetRegnetSomNyoppstartet(næringFom));
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -275,7 +279,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                         description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' })),
-                            hasMaxLength(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' }), 9),
+                            hasMaxLength(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.forLang' }), 9),
                             isValidNumber(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' })),
                             hasMinValue(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.mindreEnnNull' }), 0),
                         ]}

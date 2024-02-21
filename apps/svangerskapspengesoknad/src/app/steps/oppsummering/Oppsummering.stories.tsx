@@ -92,7 +92,7 @@ interface Props {
 
 const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     sendSøknad = () => Promise.resolve(),
 }) => {
     return (

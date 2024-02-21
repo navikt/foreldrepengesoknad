@@ -91,7 +91,9 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egen
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.påkrevd' })),
                             hasMaxLength(intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.forLang' }), 9),
-                            isValidNumber('valideringsfeil.varigEndringInntekt.ugyldigFormat'),
+                            isValidNumber(
+                                intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.ugyldigFormat' }),
+                            ),
                             hasMinValue(
                                 intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.mindreEnnNull' }),
                                 0,
@@ -108,7 +110,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egen
                                 intl.formatMessage({ id: 'valideringsfeil.egenNæringVarigEndringBeskrivelse.påkrevd' }),
                             ),
                             hasMaxLength(
-                                intl.formatMessage({ id: 'valideringsfeil.egenNæringVarigEndringBeskrivelse.påkrevd' }),
+                                intl.formatMessage({ id: 'valideringsfeil.egenNæringVarigEndringBeskrivelse.forLang' }),
                                 TEXT_INPUT_MAX_LENGTH,
                             ),
                             hasMinLength(

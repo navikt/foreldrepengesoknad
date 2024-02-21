@@ -78,7 +78,7 @@ interface Props {
 
 const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     utenlandsopphold = {
         iNorgeNeste12Mnd: true,
         iNorgeSiste12Mnd: false,

@@ -94,7 +94,7 @@ interface TilretteleggingStepStoryProps {
 
 const Template: StoryFn<TilretteleggingStepStoryProps> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     skalFeileOpplasting,
     maxAntallVedlegg = 40,
     tilrettelegging,

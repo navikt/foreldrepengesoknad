@@ -5,7 +5,6 @@ import { Stilling } from 'app/types/Tilrettelegging';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
-import { hasValue } from './validationUtils';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
@@ -26,7 +25,7 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
     stillinger: Stilling[],
     skjæringstidspunkt: string | undefined,
 ): number => {
-    if (hasValue(skjæringstidspunkt) && isISODateString(skjæringstidspunkt)) {
+    if (skjæringstidspunkt) {
         const perioderISkjæringstidspunktet = stillinger.filter((p) => {
             if (!p.tom) {
                 return dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
