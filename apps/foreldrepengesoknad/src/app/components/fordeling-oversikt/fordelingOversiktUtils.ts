@@ -809,7 +809,7 @@ export const getBeggeHarRettGrafFordeling = (
             konto: StønadskontoType.Fedrekvote,
             eier: FordelingEier.FarMedmor,
             fargekode: erFarEllerMedmor ? FordelingFargekode.SØKER_FAR : FordelingFargekode.ANNEN_PART_FAR,
-            beskrivelse: erFarEllerMedmor ? 'Din del' : `${navnFar}s del`,
+            beskrivelse: erFarEllerMedmor ? 'Din del' : `${getNavnGenitivEierform(navnFar, intl.locale)} del`,
         },
     ];
 
