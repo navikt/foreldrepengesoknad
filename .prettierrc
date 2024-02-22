@@ -4,5 +4,9 @@
     "singleQuote": true,
     "printWidth": 120,
     "endOfLine": "auto",
-    "editorconfig": true
+    "editorconfig": true,
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "importOrder": ["^@navikt/ds(.*)$", "^@navikt/fp(.*)$", "^app/(.*)$", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
 }

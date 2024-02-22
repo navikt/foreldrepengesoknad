@@ -1,4 +1,11 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
+
 import { Alert, BodyLong, BodyShort, ReadMore } from '@navikt/ds-react';
+
 import {
     AttachmentType,
     Barn,
@@ -20,17 +27,14 @@ import {
 import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import SøkerData from 'app/context/types/SøkerData';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
-import dayjs from 'dayjs';
-import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
 import {
     cleanAnnenForelderFormData,
