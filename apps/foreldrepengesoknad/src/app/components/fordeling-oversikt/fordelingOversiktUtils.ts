@@ -509,18 +509,14 @@ const getFordelingForeldrepengerFarAleneomsorg = (
 
 const getFordelingForeldrepengerFar = (
     dagerForeldrepenger: number,
-    dagerRundtFødsel: number,
     dagerUtenAktivitetskrav: number,
     erAleneOmsorg: boolean,
     erAdopsjon: boolean,
     familiehendelsesdato: Date,
     antallBarn: number,
     ekstraDagerGrunnetPrematurFødsel: number | undefined,
-    farTekst: string,
     morTekst: string,
-    erFarEllerMedmor: boolean,
     intl: IntlShape,
-    annenForelderHarRettIEØS: boolean | undefined,
 ): DelInformasjon => {
     const fordelingDager = [];
     const fordelingInfo = [];
@@ -548,28 +544,7 @@ const getFordelingForeldrepengerFar = (
             }),
         );
     }
-    if (dagerRundtFødsel > 0) {
-        const morEllerDeg = morTekst === intlUtils(intl, 'du') ? intlUtils(intl, 'deg') : morTekst;
-        const dinEllerHans = erFarEllerMedmor ? intlUtils(intl, 'din') : intlUtils(intl, 'hans');
-        if (annenForelderHarRettIEØS) {
-            fordelingInfo.push(
-                getFormattedMessage('fordeling.info.farMedmor.rundtFødsel.eøs', {
-                    farTekst,
-                    farTekstCapitalized: capitalizeFirstLetter(farTekst),
-                    dinEllerHans,
-                }),
-            );
-        } else {
-            fordelingInfo.push(
-                getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', {
-                    farTekst,
-                    farTekstCapitalized: capitalizeFirstLetter(farTekst),
-                    morEllerDeg,
-                    dinEllerHans,
-                }),
-            );
-        }
-    }
+
     if (dagerMedAktivitetskrav > 0) {
         const varighetTekst = getVarighetString(dagerMedAktivitetskrav, intl);
         fordelingDager.push({ antallDager: dagerMedAktivitetskrav, fargekode });
@@ -745,18 +720,14 @@ export const getFordelingFraKontoer = (
         const fordeling = erFarEllerMedmor
             ? getFordelingForeldrepengerFar(
                   dagerTotalt,
-                  minsteretter.farRundtFødsel,
                   dagerUtenAktivitetskrav,
                   erAleneomsorg,
                   erAdopsjon,
                   familiehendelsesdato,
                   antallBarn,
                   ekstraDagerGrunnetPrematurFødsel,
-                  farTekst,
                   morTekst,
-                  erFarEllerMedmor,
                   intl,
-                  annenPartHarKunRettIEØS,
               )
             : getFordelingMor(
                   dagerForeldrepenger,
