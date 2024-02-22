@@ -240,7 +240,7 @@ const getFordelingFelles = (
     const fordelingInfo = [
         getFellesInfoTekst(dagerFelles, familiehendelsesdato, erAdopsjon, antallBarn, morTekst, farTekst, intl),
     ];
-    const gjenståendeDager = dagerBruktAvAnnenPart ? dagerFelles - dagerBruktAvAnnenPart / 5 : dagerFelles;
+    const gjenståendeDager = dagerBruktAvAnnenPart ? (dagerFelles - dagerBruktAvAnnenPart) / 5 : dagerFelles;
     const gjenståendeVarighet = getVarighetString(gjenståendeDager, intl);
 
     if (dagerBruktAvAnnenPart && dagerBruktAvAnnenPart > 0) {
