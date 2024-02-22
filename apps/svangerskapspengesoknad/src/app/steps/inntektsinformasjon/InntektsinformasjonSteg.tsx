@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, Button, Radio, VStack } from '@navikt/ds-react';
+import { BodyShort, Radio, VStack } from '@navikt/ds-react';
 
-import { Step, StepButtonWrapper } from '@navikt/fp-common';
+import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { StepButtons } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
@@ -18,7 +19,6 @@ import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
 import { getBackLinkForArbeidSteg, useStepConfig } from '../stepsConfig';
 import { getArbeidsforholdTilretteleggingOptions } from '../velg-arbeidsforhold/velgArbeidFormUtils';
-import BackButton from './BackButton';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
@@ -243,17 +243,14 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
                         <InfoTilFiskere />
                     </VStack>
                     {kanIkkeSøke && <BrukerKanIkkeSøke />}
-                    <StepButtonWrapper>
-                        <BackButton
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            route={getBackLinkForArbeidSteg(utenlandsopphold)}
-                        />
-                        {!kanIkkeSøke && (
-                            <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                                <FormattedMessage id="søknad.gåVidere" />
-                            </Button>
-                        )}
-                    </StepButtonWrapper>
+                    <StepButtons
+                        isNexButtonVisible={!kanIkkeSøke}
+                        isDisabledAndLoading={isSubmitting}
+                        goToPreviousStep={() => {
+                            oppdaterAppRoute(getBackLinkForArbeidSteg(utenlandsopphold));
+                            mellomlagreSøknadOgNaviger();
+                        }}
+                    />
                 </VStack>
             </Form>
         </Step>
