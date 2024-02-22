@@ -1,7 +1,9 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import VelgArbeid from './VelgArbeid';
+import { StoryFn } from '@storybook/react';
+
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+
+import VelgArbeid from './VelgArbeid';
 
 const defaultExport = {
     title: 'steps/VelgArbeid',

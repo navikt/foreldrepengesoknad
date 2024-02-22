@@ -1,5 +1,6 @@
-import { ReadMore } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { ReadMore } from '@navikt/ds-react';
 
 const InfoOmArbeidIUtlandet = () => {
     const intl = useIntl();

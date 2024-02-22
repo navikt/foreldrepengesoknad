@@ -1,4 +1,8 @@
+import dayjs from 'dayjs';
+
 import { getFloatFromString } from '@navikt/fp-common';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
 import Tilrettelegging, {
     PeriodeMedVariasjon,
     Stilling,
@@ -7,9 +11,8 @@ import Tilrettelegging, {
     Tilretteleggingstype,
     TilretteleggingstypeOptions,
 } from 'app/types/Tilrettelegging';
-import dayjs from 'dayjs';
+
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from './arbeidsforholdUtils';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 const mapTilretteleggingTilPeriode = (
     tilrettelegging: Tilrettelegging,

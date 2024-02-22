@@ -1,6 +1,9 @@
-import { BodyShort, ReadMore } from '@navikt/ds-react';
-import { Arbeidsforhold } from '@navikt/fp-types';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, ReadMore } from '@navikt/ds-react';
+
+import { Arbeidsforhold } from '@navikt/fp-types';
+
 import HarArbeidsforhold from './HarArbeidsforhold';
 import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
 

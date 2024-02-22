@@ -1,12 +1,14 @@
+import { IntlShape } from 'react-intl';
+
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Arbeidsforhold } from '@navikt/fp-types';
+
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
 import { Frilans, frilansId } from 'app/types/Frilans';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { IntlShape } from 'react-intl';
 
 export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
     if (type === Arbeidsforholdstype.FRILANSER) {

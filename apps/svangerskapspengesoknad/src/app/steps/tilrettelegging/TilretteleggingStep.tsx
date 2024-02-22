@@ -1,4 +1,10 @@
+import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { BodyLong, BodyShort, ExpansionCard, Radio, ReadMore, VStack } from '@navikt/ds-react';
+
 import { Step } from '@navikt/fp-common';
 import {
     Datepicker,
@@ -10,10 +16,12 @@ import {
     TextField,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
-import Bedriftsbanner from '../Bedriftsbanner';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
+import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 import Tilrettelegging, {
     Arbeidsforholdstype,
     TilOgMedDatoType,
@@ -26,10 +34,8 @@ import {
 } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
-import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import Bedriftsbanner from '../Bedriftsbanner';
 import { getNesteTilretteleggingId, useStepConfig } from '../stepsConfig';
 import { TilretteleggingFormData, mapOmTilretteleggingFormDataToState } from './tilretteleggingStepUtils';
 import {
@@ -41,8 +47,6 @@ import {
     validateTilretteleggingstiltak,
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
-import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
-import { tiMånederSidenDato } from '@navikt/fp-utils';
 
 export const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     values: TilretteleggingFormData,

@@ -1,15 +1,17 @@
-import { FunctionComponent, useState } from 'react';
 import dayjs from 'dayjs';
-import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
+import { FunctionComponent, useState } from 'react';
+
+import { deleteData } from '@navikt/fp-api';
 import { allCommonMessages } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
-import { deleteData } from '@navikt/fp-api';
+import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage, shouldChangeBrowser } from '@navikt/fp-utils';
+
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
-import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
+import { svpApi } from './SvangerskapspengesøknadRoutes';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
-import { svpApi } from './SvangerskapspengesøknadRoutes';
-import { getLocaleFromSessionStorage, setLocaleInSessionStorage, shouldChangeBrowser } from '@navikt/fp-utils';
+import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 

@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Heading, Modal, BodyShort } from '@navikt/ds-react';
+
+import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
 export interface Props {
     skalEndreNettleser: boolean;

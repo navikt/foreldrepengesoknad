@@ -1,4 +1,5 @@
 import { Attachment } from '@navikt/fp-types';
+
 import { ArbeidsforholdDTO } from './Arbeidsforhold';
 import { DelivisTilretteleggingPeriodeType } from './DelivisTilretteleggingPeriodeType';
 

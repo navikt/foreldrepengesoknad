@@ -1,7 +1,16 @@
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
+import { Fragment } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
+
 import { Datepicker, RadioGroup, TextField } from '@navikt/fp-form-hooks';
+import { HorizontalLine } from '@navikt/fp-ui';
+import { bemUtils } from '@navikt/fp-utils';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
+
 import { Barn } from 'app/types/Barn';
 import Tilrettelegging, {
     PeriodeMedVariasjon,
@@ -10,10 +19,8 @@ import Tilrettelegging, {
 } from 'app/types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
 import { getOpprinneligStillingsprosent } from 'app/utils/tilretteleggingUtils';
-import dayjs from 'dayjs';
-import { Fragment } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+
+import './perioderFieldArray.css';
 import {
     getMinDatoTom,
     getMåSendeNySøknad,
@@ -27,9 +34,6 @@ import {
     validatePeriodeTomType,
     validateStillingsprosentPåPerioder,
 } from './perioderValidation';
-import './perioderFieldArray.css';
-import { HorizontalLine } from '@navikt/fp-ui';
-import { bemUtils } from '@navikt/fp-utils';
 
 export type PerioderFormData = {
     varierendePerioder: PeriodeMedVariasjon[];

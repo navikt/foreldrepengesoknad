@@ -1,10 +1,13 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import FrilansStep from './FrilansStep';
-import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import { StoryFn } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
+
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+
+import FrilansStep from './FrilansStep';
 
 const defaultExport = {
     title: 'steps/FrilansStep',

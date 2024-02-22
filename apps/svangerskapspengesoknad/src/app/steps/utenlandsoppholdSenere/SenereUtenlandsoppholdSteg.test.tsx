@@ -1,11 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
-import dayjs from 'dayjs';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './SenereUtenlandsoppholdSteg.stories';
-import SøknadRoutes from 'app/appData/routes';
-import { ContextDataType } from 'app/appData/SvpDataContext';
+import dayjs from 'dayjs';
+
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
+import * as stories from './SenereUtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 

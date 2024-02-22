@@ -1,10 +1,12 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './PerioderStep.stories';
 import dayjs from 'dayjs';
+
 import { ContextDataType } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
+
+import * as stories from './PerioderStep.stories';
 
 const { Default, FlereStillinger } = composeStories(stories);
 

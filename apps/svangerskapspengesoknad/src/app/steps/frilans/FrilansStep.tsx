@@ -1,18 +1,22 @@
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+
 import { Radio, VStack } from '@navikt/ds-react';
+
 import { Step } from '@navikt/fp-common';
 import { DATE_20_YEARS_AGO, DATE_TODAY } from '@navikt/fp-constants';
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { isBeforeTodayOrToday, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { getNextRouteForFrilans, useStepConfig } from 'app/steps/stepsConfig';
 import { Frilans } from 'app/types/Frilans';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+
 import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 
 type Props = {
@@ -42,6 +46,8 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     });
 
     const onSubmit = (values: Frilans) => {
+        oppdaterFrilans(values);
+
         const harKunEtAktivtArbeid = søkerHarKunEtAktivtArbeid(
             barnet.termindato,
             arbeidsforhold,
@@ -52,8 +58,6 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
             const tilretteleggingOptions = [getFrilansTilretteleggingOption(tilrettelegginger || [], values.oppstart)];
             oppdaterTilrettelegginger(tilretteleggingOptions);
         }
-
-        oppdaterFrilans(values);
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteForFrilans(
             inntektsinformasjon,

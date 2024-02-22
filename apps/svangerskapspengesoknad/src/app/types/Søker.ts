@@ -1,7 +1,8 @@
-import { ArbeidIUtlandetDTO } from './ArbeidIUtlandet';
-import { Frilans } from './Frilans';
-import { EgenNæringDTO } from './EgenNæring';
 import { LocaleNo } from '@navikt/fp-types';
+
+import { ArbeidIUtlandetDTO } from './ArbeidIUtlandet';
+import { EgenNæringDTO } from './EgenNæring';
+import { Frilans } from './Frilans';
 
 export enum Søkerrolle {
     'MOR' = 'mor',

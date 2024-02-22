@@ -1,5 +1,12 @@
+import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+
 import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+
 import { Step, validateTextInputField } from '@navikt/fp-common';
+import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import {
     Datepicker,
     ErrorSummaryHookForm,
@@ -21,20 +28,17 @@ import {
     isValidNumber,
     notEmpty,
 } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
 import { EgenNæring, Næringstype } from 'app/types/EgenNæring';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
-import dayjs from 'dayjs';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
-import { DATE_20_YEARS_AGO, DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO } from '@navikt/fp-constants';
-import { useNavigate } from 'react-router-dom';
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
     if (!isStringAValidDate(oppstartsdato)) {

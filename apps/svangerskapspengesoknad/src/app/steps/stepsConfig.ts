@@ -1,5 +1,8 @@
+import { IntlShape } from 'react-intl';
+
 import { assertUnreachable } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
+
 import { ContextDataType, useContextGetData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
@@ -9,7 +12,6 @@ import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import { IntlShape } from 'react-intl';
 
 type BarnetStepId = 'barnet';
 type InntektsinformasjonStepId = 'arbeid';

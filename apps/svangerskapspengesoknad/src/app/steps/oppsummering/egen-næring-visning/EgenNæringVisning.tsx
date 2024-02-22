@@ -1,10 +1,13 @@
-import { BodyShort, Box, VStack } from '@navikt/ds-react';
-import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
-import { formatDate, getCountryName, isValidDate } from '@navikt/fp-utils';
-import { EgenNæring } from 'app/types/EgenNæring';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, Box, VStack } from '@navikt/ds-react';
+
+import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
+import { formatDate, getCountryName, isValidDate } from '@navikt/fp-utils';
+
+import { EgenNæring } from 'app/types/EgenNæring';
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
     if (!isValidDate(oppstartsdato)) {

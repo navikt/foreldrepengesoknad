@@ -1,8 +1,10 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { Barn } from 'app/types/Barn';
+
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { dagenFør, treUkerSiden } from '@navikt/fp-utils/src/dateUtils';
+
+import { Barn } from 'app/types/Barn';
 
 dayjs.extend(isBetween);
 

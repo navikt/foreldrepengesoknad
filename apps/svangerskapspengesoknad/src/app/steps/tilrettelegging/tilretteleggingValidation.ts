@@ -1,5 +1,9 @@
+import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
 import { SkjemaelementFeil, validateTextInputField } from '@navikt/fp-common';
 import { dagenFør, formatDate, tiMånederSidenDato } from '@navikt/fp-utils';
+
 import {
     Arbeidsforholdstype,
     Stilling,
@@ -9,8 +13,6 @@ import {
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'app/utils/arbeidsforholdUtils';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'app/utils/validationUtils';
-import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
 
 const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     if (!hasValue(value) || value.trim() === '') {

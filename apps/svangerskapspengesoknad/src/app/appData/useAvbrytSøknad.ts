@@ -1,9 +1,11 @@
+import { AxiosInstance } from 'axios';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AxiosInstance } from 'axios';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { useContextReset } from './SvpDataContext';
+
 import { deleteData } from '@navikt/fp-api';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
+import { useContextReset } from './SvpDataContext';
 
 const useAvbrytSøknad = (svpApi: AxiosInstance, setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
     const navigate = useNavigate();

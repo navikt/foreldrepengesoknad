@@ -1,11 +1,13 @@
-import { useCallback, useMemo, useState } from 'react';
-import { AxiosInstance } from 'axios';
 import * as Sentry from '@sentry/browser';
-import { Kvittering, LocaleNo } from '@navikt/fp-types';
+import { AxiosInstance } from 'axios';
+import { useCallback, useMemo, useState } from 'react';
+
 import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
-import { getSøknadForInnsending } from './getSøknadForInnsending';
+import { Kvittering, LocaleNo } from '@navikt/fp-types';
+
 import Environment from './Environment';
 import { useContextGetAnyData } from './SvpDataContext';
+import { getSøknadForInnsending } from './getSøknadForInnsending';
 
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';

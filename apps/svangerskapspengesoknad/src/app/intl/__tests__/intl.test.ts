@@ -1,5 +1,6 @@
-import glob from 'fast-glob';
 import { extract } from '@formatjs/cli-lib';
+import glob from 'fast-glob';
+
 const nb = require('../nb_NO.json');
 const nn = require('../nn_NO.json');
 

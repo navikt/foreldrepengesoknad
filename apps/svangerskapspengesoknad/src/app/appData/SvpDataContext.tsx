@@ -1,12 +1,14 @@
-import { createContext, useReducer, FunctionComponent, ReactNode, useContext } from 'react';
-import SøknadRoutes from './routes';
-import { Barn } from 'app/types/Barn';
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'app/types/Utenlandsopphold';
-import Tilrettelegging from 'app/types/Tilrettelegging';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
-import { Frilans } from 'app/types/Frilans';
+import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
+
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
+import { Barn } from 'app/types/Barn';
 import { EgenNæring } from 'app/types/EgenNæring';
+import { Frilans } from 'app/types/Frilans';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import Tilrettelegging from 'app/types/Tilrettelegging';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'app/types/Utenlandsopphold';
+
+import SøknadRoutes from './routes';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',

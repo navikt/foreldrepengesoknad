@@ -1,4 +1,9 @@
+import dayjs, { Dayjs } from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+
 import { Step } from '@navikt/fp-common';
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -17,13 +22,12 @@ import {
     isRequired,
     isValidDate,
 } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { Barn } from 'app/types/Barn';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import dayjs, { Dayjs } from 'dayjs';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { useStepConfig } from '../stepsConfig';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>

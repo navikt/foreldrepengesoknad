@@ -1,5 +1,9 @@
+import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formatDate, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
+
 import {
     PeriodeMedVariasjon,
     TilOgMedDatoType,
@@ -8,8 +12,7 @@ import {
 } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { hasValue } from 'app/utils/validationUtils';
-import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
+
 import { PerioderFormData } from './PerioderFieldArray';
 
 export const getMåSendeNySøknad = (

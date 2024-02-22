@@ -1,15 +1,16 @@
-import { useRequest } from '@navikt/fp-api';
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
-import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
-import { Umyndig } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 import { useIntl } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
+
+import { useRequest } from '@navikt/fp-api';
+import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { Umyndig } from '@navikt/fp-ui';
+import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
+
+import SvangerskapspengesøknadRoutes, { ApiErrorHandler, Spinner, svpApi } from './SvangerskapspengesøknadRoutes';
 import { SvpDataContext } from './appData/SvpDataContext';
 import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './appData/useMellomlagreSøknad';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
-import SvangerskapspengesøknadRoutes, { ApiErrorHandler, Spinner, svpApi } from './SvangerskapspengesøknadRoutes';
-
 import './styles/app.css';
 
 interface Props {

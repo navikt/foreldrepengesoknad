@@ -1,16 +1,20 @@
+import { FunctionComponent, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
+
 import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
-import Bedriftsbanner from '../Bedriftsbanner';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { FunctionComponent, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+
+import Bedriftsbanner from '../Bedriftsbanner';
 import { getNesteTilretteleggingId, useStepConfig } from '../stepsConfig';
 import PerioderFieldArray, { NEW_PERIODE, PerioderFormData } from './PerioderFieldArray';
 import { mapPerioderFormDataToState } from './perioderStepUtils';

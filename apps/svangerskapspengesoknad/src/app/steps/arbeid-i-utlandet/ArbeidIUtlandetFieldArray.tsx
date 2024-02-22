@@ -1,24 +1,28 @@
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
+
 import { validateTextInputField } from '@navikt/fp-common';
+import { DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import { Datepicker, RadioGroup, Select, TextField } from '@navikt/fp-form-hooks';
+import { HorizontalLine } from '@navikt/fp-ui';
 import { bemUtils, createCountryOptions } from '@navikt/fp-utils';
+import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
 import {
+    hasMaxLength,
     isAfterDate,
     isBeforeDate,
     isBeforeTodayOrToday,
     isRequired,
     isValidDate,
-    hasMaxLength,
 } from '@navikt/fp-validation';
+
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
-import dayjs from 'dayjs';
-import { useFieldArray, useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { HorizontalLine } from '@navikt/fp-ui';
-import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
-import { DATE_20_YEARS_AGO, DATE_5_MONTHS_AGO } from '@navikt/fp-constants';
+
 import './arbeidIUtlandet.css';
 
 export const NEW_ARBEID_I_UTLANDET = {

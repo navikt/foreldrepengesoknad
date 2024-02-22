@@ -1,8 +1,10 @@
-import PeriodeVisning from './PeriodeVisning';
+import { FunctionComponent } from 'react';
+
 import { Barn } from 'app/types/Barn';
 import { TilretteleggingPeriode } from 'app/types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'app/utils/dateUtils';
-import { FunctionComponent } from 'react';
+
+import PeriodeVisning from './PeriodeVisning';
 
 interface Props {
     perioder: TilretteleggingPeriode[];

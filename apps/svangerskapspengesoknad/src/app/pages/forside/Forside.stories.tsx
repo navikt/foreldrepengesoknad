@@ -1,7 +1,9 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import Forside from './Forside';
+import { StoryFn } from '@storybook/react';
+
 import { Action, SvpDataContext } from 'app/appData/SvpDataContext';
+
+import Forside from './Forside';
 
 const defaultExport = {
     title: 'pages/Forside',

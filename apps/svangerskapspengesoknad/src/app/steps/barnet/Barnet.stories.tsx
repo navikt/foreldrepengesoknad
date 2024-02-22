@@ -1,7 +1,9 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import Barnet from './Barnet';
+import { StoryFn } from '@storybook/react';
+
 import { Action, SvpDataContext } from 'app/appData/SvpDataContext';
+
+import Barnet from './Barnet';
 
 const defaultExport = {
     title: 'steps/Barnet',

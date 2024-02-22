@@ -1,11 +1,15 @@
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Heading } from '@navikt/ds-react';
+
 import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import { getPreviousStep, useStepConfig } from '../stepsConfig';
 
 const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {

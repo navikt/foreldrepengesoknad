@@ -1,11 +1,13 @@
 import { ArrowRightIcon } from '@navikt/aksel-icons';
-import { Button, GuidePanel, Heading, VStack } from '@navikt/ds-react';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { FormattedMessage } from 'react-intl';
 
+import { Button, GuidePanel, Heading, VStack } from '@navikt/ds-react';
+
 import { links } from '@navikt/fp-constants';
-import './ikkeKvinne.css';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { bemUtils } from '@navikt/fp-utils';
+
+import './ikkeKvinne.css';
 
 const IkkeKvinne: React.FunctionComponent = () => {
     const bem = bemUtils('ikke-kvinne');

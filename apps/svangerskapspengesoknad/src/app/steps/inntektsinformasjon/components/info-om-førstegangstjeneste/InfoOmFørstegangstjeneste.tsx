@@ -1,6 +1,8 @@
-import { BodyLong, ExpansionCard, VStack } from '@navikt/ds-react';
-import { links } from '@navikt/fp-constants';
 import { FormattedMessage } from 'react-intl';
+
+import { BodyLong, ExpansionCard, VStack } from '@navikt/ds-react';
+
+import { links } from '@navikt/fp-constants';
 
 const InfoOmFørstegangstjeneste = () => {
     return (

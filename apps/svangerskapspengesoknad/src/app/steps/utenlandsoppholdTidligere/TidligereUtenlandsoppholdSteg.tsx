@@ -1,13 +1,17 @@
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Heading } from '@navikt/ds-react';
-import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
+
 import { Arbeidsforhold, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import SøknadRoutes from 'app/appData/routes';
-import { getPreviousStep, useStepConfig } from '../stepsConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
+
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+
+import { getPreviousStep, useStepConfig } from '../stepsConfig';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;

@@ -1,11 +1,13 @@
-import { Arbeidsforhold } from '@navikt/fp-types';
-import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
-import { Stilling } from 'app/types/Tilrettelegging';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
+
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { Arbeidsforhold } from '@navikt/fp-types';
+
+import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import { Stilling } from 'app/types/Tilrettelegging';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {

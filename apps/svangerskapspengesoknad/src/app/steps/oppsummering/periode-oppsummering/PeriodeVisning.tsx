@@ -1,9 +1,12 @@
-import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
-import { Arbeidsforholdstype, TilretteleggingPeriode, Tilretteleggingstype } from 'app/types/Tilrettelegging';
-import { FunctionComponent } from 'react';
 import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+
+import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
+
 import { formatDate } from '@navikt/fp-utils';
+
+import { Arbeidsforholdstype, TilretteleggingPeriode, Tilretteleggingstype } from 'app/types/Tilrettelegging';
 
 interface Props {
     periode: TilretteleggingPeriode;

@@ -1,4 +1,9 @@
+import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
+
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { Datepicker, RadioGroup, TextArea, TextField } from '@navikt/fp-form-hooks';
 import {
@@ -13,10 +18,8 @@ import {
     isValidDate,
     isValidNumber,
 } from '@navikt/fp-validation';
+
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
-import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 
 interface Props {
     egenNæringFom: string;

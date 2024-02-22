@@ -1,9 +1,11 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
-import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-import PerioderStep from './PerioderStep';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
+import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+
+import PerioderStep from './PerioderStep';
 
 const defaultExport = {
     title: 'steps/PerioderStep',

@@ -1,7 +1,9 @@
 import { FormattedMessage } from 'react-intl';
-import SøknadRoutes from 'app/appData/routes';
+
 import { Button } from '@navikt/ds-react';
+
 import { ContextDataType, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 type Props = {
     route: SøknadRoutes;

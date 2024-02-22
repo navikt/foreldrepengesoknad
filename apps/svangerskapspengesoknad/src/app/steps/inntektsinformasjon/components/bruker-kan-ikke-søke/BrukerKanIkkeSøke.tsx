@@ -1,5 +1,6 @@
-import { Alert, VStack } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
+
+import { Alert, VStack } from '@navikt/ds-react';
 
 const BrukerKanIkkeSøke = () => {
     return (

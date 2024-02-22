@@ -1,6 +1,7 @@
-import { BodyShort } from '@navikt/ds-react';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
+
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     harArbeidsforhold: boolean;

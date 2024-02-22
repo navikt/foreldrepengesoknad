@@ -1,18 +1,24 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { BodyShort, Button, Radio, VStack } from '@navikt/ds-react';
+
 import { Step, StepButtonWrapper } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import BackButton from './BackButton';
+
 import { getBackLinkForArbeidSteg, useStepConfig } from '../stepsConfig';
+import { getArbeidsforholdTilretteleggingOptions } from '../velg-arbeidsforhold/velgArbeidFormUtils';
+import BackButton from './BackButton';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
@@ -20,8 +26,6 @@ import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKan
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
-import { getArbeidsforholdTilretteleggingOptions } from '../velg-arbeidsforhold/velgArbeidFormUtils';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 
 const søkerHarKunEttARegArbeidsforholdForTilrettelegging = (
     formValues: Inntektsinformasjon,

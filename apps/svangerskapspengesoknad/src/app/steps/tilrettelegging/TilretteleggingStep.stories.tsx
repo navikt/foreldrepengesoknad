@@ -1,9 +1,12 @@
-import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import dayjs from 'dayjs';
+
+import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import dayjs from 'dayjs';
+
 import TilretteleggingStep from './TilretteleggingStep';
 
 const defaultExport = {

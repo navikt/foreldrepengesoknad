@@ -1,8 +1,13 @@
+import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+
 import { VStack } from '@navikt/ds-react';
+
 import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import {
     getBackLinkForArbeidIUtlandetSteg,
@@ -11,10 +16,8 @@ import {
 } from 'app/steps/stepsConfig';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
-import ArbeidIUtlandetFieldArray, { NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
 
+import ArbeidIUtlandetFieldArray, { NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
 import './arbeidIUtlandet.css';
 
 type Props = {

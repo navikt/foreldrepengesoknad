@@ -1,4 +1,8 @@
+import { useMemo } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
+
 import { guid } from '@navikt/fp-common';
 import {
     BoIUtlandetOppsummeringspunkt,
@@ -6,9 +10,11 @@ import {
     OppsummeringIndex,
     SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
+import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
-import FrilansVisning from './frilans-visning/FrilansVisning';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import {
@@ -20,18 +26,15 @@ import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
-import { useMemo } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { getBackLinkAndIdForOppsummeringSteg, useStepConfig } from '../stepsConfig';
 import ArbeidIUtlandetVisning from './arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import EgenNæringVisning from './egen-næring-visning/EgenNæringVisning';
+import FrilansVisning from './frilans-visning/FrilansVisning';
+import './oppsummering.css';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
-
-import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
-import './oppsummering.css';
-import { bemUtils, formatDate } from '@navikt/fp-utils';
 
 // TODO (TOR) Bruk same typar i dei forskjellige appane
 const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({

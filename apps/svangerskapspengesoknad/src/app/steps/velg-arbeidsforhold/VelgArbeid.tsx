@@ -1,14 +1,18 @@
+import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+
 import { Checkbox, VStack } from '@navikt/ds-react';
+
 import { Step } from '@navikt/fp-common';
 import { CheckboxGroup, ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { getBackLinkForVelgArbeidSteg, useStepConfig } from 'app/steps/stepsConfig';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+
 import FlereArbeidsforholdGuidePanel from './FlereArbeidsforholdGuidePanel';
 import { getOptionNavn, mapArbeidsforholdToVelgArbeidOptions } from './velgArbeidFormUtils';
 

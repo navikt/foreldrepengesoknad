@@ -1,8 +1,11 @@
-import { BodyShort, Box, VStack } from '@navikt/ds-react';
-import { formatDate, getCountryName } from '@navikt/fp-utils';
-import { ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { BodyShort, Box, VStack } from '@navikt/ds-react';
+
+import { formatDate, getCountryName } from '@navikt/fp-utils';
+
+import { ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
 
 interface Props {
     arbeidIUtlandet: ArbeidIUtlandetInput;

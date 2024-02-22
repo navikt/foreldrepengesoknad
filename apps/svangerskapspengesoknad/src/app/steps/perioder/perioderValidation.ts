@@ -1,9 +1,11 @@
+import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
 import { formatDate, overlapperTidsperioder } from '@navikt/fp-utils';
+
 import { PeriodeMedVariasjon, TilOgMedDatoType } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { getSlutteTekst } from 'app/utils/validationUtils';
-import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
 
 const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     if (!value || value.trim() === '') {

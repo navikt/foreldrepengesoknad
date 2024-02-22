@@ -1,11 +1,14 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './Barnet.stories';
 import dayjs from 'dayjs';
+
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
 import { ContextDataType } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
+import * as stories from './Barnet.stories';
 
 const { Default } = composeStories(stories);
 

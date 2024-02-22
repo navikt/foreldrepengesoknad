@@ -1,10 +1,14 @@
-import { BodyShort, HStack, Link } from '@navikt/ds-react';
-import { guid } from '@navikt/fp-common';
-import Tilrettelegging, { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import { FileIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { FileIcon } from '@navikt/aksel-icons';
+
+import { BodyShort, HStack, Link } from '@navikt/ds-react';
+
+import { guid } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
+
+import Tilrettelegging, { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+
 import './vedlegg-oppsummering.css';
 
 interface Props {

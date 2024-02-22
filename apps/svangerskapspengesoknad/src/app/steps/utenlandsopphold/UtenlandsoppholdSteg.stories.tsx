@@ -1,7 +1,9 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
+import { StoryFn } from '@storybook/react';
+
 import { Action, SvpDataContext } from 'app/appData/SvpDataContext';
+
+import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 
 const defaultExport = {
     title: 'steps/UtenlandsoppholdSteg',

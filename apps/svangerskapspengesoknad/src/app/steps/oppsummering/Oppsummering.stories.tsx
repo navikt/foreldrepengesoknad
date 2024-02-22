@@ -1,12 +1,15 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
-import Oppsummering from './Oppsummering';
-import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import { StoryFn } from '@storybook/react';
+import dayjs from 'dayjs';
+
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { Søker } from '@navikt/fp-types';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import { Næringstype } from 'app/types/EgenNæring';
-import dayjs from 'dayjs';
+import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+
+import Oppsummering from './Oppsummering';
 
 const defaultExport = {
     title: 'steps/Oppsummering',

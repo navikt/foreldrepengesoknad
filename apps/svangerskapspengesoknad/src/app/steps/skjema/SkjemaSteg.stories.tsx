@@ -1,10 +1,13 @@
-import { attachmentApi } from '@navikt/fp-api';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import MockAdapter from 'axios-mock-adapter';
+
+import { attachmentApi } from '@navikt/fp-api';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import MockAdapter from 'axios-mock-adapter';
+
 import SkjemaSteg from './SkjemaSteg';
 
 const defaultExport = {

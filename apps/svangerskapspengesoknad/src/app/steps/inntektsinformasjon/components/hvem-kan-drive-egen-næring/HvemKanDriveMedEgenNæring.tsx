@@ -1,7 +1,8 @@
-import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
-import { links } from '@navikt/fp-constants';
-
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
+
+import { links } from '@navikt/fp-constants';
 
 const HvemKanDriveMedEgenNæring = () => {
     const intl = useIntl();

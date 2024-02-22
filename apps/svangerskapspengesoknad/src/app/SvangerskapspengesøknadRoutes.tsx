@@ -1,30 +1,33 @@
+import { FunctionComponent, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+
 import { Loader } from '@navikt/ds-react';
+
 import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
 import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect, redirectToLogin } from '@navikt/fp-utils';
-import Environment from 'app/appData/Environment';
-import { ContextDataType } from 'app/appData/SvpDataContext';
-import useAvbrytSøknad from 'app/appData/useAvbrytSøknad';
-import useMellomlagreSøknad, { SvpDataMapAndMetaData } from 'app/appData/useMellomlagreSøknad';
-import useSendSøknad from 'app/appData/useSendSøknad';
-import Forside from 'app/pages/forside/Forside';
-import ArbeidIUtlandetStep from 'app/steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
-import Barnet from 'app/steps/barnet/Barnet';
-import EgenNæringStep from 'app/steps/egen-næring/EgenNæringStep';
-import FrilansStep from 'app/steps/frilans/FrilansStep';
-import InntektsinformasjonSteg from 'app/steps/inntektsinformasjon/InntektsinformasjonSteg';
-import Oppsummering from 'app/steps/oppsummering/Oppsummering';
-import PerioderStep from 'app/steps/perioder/PerioderStep';
-import SkjemaSteg from 'app/steps/skjema/SkjemaSteg';
-import TilretteleggingStep from 'app/steps/tilrettelegging/TilretteleggingStep';
-import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
-import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import VelgArbeid from 'app/steps/velg-arbeidsforhold/VelgArbeid';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+
+import Environment from './appData/Environment';
+import { ContextDataType } from './appData/SvpDataContext';
 import SøknadRoutes from './appData/routes';
+import useAvbrytSøknad from './appData/useAvbrytSøknad';
+import useMellomlagreSøknad, { SvpDataMapAndMetaData } from './appData/useMellomlagreSøknad';
+import useSendSøknad from './appData/useSendSøknad';
+import Forside from './pages/forside/Forside';
+import ArbeidIUtlandetStep from './steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
+import Barnet from './steps/barnet/Barnet';
+import EgenNæringStep from './steps/egen-næring/EgenNæringStep';
+import FrilansStep from './steps/frilans/FrilansStep';
+import InntektsinformasjonSteg from './steps/inntektsinformasjon/InntektsinformasjonSteg';
+import Oppsummering from './steps/oppsummering/Oppsummering';
+import PerioderStep from './steps/perioder/PerioderStep';
+import SkjemaSteg from './steps/skjema/SkjemaSteg';
+import TilretteleggingStep from './steps/tilrettelegging/TilretteleggingStep';
+import UtenlandsoppholdSteg from './steps/utenlandsopphold/UtenlandsoppholdSteg';
+import SenereUtenlandsoppholdSteg from './steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from './steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
+import VelgArbeid from './steps/velg-arbeidsforhold/VelgArbeid';
 
 export const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>

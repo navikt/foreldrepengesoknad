@@ -1,6 +1,8 @@
-import { BodyLong, BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
-import { links } from '@navikt/fp-constants';
 import { FormattedMessage } from 'react-intl';
+
+import { BodyLong, BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
+
+import { links } from '@navikt/fp-constants';
 
 const InfoTilFiskere = () => {
     return (
