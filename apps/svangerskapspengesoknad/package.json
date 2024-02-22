@@ -92,6 +92,7 @@
         "@testing-library/jest-dom": "^6.2.1",
         "@testing-library/react": "^14.1.2",
         "@testing-library/user-event": "^14.5.2",
+        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@types/amplitude-js": "^8.16.5",
         "@types/bytes": "^3.1.4",
         "@types/lodash": "^4.14.202",
