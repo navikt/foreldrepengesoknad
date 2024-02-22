@@ -3,7 +3,7 @@
         "FORELDREPENGER": 250
     },
     "minsteretter": {
-        "farRundtFødsel": 10,
+        "farRundtFødsel": 0,
         "generellMinsterett": 40,
         "toTette": 0
     }

@@ -544,7 +544,7 @@ const getFordelingForeldrepengerFar = (
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.far.utenAktivitetskrav', {
                 varighetTekst,
-                morNavn: getNavnGenitivEierform(morTekst, intl.locale),
+                morNavnEierform: getNavnGenitivEierform(morTekst, intl.locale),
             }),
         );
     }
