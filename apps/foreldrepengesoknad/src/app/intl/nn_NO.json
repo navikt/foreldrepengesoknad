@@ -1022,7 +1022,6 @@
     "fordeling.info.felles.adopsjon": "<b> {varighetTekst} </b> kan deles slik dere ønsker, og brukes når som helst innen tre år etter omsorgsovertakelsen. Når {farTekst} skal ha dager fra denne perioden, må {morTekst} være i aktivitet. <a>Les om aktivitetskravet til mor.</a>",
     "fordeling.info.felles.før1okt2021": "<b> {varighetTekst} </b> kan deles slik dere ønsker. Når {farTekst} skal ha dager fra denne perioden, må {morTekst} være i aktivitet. <a>Les om aktivitetskravet til mor.</a>",
     "fordeling.info.felles.annenForelder.del1": "<b> {varighet} </b> er allerede brukt av {annenPartNavn}. Dette kan endres. Det gjenstår {varighetTekst} som kan brukes av deg eller {annenPartNavn}.",
-    "fordeling.info.felles.annenForelder.del2": "Hvis du vil ha ukene som er satt av til {annenPartNavn}, må {annenPartNavn} sende inn en søknad for å frigjøre disse ukene. Etter dette kan du søke om å bruke disse ukene. Det er den siste søknaden som er gjeldende.",
     "fordeling.info.felles.annenForelder.eøs": "Hvis {navn} bruker mer enn  {varighetAnnenPart} med foreldrepenger i et annet EØS land, skal perioden utover dette trekkes fra fellesperioden. Les mer om hva som skjer hvis <a>annen forelder har foreldrepenger i EØS</a>.",
     "fordeling.info.farMedmor.adopsjon": "<b>{varighetTekst}</b> kan brukes når som helst innen tre år etter omsorgsovertakelsen.",
     "fordeling.info.farMedmor.fødsel": "<b>{varighetTekst}</b> kan brukes når som helst før {barnTekst} fyller 3 år.",

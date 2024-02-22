@@ -240,7 +240,7 @@ const getFordelingFelles = (
     const fordelingInfo = [
         getFellesInfoTekst(dagerFelles, familiehendelsesdato, erAdopsjon, antallBarn, morTekst, farTekst, intl),
     ];
-    const gjenståendeDager = dagerBruktAvAnnenPart ? (dagerFelles - dagerBruktAvAnnenPart) / 5 : dagerFelles;
+    const gjenståendeDager = dagerBruktAvAnnenPart ? dagerFelles - dagerBruktAvAnnenPart : dagerFelles;
     const gjenståendeVarighet = getVarighetString(gjenståendeDager, intl);
 
     if (dagerBruktAvAnnenPart && dagerBruktAvAnnenPart > 0) {
@@ -256,7 +256,6 @@ const getFordelingFelles = (
                 varighetTekst: gjenståendeVarighet,
             }),
         );
-        fordelingInfo.push(getFormattedMessage('fordeling.info.felles.annenForelder.del2', { annenPartNavn }));
     }
     if (gjenståendeDager > 0) {
         fordelingDager.push({ antallDager: gjenståendeDager, fargekode: FordelingFargekode.IKKE_TILDELT });
