@@ -8,6 +8,7 @@ import {
     ISOStringToDate,
     MorsAktivitet,
     OppholdÅrsakType,
+    OpprinneligSøkt,
     Overføringsperiode,
     Periode,
     PeriodeInfoType,
@@ -254,6 +255,8 @@ export const mapUttaksperiodeFromSaksperiode = (
         saksperiode.gradering?.arbeidstidprosent,
     );
 
+    const opprinneligSøkt = getOpprinneligSøkt(saksperiode);
+
     const { termindato, fødselsdato, omsorgsovertakelsesdato } = grunnlag;
 
     const familiehendelseDato = getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato);
@@ -281,6 +284,7 @@ export const mapUttaksperiodeFromSaksperiode = (
         morsAktivitetIPerioden: saksperiode.morsAktivitet,
         erMorForSyk: getErMorForSyk(grunnlag.søkerErFarEllerMedmor, saksperiode, familiehendelseDato, kontoType),
         angittAvAnnenPart: saksperiode.angittAvAnnenPart,
+        opprinneligSøkt,
     };
 
     return uttaksperiode;
@@ -300,7 +304,27 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
     return utsettelsesperiode;
 };
 
+const getOpprinneligSøkt = (saksperiode: Saksperiode) => {
+    if (saksperiode.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
+        if (saksperiode.utsettelseÅrsak === UtsettelseÅrsakTypeDTO.Ferie) {
+            return OpprinneligSøkt.Ferie;
+        }
+
+        if (saksperiode.utsettelseÅrsak === UtsettelseÅrsakTypeDTO.Arbeid) {
+            return OpprinneligSøkt.Arbeid;
+        }
+    }
+
+    if (saksperiode.resultat.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID) {
+        return OpprinneligSøkt.Gradering;
+    }
+
+    return undefined;
+};
+
 const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEllerMedmor: boolean): AvslåttPeriode => {
+    const opprinneligSøkt = getOpprinneligSøkt(saksperiode);
+
     const avslåttPeriode: AvslåttPeriode = {
         id: guid(),
         type: Periodetype.Info,
@@ -312,6 +336,7 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEl
         overskrives: true,
         visPeriodeIPlan: true,
         kanSlettes: saksperiode.resultat.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
+        opprinneligSøkt,
     };
     return avslåttPeriode;
 };

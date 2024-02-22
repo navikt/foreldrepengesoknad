@@ -12,6 +12,7 @@ import {
     MorsAktivitet,
     NavnPåForeldre,
     OppholdÅrsakType,
+    OpprinneligSøkt,
     OverføringÅrsakType,
     Periode,
     PeriodeValidState,
@@ -234,6 +235,13 @@ const getPeriodeTittelInfoPeriode = (
                 navn: getForelderNavn(periode.forelder, navnPåForeldre),
             });
         case PeriodeInfoType.avslåttPeriode:
+            if (
+                periode.opprinneligSøkt === OpprinneligSøkt.Arbeid ||
+                periode.opprinneligSøkt === OpprinneligSøkt.Ferie
+            ) {
+                return 'Avslått utsettelse';
+            }
+
             if (
                 (periode.forelder === Forelder.mor && erFarEllerMedmor) ||
                 (periode.forelder === Forelder.farMedmor && !erFarEllerMedmor)

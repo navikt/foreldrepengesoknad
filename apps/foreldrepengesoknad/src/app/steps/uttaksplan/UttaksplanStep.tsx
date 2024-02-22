@@ -666,7 +666,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             </Block>
                         )}
                         <Block textAlignCenter={true} padBottom="l">
-                            <StepButtonWrapper>
+                            <StepButtonWrapper singleButton={true}>
                                 {!erEndringssøknad && (
                                     <Button
                                         variant="secondary"

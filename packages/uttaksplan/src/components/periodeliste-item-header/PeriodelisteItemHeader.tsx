@@ -1,7 +1,9 @@
 import {
     Forelder,
     NavnPåForeldre,
+    OpprinneligSøkt,
     Periode,
+    PeriodeInfoType,
     Periodetype,
     Situasjon,
     StønadskontoType,
@@ -29,8 +31,8 @@ import { BodyShort, Label } from '@navikt/ds-react';
 import './periodelisteItemHeader.less';
 import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
-import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
 import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
+import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
 
 interface Props {
     egenPeriode: boolean;
@@ -57,6 +59,10 @@ export const getPeriodeIkon = (
 ): React.ReactNode | undefined => {
     switch (periode.type) {
         case Periodetype.Uttak:
+            if (periode.opprinneligSøkt === OpprinneligSøkt.Gradering) {
+                return <UttaksplanAdvarselIkon />;
+            }
+
             return (
                 <StønadskontoIkon
                     konto={periode.konto}
@@ -87,6 +93,14 @@ export const getPeriodeIkon = (
             if (isUtsettelseAnnenPart(periode)) {
                 return <UtsettelseIkon årsak={periode.årsak} />;
             } else {
+                if (
+                    periode.infotype === PeriodeInfoType.avslåttPeriode &&
+                    (periode.opprinneligSøkt === OpprinneligSøkt.Arbeid ||
+                        periode.opprinneligSøkt === OpprinneligSøkt.Ferie)
+                ) {
+                    return <UttaksplanAdvarselIkon />;
+                }
+
                 return (
                     <StønadskontoIkon
                         konto={StønadskontoType.Foreldrepenger}

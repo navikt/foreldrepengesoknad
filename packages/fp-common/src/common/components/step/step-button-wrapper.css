@@ -18,3 +18,7 @@
 .step-button-wrapper--last-step > button {
     width: 60%;
 }
+
+.step-button-wrapper--single-button > button {
+    width: 100%;
+}

@@ -18,8 +18,10 @@ import {
     intlUtils,
     isAnnenForelderOppgitt,
     ISOStringToDate,
+    isUttaksperiode,
     isValidTidsperiode,
     NavnPåForeldre,
+    OpprinneligSøkt,
     Periode,
     Periodetype,
     PeriodeValidState,
@@ -55,7 +57,7 @@ import {
 import { FormattedMessage, IntlShape } from 'react-intl';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
-import { Button, GuidePanel } from '@navikt/ds-react';
+import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 
@@ -211,6 +213,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
             : undefined;
 
     const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
+    const harOpprinneligSøktGradering =
+        isUttaksperiode(periode) && periode.opprinneligSøkt === OpprinneligSøkt.Gradering;
 
     if (!isOpen) {
         return null;
@@ -313,6 +317,16 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 );
                 return (
                     <>
+                        {harOpprinneligSøktGradering ? (
+                            <Block padBottom="l">
+                                <GuidePanel>
+                                    <BodyLong>
+                                        Du har søkt om å kombinere foreldrepenger med delvis arbeid, men har fått dette
+                                        avslått. I stedet får du delvis utbetaling og trekkes fulle dager.
+                                    </BodyLong>
+                                </GuidePanel>
+                            </Block>
+                        ) : null}
                         <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
