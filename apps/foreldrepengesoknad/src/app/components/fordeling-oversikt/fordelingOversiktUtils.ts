@@ -339,9 +339,8 @@ const getFordelingFedrekvote = (
     ];
 
     if (dagerRundtFødsel > 0) {
-        const dinEllerHans = erFarEllerMedmor ? intlUtils(intl, 'din') : intlUtils(intl, 'hans');
-        const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
-        const morEllerDeg = morTekst === intlUtils(intl, 'mor') ? morTekst : intlUtils(intl, 'deg');
+        const dinEllerHans = getDinEllerHansTekst(erFarEllerMedmor, intl);
+        const morEllerDeg = getDegEllerMorTekst(erFarEllerMedmor, navnMor, intl);
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', {
                 farTekst,
@@ -592,6 +591,10 @@ const getFordelingForeldrepengerFar = (
         fordelingDager,
         fordelingInfo,
     };
+};
+
+const getDinEllerHansTekst = (erFarEllerMedmor: boolean, intl: IntlShape) => {
+    return erFarEllerMedmor ? intlUtils(intl, 'din') : intlUtils(intl, 'hans');
 };
 
 export const getMorTekst = (erFarEllerMedmor: boolean, navnMor: string, intl: IntlShape) => {

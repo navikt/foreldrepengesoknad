@@ -97,7 +97,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                                     </BodyShort>
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.morSykFørste6Uker.info"
-                                        values={{ morTekst, farTekst, degEllerSeg, degEllerMor }}
+                                        values={{ morTekst, farTekst, degEllerSeg, degEllerMor, barnetEllerBarna }}
                                     />
                                 </VStack>
                             </div>
