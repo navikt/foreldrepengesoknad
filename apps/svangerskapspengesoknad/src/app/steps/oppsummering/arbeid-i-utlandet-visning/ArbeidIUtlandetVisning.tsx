@@ -1,6 +1,5 @@
 import { BodyShort, Box, VStack } from '@navikt/ds-react';
-import { formatDate } from '@navikt/fp-common';
-import { getCountryName } from '@navikt/fp-utils';
+import { formatDate, getCountryName } from '@navikt/fp-utils';
 import { ArbeidIUtlandetInput } from 'app/types/ArbeidIUtlandet';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';

@@ -1,6 +1,6 @@
 import { Radio, VStack } from '@navikt/ds-react';
-import { Step, date20YearsAgo } from '@navikt/fp-common';
-import { DATE_TODAY } from '@navikt/fp-constants';
+import { Step } from '@navikt/fp-common';
+import { DATE_20_YEARS_AGO, DATE_TODAY } from '@navikt/fp-constants';
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { isBeforeTodayOrToday, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
@@ -89,7 +89,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                             ),
                         ]}
                         maxDate={DATE_TODAY}
-                        minDate={date20YearsAgo}
+                        minDate={DATE_20_YEARS_AGO}
                     />
                     <RadioGroup
                         name="jobberFremdelesSomFrilans"

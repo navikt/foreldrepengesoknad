@@ -1,5 +1,5 @@
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
-import { bemUtils, guid } from '@navikt/fp-common';
+import { guid } from '@navikt/fp-common';
 import {
     BoIUtlandetOppsummeringspunkt,
     HendelseType,
@@ -31,7 +31,7 @@ import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
 
 import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import './oppsummering.css';
-import { formatDate } from '@navikt/fp-utils';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
 
 // TODO (TOR) Bruk same typar i dei forskjellige appane
 const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({

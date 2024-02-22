@@ -1,6 +1,6 @@
 import { useRequest } from '@navikt/fp-api';
-import { erKvinne, erMyndig, useDocumentTitle } from '@navikt/fp-common';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { Umyndig } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { useIntl } from 'react-intl';
@@ -37,7 +37,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
         return <Spinner />;
     }
 
-    const erPersonKvinne = erKvinne(søkerinfoData.søker.kjønn);
+    const erPersonKvinne = søkerinfoData.søker.kjønn === 'K';
 
     if (!erPersonKvinne) {
         return <IkkeKvinne />;

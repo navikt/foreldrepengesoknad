@@ -1,9 +1,9 @@
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
 import { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { IntlShape, useIntl } from 'react-intl';
 import './bedriftsbanner.css';
 import { Buldings3Icon } from '@navikt/aksel-icons';
+import { bemUtils } from '@navikt/fp-utils';
 
 interface Props {
     arbeid: ArbeidsforholdForTilrettelegging;

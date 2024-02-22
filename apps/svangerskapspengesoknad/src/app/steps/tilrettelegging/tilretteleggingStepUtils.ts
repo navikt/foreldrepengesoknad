@@ -1,4 +1,3 @@
-import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 import { TilOgMedDatoType, Tilrettelegging, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 
@@ -41,10 +40,8 @@ export const mapOmTilretteleggingFormDataToState = (
             ? undefined
             : values.enPeriodeMedTilretteleggingTilbakeIJobbDato,
         delvisTilretteleggingPeriodeType: values.delvisTilretteleggingPeriodeType,
-        risikofaktorer: values.risikofaktorer ? replaceInvisibleCharsWithSpace(values.risikofaktorer!) : undefined,
-        tilretteleggingstiltak: values.tilretteleggingstiltak
-            ? replaceInvisibleCharsWithSpace(values.tilretteleggingstiltak!)
-            : undefined,
+        risikofaktorer: values.risikofaktorer,
+        tilretteleggingstiltak: values.tilretteleggingstiltak,
     };
 
     const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {

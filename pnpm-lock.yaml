@@ -1812,6 +1812,12 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10

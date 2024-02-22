@@ -1,8 +1,8 @@
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
-import { bemUtils, date20YearsAgo, date5MonthsAgo, validateTextInputField } from '@navikt/fp-common';
+import { validateTextInputField } from '@navikt/fp-common';
 import { Datepicker, RadioGroup, Select, TextField } from '@navikt/fp-form-hooks';
-import { createCountryOptions } from '@navikt/fp-utils';
+import { bemUtils, createCountryOptions } from '@navikt/fp-utils';
 import {
     isAfterDate,
     isBeforeDate,
@@ -18,6 +18,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
+import { DATE_20_YEARS_AGO, DATE_5_MONTHS_AGO } from '@navikt/fp-constants';
 import './arbeidIUtlandet.css';
 
 export const NEW_ARBEID_I_UTLANDET = {
@@ -102,7 +103,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                             ),
                         ]}
                         maxDate={dayjs().toDate()}
-                        minDate={date20YearsAgo}
+                        minDate={DATE_20_YEARS_AGO}
                     />
                     <RadioGroup
                         name={`arbeidIUtlandet.${index}.pågående`}
@@ -140,7 +141,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                                 ),
                             ]}
                             maxDate={dayjs().add(9, 'month').toDate()}
-                            minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet[index].fom, date5MonthsAgo)}
+                            minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet[index].fom, DATE_5_MONTHS_AGO)}
                         />
                     )}
                     {index < fields.length - 1 && <HorizontalLine />}

@@ -1,5 +1,5 @@
 import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
-import { Step, date20YearsAgo, date5MonthsAgo, validateTextInputField } from '@navikt/fp-common';
+import { Step, validateTextInputField } from '@navikt/fp-common';
 import {
     Datepicker,
     ErrorSummaryHookForm,
@@ -33,7 +33,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
-import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
+import { DATE_20_YEARS_AGO, DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO } from '@navikt/fp-constants';
 import { useNavigate } from 'react-router-dom';
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
@@ -165,6 +165,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                         label={navnPåNæringLabel}
                         maxLength={100}
                         validate={[validateEgenNæringNavn(intl, navnPåNæringLabel, næringsType === Næringstype.FISKER)]}
+                        shouldReplaceInvisibleChars
                     />
                     <RadioGroup
                         name="registrertINorge"
@@ -211,7 +212,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                             ),
                         ]}
                         maxDate={dayjs()}
-                        minDate={date20YearsAgo}
+                        minDate={DATE_20_YEARS_AGO}
                     />
 
                     <RadioGroup
@@ -263,7 +264,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                                 ),
                             ]}
                             maxDate={dayjs().add(9, 'month')}
-                            minDate={getMinInputTilOgMedValue(næringFom, date5MonthsAgo)}
+                            minDate={getMinInputTilOgMedValue(næringFom, DATE_5_MONTHS_AGO)}
                         />
                     )}
                     {!erVirksomhetRegnetSomNyoppstartet(næringFom) && (

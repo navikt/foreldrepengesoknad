@@ -1,5 +1,3 @@
-import { Tidsperiode } from '@navikt/fp-common';
-
 export const egenNæringId = 'næring';
 
 export enum Næringstype {
@@ -48,6 +46,9 @@ export interface EgenNæringDTO
     > {
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonDTO;
     næringsinntekt?: number;
-    tidsperiode: Tidsperiode;
+    tidsperiode: {
+        fom: string;
+        tom: string;
+    };
     næringstyper: Næringstype[];
 }

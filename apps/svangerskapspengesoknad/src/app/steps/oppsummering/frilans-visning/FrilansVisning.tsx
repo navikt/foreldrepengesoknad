@@ -1,5 +1,5 @@
 import { BodyShort, Box, VStack } from '@navikt/ds-react';
-import { formatDate } from '@navikt/fp-common';
+import { formatDate } from '@navikt/fp-utils';
 import { Frilans } from 'app/types/Frilans';
 import { FunctionComponent } from 'react';
 interface Props {

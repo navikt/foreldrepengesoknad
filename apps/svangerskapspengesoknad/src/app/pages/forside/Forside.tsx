@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
-import { LanguageToggle, bemUtils } from '@navikt/fp-common';
+import { LanguageToggle } from '@navikt/fp-common';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { LocaleNo } from '@navikt/fp-types';
 import { links } from '@navikt/fp-constants';
@@ -9,6 +9,7 @@ import { ContextDataType, useContextSaveData } from 'app/appData/SvpDataContext'
 import SøknadRoutes from 'app/appData/routes';
 
 import './forside.css';
+import { bemUtils } from '@navikt/fp-utils';
 
 export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;

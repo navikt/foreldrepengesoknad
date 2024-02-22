@@ -14,4 +14,6 @@ export {
     SIX_MONTHS_AGO,
     DATE_1_YEAR_FROM_NOW,
     DATE_1_YEAR_AGO,
+    DATE_20_YEARS_AGO,
+    DATE_5_MONTHS_AGO,
 } from './src/dates';

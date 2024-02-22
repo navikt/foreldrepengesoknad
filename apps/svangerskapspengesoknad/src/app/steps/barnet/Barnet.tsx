@@ -1,56 +1,47 @@
-import { BodyShort, Button, Radio, ReadMore, VStack } from '@navikt/ds-react';
-import { Step, StepButtonWrapper } from '@navikt/fp-common';
-import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
-import { isBeforeTodayOrToday, isLessThanOneAndHalfYearsAgo, isRequired, isValidDate } from '@navikt/fp-validation';
+import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { Step } from '@navikt/fp-common';
+import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Arbeidsforhold } from '@navikt/fp-types';
+import {
+    enMånedSiden,
+    etÅrSiden,
+    halvannetÅrSiden,
+    isValidDate as isStringADate,
+    niMånederFremITid,
+} from '@navikt/fp-utils';
+import {
+    isAfterOrSame,
+    isBeforeDate,
+    isBeforeTodayOrToday,
+    isLessThanOneAndHalfYearsAgo,
+    isRequired,
+    isValidDate,
+} from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { Barn } from 'app/types/Barn';
+import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import dayjs, { Dayjs } from 'dayjs';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useStepConfig } from '../stepsConfig';
-import {
-    isValidDate as isStringADate,
-    halvannetÅrSiden,
-    enMånedSiden,
-    etÅrSiden,
-    niMånederFremITid,
-} from '@navikt/fp-utils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { Arbeidsforhold } from '@navikt/fp-types';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
     erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(new Date());
 
 const validerTermindato = (intl: IntlShape, fødselsdato?: string) => (termindato: string) => {
-    if (dayjs(termindato).isSameOrAfter(niMånederFremITid(new Date()), 'day')) {
-        return intl.formatMessage({
-            id: 'valideringsfeil.barnet.termindato.forLangtFremITid',
-        });
-    }
-    if (dayjs(termindato).isBefore(enMånedSiden(new Date()), 'day') && !fødselsdato) {
-        return intl.formatMessage({
-            id: 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato',
-        });
-    }
-    if (dayjs(termindato).isBefore(etÅrSiden(new Date()), 'day')) {
-        return intl.formatMessage({
-            id: 'valideringsfeil.barnet.termindato.forLangtTilbakeITid',
-        });
-    }
     if (fødselsdato && !dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
         return intl.formatMessage({
             id: 'valideringsfeil.barnet.termindato.6mndEtterFødsel',
         });
     }
+
     if (fødselsdato && !dayjs(termindato).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
         return intl.formatMessage({
             id: 'valideringsfeil.barnet.termindato.1mndFørFødsel',
         });
     }
-
-    return undefined;
+    return null;
 };
 
 type Props = {
@@ -62,7 +53,6 @@ type Props = {
 const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const barnet = useContextGetData(ContextDataType.OM_BARNET);
@@ -71,8 +61,6 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: Barn) => {
-        setIsSubmitting(true);
-
         oppdaterOmBarnet(values);
         oppdaterAppRoute(SøknadRoutes.UTENLANDSOPPHOLD);
 
@@ -161,6 +149,23 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                 isValidDate(
                                     intl.formatMessage({ id: 'valideringsfeil.barnet.termindato.ugyldigDatoFormat' }),
                                 ),
+                                isBeforeDate(
+                                    intl.formatMessage({ id: 'valideringsfeil.barnet.termindato.forLangtFremITid' }),
+                                    niMånederFremITid(new Date()),
+                                ),
+                                (termindato) =>
+                                    !fødselsdato
+                                        ? isAfterOrSame(
+                                              intl.formatMessage({
+                                                  id: 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato',
+                                              }),
+                                              enMånedSiden(new Date()),
+                                          )(termindato)
+                                        : null,
+                                isAfterOrSame(
+                                    intl.formatMessage({ id: 'valideringsfeil.barnet.termindato.forLangtTilbakeITid' }),
+                                    etÅrSiden(new Date()),
+                                ),
                                 validerTermindato(intl, fødselsdato),
                             ]}
                         />
@@ -170,11 +175,12 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             </BodyShort>
                         </ReadMore>
                     </div>
-                    <StepButtonWrapper>
-                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                            <FormattedMessage id="søknad.gåVidere" />
-                        </Button>
-                    </StepButtonWrapper>
+                    <StepButtonsHookForm
+                        goToPreviousStep={() => {
+                            oppdaterAppRoute(SøknadRoutes.FORSIDE);
+                            mellomlagreSøknadOgNaviger();
+                        }}
+                    />
                 </VStack>
             </Form>
         </Step>

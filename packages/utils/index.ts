@@ -11,6 +11,15 @@ export { shouldChangeBrowser } from './src/browserUtils';
 export { omitOne, omitMany } from './src/objectUtils';
 export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect, redirectToLogin } from './src/loginUtils';
+export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
+export { default as bemUtils } from './src/bemUtils';
+export {
+    getBokmålLocale,
+    getLocaleForApi,
+    getLocaleFromSessionStorage,
+    getNynorskLocale,
+    setLocaleInSessionStorage,
+} from './src/localeUtils';
 export {
     isValidDate,
     formatDate,

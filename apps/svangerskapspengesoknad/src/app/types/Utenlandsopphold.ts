@@ -1,9 +1,11 @@
-import { Tidsperiode } from '@navikt/fp-common';
 import { TidsperiodeDTO } from './TidsperiodeDTO';
 
 export interface UtenlandsoppholdPeriode {
     land: string;
-    tidsperiode: Tidsperiode;
+    tidsperiode: {
+        fom: string;
+        tom: string;
+    };
 }
 
 export type Utenlandsopphold = {

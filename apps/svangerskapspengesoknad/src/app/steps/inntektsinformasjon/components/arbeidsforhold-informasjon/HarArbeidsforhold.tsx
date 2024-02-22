@@ -1,10 +1,10 @@
 import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
-import { bemUtils, formatDate } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import './harArbeidsforhold.css';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
