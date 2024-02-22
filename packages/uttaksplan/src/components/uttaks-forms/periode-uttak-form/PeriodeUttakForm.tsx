@@ -1,12 +1,29 @@
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
+import { FormattedMessage, IntlShape } from 'react-intl';
+
+import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
+
 import {
     ActionLink,
-    andreAugust2022ReglerGjelder,
     AnnenForelder,
     Arbeidsforhold,
     Attachment,
-    bemUtils,
     Block,
     Forelder,
+    ISOStringToDate,
+    NavnPåForeldre,
+    OpprinneligSøkt,
+    Periode,
+    PeriodeValidState,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    TidsperiodeDate,
+    TilgjengeligStønadskonto,
+    Utsettelsesperiode,
+    andreAugust2022ReglerGjelder,
+    bemUtils,
     formaterDatoKompakt,
     getFiltrerteVelgbareStønadskontotyper,
     getFørsteUttaksdag2UkerFørFødsel,
@@ -17,36 +34,29 @@ import {
     guid,
     intlUtils,
     isAnnenForelderOppgitt,
-    ISOStringToDate,
     isUttaksperiode,
     isValidTidsperiode,
-    NavnPåForeldre,
-    OpprinneligSøkt,
-    Periode,
-    Periodetype,
-    PeriodeValidState,
-    Situasjon,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
-    StønadskontoType,
-    TidsperiodeDate,
-    TilgjengeligStønadskonto,
-    Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
+
+import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
+import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
+import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpørsmål';
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
 import HvilkenKontoSpørsmål from '../spørsmål/hvilken-konto/HvilkenKontoSpørsmål';
-import UttakRundtFødselÅrsakSpørsmål from '../spørsmål/uttak-rundt-fødsel-årsak/UttakRundtFødselÅrsakSpørsmål';
 import OverføringsårsakSpørsmål from '../spørsmål/overføringsårsak/OverføringsårsakSpørsmål';
 import SamtidigUttakSpørsmål from '../spørsmål/samtidig-uttak/SamtidigUttakSpørsmål';
 import SkalHaGraderingSpørsmål from '../spørsmål/skal-ha-gradering/SkalHaGraderingSpørsmål';
+import UttakRundtFødselÅrsakSpørsmål from '../spørsmål/uttak-rundt-fødsel-årsak/UttakRundtFødselÅrsakSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
+import './periodeUttakForm.less';
 import { PeriodeUttakFormComponents, PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
-    periodeUttakFormQuestionsConfig,
     PeriodeUttakFormQuestionsPayload,
+    periodeUttakFormQuestionsConfig,
     skalViseWLBInfoOmSamtidigUttakRundtFødsel,
 } from './periodeUttakFormQuestionsConfig';
 import {
@@ -54,14 +64,6 @@ import {
     getPeriodeUttakFormInitialValues,
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
-import { FormattedMessage, IntlShape } from 'react-intl';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
-import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
-import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
-import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
-
-import './periodeUttakForm.less';
 
 interface Props {
     periode: Periode;
@@ -321,8 +323,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             <Block padBottom="l">
                                 <GuidePanel>
                                     <BodyLong>
-                                        Du har søkt om å kombinere foreldrepenger med delvis arbeid, men har fått dette
-                                        avslått. I stedet får du delvis utbetaling og trekkes fulle dager.
+                                        Du søkte om å kombinere foreldrepenger med delvis arbeid, men fikk dette
+                                        avslått. I stedet fikk du delvis utbetaling og brukte fulle dager.
                                     </BodyLong>
                                 </GuidePanel>
                             </Block>
