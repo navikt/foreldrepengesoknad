@@ -123,6 +123,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                     erAdopsjon={erAdopsjon}
                     morTekst={morTekst}
                     farTekst={farTekst}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
             )}
             {!førsteOktober2021ReglerGjelder(familiehendelsesdato) && (

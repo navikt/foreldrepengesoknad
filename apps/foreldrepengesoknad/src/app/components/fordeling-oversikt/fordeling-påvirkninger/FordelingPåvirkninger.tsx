@@ -10,6 +10,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
 import './fordeling-påvirkninger.css';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { notEmpty } from '@navikt/fp-validation';
+import {
+    getDegEllerMorTekst,
+    getBarnetEllerBarnaTekst,
+    getDuEllerDereTekst,
+    getDegEllerSegTekst,
+} from '../fordelingOversiktUtils';
 
 interface Props {
     deltUttak: boolean;
@@ -31,6 +39,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     erIkkeFødtBarn,
 }) => {
     const intl = useIntl();
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const bem = bemUtils('fordeling-påvirkninger');
     const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
     const visInfoMorSykFørsteSeksUker = deltUttak && !erAdopsjon;
@@ -43,10 +52,10 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
             });
         }
     };
-    const degEllerSeg = erFarEllerMedmor ? intlUtils(intl, 'seg') : intlUtils(intl, 'deg');
-    const degEllerMor = erFarEllerMedmor ? navnAnnenForelder : intlUtils(intl, 'deg');
-    const duEllerDere = deltUttak ? intlUtils(intl, 'dere') : intlUtils(intl, 'du');
-    const barnetEllerBarna = deltUttak ? intlUtils(intl, 'barnet') : intlUtils(intl, 'barna');
+    const degEllerSeg = getDegEllerSegTekst(erFarEllerMedmor, intl);
+    const degEllerMor = getDegEllerMorTekst(erFarEllerMedmor, navnAnnenForelder, intl);
+    const duEllerDere = getDuEllerDereTekst(deltUttak, intl);
+    const barnetEllerBarna = getBarnetEllerBarnaTekst(barn.antallBarn, intl);
     return (
         <ExpansionCard size="small" title-size="small" aria-label={heading} onToggle={onToggleHandler}>
             <ExpansionCard.Header>

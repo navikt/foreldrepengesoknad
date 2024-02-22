@@ -194,7 +194,7 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
         rolle: 'far',
     },
     barn: {
-        type: BarnType.ADOPTERT_ANNET_BARN,
+        type: BarnType.FØDT,
         dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2022-06-14').toDate(), dayjs('2022-06-14').toDate()],
         antallBarn: 2,
