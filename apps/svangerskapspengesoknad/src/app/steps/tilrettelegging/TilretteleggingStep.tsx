@@ -13,7 +13,6 @@ import {
     RadioGroup,
     StepButtonsHookForm,
     TextArea,
-    TextField,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
@@ -22,11 +21,7 @@ import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, {
-    Arbeidsforholdstype,
-    TilOgMedDatoType,
-    TilretteleggingstypeOptions,
-} from 'app/types/Tilrettelegging';
+import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import {
     getDefaultMonth,
     getKanHaSvpFremTilTreUkerFørTermin,
@@ -37,18 +32,16 @@ import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validati
 
 import Bedriftsbanner from '../Bedriftsbanner';
 import { getNesteTilretteleggingId, useStepConfig } from '../stepsConfig';
+import DelvisTilretteleggingPanel from './DelvisTilretteleggingPanel';
+import IngenTilretteleggingPanel from './IngenTilretteleggingPanel';
 import { TilretteleggingFormData, mapOmTilretteleggingFormDataToState } from './tilretteleggingStepUtils';
 import {
     validateBehovForTilretteleggingFom,
     validateRisikofaktorer,
-    validateSammePeriodeFremTilTerminFom,
-    validateSammePeriodeFremTilTerminTilbakeIJobbDato,
-    validateStillingsprosentEnDelvisPeriode,
     validateTilretteleggingstiltak,
-    validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
 
-export const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
+const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     values: TilretteleggingFormData,
     tilrettelegging: Tilrettelegging[],
     currentTilretteleggingId: string,
@@ -67,13 +60,10 @@ export const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     return { nextRoute: SøknadRoutes.OPPSUMMERING };
 };
 
-const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
-    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
-        return intl.formatMessage({ id: 'skjema.risikofaktorer.frilanser' });
-    } else {
-        return intl.formatMessage({ id: 'skjema.risikofaktorer.selvstendig' });
-    }
-};
+const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) =>
+    typeArbeid === Arbeidsforholdstype.FRILANSER
+        ? intl.formatMessage({ id: 'skjema.risikofaktorer.frilanser' })
+        : intl.formatMessage({ id: 'skjema.risikofaktorer.selvstendig' });
 
 const getLabel = (
     erFlereTilrettelegginger: boolean,
@@ -140,9 +130,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
             : currentTilrettelegging.arbeidsforhold.navn;
 
     const erFlereTilrettelegginger = tilrettelegginger.length > 1;
-
     const typeArbeid = currentTilrettelegging.arbeidsforhold.type;
-
     const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeid);
 
     const labelTiltak = intl.formatMessage({ id: 'tilrettelegging.tilretteleggingstiltak.label' });
@@ -185,15 +173,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
     });
 
     const type = formMethods.watch('type');
-    const behovForTilretteleggingFom = formMethods.watch('behovForTilretteleggingFom');
-    const enPeriodeMedTilretteleggingFom = formMethods.watch('enPeriodeMedTilretteleggingFom');
-    const delvisTilretteleggingPeriodeType = formMethods.watch('delvisTilretteleggingPeriodeType');
-    const enPeriodeMedTilretteleggingTomType = formMethods.watch('enPeriodeMedTilretteleggingTomType');
-
-    const minDatoPeriodeFom = behovForTilretteleggingFom ? behovForTilretteleggingFom : minDatoBehovFom;
-    const minDatoTilbakeIJobb = enPeriodeMedTilretteleggingFom
-        ? dayjs(enPeriodeMedTilretteleggingFom).add(1, 'day')
-        : behovForTilretteleggingFom;
 
     return (
         <Step
@@ -301,214 +280,12 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                             </BodyShort>
                         </ReadMore>
                     </div>
-
+                    {type === TilretteleggingstypeOptions.INGEN && (
+                        <IngenTilretteleggingPanel barnet={barnet} valgtTilrettelegging={currentTilrettelegging} />
+                    )}
                     {type === TilretteleggingstypeOptions.DELVIS && (
-                        <RadioGroup
-                            name="delvisTilretteleggingPeriodeType"
-                            label={intl.formatMessage({ id: 'tilrettelegging.tilretteleggingPeriodetype.label' })}
-                            description={
-                                harSkjema
-                                    ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.description' })
-                                    : ''
-                            }
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({ id: 'valideringsfeil.tilretteleggingPeriodeType.mangler' }),
-                                ),
-                            ]}
-                        >
-                            <Radio value={DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN}>
-                                <FormattedMessage id="tilrettelegging.tilretteleggingPeriodetype.en" />
-                            </Radio>
-                            <Radio value={DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER}>
-                                <FormattedMessage id="tilrettelegging.tilretteleggingPeriodetype.variert" />
-                            </Radio>
-                        </RadioGroup>
+                        <DelvisTilretteleggingPanel barnet={barnet} valgtTilrettelegging={currentTilrettelegging} />
                     )}
-                    {type === TilretteleggingstypeOptions.DELVIS &&
-                        delvisTilretteleggingPeriodeType ===
-                            DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
-                            <div>
-                                <TextField
-                                    name="enPeriodeMedTilretteleggingStillingsprosent"
-                                    label={intl.formatMessage({ id: 'tilrettelegging.stillingsprosent.label' })}
-                                    description={
-                                        harSkjema
-                                            ? intl.formatMessage({
-                                                  id: 'tilrettelegging.tilrettelagtArbeidType.description',
-                                              })
-                                            : ''
-                                    }
-                                    validate={[
-                                        validateStillingsprosentEnDelvisPeriode(
-                                            intl,
-                                            enPeriodeMedTilretteleggingFom,
-                                            currentTilrettelegging.arbeidsforhold.stillinger,
-                                        ),
-                                    ]}
-                                />
-                                <ReadMore
-                                    header={intl.formatMessage({
-                                        id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
-                                    })}
-                                >
-                                    <VStack gap="2">
-                                        <BodyShort>
-                                            <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del1"></FormattedMessage>
-                                        </BodyShort>
-                                        <BodyShort>
-                                            <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del2"></FormattedMessage>
-                                        </BodyShort>
-                                    </VStack>
-                                </ReadMore>
-                            </div>
-                        )}
-                    {((type === TilretteleggingstypeOptions.DELVIS &&
-                        delvisTilretteleggingPeriodeType ===
-                            DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN) ||
-                        type === TilretteleggingstypeOptions.INGEN) && (
-                        <Datepicker
-                            name="enPeriodeMedTilretteleggingFom"
-                            label={
-                                type === TilretteleggingstypeOptions.INGEN
-                                    ? intl.formatMessage({
-                                          id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen',
-                                      })
-                                    : intl.formatMessage({
-                                          id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis',
-                                      })
-                            }
-                            description={
-                                harSkjema
-                                    ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.description' })
-                                    : ''
-                            }
-                            minDate={minDatoPeriodeFom}
-                            maxDate={maxDatoBehovFom}
-                            validate={[
-                                isRequired(
-                                    type === TilretteleggingstypeOptions.DELVIS
-                                        ? intl.formatMessage({
-                                              id: 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.delvis',
-                                          })
-                                        : intl.formatMessage({
-                                              id: 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.ingen',
-                                          }),
-                                ),
-                                isValidDate(
-                                    type === TilretteleggingstypeOptions.DELVIS
-                                        ? intl.formatMessage({
-                                              id: 'valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.delvis',
-                                          })
-                                        : intl.formatMessage({
-                                              id: 'valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.ingen',
-                                          }),
-                                ),
-                                validateSammePeriodeFremTilTerminFom(
-                                    intl,
-                                    behovForTilretteleggingFom,
-                                    sisteDagForSvangerskapspenger,
-                                    type!,
-                                    currentTilrettelegging.arbeidsforhold.navn,
-                                    sluttDatoArbeid,
-                                    kanHaSVPFremTilTreUkerFørTermin,
-                                ),
-                            ]}
-                            defaultMonth={
-                                minDatoPeriodeFom ? getDefaultMonth(minDatoPeriodeFom, maxDatoBehovFom) : undefined
-                            }
-                        />
-                    )}
-                    {(type === TilretteleggingstypeOptions.INGEN ||
-                        (type === TilretteleggingstypeOptions.DELVIS &&
-                            delvisTilretteleggingPeriodeType ===
-                                DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN)) && (
-                        <RadioGroup
-                            name="enPeriodeMedTilretteleggingTomType"
-                            label={
-                                type === TilretteleggingstypeOptions.INGEN
-                                    ? intl.formatMessage({
-                                          id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen',
-                                      })
-                                    : intl.formatMessage({
-                                          id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis',
-                                      })
-                            }
-                            validate={[
-                                validerTilretteleggingTomType(
-                                    intl,
-                                    type,
-                                    behovForTilretteleggingFom,
-                                    sisteDagForSvangerskapspenger,
-                                    currentTilrettelegging.arbeidsforhold.navn,
-                                    sluttDatoArbeid,
-                                    kanHaSVPFremTilTreUkerFørTermin,
-                                ),
-                            ]}
-                        >
-                            <Radio value={TilOgMedDatoType.VALGFRI_DATO}>
-                                <FormattedMessage id="perioder.varierende.tomType.valgfriDato" />
-                            </Radio>
-                            <Radio value={TilOgMedDatoType.SISTE_DAG_MED_SVP}>
-                                {kanHaSVPFremTilTreUkerFørTermin ? (
-                                    <FormattedMessage id="perioder.varierende.tomType.treUkerFørTermin" />
-                                ) : (
-                                    <FormattedMessage id="perioder.varierende.tomType.dagenFørFødsel" />
-                                )}
-                            </Radio>
-                        </RadioGroup>
-                    )}
-                    {(type === TilretteleggingstypeOptions.INGEN ||
-                        (type === TilretteleggingstypeOptions.DELVIS &&
-                            delvisTilretteleggingPeriodeType ===
-                                DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN)) &&
-                        enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
-                            <Datepicker
-                                name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
-                                label={
-                                    type === TilretteleggingstypeOptions.INGEN
-                                        ? intl.formatMessage({
-                                              id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen',
-                                          })
-                                        : intl.formatMessage({
-                                              id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis',
-                                          })
-                                }
-                                minDate={minDatoTilbakeIJobb}
-                                maxDate={maxDatoBehovFom}
-                                validate={[
-                                    isRequired(
-                                        type === TilretteleggingstypeOptions.DELVIS
-                                            ? intl.formatMessage({
-                                                  id: 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.delvis',
-                                              })
-                                            : intl.formatMessage({
-                                                  id: 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.ingen',
-                                              }),
-                                    ),
-                                    isValidDate(
-                                        type === TilretteleggingstypeOptions.DELVIS
-                                            ? intl.formatMessage({
-                                                  id: 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis',
-                                              })
-                                            : intl.formatMessage({
-                                                  id: 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.ingen',
-                                              }),
-                                    ),
-                                    validateSammePeriodeFremTilTerminTilbakeIJobbDato(
-                                        intl,
-                                        behovForTilretteleggingFom,
-                                        sisteDagForSvangerskapspenger,
-                                        enPeriodeMedTilretteleggingFom,
-                                        type!,
-                                        currentTilrettelegging.arbeidsforhold.navn,
-                                        sluttDatoArbeid,
-                                        kanHaSVPFremTilTreUkerFørTermin,
-                                    ),
-                                ]}
-                                defaultMonth={getDefaultMonth(minDatoTilbakeIJobb, maxDatoBehovFom)}
-                            />
-                        )}
                     <ExpansionCard size="small" aria-label="">
                         <ExpansionCard.Header>
                             <ExpansionCard.Title size="small" as="h3">
