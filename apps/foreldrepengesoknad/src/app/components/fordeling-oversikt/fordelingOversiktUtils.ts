@@ -282,11 +282,13 @@ const getFordelingFelles = (
             : undefined;
     if (ekstraDagerGrunnetPrematurFødsel && ekstraDagerGrunnetPrematurFødsel > 0) {
         const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
+        const barnetEllerBarna = getBarnetEllerBarnaTekst(antallBarn, intl);
         fordelingInfo.push(
             getFormattedMessage(
                 'fordeling.info.ekstraDagerPrematur.fellesperiode',
                 {
                     varighetTekst,
+                    barnetEllerBarna,
                 },
                 links.hvorLenge,
             ),
@@ -453,7 +455,6 @@ const getFordelingMor = (
 
     if (ekstraDagerGrunnetPrematurFødsel && ekstraDagerGrunnetPrematurFødsel > 0) {
         const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
-        const barnetEllerBarna = getBarnetEllerBarnaTekst(antallBarn, intl);
         fordelingInfo.push(
             getFormattedMessage(
                 'fordeling.info.ekstraDagerPrematur.foreldrepenger',

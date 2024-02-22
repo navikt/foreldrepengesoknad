@@ -1029,7 +1029,7 @@
     "fordeling.info.farMedmor.rundtFødsel": "<b>2 av disse ukene</b> kan brukes i perioden rundt fødsel, samtidig med {morEllerDeg}. {farTekstCapitalized} kan bruke disse 2 ukene  i perioden fra to uker før termin til seks uker etter fødsel. Mange får disse to ukene dekket av arbeidsgiveren sin. Hvis {farTekst} får dekket disse to ukene, kan det lønne seg å spare kvoten {dinEllerHans} til senere.",
     "fordeling.info.farMedmor.rundtFødsel.eøs": "<b>2 av disse ukene</b> kan brukes i perioden rundt fødsel. {farTekstCapitalized} kan bruke disse 2 ukene  i perioden fra to uker før termin til seks uker etter fødsel. Mange får disse to ukene dekket av arbeidsgiveren sin. Hvis {farTekst} får dekket disse to ukene, kan det lønne seg å spare kvoten {dinEllerHans} til senere.",
     "fordeling.info.annenPart.brukteDagerAvDinKvote": "<b>{varighetTekst}</b> er allerede brukt av {navnAnnenPart} fordi du er enten syk eller innlagt i helseinstitusjon.",
-    "fordeling.info.ekstraDagerPrematur.fellesperiode": "<b>{varighetTekst}</b> av disse er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33.",
+    "fordeling.info.ekstraDagerPrematur.fellesperiode": "<b>{varighetTekst}</b> av disse er lagt til i fellesperioden fordi {barnetEllerBarna} ble født før svangerskapsuke 33.",
     "fordeling.info.ekstraDagerPrematur.foreldrepenger": "<b>{varighetTekst}</b> av disse er lagt til fordi {barnetEllerBarna} ble født før svangerskapsuke 33.",
     "fordeling.hvorLengeAntallUkerKanBrukes.før1okt2021": "<b>{varighetTekst}</b> med foreldrepenger.",
     "fordeling.hvorLengeAntallUkerKanBrukes.adopsjon": "<b>{varighetTekst}</b> kan brukes når som helst innen tre år etter omsorgsovertakelsen.",
