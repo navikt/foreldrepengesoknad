@@ -420,7 +420,9 @@ const getFordelingMor = (
             antallDager: dagerRettEtterFødsel,
             fargekode,
         });
-        fordelingInfo.push(getFormattedMessage('fordeling.info.mor.første6Uker', { varighetTekst, barnetEllerBarna }));
+        fordelingInfo.push(
+            getFormattedMessage('fordeling.info.mor.første6Uker', { morTekst, varighetTekst, barnetEllerBarna }),
+        );
     }
 
     if (!erFarEllerMedmor && dagerMorsKvoteBruktAvFar && dagerMorsKvoteBruktAvFar > 0) {
@@ -490,9 +492,11 @@ const getFordelingForeldrepengerFarAleneomsorg = (
     );
     if (ekstraDagerGrunnetPrematurFødsel) {
         const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
+        const barnetEllerBarna = getBarnetEllerBarnaTekst(antallBarn, intl);
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.ekstraDagerPrematur.foreldrepenger', {
                 varighetTekst,
+                barnetEllerBarna,
             }),
         );
     }
@@ -572,9 +576,11 @@ const getFordelingForeldrepengerFar = (
 
     if (ekstraDagerGrunnetPrematurFødsel && ekstraDagerGrunnetPrematurFødsel > 0) {
         const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
+        const barnetEllerBarna = getBarnetEllerBarnaTekst(antallBarn, intl);
         fordelingInfo.push(
             getFormattedMessage('fordeling.info.ekstraDagerPrematur.foreldrepenger', {
                 varighetTekst,
+                barnetEllerBarna,
             }),
         );
     }

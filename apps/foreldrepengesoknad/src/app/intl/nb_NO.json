@@ -1014,7 +1014,7 @@
     "fordeling.info.mor.adopsjon": "<b>{varighetTekst}</b> kan brukes når som helst innen tre år etter omsorgsovertakelsen.",
     "fordeling.info.mor.førFødsel.deltUttak": "<b>{varighetTekst}</b> kan kun brukes før fødsel. Hvis {morTekst} føder før termin, begynner {morTekst} å bruke kvoten {dinEllerSin} fra fødsel. Resten av de 3 ukene slettes. Føder {morTekst} etter termin, bruker {morTekst} fellesperioden frem til fødselen.",
     "fordeling.info.mor.førFødsel.kunMorFårForeldrepenger": "<b>{varighetTekst}</b> kan kun brukes før fødsel. Hvis du føder før termin, slettes det som er igjen av disse ukene. Hvis du føder etter termin, vil du bruke mer av foreldrepengene dine frem til fødselen.",
-    "fordeling.info.mor.første6Uker": "<b>{varighetTekst}</b> er satt av til rett etter fødsel. Disse kan ikke brukes senere. Dette gjelder ikke hvis du er syk, eller hvis du eller {barnetEllerBarna} er lagt inn på sykehus.",
+    "fordeling.info.mor.første6Uker": "<b>{varighetTekst}</b> er satt av til rett etter fødsel. Disse kan ikke brukes senere. Dette gjelder ikke hvis {morTekst} er syk, eller hvis du eller {barnetEllerBarna} er lagt inn på sykehus.",
     "fordeling.info.mor.resterendeUker.adopsjon": "<b>{varighetTekst}</b> kan brukes når som helst innen tre år etter omsorgsovertakelsen.",
     "fordeling.info.mor.resterendeUker.fødsel": "<b>{varighetTekst}</b> kan brukes når som helst før {barnTekst} fyller 3 år.",
     "fordeling.info.mor.resterendeUker.før1okt2021": "<b>{varighetTekst}</b> med foreldrepenger.",
