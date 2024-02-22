@@ -541,7 +541,12 @@ const getFordelingForeldrepengerFar = (
     if (dagerUtenAktivitetskrav > 0) {
         const varighetTekst = getVarighetString(dagerUtenAktivitetskrav, intl);
         fordelingDager.push({ antallDager: dagerUtenAktivitetskrav, fargekode });
-        fordelingInfo.push(getFormattedMessage('fordeling.info.far.utenAktivitetskrav', { varighetTekst }));
+        fordelingInfo.push(
+            getFormattedMessage('fordeling.info.far.utenAktivitetskrav', {
+                varighetTekst,
+                morNavn: getNavnGenitivEierform(morTekst, intl.locale),
+            }),
+        );
     }
     if (dagerRundtFødsel > 0) {
         const morEllerDeg = morTekst === intlUtils(intl, 'du') ? intlUtils(intl, 'deg') : morTekst;
@@ -569,7 +574,11 @@ const getFordelingForeldrepengerFar = (
         const varighetTekst = getVarighetString(dagerMedAktivitetskrav, intl);
         fordelingDager.push({ antallDager: dagerMedAktivitetskrav, fargekode });
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.far.medAktivitetskrav', { varighetTekst }, links.hvorLenge),
+            getFormattedMessage(
+                'fordeling.info.far.medAktivitetskrav',
+                { varighetTekst, morNavn: morTekst },
+                links.hvorLenge,
+            ),
         );
     }
 
@@ -584,7 +593,12 @@ const getFordelingForeldrepengerFar = (
         );
     }
 
-    fordelingInfo.push(getFormattedMessage('fordeling.info.far.opphold'));
+    fordelingInfo.push(
+        getFormattedMessage('fordeling.info.far.opphold', {
+            morNavn: morTekst,
+            morNavnEierform: getNavnGenitivEierform(morTekst, intl.locale),
+        }),
+    );
     return {
         eier: FordelingEier.FarMedmor,
         sumDager: dagerForeldrepenger,
