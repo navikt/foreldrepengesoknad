@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { SkjemaelementFeil, validateTextInputField } from '@navikt/fp-common';
 import { dagenFør, formatDate, tiMånederSidenDato } from '@navikt/fp-utils';
 
 import {
@@ -57,7 +56,7 @@ export const validateStillingsprosentEnDelvisPeriode =
         }
         return undefined;
     };
-export const validateTilretteleggingstiltak = (intl: IntlShape, label: string) => (value: string) => {
+export const validateTilretteleggingstiltak = (intl: IntlShape) => (value: string) => {
     if (!hasValue(value) || value.trim() === '') {
         return intl.formatMessage({ id: 'valideringsfeil.tilretteleggingstiltak.påkrevd' });
     }
@@ -70,7 +69,7 @@ export const validateTilretteleggingstiltak = (intl: IntlShape, label: string) =
         return intl.formatMessage({ id: 'valideringsfeil.tilretteleggingstiltak.forKort' });
     }
 
-    return validateTextInputField(value, label, intl);
+    return null;
 };
 
 export const validateSammePeriodeFremTilTerminFom =
@@ -218,7 +217,7 @@ export const validateBehovForTilretteleggingFom =
         kanHaSvpFremTilTreUkerFørTermin: boolean,
         erFrilansTilrettelegging: boolean,
     ) =>
-    (fom: string): SkjemaelementFeil => {
+    (fom: string): string | undefined => {
         if (dayjs(fom).isBefore(tiMånederSidenDato(termindato), 'd')) {
             return intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.tiMndSidenTermin' });
         }
@@ -263,7 +262,7 @@ export const validerTilretteleggingTomType =
         sluttDatoArbeid: string | undefined,
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
-    (value: string | number): SkjemaelementFeil => {
+    (value: string | number): string | undefined => {
         const erDelvis = tilretteleggingType === TilretteleggingstypeOptions.DELVIS;
         if (!hasValue(value)) {
             if (erDelvis) {
@@ -336,19 +335,18 @@ const finnFeilmeldingForUnderMinLengde = (intl: IntlShape, type: Arbeidsforholds
     throw Error('Ingen tekst for type: ' + type);
 };
 
-export const validateRisikofaktorer =
-    (intl: IntlShape, label: string, type: Arbeidsforholdstype) => (value: string) => {
-        if (!hasValue(value) || value.trim() === '') {
-            return finnFeilmeldingForPåkrevd(intl, type);
-        }
+export const validateRisikofaktorer = (intl: IntlShape, type: Arbeidsforholdstype) => (value: string) => {
+    if (!hasValue(value) || value.trim() === '') {
+        return finnFeilmeldingForPåkrevd(intl, type);
+    }
 
-        if (value.length > TEXT_INPUT_MAX_LENGTH) {
-            return finnFeilmeldingForOverMakslengde(intl, type);
-        }
+    if (value.length > TEXT_INPUT_MAX_LENGTH) {
+        return finnFeilmeldingForOverMakslengde(intl, type);
+    }
 
-        if (value.length < TEXT_INPUT_MIN_LENGTH) {
-            return finnFeilmeldingForUnderMinLengde(intl, type);
-        }
+    if (value.length < TEXT_INPUT_MIN_LENGTH) {
+        return finnFeilmeldingForUnderMinLengde(intl, type);
+    }
 
-        return validateTextInputField(value, label, intl);
-    };
+    return null;
+};

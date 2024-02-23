@@ -1,5 +1,6 @@
-export { notEmpty } from './src/other/validation';
-export { isRequired, isEqualValue, hasMinLength, hasMaxLength } from './src/form/generalFormValidation';
+export { notEmpty, assertUnreachable, containsWhiteSpace } from './src/other/validation';
+export { erGyldigNorskOrgnummer } from './src/other/orgnrValidation';
+export { isRequired, isEqualValue, hasMinLength, hasMaxLength, hasLegalChars } from './src/form/generalFormValidation';
 export {
     isValidNumber,
     isValidDecimal,

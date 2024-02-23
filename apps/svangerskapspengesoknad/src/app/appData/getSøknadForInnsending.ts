@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 
-import { ISOStringToDate } from '@navikt/fp-common';
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { LocaleNo } from '@navikt/fp-types';
 import { isValidDate } from '@navikt/fp-utils';
@@ -58,8 +57,8 @@ const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode): Utenl
     return {
         land: utenlandsopphold.land,
         tidsperiode: {
-            fom: ISOStringToDate(utenlandsopphold.tidsperiode.fom)!,
-            tom: ISOStringToDate(utenlandsopphold.tidsperiode.tom)!,
+            fom: utenlandsopphold.tidsperiode.fom,
+            tom: utenlandsopphold.tidsperiode.tom,
         },
     };
 };
@@ -92,9 +91,9 @@ const mapHelTilretteleggingForInnsending = (
 ): HelTilretteleggingDTO => {
     return {
         type: Tilretteleggingstype.HEL,
-        tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
+        tilrettelagtArbeidFom: periode.fom,
         arbeidsforhold,
-        behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
+        behovForTilretteleggingFom: periode.behovForTilretteleggingFom,
     };
 };
 
@@ -104,9 +103,9 @@ const mapDelvisTilretteleggingForInnsending = (
 ): DelvisTilretteleggingDTO => {
     return {
         type: Tilretteleggingstype.DELVIS,
-        tilrettelagtArbeidFom: ISOStringToDate(periode.fom)!,
+        tilrettelagtArbeidFom: periode.fom,
         arbeidsforhold,
-        behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
+        behovForTilretteleggingFom: periode.behovForTilretteleggingFom,
         stillingsprosent: periode.stillingsprosent,
     };
 };
@@ -117,9 +116,9 @@ const mapIngenTilretteleggingForInnsending = (
 ): IngenTilretteleggingDTO => {
     return {
         type: Tilretteleggingstype.INGEN,
-        slutteArbeidFom: ISOStringToDate(periode.fom)!,
+        slutteArbeidFom: periode.fom,
         arbeidsforhold,
-        behovForTilretteleggingFom: ISOStringToDate(periode.behovForTilretteleggingFom)!,
+        behovForTilretteleggingFom: periode.behovForTilretteleggingFom,
     };
 };
 

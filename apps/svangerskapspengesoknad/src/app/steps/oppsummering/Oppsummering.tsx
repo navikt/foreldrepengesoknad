@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
 import {
     BoIUtlandetOppsummeringspunkt,
     HendelseType,
@@ -170,7 +169,10 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                         {inntektsinformasjon.harHattArbeidIUtlandet &&
                             arbeidIUtlandet &&
                             arbeidIUtlandet.arbeidIUtlandet.map((arbeid) => (
-                                <ArbeidIUtlandetVisning key={guid()} arbeidIUtlandet={arbeid}></ArbeidIUtlandetVisning>
+                                <ArbeidIUtlandetVisning
+                                    key={`${arbeid.fom}${arbeid.tom}${arbeid.arbeidsgiverNavn}`}
+                                    arbeidIUtlandet={arbeid}
+                                ></ArbeidIUtlandetVisning>
                             ))}
                         {(!inntektsinformasjon.harJobbetSomFrilans ||
                             !inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ||

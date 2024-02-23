@@ -16,7 +16,7 @@ import {
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
-import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
+import { hasLegalChars, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
@@ -228,7 +228,18 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 label={risikofaktorerLabel}
                                 minLength={TEXT_INPUT_MIN_LENGTH}
                                 maxLength={TEXT_INPUT_MAX_LENGTH}
-                                validate={[validateRisikofaktorer(intl, risikofaktorerLabel, typeArbeid)]}
+                                validate={[
+                                    validateRisikofaktorer(intl, typeArbeid),
+                                    hasLegalChars((ugyldigeTegn: string) =>
+                                        intl.formatMessage(
+                                            { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
+                                            {
+                                                feltNavn: risikofaktorerLabel,
+                                                ugyldigeTegn: ugyldigeTegn,
+                                            },
+                                        ),
+                                    ),
+                                ]}
                                 description={intl.formatMessage({ id: 'skjema.risikofaktorer.description' })}
                             />
                             <div>
@@ -237,7 +248,18 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                     label={labelTiltak}
                                     minLength={TEXT_INPUT_MIN_LENGTH}
                                     maxLength={TEXT_INPUT_MAX_LENGTH}
-                                    validate={[validateTilretteleggingstiltak(intl, labelTiltak)]}
+                                    validate={[
+                                        validateTilretteleggingstiltak(intl),
+                                        hasLegalChars((ugyldigeTegn: string) =>
+                                            intl.formatMessage(
+                                                { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
+                                                {
+                                                    feltNavn: labelTiltak,
+                                                    ugyldigeTegn: ugyldigeTegn,
+                                                },
+                                            ),
+                                        ),
+                                    ]}
                                 />
                                 <ReadMore
                                     size="small"

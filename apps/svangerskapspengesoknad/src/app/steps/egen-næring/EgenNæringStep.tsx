@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Step, validateTextInputField } from '@navikt/fp-common';
+import { Step } from '@navikt/fp-common';
 import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import {
     Datepicker,
@@ -18,6 +18,7 @@ import {
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
+    hasLegalChars,
     hasMaxLength,
     hasMinValue,
     isAfterOrSame,
@@ -47,14 +48,15 @@ const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): b
     return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(DATE_4_YEARS_AGO, 'day');
 };
 
-const validateEgenNæringNavn = (intl: IntlShape, label: string, erValgfri: boolean) => (value: string | undefined) => {
+const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value: string | undefined) => {
     if (!erValgfri && !value) {
         return intl.formatMessage({ id: 'valideringsfeil.egenNæringNavn.påkrevd' });
     }
     if (value && value.length > 100) {
         return intl.formatMessage({ id: 'valideringsfeil.egenNæringNavn.forLang' });
     }
-    return validateTextInputField(value, label, intl);
+
+    return null;
 };
 
 type Props = {
@@ -168,7 +170,18 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                         name="navnPåNæringen"
                         label={navnPåNæringLabel}
                         maxLength={100}
-                        validate={[validateEgenNæringNavn(intl, navnPåNæringLabel, næringsType === Næringstype.FISKER)]}
+                        validate={[
+                            validateEgenNæringNavn(intl, næringsType === Næringstype.FISKER),
+                            hasLegalChars((ugyldigeTegn: string) =>
+                                intl.formatMessage(
+                                    { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
+                                    {
+                                        feltNavn: navnPåNæringLabel,
+                                        ugyldigeTegn: ugyldigeTegn,
+                                    },
+                                ),
+                            ),
+                        ]}
                         shouldReplaceInvisibleChars
                     />
                     <RadioGroup

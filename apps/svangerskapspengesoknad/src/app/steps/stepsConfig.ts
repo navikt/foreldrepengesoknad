@@ -1,7 +1,7 @@
 import { IntlShape } from 'react-intl';
 
-import { assertUnreachable } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { assertUnreachable } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
@@ -315,7 +315,7 @@ export const getPreviousStep = (id: StepIdWithSetBackHref): SøknadRoutes => {
         case 'frilans':
             return SøknadRoutes.ARBEID;
         default:
-            return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
+            return assertUnreachable(`Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
     }
 };
 
@@ -332,7 +332,7 @@ export const getPreviousSetStepHref = (id: StepIdWithSetBackHref): SøknadRoutes
             href = SøknadRoutes.ARBEID;
             break;
         default:
-            return assertUnreachable(id, `Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
+            return assertUnreachable(`Forsøkt å nå en side som ikke er tilgjengelig i søknaden: ${id}`);
     }
 
     return href;

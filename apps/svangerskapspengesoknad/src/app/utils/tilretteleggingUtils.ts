@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import { getFloatFromString } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { getFloatFromString } from '@navikt/fp-utils';
 
 import Tilrettelegging, {
     PeriodeMedVariasjon,

@@ -1,9 +1,10 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { ISO_DATE_REGEX, TIME_FORMAT, DATE_TODAY, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import utc from 'dayjs/plugin/utc';
+
+import { DATE_TODAY, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, ISO_DATE_REGEX, TIME_FORMAT } from '@navikt/fp-constants';
 
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
@@ -30,6 +31,7 @@ export const halvannetÅrSiden = (dato: DateTypes): Dayjs =>
     dayjs(dato).startOf('day').subtract(1, 'year').subtract(6, 'months');
 export const niMånederFremITid = (dato: DateTypes): Dayjs => dayjs(dato).startOf('day').add(9, 'months');
 
+// TODO (TOR) Flytt valideringer til pakke validation (lag date-fil under other)
 /** --- Valider dato(er) --- */
 export const isValidDate = (date?: string): boolean => !!date && dayjs(date).isValid() && ISO_DATE_REGEX.test(date);
 export const isToday = (date: DateTypes): boolean => dayjs(date).isSame(DATE_TODAY, 'day');

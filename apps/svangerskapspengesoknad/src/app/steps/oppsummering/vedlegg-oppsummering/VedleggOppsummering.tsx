@@ -4,7 +4,6 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Link } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
 import Tilrettelegging, { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
@@ -35,7 +34,7 @@ const VedleggOppsummering: FunctionComponent<Props> = ({ tilrettelegging }) => {
             <div className={bem.element('tilrettelegging')} key={t.id}>
                 <BodyShort className={bem.element('tittel')}>{tittel}</BodyShort>
                 {t.vedlegg.map((v) => (
-                    <div key={guid()}>
+                    <div key={v.id}>
                         <HStack>
                             <Link className={bem.element('link')} href={v.url} target="_blank">
                                 <FileIcon className={bem.element('icon')} title="Opplastet fil" />

@@ -1,14 +1,13 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { SkjemaelementFeil, containsWhiteSpace, erGyldigNorskOrgnummer } from '@navikt/fp-common';
 import { Select, TextField } from '@navikt/fp-form-hooks';
 import { createCountryOptions } from '@navikt/fp-utils';
-import { isEqualValue, isRequired } from '@navikt/fp-validation';
+import { containsWhiteSpace, erGyldigNorskOrgnummer, isEqualValue, isRequired } from '@navikt/fp-validation';
 
 const validateEgenNæringOrgnr =
     (intl: IntlShape, erValgfri: boolean) =>
-    (orgnr: string | undefined): SkjemaelementFeil => {
+    (orgnr: string | undefined): string | undefined => {
         const trimmedOrgNr = (orgnr || '').trim();
 
         if (!erValgfri && !trimmedOrgNr) {

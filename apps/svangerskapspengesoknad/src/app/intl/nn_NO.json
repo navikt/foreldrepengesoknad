@@ -364,5 +364,6 @@
     "bedriftsbanner.tittel.frilansarbeid": "Frilansar",
     "ny.periode": "Ny periode",
     "sesjonUtløpt.tittel": "Du er no logga ut.",
-    "SkjemaSteg.MinstEttDokument": "Du må lasta opp minst eitt dokument"
+    "SkjemaSteg.MinstEttDokument": "Du må lasta opp minst eitt dokument",
+    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige teikn i feltet \"{feltNavn}\"."
 }

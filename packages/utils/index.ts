@@ -13,6 +13,7 @@ export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect, redirectToLogin } from './src/loginUtils';
 export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { default as bemUtils } from './src/bemUtils';
+export { getFloatFromString } from './src/numberUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,

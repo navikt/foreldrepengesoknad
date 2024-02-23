@@ -1,5 +1,3 @@
-import { TidsperiodeDTO } from './TidsperiodeDTO';
-
 export interface UtenlandsoppholdPeriode {
     land: string;
     tidsperiode: {
@@ -23,7 +21,10 @@ export type UtenlandsoppholdSenere = {
 
 export interface UtenlandsoppholdDTO {
     land: string;
-    tidsperiode: TidsperiodeDTO;
+    tidsperiode: {
+        fom: string;
+        tom: string;
+    };
 }
 
 export interface InformasjonOmUtenlandsoppholdDTO {

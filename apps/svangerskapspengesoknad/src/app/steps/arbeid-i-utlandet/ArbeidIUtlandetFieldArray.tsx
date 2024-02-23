@@ -5,13 +5,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
 
-import { validateTextInputField } from '@navikt/fp-common';
 import { DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import { Datepicker, RadioGroup, Select, TextField } from '@navikt/fp-form-hooks';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { bemUtils, createCountryOptions } from '@navikt/fp-utils';
 import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
 import {
+    hasLegalChars,
     hasMaxLength,
     isAfterDate,
     isBeforeDate,
@@ -88,7 +88,15 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                                 intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetNavn.forLang' }),
                                 100,
                             ),
-                            (navn: string) => validateTextInputField(navn, navnPåArbeidsgiverLabel, intl),
+                            hasLegalChars((ugyldigeTegn: string) =>
+                                intl.formatMessage(
+                                    { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
+                                    {
+                                        feltNavn: navnPåArbeidsgiverLabel,
+                                        ugyldigeTegn: ugyldigeTegn,
+                                    },
+                                ),
+                            ),
                         ]}
                         maxLength={100}
                     />
