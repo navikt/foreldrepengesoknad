@@ -138,6 +138,8 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                     farTekst={farTekst}
                     erFarEllerMedmor={erFarEllerMedmor}
                     erIkkeFødtBarn={erIkkeFødtBarn}
+                    familiehendelsesdato={familiehendelsesdato}
+                    annenForelderHarKunRettIEØS={!!annenForelderHarKunRettIEØS}
                 />
             </Block>
         </>

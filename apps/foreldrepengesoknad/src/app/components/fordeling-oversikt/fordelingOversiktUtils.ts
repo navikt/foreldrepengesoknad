@@ -43,9 +43,9 @@ export const getHarFåttEllerSkalFå = (barn: Barn, intl: IntlShape) => {
     }
     if (isAdoptertBarn(barn)) {
         if (dayjs().isAfter(dayjs(barn.adopsjonsdato))) {
-            return intlUtils(intl, 'skalAdoptere');
+            return intlUtils(intl, 'harAdoptert');
         }
-        return intlUtils(intl, 'harAdoptert');
+        return intlUtils(intl, 'skalAdoptere');
     }
     throw Error('Ukjent type barn');
 };
@@ -132,7 +132,10 @@ export const getFordelingDelTittel = (
                   });
         case FordelingEier.Felles:
             return harAnnenForelderKunRettIEØS
-                ? intlUtils(intl, 'fordeling.antallUkerFelles.eøs', { varighetTekst, navnAnnenForelder })
+                ? intlUtils(intl, 'fordeling.antallUkerFelles.eøs', {
+                      varighetTekst,
+                      navnAnnenForelderEierForm: getNavnGenitivEierform(navnAnnenForelder, intl.locale),
+                  })
                 : intlUtils(intl, 'fordeling.antallUkerFelles', { varighetTekst });
     }
 };
@@ -171,7 +174,11 @@ const getFellesInfoTekst = (
 ): React.ReactNode => {
     const varighetTekst = getVarighetString(dagerFelles, intl);
     if (!førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
-        return getFormattedMessage('fordeling.info.felles.før1okt2021', { varighetTekst, morTekst, farTekst });
+        return getFormattedMessage(
+            'fordeling.info.felles.før1okt2021',
+            { varighetTekst, morTekst, farTekst },
+            links.hvorLenge,
+        );
     }
     if (erAdopsjon) {
         return getFormattedMessage(

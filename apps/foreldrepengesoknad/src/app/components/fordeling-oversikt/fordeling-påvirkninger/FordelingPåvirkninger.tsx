@@ -7,7 +7,7 @@ import {
 } from '@navikt/aksel-icons';
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
+import { Block, andreAugust2022ReglerGjelder, bemUtils, intlUtils, uttaksConstants } from '@navikt/fp-common';
 import './fordeling-påvirkninger.css';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -27,6 +27,8 @@ interface Props {
     farTekst: string;
     erFarEllerMedmor: boolean;
     erIkkeFødtBarn: boolean;
+    familiehendelsesdato: Date;
+    annenForelderHarKunRettIEØS: boolean;
 }
 
 const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
@@ -37,6 +39,8 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     farTekst,
     erFarEllerMedmor,
     erIkkeFødtBarn,
+    familiehendelsesdato,
+    annenForelderHarKunRettIEØS,
 }) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -56,6 +60,12 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     const degEllerMor = getDegEllerMorTekst(erFarEllerMedmor, navnAnnenForelder, intl);
     const duEllerDere = getDuEllerDereTekst(deltUttak, intl);
     const barnetEllerBarna = getBarnetEllerBarnaTekst(barn.antallBarn, intl);
+    const morMinsterettUkerToTette = erAdopsjon
+        ? uttaksConstants.ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON
+        : uttaksConstants.ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL;
+    const farMinsterettUkerToTette = uttaksConstants.ANTALL_UKER_MINSTERETT_FAR_TO_TETTE;
+    const søkerensMinsterettToTette = erFarEllerMedmor ? farMinsterettUkerToTette : morMinsterettUkerToTette;
+    const wlbReglerGjelder = andreAugust2022ReglerGjelder(familiehendelsesdato);
     return (
         <ExpansionCard size="small" title-size="small" aria-label={heading} onToggle={onToggleHandler}>
             <ExpansionCard.Header>
@@ -131,7 +141,30 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                             <BodyShort className={bem.element('undertittel')}>
                                 <FormattedMessage id="fordeling.påvirkninger.totette.tittel" values={{ duEllerDere }} />
                             </BodyShort>
-                            <FormattedMessage id="fordeling.påvirkninger.totette.info" values={{ duEllerDere }} />
+                            {wlbReglerGjelder && (
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.totette.info.etterWLB.del1"
+                                    values={{ duEllerDere }}
+                                />
+                            )}
+                            {wlbReglerGjelder && deltUttak && (
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.totette.info.etterWLB.del2.deltUttak"
+                                    values={{ morTekst, morMinsterettUkerToTette, farTekst, farMinsterettUkerToTette }}
+                                />
+                            )}
+                            {wlbReglerGjelder && !deltUttak && (
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.totette.info.etterWLB.del2.alene"
+                                    values={{ søkerensMinsterettToTette }}
+                                />
+                            )}
+                            {!wlbReglerGjelder && (
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.totette.info.førWlb"
+                                    values={{ duEllerDere }}
+                                />
+                            )}
                         </VStack>
                     </div>
                 </Block>
@@ -148,7 +181,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                         </VStack>
                     </div>
                 </Block>
-                {deltUttak && (
+                {deltUttak && !annenForelderHarKunRettIEØS && (
                     <Block padBottom="l">
                         <div className={bem.element('påvirkning')}>
                             <div className={bem.element('ikon-frame')}>
