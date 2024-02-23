@@ -35,5 +35,14 @@
     "ScanDocumentInfo.Link": "Mer informasjon om å sende vedlegg på nav.no.",
     "LanguageToggle.nb": "Bokmål - norsk",
     "LanguageToggle.nn": "Nynorsk - norsk",
-    "LanguageToggle.en": "English"
+    "LanguageToggle.en": "English",
+    "ProgressStepper.AllStepsSectionAriaLabel": "Alle steg",
+    "ProgressStepper.NavigasjonAriaLabel": "Navigasjon i søknaden",
+    "ProgressStepper.StepProgressLabel": "Steg {currentStep} av {totalSteps}",
+    "Page.DefaultMainRoleLabel": "Hovedinnhold",
+    "StepFooter.Avslutt": "Avslutt",
+    "AvsluttModal.ContinueLater": "Fortsett senere",
+    "AvsluttModal.CompleteLater": "Søknaden er lagret, og du kan fullføre den senere, eller velge å slette den. Søknaden blir lagret i 24 timer.",
+    "AvsluttModal.Ok": "OK",
+    "AvsluttModal.Delete": "Slett søknaden"
 }

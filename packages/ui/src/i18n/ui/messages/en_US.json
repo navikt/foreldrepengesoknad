@@ -35,5 +35,14 @@
     "ScanDocumentInfo.Link": "More information about sending attachments at nav.no.",
     "LanguageToggle.nb": "Bokmål - norsk",
     "LanguageToggle.nn": "Nynorsk - norsk",
-    "LanguageToggle.en": "English"
+    "LanguageToggle.en": "English",
+    "ProgressStepper.AllStepsSectionAriaLabel": "All steps",
+    "ProgressStepper.NavigasjonAriaLabel": "Navigate application",
+    "ProgressStepper.StepProgressLabel": "Step {currentStep} of {totalSteps}",
+    "Page.DefaultMainRoleLabel": "Main content",
+    "StepFooter.Avslutt": "Quit",
+    "AvsluttModal.ContinueLater": "Continue later",
+    "AvsluttModal.CompleteLater": "The application is saved and you can complete it later, or choose to delete it. The application is saved for 24 hours.",
+    "AvsluttModal.Ok": "OK",
+    "AvsluttModal.Delete": "Delete application"
 }

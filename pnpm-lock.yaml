@@ -1606,12 +1606,18 @@ importers:
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
       '@sentry/browser':
         specifier: ^7.95.0
         version: 7.95.0
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       intl-messageformat:
         specifier: ^10.5.10
         version: 10.5.10
