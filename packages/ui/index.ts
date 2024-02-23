@@ -9,4 +9,5 @@ export { default as StepButtons } from './src/step/StepButtons';
 export { default as ScanDocumentInfo } from './src/scanDocumentInfo/ScanDocumentInfo';
 export { default as HorizontalLine } from './src/horizontalLine/HorizontalLine';
 export { default as Umyndig } from './src/umyndig/Umyndig';
+export { default as LanguageToggle } from './src/languageToggle/LanguageToggle';
 export { default as IntlProvider } from './src/i18n/IntlProvider';

@@ -24,6 +24,7 @@
         "bytes": "^3.1.2",
         "intl-messageformat": "^10.5.10",
         "react": "^18.2.0",
+        "react-aria-menubutton": "^7.0.3",
         "react-dom": "^18.2.0",
         "react-intl": "^6.6.1"
     },
@@ -41,6 +42,7 @@
         "@testing-library/user-event": "^14.5.2",
         "@types/bytes": "^3.1.4",
         "@types/react": "^18.2.48",
+        "@types/react-aria-menubutton": "^6.2.14",
         "@vitejs/plugin-react": "^4.2.1",
         "fast-glob": "^3.3.2",
         "storybook": "7.6.10",

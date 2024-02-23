@@ -32,5 +32,8 @@
     "ScanDocumentInfo.Liste.Punkt4": "If you use a PC or Mac, you can send the images to your private email account and save the images on your device.",
     "ScanDocumentInfo.Liste.Punkt5": "Upload and add the images to your electronic application.",
     "ScanDocumentInfo.Del2": "If you have a scanner, you can scan documents.",
-    "ScanDocumentInfo.Link": "More information about sending attachments at nav.no."
+    "ScanDocumentInfo.Link": "More information about sending attachments at nav.no.",
+    "LanguageToggle.nb": "Bokmål - norsk",
+    "LanguageToggle.nn": "Nynorsk - norsk",
+    "LanguageToggle.en": "English"
 }

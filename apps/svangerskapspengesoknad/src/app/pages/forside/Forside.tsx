@@ -3,10 +3,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { LanguageToggle } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { LocaleNo } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { ContextDataType, useContextSaveData } from 'app/appData/SvpDataContext';
@@ -55,8 +54,7 @@ const Forside: React.FunctionComponent<Props> = ({
                 <LanguageToggle
                     locale={locale}
                     availableLocales={['nb', 'nn']}
-                    toggle={(l: LocaleNo) => onChangeLocale(l)}
-                    isCleanVersion
+                    toggleLanguage={(l: LocaleNo) => onChangeLocale(l)}
                 />
                 <VStack gap="8">
                     <Heading size="xlarge" className={`${bem.element('tittel')}`}>

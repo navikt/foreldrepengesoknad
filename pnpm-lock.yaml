@@ -921,9 +921,6 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.2.0
-      react-aria-menubutton:
-        specifier: ^7.0.3
-        version: 7.0.3(react@18.2.0)
       react-collapse:
         specifier: ^5.1.1
         version: 5.1.1(react@18.2.0)
@@ -1621,6 +1618,9 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.2.0
+      react-aria-menubutton:
+        specifier: ^7.0.3
+        version: 7.0.3(react@18.2.0)
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
@@ -1667,6 +1667,9 @@ importers:
       '@types/react':
         specifier: ^18.2.48
         version: 18.2.48
+      '@types/react-aria-menubutton':
+        specifier: ^6.2.14
+        version: 6.2.14
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.2.1(vite@4.4.9)
