@@ -332,6 +332,10 @@ export const getPeriodeTittel = (
     erAleneOmOmsorg?: boolean,
 ): string => {
     if (isAvslåttPeriode(periode)) {
+        if (periode.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
+            return intlUtils(intl, 'uttaksplan.avslåttPeriode.utsettelse');
+        }
+
         return intlUtils(intl, 'uttaksplan.avslåttPeriode');
     }
     if (isUttaksperiode(periode)) {

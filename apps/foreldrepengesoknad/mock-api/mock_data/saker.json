@@ -3,7 +3,7 @@
         {
             "saksnummer": "352014403",
             "sakAvsluttet": false,
-            "kanSøkeOmEndring": true,
+            "kanSøkeOmEndring": false,
             "sakTilhørerMor": false,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
@@ -17,8 +17,8 @@
                 "fødselsdato": "2021-07-01",
                 "antallBarn": 1
             },
-            "gjeldendeVedtak": {
-                "perioder": [
+            "åpenBehandling": {
+                "saksperioder": [
                     {
                         "fom": "2022-02-03",
                         "tom": "2022-02-04",
@@ -85,7 +85,11 @@
             },
             "barn": [
                 {
-                    "fnr": "01472152307"
+                    "fnr": "01472152307",
+                    "fødselsdato": "2024-02-26",
+                    "annenForelder": {
+                        "fnr": "01472152308"
+                      } 
                 }
             ],
             "dekningsgrad": "HUNDRE",
