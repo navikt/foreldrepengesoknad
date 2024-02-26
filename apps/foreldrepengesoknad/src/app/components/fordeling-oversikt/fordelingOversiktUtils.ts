@@ -1,11 +1,7 @@
-import {
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerFedrekvote,
-    getAntallUkerFellesperiode,
-    getAntallUkerForeldrepenger,
-    getAntallUkerForeldrepengerFørFødsel,
-    getAntallUkerMødrekvote,
-} from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { getBrukteDager } from '@navikt/uttaksplan/src/utils/brukteDagerUtils';
+import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
 import {
     Barn,
     ISOStringToDate,
@@ -23,16 +19,23 @@ import {
     isUfødtBarn,
     uttaksConstants,
 } from '@navikt/fp-common';
-import { IntlShape } from 'react-intl';
 import { links } from '@navikt/fp-constants';
-import { TilgjengeligeMinsterettskontoer } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
-import { getFormattedMessage } from './FordelingOversikt';
-import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import { getBrukteDager } from '@navikt/uttaksplan/src/utils/brukteDagerUtils';
-import dayjs from 'dayjs';
+
+import {
+    getAntallUkerAktivitetsfriKvote,
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerForeldrepenger,
+    getAntallUkerForeldrepengerFørFødsel,
+    getAntallUkerMødrekvote,
+} from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
+import { TilgjengeligeMinsterettskontoer } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
+
+import { getFormattedMessage } from './FordelingOversikt';
 
 export const getHarFåttEllerSkalFå = (barn: Barn, intl: IntlShape) => {
     if (isFødtBarn(barn)) {
@@ -749,6 +752,9 @@ export const getFordelingFraKontoer = (
                   intl,
               );
         fordelingsinformasjon.push(fordeling);
+    }
+    if (erFarEllerMedmor && annenPartHarKunRettIEØS) {
+        return fordelingsinformasjon.reverse();
     }
     return fordelingsinformasjon;
 };
