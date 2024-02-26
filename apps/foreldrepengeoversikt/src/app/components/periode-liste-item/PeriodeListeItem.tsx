@@ -1,12 +1,19 @@
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
+
 import { BodyShort, Heading } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+
+import { AdvarselIkon, bemUtils } from '@navikt/fp-common';
+
 import StønadskontoIkon from 'app/components/stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from 'app/components/utsettelse-ikon/UtsettelseIkon';
 import { Periode } from 'app/types/Periode';
+import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
 import {
+    ISOStringToDate,
     getAntallUttaksdagerITidsperiode,
     getVarighetString,
-    ISOStringToDate,
     måned3bokstaver,
 } from 'app/utils/dateUtils';
 import {
@@ -19,10 +26,6 @@ import {
     isUttaksperiode,
 } from 'app/utils/periodeUtils';
 import { NavnPåForeldre } from 'app/utils/personUtils';
-import classNames from 'classnames';
-import dayjs from 'dayjs';
-
-import { useIntl } from 'react-intl';
 
 import './periodeListeItem.css';
 
@@ -60,6 +63,12 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         isOverføringsperiode(periode) ||
         isOppholdsperiode(periode) ||
         isAvslåttPeriode(periode);
+    const visAvslåttIkon =
+        (isAvslåttPeriode(periode) &&
+            periode.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) ||
+        (isUttaksperiode(periode) &&
+            periode.resultat.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID);
+
     const visUtsettelsesIkon = !visStønadskontoIkon && isUtsettelsesperiode(periode);
     return (
         <div
@@ -71,7 +80,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         >
             <div>
                 <div className={bem.element('innhold')}>
-                    {visStønadskontoIkon && (
+                    {visStønadskontoIkon && !visAvslåttIkon && (
                         <StønadskontoIkon
                             konto={periode.kontoType!}
                             gradert={!!periode.gradering}
@@ -83,6 +92,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                         />
                     )}
                     {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
+                    {visAvslåttIkon && <AdvarselIkon />}
                     <div className={bem.element('innhold-tekst-periodetittel')}>
                         <Heading size="small" level="4">
                             {tittel}
@@ -140,5 +150,5 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         </div>
     );
 };
-//color={getStønadskontoFarge(konto)}
+
 export default PeriodeListeItem;

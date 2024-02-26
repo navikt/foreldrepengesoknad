@@ -1,16 +1,32 @@
 {
     "søker": {
-        "fnr": "06499121154",
-        "fornavn": "Tapper",
-        "etternavn": "Konvolutt",
-        "kjønn": "K",
-        "fødselsdato": "1991-09-06",
+        "fnr": "08479806382",
+        "fornavn": "God",
+        "etternavn": "Gjerde",
+        "kjønn": "M",
+        "fødselsdato": "1998-07-08",
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""
         },
-        "sivilstand": { "type": "UGIFT" },
-        "barn": []
+        "barn": [
+            {
+                "fnr": "01472152307",
+                "fornavn": "Sannferdig",
+                "etternavn": "Høyttaler",
+                "kjønn": "M",
+                "fødselsdato": "2021-07-01",
+                "annenForelder": {
+                    "fnr": "12449448004",
+                    "fornavn": "Selvhjulpen",
+                    "etternavn": "Regel",
+                    "fødselsdato": "1994-04-12"
+                }
+            }
+        ],
+        "sivilstand": {
+            "type": "GIFT"
+        }
     },
     "arbeidsforhold": [
         {
@@ -18,7 +34,7 @@
             "arbeidsgiverIdType": "orgnr",
             "arbeidsgiverNavn": "SAUEFABRIKK",
             "stillingsprosent": 100,
-            "fom": "2018-03-01"
+            "fom": "2004-02-19"
         }
     ]
 }

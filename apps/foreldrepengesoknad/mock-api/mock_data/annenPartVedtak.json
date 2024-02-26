@@ -1,16 +1,55 @@
 {
     "perioder": [
         {
-            "fom": "2023-12-04",
-            "tom": "2023-12-22",
-            "kontoType": "FEDREKVOTE",
-
+            "fom": "2021-06-10",
+            "tom": "2021-06-30",
+            "kontoType": "FORELDREPENGER_FØR_FØDSEL",
             "resultat": {
                 "innvilget": true,
-                "trekkerMinsterett": false,
+                "trekkerMinsterett": true,
                 "trekkerDager": true,
                 "årsak": "ANNET"
-            }
+            },
+            "flerbarnsdager": false
+        },
+        {
+            "fom": "2021-07-01",
+            "tom": "2021-08-11",
+            "kontoType": "MØDREKVOTE",
+            "resultat": {
+                "innvilget": true,
+                "trekkerMinsterett": true,
+                "trekkerDager": true,
+                "årsak": "ANNET"
+            },
+            "flerbarnsdager": false
+        },
+        {
+            "fom": "2021-08-12",
+            "tom": "2021-10-13",
+            "kontoType": "MØDREKVOTE",
+            "resultat": {
+                "innvilget": true,
+                "trekkerMinsterett": true,
+                "trekkerDager": true,
+                "årsak": "ANNET"
+            },
+            "flerbarnsdager": false
+        },
+        {
+            "fom": "2021-10-14",
+            "tom": "2022-02-02",
+            "kontoType": "FELLESPERIODE",
+            "resultat": {
+                "innvilget": true,
+                "trekkerMinsterett": true,
+                "trekkerDager": true,
+                "årsak": "ANNET"
+            },
+            "flerbarnsdager": false
         }
-    ]
+    ],
+    "termindato": "2021-07-01",
+    "dekningsgrad": "HUNDRE",
+    "antallBarn": 1
 }
