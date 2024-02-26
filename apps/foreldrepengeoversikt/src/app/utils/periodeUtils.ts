@@ -332,7 +332,7 @@ export const getPeriodeTittel = (
     erAleneOmOmsorg?: boolean,
 ): string => {
     if (isAvslåttPeriode(periode)) {
-        if (periode.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
+        if (periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
             return intlUtils(intl, 'uttaksplan.avslåttPeriode.utsettelse');
         }
 
@@ -393,7 +393,7 @@ export const getPeriodeTittel = (
     return '';
 };
 
-const periodeErInnvilget = (periode: Periode): boolean => periode.resultat && periode.resultat.innvilget;
+const periodeErInnvilget = (periode: Periode): boolean => periode.resultat !== undefined && periode.resultat.innvilget;
 
 interface SplittetDatoType {
     dato: Date;
@@ -587,14 +587,14 @@ export const getOverlappendePeriodeTittel = (
 export const erAnnenPartsPrematurePeriode = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
     return (
         !!termindato &&
-        !annenPartsPeriode.resultat.innvilget &&
+        !annenPartsPeriode.resultat?.innvilget &&
         dayjs(annenPartsPeriode.tom).isBefore(dayjs(termindato), 'd') &&
         annenPartsPeriode.kontoType !== StønadskontoType.Fedrekvote
     );
 };
 
 export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
-    if (annenPartsPeriode.resultat.innvilget) {
+    if (annenPartsPeriode.resultat?.innvilget) {
         return true;
     }
     return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);

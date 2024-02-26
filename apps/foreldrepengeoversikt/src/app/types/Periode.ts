@@ -10,7 +10,7 @@ export interface Periode {
     id: string;
     fom: string;
     tom: string;
-    resultat: PeriodeResultat;
+    resultat?: PeriodeResultat;
     kontoType?: StønadskontoType;
     flerbarnsdager?: boolean;
     gradering?: Gradering;

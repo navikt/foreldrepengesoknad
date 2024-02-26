@@ -1,29 +1,32 @@
-import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
 import { Link as LinkInternal, useParams } from 'react-router-dom';
+
+import { ExternalLink } from '@navikt/ds-icons';
+import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
+
 import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
+import { Skjemanummer } from '@navikt/fp-constants';
+
+import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
+import OversiktRoutes from 'app/routes/routes';
+import { SakOppslag } from 'app/types/SakOppslag';
+import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
+import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
+import { Ytelse } from 'app/types/Ytelse';
+import { getAlleYtelser, getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
+import {
+    VENTEÅRSAKER,
+    getAlleTidslinjehendelser,
+    getHendelserForVisning,
+    getTidslinjehendelseTittel,
+} from 'app/utils/tidslinjeUtils';
 
 import DokumentHendelse from './DokumentHendelse';
 import TidslinjeHendelse from './TidslinjeHendelse';
-import { ExternalLink } from '@navikt/ds-icons';
-import {
-    VENTEÅRSAKER,
-    getTidslinjehendelseTittel,
-    getHendelserForVisning,
-    getAlleTidslinjehendelser,
-} from 'app/utils/tidslinjeUtils';
 import './tidslinje-hendelse.css';
-import { useIntl } from 'react-intl';
-import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
-import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
-import dayjs from 'dayjs';
-import { Ytelse } from 'app/types/Ytelse';
-import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
-import { getAlleYtelser, getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
-import { SakOppslag } from 'app/types/SakOppslag';
-import OversiktRoutes from 'app/routes/routes';
-import { AxiosError } from 'axios';
-import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
-import { Skjemanummer } from '@navikt/fp-constants';
 
 interface Params {
     saker: SakOppslag;
@@ -59,7 +62,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         sak.ytelse === Ytelse.FORELDREPENGER &&
         !!sak.gjeldendeVedtak &&
         (sak.gjeldendeVedtak.perioder.length === 0 ||
-            sak.gjeldendeVedtak.perioder.every((p) => p.resultat.innvilget === false));
+            sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
     if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
         return (
             <NoeGikkGalt>

@@ -66,12 +66,12 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         isAvslåttPeriode(periode);
     const visAvslåttIkon =
         (isAvslåttPeriode(periode) &&
-            periode.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) ||
+            periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) ||
         (isUttaksperiode(periode) &&
-            periode.resultat.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID);
+            periode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID);
     const visGraderingTilbakeITidAvslagTekst =
         isUttaksperiode(periode) &&
-        periode.resultat.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID;
+        periode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID;
 
     const visUtsettelsesIkon = !visStønadskontoIkon && isUtsettelsesperiode(periode);
     const forelder = getPeriodeForelder(erFarEllerMedmor, periode);
