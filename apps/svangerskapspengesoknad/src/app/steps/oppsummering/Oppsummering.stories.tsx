@@ -149,8 +149,8 @@ const Template: StoryFn<Props> = ({
                         fødselsdato: '2024-02-18',
                     },
                     [ContextDataType.UTENLANDSOPPHOLD]: {
-                        iNorgeNeste12Mnd: true,
-                        iNorgeSiste12Mnd: true,
+                        skalBoUtenforNorgeNeste12Mnd: false,
+                        harBoddUtenforNorgeSiste12Mnd: false,
                     },
                     [ContextDataType.ARBEID_I_UTLANDET]: {
                         arbeidIUtlandet: [

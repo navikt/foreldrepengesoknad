@@ -38,13 +38,11 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                tidligereOpphold: [
+                utenlandsoppholdSiste12Mnd: [
                     {
-                        land: 'CA',
-                        tidsperiode: {
-                            fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
-                            tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
-                        },
+                        landkode: 'CA',
+                        fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },
@@ -66,7 +64,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
             <Default
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                utenlandsopphold={{ iNorgeSiste12Mnd: false, iNorgeNeste12Mnd: false }}
+                utenlandsopphold={{ skalBoUtenforNorgeNeste12Mnd: true, harBoddUtenforNorgeSiste12Mnd: true }}
             />,
         );
 
@@ -89,13 +87,11 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                tidligereOpphold: [
+                utenlandsoppholdSiste12Mnd: [
                     {
-                        land: 'CA',
-                        tidsperiode: {
-                            fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
-                            tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
-                        },
+                        landkode: 'CA',
+                        fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },

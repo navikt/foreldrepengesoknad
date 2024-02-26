@@ -96,8 +96,8 @@ const Template: StoryFn<Props> = ({
                 onDispatch={gåTilNesteSide}
                 initialState={{
                     [ContextDataType.UTENLANDSOPPHOLD]: {
-                        iNorgeNeste12Mnd: true,
-                        iNorgeSiste12Mnd: true,
+                        harBoddUtenforNorgeSiste12Mnd: false,
+                        skalBoUtenforNorgeNeste12Mnd: false,
                     },
                     [ContextDataType.OM_BARNET]: {
                         erBarnetFødt: false,

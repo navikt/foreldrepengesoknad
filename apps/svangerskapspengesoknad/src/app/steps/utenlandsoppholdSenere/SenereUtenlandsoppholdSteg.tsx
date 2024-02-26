@@ -28,28 +28,8 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
 
     const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
-    const lagredeSenereUtenlandsopphold =
-        senereUtenlandsopphold && senereUtenlandsopphold.senereOpphold.length > 0
-            ? {
-                  utenlandsoppholdNeste12Mnd: senereUtenlandsopphold.senereOpphold.map((so) => ({
-                      fom: so.tidsperiode.fom,
-                      tom: so.tidsperiode.tom,
-                      landkode: so.land,
-                  })),
-              }
-            : undefined;
-
     const save = (values: UtenlandsoppholdSenere) => {
-        oppdaterSenereUtenlandsopphold({
-            senereOpphold: values.utenlandsoppholdNeste12Mnd.map((un) => ({
-                land: un.landkode,
-                tidsperiode: {
-                    fom: un.fom,
-                    tom: un.tom,
-                },
-            })),
-        });
-
+        oppdaterSenereUtenlandsopphold(values);
         return navigator.goToNextDefaultStep();
     };
 
@@ -63,7 +43,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
             <SenereUtenlandsoppholdPanel
-                senereUtenlandsopphold={lagredeSenereUtenlandsopphold}
+                senereUtenlandsopphold={senereUtenlandsopphold}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
                 cancelApplication={avbrytSøknad}

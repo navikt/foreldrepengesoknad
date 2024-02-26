@@ -38,13 +38,11 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                senereOpphold: [
+                utenlandsoppholdNeste12Mnd: [
                     {
-                        land: 'CA',
-                        tidsperiode: {
-                            fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
-                            tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
-                        },
+                        landkode: 'CA',
+                        fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },
@@ -86,8 +84,8 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 utenlandsforhold={{
-                    iNorgeNeste12Mnd: false,
-                    iNorgeSiste12Mnd: false,
+                    harBoddUtenforNorgeSiste12Mnd: true,
+                    skalBoUtenforNorgeNeste12Mnd: true,
                 }}
             />,
         );

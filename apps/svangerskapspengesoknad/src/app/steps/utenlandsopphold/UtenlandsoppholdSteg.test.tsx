@@ -29,8 +29,8 @@ describe('<Utlandsopphold>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(4);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                iNorgeNeste12Mnd: true,
-                iNorgeSiste12Mnd: true,
+                harBoddUtenforNorgeSiste12Mnd: false,
+                skalBoUtenforNorgeNeste12Mnd: false,
             },
             key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
@@ -71,8 +71,8 @@ describe('<Utlandsopphold>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                iNorgeNeste12Mnd: true,
-                iNorgeSiste12Mnd: false,
+                harBoddUtenforNorgeSiste12Mnd: true,
+                skalBoUtenforNorgeNeste12Mnd: false,
             },
             key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
@@ -108,8 +108,8 @@ describe('<Utlandsopphold>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                iNorgeNeste12Mnd: false,
-                iNorgeSiste12Mnd: true,
+                harBoddUtenforNorgeSiste12Mnd: false,
+                skalBoUtenforNorgeNeste12Mnd: true,
             },
             key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
@@ -145,8 +145,8 @@ describe('<Utlandsopphold>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                iNorgeNeste12Mnd: false,
-                iNorgeSiste12Mnd: false,
+                harBoddUtenforNorgeSiste12Mnd: true,
+                skalBoUtenforNorgeNeste12Mnd: true,
             },
             key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',

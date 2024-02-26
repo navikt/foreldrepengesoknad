@@ -1,12 +1,13 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { Barn } from 'app/types/Barn';
 import { EgenNæring } from 'app/types/EgenNæring';
 import { Frilans } from 'app/types/Frilans';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging from 'app/types/Tilrettelegging';
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from 'app/types/Utenlandsopphold';
 
 import SøknadRoutes from './routes';
 

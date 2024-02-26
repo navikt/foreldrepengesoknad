@@ -3,10 +3,10 @@ import { StoryFn } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
-import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 
@@ -86,8 +86,8 @@ const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide = action('button-click'),
     utenlandsopphold = {
-        iNorgeNeste12Mnd: true,
-        iNorgeSiste12Mnd: false,
+        harBoddUtenforNorgeSiste12Mnd: true,
+        skalBoUtenforNorgeNeste12Mnd: false,
     },
 }) => {
     initAmplitude();

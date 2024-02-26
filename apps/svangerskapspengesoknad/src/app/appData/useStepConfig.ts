@@ -63,10 +63,10 @@ const getStepConfig = (
         createStep(SøknadRoutes.UTENLANDSOPPHOLD, intl, currentPath),
     ];
 
-    if (utenlandsopphold?.iNorgeSiste12Mnd === false) {
+    if (utenlandsopphold?.harBoddUtenforNorgeSiste12Mnd) {
         steps.push(createStep(SøknadRoutes.HAR_BODD_I_UTLANDET, intl, currentPath));
     }
-    if (utenlandsopphold?.iNorgeNeste12Mnd === false) {
+    if (utenlandsopphold?.skalBoUtenforNorgeNeste12Mnd) {
         steps.push(createStep(SøknadRoutes.SKAL_BO_I_UTLANDET, intl, currentPath));
     }
 

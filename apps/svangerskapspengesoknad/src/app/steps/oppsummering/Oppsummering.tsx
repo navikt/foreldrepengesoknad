@@ -9,7 +9,7 @@ import {
     OppsummeringIndex,
     SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
-import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { bemUtils, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -19,11 +19,6 @@ import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-import {
-    Utenlandsopphold as Opphold,
-    UtenlandsoppholdSenere as SenereOpphold,
-    UtenlandsoppholdTidligere as TidligereOpphold,
-} from 'app/types/Utenlandsopphold';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
@@ -42,40 +37,6 @@ const getForrigeTilretteleggingId = (tilrettelegging: Tilrettelegging[]): string
         sisteTilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
         ? sisteTilrettelegging.id
         : sisteTilrettelegging.id;
-};
-
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({
-    harBoddUtenforNorgeSiste12Mnd: !utenlandsopphold.iNorgeSiste12Mnd,
-    skalBoUtenforNorgeNeste12Mnd: !utenlandsopphold.iNorgeNeste12Mnd,
-});
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingSenere = (utenlandsopphold?: SenereOpphold): UtenlandsoppholdSenere | undefined => {
-    if (!utenlandsopphold) {
-        return undefined;
-    }
-
-    return {
-        utenlandsoppholdNeste12Mnd: utenlandsopphold.senereOpphold.map((o) => ({
-            fom: o.tidsperiode.fom,
-            tom: o.tidsperiode.tom,
-            landkode: o.land,
-        })),
-    };
-};
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingTidligere = (utenlandsopphold?: TidligereOpphold): UtenlandsoppholdTidligere | undefined => {
-    if (!utenlandsopphold) {
-        return undefined;
-    }
-
-    return {
-        utenlandsoppholdSiste12Mnd: utenlandsopphold.tidligereOpphold.map((o) => ({
-            fom: o.tidsperiode.fom,
-            tom: o.tidsperiode.tom,
-            landkode: o.land,
-        })),
-    };
 };
 
 type Props = {
@@ -151,9 +112,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={barn.erBarnetFødt && barn.fødselsdato ? barn.fødselsdato : barn.termindato}
                     hendelseType={barn.erBarnetFødt ? HendelseType.FØDSEL : HendelseType.TERMIN}
-                    utenlandsopphold={tempMappingOpphold(utenlandsopphold)}
-                    tidligereUtenlandsopphold={tempMappingTidligere(utenlandsoppholdTidligere)}
-                    senereUtenlandsopphold={tempMappingSenere(utenlandsoppholdSenere)}
+                    utenlandsopphold={utenlandsopphold}
+                    tidligereUtenlandsopphold={utenlandsoppholdTidligere}
+                    senereUtenlandsopphold={utenlandsoppholdSenere}
                 />
                 <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
                     <VStack gap="2">
