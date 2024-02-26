@@ -5,10 +5,8 @@ import { Heading } from '@navikt/ds-react';
 import { Arbeidsforhold, UtenlandsoppholdSenere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { SenereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
-import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 
@@ -26,7 +24,6 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
-    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
     const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
@@ -56,12 +53,6 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
         return navigator.goToNextDefaultStep();
     };
 
-    const goToPreviousStep = () => {
-        const appRoute = utenlandsopphold.iNorgeSiste12Mnd
-            ? SøknadRoutes.UTENLANDSOPPHOLD
-            : SøknadRoutes.HAR_BODD_I_UTLANDET;
-        navigator.goToPreviousStep(appRoute);
-    };
     const saveOnPrevious = () => {
         // TODO (TOR) Lagre uvalidert data i framtida
     };
@@ -77,7 +68,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 saveOnPrevious={saveOnPrevious}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
-                goToPreviousStep={goToPreviousStep}
+                goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
             />
         </ContentWrapper>

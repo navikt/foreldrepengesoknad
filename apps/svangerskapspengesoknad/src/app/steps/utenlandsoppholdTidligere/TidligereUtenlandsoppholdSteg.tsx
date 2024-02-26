@@ -52,7 +52,9 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
             })),
         });
 
-        const nesteSide = utenlandsopphold.iNorgeNeste12Mnd ? SøknadRoutes.ARBEID : SøknadRoutes.SKAL_BO_I_UTLANDET;
+        const nesteSide = utenlandsopphold.iNorgeNeste12Mnd
+            ? SøknadRoutes.INNTEKTSINFORMASJON
+            : SøknadRoutes.SKAL_BO_I_UTLANDET;
         return navigator.goToNextStep(nesteSide);
     };
 

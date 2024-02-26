@@ -97,17 +97,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <ArbeidIUtlandetFieldArray />
-                    <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            let previousRoute = SøknadRoutes.ARBEID;
-                            if (inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende) {
-                                previousRoute = SøknadRoutes.NÆRING;
-                            } else if (inntektsinformasjon.harJobbetSomFrilans) {
-                                previousRoute = SøknadRoutes.FRILANS;
-                            }
-                            navigator.goToPreviousStep(previousRoute);
-                        }}
-                    />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

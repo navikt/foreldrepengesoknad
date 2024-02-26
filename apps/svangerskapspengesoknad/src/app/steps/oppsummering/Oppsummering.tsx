@@ -15,7 +15,6 @@ import { bemUtils, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
@@ -37,17 +36,12 @@ import './oppsummering.css';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
 
-const getBackLinkAndId = (
-    tilrettelegging: Tilrettelegging[],
-): { previousRoute: SøknadRoutes; previousTilretteleggingId?: string } => {
+const getForrigeTilretteleggingId = (tilrettelegging: Tilrettelegging[]): string => {
     const sisteTilrettelegging = tilrettelegging[tilrettelegging?.length - 1];
-    if (
-        sisteTilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
+    return sisteTilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
         sisteTilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
-    ) {
-        return { previousRoute: SøknadRoutes.PERIODER, previousTilretteleggingId: sisteTilrettelegging.id };
-    }
-    return { previousRoute: SøknadRoutes.TILRETTELEGGING, previousTilretteleggingId: sisteTilrettelegging.id };
+        ? sisteTilrettelegging.id
+        : sisteTilrettelegging.id;
 };
 
 // TODO (TOR) Bruk same typar i dei forskjellige appane
@@ -127,13 +121,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
         (t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG,
     );
 
-    const { previousRoute, previousTilretteleggingId } = getBackLinkAndId(tilrettelegginger);
-
-    const gåTilForrigeSteg = () => {
-        oppdaterValgtTilretteleggingId(previousTilretteleggingId);
-        navigator.goToPreviousStep(previousRoute);
-    };
-
     return (
         <ContentWrapper>
             <Heading size="large">
@@ -144,7 +131,10 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
                 cancelApplication={avbrytSøknad}
-                goToPreviousStep={gåTilForrigeSteg}
+                goToPreviousStep={() => {
+                    oppdaterValgtTilretteleggingId(getForrigeTilretteleggingId(tilrettelegginger));
+                    navigator.goToPreviousDefaultStep();
+                }}
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søkerInfo.søker} />

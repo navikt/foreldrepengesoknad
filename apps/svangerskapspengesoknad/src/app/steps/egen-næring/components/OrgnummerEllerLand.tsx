@@ -3,7 +3,7 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { Select, TextField } from '@navikt/fp-form-hooks';
 import { createCountryOptions } from '@navikt/fp-utils';
-import { containsWhiteSpace, erGyldigNorskOrgnummer, isEqualValue, isRequired } from '@navikt/fp-validation';
+import { containsWhiteSpace, erGyldigNorskOrgnummer, isNotEqualValue, isRequired } from '@navikt/fp-validation';
 
 const validateEgenNæringOrgnr =
     (intl: IntlShape, erValgfri: boolean) =>
@@ -48,7 +48,7 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ orgNummerErValgfritt, re
                     label={intl.formatMessage({ id: 'egenNæring.registrertILand' })}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.påkrevd' })),
-                        isEqualValue(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.ikkeNorge' }), 'NO'),
+                        isNotEqualValue(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.ikkeNorge' }), 'NO'),
                     ]}
                 >
                     {createCountryOptions().map((o: Record<string, any>) => (

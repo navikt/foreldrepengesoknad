@@ -19,7 +19,7 @@ const getStepLabels = (
     navn?: string,
 ): Record<SøknadRoutes, string> => ({
     [SøknadRoutes.BARNET]: intl.formatMessage({ id: 'steps.label.barnet' }),
-    [SøknadRoutes.ARBEID]: intl.formatMessage({ id: 'steps.label.arbeid' }),
+    [SøknadRoutes.INNTEKTSINFORMASJON]: intl.formatMessage({ id: 'steps.label.arbeid' }),
     [SøknadRoutes.ARBEID_I_UTLANDET]: intl.formatMessage({ id: 'steps.label.arbeidIUtlandet' }),
     [SøknadRoutes.FORSIDE]: '',
     [SøknadRoutes.FRILANS]: intl.formatMessage({ id: 'steps.label.frilans' }),
@@ -70,7 +70,7 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoutes.SKAL_BO_I_UTLANDET, intl, currentPath));
     }
 
-    steps.push(createStep(SøknadRoutes.ARBEID, intl, currentPath));
+    steps.push(createStep(SøknadRoutes.INNTEKTSINFORMASJON, intl, currentPath));
 
     if (inntektsinformasjon?.harJobbetSomFrilans) {
         steps.push(createStep(SøknadRoutes.FRILANS, intl, currentPath));

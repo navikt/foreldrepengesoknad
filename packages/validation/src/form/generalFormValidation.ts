@@ -17,10 +17,10 @@ export const isRequired =
     (value?: string | number | boolean): FormValidationResult =>
         isEmpty(value) ? i18nText : null;
 
-export const isEqualValue =
+export const isNotEqualValue =
     (i18nText: string, value: string) =>
     (fieldValue?: string | number): FormValidationResult =>
-        fieldValue !== value ? i18nText : null;
+        fieldValue === value ? i18nText : null;
 
 export const hasMinLength =
     (i18nText: string, length: number) =>

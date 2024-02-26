@@ -100,7 +100,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.ARBEID}
+                path={SøknadRoutes.INNTEKTSINFORMASJON}
                 element={
                     <InntektsinformasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}

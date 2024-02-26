@@ -371,13 +371,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                         />
                     )}
                     <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
-                    <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            navigator.goToPreviousStep(
-                                inntektsinformasjon.harJobbetSomFrilans ? SøknadRoutes.FRILANS : SøknadRoutes.ARBEID,
-                            );
-                        }}
-                    />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

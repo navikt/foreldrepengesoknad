@@ -15,7 +15,6 @@ import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging from 'app/types/Tilrettelegging';
-import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 import { getArbeidsforholdTilretteleggingOptions } from '../velg-arbeidsforhold/velgArbeidFormUtils';
@@ -86,16 +85,6 @@ const getNextRouteForInntektsinformasjon = (
     return automatiskValgtTilrettelegging ? SøknadRoutes.SKJEMA : SøknadRoutes.VELG_ARBEID;
 };
 
-const getPreviousRoute = (utenlandsopphold: Utenlandsopphold): SøknadRoutes => {
-    if (!utenlandsopphold.iNorgeNeste12Mnd) {
-        return SøknadRoutes.SKAL_BO_I_UTLANDET;
-    }
-    if (!utenlandsopphold.iNorgeSiste12Mnd) {
-        return SøknadRoutes.HAR_BODD_I_UTLANDET;
-    }
-    return SøknadRoutes.UTENLANDSOPPHOLD;
-};
-
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
@@ -116,7 +105,6 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
     const inntektsinformasjon = useContextGetData(ContextDataType.INNTEKTSINFORMASJON);
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
 
     const oppdaterInntektsinformasjon = useContextSaveData(ContextDataType.INNTEKTSINFORMASJON);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
@@ -252,9 +240,7 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
                     <StepButtons
                         isNexButtonVisible={!kanIkkeSøke}
                         isDisabledAndLoading={isSubmitting}
-                        goToPreviousStep={() => {
-                            navigator.goToPreviousStep(getPreviousRoute(utenlandsopphold));
-                        }}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
                     />
                 </VStack>
             </Form>

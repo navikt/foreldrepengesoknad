@@ -21,11 +21,6 @@ const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforho
         });
     }, [activeStepId]);
 
-    const goToPreviousStep = (path: SøknadRoutes) => {
-        oppdaterPath(path);
-        return mellomlagreOgNaviger();
-    };
-
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id || SøknadRoutes.FORSIDE;
@@ -55,7 +50,6 @@ const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforho
     };
 
     return {
-        goToPreviousStep,
         goToPreviousDefaultStep,
         goToNextStep,
         goToNextDefaultStep,

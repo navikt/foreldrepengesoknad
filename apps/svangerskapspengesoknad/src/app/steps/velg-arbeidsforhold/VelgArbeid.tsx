@@ -9,7 +9,6 @@ import { Step } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 
@@ -93,19 +92,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
                         ))}
                     </CheckboxGroup>
                     {visInfo && <FlereArbeidsforholdGuidePanel />}
-                    <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            let previousRoute = SøknadRoutes.ARBEID;
-                            if (inntektsinformasjon.harHattArbeidIUtlandet) {
-                                previousRoute = SøknadRoutes.ARBEID_I_UTLANDET;
-                            } else if (inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende) {
-                                previousRoute = SøknadRoutes.NÆRING;
-                            } else if (inntektsinformasjon.harJobbetSomFrilans) {
-                                previousRoute = SøknadRoutes.FRILANS;
-                            }
-                            navigator.goToPreviousStep(previousRoute);
-                        }}
-                    />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

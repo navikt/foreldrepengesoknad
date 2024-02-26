@@ -91,7 +91,7 @@ const Template: StoryFn<Props> = ({
 }) => {
     initAmplitude();
     return (
-        <MemoryRouter initialEntries={[SøknadRoutes.ARBEID]}>
+        <MemoryRouter initialEntries={[SøknadRoutes.INNTEKTSINFORMASJON]}>
             <SvpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
