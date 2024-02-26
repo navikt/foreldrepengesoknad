@@ -1,19 +1,22 @@
-import { guid, intlUtils, ISOStringToDate, TidsperiodeDate } from '@navikt/fp-common';
-import { Periode } from 'app/types/Periode';
-import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
-import { StønadskontoType } from 'app/types/StønadskontoType';
-import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
-import { IntlShape } from 'react-intl';
-import { getNavnGenitivEierform, NavnPåForeldre } from './personUtils';
-import { capitalizeFirstLetter } from './stringUtils';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
+import { IntlShape } from 'react-intl';
+
+import { ISOStringToDate, TidsperiodeDate, guid, intlUtils } from '@navikt/fp-common';
 import { formatDateIso } from '@navikt/fp-utils';
-import { PeriodeResultat } from 'app/types/PeriodeResultat';
+
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
+import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
+import { Periode } from 'app/types/Periode';
+import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
-import { getTidsperiode, isValidTidsperiode, Tidsperioden } from './tidsperiodeUtils';
+import { StønadskontoType } from 'app/types/StønadskontoType';
+import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
+
 import { Uttaksdagen } from './Uttaksdagen';
+import { NavnPåForeldre, getNavnGenitivEierform } from './personUtils';
+import { capitalizeFirstLetter } from './stringUtils';
+import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
 
 export const Periodene = (perioder: Periode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
@@ -220,6 +223,13 @@ export const getStønadskontoForelderNavn = (
             navn = undefined;
     }
 
+    if (navn && periodeResultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID) {
+        return intl.formatMessage(
+            { id: 'uttaksplan.stønadskontotype.foreldernavn.kvote.avslåttGradering' },
+            { navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) },
+        );
+    }
+
     if (navn) {
         return intl.formatMessage(
             { id: 'uttaksplan.stønadskontotype.foreldernavn.kvote' },
@@ -323,6 +333,10 @@ export const getPeriodeTittel = (
     erAleneOmOmsorg?: boolean,
 ): string => {
     if (isAvslåttPeriode(periode)) {
+        if (periode.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
+            return intlUtils(intl, 'uttaksplan.avslåttPeriode.utsettelse');
+        }
+
         return intlUtils(intl, 'uttaksplan.avslåttPeriode');
     }
     if (isUttaksperiode(periode)) {
