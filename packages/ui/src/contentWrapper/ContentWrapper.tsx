@@ -1,4 +1,4 @@
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import './contentWrapper.less';
 

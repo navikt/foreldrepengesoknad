@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Button } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import useUiIntl from '../../../i18n/ui/useUiIntl';
 import AvsluttModal from './AvsluttModal';

@@ -1,12 +1,15 @@
-import { FormattedMessage, IntlShape } from 'react-intl';
-import { useDocumentTitle } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { Button, GuidePanel, Heading, VStack, HStack } from '@navikt/ds-react';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
+import { FormattedMessage, IntlShape } from 'react-intl';
+
+import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
+
 import { links } from '@navikt/fp-constants';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { useDocumentTitle } from '@navikt/fp-utils';
+
+import ContentWrapper from '../contentWrapper/ContentWrapper';
 import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 import useUiIntl from '../i18n/ui/useUiIntl';
-import ContentWrapper from '../contentWrapper/ContentWrapper';
 
 export interface Props {
     appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';

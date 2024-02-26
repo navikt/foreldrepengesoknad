@@ -1,8 +1,10 @@
 import { Fragment } from 'react';
+
 import { VStack } from '@navikt/ds-react';
+
 import { Attachment } from '@navikt/fp-types';
+
 import FailedAttachment from './FailedAttachment';
-import { guid } from '@navikt/fp-common';
 
 interface Props {
     failedAttachments: Attachment[];
@@ -16,7 +18,7 @@ const FailedAttachmentList: React.FunctionComponent<Props> = (props) => {
             {failedAttachments.length > 0 && (
                 <VStack gap="2">
                     {failedAttachments.map((failedAttachment) => (
-                        <Fragment key={guid()}>
+                        <Fragment key={failedAttachment.id}>
                             <FailedAttachment failedAttachment={failedAttachment} onDelete={onDelete} />
                         </Fragment>
                     ))}

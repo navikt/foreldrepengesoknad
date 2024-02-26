@@ -9,7 +9,6 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "classnames": "^2.5.1",

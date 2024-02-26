@@ -1,5 +1,9 @@
-import { Tidsperiode } from '@navikt/fp-common';
 import dayjs from 'dayjs';
+
+interface Tidsperiode {
+    fom: string;
+    tom: string;
+}
 
 export const overlapperTidsperioder = (t1: Tidsperiode, t2: Tidsperiode) => {
     return (
