@@ -15,30 +15,4 @@ enum SøknadRoutes {
     OPPSUMMERING = '/oppsummering',
 }
 
-export const ROUTES_ORDER = [
-    SøknadRoutes.FORSIDE,
-    SøknadRoutes.BARNET,
-    SøknadRoutes.UTENLANDSOPPHOLD,
-    SøknadRoutes.HAR_BODD_I_UTLANDET,
-    SøknadRoutes.SKAL_BO_I_UTLANDET,
-    SøknadRoutes.INNTEKTSINFORMASJON,
-    SøknadRoutes.FRILANS,
-    SøknadRoutes.NÆRING,
-    SøknadRoutes.ARBEID_I_UTLANDET,
-    SøknadRoutes.VELG_ARBEID,
-    SøknadRoutes.SKJEMA,
-    SøknadRoutes.TILRETTELEGGING,
-    SøknadRoutes.PERIODER,
-    SøknadRoutes.OPPSUMMERING,
-];
-
-export const REQUIRED_APP_STEPS = [
-    SøknadRoutes.BARNET,
-    SøknadRoutes.UTENLANDSOPPHOLD,
-    SøknadRoutes.INNTEKTSINFORMASJON,
-    SøknadRoutes.SKJEMA,
-    SøknadRoutes.TILRETTELEGGING,
-    SøknadRoutes.OPPSUMMERING,
-];
-
 export default SøknadRoutes;
