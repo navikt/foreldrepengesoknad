@@ -1,21 +1,24 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
+
 import { Loader } from '@navikt/ds-react';
+
+import { useDocumentTitle } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
 import { redirect } from '@navikt/fp-utils';
+
+import Environment from './Environment';
 import Api from './api/api';
 import { sendErrorMessageToSentry } from './api/apiUtils';
-import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
-import SøknadRoutes from './routes/routes';
-import { shouldApplyStorage } from './utils/mellomlagringUtils';
-import { RequestStatus } from './types/RequestState';
 import { FpDataContext } from './context/FpDataContext';
 import { konverterMellomlagretDataTilAppData } from './context/konverterMellomlagretDataTilAppData';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
+import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
+import SøknadRoutes from './routes/routes';
 import { Kvittering } from './types/Kvittering';
-import Environment from './Environment';
-import { useIntl } from 'react-intl';
-import { useDocumentTitle } from '@navikt/fp-common';
+import { RequestStatus } from './types/RequestState';
+import { shouldApplyStorage } from './utils/mellomlagringUtils';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -30,6 +33,7 @@ interface Props {
 
 const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const intl = useIntl();
+
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
     const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();

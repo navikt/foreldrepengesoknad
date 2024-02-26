@@ -1,8 +1,22 @@
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { Uttaksplan, getHarAktivitetskravIPeriodeUtenUttak, kreverUttaksplanVedlegg } from '@navikt/uttaksplan';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+import dayjs from 'dayjs';
+import { FormikValues } from 'formik';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Alert, Button, Loader } from '@navikt/ds-react';
+
 import {
     Block,
     Dekningsgrad,
     Forelder,
+    ISOStringToDate,
+    Periode,
+    Periodene,
+    Step,
+    StepButtonWrapper,
     getAktiveArbeidsforhold,
     getErMorUfør,
     getFarMedmorErAleneOmOmsorg,
@@ -15,23 +29,15 @@ import {
     intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
-    ISOStringToDate,
     isUfødtBarn,
     isUttakAnnenPart,
     isUttakAvForeldrepengerFørFødsel,
     isUttaksperiode,
-    Periode,
-    Periodene,
-    Step,
-    StepButtonWrapper,
 } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { Skjemanummer } from '@navikt/fp-constants';
+import { Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
-import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { getHarAktivitetskravIPeriodeUtenUttak, kreverUttaksplanVedlegg, Uttaksplan } from '@navikt/uttaksplan';
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
 import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
@@ -42,8 +48,10 @@ import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { RequestStatus } from 'app/types/RequestState';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
 import {
@@ -53,22 +61,18 @@ import {
 import useDebounce from 'app/utils/hooks/useDebounce';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
-import dayjs from 'dayjs';
-import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
-import { FormikValues } from 'formik';
+
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
+import { getUttaksplanNextStep } from '../stepsConfig';
+import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
+import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
 import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
-import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
-import { Søkerinfo } from '@navikt/fp-types';
-import { VedleggDataType } from 'app/types/VedleggDataType';
-import { Skjemanummer } from '@navikt/fp-constants';
-import { getUttaksplanNextStep } from '../stepsConfig';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
@@ -696,7 +700,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             </Block>
                         )}
                         <Block textAlignCenter={true} padBottom="l">
-                            <StepButtonWrapper>
+                            <StepButtonWrapper singleButton={true}>
                                 {!erEndringssøknad && (
                                     <Button
                                         variant="secondary"

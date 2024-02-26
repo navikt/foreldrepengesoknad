@@ -1,3 +1,8 @@
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Heading } from '@navikt/ds-react';
+
 import {
     Barn,
     ISOStringToDate,
@@ -10,27 +15,26 @@ import {
 } from '@navikt/fp-common';
 import {
     BoIUtlandetOppsummeringspunkt,
-    SøkerOppsummeringspunkt,
     HendelseType,
     OppsummeringIndex,
+    SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
 import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { formatDateIso } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
 import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
 import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
-import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-import { Heading } from '@navikt/ds-react';
 import DokumentasjonOppsummering from './components/dokumentasjon-oppsummering/DokumentasjonOppsummering';
+import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const getDatoOgHendelsetype = (barn: Barn): [string, HendelseType] => {
     if (isFødtBarn(barn)) {
@@ -158,7 +162,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={datoOgHendelsetype[0]}
                     hendelseType={datoOgHendelsetype[1]}
-                    utenlandsopphold={tempMappingOpphold(notEmpty(utenlandsopphold))}
+                    utenlandsopphold={erEndringssøknad ? ({} as any) : tempMappingOpphold(notEmpty(utenlandsopphold))}
                     tidligereUtenlandsopphold={tempMappingTidligere(tidligereUtenlandsopphold)}
                     senereUtenlandsopphold={tempMappingSenere(senereUtenlandsopphold)}
                     hide={erEndringssøknad}

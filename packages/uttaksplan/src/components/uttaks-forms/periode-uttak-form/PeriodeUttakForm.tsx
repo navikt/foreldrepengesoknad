@@ -1,11 +1,28 @@
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
+import { FormattedMessage, IntlShape } from 'react-intl';
+
+import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
+
 import {
     ActionLink,
-    andreAugust2022ReglerGjelder,
     AnnenForelder,
     Arbeidsforhold,
-    bemUtils,
     Block,
     Forelder,
+    ISOStringToDate,
+    NavnPåForeldre,
+    OpprinneligSøkt,
+    Periode,
+    PeriodeValidState,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    TidsperiodeDate,
+    TilgjengeligStønadskonto,
+    Utsettelsesperiode,
+    andreAugust2022ReglerGjelder,
+    bemUtils,
     formaterDatoKompakt,
     getFiltrerteVelgbareStønadskontotyper,
     getFørsteUttaksdag2UkerFørFødsel,
@@ -16,34 +33,29 @@ import {
     guid,
     intlUtils,
     isAnnenForelderOppgitt,
-    ISOStringToDate,
+    isUttaksperiode,
     isValidTidsperiode,
-    NavnPåForeldre,
-    Periode,
-    Periodetype,
-    PeriodeValidState,
-    Situasjon,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
-    StønadskontoType,
-    TidsperiodeDate,
-    TilgjengeligStønadskonto,
-    Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
+
+import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
+import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
+import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 import ErMorForSykSpørsmål from '../spørsmål/er-mor-for-syk/ErMorForSykSpørsmål';
 import FlerbarnsdagerSpørsmål from '../spørsmål/flerbarnsdager/FlerbarnsdagerSpørsmål';
 import HvemSkalHaUttakSpørsmål from '../spørsmål/hvem-skal-ha-uttak/HvemSkalHaUttakSpørsmål';
 import HvilkenKontoSpørsmål from '../spørsmål/hvilken-konto/HvilkenKontoSpørsmål';
-import UttakRundtFødselÅrsakSpørsmål from '../spørsmål/uttak-rundt-fødsel-årsak/UttakRundtFødselÅrsakSpørsmål';
 import OverføringsårsakSpørsmål from '../spørsmål/overføringsårsak/OverføringsårsakSpørsmål';
 import SamtidigUttakSpørsmål from '../spørsmål/samtidig-uttak/SamtidigUttakSpørsmål';
 import SkalHaGraderingSpørsmål from '../spørsmål/skal-ha-gradering/SkalHaGraderingSpørsmål';
+import UttakRundtFødselÅrsakSpørsmål from '../spørsmål/uttak-rundt-fødsel-årsak/UttakRundtFødselÅrsakSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
+import './periodeUttakForm.less';
 import { PeriodeUttakFormComponents, PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
-    periodeUttakFormQuestionsConfig,
     PeriodeUttakFormQuestionsPayload,
+    periodeUttakFormQuestionsConfig,
     skalViseWLBInfoOmSamtidigUttakRundtFødsel,
 } from './periodeUttakFormQuestionsConfig';
 import {
@@ -51,14 +63,6 @@ import {
     getPeriodeUttakFormInitialValues,
     mapPeriodeUttakFormToPeriode,
 } from './periodeUttakFormUtils';
-import { FormattedMessage, IntlShape } from 'react-intl';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
-import { Button, GuidePanel } from '@navikt/ds-react';
-import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
-import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
-
-import './periodeUttakForm.less';
 
 interface Props {
     periode: Periode;
@@ -208,6 +212,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
             : undefined;
 
     const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
+    const harOpprinneligSøktGradering =
+        isUttaksperiode(periode) && periode.opprinneligSøkt === OpprinneligSøkt.Gradering;
 
     if (!isOpen) {
         return null;
@@ -310,6 +316,16 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                 );
                 return (
                     <>
+                        {harOpprinneligSøktGradering ? (
+                            <Block padBottom="l">
+                                <GuidePanel>
+                                    <BodyLong>
+                                        Du søkte om å kombinere foreldrepenger med delvis arbeid, men fikk dette
+                                        avslått. I stedet fikk du delvis utbetaling og brukte fulle dager.
+                                    </BodyLong>
+                                </GuidePanel>
+                            </Block>
+                        ) : null}
                         <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}

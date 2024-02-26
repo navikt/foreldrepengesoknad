@@ -1,4 +1,11 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
+
 import { Alert, BodyLong, BodyShort, ReadMore } from '@navikt/ds-react';
+
 import {
     Barn,
     Block,
@@ -16,19 +23,18 @@ import {
     lagSendSenereDokumentNårIngenAndreFinnes,
     links,
 } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
-import dayjs from 'dayjs';
-import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
 import {
     cleanAnnenForelderFormData,
@@ -42,8 +48,6 @@ import FarDokumentasjonAleneomsorgVeileder from './components/FarDokumentasjonAl
 import MåOrientereAnnenForelderVeileder from './components/MåOrientereAnnenForelderVeileder';
 import OppgiPersonalia from './components/OppgiPersonalia';
 import { validateDatoForAleneomsorg } from './validation/annenForelderValidering';
-import { VedleggDataType } from 'app/types/VedleggDataType';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 type Props = {
     søker: Søker;

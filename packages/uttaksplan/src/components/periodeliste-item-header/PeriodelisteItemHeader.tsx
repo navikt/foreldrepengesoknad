@@ -1,7 +1,16 @@
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import { BodyShort, Label } from '@navikt/ds-react';
+
 import {
     Forelder,
     NavnPåForeldre,
+    OpprinneligSøkt,
     Periode,
+    PeriodeInfoType,
     Periodetype,
     Situasjon,
     StønadskontoType,
@@ -17,20 +26,15 @@ import {
     måned3bokstaver,
     år,
 } from '@navikt/fp-common';
-import classNames from 'classnames';
-import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
-import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
-import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
-import { BodyShort, Label } from '@navikt/ds-react';
-
-import './periodelisteItemHeader.less';
 import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
-import { VeilederMessage } from '../../validering/veilederInfo/types';
+
 import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
 import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
+import { VeilederMessage } from '../../validering/veilederInfo/types';
+import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
+import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
+import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
+import './periodelisteItemHeader.less';
 
 interface Props {
     egenPeriode: boolean;
@@ -57,6 +61,10 @@ export const getPeriodeIkon = (
 ): React.ReactNode | undefined => {
     switch (periode.type) {
         case Periodetype.Uttak:
+            if (periode.opprinneligSøkt === OpprinneligSøkt.Gradering) {
+                return <UttaksplanAdvarselIkon />;
+            }
+
             return (
                 <StønadskontoIkon
                     konto={periode.konto}
@@ -87,6 +95,14 @@ export const getPeriodeIkon = (
             if (isUtsettelseAnnenPart(periode)) {
                 return <UtsettelseIkon årsak={periode.årsak} />;
             } else {
+                if (
+                    periode.infotype === PeriodeInfoType.avslåttPeriode &&
+                    (periode.opprinneligSøkt === OpprinneligSøkt.Arbeid ||
+                        periode.opprinneligSøkt === OpprinneligSøkt.Ferie)
+                ) {
+                    return <UttaksplanAdvarselIkon />;
+                }
+
                 return (
                     <StønadskontoIkon
                         konto={StønadskontoType.Foreldrepenger}

@@ -48,6 +48,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     ønskerFlerbarnsdager?: boolean;
     erMorForSyk?: boolean;
     angittAvAnnenPart?: boolean;
+    opprinneligSøkt?: OpprinneligSøkt;
 }
 
 export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;
@@ -88,6 +89,12 @@ interface InfoPeriodeBase extends PeriodeBase {
     visPeriodeIPlan: boolean;
 }
 
+export enum OpprinneligSøkt {
+    Ferie = 'FERIE',
+    Arbeid = 'ARBEID',
+    Gradering = 'GRADERING',
+}
+
 export interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
@@ -97,6 +104,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     overskrives: true;
     visPeriodeIPlan: boolean;
     kanSlettes: boolean;
+    opprinneligSøkt?: OpprinneligSøkt;
 }
 
 export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
