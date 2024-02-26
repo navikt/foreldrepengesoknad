@@ -223,13 +223,6 @@ export const getStønadskontoForelderNavn = (
             navn = undefined;
     }
 
-    if (navn && periodeResultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID) {
-        return intl.formatMessage(
-            { id: 'uttaksplan.stønadskontotype.foreldernavn.kvote.avslåttGradering' },
-            { navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) },
-        );
-    }
-
     if (navn) {
         return intl.formatMessage(
             { id: 'uttaksplan.stønadskontotype.foreldernavn.kvote' },

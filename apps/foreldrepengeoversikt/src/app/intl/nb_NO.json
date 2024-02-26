@@ -99,7 +99,6 @@
     "uttaksplan.stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
     "uttaksplan.stønadskontotype.MØDREKVOTE": "Mors kvote",
     "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
-    "uttaksplan.stønadskontotype.foreldernavn.kvote.avslåttGradering": "{navn} kvote - Avslått foreldrepenger kombinert med delvis arbeid",
     "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote",
     "uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE": "Utsettelse på grunn av ferie",
     "uttaksplan.utsettelsesårsak.ARBEID": "Utsettelse på grunn av heltidsarbeid",
