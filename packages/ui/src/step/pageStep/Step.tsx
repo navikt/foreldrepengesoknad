@@ -4,16 +4,15 @@ import { VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import UiIntlProvider from '../../i18n/ui/UiIntlProvider';
 import ProgressStepper, { ProgressStep } from '../progressStepper/ProgressStepper';
 import Page from './Page';
 import StepBanner from './StepBanner';
 import './step.css';
 import StepFooter from './stepFooter/StepFooter';
 
-export interface StepProps {
+export interface StepProps<TYPE> {
     bannerTitle?: string;
-    steps: ProgressStep[];
+    steps: Array<ProgressStep<TYPE>>;
     children: React.ReactNode;
     onCancel?: () => void;
     onContinueLater?: () => void;
@@ -22,7 +21,7 @@ export interface StepProps {
     infoMessage?: React.ReactNode;
 }
 
-const Step: React.FunctionComponent<StepProps> = ({
+const Step = <TYPE extends string>({
     bannerTitle,
     steps,
     onCancel,
@@ -31,7 +30,7 @@ const Step: React.FunctionComponent<StepProps> = ({
     children,
     pageAriaLabel,
     infoMessage,
-}) => {
+}: StepProps<TYPE>) => {
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
     if (currentStepIndex === -1) {
         throw new Error('No selected step in step-config');
@@ -41,34 +40,32 @@ const Step: React.FunctionComponent<StepProps> = ({
 
     const bem = bemUtils('step');
     return (
-        <UiIntlProvider>
-            <Page
-                className={bem.block}
-                title={title}
-                ariaLabel={pageAriaLabel}
-                topContentRenderer={() => <>{bannerTitle && <StepBanner text={bannerTitle} />}</>}
-            >
-                {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
-                <VStack gap="6">
-                    <div role="presentation">
-                        <ProgressStepper steps={steps} />
-                    </div>
-                    <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
-                        <VStack gap="4">
-                            {children}
-                            {(onCancel || onContinueLater) && (
-                                <div
-                                    role={cancelOrContinueLaterAriaLabel ? 'complementary' : undefined}
-                                    aria-label={cancelOrContinueLaterAriaLabel}
-                                >
-                                    <StepFooter onAvbrytOgSlett={onCancel} onAvbrytOgFortsettSenere={onContinueLater} />
-                                </div>
-                            )}
-                        </VStack>
-                    </section>
-                </VStack>
-            </Page>
-        </UiIntlProvider>
+        <Page
+            className={bem.block}
+            title={title}
+            ariaLabel={pageAriaLabel}
+            topContentRenderer={() => <>{bannerTitle && <StepBanner text={bannerTitle} />}</>}
+        >
+            {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
+            <VStack gap="6">
+                <div role="presentation">
+                    <ProgressStepper steps={steps} />
+                </div>
+                <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
+                    <VStack gap="4">
+                        {children}
+                        {(onCancel || onContinueLater) && (
+                            <div
+                                role={cancelOrContinueLaterAriaLabel ? 'complementary' : undefined}
+                                aria-label={cancelOrContinueLaterAriaLabel}
+                            >
+                                <StepFooter onAvbrytOgSlett={onCancel} onAvbrytOgFortsettSenere={onContinueLater} />
+                            </div>
+                        )}
+                    </VStack>
+                </section>
+            </VStack>
+        </Page>
     );
 };
 

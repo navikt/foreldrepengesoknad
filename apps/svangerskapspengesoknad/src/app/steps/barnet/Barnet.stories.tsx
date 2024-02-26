@@ -1,7 +1,11 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
+import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Action, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import Barnet from './Barnet';
 
@@ -75,14 +79,17 @@ const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide = action('button-click'),
 }) => {
+    initAmplitude();
     return (
-        <SvpDataContext onDispatch={gåTilNesteSide}>
-            <Barnet
-                arbeidsforhold={arbeidsforhold}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={promiseAction()}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.BARNET]}>
+            <SvpDataContext onDispatch={gåTilNesteSide}>
+                <Barnet
+                    arbeidsforhold={arbeidsforhold}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={promiseAction()}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 export const Default = Template.bind({});

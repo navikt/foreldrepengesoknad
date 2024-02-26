@@ -1,9 +1,12 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
 
+import { initAmplitude } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import InntektsinformasjonSteg from './InntektsinformasjonSteg';
 
@@ -86,27 +89,30 @@ const Template: StoryFn<Props> = ({
     gåTilNesteSide = action('button-click'),
     arbeidsforhold = DEFAULT_ARBEIDSFORHOLD,
 }) => {
+    initAmplitude();
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.UTENLANDSOPPHOLD]: {
-                    iNorgeNeste12Mnd: true,
-                    iNorgeSiste12Mnd: true,
-                },
-                [ContextDataType.OM_BARNET]: {
-                    erBarnetFødt: false,
-                    termindato: '2024-02-18',
-                    fødselsdato: '2024-02-18',
-                },
-            }}
-        >
-            <InntektsinformasjonSteg
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={promiseAction()}
-                arbeidsforhold={arbeidsforhold}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.ARBEID]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.UTENLANDSOPPHOLD]: {
+                        iNorgeNeste12Mnd: true,
+                        iNorgeSiste12Mnd: true,
+                    },
+                    [ContextDataType.OM_BARNET]: {
+                        erBarnetFødt: false,
+                        termindato: '2024-02-18',
+                        fødselsdato: '2024-02-18',
+                    },
+                }}
+            >
+                <InntektsinformasjonSteg
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={promiseAction()}
+                    arbeidsforhold={arbeidsforhold}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 

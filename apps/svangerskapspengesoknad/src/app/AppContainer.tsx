@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 
 import { deleteData } from '@navikt/fp-api';
-import { allCommonMessages } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage, shouldChangeBrowser } from '@navikt/fp-utils';
@@ -16,8 +15,8 @@ import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: { ...nbMessages, ...allCommonMessages.nb },
-    nn: { ...nnMessages, ...allCommonMessages.nn },
+    nb: nbMessages,
+    nn: nnMessages,
 };
 
 dayjs.locale(localeFromSessionStorage);

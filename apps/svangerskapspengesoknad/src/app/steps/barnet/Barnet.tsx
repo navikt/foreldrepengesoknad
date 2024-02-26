@@ -4,9 +4,9 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import {
     enMånedSiden,
     etÅrSiden,
@@ -24,11 +24,9 @@ import {
 } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { Barn } from 'app/types/Barn';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-
-import { useStepConfig } from '../stepsConfig';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
     erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(new Date());
@@ -56,19 +54,15 @@ type Props = {
 
 const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const barnet = useContextGetData(ContextDataType.OM_BARNET);
-
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: Barn) => {
         oppdaterOmBarnet(values);
-        oppdaterAppRoute(SøknadRoutes.UTENLANDSOPPHOLD);
-
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<Barn>({
@@ -84,11 +78,9 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="barnet"
-            pageTitle={intl.formatMessage({ id: 'steps.label.barnet' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -179,12 +171,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             </BodyShort>
                         </ReadMore>
                     </div>
-                    <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            oppdaterAppRoute(SøknadRoutes.FORSIDE);
-                            mellomlagreSøknadOgNaviger();
-                        }}
-                    />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

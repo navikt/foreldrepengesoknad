@@ -1,11 +1,9 @@
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 
 import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import {
     Datepicker,
@@ -16,6 +14,7 @@ import {
     TextField,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
     hasLegalChars,
@@ -31,15 +30,52 @@ import {
 } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import { getBackLinkForNæringSteg, getNextRouteForNæring, useStepConfig } from 'app/steps/stepsConfig';
-import { EgenNæring, Næringstype } from 'app/types/EgenNæring';
-import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import SøknadRoutes from 'app/appData/routes';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
+import { EgenNæring, Næringstype, egenNæringId } from 'app/types/EgenNæring';
+import { frilansId } from 'app/types/Frilans';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
+
+const getNextRouteValgAvArbeidEllerSkjema = (
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+    inntektsinformasjon: Inntektsinformasjon,
+): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
+        termindato,
+        aktiveArbeidsforhold,
+        inntektsinformasjon.harJobbetSomFrilans,
+        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
+    );
+    if (harKunEtArbeid) {
+        if (aktiveArbeidsforhold.length === 0) {
+            const frilansEllerNæringId = inntektsinformasjon.harJobbetSomFrilans ? frilansId : egenNæringId;
+            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: frilansEllerNæringId };
+        } else {
+            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: aktiveArbeidsforhold[0].arbeidsgiverId };
+        }
+    }
+    return { nextRoute: SøknadRoutes.VELG_ARBEID };
+};
+
+const getNextRoute = (
+    inntektsinformasjon: Inntektsinformasjon,
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+    const nextRoute = inntektsinformasjon.harHattArbeidIUtlandet ? SøknadRoutes.ARBEID_I_UTLANDET : undefined;
+    return nextRoute
+        ? { nextRoute }
+        : getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, inntektsinformasjon);
+};
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
     if (!isStringAValidDate(oppstartsdato)) {
@@ -71,9 +107,8 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
     arbeidsforhold,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const navigate = useNavigate();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
@@ -83,7 +118,6 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: EgenNæring) => {
         oppdaterEgenNæring(values);
@@ -100,16 +134,15 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
             oppdaterTilrettelegginger(automatiskValgtTilrettelegging);
         }
 
-        const { nextRoute, nextTilretteleggingId } = getNextRouteForNæring(
+        const { nextRoute, nextTilretteleggingId } = getNextRoute(
             inntektsinformasjon,
             barnet.termindato,
             arbeidsforhold,
         );
 
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
-        oppdaterAppRoute(nextRoute);
 
-        mellomlagreSøknadOgNaviger();
+        return navigator.goToNextStep(nextRoute);
     };
 
     const formMethods = useForm<EgenNæring>({
@@ -136,11 +169,9 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="næring"
-            pageTitle={intl.formatMessage({ id: 'steps.label.næring' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -342,9 +373,9 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                     <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
                     <StepButtonsHookForm
                         goToPreviousStep={() => {
-                            const backRoute = getBackLinkForNæringSteg(inntektsinformasjon);
-                            oppdaterAppRoute(backRoute);
-                            navigate(backRoute);
+                            navigator.goToPreviousStep(
+                                inntektsinformasjon.harJobbetSomFrilans ? SøknadRoutes.FRILANS : SøknadRoutes.ARBEID,
+                            );
                         }}
                     />
                 </VStack>

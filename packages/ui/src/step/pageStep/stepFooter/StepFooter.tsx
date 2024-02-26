@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-common';
 
+import useUiIntl from '../../../i18n/ui/useUiIntl';
 import AvsluttModal from './AvsluttModal';
 import './stepFooter.css';
 
@@ -15,6 +15,7 @@ interface Props {
 
 function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
     const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
+    const intl = useUiIntl();
 
     const bem = bemUtils('stepFooter');
     return (
@@ -28,7 +29,7 @@ function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
                     onAvbrytOgSlett={onAvbrytOgSlett}
                 />
                 <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
-                    <FormattedMessage id="StepFooter.Avslutt" />
+                    {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
                 </Button>
             </div>
         </>

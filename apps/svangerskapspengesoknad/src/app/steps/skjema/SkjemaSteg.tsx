@@ -5,25 +5,87 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
-import { Step } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
+import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import Environment from 'app/appData/Environment';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
+import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 import Bedriftsbanner from '../Bedriftsbanner';
-import { getBackLinkForSkjemaSteg, useStepConfig } from '../stepsConfig';
 import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
 import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 
 const MAX_ANTALL_VEDLEGG = 40;
+
+export const getBackLinkForVelgArbeidSteg = (inntektsinformasjon: Inntektsinformasjon): SøknadRoutes => {
+    if (inntektsinformasjon.harHattArbeidIUtlandet) {
+        return SøknadRoutes.ARBEID_I_UTLANDET;
+    }
+    if (inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende) {
+        return SøknadRoutes.NÆRING;
+    }
+    if (inntektsinformasjon.harJobbetSomFrilans) {
+        return SøknadRoutes.FRILANS;
+    }
+    return SøknadRoutes.ARBEID;
+};
+
+const getForrigeTilrettelegging = (
+    tilretteleggingBehov: Tilrettelegging[],
+    currentTilretteleggingId: string | undefined,
+): Tilrettelegging | undefined => {
+    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
+        return tilretteleggingBehov[tilretteleggingBehov.length - 1];
+    }
+    const forrigeTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) - 1;
+    if (forrigeTilretteleggingIndex < 0) {
+        return undefined;
+    }
+    return tilretteleggingBehov[forrigeTilretteleggingIndex];
+};
+
+const getBackLink = (
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+    inntektsinformasjon: Inntektsinformasjon,
+    tilrettelegginger: Tilrettelegging[] | undefined,
+    currentTilretteleggingId: string | undefined,
+): { previousRoute: SøknadRoutes; previousTilretteleggingId?: string } => {
+    if (!tilrettelegginger) {
+        return { previousRoute: SøknadRoutes.ARBEID };
+    }
+    const forrigeTilrettelegging = getForrigeTilrettelegging(tilrettelegginger, currentTilretteleggingId);
+    if (forrigeTilrettelegging) {
+        if (
+            forrigeTilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
+            forrigeTilrettelegging.delvisTilretteleggingPeriodeType ===
+                DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+        ) {
+            return { previousRoute: SøknadRoutes.PERIODER, previousTilretteleggingId: forrigeTilrettelegging.id };
+        }
+        return { previousRoute: SøknadRoutes.TILRETTELEGGING, previousTilretteleggingId: forrigeTilrettelegging.id };
+    }
+    const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
+        termindato,
+        arbeidsforhold,
+        inntektsinformasjon.harJobbetSomFrilans,
+        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
+    );
+    if (harKunEtArbeid) {
+        return { previousRoute: getBackLinkForVelgArbeidSteg(inntektsinformasjon) };
+    }
+    return { previousRoute: SøknadRoutes.VELG_ARBEID };
+};
 
 export interface SkjemaFormData {
     vedlegg: Attachment[];
@@ -43,8 +105,8 @@ const SkjemaSteg: FunctionComponent<Props> = ({
     maxAntallVedlegg = MAX_ANTALL_VEDLEGG,
 }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
@@ -54,7 +116,6 @@ const SkjemaSteg: FunctionComponent<Props> = ({
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
@@ -92,9 +153,8 @@ const SkjemaSteg: FunctionComponent<Props> = ({
 
             oppdaterTilrettelegginger(alleValgteTilrettelegginger);
             oppdaterValgtTilretteleggingId(valgtTilrettelegging.id);
-            oppdaterAppRoute(SøknadRoutes.TILRETTELEGGING);
 
-            return mellomlagreSøknadOgNaviger();
+            return navigator.goToNextDefaultStep();
         }
     };
 
@@ -119,20 +179,9 @@ const SkjemaSteg: FunctionComponent<Props> = ({
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId={`skjema-${valgtTilrettelegging.id}`}
-            pageTitle={
-                tilrettelegginger.length > 1
-                    ? intl.formatMessage(
-                          { id: 'steps.label.skjema.flere' },
-                          {
-                              navn: valgtTilrettelegging.arbeidsforhold.navn,
-                          },
-                      )
-                    : intl.formatMessage({ id: 'steps.label.skjema.en' })
-            }
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -151,7 +200,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                     </VStack>
                     <StepButtonsHookForm
                         goToPreviousStep={() => {
-                            const linkData = getBackLinkForSkjemaSteg(
+                            const linkData = getBackLink(
                                 barnet.termindato,
                                 arbeidsforhold,
                                 inntektsinformasjon,
@@ -162,8 +211,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                             if (linkData.previousTilretteleggingId) {
                                 oppdaterValgtTilretteleggingId(linkData.previousTilretteleggingId);
                             }
-                            oppdaterAppRoute(linkData.previousRoute);
-                            mellomlagreSøknadOgNaviger();
+                            navigator.goToPreviousStep(linkData.previousRoute);
                         }}
                         isDisabledAndLoading={avventerVedlegg}
                     />

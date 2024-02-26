@@ -3,22 +3,46 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import {
-    getBackLinkForArbeidIUtlandetSteg,
-    getNextRouteValgAvArbeidEllerSkjema,
-    useStepConfig,
-} from 'app/steps/stepsConfig';
+import SøknadRoutes from 'app/appData/routes';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import { egenNæringId } from 'app/types/EgenNæring';
+import { frilansId } from 'app/types/Frilans';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 import ArbeidIUtlandetFieldArray, { NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
 import './arbeidIUtlandet.css';
+
+const getNextRouteValgAvArbeidEllerSkjema = (
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+    inntektsinformasjon: Inntektsinformasjon,
+): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
+        termindato,
+        aktiveArbeidsforhold,
+        inntektsinformasjon.harJobbetSomFrilans,
+        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
+    );
+    if (harKunEtArbeid) {
+        if (aktiveArbeidsforhold.length === 0) {
+            const frilansEllerNæringId = inntektsinformasjon.harJobbetSomFrilans ? frilansId : egenNæringId;
+            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: frilansEllerNæringId };
+        } else {
+            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: aktiveArbeidsforhold[0].arbeidsgiverId };
+        }
+    }
+    return { nextRoute: SøknadRoutes.VELG_ARBEID };
+};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -32,8 +56,8 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     arbeidsforhold,
 }) => {
     const intl = useIntl();
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -41,7 +65,6 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
 
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: ArbeidIUtlandet) => {
         oppdaterArbeidIUtlandet(values);
@@ -53,9 +76,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
 
-        oppdaterAppRoute(nextRoute);
-
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextStep(nextRoute);
     };
 
     const formMethods = useForm<ArbeidIUtlandet>({
@@ -68,11 +89,9 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="arbeidIUtlandet"
-            pageTitle={intl.formatMessage({ id: 'steps.label.arbeidIUtlandet' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -80,8 +99,13 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
                     <ArbeidIUtlandetFieldArray />
                     <StepButtonsHookForm
                         goToPreviousStep={() => {
-                            oppdaterAppRoute(getBackLinkForArbeidIUtlandetSteg(inntektsinformasjon));
-                            mellomlagreSøknadOgNaviger();
+                            let previousRoute = SøknadRoutes.ARBEID;
+                            if (inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende) {
+                                previousRoute = SøknadRoutes.NÆRING;
+                            } else if (inntektsinformasjon.harJobbetSomFrilans) {
+                                previousRoute = SøknadRoutes.FRILANS;
+                            }
+                            navigator.goToPreviousStep(previousRoute);
                         }}
                     />
                 </VStack>

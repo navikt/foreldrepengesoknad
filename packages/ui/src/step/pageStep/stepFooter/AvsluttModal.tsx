@@ -1,7 +1,8 @@
 import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react';
+
+import useUiIntl from '../../../i18n/ui/useUiIntl';
 
 interface Props {
     isOpen: boolean;
@@ -11,24 +12,21 @@ interface Props {
 }
 
 const AvsluttModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFortsettSenere }) => {
+    const intl = useUiIntl();
     return (
         <Modal open={isOpen} onClose={() => setIsOpen(false)}>
             <Modal.Header>
-                <Heading size="medium">
-                    <FormattedMessage id="AvsluttModal.ContinueLater" />
-                </Heading>
+                <Heading size="medium">{intl.formatMessage({ id: 'AvsluttModal.ContinueLater' })}</Heading>
             </Modal.Header>
             <Modal.Body>
-                <BodyLong>
-                    <FormattedMessage id="AvsluttModal.CompleteLater" />
-                </BodyLong>
+                <BodyLong>{intl.formatMessage({ id: 'AvsluttModal.CompleteLater' })}</BodyLong>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" onClick={onAvbrytOgFortsettSenere}>
-                    <FormattedMessage id="AvsluttModal.Ok" />
+                    {intl.formatMessage({ id: 'AvsluttModal.Ok' })}
                 </Button>
                 <Button variant="tertiary" onClick={onAvbrytOgSlett}>
-                    <FormattedMessage id="AvsluttModal.Delete" />
+                    {intl.formatMessage({ id: 'AvsluttModal.Delete' })}
                 </Button>
             </Modal.Footer>
         </Modal>

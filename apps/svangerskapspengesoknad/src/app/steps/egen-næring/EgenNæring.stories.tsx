@@ -3,8 +3,10 @@ import { StoryFn } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 
 import EgenNæringStep from './EgenNæringStep';
@@ -83,8 +85,9 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
+    initAmplitude();
     return (
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[SøknadRoutes.NÆRING]}>
             <SvpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{

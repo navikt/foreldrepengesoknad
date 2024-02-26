@@ -11,3 +11,8 @@ export { default as HorizontalLine } from './src/horizontalLine/HorizontalLine';
 export { default as Umyndig } from './src/umyndig/Umyndig';
 export { default as LanguageToggle } from './src/languageToggle/LanguageToggle';
 export { default as IntlProvider } from './src/i18n/IntlProvider';
+export { useCustomIntl } from './src/i18n/useCustomI18n';
+export type { CustomIntlShape, I18nFn } from './src/i18n/useCustomI18n';
+export { default as Step } from './src/step/pageStep/Step';
+export { default as ProgressStepper } from './src/step/progressStepper/ProgressStepper';
+export type { ProgressStep } from './src/step/progressStepper/ProgressStepper';

@@ -1,7 +1,11 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
+import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import VelgArbeid from './VelgArbeid';
 
@@ -82,29 +86,32 @@ const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide = action('button-click'),
 }) => {
+    initAmplitude();
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.INNTEKTSINFORMASJON]: {
-                    harHattArbeidIUtlandet: false,
-                    harJobbetSomFrilans: false,
-                    harJobbetSomSelvstendigNæringsdrivende: false,
-                },
-                [ContextDataType.TILRETTELEGGINGER]: [],
-                [ContextDataType.OM_BARNET]: {
-                    erBarnetFødt: false,
-                    termindato: '2024-02-18',
-                    fødselsdato: '2024-02-18',
-                },
-            }}
-        >
-            <VelgArbeid
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={promiseAction()}
-                arbeidsforhold={arbeidsforhold}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.VELG_ARBEID]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.INNTEKTSINFORMASJON]: {
+                        harHattArbeidIUtlandet: false,
+                        harJobbetSomFrilans: false,
+                        harJobbetSomSelvstendigNæringsdrivende: false,
+                    },
+                    [ContextDataType.TILRETTELEGGINGER]: [],
+                    [ContextDataType.OM_BARNET]: {
+                        erBarnetFødt: false,
+                        termindato: '2024-02-18',
+                        fødselsdato: '2024-02-18',
+                    },
+                }}
+            >
+                <VelgArbeid
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={promiseAction()}
+                    arbeidsforhold={arbeidsforhold}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 export const Default = Template.bind({});

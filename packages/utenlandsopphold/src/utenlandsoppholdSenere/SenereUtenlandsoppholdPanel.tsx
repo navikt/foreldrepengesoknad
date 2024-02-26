@@ -1,15 +1,16 @@
-import { Fragment, useCallback, useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon } from '@navikt/aksel-icons';
-import { Button, VStack } from '@navikt/ds-react';
-import { Step } from '@navikt/fp-common';
-import { Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HorizontalLine } from '@navikt/fp-ui';
-import { StepConfig, UtenlandsoppholdPeriode, UtenlandsoppholdSenere } from '@navikt/fp-types';
+import { Fragment, useCallback, useMemo } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
-import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
+import { Button, VStack } from '@navikt/ds-react';
+
+import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { UtenlandsoppholdPeriode, UtenlandsoppholdSenere } from '@navikt/fp-types';
+import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
+
 import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
+import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
 
 const DEFAULT_PERIODE = {
     fom: '',
@@ -21,17 +22,17 @@ const DEFAULT_FORM_VALUES = {
     utenlandsoppholdNeste12Mnd: [DEFAULT_PERIODE],
 } as UtenlandsoppholdSenere;
 
-export interface Props {
+export interface Props<TYPE> {
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
     saveOnNext: (formValues: UtenlandsoppholdSenere) => void;
     saveOnPrevious: (formValues: UtenlandsoppholdSenere | undefined) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
     goToPreviousStep: () => void;
-    stepConfig: StepConfig[];
+    stepConfig: Array<ProgressStep<TYPE>>;
 }
 
-const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
+const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     saveOnNext,
     saveOnPrevious,
     cancelApplication,
@@ -39,7 +40,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     goToPreviousStep,
     senereUtenlandsopphold,
     stepConfig,
-}) => {
+}: Props<TYPE>) => {
     const defaultValues = useMemo(() => senereUtenlandsopphold || DEFAULT_FORM_VALUES, [senereUtenlandsopphold]);
     const formMethods = useForm<UtenlandsoppholdSenere>({
         defaultValues,

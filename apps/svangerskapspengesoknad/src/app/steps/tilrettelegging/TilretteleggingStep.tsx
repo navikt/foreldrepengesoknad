@@ -5,7 +5,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyLong, BodyShort, ExpansionCard, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import {
     Datepicker,
     ErrorSummaryHookForm,
@@ -15,11 +14,14 @@ import {
     TextArea,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { hasLegalChars, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import {
@@ -27,11 +29,9 @@ import {
     getKanHaSvpFremTilTreUkerFørTermin,
     getSisteDagForSvangerskapspenger,
 } from 'app/utils/dateUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 
 import Bedriftsbanner from '../Bedriftsbanner';
-import { getNesteTilretteleggingId, useStepConfig } from '../stepsConfig';
 import DelvisTilretteleggingPanel from './DelvisTilretteleggingPanel';
 import IngenTilretteleggingPanel from './IngenTilretteleggingPanel';
 import { TilretteleggingFormData, mapOmTilretteleggingFormDataToState } from './tilretteleggingStepUtils';
@@ -40,6 +40,20 @@ import {
     validateRisikofaktorer,
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
+
+const getNesteTilretteleggingId = (
+    tilretteleggingBehov: Tilrettelegging[],
+    currentTilretteleggingId: string | undefined,
+): string | undefined => {
+    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
+        return tilretteleggingBehov[0].id;
+    }
+    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
+    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
+        return undefined;
+    }
+    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
+};
 
 const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     values: TilretteleggingFormData,
@@ -110,8 +124,8 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
     arbeidsforhold,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -119,7 +133,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const currentTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
@@ -162,9 +175,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
             oppdaterValgtTilretteleggingId(nextTilretteleggingId);
         }
 
-        oppdaterAppRoute(nextRoute);
-
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextStep(nextRoute);
     };
 
     const formMethods = useForm<TilretteleggingFormData>({
@@ -177,18 +188,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId={`tilrettelegging-${valgtTilretteleggingId}`}
-            pageTitle={
-                erFlereTilrettelegginger
-                    ? intl.formatMessage(
-                          { id: 'steps.label.tilrettelegging.flere' },
-                          { navn: currentTilrettelegging.arbeidsforhold.navn },
-                      )
-                    : intl.formatMessage({ id: 'steps.label.tilrettelegging.en' })
-            }
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -325,12 +327,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                             </BodyLong>
                         </ExpansionCard.Content>
                     </ExpansionCard>
-                    <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            oppdaterAppRoute(SøknadRoutes.SKJEMA);
-                            mellomlagreSøknadOgNaviger();
-                        }}
-                    />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

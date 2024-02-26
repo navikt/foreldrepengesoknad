@@ -4,20 +4,20 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Radio, VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { StepButtons } from '@navikt/fp-ui';
+import { Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging from 'app/types/Tilrettelegging';
+import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 
-import { getBackLinkForArbeidSteg, useStepConfig } from '../stepsConfig';
 import { getArbeidsforholdTilretteleggingOptions } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
@@ -86,6 +86,16 @@ const getNextRouteForInntektsinformasjon = (
     return automatiskValgtTilrettelegging ? SøknadRoutes.SKJEMA : SøknadRoutes.VELG_ARBEID;
 };
 
+const getPreviousRoute = (utenlandsopphold: Utenlandsopphold): SøknadRoutes => {
+    if (!utenlandsopphold.iNorgeNeste12Mnd) {
+        return SøknadRoutes.SKAL_BO_I_UTLANDET;
+    }
+    if (!utenlandsopphold.iNorgeSiste12Mnd) {
+        return SøknadRoutes.HAR_BODD_I_UTLANDET;
+    }
+    return SøknadRoutes.UTENLANDSOPPHOLD;
+};
+
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
@@ -98,8 +108,9 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
     arbeidsforhold,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const inntektsinformasjon = useContextGetData(ContextDataType.INNTEKTSINFORMASJON);
@@ -107,7 +118,6 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
 
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterInntektsinformasjon = useContextSaveData(ContextDataType.INNTEKTSINFORMASJON);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
@@ -149,9 +159,7 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
             oppdaterValgtTilretteleggingId(automatiskValgtTilrettelegging.id);
         }
 
-        oppdaterAppRoute(neste);
-
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextStep(neste);
     };
 
     const formMethods = useForm<Inntektsinformasjon>({
@@ -167,11 +175,9 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="arbeid"
-            pageTitle={intl.formatMessage({ id: 'steps.label.arbeid' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -247,8 +253,7 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
                         isNexButtonVisible={!kanIkkeSøke}
                         isDisabledAndLoading={isSubmitting}
                         goToPreviousStep={() => {
-                            oppdaterAppRoute(getBackLinkForArbeidSteg(utenlandsopphold));
-                            mellomlagreSøknadOgNaviger();
+                            navigator.goToPreviousStep(getPreviousRoute(utenlandsopphold));
                         }}
                     />
                 </VStack>

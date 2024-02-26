@@ -1,7 +1,11 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
+import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
@@ -86,19 +90,22 @@ const Template: StoryFn<Props> = ({
         iNorgeSiste12Mnd: false,
     },
 }) => {
+    initAmplitude();
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-            }}
-        >
-            <TidligereUtenlandsoppholdSteg
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={() => undefined}
-                arbeidsforhold={arbeidsforhold}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.HAR_BODD_I_UTLANDET]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                }}
+            >
+                <TidligereUtenlandsoppholdSteg
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={() => undefined}
+                    arbeidsforhold={arbeidsforhold}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 

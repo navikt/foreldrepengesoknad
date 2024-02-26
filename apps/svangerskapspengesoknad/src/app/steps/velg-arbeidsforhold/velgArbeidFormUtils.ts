@@ -1,7 +1,7 @@
 import { IntlShape } from 'react-intl';
 
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';

@@ -1,5 +1,6 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+
 import TidligereUtenlandsoppholdPanel from './TidligereUtenlandsoppholdPanel';
 
 export default {
@@ -22,7 +23,6 @@ const Template: StoryFn<{
             stepConfig={[
                 {
                     id: '1',
-                    index: 1,
                     label: 'Har bodd i utlandet',
                     isSelected: true,
                 },

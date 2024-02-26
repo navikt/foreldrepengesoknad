@@ -1,23 +1,59 @@
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import { DATE_20_YEARS_AGO, DATE_TODAY } from '@navikt/fp-constants';
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
-import { getNextRouteForFrilans, useStepConfig } from 'app/steps/stepsConfig';
-import { Frilans } from 'app/types/Frilans';
-import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
+import { egenNæringId } from 'app/types/EgenNæring';
+import { Frilans, frilansId } from 'app/types/Frilans';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
+
+const getNextRouteValgAvArbeidEllerSkjema = (
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+    inntektsinformasjon: Inntektsinformasjon,
+): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
+        termindato,
+        aktiveArbeidsforhold,
+        inntektsinformasjon.harJobbetSomFrilans,
+        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
+    );
+    if (harKunEtArbeid) {
+        if (aktiveArbeidsforhold.length === 0) {
+            const frilansEllerNæringId = inntektsinformasjon.harJobbetSomFrilans ? frilansId : egenNæringId;
+            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: frilansEllerNæringId };
+        } else {
+            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: aktiveArbeidsforhold[0].arbeidsgiverId };
+        }
+    }
+    return { nextRoute: SøknadRoutes.VELG_ARBEID };
+};
+
+const getNextRoute = (
+    inntektsinformasjon: Inntektsinformasjon,
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+    const route = inntektsinformasjon.harHattArbeidIUtlandet ? SøknadRoutes.ARBEID_I_UTLANDET : undefined;
+    const nextRoute = inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ? SøknadRoutes.NÆRING : route;
+    return nextRoute
+        ? { nextRoute }
+        : getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, inntektsinformasjon);
+};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -27,9 +63,8 @@ type Props = {
 
 const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const navigate = useNavigate();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
@@ -39,7 +74,6 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const formMethods = useForm<Frilans>({
         defaultValues: frilans,
@@ -59,25 +93,22 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
             oppdaterTilrettelegginger(tilretteleggingOptions);
         }
 
-        const { nextRoute, nextTilretteleggingId } = getNextRouteForFrilans(
+        const { nextRoute, nextTilretteleggingId } = getNextRoute(
             inntektsinformasjon,
             barnet.termindato,
             arbeidsforhold,
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
-        oppdaterAppRoute(nextRoute);
 
-        mellomlagreSøknadOgNaviger();
+        return navigator.goToNextStep(nextRoute);
     };
 
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="frilans"
-            pageTitle={intl.formatMessage({ id: 'steps.label.frilans' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -109,12 +140,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                             <FormattedMessage id="frilans.jobberFremdelesSomFrilans.nei" />
                         </Radio>
                     </RadioGroup>
-                    <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            oppdaterAppRoute(SøknadRoutes.ARBEID);
-                            navigate(SøknadRoutes.ARBEID);
-                        }}
-                    />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

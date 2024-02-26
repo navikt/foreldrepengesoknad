@@ -15,7 +15,11 @@ import { bemUtils, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import SøknadRoutes from 'app/appData/routes';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
+import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
+import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import {
     Utenlandsopphold as Opphold,
     UtenlandsoppholdSenere as SenereOpphold,
@@ -23,17 +27,28 @@ import {
 } from 'app/types/Utenlandsopphold';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
-import { getBackLinkAndIdForOppsummeringSteg, useStepConfig } from '../stepsConfig';
 import ArbeidIUtlandetVisning from './arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
 import EgenNæringVisning from './egen-næring-visning/EgenNæringVisning';
 import FrilansVisning from './frilans-visning/FrilansVisning';
 import './oppsummering.css';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
+
+const getBackLinkAndId = (
+    tilrettelegging: Tilrettelegging[],
+): { previousRoute: SøknadRoutes; previousTilretteleggingId?: string } => {
+    const sisteTilrettelegging = tilrettelegging[tilrettelegging?.length - 1];
+    if (
+        sisteTilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
+        sisteTilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+    ) {
+        return { previousRoute: SøknadRoutes.PERIODER, previousTilretteleggingId: sisteTilrettelegging.id };
+    }
+    return { previousRoute: SøknadRoutes.TILRETTELEGGING, previousTilretteleggingId: sisteTilrettelegging.id };
+};
 
 // TODO (TOR) Bruk same typar i dei forskjellige appane
 const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({
@@ -83,9 +98,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     søkerInfo,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, søkerInfo.arbeidsforhold);
     const bem = bemUtils('oppsummering');
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const frilans = useContextGetData(ContextDataType.FRILANS);
@@ -98,7 +113,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const allePerioderMedFomOgTom = useMemo(
@@ -113,12 +127,11 @@ const Oppsummering: React.FunctionComponent<Props> = ({
         (t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG,
     );
 
-    const { previousRoute, previousTilretteleggingId } = getBackLinkAndIdForOppsummeringSteg(tilrettelegginger);
+    const { previousRoute, previousTilretteleggingId } = getBackLinkAndId(tilrettelegginger);
 
     const gåTilForrigeSteg = () => {
         oppdaterValgtTilretteleggingId(previousTilretteleggingId);
-        oppdaterAppRoute(previousRoute);
-        return mellomlagreSøknadOgNaviger();
+        navigator.goToPreviousStep(previousRoute);
     };
 
     return (
@@ -128,14 +141,11 @@ const Oppsummering: React.FunctionComponent<Props> = ({
             </Heading>
             <OppsummeringIndex
                 appName="Svangerskapspenger"
-                stepConfig={stepConfig.map((sc) => ({
-                    ...sc,
-                    isSelected: sc.id === 'oppsummering',
-                }))}
+                stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
                 cancelApplication={avbrytSøknad}
                 goToPreviousStep={gåTilForrigeSteg}
-                onContinueLater={onFortsettSøknadSenere}
+                onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
                 <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omBarnet' })}>

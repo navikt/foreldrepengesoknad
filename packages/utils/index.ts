@@ -14,6 +14,7 @@ export { redirect, redirectToLogin } from './src/loginUtils';
 export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { default as bemUtils } from './src/bemUtils';
 export { getFloatFromString } from './src/numberUtils';
+export { capitalizeFirstLetter } from './src/stringUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,

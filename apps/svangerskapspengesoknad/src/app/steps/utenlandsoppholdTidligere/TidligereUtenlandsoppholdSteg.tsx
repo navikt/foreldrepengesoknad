@@ -1,4 +1,4 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
@@ -9,9 +9,8 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-
-import { getPreviousStep, useStepConfig } from '../stepsConfig';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -24,17 +23,12 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     avbrytSøknad,
     arbeidsforhold,
 }) => {
-    const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold).map((config) => ({
-        ...config,
-        isSelected: config.id === 'boIUtlandetIFortid',
-    }));
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const oppdaterTidligereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const lagredeTidligereUtenlandsopphold =
         tidligereUtenlandsopphold && tidligereUtenlandsopphold.tidligereOpphold.length > 0
@@ -59,14 +53,9 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
         });
 
         const nesteSide = utenlandsopphold.iNorgeNeste12Mnd ? SøknadRoutes.ARBEID : SøknadRoutes.SKAL_BO_I_UTLANDET;
-        oppdaterAppRoute(nesteSide);
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextStep(nesteSide);
     };
 
-    const goToPreviousStep = () => {
-        oppdaterAppRoute(getPreviousStep('boIUtlandetIFortid'));
-        mellomlagreSøknadOgNaviger();
-    };
     const saveOnPrevious = () => {
         // TODO (TOR) Lagre uvalidert data i framtida
     };
@@ -81,8 +70,8 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
                 cancelApplication={avbrytSøknad}
-                onContinueLater={onFortsettSøknadSenere}
-                goToPreviousStep={goToPreviousStep}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
             />
         </ContentWrapper>
