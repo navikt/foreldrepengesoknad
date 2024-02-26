@@ -7,7 +7,14 @@ import {
 } from '@navikt/aksel-icons';
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, andreAugust2022ReglerGjelder, bemUtils, intlUtils, uttaksConstants } from '@navikt/fp-common';
+import {
+    Block,
+    andreAugust2022ReglerGjelder,
+    bemUtils,
+    førsteOktober2021ReglerGjelder,
+    intlUtils,
+    uttaksConstants,
+} from '@navikt/fp-common';
 import './fordeling-påvirkninger.css';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -46,7 +53,6 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const bem = bemUtils('fordeling-påvirkninger');
     const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
-    const visInfoMorSykFørsteSeksUker = deltUttak && !erAdopsjon;
     const onToggleHandler = (open: boolean) => {
         if (open) {
             logAmplitudeEvent('applikasjon-hendelse', {
@@ -66,6 +72,10 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     const farMinsterettUkerToTette = uttaksConstants.ANTALL_UKER_MINSTERETT_FAR_TO_TETTE;
     const søkerensMinsterettToTette = erFarEllerMedmor ? farMinsterettUkerToTette : morMinsterettUkerToTette;
     const wlbReglerGjelder = andreAugust2022ReglerGjelder(familiehendelsesdato);
+    const førsteOkt2021Gjelder = førsteOktober2021ReglerGjelder(familiehendelsesdato);
+    const visInfoMorSykFørsteSeksUker = deltUttak && !erAdopsjon && førsteOkt2021Gjelder;
+    const visInfoMorSykISinPeriode = deltUttak && førsteOkt2021Gjelder;
+    const visInfoFørFørsteOkt2021 = deltUttak && !førsteOkt2021Gjelder;
     return (
         <ExpansionCard size="small" title-size="small" aria-label={heading} onToggle={onToggleHandler}>
             <ExpansionCard.Header>
@@ -114,7 +124,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                         </Block>
                     </>
                 )}
-                {deltUttak && (
+                {visInfoMorSykISinPeriode && (
                     <Block padBottom="l">
                         <div className={bem.element('påvirkning')}>
                             <div className={bem.element('ikon-frame')}>
@@ -126,6 +136,27 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                                 </BodyShort>
                                 <FormattedMessage
                                     id="fordeling.påvirkninger.morSykISinPeriode.info"
+                                    values={{ navnAnnenForelder }}
+                                />
+                            </VStack>
+                        </div>
+                    </Block>
+                )}
+                {visInfoFørFørsteOkt2021 && (
+                    <Block padBottom="l">
+                        <div className={bem.element('påvirkning')}>
+                            <div className={bem.element('ikon-frame')}>
+                                <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
+                            </div>
+                            <VStack>
+                                <BodyShort className={bem.element('undertittel')}>
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.utsettelse.tittel"
+                                        values={{ barnetEllerBarna }}
+                                    />
+                                </BodyShort>
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.utsettelse.info"
                                     values={{ navnAnnenForelder }}
                                 />
                             </VStack>

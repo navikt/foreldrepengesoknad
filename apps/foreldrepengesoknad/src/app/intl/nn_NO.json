@@ -1060,5 +1060,7 @@
     "fordeling.påvirkninger.prematur.tittel": "Hvis {barnetEllerBarna} blir født før svangerskapsuke 33",
     "fordeling.påvirkninger.prematur.info": "Hvis {barnetEllerBarna} blir født før 33. svangerskapsuke så blir perioden med foreldrepenger utvidet med samme antall uker og dager som {barnetEllerBarna} er født før termindato. Får {duEllerDere} pleiepenger i perioden fra fødsel og fram til opprinnelig termindato, trekkes disse dagene fra den utvidede perioden.",
     "fordeling.påvirkninger.barnSyk.tittel": "Hvis {barnetEllerBarna} blir innlagt på sykehus de første 6 ukene etter fødsel.",
-    "fordeling.påvirkninger.barnSyk.info": "Hvis {barnetEllerBarna} blir innlagt på sykehus de første 6 ukene etter fødsel, kan {morTekst} utsette foreldrepengene i denne perioden."
+    "fordeling.påvirkninger.barnSyk.info": "Hvis {barnetEllerBarna} blir innlagt på sykehus de første 6 ukene etter fødsel, kan {morTekst} utsette foreldrepengene i denne perioden.",
+    "fordeling.påvirkninger.utsettelse.tittel": "Hvis du blir syk, eller hvis du eller {barnetEllerBarna} blir innlagt på helseinstitusjon",
+    "fordeling.påvirkninger.utsettelse.info": "Du kan utsette foreldrepengene dine hvis du blir syk eller innlagt på helseinstitusjon. {navnAnnenForelder} kan også søke om overta foreldrepenger i denne perioden. Du kan også utsette foreldrepengene dine hvis barnet blir innlagt på helseinstitusjon."
 }
