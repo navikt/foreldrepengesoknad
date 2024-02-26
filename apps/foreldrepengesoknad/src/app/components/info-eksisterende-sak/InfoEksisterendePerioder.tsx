@@ -1,3 +1,8 @@
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, Label } from '@navikt/ds-react';
+
 import {
     NavnPåForeldre,
     Periode,
@@ -8,9 +13,6 @@ import {
     getPeriodeTittel,
     guid,
 } from '@navikt/fp-common';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { BodyShort, Label } from '@navikt/ds-react';
 
 import './infoEksisterendePerioder.less';
 
@@ -21,6 +23,7 @@ interface Props {
     familiehendelsesdato: Date;
     termindato: Date | undefined;
     situasjon: Situasjon;
+    erFarEllerMedmor: boolean;
 }
 
 const InfoEksisterendePerioder: FunctionComponent<Props> = ({
@@ -30,6 +33,7 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
     familiehendelsesdato,
     termindato,
     situasjon,
+    erFarEllerMedmor,
 }) => {
     const intl = useIntl();
     const dateFormat = 'DD. MMM YYYY';
@@ -64,6 +68,7 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
                                         familiehendelsesdato,
                                         termindato,
                                         situasjon,
+                                        erFarEllerMedmor,
                                     )}
                                 </BodyShort>
                             </div>

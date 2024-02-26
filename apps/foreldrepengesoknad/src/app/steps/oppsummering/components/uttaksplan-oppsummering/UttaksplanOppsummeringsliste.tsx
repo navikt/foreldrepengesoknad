@@ -1,31 +1,33 @@
 import { FunctionComponent } from 'react';
+import { useIntl } from 'react-intl';
+
 import {
     AnnenForelder,
+    NavnPåForeldre,
+    Oppholdsperiode,
+    Overføringsperiode,
+    Periode,
+    PeriodeUtenUttakUtsettelse,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    TidsperiodeDate,
+    Utsettelsesperiode,
+    Uttaksperiode,
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
     finnesPeriodeIOpprinneligPlan,
     formatDate,
     getPeriodeTittel,
     getStønadskontoNavn,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
-    NavnPåForeldre,
-    Oppholdsperiode,
-    Overføringsperiode,
-    Periode,
-    Periodetype,
-    PeriodeUtenUttakUtsettelse,
-    Situasjon,
-    StønadskontoType,
-    TidsperiodeDate,
-    Utsettelsesperiode,
-    Uttaksperiode,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
-import { useIntl } from 'react-intl';
-import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeringsliste/Oppsummeringsliste';
+import { Arbeidsforhold } from '@navikt/fp-types';
+
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeringsliste/Oppsummeringsliste';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -119,6 +121,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
                 familiehendelsesdato,
                 termindato,
                 situasjon,
+                erFarEllerMedmor,
             ),
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
         };

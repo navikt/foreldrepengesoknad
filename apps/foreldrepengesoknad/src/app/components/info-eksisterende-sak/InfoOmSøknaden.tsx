@@ -1,4 +1,8 @@
+import classNames from 'classnames';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { BodyShort, ReadMore } from '@navikt/ds-react';
+
 import {
     Block,
     EksisterendeSak,
@@ -32,13 +36,12 @@ import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-s
 import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
 import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import classNames from 'classnames';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 
+import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import './infoOmSøknaden.less';
 
 const getHvem = (
@@ -200,6 +203,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                     familiehendelsesdato={familiehendelsesdato!}
                                     termindato={termindato}
                                     situasjon={søkersituasjon.situasjon}
+                                    erFarEllerMedmor={erFarEllerMedmor}
                                 />
                             </ReadMore>
                         </Block>
@@ -220,6 +224,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
                                         familiehendelsesdato={familiehendelsesdato!}
                                         termindato={termindato}
                                         situasjon={søkersituasjon.situasjon}
+                                        erFarEllerMedmor={erFarEllerMedmor}
                                     />
                                 </ReadMore>
                             </>

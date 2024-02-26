@@ -1,5 +1,5 @@
 import { IntlShape } from 'react-intl';
-import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
+
 import {
     Periodene,
     Søknadsinfo,
@@ -9,6 +9,8 @@ import {
     getPeriodeTittel,
     isUttakAnnenPart,
 } from '@navikt/fp-common';
+
+import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
 
 export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const { perioder, navnPåForeldre } = grunnlag;
@@ -34,6 +36,7 @@ export const overlapperPeriodeAndrePerioder: RegelTest = (grunnlag: Søknadsinfo
                             grunnlag.familiehendelsesdato,
                             grunnlag.termindato,
                             grunnlag.søkersituasjon.situasjon,
+                            grunnlag.søkerErFarEllerMedmor,
                         ),
                     tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                     forelder: (intl: IntlShape) =>
