@@ -109,11 +109,11 @@
 }
 
 .periode--bg-farMedmor {
-    border-left: 0.5rem solid var(--a-blue-400);
+    border-left: 0.5rem solid var(--a-data-surface-5-subtle);
 }
 
 .periode--bg-mor {
-    border-left: 0.5rem solid var(--a-purple-400);
+    border-left: 0.5rem solid  var(--a-data-surface-2-subtle);
 }
 
 .periode--bg-søker {
