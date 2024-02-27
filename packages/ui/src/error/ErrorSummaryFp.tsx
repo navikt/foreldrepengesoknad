@@ -1,6 +1,8 @@
 import { FunctionComponent } from 'react';
-import { ErrorSummary } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
+
+import { ErrorSummary } from '@navikt/ds-react';
+
 import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 
 export type ErrorSummaryError = {

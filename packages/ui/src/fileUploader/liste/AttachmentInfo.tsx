@@ -7,7 +7,7 @@ import { HStack, Link, Loader, Spacer, VStack } from '@navikt/ds-react';
 import { Attachment } from '@navikt/fp-types';
 
 import { bytesString } from '../fileUtils';
-import './attachmentInfo.less';
+import './attachmentInfo.css';
 
 interface OwnProps {
     attachment: Attachment;

@@ -6,7 +6,7 @@ import { Button } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import './fileInput.less';
+import './fileInput.css';
 
 interface Props {
     onFilesSelect: (files: File[]) => void;

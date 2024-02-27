@@ -1,6 +1,6 @@
 import { bemUtils } from '@navikt/fp-utils';
 
-import './contentWrapper.less';
+import './contentWrapper.css';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];
