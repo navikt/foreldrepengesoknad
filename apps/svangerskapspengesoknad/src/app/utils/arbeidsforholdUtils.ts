@@ -1,4 +1,7 @@
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import minMax from 'dayjs/plugin/minMax';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
 
@@ -8,6 +11,10 @@ import { Arbeidsforhold } from '@navikt/fp-types';
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { Stilling } from 'app/types/Tilrettelegging';
+
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isBetween);
+dayjs.extend(minMax);
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
