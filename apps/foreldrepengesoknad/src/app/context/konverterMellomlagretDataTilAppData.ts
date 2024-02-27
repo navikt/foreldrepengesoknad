@@ -1,4 +1,5 @@
 import { FpMellomlagretData } from 'app/api/api';
+
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 
 // TODO (TOR) Reduser mappingbehov. Målbilde: Form-verdiar === mellomlagra data === lagra søknad
@@ -19,16 +20,22 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
                   iNorgeSiste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
               }
             : undefined,
-        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: søknad?.informasjonOmUtenlandsopphold
-            ? {
-                  senereOpphold: søknad.informasjonOmUtenlandsopphold.senereOpphold,
-              }
-            : undefined,
-        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: søknad?.informasjonOmUtenlandsopphold
-            ? {
-                  tidligereOpphold: søknad.informasjonOmUtenlandsopphold.tidligereOpphold,
-              }
-            : undefined,
+        [ContextDataType.UTENLANDSOPPHOLD_SENERE]:
+            søknad?.informasjonOmUtenlandsopphold &&
+            søknad.informasjonOmUtenlandsopphold.senereOpphold &&
+            søknad.informasjonOmUtenlandsopphold.senereOpphold.length > 0
+                ? {
+                      senereOpphold: søknad.informasjonOmUtenlandsopphold.senereOpphold,
+                  }
+                : undefined,
+        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]:
+            søknad?.informasjonOmUtenlandsopphold &&
+            søknad.informasjonOmUtenlandsopphold.tidligereOpphold &&
+            søknad.informasjonOmUtenlandsopphold.tidligereOpphold.length > 0
+                ? {
+                      tidligereOpphold: søknad.informasjonOmUtenlandsopphold.tidligereOpphold,
+                  }
+                : undefined,
         [ContextDataType.PERIODE_MED_FORELDREPENGER]: søknad?.dekningsgrad
             ? { dekningsgrad: søknad.dekningsgrad }
             : undefined,
