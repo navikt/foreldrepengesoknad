@@ -1,21 +1,24 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import { RequestStatus } from 'app/types/RequestState';
-import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
-import stønadskontoDeltUttak100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Adopsjon.json';
+import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80Adopsjon.json';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Adopsjon.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
 import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
-import SøkerData from 'app/context/types/SøkerData';
-import dayjs from 'dayjs';
-import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
-import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøkerData from 'app/context/types/SøkerData';
+import SøknadRoutes from 'app/routes/routes';
+import { RequestStatus } from 'app/types/RequestState';
+
+import UttaksplanInfo from './UttaksplanInfo';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -194,7 +197,7 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
         rolle: 'far',
     },
     barn: {
-        type: BarnType.ADOPTERT_ANNET_BARN,
+        type: BarnType.FØDT,
         dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2022-06-14').toDate(), dayjs('2022-06-14').toDate()],
         antallBarn: 2,

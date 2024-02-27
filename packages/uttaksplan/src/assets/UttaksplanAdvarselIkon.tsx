@@ -8,7 +8,7 @@ export interface OwnProps {
 type Props = OwnProps & SVGProps<any>;
 
 const UttaksplanAdvarselIkon = (props: Props) => {
-    const farge = '#C30000';
+    const farge = props.type === 'feil' ? '#ba3a26' : '#ff9100';
     const { title, ...rest } = props;
 
     return (
@@ -17,9 +17,8 @@ const UttaksplanAdvarselIkon = (props: Props) => {
             role="img"
             aria-hidden="true"
             xmlnsXlink="http://www.w3.org/1999/xlink"
-            width={24}
-            height={24}
-            viewBox="0 0 24 24"
+            width={32}
+            height={32}
             {...rest}
         >
             <title>{props.title}</title>

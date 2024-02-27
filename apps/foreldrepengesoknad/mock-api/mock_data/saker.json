@@ -1,77 +1,78 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352013898",
+            "saksnummer": "352014403",
             "sakAvsluttet": false,
-            "kanSøkeOmEndring": true,
-            "sakTilhørerMor": true,
+            "kanSøkeOmEndring": false,
+            "sakTilhørerMor": false,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "03439013124"
+                "fnr": "12449448004"
             },
             "familiehendelse": {
-                "fødselsdato": "2023-10-02",
-                "termindato": "2023-10-01",
+                "fødselsdato": "2021-07-01",
                 "antallBarn": 1
             },
-            "gjeldendeVedtak": {
-                "perioder": [
+            "åpenBehandling": {
+                "saksperioder": [
                     {
-                        "fom": "2023-09-11",
-                        "tom": "2023-09-29",
-                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2023-10-02",
-                        "tom": "2023-11-12",
-                        "kontoType": "MØDREKVOTE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2023-11-13",
-                        "tom": "2023-12-03",
-                        "kontoType": "MØDREKVOTE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2023-12-04",
-                        "tom": "2023-12-22",
-                        "kontoType": "MØDREKVOTE",
+                        "fom": "2022-02-03",
+                        "tom": "2022-02-04",
+                        "kontoType": "FEDREKVOTE",
                         "resultat": {
                             "innvilget": false,
-                            "trekkerMinsterett": false,
-                            "trekkerDager": false,
-                            "årsak": "ANNET"
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER"
                         },
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2023-12-23",
-                        "tom": "2023-12-25",
-                        "kontoType": "MØDREKVOTE",
+                        "fom": "2022-02-07",
+                        "tom": "2022-02-11",
+                        "kontoType": "FEDREKVOTE",
+                        "resultat": {
+                            "innvilget": false,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "AVSLAG_UTSETTELSE_TILBAKE_I_TID"
+                        },
+                        "utsettelseÅrsak": "LOVBESTEMT_FERIE",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-02-14",
+                        "tom": "2022-02-18",
+                        "kontoType": "FEDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-02-21",
+                        "tom": "2022-02-25",
+                        "kontoType": "FEDREKVOTE",
+                        "resultat": {
+                            "innvilget": false,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "AVSLAG_UTSETTELSE_TILBAKE_I_TID"
+                        },
+                        "utsettelseÅrsak": "ARBEID",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2022-02-28",
+                        "tom": "2022-05-06",
+                        "kontoType": "FEDREKVOTE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
@@ -84,11 +85,15 @@
             },
             "barn": [
                 {
-                    "fnr": "02502350547"
+                    "fnr": "01472152307",
+                    "fødselsdato": "2024-02-26",
+                    "annenForelder": {
+                        "fnr": "01472152308"
+                      } 
                 }
             ],
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2023-12-12T09:53:56.657"
+            "oppdatertTidspunkt": "2024-02-21T09:37:03.806"
         }
     ],
     "engangsstønad": [],

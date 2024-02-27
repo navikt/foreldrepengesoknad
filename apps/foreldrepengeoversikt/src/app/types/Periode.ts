@@ -1,16 +1,16 @@
 import { Gradering } from './Gradering';
-import { PeriodeResultat } from './PeriodeResultat';
-import { StønadskontoType } from './StønadskontoType';
+import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
+import { PeriodeResultat } from './PeriodeResultat';
+import { StønadskontoType } from './StønadskontoType';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
-import { MorsAktivitet } from './MorsAktivitet';
 
 export interface Periode {
     id: string;
     fom: string;
     tom: string;
-    resultat: PeriodeResultat;
+    resultat?: PeriodeResultat;
     kontoType?: StønadskontoType;
     flerbarnsdager?: boolean;
     gradering?: Gradering;

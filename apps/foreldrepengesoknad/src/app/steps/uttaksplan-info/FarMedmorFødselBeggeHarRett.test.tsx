@@ -1,9 +1,10 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './FarMedmorFodselBeggeHarRett.stories';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
+
+import * as stories from './FarMedmorFodselBeggeHarRett.stories';
 
 const {
     FarMedmorFødselBeggeHarRettDekningsgrad100FørWLB,
@@ -23,7 +24,9 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
         expect(await screen.findByText('22 uker til Hanne')).toBeInTheDocument();
         expect(screen.getByText('3 uker kan kun brukes før fødsel', { exact: false })).toBeInTheDocument();
         expect(
-            screen.getByText('6 uker er satt av til rett etter fødsel. Disse kan ikke brukes senere.'),
+            screen.getByText('6 uker er satt av til rett etter fødsel. Disse kan ikke brukes senere.', {
+                exact: false,
+            }),
         ).toBeInTheDocument();
         expect(screen.getByText('13 uker kan brukes når som helst før barnet er 3 år.')).toBeInTheDocument();
 
@@ -120,7 +123,9 @@ describe('<UttaksplanInfo_FarMedmorFødselBeggeHarRett>', () => {
         expect(screen.getByText('Din del')).toBeInTheDocument();
         expect(screen.getByText('22 uker til Hanne')).toBeInTheDocument();
         expect(
-            screen.getByText('6 uker er satt av til rett etter fødsel. Disse kan ikke brukes senere.'),
+            screen.getByText('6 uker er satt av til rett etter fødsel. Disse kan ikke brukes senere.', {
+                exact: false,
+            }),
         ).toBeInTheDocument();
         expect(screen.getByText('13 uker må brukes sammenhengende.')).toBeInTheDocument();
         expect(screen.getByText('18 uker kan deles, fellesperiode')).toBeInTheDocument();

@@ -7,6 +7,10 @@
     background-color: var(--a-data-surface-3);
 }
 
+.iconBox--purple {
+    background-color: var(--a-data-surface-6);
+}
+
 .iconBox--blue {
     background-color: var(--a-data-surface-1);
 }

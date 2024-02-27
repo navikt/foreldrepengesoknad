@@ -1,8 +1,9 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './MorFarAnnenForelderHarRettIEOS.stories';
 import dayjs from 'dayjs';
+
+import * as stories from './MorFarAnnenForelderHarRettIEOS.stories';
 
 const {
     AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021,
@@ -51,9 +52,12 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
 
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
         expect(
-            screen.getByText('Av ukene deres har dere 17 uker hvor dere kan ta foreldrepenger samtidig', {
-                exact: false,
-            }),
+            screen.getByText(
+                'Dere kan velge om dere vil ha foreldrepenger samtidig i opp til 17 uker fordi dere har fått tvillinger',
+                {
+                    exact: false,
+                },
+            ),
         );
     });
     it('Skal fungere for fødsel der mor søker, far har rett i EØS og det er prematur fødsel', async () => {
@@ -61,7 +65,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(
-            screen.getByText('av disse er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33', {
+            screen.getByText('er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33', {
                 exact: false,
             }),
         );

@@ -1,16 +1,24 @@
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
+
 import { BodyShort, Heading } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+
+import { AdvarselIkon, Block, bemUtils } from '@navikt/fp-common';
+
 import StønadskontoIkon from 'app/components/stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from 'app/components/utsettelse-ikon/UtsettelseIkon';
 import { Periode } from 'app/types/Periode';
+import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
 import {
+    ISOStringToDate,
     getAntallUttaksdagerITidsperiode,
     getVarighetString,
-    ISOStringToDate,
     måned3bokstaver,
 } from 'app/utils/dateUtils';
 import {
     getOverlappendePeriodeTittel,
+    getPeriodeForelder,
     getPeriodeTittel,
     isAvslåttPeriode,
     isOppholdsperiode,
@@ -19,10 +27,6 @@ import {
     isUttaksperiode,
 } from 'app/utils/periodeUtils';
 import { NavnPåForeldre } from 'app/utils/personUtils';
-import classNames from 'classnames';
-import dayjs from 'dayjs';
-
-import { useIntl } from 'react-intl';
 
 import './periodeListeItem.css';
 
@@ -60,7 +64,17 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         isOverføringsperiode(periode) ||
         isOppholdsperiode(periode) ||
         isAvslåttPeriode(periode);
+    const visAvslåttIkon =
+        (isAvslåttPeriode(periode) &&
+            periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) ||
+        (isUttaksperiode(periode) &&
+            periode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID);
+    const visGraderingTilbakeITidAvslagTekst =
+        isUttaksperiode(periode) &&
+        periode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID;
+
     const visUtsettelsesIkon = !visStønadskontoIkon && isUtsettelsesperiode(periode);
+    const forelder = getPeriodeForelder(erFarEllerMedmor, periode);
     return (
         <div
             className={classNames(
@@ -71,7 +85,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         >
             <div>
                 <div className={bem.element('innhold')}>
-                    {visStønadskontoIkon && (
+                    {visStønadskontoIkon && !visAvslåttIkon && (
                         <StønadskontoIkon
                             konto={periode.kontoType!}
                             gradert={!!periode.gradering}
@@ -80,9 +94,11 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                             erAleneOmOmsorg={erAleneOmOmsorg}
                             periodeResultat={periode.resultat}
                             morsAktivitet={periode.morsAktivitet}
+                            forelder={forelder}
                         />
                     )}
                     {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
+                    {visAvslåttIkon && <AdvarselIkon />}
                     <div className={bem.element('innhold-tekst-periodetittel')}>
                         <Heading size="small" level="4">
                             {tittel}
@@ -111,6 +127,14 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                         </BodyShort>
                     </div>
                 </div>
+                <Block margin="l">
+                    {visGraderingTilbakeITidAvslagTekst && (
+                        <div>
+                            Du søkte om å kombinere foreldrepenger med delvis arbeid, men fikk dette avslått. I stedet
+                            fikk du delvis utbetaling og brukte fulle dager.
+                        </div>
+                    )}
+                </Block>
                 {overlappendePeriodeAnnenPart && (
                     <div
                         className={classNames(
@@ -125,6 +149,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                                     overlappendePeriodeAnnenPart,
                                     intl,
                                     navnPåForeldre,
+                                    erFarEllerMedmor,
                                 )}
                             </BodyShort>
                             <div className={bem.element('beskrivelse')}>
@@ -140,5 +165,5 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         </div>
     );
 };
-//color={getStønadskontoFarge(konto)}
+
 export default PeriodeListeItem;

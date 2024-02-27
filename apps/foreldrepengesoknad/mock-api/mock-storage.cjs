@@ -49,18 +49,18 @@ const getSokerInfo = function () {
     }
 };
 
-const getStønadskontoer = function (erDekningsgrad100) {
-    const fileName = erDekningsgrad100 ? getFilePath('stønadskontoer100.json') : getFilePath('stønadskontoer80.json');
-    if (!fs.existsSync(fileName)) {
-        return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
-            return {};
-        }
+const getStønadskontoer = async function (req) {
+    try {
+        const test = await fetch('https://foreldrepengesoknad-api.nav.no/rest/konto?' + new URLSearchParams(req.query));
+
+        const jsonResponse = await test.json();
+
+        return jsonResponse;
+    } catch (err) {
+        console.log(err);
     }
 };
+
 const getSoknadSendt = function () {
     const fileName = getFilePath('soknad_sendt.json');
     if (!fs.existsSync(fileName)) {

@@ -1,0 +1,10 @@
+.infoOmFørsteUttaksdagEtterMor {
+    display: flex;
+    width: 568px;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 2px;
+    background-color: var(--a-deepblue-50);
+}

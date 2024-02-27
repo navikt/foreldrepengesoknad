@@ -12,6 +12,7 @@ import {
     MorsAktivitet,
     NavnPåForeldre,
     OppholdÅrsakType,
+    OpprinneligSøkt,
     OverføringÅrsakType,
     Periode,
     PeriodeValidState,
@@ -188,7 +189,7 @@ const getPeriodeTittelUttaksPeriode = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     situasjon: Situasjon,
-    erFarEllerMedmor?: boolean,
+    erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
     const tittelMedNavn = getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
@@ -218,7 +219,7 @@ const getPeriodeTittelInfoPeriode = (
     intl: IntlShape,
     periode: InfoPeriode,
     navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor?: boolean,
+    erFarEllerMedmor: boolean,
 ) => {
     switch (periode.infotype) {
         case PeriodeInfoType.uttakAnnenPart:
@@ -228,12 +229,20 @@ const getPeriodeTittelInfoPeriode = (
                 periode.forelder,
                 navnPåForeldre,
                 periode.samtidigUttakProsent,
+                erFarEllerMedmor,
             );
         case PeriodeInfoType.utsettelseAnnenPart:
             return intlUtils(intl, `uttaksplan.periodetype.info.utsettelse.${periode.årsak}`, {
                 navn: getForelderNavn(periode.forelder, navnPåForeldre),
             });
         case PeriodeInfoType.avslåttPeriode:
+            if (
+                periode.opprinneligSøkt === OpprinneligSøkt.Arbeid ||
+                periode.opprinneligSøkt === OpprinneligSøkt.Ferie
+            ) {
+                return 'Avslått utsettelse';
+            }
+
             if (
                 (periode.forelder === Forelder.mor && erFarEllerMedmor) ||
                 (periode.forelder === Forelder.farMedmor && !erFarEllerMedmor)
@@ -253,7 +262,7 @@ export const getPeriodeTittel = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     situasjon: Situasjon,
-    erFarEllerMedmor?: boolean,
+    erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ): string => {
     switch (periode.type) {
@@ -272,7 +281,7 @@ export const getPeriodeTittel = (
         case Periodetype.PeriodeUtenUttak:
             return intlUtils(intl, 'uttaksplan.periodetype.periodeUtenUttak.tittel');
         case Periodetype.Overføring:
-            return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
+            return getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor);
         case Periodetype.Utsettelse:
             if (periode.årsak) {
                 return intlUtils(intl, 'uttaksplan.periodeliste.utsettelsesårsak', {

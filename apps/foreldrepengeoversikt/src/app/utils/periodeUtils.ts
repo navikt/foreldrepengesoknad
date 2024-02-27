@@ -1,19 +1,22 @@
-import { guid, intlUtils, ISOStringToDate, TidsperiodeDate } from '@navikt/fp-common';
-import { Periode } from 'app/types/Periode';
-import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
-import { StønadskontoType } from 'app/types/StønadskontoType';
-import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
-import { IntlShape } from 'react-intl';
-import { getNavnGenitivEierform, NavnPåForeldre } from './personUtils';
-import { capitalizeFirstLetter } from './stringUtils';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
+import { IntlShape } from 'react-intl';
+
+import { Forelder, ISOStringToDate, TidsperiodeDate, guid, intlUtils } from '@navikt/fp-common';
 import { formatDateIso } from '@navikt/fp-utils';
-import { PeriodeResultat } from 'app/types/PeriodeResultat';
+
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
+import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
+import { Periode } from 'app/types/Periode';
+import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
-import { getTidsperiode, isValidTidsperiode, Tidsperioden } from './tidsperiodeUtils';
+import { StønadskontoType } from 'app/types/StønadskontoType';
+import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
+
 import { Uttaksdagen } from './Uttaksdagen';
+import { NavnPåForeldre, getNavnGenitivEierform } from './personUtils';
+import { capitalizeFirstLetter } from './stringUtils';
+import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
 
 export const Periodene = (perioder: Periode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
@@ -204,7 +207,7 @@ export const getStønadskontoForelderNavn = (
     navnPåForeldre: NavnPåForeldre,
     periodeResultat: PeriodeResultat | undefined,
     morsAktivitet: MorsAktivitet | undefined,
-    erFarEllerMedmor?: boolean,
+    erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
     if (
@@ -325,10 +328,14 @@ export const getPeriodeTittel = (
     intl: IntlShape,
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor?: boolean,
+    erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ): string => {
     if (isAvslåttPeriode(periode)) {
+        if (periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
+            return intlUtils(intl, 'uttaksplan.avslåttPeriode.utsettelse');
+        }
+
         return intlUtils(intl, 'uttaksplan.avslåttPeriode');
     }
     if (isUttaksperiode(periode)) {
@@ -373,6 +380,7 @@ export const getPeriodeTittel = (
             navnPåForeldre,
             periode.resultat,
             periode.morsAktivitet,
+            erFarEllerMedmor,
         );
     }
     if (isUtsettelsesperiode(periode)) {
@@ -385,7 +393,7 @@ export const getPeriodeTittel = (
     return '';
 };
 
-const periodeErInnvilget = (periode: Periode): boolean => periode.resultat && periode.resultat.innvilget;
+const periodeErInnvilget = (periode: Periode): boolean => periode.resultat !== undefined && periode.resultat.innvilget;
 
 interface SplittetDatoType {
     dato: Date;
@@ -558,6 +566,7 @@ export const getOverlappendePeriodeTittel = (
     overlappendePeriodeAnnenPart: Periode,
     intl: IntlShape,
     navnPåForeldre: NavnPåForeldre,
+    erFarEllerMedmor: boolean,
 ) => {
     if (søkerensPeriode.utsettelseÅrsak) {
         return getStønadskontoForelderNavn(
@@ -566,6 +575,7 @@ export const getOverlappendePeriodeTittel = (
             navnPåForeldre,
             overlappendePeriodeAnnenPart.resultat,
             overlappendePeriodeAnnenPart.morsAktivitet,
+            erFarEllerMedmor,
         );
     }
     if (overlappendePeriodeAnnenPart.utsettelseÅrsak) {
@@ -577,15 +587,28 @@ export const getOverlappendePeriodeTittel = (
 export const erAnnenPartsPrematurePeriode = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
     return (
         !!termindato &&
-        !annenPartsPeriode.resultat.innvilget &&
+        !annenPartsPeriode.resultat?.innvilget &&
         dayjs(annenPartsPeriode.tom).isBefore(dayjs(termindato), 'd') &&
         annenPartsPeriode.kontoType !== StønadskontoType.Fedrekvote
     );
 };
 
 export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
-    if (annenPartsPeriode.resultat.innvilget) {
+    if (annenPartsPeriode.resultat?.innvilget) {
         return true;
     }
     return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);
+};
+
+export const getPeriodeForelder = (erFarEllerMedmor: boolean, periode: Periode): Forelder => {
+    if (erFarEllerMedmor) {
+        if (periode.gjelderAnnenPart) {
+            return Forelder.mor;
+        }
+        return Forelder.farMedmor;
+    }
+    if (periode.gjelderAnnenPart) {
+        return Forelder.farMedmor;
+    }
+    return Forelder.mor;
 };

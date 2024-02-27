@@ -1,4 +1,5 @@
 import { Arbeidsform, DekningsgradDTO, Sak, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
+
 import {
     getArbeidsformFromUttakArbeidstype,
     mapSaksperiodeFromDTO,
@@ -150,6 +151,7 @@ describe('eksisterendeSakUtils', () => {
                 morsAktivitetIPerioden: undefined,
                 erMorForSyk: undefined,
                 angittAvAnnenPart: undefined,
+                opprinneligSøkt: undefined,
             },
             {
                 id: '1',
@@ -170,6 +172,7 @@ describe('eksisterendeSakUtils', () => {
                 morsAktivitetIPerioden: undefined,
                 erMorForSyk: undefined,
                 angittAvAnnenPart: undefined,
+                opprinneligSøkt: undefined,
             },
         ],
     };
@@ -271,6 +274,7 @@ describe('eksisterendeSakUtils', () => {
                 morsAktivitetIPerioden: undefined,
                 erMorForSyk: undefined,
                 angittAvAnnenPart: undefined,
+                opprinneligSøkt: undefined,
             },
         ],
     };
@@ -369,6 +373,7 @@ describe('eksisterendeSakUtils', () => {
                 morsAktivitetIPerioden: undefined,
                 erMorForSyk: true,
                 angittAvAnnenPart: undefined,
+                opprinneligSøkt: undefined,
             },
         ],
     };

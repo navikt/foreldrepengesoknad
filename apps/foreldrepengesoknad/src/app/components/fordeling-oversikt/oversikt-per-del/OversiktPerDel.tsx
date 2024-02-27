@@ -1,12 +1,16 @@
-import { BodyLong, VStack } from '@navikt/ds-react';
-import './oversikt-per-del.css';
-import { bemUtils, guid } from '@navikt/fp-common';
-import DelGraf from '../grafer/del-graf/DelGraf';
-import { Dispatch, SetStateAction } from 'react';
-import { getFordelingDelTittel } from '../fordelingOversiktUtils';
 import classNames from 'classnames';
+import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from 'react-intl';
+
+import { BodyLong, VStack } from '@navikt/ds-react';
+
+import { bemUtils, guid } from '@navikt/fp-common';
+
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
+
+import { getFordelingDelTittel } from '../fordelingOversiktUtils';
+import DelGraf from '../grafer/del-graf/DelGraf';
+import './oversikt-per-del.css';
 
 interface Props {
     delInformasjon: DelInformasjon;
@@ -14,6 +18,8 @@ interface Props {
     erFarEllerMedmor: boolean;
     navnMor: string;
     navnFarMedmor: string;
+    erFødsel: boolean;
+    annenForelderKunRettIEØS: boolean | undefined;
     setCurrentUthevet: Dispatch<SetStateAction<FordelingEier | undefined>>;
 }
 
@@ -23,6 +29,8 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
     erFarEllerMedmor,
     navnMor,
     navnFarMedmor,
+    erFødsel,
+    annenForelderKunRettIEØS,
     setCurrentUthevet,
 }) => {
     const intl = useIntl();
@@ -35,7 +43,15 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
         setCurrentUthevet(undefined);
     };
 
-    const tittel = getFordelingDelTittel(delInformasjon, erFarEllerMedmor, intl, navnMor, navnFarMedmor);
+    const tittel = getFordelingDelTittel(
+        delInformasjon,
+        erFarEllerMedmor,
+        intl,
+        navnMor,
+        navnFarMedmor,
+        erFødsel,
+        annenForelderKunRettIEØS,
+    );
     return (
         <VStack
             className={classNames(bem.block, bem.modifier(`${hoverClass}`))}

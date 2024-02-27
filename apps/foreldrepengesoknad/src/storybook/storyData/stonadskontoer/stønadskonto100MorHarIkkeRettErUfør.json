@@ -4,7 +4,7 @@
     },
     "minsteretter": {
         "generellMinsterett": 75,
-        "farRundtFødsel": 10,
+        "farRundtFødsel": 0,
         "toTette": 0
     }
 }
