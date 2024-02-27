@@ -1,67 +1,46 @@
-import { Forelder, Oppholdsperiode, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Forelder, Oppholdsperiode, StønadskontoType } from '@navikt/fp-common';
 import { UttaksplanColor } from '../types/UttaksplanColor';
 
-export const getForelderFarge = (forelder: Forelder) => {
-    return forelder === Forelder.mor ? UttaksplanColor.purple : UttaksplanColor.blue;
+export const getForelderFarge = (forelder: Forelder, erFarEllerMedmor: boolean) => {
+    if (forelder === Forelder.mor) {
+        return erFarEllerMedmor ? UttaksplanColor.lightBlue : UttaksplanColor.blue;
+    }
+    return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.lightGreen;
 };
 
 export const getStønadskontoFarge = (
     konto: StønadskontoType,
     forelder: Forelder | undefined,
-    forIkon?: boolean,
+    erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,
 ): UttaksplanColor => {
-    if (forIkon && konto === StønadskontoType.Fellesperiode) {
-        return UttaksplanColor.purpleBlue;
-    }
-
     if (harMidlertidigOmsorg) {
-        return UttaksplanColor.purple;
+        return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.blue;
     }
 
     if (forelder === undefined) {
         switch (konto) {
             case StønadskontoType.Fedrekvote:
             case StønadskontoType.AktivitetsfriKvote:
-                return UttaksplanColor.blue;
-            case StønadskontoType.Mødrekvote:
-            case StønadskontoType.Foreldrepenger:
+                return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.lightGreen;
             case StønadskontoType.ForeldrepengerFørFødsel:
-                return UttaksplanColor.purple;
+            case StønadskontoType.Mødrekvote:
+                return erFarEllerMedmor ? UttaksplanColor.lightBlue : UttaksplanColor.blue;
+            case StønadskontoType.Foreldrepenger:
+                return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.blue;
             case StønadskontoType.Fellesperiode:
-                return UttaksplanColor.purpleBlue;
+                return erFarEllerMedmor ? UttaksplanColor.greenLightBlue : UttaksplanColor.blueLightGreen;
             default:
                 return UttaksplanColor.transparent;
         }
     }
-    return getForelderFarge(forelder);
+    return getForelderFarge(forelder, erFarEllerMedmor);
 };
 
 export const getUtsettelseFarge = (): UttaksplanColor => {
-    return UttaksplanColor.green;
+    return UttaksplanColor.purple;
 };
 
-export const getOppholdFarge = (periode: Oppholdsperiode): UttaksplanColor => {
-    return getForelderFarge(periode.forelder);
-};
-
-export const getPeriodeFarge = (
-    periode: Periode,
-    forelder?: Forelder,
-    harMidlertidligOmsorg?: boolean,
-): UttaksplanColor | undefined => {
-    if (harMidlertidligOmsorg) {
-        return UttaksplanColor.purple;
-    }
-
-    if (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) {
-        return getStønadskontoFarge(periode.konto, periode.forelder || forelder);
-    }
-    if (periode.type === Periodetype.Utsettelse) {
-        return getUtsettelseFarge();
-    }
-    if (periode.type === Periodetype.Opphold) {
-        return getOppholdFarge(periode);
-    }
-    return undefined;
+export const getOppholdFarge = (periode: Oppholdsperiode, erFarEllerMedmor: boolean): UttaksplanColor => {
+    return getForelderFarge(periode.forelder, erFarEllerMedmor);
 };

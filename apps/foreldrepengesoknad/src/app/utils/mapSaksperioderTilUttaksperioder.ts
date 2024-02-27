@@ -1,6 +1,10 @@
+import {
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
+import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import dayjs from 'dayjs';
-import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
-import { getRelevantFamiliehendelseDato } from './dateUtils';
+
 import {
     AvslåttPeriode,
     FamiliehendelseType,
@@ -35,11 +39,9 @@ import {
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import {
-    splittPeriodePåDato,
-    splittUttaksperiodePåFamiliehendelsesdato,
-} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+
+import { getRelevantFamiliehendelseDato } from './dateUtils';
+import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;

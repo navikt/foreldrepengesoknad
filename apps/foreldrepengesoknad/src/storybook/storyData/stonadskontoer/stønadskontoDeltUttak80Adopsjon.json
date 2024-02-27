@@ -1,0 +1,12 @@
+{
+    "kontoer": {
+        "MØDREKVOTE": 95,
+        "FEDREKVOTE": 95,
+        "FELLESPERIODE": 90
+    },
+    "minsteretter": {
+        "farRundtFødsel": 0,
+        "generellMinsterett": 0,
+        "toTette": 0
+    }
+}

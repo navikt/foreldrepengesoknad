@@ -8,7 +8,7 @@ import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/Uttakspla
 import { UttaksplanColor } from 'app/types/UttaksplanColor';
 
 export const getUtsettelseFarge = (): UttaksplanColor => {
-    return UttaksplanColor.green;
+    return UttaksplanColor.purple;
 };
 
 export interface Props {

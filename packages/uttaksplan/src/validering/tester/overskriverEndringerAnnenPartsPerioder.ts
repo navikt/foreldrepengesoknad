@@ -1,5 +1,5 @@
 import { IntlShape } from 'react-intl';
-import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
+
 import {
     Periode,
     Periodene,
@@ -11,6 +11,8 @@ import {
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+
+import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
 
 export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const eksisterendeUttaksplan =
@@ -54,6 +56,7 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
                                 grunnlag.familiehendelsesdato,
                                 grunnlag.termindato,
                                 grunnlag.søkersituasjon.situasjon,
+                                grunnlag.søkerErFarEllerMedmor,
                             ),
                         tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                         forelder: fornavnAnnenForelder,

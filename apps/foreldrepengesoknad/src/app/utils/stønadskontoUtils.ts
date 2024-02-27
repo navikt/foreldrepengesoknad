@@ -11,7 +11,7 @@ const opprettAktivitetsFriKonto = (
     return nyeKontoer;
 };
 
-const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
+export const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
     stønadskontoerDTO: TilgjengeligeStønadskontoerDTO,
 ): TilgjengeligStønadskonto[] => {
     let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];

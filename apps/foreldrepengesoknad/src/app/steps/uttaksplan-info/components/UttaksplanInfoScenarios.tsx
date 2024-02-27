@@ -88,7 +88,6 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
                 <FarMedmorFødselFørsteganggsøknadBeggeHarRett
                     tilgjengeligeStønadskontoer100DTO={tilgjengeligeStønadskontoer100DTO}
                     tilgjengeligeStønadskontoer80DTO={tilgjengeligeStønadskontoer80DTO}
-                    eksisterendeSakAnnenPart={eksisterendeSakAnnenPart}
                     erEndringssøknad={erEndringssøknad}
                     søker={søker}
                     goToNextDefaultStep={goToNextDefaultStep}

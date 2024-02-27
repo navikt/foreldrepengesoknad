@@ -1,3 +1,10 @@
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import { BodyShort, Label } from '@navikt/ds-react';
+
 import {
     Forelder,
     NavnPåForeldre,
@@ -19,20 +26,15 @@ import {
     måned3bokstaver,
     år,
 } from '@navikt/fp-common';
-import classNames from 'classnames';
-import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
+import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
+
+import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
+import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
+import { VeilederMessage } from '../../validering/veilederInfo/types';
 import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from '../utsettelse-ikon/UtsettelseIkon';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
-import { BodyShort, Label } from '@navikt/ds-react';
-
 import './periodelisteItemHeader.less';
-import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
-import { VeilederMessage } from '../../validering/veilederInfo/types';
-import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
-import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
 
 interface Props {
     egenPeriode: boolean;
@@ -52,8 +54,8 @@ const bem = bemUtils('periodelisteItemHeader');
 export const getPeriodeIkon = (
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
+    erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,
-    erFarEllerMedmor?: boolean,
     situasjon?: Situasjon,
     erAleneOmOmsorg?: boolean,
 ): React.ReactNode | undefined => {
@@ -77,7 +79,12 @@ export const getPeriodeIkon = (
             );
         case Periodetype.Overføring:
             return (
-                <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} navnPåForeldre={navnPåForeldre} />
+                <StønadskontoIkon
+                    konto={periode.konto}
+                    forelder={periode.forelder}
+                    navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                />
             );
         case Periodetype.Utsettelse:
             return <UtsettelseIkon årsak={periode.årsak} />;
@@ -87,6 +94,7 @@ export const getPeriodeIkon = (
                     konto={StønadskontoType.Foreldrepenger}
                     forelder={periode.forelder}
                     navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
             );
         case Periodetype.Info:
@@ -106,6 +114,7 @@ export const getPeriodeIkon = (
                         konto={StønadskontoType.Foreldrepenger}
                         forelder={periode.forelder}
                         navnPåForeldre={navnPåForeldre}
+                        erFarEllerMedmor={erFarEllerMedmor}
                     />
                 );
             }
@@ -195,7 +204,9 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
         <div>
             <div className={bem.block}>
                 <div className={bem.element('content')}>
-                    <div className={bem.element('ikon')}>{getPeriodeIkon(periode, navnPåForeldre)}</div>
+                    <div className={bem.element('ikon')}>
+                        {getPeriodeIkon(periode, navnPåForeldre, erFarEllerMedmor)}
+                    </div>
                     <div className={bem.element('tittel')}>
                         <Label as="h4">
                             {getPeriodeTittel(

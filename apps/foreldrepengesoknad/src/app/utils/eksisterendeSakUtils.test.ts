@@ -1,4 +1,5 @@
 import { Arbeidsform, DekningsgradDTO, Sak, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
+
 import {
     getArbeidsformFromUttakArbeidstype,
     mapSaksperiodeFromDTO,

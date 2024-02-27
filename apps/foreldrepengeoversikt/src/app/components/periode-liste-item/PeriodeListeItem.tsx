@@ -18,6 +18,7 @@ import {
 } from 'app/utils/dateUtils';
 import {
     getOverlappendePeriodeTittel,
+    getPeriodeForelder,
     getPeriodeTittel,
     isAvslåttPeriode,
     isOppholdsperiode,
@@ -73,6 +74,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
         periode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID;
 
     const visUtsettelsesIkon = !visStønadskontoIkon && isUtsettelsesperiode(periode);
+    const forelder = getPeriodeForelder(erFarEllerMedmor, periode);
     return (
         <div
             className={classNames(
@@ -92,6 +94,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                             erAleneOmOmsorg={erAleneOmOmsorg}
                             periodeResultat={periode.resultat}
                             morsAktivitet={periode.morsAktivitet}
+                            forelder={forelder}
                         />
                     )}
                     {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
@@ -146,6 +149,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                                     overlappendePeriodeAnnenPart,
                                     intl,
                                     navnPåForeldre,
+                                    erFarEllerMedmor,
                                 )}
                             </BodyShort>
                             <div className={bem.element('beskrivelse')}>

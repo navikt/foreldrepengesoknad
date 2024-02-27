@@ -15,12 +15,10 @@
                 "fornavn": "Sannferdig",
                 "etternavn": "Høyttaler",
                 "kjønn": "M",
-                "fødselsdato": "2021-07-01",
+                "fødselsdato": "2024-02-01",
                 "annenForelder": {
-                    "fnr": "12449448004",
-                    "fornavn": "Selvhjulpen",
-                    "etternavn": "Regel",
-                    "fødselsdato": "1994-04-12"
+                    "fnr": "12449448004"
+
                 }
             }
         ],

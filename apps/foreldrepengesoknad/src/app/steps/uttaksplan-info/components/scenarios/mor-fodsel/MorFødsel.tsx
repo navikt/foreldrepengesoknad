@@ -1,27 +1,23 @@
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { GuidePanel } from '@navikt/ds-react';
+import { useIntl } from 'react-intl';
+import { VStack } from '@navikt/ds-react';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 import {
     Block,
+    Dekningsgrad,
     EksisterendeSak,
-    Forelder,
     ISOStringToDate,
-    Tidsperioden,
     Uttaksdagen,
     formaterNavn,
-    getFlerbarnsuker,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     uttaksConstants,
 } from '@navikt/fp-common';
-import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { MorFødselFormComponents, MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
-import { getTilgjengeligeDager } from '../../tilgjengeligeDagerGraf/tilgjengeligeDagerUtils';
-import TilgjengeligeDagerGraf from '../../tilgjengeligeDagerGraf/TilgjengeligeDagerGraf';
 import { getInitialMorFødselValues, mapMorFødselFormToState } from './morFødselUtils';
 import StartdatoPermisjonMor from './StartdatoPermisjonMor';
 import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
@@ -30,10 +26,11 @@ import { MorFødselQuestionsPayload, morFødselQuestionsConfig } from './morFød
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { StepButtons } from '@navikt/fp-ui';
 import { Søker } from '@navikt/fp-types';
 
@@ -59,7 +56,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    const intl = useIntl();
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -73,25 +70,22 @@ const MorFødsel: FunctionComponent<Props> = ({
     const oppdaterUttaksplanInfo = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const antallBarn = barn.antallBarn;
     const { dekningsgrad } = periodeMedForeldrepenger;
 
-    const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
-    const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
-    const ekstraDagerGrunnetPrematurFødsel = visInfoOmPrematuruker
-        ? Tidsperioden({ fom: fødselsdato!, tom: termindato! }).getAntallUttaksdager() - 1
-        : undefined;
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erMorUfør = !!oppgittAnnenForelder?.erUfør;
     const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
+    const annenForeldrerHarRettiNorgeEllerEØS =
+        !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge || !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
+    const annenForeldrerHarKunRettiEØS = !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
     const navnFarMedmor = oppgittAnnenForelder
-        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, true)
+        ? formaterNavn(oppgittAnnenForelder.fornavn, oppgittAnnenForelder.etternavn, false)
         : '';
 
-    const navnMor = formaterNavn(søker.fornavn, søker.etternavn, true, søker.mellomnavn);
+    const navnMor = formaterNavn(søker.fornavn, søker.etternavn, false, søker.mellomnavn);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdag = Uttaksdagen(ISOStringToDate(familiehendelsesdato)!).denneEllerNeste();
     const defaultPermisjonStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
@@ -107,7 +101,24 @@ const MorFødsel: FunctionComponent<Props> = ({
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO,
     );
+    const minsterett =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
+    const valgtStønadskonto = tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)];
+    const fordelingScenario = getFordelingFraKontoer(
+        valgtStønadskonto,
+        minsterett,
+        søkersituasjon,
+        barn,
+        søkerData.erAleneOmOmsorg,
+        navnMor,
+        navnFarMedmor,
+        intl,
+        annenForeldrerHarKunRettiEØS,
+        eksisterendeSakFar?.uttaksplan,
+    );
 
     const onSubmit = (values: Partial<MorFødselFormData>) => {
         setIsSubmitting(true);
@@ -126,7 +137,7 @@ const MorFødsel: FunctionComponent<Props> = ({
             situasjon: erFødsel ? 'fødsel' : 'adopsjon',
             søkerErFarEllerMedmor: erFarEllerMedmor,
             søkerHarMidlertidigOmsorg: false,
-            tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)],
+            tilgjengeligeStønadskontoer: valgtStønadskonto,
             uttaksplanSkjema: {
                 fellesperiodeukerMor: submissionValues.fellesperiodeukerMor,
                 startdatoPermisjon: submissionValues.skalIkkeHaUttakFørTermin
@@ -170,106 +181,68 @@ const MorFødsel: FunctionComponent<Props> = ({
 
         oppdaterBarnOgLagreUttaksplandata({
             ...uttaksplanMetadata,
-            antallUkerIUttaksplan: getAntallUker(tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80]),
+            antallUkerIUttaksplan: getAntallUker(valgtStønadskonto),
         });
 
         return goToNextDefaultStep();
     };
 
     return (
-        <MorFødselFormComponents.FormikWrapper
-            initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, uttaksplanInfo)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = morFødselQuestionsConfig.getVisbility({
-                    ...formValues,
-                    harRettPåForeldrepengerINorge,
-                    erAleneOmOmsorg: søkerData.erAleneOmOmsorg,
-                } as MorFødselQuestionsPayload);
+        <VStack gap="5">
+            <FordelingOversikt
+                kontoer={valgtStønadskonto}
+                navnFarMedmor={navnFarMedmor}
+                navnMor={navnMor}
+                deltUttak={annenForeldrerHarRettiNorgeEllerEØS}
+                fordelingScenario={fordelingScenario}
+            ></FordelingOversikt>
+            <MorFødselFormComponents.FormikWrapper
+                initialValues={getInitialMorFødselValues(defaultPermisjonStartdato, uttaksplanInfo)}
+                onSubmit={onSubmit}
+                renderForm={({ values: formValues, setFieldValue }) => {
+                    const visibility = morFødselQuestionsConfig.getVisbility({
+                        ...formValues,
+                        harRettPåForeldrepengerINorge,
+                        erAleneOmOmsorg: søkerData.erAleneOmOmsorg,
+                    } as MorFødselQuestionsPayload);
 
-                const valgtStønadskonto = tilgjengeligeStønadskontoer[dekningsgrad === '100' ? 100 : 80];
-
-                return (
-                    <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
-                        <Block padBottom="xl">
-                            {valgtStønadskonto && (
-                                <TilgjengeligeDagerGraf
-                                    erDeltUttak={erDeltUttak}
-                                    erFarEllerMedmor={false}
-                                    navnFarMedmor={navnFarMedmor}
-                                    navnMor={navnMor}
-                                    tilgjengeligeDager={getTilgjengeligeDager(
-                                        valgtStønadskonto,
-                                        false,
-                                        Forelder.farMedmor,
-                                    )}
+                    return (
+                        <MorFødselFormComponents.Form includeButtons={false} includeValidationSummary={true}>
+                            <Block>
+                                <StartdatoPermisjonMor
+                                    permisjonStartdato={formValues.permisjonStartdato!}
+                                    skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
+                                    termindato={termindato}
+                                    barn={barn}
                                 />
-                            )}
-                        </Block>
-                        <Block padBottom="xl" visible={visInfoOmPrematuruker === true}>
-                            <GuidePanel>
-                                <FormattedMessage
-                                    id="uttaksplaninfo.veileder.informasjonPrematuruker"
-                                    values={{
-                                        antallprematuruker: Math.floor(ekstraDagerGrunnetPrematurFødsel! / 5),
-                                        antallprematurdager: ekstraDagerGrunnetPrematurFødsel! % 5,
-                                    }}
-                                />
-                            </GuidePanel>
-                        </Block>
-                        <Block>
-                            <StartdatoPermisjonMor
-                                permisjonStartdato={formValues.permisjonStartdato!}
-                                skalIkkeHaUttakFørTermin={formValues.skalIkkeHaUttakFørTermin!}
-                                termindato={termindato}
-                                barn={barn}
-                            />
-                        </Block>
-                        <Block visible={søkerData.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
-                            <Block
-                                padBottom="xl"
-                                visible={
-                                    antallBarn > 1 &&
-                                    (formValues.permisjonStartdato !== undefined ||
-                                        formValues.skalIkkeHaUttakFørTermin === true)
-                                }
-                            >
-                                <GuidePanel>
-                                    <FormattedMessage
-                                        id="uttaksplaninfo.veileder.flerbarnsInformasjon"
-                                        values={{
-                                            uker: getFlerbarnsuker(dekningsgrad, antallBarn),
-                                            navnFar: navnFarMedmor,
-                                            navnMor: navnMor,
-                                        }}
+                            </Block>
+                            <Block visible={søkerData.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
+                                <Block
+                                    padBottom="xl"
+                                    visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}
+                                >
+                                    <FordelingFellesperiodeSpørsmål
+                                        setFieldValue={setFieldValue}
+                                        valgtStønadskonto={valgtStønadskonto}
+                                        valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
+                                        mor={navnMor}
+                                        farMedmor={navnFarMedmor}
+                                        annenForelderErFarEllerMedmor={!erFarEllerMedmor}
                                     />
-                                </GuidePanel>
+                                </Block>
                             </Block>
-                            <Block
-                                padBottom="xl"
-                                visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}
-                            >
-                                <FordelingFellesperiodeSpørsmål
-                                    setFieldValue={setFieldValue}
-                                    valgtStønadskonto={valgtStønadskonto}
-                                    valgtFellesperiodeukerMor={formValues.fellesperiodeukerMor}
-                                    mor={navnMor}
-                                    farMedmor={navnFarMedmor}
-                                    annenForelderErFarEllerMedmor={!erFarEllerMedmor}
+                            <Block>
+                                <StepButtons
+                                    isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                    goToPreviousStep={goToPreviousDefaultStep}
+                                    isDisabledAndLoading={isSubmitting}
                                 />
                             </Block>
-                        </Block>
-                        <Block>
-                            <StepButtons
-                                isNexButtonVisible={visibility.areAllQuestionsAnswered()}
-                                goToPreviousStep={goToPreviousDefaultStep}
-                                isDisabledAndLoading={isSubmitting}
-                            />
-                        </Block>
-                    </MorFødselFormComponents.Form>
-                );
-            }}
-        />
+                        </MorFødselFormComponents.Form>
+                    );
+                }}
+            />
+        </VStack>
     );
 };
 

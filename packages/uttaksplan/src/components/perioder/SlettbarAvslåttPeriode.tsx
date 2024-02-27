@@ -1,3 +1,8 @@
+import { FunctionComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
+
+import { BodyLong } from '@navikt/ds-react';
+
 import {
     ActionLink,
     InfoPeriode,
@@ -6,11 +11,9 @@ import {
     getSlettPeriodeTekst,
     isAvslåttPeriode,
 } from '@navikt/fp-common';
-import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
-import './slettbarAvslåttPeriode.less';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { BodyLong } from '@navikt/ds-react';
+
+import './slettbarAvslåttPeriode.less';
 
 interface Props {
     periode: InfoPeriode;

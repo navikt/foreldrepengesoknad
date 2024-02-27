@@ -1,9 +1,19 @@
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { FunctionComponent, useState } from 'react';
+import { useIntl } from 'react-intl';
+
+import { VStack } from '@navikt/ds-react';
+
 import {
     Block,
+    Dekningsgrad,
     EksisterendeSak,
     Forelder,
     ISOStringToDate,
+    Periodene,
     Uttaksdagen,
+    formaterNavn,
     getErMorUfør,
     getMorHarRettPåForeldrepengerINorgeEllerEØS,
     isAnnenForelderOppgitt,
@@ -13,9 +23,10 @@ import {
 import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
+
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import InfoOmFørsteUttaksdagEtterMor from 'app/components/fordeling-oversikt/info-om-første-dag-etter-mor/InfoOmFørsteUttaksdagEtterMor';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
@@ -26,7 +37,7 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { FunctionComponent, useState } from 'react';
+
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import {
     FarMedmorFørstegangssøknadMedAnnenPartFormComponents,
@@ -57,8 +68,8 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     søker,
     oppdaterBarnOgLagreUttaksplandata,
 }) => {
+    const intl = useIntl();
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -169,62 +180,101 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
     }
 
     const navnMor = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
+    const navnFarMedmor = formaterNavn(søker.fornavn, søker.etternavn, false, søker.mellomnavn);
     const { grunnlag, uttaksplan } = eksisterendeSakAnnenPart;
     const morsPerioder = uttaksplan.filter((p) => isInfoPeriode(p) && p.forelder === Forelder.mor);
+
     const morsSisteDag = morsPerioder.reverse()[0].tidsperiode.tom;
 
     const tilgjengeligeStønadskontoer = getValgtStønadskontoFor80Og100Prosent(
         tilgjengeligeStønadskontoer80DTO,
         tilgjengeligeStønadskontoer100DTO,
     );
+    const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
+
+    const minsterett =
+        grunnlag.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? tilgjengeligeStønadskontoer100DTO.minsteretter
+            : tilgjengeligeStønadskontoer80DTO.minsteretter;
+
+    const fordelingScenario = getFordelingFraKontoer(
+        valgtMengdeStønadskonto,
+        minsterett,
+        søkersituasjon,
+        barn,
+        false,
+        navnMor,
+        navnFarMedmor,
+        intl,
+        false,
+        eksisterendeSakAnnenPart?.uttaksplan,
+    );
+    let sisteInfoPeriode;
+    if (eksisterendeSakAnnenPart) {
+        sisteInfoPeriode = eksisterendeSakAnnenPart.uttaksplan
+            ? Periodene(eksisterendeSakAnnenPart.uttaksplan).finnSisteInfoperiode()
+            : undefined;
+    }
+    const nesteMuligeUttaksdagEtterAnnenPart =
+        eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan && sisteInfoPeriode
+            ? Uttaksdagen(sisteInfoPeriode.tidsperiode.tom).neste()
+            : undefined;
 
     return (
-        <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper
-            initialValues={getFarMedmorFørstegangssøknadMedAnnenPartInitialValues(uttaksplanInfo)}
-            onSubmit={onSubmit}
-            renderForm={({ values: formValues, setFieldValue }) => {
-                const visibility = farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig.getVisbility(
-                    formValues as FarMedmorFørstegangssøknadMedAnnenPartFormData,
-                );
-                const valgtMengdeStønadskonto = tilgjengeligeStønadskontoer[grunnlag.dekningsgrad];
+        <VStack gap="5">
+            <FordelingOversikt
+                kontoer={valgtMengdeStønadskonto}
+                navnFarMedmor={navnFarMedmor}
+                navnMor={navnMor}
+                deltUttak={true}
+                fordelingScenario={fordelingScenario}
+            ></FordelingOversikt>
+            <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.FormikWrapper
+                initialValues={getFarMedmorFørstegangssøknadMedAnnenPartInitialValues(uttaksplanInfo)}
+                onSubmit={onSubmit}
+                renderForm={({ values: formValues, setFieldValue }) => {
+                    const visibility = farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig.getVisbility(
+                        formValues as FarMedmorFørstegangssøknadMedAnnenPartFormData,
+                    );
 
-                return (
-                    <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form
-                        includeButtons={false}
-                        includeValidationSummary={true}
-                    >
-                        <Block padBottom="xl">
-                            <InfoOmSøknaden
-                                eksisterendeSak={eksisterendeSakAnnenPart}
-                                erIUttaksplanenSteg={false}
-                                tilgjengeligeStønadskontoer={valgtMengdeStønadskonto}
-                                søker={søker}
-                            />
-                        </Block>
-                        <Block padBottom="xl">
-                            <FarMedmorsFørsteDag
-                                FormComponents={FarMedmorFørstegangssøknadMedAnnenPartFormComponents}
-                                fieldName={FarMedmorFørstegangssøknadMedAnnenPartFormField.permisjonStartdato}
-                                familiehendelsesdato={familiehendelsedatoDate!}
-                                setFieldValue={setFieldValue}
-                                morsSisteDag={morsSisteDag}
-                                navnMor={navnMor}
-                                termindato={termindato}
-                                situasjon={søkersituasjon.situasjon}
-                                morHarRettTilForeldrepengerIEØS={false}
-                            />
-                        </Block>
-                        <Block>
-                            <StepButtons
-                                isNexButtonVisible={visibility.areAllQuestionsAnswered()}
-                                goToPreviousStep={goToPreviousDefaultStep}
-                                isDisabledAndLoading={isSubmitting}
-                            />
-                        </Block>
-                    </FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form>
-                );
-            }}
-        />
+                    return (
+                        <FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form
+                            includeButtons={false}
+                            includeValidationSummary={true}
+                        >
+                            {nesteMuligeUttaksdagEtterAnnenPart && navnMor && navnMor.length > 0 && (
+                                <Block padBottom="xl">
+                                    <InfoOmFørsteUttaksdagEtterMor
+                                        nesteMuligeUttaksdagEtterMor={nesteMuligeUttaksdagEtterAnnenPart}
+                                        annenForelderNavn={navnMor}
+                                    />
+                                </Block>
+                            )}
+                            <Block padBottom="xl">
+                                <FarMedmorsFørsteDag
+                                    FormComponents={FarMedmorFørstegangssøknadMedAnnenPartFormComponents}
+                                    fieldName={FarMedmorFørstegangssøknadMedAnnenPartFormField.permisjonStartdato}
+                                    familiehendelsesdato={familiehendelsedatoDate!}
+                                    setFieldValue={setFieldValue}
+                                    morsSisteDag={morsSisteDag}
+                                    navnMor={navnMor}
+                                    termindato={termindato}
+                                    situasjon={søkersituasjon.situasjon}
+                                    morHarRettTilForeldrepengerIEØS={false}
+                                />
+                            </Block>
+                            <Block>
+                                <StepButtons
+                                    isNexButtonVisible={visibility.areAllQuestionsAnswered()}
+                                    goToPreviousStep={goToPreviousDefaultStep}
+                                    isDisabledAndLoading={isSubmitting}
+                                />
+                            </Block>
+                        </FarMedmorFørstegangssøknadMedAnnenPartFormComponents.Form>
+                    );
+                }}
+            />
+        </VStack>
     );
 };
 
