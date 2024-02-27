@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import Banner, { BannerProps } from './Banner';
 
 export default {
-    title: 'components/Banner',
+    title: 'step/Banner',
     component: Banner,
 };
 

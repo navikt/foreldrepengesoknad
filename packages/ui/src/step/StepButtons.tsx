@@ -1,9 +1,10 @@
-import { FunctionComponent } from 'react';
-import { StepButtonWrapper } from '@navikt/fp-common';
-import { FormattedMessage } from 'react-intl';
-import { Button } from '@navikt/ds-react';
-import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 import { PaperplaneIcon } from '@navikt/aksel-icons';
+import { FunctionComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
+
+import { Button, HStack } from '@navikt/ds-react';
+
+import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 
 interface Props {
     goToPreviousStep: () => void;
@@ -26,8 +27,8 @@ const StepButtons: FunctionComponent<Props> = ({
 }) => {
     return (
         <UiIntlProvider>
-            <StepButtonWrapper>
-                <Button type="button" variant="secondary" onClick={goToPreviousStep}>
+            <HStack gap="2">
+                <Button type="button" variant="secondary" onClick={goToPreviousStep} style={{ flex: 1 }}>
                     <FormattedMessage id="StepButtons.Forrige" />
                 </Button>
                 {isNexButtonVisible && (
@@ -38,12 +39,13 @@ const StepButtons: FunctionComponent<Props> = ({
                         onClick={nextButtonOnClick}
                         disabled={isDisabled || isDisabledAndLoading}
                         loading={isLoading || isDisabledAndLoading}
+                        style={{ flex: 1 }}
                     >
-                        {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
-                        {!isSendButton && <FormattedMessage id={'StepButtons.Neste'} />}
+                        {isSendButton && <FormattedMessage id="StepButtons.Send" />}
+                        {!isSendButton && <FormattedMessage id="StepButtons.Neste" />}
                     </Button>
                 )}
-            </StepButtonWrapper>
+            </HStack>
         </UiIntlProvider>
     );
 };

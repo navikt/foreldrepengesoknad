@@ -5,7 +5,7 @@ import { LocaleAll } from '@navikt/fp-types';
 import LanguageToggle, { LanguageToggleProps } from './LanguageToggle';
 
 export default {
-    title: 'components/LanguageToggle',
+    title: 'LanguageToggle',
     component: LanguageToggle,
 };
 

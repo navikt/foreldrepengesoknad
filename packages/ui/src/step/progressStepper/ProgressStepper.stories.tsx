@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import ProgressStepper, { ProgressStepperProps } from './ProgressStepper';
 
 export default {
-    title: 'components/ProgressStepper',
+    title: 'step/ProgressStepper',
     component: ProgressStepper,
 };
 

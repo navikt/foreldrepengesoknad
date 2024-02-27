@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import Step, { StepProps } from './Step';
 
 export default {
-    title: 'components/Step',
+    title: 'step/Step',
     component: Step,
 };
 
