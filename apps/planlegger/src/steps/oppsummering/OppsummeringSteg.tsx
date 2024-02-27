@@ -1,20 +1,20 @@
 import { BodyLong, Button, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 import { StepButtonWrapper } from '@navikt/fp-common';
-import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
-import { FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { StepButtons } from '@navikt/fp-ui';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
+import useStepData from 'appData/useStepData';
 import Kalender from 'components/ikoner/Kalender';
 import OppsummeringCheck from 'components/ikoner/OppsummeringCheck';
-import { PlanleggerRoutes } from 'appData/routes';
+import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import { FormattedMessage } from 'react-intl';
 
 const Oppsummering = () => {
-    const navigate = useNavigate();
     const navigator = usePlanleggerNavigator();
+    const stepConfig = useStepData();
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage steps={stepConfig}>
             <VStack gap="10">
                 <div className="panel-top green">
                     <Heading size="large">
@@ -69,23 +69,23 @@ const Oppsummering = () => {
                         </StepButtonWrapper>
                     </VStack>
 
-                    <VStack gap="10" className="button-wrapper content-wrapper">
+                    <VStack gap="10">
                         <StepButtons
                             nextButtonText="Legg til i søknad"
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            nextButtonOnClick={() => navigate(PlanleggerRoutes.OM_PLANLEGGEREN)}
+                            nextButtonOnClick={() => undefined}
                             previousButtonText="Tilbake"
                         ></StepButtons>
 
                         <VStack align="center">
-                            <Button variant="tertiary" onClick={() => navigate(PlanleggerRoutes.OM_PLANLEGGEREN)}>
+                            <Button variant="tertiary" onClick={() => undefined}>
                                 Avbryt
                             </Button>
                         </VStack>
                     </VStack>
                 </VStack>
             </VStack>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 

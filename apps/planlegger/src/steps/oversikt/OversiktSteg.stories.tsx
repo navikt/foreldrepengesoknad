@@ -64,4 +64,9 @@ PeriodeAleneforsørgerÅttiProsent.args = {
     periode: {
         periode: PeriodeEnum.ÅTTI,
     },
+    omBarnet: {
+        erFødsel: false,
+        erBarnetFødt: false,
+        termindato: '2022-10-24',
+    },
 };

@@ -1,7 +1,7 @@
-import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, Box, Heading, Radio, VStack } from '@navikt/ds-react';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
-import GreenRadio from 'components/radio/GreenRadio';
+import GreenPanel from 'components/GreenPanel';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { PeriodeEnum } from 'types/Periode';
@@ -21,39 +21,41 @@ const Aleneforsørger: FunctionComponent = () => {
                 <Heading size="small">
                     <FormattedMessage id="periode.hvaGjelderDeg" />
                 </Heading>
-                <RadioGroup
-                    name="periode"
-                    validate={[
-                        isRequired(
-                            intl.formatMessage({
-                                id: 'feilmelding.periode.hvorLangPeriodeAlene.duMåOppgi',
-                            }),
-                        ),
-                    ]}
-                >
-                    <GreenRadio
-                        value={PeriodeEnum.HUNDRE}
-                        description={intl.formatMessage(
-                            { id: 'periode.hvaGjelder.beskrivelseDeg' },
-                            {
-                                kr1: penger100,
-                            },
-                        )}
+                <GreenPanel>
+                    <RadioGroup
+                        name="periode"
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'feilmelding.periode.hvorLangPeriodeAlene.duMåOppgi',
+                                }),
+                            ),
+                        ]}
                     >
-                        <FormattedMessage id="periode.100" />
-                    </GreenRadio>
-                    <GreenRadio
-                        value={PeriodeEnum.ÅTTI}
-                        description={intl.formatMessage(
-                            { id: 'periode.hvaGjelder.beskrivelseDeg' },
-                            {
-                                kr1: penger80,
-                            },
-                        )}
-                    >
-                        <FormattedMessage id="periode.80" />
-                    </GreenRadio>
-                </RadioGroup>
+                        <Radio
+                            value={PeriodeEnum.HUNDRE}
+                            description={intl.formatMessage(
+                                { id: 'periode.hvaGjelder.beskrivelseDeg' },
+                                {
+                                    kr1: penger100,
+                                },
+                            )}
+                        >
+                            <FormattedMessage id="periode.100" />
+                        </Radio>
+                        <Radio
+                            value={PeriodeEnum.ÅTTI}
+                            description={intl.formatMessage(
+                                { id: 'periode.hvaGjelder.beskrivelseDeg' },
+                                {
+                                    kr1: penger80,
+                                },
+                            )}
+                        >
+                            <FormattedMessage id="periode.80" />
+                        </Radio>
+                    </RadioGroup>
+                </GreenPanel>
             </VStack>
             <VStack gap="10">
                 <Box padding="4" borderRadius="large" borderColor="border-alt-3" borderWidth="2">

@@ -1,17 +1,18 @@
-import { FormattedMessage } from 'react-intl';
-import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
 import { BodyLong, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
-import { PlanleggerRoutes } from 'appData/routes';
-import Kalender from 'components/ikoner/Kalender';
-import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import useStepData from 'appData/useStepData';
+import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import Kalender from 'components/ikoner/Kalender';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { isAlene } from 'types/HvemPlanlegger';
-import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import 'dayjs/locale/nb';
+import { FormattedMessage } from 'react-intl';
+import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { isAlene } from 'types/HvemPlanlegger';
 dayjs.locale('nb');
 
 const BARNEHAGELOVEN_TEKST =
@@ -36,6 +37,7 @@ const barnehageStartdato = (barnet: OmBarnet) => {
 
 const BarnehageplassSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
+    const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
@@ -45,7 +47,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
     //TODO Bytt ut <a href> med Link-komponent (Aksel)
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage steps={stepConfig}>
             <VStack gap="10">
                 <Heading size="large">
                     <FormattedMessage id="barnehageplass.tittel" />
@@ -268,19 +270,17 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
 
                 <VStack gap="20">
                     <HvorforSpørViOmDette text="TODO" />
-                    <VStack className="button-wrapper content-wrapper">
+                    <VStack>
                         <StepButtons
+                            nextButtonOnClick={navigator.goToNextDefaultStep}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             nextButtonText="Neste"
                             previousButtonText="Tilbake"
-                            nextButtonOnClick={() => {
-                                navigator.goToNextStep(PlanleggerRoutes.ARBEIDSSITUASJON);
-                            }}
                         />
                     </VStack>
                 </VStack>
             </VStack>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 

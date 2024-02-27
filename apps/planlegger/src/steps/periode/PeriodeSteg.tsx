@@ -1,20 +1,21 @@
 import { VStack } from '@navikt/ds-react';
-import { ContentWrapper } from '@navikt/fp-ui';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { notEmpty } from '@navikt/fp-validation';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import useStepData from 'appData/useStepData';
+import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
-import { Periode } from 'types/Periode';
-import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
-import { notEmpty } from '@navikt/fp-validation';
-import FlereForsørgere from './situasjon/FlereForsørgere';
-import Aleneforsørger from './situasjon/Aleneforsørger';
 import { isAlene } from 'types/HvemPlanlegger';
+import { Periode } from 'types/Periode';
+import Aleneforsørger from './situasjon/Aleneforsørger';
+import FlereForsørgere from './situasjon/FlereForsørgere';
 
 const PeriodeSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
+    const stepConfig = useStepData();
     const periode = useContextGetData(ContextDataType.PERIODE);
     const formMethods = useForm<Periode>({ defaultValues: periode });
 
@@ -24,18 +25,18 @@ const PeriodeSteg: FunctionComponent = () => {
 
     const lagre = (formValues: Periode) => {
         lagrePeriode(formValues);
-        navigator.goToNextStep(PlanleggerRoutes.PLAN_INFO);
+        return navigator.goToNextDefaultStep();
     };
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     {isAlene(hvemPlanlegger) && <Aleneforsørger />}
                     {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
                     <VStack gap="20">
                         <HvorforSpørViOmDette text="TODO" />
-                        <VStack gap="10" className="button-wrapper content-wrapper">
+                        <VStack gap="10">
                             <StepButtonsHookForm<Periode>
                                 saveDataOnPreviousClick={lagrePeriode}
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
@@ -46,7 +47,7 @@ const PeriodeSteg: FunctionComponent = () => {
                     </VStack>
                 </VStack>
             </Form>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 

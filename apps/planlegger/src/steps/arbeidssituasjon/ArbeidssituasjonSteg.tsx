@@ -1,21 +1,21 @@
-import { Heading, VStack } from '@navikt/ds-react';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { VStack } from '@navikt/ds-react';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useForm } from 'react-hook-form';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
 import { notEmpty } from '@navikt/fp-validation';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import useStepData from 'appData/useStepData';
+import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import { FunctionComponent } from 'react';
+import { useForm } from 'react-hook-form';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { isAlene } from 'types/HvemPlanlegger';
 import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
+    const stepConfig = useStepData();
 
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
@@ -28,22 +28,18 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
 
     const lagre = (formValues: Arbeidssituasjon) => {
         lagreArbeidssituasjon(formValues);
-        navigator.goToNextStep(PlanleggerRoutes.PERIODE);
+        return navigator.goToNextDefaultStep();
     };
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
-                    <Heading size="large">
-                        <FormattedMessage id="arbeid.tittel" />
-                    </Heading>
                     {isAlene(hvemPlanlegger) && <Aleneforsørger />}
                     {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
-
                     <VStack gap="20">
                         <HvorforSpørViOmDette text="TODO" />
-                        <VStack className="button-wrapper content-wrapper">
+                        <VStack>
                             <StepButtonsHookForm
                                 saveDataOnPreviousClick={lagreArbeidssituasjon}
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
@@ -54,7 +50,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     </VStack>
                 </VStack>
             </Form>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 

@@ -6,7 +6,9 @@ import useStepData from './useStepData';
 
 const usePlanleggerNavigator = () => {
     const navigate = useNavigate();
-    const { activeStepId, stepConfig } = useStepData();
+    const stepConfig = useStepData();
+
+    const activeStepId = stepConfig.find((sc) => sc.isSelected);
 
     useEffect(() => {
         logAmplitudeEvent('sidevisning', {
@@ -17,10 +19,10 @@ const usePlanleggerNavigator = () => {
     }, [activeStepId]);
 
     const goToPreviousDefaultStep = useCallback(() => {
-        const index = stepConfig.findIndex((s) => s.id === activeStepId) - 1;
+        const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id || PlanleggerRoutes.OM_PLANLEGGEREN;
         navigate(previousPath);
-    }, [navigate, stepConfig, activeStepId]);
+    }, [navigate, stepConfig]);
 
     const goToNextStep = useCallback(
         (path: PlanleggerRoutes) => {
@@ -30,10 +32,10 @@ const usePlanleggerNavigator = () => {
     );
 
     const goToNextDefaultStep = useCallback(() => {
-        const index = stepConfig.findIndex((s) => s.id === activeStepId) + 1;
+        const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
         navigate(nextPath);
-    }, [navigate, stepConfig, activeStepId]);
+    }, [navigate, stepConfig]);
 
     const avbrytSøknad = useCallback(() => {
         navigate(PlanleggerRoutes.OM_PLANLEGGEREN);

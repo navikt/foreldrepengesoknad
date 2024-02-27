@@ -1,32 +1,18 @@
-import { ClockIcon } from '@navikt/aksel-icons';
-import { BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
-import { ContentWrapper } from '@navikt/fp-ui';
-import { PlanleggerRoutes } from 'appData/routes';
+import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 import Kalender from 'components/ikoner/Kalender';
 import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
 import { FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 
-import styles from './omPlanleggerenSteg.module.css';
+import { ArrowRightIcon } from '@navikt/aksel-icons';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 
 const OmPlanleggerenSteg = () => {
-    const navigate = useNavigate();
+    const navigator = usePlanleggerNavigator();
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage isFrontpage steps={[]}>
             <VStack gap="10">
-                <VStack gap="1">
-                    <Heading size="large">
-                        <FormattedMessage id="om.tittel" />
-                    </Heading>
-                    <Heading size="small">
-                        <HStack gap="4" align="center">
-                            <ClockIcon />
-                            <FormattedMessage id="om.label" />
-                        </HStack>
-                    </Heading>
-                </VStack>
-
                 <BodyShort size="large">
                     <FormattedMessage id="om.ingress" />
                 </BodyShort>
@@ -35,14 +21,12 @@ const OmPlanleggerenSteg = () => {
                         <Heading level="2" size="xsmall">
                             <FormattedMessage id="om.underoverskrift" />
                         </Heading>
-
                         <HStack gap="4" align="center">
                             <Spørsmålstegn />
                             <BodyShort>
                                 <FormattedMessage id="om.trinn1" />
                             </BodyShort>
                         </HStack>
-
                         <HStack gap="4" align="center">
                             <Kalender />
                             <BodyShort>
@@ -50,19 +34,17 @@ const OmPlanleggerenSteg = () => {
                             </BodyShort>
                         </HStack>
                     </VStack>
-
-                    <VStack gap="10" className="content-wrapper button-wrapper">
-                        <Button
-                            variant="secondary"
-                            className={styles.planleggerKnapp}
-                            onClick={() => navigate(PlanleggerRoutes.HVEM_PLANLEGGER)}
-                        >
+                    <HStack justify="center">
+                        <Button onClick={navigator.goToNextDefaultStep} icon={<ArrowRightIcon />} iconPosition="right">
                             <FormattedMessage id="om.start.planlegger" />
                         </Button>
-                    </VStack>
+                    </HStack>
                 </VStack>
+                <Show above="md" asChild>
+                    <div>Språkvelger</div>
+                </Show>
             </VStack>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 
