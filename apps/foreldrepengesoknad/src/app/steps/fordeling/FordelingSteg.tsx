@@ -1,4 +1,8 @@
+import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
+
 import { Loader, VStack } from '@navikt/ds-react';
+
 import {
     ISOStringToDate,
     Step,
@@ -7,7 +11,9 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
+import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
+
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
 import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
@@ -16,20 +22,18 @@ import useStepConfig from 'app/appData/useStepConfig';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getFordelingFraKontoer, getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { RequestStatus } from 'app/types/RequestState';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtMinsterett, getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { useMemo } from 'react';
-import { useIntl } from 'react-intl';
+
 import {
     getAnnenPartVedtakParam,
     shouldSuspendAnnenPartVedtakApiRequest,
 } from '../periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
-import { RequestStatus } from 'app/types/RequestState';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import { Søker } from '@navikt/fp-types';
-import FordelingForm from './FordelingForm';
 import { getAntallUkerFellesperiode } from '../uttaksplan-info/utils/stønadskontoer';
+import FordelingForm from './FordelingForm';
 
 type Props = {
     søker: Søker;
@@ -114,6 +118,8 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
         ? tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)]
         : undefined;
 
+    //TODO GR: eksisterendeVedtakAnnenPart?.uttaksplan, er på infoperiode format og derfor vises ikke annen parts bruk av fellesperiode eller søkerens kvote.
+
     const fordelingScenario =
         valgtStønadskonto && minsterett
             ? getFordelingFraKontoer(
@@ -131,11 +137,12 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
             : [];
     const dagerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) * 5 : 0;
     //TODO GR: Må finnes siste uttaksperiode, filtrere bort på kun de og kun invilgede:
-    const sisteDagAnnenForelder = annenPartsVedtak
-        ? Uttaksdagen(
-              ISOStringToDate(annenPartsVedtak.perioder[annenPartsVedtak.perioder.length - 1].tom)!,
-          ).denneEllerForrige()
-        : undefined;
+    const sisteDagAnnenForelder =
+        deltUttak && annenPartsVedtak
+            ? Uttaksdagen(
+                  ISOStringToDate(annenPartsVedtak.perioder[annenPartsVedtak.perioder.length - 1].tom)!,
+              ).denneEllerForrige()
+            : undefined;
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder ? Uttaksdagen(sisteDagAnnenForelder).neste() : undefined;
     return (
         <Step

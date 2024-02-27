@@ -96,10 +96,9 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                             id: 'fordeling.fordelingsvalg.option.likt.description',
                         },
                         {
-                            ukerMor: likFordeling,
-                            ukerFar: likFordeling,
-                            navnMor: navnPåForeldre.mor,
-                            navnFar: navnPåForeldre.farMedmor,
+                            ukerDeg: likFordeling,
+                            ukerAnnenForelder: likFordeling,
+                            navnAnnenForelder: navnAnnenForelder,
                         },
                     )}
                 >
@@ -107,10 +106,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                 </Radio>
                 <Radio
                     value={FellesperiodeFordelingValg.VIL_VELGE}
-                    description={intl.formatMessage(
-                        { id: 'fordeling.fordelingsvalg.option.valgfritt.description' },
-                        { navnAnnenForelder },
-                    )}
+                    description={intl.formatMessage({ id: 'fordeling.fordelingsvalg.option.valgfritt.description' })}
                 >
                     <FormattedMessage id="fordeling.fordelingsvalg.option.valgfritt" />
                 </Radio>

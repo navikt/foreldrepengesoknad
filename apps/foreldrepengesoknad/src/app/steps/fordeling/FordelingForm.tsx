@@ -1,10 +1,14 @@
 import { useForm } from 'react-hook-form';
+
 import { VStack } from '@navikt/ds-react';
-import { Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+
+import { NavnPåForeldre, isFarEllerMedmor } from '@navikt/fp-common';
+import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
-import { NavnPåForeldre, isFarEllerMedmor } from '@navikt/fp-common';
-import { notEmpty } from '@navikt/fp-validation';
+
 import FellesperiodeFordeling from './components/FellesperiodeFordeling';
 import OppstartAvForeldrepenger from './components/OppstartAvForeldrepenger';
 
@@ -37,12 +41,12 @@ const FordelingForm: React.FunctionComponent<Props> = ({
         oppdaterFordeling(values);
         return goToNextDefaultStep();
     };
-
+    const søkerDeltUttakFørst = deltUttak && førsteDagEtterAnnenForelder === undefined;
     return (
         <Form formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
                 <ErrorSummaryHookForm />
-                {deltUttak && (
+                {søkerDeltUttakFørst && (
                     <FellesperiodeFordeling
                         navnPåForeldre={navnPåForeldre}
                         dagerMedFellesperiode={dagerMedFellesperiode}

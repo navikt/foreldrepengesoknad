@@ -1,22 +1,26 @@
-import { RadioGroup } from '@navikt/fp-form-hooks';
+import React from 'react';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { Radio } from '@navikt/ds-react';
-import { isRequired } from '@navikt/fp-validation';
-import { FormattedMessage, useIntl, IntlShape } from 'react-intl';
-import { OppstartValg } from 'app/steps/fordeling/FordelingFormValues';
+
 import {
     Barn,
     ISOStringToDate,
     andreAugust2022ReglerGjelder,
     formatDate,
     førsteOktober2021ReglerGjelder,
+    getFørsteUttaksdagForeldrepengerFørFødsel,
     intlUtils,
     isAdoptertAnnetBarn,
     isFarEllerMedmor,
     isFødtBarn,
 } from '@navikt/fp-common';
+import { RadioGroup } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
+import { isRequired } from '@navikt/fp-validation';
+
+import { OppstartValg } from 'app/steps/fordeling/FordelingFormValues';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import React from 'react';
 
 const getRadioOptionFarFødsel = (
     erBarnetFødt: boolean,
@@ -28,20 +32,22 @@ const getRadioOptionFarFødsel = (
     const radioOptions = [];
     if (andreAugust2022ReglerGjelder(familiehendelsesDato)) {
         radioOptions.push(getRadioOptionFarPåFødselWLB(erBarnetFødt, intl));
-        radioOptions.push(getRadioOptionFarRundtFødselWLB(erBarnetFødt, intl));
-        radioOptions.push(getRadioOptionFarSenereWLB());
     }
     if (førsteDagEtterAnnenForelder) {
         radioOptions.push(getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder));
     }
-    if (!førsteOktober2021ReglerGjelder(familiehendelsesDato)) {
+    if (førsteOktober2021ReglerGjelder(familiehendelsesDato)) {
         radioOptions.push(getRadioOptionAnnenDato());
     }
     return radioOptions;
 };
 
-const getRadioOptionMorFødsel = (erBarnetFødt: boolean, intl: IntlShape): React.ReactElement[] => [
-    getRadioOptionTreUkerFørTermin(erBarnetFødt),
+const getRadioOptionMorFødsel = (
+    erBarnetFødt: boolean,
+    intl: IntlShape,
+    familiehendelsesdato: Date,
+): React.ReactElement[] => [
+    getRadioOptionTreUkerFørTermin(erBarnetFødt, intl, familiehendelsesdato),
     getRadioOptionAnnenDatoMorFødsel(erBarnetFødt, intl),
 ];
 
@@ -83,7 +89,9 @@ const getRadioOptionAdopsjon = (
 };
 
 const getRadioOptionFarPåFødselWLB = (erBarnetFødt: boolean, intl: IntlShape): React.ReactElement => {
-    const description = intlUtils(intl, 'fordeling.oppstartValg.påFødsel.description');
+    const description = erBarnetFødt
+        ? intlUtils(intl, 'fordeling.oppstartValg.påFødsel.description.barnErFødt')
+        : intlUtils(intl, 'fordeling.oppstartValg.påFødsel.description.barnErIkkeFødt');
     const tekstId = erBarnetFødt
         ? 'fordeling.oppstartValg.påFødsel.barnErFødt'
         : 'fordeling.oppstartValg.påFødsel.barnErIkkeFødt';
@@ -94,32 +102,14 @@ const getRadioOptionFarPåFødselWLB = (erBarnetFødt: boolean, intl: IntlShape)
     );
 };
 
-const getRadioOptionFarRundtFødselWLB = (erBarnetFødt: boolean, intl: IntlShape): React.ReactElement => {
-    const tekstId = erBarnetFødt ? 'fordeling.oppstartValg.rundtFødsel' : 'fordeling.oppstartValg.rundtTermin';
-    const description = erBarnetFødt
-        ? intlUtils(intl, 'fordeling.oppstartValg.rundtFødsel.description')
-        : intlUtils(intl, 'fordeling.oppstartValg.rundtTermin.description');
-    return (
-        <Radio value={OppstartValg.RUNDT_FØDSEL} description={description}>
-            <FormattedMessage id={tekstId} />
-        </Radio>
-    );
-};
-
-const getRadioOptionFarSenereWLB = (): React.ReactElement => (
-    <Radio value={OppstartValg.ANNEN_DATO}>
-        <FormattedMessage id="fordeling.oppstartValg.senereFar" />
-    </Radio>
-);
-
 const getRadioOptionDagenEtterAnnenForelder = (
-    annenForelderNavn: string,
+    navnAnnenForelder: string,
     førsteDagEtterAnnenForelder: Date,
 ): React.ReactElement => (
     <Radio value={OppstartValg.DAGEN_ETTER_ANNEN_FORELDER}>
         <FormattedMessage
             id="fordeling.oppstartValg.dagenEtterAnnenForelder"
-            values={{ annenForelderNavn, førsteDagEtterAnnenForelder }}
+            values={{ navnAnnenForelder, førsteDagEtterAnnenForelder: formatDate(førsteDagEtterAnnenForelder) }}
         />
     </Radio>
 );
@@ -141,9 +131,19 @@ const getRadioOptionAnnenDatoMorFødsel = (erBarnetFødt: boolean, intl: IntlSha
     );
 };
 
-const getRadioOptionTreUkerFørTermin = (erBarnetFødt: boolean): React.ReactElement => {
+const getRadioOptionTreUkerFørTermin = (
+    erBarnetFødt: boolean,
+    intl: IntlShape,
+    familiehendelsesdato: Date,
+): React.ReactElement => {
+    const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
     return (
-        <Radio value={OppstartValg.TRE_UKER_FØR_TERMIN}>
+        <Radio
+            value={OppstartValg.TRE_UKER_FØR_TERMIN}
+            description={intlUtils(intl, 'fordeling.oppstartValg.treUkerFør.description', {
+                dato: formatDate(førsteDagTreUkerFørFødsel),
+            })}
+        >
             {!erBarnetFødt && <FormattedMessage id="fordeling.oppstartValg.treUkerFørTermin" />}
             {erBarnetFødt && <FormattedMessage id="fordeling.oppstartValg.treUkerFørFødsel" />}
         </Radio>
@@ -164,7 +164,7 @@ export const getRadioOptionsForSituasjon = (
     const erMor = !erFarEllerMedmor;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     if (erMor && erFødsel) {
-        return getRadioOptionMorFødsel(erBarnetFødt, intl);
+        return getRadioOptionMorFødsel(erBarnetFødt, intl, familiehendelsesdato);
     }
     if (erFarEllerMedmor && erFødsel) {
         return getRadioOptionFarFødsel(
