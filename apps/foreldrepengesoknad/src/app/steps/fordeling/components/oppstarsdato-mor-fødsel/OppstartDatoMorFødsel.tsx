@@ -1,22 +1,28 @@
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
+import dayjs from 'dayjs';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { Alert, BodyShort, HStack, VStack } from '@navikt/ds-react';
+
 import {
     ISOStringToDate,
     Tidsperioden,
     Uttaksdagen,
+    bemUtils,
     getValidTidsperiode,
     getVarighetString,
     intlUtils,
     isFødtBarn,
 } from '@navikt/fp-common';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import OppstartDatoInput from './OppstartDatoInput';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { isValidDate, notEmpty } from '@navikt/fp-validation';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
-import { useFormContext } from 'react-hook-form';
-import FordelingFormValues from '../FordelingFormValues';
-import dayjs from 'dayjs';
+
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+
+import FordelingFormValues from '../../FordelingFormValues';
+import OppstartDatoInput from '../OppstartDatoInput';
+import './oppstart-dato-mor-fødsel.css';
 
 const getVarighetFørFamiliehendelse = (
     familiehendelsesdato: Date,
@@ -72,6 +78,7 @@ const getMorInfoFellesperiodeFørFødsel = (
 
 const OppstartDatoMorFødsel = () => {
     const intl = useIntl();
+    const bem = bemUtils('oppstart-dato-mor-fødsel');
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const førsteUttaksdagMorFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
@@ -88,34 +95,29 @@ const OppstartDatoMorFødsel = () => {
         førsteUttaksdagMorFødsel,
         intl,
     );
+    const visMisterDagerFørFødsel = morStarterIkkePå3UkerFørFødsel && morInfoMistetDagerFørFødsel;
+    const visBrukFellesperiode = morStarterIkkePå3UkerFørFødsel && morVarighetFellesperiodeFørFødsel;
     return (
         <div>
             <VStack gap="2">
                 <HStack gap="1">
                     <OppstartDatoInput />
-                    {morStarterIkkePå3UkerFørFødsel && (
-                        <div
-                            style={{
-                                marginTop: '3.2rem',
-                                marginLeft: '-5rem',
-                                backgroundColor: 'lightblue',
-                                padding: '0.5rem',
-                            }}
-                        >
+                    {oppstartDato && (
+                        <div className={bem.element('div')}>
                             <BodyShort>
                                 {intlUtils(intl, 'fordeling.oppstartValg.førFødselEllerTerminInfo', {
                                     varighetString,
                                     fødselEllerTermin,
                                 })}
                             </BodyShort>
-                            {morInfoMistetDagerFørFødsel && (
+                            {visMisterDagerFørFødsel && (
                                 <BodyShort>
                                     {intlUtils(intl, 'fordeling.oppstartValg.misterDagerInfo', {
                                         varighetString: morInfoMistetDagerFørFødsel,
                                     })}
                                 </BodyShort>
                             )}
-                            {morVarighetFellesperiodeFørFødsel && (
+                            {visBrukFellesperiode && (
                                 <BodyShort>
                                     {intlUtils(intl, 'fordeling.oppstartValg.taFraFellesperioden', {
                                         varighetString: morVarighetFellesperiodeFørFødsel,

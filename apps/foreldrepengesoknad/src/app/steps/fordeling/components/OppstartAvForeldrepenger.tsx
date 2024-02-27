@@ -1,13 +1,17 @@
-import { VStack } from '@navikt/ds-react';
-import { notEmpty } from '@navikt/fp-validation';
-import { useIntl } from 'react-intl';
-import FordelingFormValues, { OppstartValg } from 'app/steps/fordeling/FordelingFormValues';
 import { useFormContext } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+
+import { VStack } from '@navikt/ds-react';
+
 import { NavnPåForeldre } from '@navikt/fp-common';
-import OppstartValgInput, { getRadioOptionsForSituasjon } from './OppstartValgInput';
+import { notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import OppstartDatoMorFødsel from './OppstartDatoMorFødsel';
+import FordelingFormValues, { OppstartValg } from 'app/steps/fordeling/FordelingFormValues';
+
 import OppstartDatoInput from './OppstartDatoInput';
+import OppstartValgInput, { getRadioOptionsForSituasjon } from './OppstartValgInput';
+import OppstartDatoMorFødsel from './oppstarsdato-mor-fødsel/OppstartDatoMorFødsel';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;

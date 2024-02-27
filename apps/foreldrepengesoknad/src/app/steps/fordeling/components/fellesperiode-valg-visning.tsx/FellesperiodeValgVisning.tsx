@@ -1,8 +1,12 @@
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { VStack } from '@navikt/ds-react';
+
 import { bemUtils, getVarighetString, guid } from '@navikt/fp-common';
+
 import DelGraf from 'app/components/fordeling-oversikt/grafer/del-graf/DelGraf';
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import './fellesperiodeValgVisning.css';
 
 interface Props {

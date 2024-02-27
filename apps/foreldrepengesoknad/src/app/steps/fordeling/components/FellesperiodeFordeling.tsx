@@ -1,14 +1,18 @@
-import { RadioGroup, TextField } from '@navikt/fp-form-hooks';
-import { Alert, Radio, VStack } from '@navikt/ds-react';
-import { isRequired } from '@navikt/fp-validation';
-import { FormattedMessage, useIntl } from 'react-intl';
-import FordelingFormValues, { FellesperiodeFordelingValg } from 'app/steps/fordeling/FordelingFormValues';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Alert, Radio, VStack } from '@navikt/ds-react';
+
 import { NavnPåForeldre, getVarighetString } from '@navikt/fp-common';
-import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
-import FellesperiodeValgVisning from './FellesperiodeValgVisning';
+import { RadioGroup, TextField } from '@navikt/fp-form-hooks';
+import { isRequired } from '@navikt/fp-validation';
+
+import FordelingFormValues, { FellesperiodeFordelingValg } from 'app/steps/fordeling/FordelingFormValues';
 import { validateNumber } from 'app/steps/inntektsinformasjon/components/egen-næring/modal/validation/egenNæringValidation';
+import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
+
 import { validateAntallUkerFellesperiode } from '../fordelingFormUtils';
+import FellesperiodeValgVisning from './fellesperiode-valg-visning.tsx/FellesperiodeValgVisning';
 
 const getValgtFellesperiodeFordeling = (
     erFarEllerMedmor: boolean,

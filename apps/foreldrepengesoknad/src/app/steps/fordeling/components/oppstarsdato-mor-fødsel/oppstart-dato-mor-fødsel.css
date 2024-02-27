@@ -1,0 +1,10 @@
+.oppstart-dato-mor-fødsel__div {
+    margin-top: 3.2rem;
+    margin-left: -5rem;
+    background-color: lightblue;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 20rem;
+}
