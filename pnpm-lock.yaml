@@ -1182,12 +1182,6 @@ importers:
       '@navikt/ds-css':
         specifier: 5.15.1
         version: 5.15.1
-      '@navikt/ds-datepicker':
-        specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.15.1)(@navikt/ds-react@5.15.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
-      '@navikt/ds-icons':
-        specifier: 3.4.3
-        version: 3.4.3(@types/react@18.2.48)(react@18.2.0)
       '@navikt/ds-react':
         specifier: 5.15.1
         version: 5.15.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
@@ -4210,33 +4204,6 @@ packages:
   /@navikt/ds-css@5.15.1:
     resolution:
       { integrity: sha512-LhcFuI4YGuxPHRe0KgMniMCI5j3cLph5Wl+sr3t10+KM7fGPBTqJFV2zeLyr6ccMl5iXJiIUL850J80VK7G3gg== }
-    dev: false
-
-  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.15.1)(@navikt/ds-react@5.15.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
-    resolution:
-      { integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A== }
-    peerDependencies:
-      '@navikt/ds-css': '>=2'
-      '@navikt/ds-react': '>=2'
-      classnames: 2.3.x
-      date-fns: 2.x
-      dayjs: 1.x
-      react: 18.x
-      react-day-picker: 8.x
-      uuid: '9'
-    dependencies:
-      '@navikt/ds-css': 5.15.1
-      '@navikt/ds-react': 5.15.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
-      classnames: 2.3.2
-      date-fns: 2.30.0
-      dayjs: 1.11.10
-      focus-trap-react: 10.1.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-day-picker: 8.10.0(date-fns@2.30.0)(react@18.2.0)
-      uuid: 9.0.1
-    transitivePeerDependencies:
-      - react-dom
     dev: false
 
   /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.15.1)(@navikt/ds-react@5.15.1)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
@@ -8263,8 +8230,7 @@ packages:
     dev: true
 
   /classnames@2.3.2:
-    resolution:
-      { integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw== }
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
     dev: false
 
   /classnames@2.5.1:
