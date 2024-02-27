@@ -1,8 +1,0 @@
-.planleggerKnapp {
-    --ac-button-secondary-bg: #007c2e;
-    --ac-button-secondary-text: white;
-    --ac-button-secondary-hover-bg: #ccf1d6;
-    --ac-button-secondary-hover-text: #007c2e;
-    --ac-button-secondary-border: none;
-    border-radius: 6.25rem !important;
-}

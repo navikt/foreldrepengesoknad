@@ -1,22 +1,22 @@
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
-import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
-import { FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { PlanleggerRoutes } from 'appData/routes';
-import { isAlene } from 'types/HvemPlanlegger';
-import Aleneforsørger from './situasjon/Aleneforsørger';
-import FlereForsørgere from './situasjon/FlereForsørgere';
+import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import useStepData from 'appData/useStepData';
 import BlåSirkel from 'components/ikoner/BlåSirkel';
 import Hjerte from 'components/ikoner/Hjerte';
 import RosaSirkel from 'components/ikoner/RosaSirkel';
-import { PeriodeEnum } from 'types/Periode';
-import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
-import Kalender from './kalender/Kalender';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
+import { FormattedMessage } from 'react-intl';
+import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { isAlene } from 'types/HvemPlanlegger';
+import { PeriodeEnum } from 'types/Periode';
+import Kalender from './kalender/Kalender';
+import Aleneforsørger from './situasjon/Aleneforsørger';
+import FlereForsørgere from './situasjon/FlereForsørgere';
 dayjs.locale('nb');
 
 const barnehagestartDato = (barnet: OmBarnet) => {
@@ -35,14 +35,14 @@ const barnehagestartDato = (barnet: OmBarnet) => {
     return undefined;
 };
 const OversiktSteg = () => {
-    const navigate = useNavigate();
     const navigator = usePlanleggerNavigator();
+    const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const valgtPeriode = notEmpty(useContextGetData(ContextDataType.PERIODE));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage steps={stepConfig}>
             <VStack gap="10">
                 {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
                 {isAlene(hvemPlanlegger) && <Aleneforsørger />}
@@ -86,16 +86,16 @@ const OversiktSteg = () => {
                     </VStack>
                 </VStack>
 
-                <VStack gap="10" className="button-wrapper content-wrapper">
+                <VStack gap="10">
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonOnClick={() => navigate(PlanleggerRoutes.OPPSUMMERING)}
+                        nextButtonOnClick={navigator.goToNextDefaultStep}
                         nextButtonText="Tilpass plan"
                         previousButtonText="Tilbake"
                     />
                 </VStack>
             </VStack>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 
