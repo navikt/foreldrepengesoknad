@@ -1006,7 +1006,6 @@
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dykk har valgt {uker} med {dekningsgrad}% foreldrepengar",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette vart valgt av {navn} i søknaden hennar, og det kan ikkje endras av deg.",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHans": "Dette vart valgt av {navn} i søknaden hans, og det kan ikkje endras av deg.",
-
     "fordeling.antallUkerTilDeg": "{varighetTekst} til deg",
     "fordeling.varighet.morFødsel": "{varighetUker} + 3 veker",
     "fordeling.antallUkerFelles": "{varighetTekst} kan delast, fellesperiode",
@@ -1029,7 +1028,6 @@
     "fordeling.info.farMedmor.før1okt2021": "<b>{varighetTekst}</b> med foreldrepengar.",
     "fordeling.info.farMedmor.rundtFødsel": "<b>2 av desse vekene</b> kan nyttast i perioden rundt fødsel, samtidig med {morEllerDeg}. {farTekstCapitalized} kan nyttast desse 2 vekene i perioden frå to veker før termin til seks veker etter fødsel. Mange får desse to vekene dekte av arbeidsgivaren sin. Hvis {farTekst} får dekte desse to vekene, kan det lønne seg å spare kvoten {dinEllerHans} til seinare.",
     "fordeling.info.farMedmor.rundtFødsel.eøs": "<b>2 av desse vekene</b> kan nyttast i perioden rundt fødsel. {farTekstCapitalized} kan nyttast desse 2 vekene  i perioden frå to veker før termin til seks veker etter fødsel. Mange får desse to vekene dekte av arbeidsgivaren sin. Hvis {farTekst} får dekte desse to vekene, kan det lønne seg å spare kvoten {dinEllerHans} til seinare.",
-
     "fordeling.info.annenPart.brukteDagerAvDinKvote": "<b>{varighetTekst}</b> er allereie brukt av {navnAnnenPart} fordi du er enten sjuk eller innlagt i helseinstitusjon.",
     "fordeling.info.ekstraDagerPrematur.fellesperiode": "<b>{varighetTekst} av desse</b> er lagt til i fellesperioden fordi {barnetEllerBarna} blei fødd før svangerskapsveke 33.",
     "fordeling.info.ekstraDagerPrematur.foreldrepenger": "<>{varighetTekst} av desse</b> er lagt til fordi {barnetEllerBarna} blei fødd før svangerskapsveke 33.",
@@ -1052,7 +1050,6 @@
     "fordeling.påvirkninger.morSykFørste6Uker.info": "Dei første seks vekene etter fødsel er førebels reservert {degEllerMor}, og det er i utgangspunktet ikkje mogleg å flytte dei til eit seinare tidspunkt. Unntaket er dersom {morTekst} blir sjuk eller innlagt i helseinstitusjon og ikkje kan ta {degEllerSeg} av {barnetEllerBarna}. Då kan enten {morTekst} søke om utsettelse eller {farTekst} kan søke om å ta over perioden.",
     "fordeling.påvirkninger.totette.tittel": "Hvis {duEllerDere} får eit nytt barn før det har gått tre år",
     "fordeling.påvirkninger.totette.info.etterWLB.del1": "Hvis {duEllerDere} får eit nytt barn før det har gått tre år, må {duEllerDere} som regel bruke opp foreldrepengene før {duEllerDere} startar med foreldrepenger for det neste barnet. Dagane som ikkje er brukt, går tapt. Unntaket er hvis {duEllerDere} får eit nytt barn innan 48 veker etter dette barnet er født. ",
-
     "fordeling.påvirkninger.totette.info.etterWLB.del2.deltUttak": "Då vil {morTekst} behalde rett til opptil {morMinsterettUkerToTette} veker foreldrepengar for det eldre barnet og {farTekst} vil behalde rett til {farMinsterettUkerToTette} veker foreldrepengar.",
     "fordeling.påvirkninger.totette.info.etterWLB.del2.alene": "Då vil du behalde rett til opptil {søkerensMinsterettToTette} veker foreldrepengar for det eldre barnet.",
     "fordeling.påvirkninger.totette.info.førWlb": "Hvis {duEllerDere} får eit nytt barn før det har gått tre år, må {duEllerDere} bruke opp foreldrepengene før {duEllerDere} startar med foreldrepenger for det neste barnet. Dagane som ikkje er brukt, går tapt.",
@@ -1061,7 +1058,7 @@
     "fordeling.påvirkninger.samtidigUttak.tittel": "Hvis dere har foreldrepenger samtidig",
     "fordeling.påvirkninger.samtidigUttak.info": "Dere kan vere heime samtidig med opp til 150% foreldrepenger. Dette er mogleg frå veke 7 etter fødsel. For eksempel kan den eine forelderen bruke inntil 100 prosent av sin kvote og den andre inntil 50 prosent av fellesperioden. Då vil den totale lengda av perioden med foreldrepenger bli kortare.",
     "fordeling.påvirkninger.prematur.tittel": "Hvis {barnetEllerBarna} blir født før svangerskapsveke 33",
-    "fordeling.påvirkninger.prematur.info": "Hvis {barnetEllerBarna} blir født før 33. svangerskapsveke så blir perioden med foreldrepenger utvida med same tal veker og dagar som {barnetEllerBarna} er født før termindato. Får {duEllerDere} pleiepenger i perioden frå fødsel og fram til opphavleg termindato, trekkjer desse dagane frå den utvida perioden.",
+    "fordeling.påvirkninger.prematur.info": "Hvis {barnetEllerBarna} blir født før 33. svangerskapsveke så blir perioden med foreldrepenger utvida med same antall veker og dagar som {barnetEllerBarna} er født før termindato. Får {duEllerDere} pleiepenger i perioden frå fødsel og fram til opphavleg termindato, trekkjer desse dagane frå den utvida perioden.",
     "fordeling.påvirkninger.barnSyk.tittel": "Hvis {barnetEllerBarna} blir innlagt på sjukehus dei første 6 vekene etter fødsel.",
     "fordeling.påvirkninger.barnSyk.info": "Hvis {barnetEllerBarna} blir innlagt på sjukehus dei første 6 vekene etter fødsel, kan {morTekst} utsette foreldrepengane i denne perioden.",
     "fordeling.påvirkninger.utsettelse.tittel": "Hvis du blir sjuk, eller hvis du eller {barnetEllerBarna} blir innlagt på helseinstitusjon",
