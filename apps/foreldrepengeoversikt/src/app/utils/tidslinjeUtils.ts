@@ -1,21 +1,24 @@
-import { formatDate, intlUtils } from '@navikt/fp-common';
-import { AktørType } from 'app/types/AktørType';
-import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from 'app/types/ÅpenBehandling';
-import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
-import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
-import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import OversiktRoutes, { NavRoutes } from 'app/routes/routes';
-import { Uttaksdagen, UTTAKSDAGER_PER_UKE } from 'app/utils/Uttaksdagen';
+
+import { formatDate, intlUtils } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Ytelse } from 'app/types/Ytelse';
-import { formaterDato } from './dateUtils';
-import { Familiehendelse } from 'app/types/Familiehendelse';
-import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
+
+import OversiktRoutes, { NavRoutes } from 'app/routes/routes';
+import { AktørType } from 'app/types/AktørType';
 import { BarnGruppering } from 'app/types/BarnGruppering';
+import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
+import { Familiehendelse } from 'app/types/Familiehendelse';
 import { Sak } from 'app/types/Sak';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
+import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import { Tilretteleggingstype } from 'app/types/TilretteleggingsperiodeSVP';
+import { Ytelse } from 'app/types/Ytelse';
+import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from 'app/types/ÅpenBehandling';
+import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from 'app/utils/Uttaksdagen';
+
+import { formaterDato } from './dateUtils';
+import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 
 export const VENTEÅRSAKER = [
     BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
@@ -179,6 +182,8 @@ const finnTekstForTidslinjehendelse = (
             return intl.formatMessage({ id: 'tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD' });
         case TidslinjehendelseType.VENT_DOKUMENTASJON:
             return intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' });
+        case TidslinjehendelseType.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV:
+            return intl.formatMessage({ id: 'tidslinje.tittel.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV' });
     }
 };
 
