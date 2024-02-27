@@ -10,9 +10,18 @@ interface Props {
     validate?: Array<(value: string | number | boolean) => any>;
     onChange?: (value: string | boolean | number) => void;
     children: ReactElement[];
+    className?: string;
 }
 
-const RadioGroup: FunctionComponent<Props> = ({ label, description, name, validate = [], onChange, children }) => {
+const RadioGroup: FunctionComponent<Props> = ({
+    label,
+    description,
+    name,
+    validate = [],
+    onChange,
+    children,
+    className,
+}) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -36,6 +45,7 @@ const RadioGroup: FunctionComponent<Props> = ({ label, description, name, valida
                 }
                 field.onChange(value);
             }}
+            className={className}
         >
             {children.map((child, index) => {
                 //TODO Vurder å heller lage ein wrapper til children

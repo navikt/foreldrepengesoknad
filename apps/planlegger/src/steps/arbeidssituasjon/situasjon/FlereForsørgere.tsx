@@ -1,9 +1,9 @@
-import { Heading, VStack } from '@navikt/ds-react';
+import { Radio, VStack } from '@navikt/ds-react';
 import { intlUtils } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import GreenRadio from 'components/radio/GreenRadio';
+import GreenPanel from 'components/GreenPanel';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
@@ -45,73 +45,77 @@ const FlereForsørgere: FunctionComponent = () => {
     return (
         <VStack gap="10">
             <VStack gap="1">
-                <Heading size="small">
-                    <FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: navn[0] }} />
-                </Heading>
-                <RadioGroup
-                    name="arbeidssituasjonFørste"
-                    validate={[
-                        isRequired(intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[0] })),
-                    ]}
-                >
-                    <GreenRadio
-                        value={true}
-                        description={intl.formatMessage(
-                            { id: 'arbeid.jobber.beskrivelse' },
-                            {
-                                navn: navn[0],
-                            },
-                        )}
+                <GreenPanel>
+                    <RadioGroup
+                        name="arbeidssituasjonFørste"
+                        label={<FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: navn[0] }} />}
+                        validate={[
+                            isRequired(
+                                intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[0] }),
+                            ),
+                        ]}
                     >
-                        <FormattedMessage id="arbeid.jobber" />
-                    </GreenRadio>
+                        <Radio
+                            value={true}
+                            description={intl.formatMessage(
+                                { id: 'arbeid.jobber.beskrivelse' },
+                                {
+                                    navn: navn[0],
+                                },
+                            )}
+                        >
+                            <FormattedMessage id="arbeid.jobber" />
+                        </Radio>
 
-                    <GreenRadio
-                        value={false}
-                        description={intl.formatMessage(
-                            { id: 'arbeid.jobberIkke.beskrivelse' },
-                            {
-                                navn: navn[0],
-                            },
-                        )}
-                    >
-                        <FormattedMessage id="arbeid.jobberIkke" />
-                    </GreenRadio>
-                </RadioGroup>
+                        <Radio
+                            value={false}
+                            description={intl.formatMessage(
+                                { id: 'arbeid.jobberIkke.beskrivelse' },
+                                {
+                                    navn: navn[0],
+                                },
+                            )}
+                        >
+                            <FormattedMessage id="arbeid.jobberIkke" />
+                        </Radio>
+                    </RadioGroup>
+                </GreenPanel>
             </VStack>
 
             <VStack gap="1">
-                <Heading size="small">
-                    <FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: navn[1] }} />
-                </Heading>
-                <RadioGroup
-                    name="arbeidssituasjonAndre"
-                    validate={[
-                        isRequired(intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[1] })),
-                    ]}
-                >
-                    <GreenRadio
-                        value={true}
-                        description={intl.formatMessage(
-                            { id: 'arbeid.jobber.beskrivelse' },
-                            {
-                                navn: navn[1],
-                            },
-                        )}
+                <GreenPanel>
+                    <RadioGroup
+                        name="arbeidssituasjonAndre"
+                        label={<FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: navn[1] }} />}
+                        validate={[
+                            isRequired(
+                                intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[1] }),
+                            ),
+                        ]}
                     >
-                        <FormattedMessage id="arbeid.jobber" />
-                    </GreenRadio>
-                    <GreenRadio
-                        value={false}
-                        description={intl.formatMessage(
-                            { id: 'arbeid.jobberIkke.beskrivelse' },
+                        <Radio
+                            value={true}
+                            description={intl.formatMessage(
+                                { id: 'arbeid.jobber.beskrivelse' },
+                                {
+                                    navn: navn[1],
+                                },
+                            )}
+                        >
+                            <FormattedMessage id="arbeid.jobber" />
+                        </Radio>
+                        <Radio
+                            value={false}
+                            description={intl.formatMessage(
+                                { id: 'arbeid.jobberIkke.beskrivelse' },
 
-                            { navn: navn[1] },
-                        )}
-                    >
-                        <FormattedMessage id="arbeid.jobberIkke" />
-                    </GreenRadio>
-                </RadioGroup>
+                                { navn: navn[1] },
+                            )}
+                        >
+                            <FormattedMessage id="arbeid.jobberIkke" />
+                        </Radio>
+                    </RadioGroup>
+                </GreenPanel>
             </VStack>
         </VStack>
     );

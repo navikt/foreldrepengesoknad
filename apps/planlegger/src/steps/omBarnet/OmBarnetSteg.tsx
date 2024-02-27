@@ -1,11 +1,6 @@
-import { FormattedMessage, useIntl } from 'react-intl';
-import { ContentWrapper } from '@navikt/fp-ui';
-import { Heading, VStack } from '@navikt/ds-react';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import { useForm } from 'react-hook-form';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import { Heading, Radio, VStack } from '@navikt/ds-react';
 import { Datepicker, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import dayjs from 'dayjs';
+import { isSameOrAfterToday } from '@navikt/fp-utils';
 import {
     erI22SvangerskapsukeEllerSenere,
     isAfterOrSameAsSixMonthsAgo,
@@ -15,14 +10,19 @@ import {
     isValidDate,
     notEmpty,
 } from '@navikt/fp-validation';
-import { PlanleggerRoutes } from 'appData/routes';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
-import { isAlene } from 'types/HvemPlanlegger';
+import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
+import { isAlene } from 'types/HvemPlanlegger';
 import Foreldrepengeinfo from './Foreldrepengeinfo';
-import { isSameOrAfterToday } from '@navikt/fp-utils';
-import GreenRadio from 'components/radio/GreenRadio';
 
+import useStepData from 'appData/useStepData';
+import GreenPanel from 'components/GreenPanel';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import styles from './omBarnetSteg.module.css';
 
 const isLessThanThreeMonthsLeft = (termindato?: string) => {
@@ -35,6 +35,7 @@ const isLessThanThreeMonthsLeft = (termindato?: string) => {
 
 const OmBarnetSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
+    const stepConfig = useStepData();
     const formMethods = useForm<OmBarnet>();
     const intl = useIntl();
 
@@ -46,45 +47,41 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const lagreOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const lagre = (formValues: OmBarnet) => {
         lagreOmBarnet(formValues);
-        navigator.goToNextStep(PlanleggerRoutes.BARNEHAGEPLASS);
+        return navigator.goToNextDefaultStep();
     };
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <VStack gap="10">
-                        <Heading size="large">
-                            <FormattedMessage id="barnet.tittel" />
-                        </Heading>
                         <VStack gap="1">
-                            {isAlene(hvemPlanlegger) && (
-                                <Heading size="small">
-                                    <FormattedMessage id="barnet.hvaGjelderDeg" />
-                                </Heading>
-                            )}
-                            {!isAlene(hvemPlanlegger) && (
-                                <Heading size="small">
-                                    <FormattedMessage id="barnet.hvaGjelder" />
-                                </Heading>
-                            )}
-                            <RadioGroup
-                                name="erFødsel"
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.fødselEllerAdopsjon.duMåOppgi',
-                                        }),
-                                    ),
-                                ]}
-                            >
-                                <GreenRadio value={true}>
-                                    <FormattedMessage id="barnet.fødsel" />
-                                </GreenRadio>
-                                <GreenRadio value={false} disabled>
-                                    <FormattedMessage id="barnet.adopsjon" />
-                                </GreenRadio>
-                            </RadioGroup>
+                            <GreenPanel>
+                                <RadioGroup
+                                    name="erFødsel"
+                                    label={
+                                        isAlene(hvemPlanlegger) ? (
+                                            <FormattedMessage id="barnet.hvaGjelderDeg" />
+                                        ) : (
+                                            <FormattedMessage id="barnet.hvaGjelder" />
+                                        )
+                                    }
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.fødselPanel.fødselEllerAdopsjon.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
+                                    <Radio value={true}>
+                                        <FormattedMessage id="barnet.fødsel" />
+                                    </Radio>
+                                    <Radio value={false} disabled>
+                                        <FormattedMessage id="barnet.adopsjon" />
+                                    </Radio>
+                                </RadioGroup>
+                            </GreenPanel>
                         </VStack>
                     </VStack>
                     {erFødsel && (
@@ -92,21 +89,25 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             <Heading size="small">
                                 <FormattedMessage id="barnet.erFødt" />
                             </Heading>
-                            <RadioGroup
-                                name="erBarnetFødt"
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi' }),
-                                    ),
-                                ]}
-                            >
-                                <GreenRadio value={true}>
-                                    <FormattedMessage id="ja" />
-                                </GreenRadio>
-                                <GreenRadio value={false}>
-                                    <FormattedMessage id="nei" />
-                                </GreenRadio>
-                            </RadioGroup>
+                            <GreenPanel>
+                                <RadioGroup
+                                    name="erBarnetFødt"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
+                                    <Radio value={true}>
+                                        <FormattedMessage id="ja" />
+                                    </Radio>
+                                    <Radio value={false}>
+                                        <FormattedMessage id="nei" />
+                                    </Radio>
+                                </RadioGroup>
+                            </GreenPanel>
                         </VStack>
                     )}
                     {erFødt && (
@@ -180,7 +181,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     )}
                     <VStack gap="20">
                         <HvorforSpørViOmDette text="TODO" />
-                        <VStack className="button-wrapper content-wrapper">
+                        <VStack>
                             <StepButtonsHookForm<OmBarnet>
                                 saveDataOnPreviousClick={lagreOmBarnet}
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
@@ -191,7 +192,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     </VStack>
                 </VStack>
             </Form>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 

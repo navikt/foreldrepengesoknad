@@ -1,11 +1,11 @@
-import { Heading, VStack } from '@navikt/ds-react';
+import { Radio, VStack } from '@navikt/ds-react';
 import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
-import { ContentWrapper } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
+import useStepData from 'appData/useStepData';
+import GreenPanel from 'components/GreenPanel';
 import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
-import GreenRadio from 'components/radio/GreenRadio';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -15,6 +15,7 @@ import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
 
 const HvemPlanleggerSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
+    const stepConfig = useStepData();
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
     const formMethods = useForm<HvemPlanlegger>({ defaultValues: hvemPlanlegger });
     const intl = useIntl();
@@ -23,43 +24,45 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
     const lagreHvemPlanlegger = useContextSaveData(ContextDataType.HVEM_PLANLEGGER);
     const lagre = (formValues: HvemPlanlegger) => {
         lagreHvemPlanlegger(formValues);
-        navigator.goToNextStep(PlanleggerRoutes.OM_BARNET);
+        return navigator.goToNextDefaultStep();
     };
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <VStack gap="10">
-                        <Heading size="large">
-                            <FormattedMessage id="hvem.tittel" />
-                        </Heading>
-                        <RadioGroup
-                            name="type"
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({
-                                        id: 'feilmelding.hvemPlanlegger.duMåOppgi',
-                                    }),
-                                ),
-                            ]}
-                        >
-                            <GreenRadio value={SøkersituasjonEnum.MOR_OG_FAR}>
-                                <FormattedMessage id="hvem.morOgFar" />
-                            </GreenRadio>
-                            <GreenRadio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
-                                <FormattedMessage id="hvem.morOgMedmor" />
-                            </GreenRadio>
-                            <GreenRadio value={SøkersituasjonEnum.FAR_OG_FAR}>
-                                <FormattedMessage id="hvem.farOgFar" />
-                            </GreenRadio>
-                            <GreenRadio value={SøkersituasjonEnum.MOR}>
-                                <FormattedMessage id="hvem.bareMor" />
-                            </GreenRadio>
-                            <GreenRadio value={SøkersituasjonEnum.FAR}>
-                                <FormattedMessage id="hvem.bareFar" />
-                            </GreenRadio>
-                        </RadioGroup>
+                        <GreenPanel>
+                            <RadioGroup
+                                name="type"
+                                label={intl.formatMessage({
+                                    id: 'HvemPlanleggerSteg.HvemPlanlegger',
+                                })}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.hvemPlanlegger.duMåOppgi',
+                                        }),
+                                    ),
+                                ]}
+                            >
+                                <Radio value={SøkersituasjonEnum.MOR_OG_FAR}>
+                                    <FormattedMessage id="hvem.morOgFar" />
+                                </Radio>
+                                <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
+                                    <FormattedMessage id="hvem.morOgMedmor" />
+                                </Radio>
+                                <Radio value={SøkersituasjonEnum.FAR_OG_FAR}>
+                                    <FormattedMessage id="hvem.farOgFar" />
+                                </Radio>
+                                <Radio value={SøkersituasjonEnum.MOR}>
+                                    <FormattedMessage id="hvem.bareMor" />
+                                </Radio>
+                                <Radio value={SøkersituasjonEnum.FAR}>
+                                    <FormattedMessage id="hvem.bareFar" />
+                                </Radio>
+                            </RadioGroup>
+                        </GreenPanel>
                     </VStack>
                     {planleggerType === SøkersituasjonEnum.MOR_OG_FAR && (
                         <VStack gap="5">
@@ -187,7 +190,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                     )}
                     <VStack gap="20">
                         <HvorforSpørViOmDette text="TODO" />
-                        <VStack className="button-wrapper content-wrapper">
+                        <VStack>
                             <StepButtonsHookForm
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                                 nextButtonText="Neste"
@@ -197,7 +200,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                     </VStack>
                 </VStack>
             </Form>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 

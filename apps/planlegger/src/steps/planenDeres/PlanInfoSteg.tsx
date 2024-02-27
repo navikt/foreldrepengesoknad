@@ -1,24 +1,24 @@
 import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
-import { ContentWrapper, StepButtons } from '@navikt/fp-ui';
-import Kalender from 'components/ikoner/Kalender';
-import { FormattedMessage } from 'react-intl';
-import Penn from 'components/ikoner/Penn';
-import Check from 'components/ikoner/Check';
-import { useNavigate } from 'react-router-dom';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import { PlanleggerRoutes } from 'appData/routes';
+import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { isAlene } from 'types/HvemPlanlegger';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import useStepData from 'appData/useStepData';
+import Check from 'components/ikoner/Check';
+import Kalender from 'components/ikoner/Kalender';
+import Penn from 'components/ikoner/Penn';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import { FormattedMessage } from 'react-intl';
+import { isAlene } from 'types/HvemPlanlegger';
 
 const PlanInfoSteg = () => {
     const navigator = usePlanleggerNavigator();
-    const navigate = useNavigate();
+    const stepConfig = useStepData();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
     return (
-        <ContentWrapper>
+        <PlanleggerPage steps={stepConfig}>
             <VStack gap="10">
                 {!isAlene(hvemPlanlegger) && (
                     <VStack gap="10">
@@ -131,16 +131,16 @@ const PlanInfoSteg = () => {
                         </VStack>
                     </VStack>
                 )}
-                <VStack gap="10" className="button-wrapper content-wrapper">
+                <VStack gap="10">
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonOnClick={() => navigate(PlanleggerRoutes.OVERSIKT)}
+                        nextButtonOnClick={navigator.goToNextDefaultStep}
                         nextButtonText="Se oversikt"
                         previousButtonText="Tilbake"
                     />
                 </VStack>
             </VStack>
-        </ContentWrapper>
+        </PlanleggerPage>
     );
 };
 

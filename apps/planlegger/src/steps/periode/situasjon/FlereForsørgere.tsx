@@ -1,8 +1,8 @@
-import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, Box, Heading, Radio, VStack } from '@navikt/ds-react';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import GreenRadio from 'components/radio/GreenRadio';
+import GreenPanel from 'components/GreenPanel';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
@@ -43,45 +43,47 @@ const FlereForsørgere: FunctionComponent = () => {
                 <Heading size="small">
                     <FormattedMessage id="periode.hvaGjelderBegge" />
                 </Heading>
-                <RadioGroup
-                    name="periode"
-                    validate={[
-                        isRequired(
-                            intl.formatMessage({
-                                id: 'feilmelding.periode.hvorLangPeriode.duMåOppgi',
-                            }),
-                        ),
-                    ]}
-                >
-                    <GreenRadio
-                        value={PeriodeEnum.HUNDRE}
-                        description={intl.formatMessage(
-                            { id: 'periode.hvaGjelder.beskrivelse' },
-                            {
-                                navn1: navn[0],
-                                kr1: Nr1Penger100,
-                                navn2: navn[1],
-                                kr2: Nr2Penger100,
-                            },
-                        )}
+                <GreenPanel>
+                    <RadioGroup
+                        name="periode"
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'feilmelding.periode.hvorLangPeriode.duMåOppgi',
+                                }),
+                            ),
+                        ]}
                     >
-                        <FormattedMessage id="periode.100" />
-                    </GreenRadio>
-                    <GreenRadio
-                        value={PeriodeEnum.ÅTTI}
-                        description={intl.formatMessage(
-                            { id: 'periode.hvaGjelder.beskrivelse' },
-                            {
-                                navn1: navn[0],
-                                kr1: Nr1Penger80,
-                                navn2: navn[1],
-                                kr2: Nr2Penger80,
-                            },
-                        )}
-                    >
-                        <FormattedMessage id="periode.80" />
-                    </GreenRadio>
-                </RadioGroup>
+                        <Radio
+                            value={PeriodeEnum.HUNDRE}
+                            description={intl.formatMessage(
+                                { id: 'periode.hvaGjelder.beskrivelse' },
+                                {
+                                    navn1: navn[0],
+                                    kr1: Nr1Penger100,
+                                    navn2: navn[1],
+                                    kr2: Nr2Penger100,
+                                },
+                            )}
+                        >
+                            <FormattedMessage id="periode.100" />
+                        </Radio>
+                        <Radio
+                            value={PeriodeEnum.ÅTTI}
+                            description={intl.formatMessage(
+                                { id: 'periode.hvaGjelder.beskrivelse' },
+                                {
+                                    navn1: navn[0],
+                                    kr1: Nr1Penger80,
+                                    navn2: navn[1],
+                                    kr2: Nr2Penger80,
+                                },
+                            )}
+                        >
+                            <FormattedMessage id="periode.80" />
+                        </Radio>
+                    </RadioGroup>
+                </GreenPanel>
             </VStack>
 
             <VStack gap="10">
