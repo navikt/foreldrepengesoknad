@@ -1,8 +1,9 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './MorFarAnnenForelderHarRettIEOS.stories';
 import dayjs from 'dayjs';
+
+import * as stories from './MorFarAnnenForelderHarRettIEOS.stories';
 
 const {
     AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021,
@@ -64,7 +65,7 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(
-            screen.getByText('av disse er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33', {
+            screen.getByText('er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33', {
                 exact: false,
             }),
         );

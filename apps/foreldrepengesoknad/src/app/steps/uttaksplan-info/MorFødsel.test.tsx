@@ -1,8 +1,9 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './MorFodsel.stories';
 import dayjs from 'dayjs';
+
+import * as stories from './MorFodsel.stories';
 
 const {
     MorAleneomsorgDekningsgrad100Før1Okt2021,
@@ -28,7 +29,7 @@ describe('<UttaksplanInfo_MorFødsel>', () => {
         expect(screen.getByText('15 + 3 uker til deg')).toBeInTheDocument();
         expect(screen.getByText('25 uker og 2 dager kan deles, fellesperiode')).toBeInTheDocument();
         expect(
-            screen.getByText('av disse er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33.', {
+            screen.getByText('er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33.', {
                 exact: false,
             }),
         ).toBeInTheDocument();

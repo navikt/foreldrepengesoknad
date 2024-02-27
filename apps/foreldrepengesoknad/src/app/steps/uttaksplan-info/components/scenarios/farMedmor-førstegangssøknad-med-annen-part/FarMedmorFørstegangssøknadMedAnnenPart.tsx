@@ -1,15 +1,17 @@
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
+
 import { VStack } from '@navikt/ds-react';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import { notEmpty } from '@navikt/fp-validation';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+
 import {
     Block,
     Dekningsgrad,
     EksisterendeSak,
     Forelder,
     ISOStringToDate,
+    Periodene,
     Uttaksdagen,
     formaterNavn,
     getErMorUfør,
@@ -19,14 +21,23 @@ import {
     isInfoPeriode,
 } from '@navikt/fp-common';
 import { Søker } from '@navikt/fp-types';
-import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import InfoOmFørsteUttaksdagEtterMor from 'app/components/fordeling-oversikt/info-om-første-dag-etter-mor/InfoOmFørsteUttaksdagEtterMor';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { FarMedmorFørstegangssøknadMedAnnenPartUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
 import {
     FarMedmorFørstegangssøknadMedAnnenPartFormComponents,
@@ -35,12 +46,6 @@ import {
 } from './farMedmorFørstegangssøknadMedAnnenPartFormConfig';
 import { farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig } from './farMedmorFørstegangssøknadMedAnnenPartQuestionsConfig';
 import { getFarMedmorFørstegangssøknadMedAnnenPartInitialValues } from './farMedmorFørstegangssøknadMedAnnenPartUtils';
-import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
-import { StepButtons } from '@navikt/fp-ui';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;
@@ -204,6 +209,16 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
         false,
         eksisterendeSakAnnenPart?.uttaksplan,
     );
+    let sisteInfoPeriode;
+    if (eksisterendeSakAnnenPart) {
+        sisteInfoPeriode = eksisterendeSakAnnenPart.uttaksplan
+            ? Periodene(eksisterendeSakAnnenPart.uttaksplan).finnSisteInfoperiode()
+            : undefined;
+    }
+    const nesteMuligeUttaksdagEtterAnnenPart =
+        eksisterendeSakAnnenPart && eksisterendeSakAnnenPart.uttaksplan && sisteInfoPeriode
+            ? Uttaksdagen(sisteInfoPeriode.tidsperiode.tom).neste()
+            : undefined;
 
     return (
         <VStack gap="5">
@@ -227,14 +242,14 @@ const FarMedmorFørstegangssøknadMedAnnenPart: FunctionComponent<Props> = ({
                             includeButtons={false}
                             includeValidationSummary={true}
                         >
-                            <Block padBottom="xl">
-                                <InfoOmSøknaden
-                                    eksisterendeSak={eksisterendeSakAnnenPart}
-                                    erIUttaksplanenSteg={false}
-                                    tilgjengeligeStønadskontoer={valgtMengdeStønadskonto}
-                                    søker={søker}
-                                />
-                            </Block>
+                            {nesteMuligeUttaksdagEtterAnnenPart && navnMor && navnMor.length > 0 && (
+                                <Block padBottom="xl">
+                                    <InfoOmFørsteUttaksdagEtterMor
+                                        nesteMuligeUttaksdagEtterMor={nesteMuligeUttaksdagEtterAnnenPart}
+                                        annenForelderNavn={navnMor}
+                                    />
+                                </Block>
+                            )}
                             <Block padBottom="xl">
                                 <FarMedmorsFørsteDag
                                     FormComponents={FarMedmorFørstegangssøknadMedAnnenPartFormComponents}
