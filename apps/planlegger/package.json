@@ -20,10 +20,10 @@
         "extract": "formatjs extract"
     },
     "dependencies": {
-        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/aksel-icons": "^5.15.1",
         "@navikt/ds-css": "5.15.1",
         "@navikt/ds-react": "5.15.1",
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
@@ -36,6 +36,7 @@
         "@navikt/uttaksplan": "workspace:*",
         "@sentry/browser": "^7.95.0",
         "axios": "^1.6.5",
+        "classnames": "^2.5.1",
         "compression": "^1.7.4",
         "dayjs": "^1.11.10",
         "dotenv": "^16.4.0",
