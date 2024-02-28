@@ -445,7 +445,11 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
 ): Tidslinjehendelse[] => {
     let hendelseVenterPåDokumentasjon = undefined;
     if (
-        åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING &&
+        [
+            BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
+            BehandlingTilstand.VENTER_PÅ_MELDEKORT,
+            BehandlingTilstand.TIDLIG_SØKNAD,
+        ].includes(åpenBehandling.tilstand) &&
         manglendeVedleggData &&
         manglendeVedleggData.length > 0
     ) {
