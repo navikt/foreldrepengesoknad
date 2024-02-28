@@ -101,8 +101,8 @@ const Datepicker: FunctionComponent<Props> = ({
         [setFieldValue, onChange, field],
     );
 
-    const fromDate = minDate ? dayjs(minDate, ISO_DATE_FORMAT, true).toDate() : undefined;
-    const toDate = maxDate ? dayjs(maxDate, ISO_DATE_FORMAT, true).toDate() : undefined;
+    const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
+    const toDate = maxDate ? dayjs(maxDate).toDate() : undefined;
     const disabledDays = useMemo(
         () => (fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined),
         [fromDate, toDate],
