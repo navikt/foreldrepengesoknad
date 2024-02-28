@@ -1,21 +1,23 @@
-import { Radio, VStack } from '@navikt/ds-react';
-import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isSameOrAfterToday } from '@navikt/fp-utils';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import useStepData from 'appData/useStepData';
+import GreenPanel from 'components/GreenPanel';
 import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
+import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
-import useStepData from 'appData/useStepData';
-import GreenPanel from 'components/GreenPanel';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
-import Fødsel from './Fødsel';
+import { Radio, VStack } from '@navikt/ds-react';
+
+import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { isSameOrAfterToday } from '@navikt/fp-utils';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
+
 import Adopsjon from './Adopsjon';
+import Fødsel from './Fødsel';
 
 export const isLessThanThreeMonthsLeft = (termindato?: string) => {
     const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
@@ -82,8 +84,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             <StepButtonsHookForm<OmBarnet>
                                 saveDataOnPreviousClick={lagreOmBarnet}
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                                nextButtonText="Neste"
-                                previousButtonText="Tilbake"
+                                useSimplifiedTexts
                             />
                         </VStack>
                     </VStack>

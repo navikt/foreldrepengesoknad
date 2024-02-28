@@ -1,7 +1,3 @@
-import { BodyLong, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { StepButtons } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
@@ -13,6 +9,13 @@ import 'dayjs/locale/nb';
 import { FormattedMessage } from 'react-intl';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
+
+import { BodyLong, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
+
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
 dayjs.locale('nb');
 
 export const BARNEHAGELOVEN_TEKST =
@@ -274,8 +277,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                         <StepButtons
                             nextButtonOnClick={navigator.goToNextDefaultStep}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            nextButtonText="Neste"
-                            previousButtonText="Tilbake"
+                            useSimplifiedTexts
                         />
                     </VStack>
                 </VStack>
