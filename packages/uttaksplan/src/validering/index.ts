@@ -1,38 +1,38 @@
-import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
-import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
-import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
-import { harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest';
+import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
+
+import { burdeKanskjeSøkeGraderingTest } from './tester/burdeKanskjeSøkeGraderingTest';
+import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
 import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTest';
+import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
+import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarRettPåUttakRundtFødselTest';
+import { farMedmorHarRettPåFlerbarnsdagerTest } from './tester/farMedmorHarRettPåFlerbarnsdagerTest';
+import { farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest } from './tester/farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest';
+import { farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest } from './tester/farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest';
+import { ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest } from './tester/ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest';
+import { harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest } from './tester/harFarMedmorSøktUgyldigUttakEllerUtsettelseFørsteSeksUkerTest';
+import { harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest } from './tester/harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest';
+import { harMorSøktUgyldigUttakFørsteSeksUkerTest } from './tester/harMorSøktUgyldigUttakFørsteSeksUkerTest';
+import { harPerioderEtterFørsteStønadsdagNesteBarnDerToTette } from './tester/harPerioderEtterFørsteStønadsdagNesteBarnDerToTette';
+import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
+import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
+import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
+import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
+import { inneholderPerioderUtenAktivitetskrav } from './tester/inneholderPerioderUtenAktivitetskrav';
+import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
+import { inneholderUtsettelserUtenÅrsak } from './tester/inneholderUtsettelserUtenÅrsak';
+import { inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest } from './tester/inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest';
+import { inneholderUttaksperioderMedUbesvartGradering } from './tester/inneholderUttaksperioderMedUbesvartGradering';
+import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
+import { inneholderUttaksplanPerioderTest } from './tester/inneholderUttaksplanPerioderTest';
+import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme';
+import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
+import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
+import { overstigerMinsterettVedToTette } from './tester/overstigerMinsterettVedToTette';
+import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
-import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
-import { harUttaksplanForMangeFlerbarnsdagerTest } from './tester/harUttaksplanForMangeFlerbarnsdagerTest';
-import { inneholderUttaksplanDatoSomIkkeErUttaksdag } from './tester/inneholderUttaksplanDatoSomIkkeErUttaksdagTest';
-import { harPerioderManglendeVedleggTest } from './tester/harPerioderManglendeVedleggTest';
-import { inneholderTapteDagerTest } from './tester/inneholderTapteDagerTest';
-import { inneholderBareUtsettelserTest } from './tester/inneholderBareUtsettelserTest';
-import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
-import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
-import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
-import { harSøktOmFerieUtenArbeidsforhold } from './tester/harSøktOmFerieUtenArbeidsforholdTest';
-import { inneholderForMyeFerie } from './tester/inneholderForMyeFerie';
-import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme';
-import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
-import { burdeKanskjeSøkeGraderingTest } from './tester/burdeKanskjeSøkeGraderingTest';
-import { ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest } from './tester/ferieEllerArbeidInnenforDeFørsteÅtteUkeneEtterTermindatoTest';
+import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
 import { Regel, RegelAlvorlighet } from './utils/types/regelTypes';
-import { inneholderPerioderUtenAktivitetskrav } from './tester/inneholderPerioderUtenAktivitetskrav';
-import { inneholderUtsettelserUtenÅrsak } from './tester/inneholderUtsettelserUtenÅrsak';
-import { farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest } from './tester/farMedmorHarSøktUgyldigAntallDagerUttakRundtFødselTest';
-import { harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest } from './tester/harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest';
-import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarRettPåUttakRundtFødselTest';
-import { farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest } from './tester/farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest';
-import { inneholderUttaksperioderMedUbesvartGradering } from './tester/inneholderUttaksperioderMedUbesvartGradering';
-import { inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest } from './tester/inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest';
-import { farMedmorHarRettPåFlerbarnsdagerTest } from './tester/farMedmorHarRettPåFlerbarnsdagerTest';
-import { overstigerMinsterettVedToTette } from './tester/overstigerMinsterettVedToTette';
-import { harPerioderEtterFørsteStønadsdagNesteBarnDerToTette } from './tester/harPerioderEtterFørsteStønadsdagNesteBarnDerToTette';
-import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
 
 export enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
@@ -48,7 +48,6 @@ export enum UttaksplanRegelKey {
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
-    'perioderManglerVedlegg' = 'manglendeVedlegg',
     'inneholderTapteDager' = 'inneholderTapteDager',
     'inneholderBareUtsettelser' = 'inneholderBareUtsettelser',
     'inneholderForMyeFerie' = 'inneholderForMyeFerie',
@@ -137,12 +136,6 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.uttaksplanInneholderDatoSomIkkeErUttaksdag,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: inneholderUttaksplanDatoSomIkkeErUttaksdag,
-    },
-    {
-        key: UttaksplanRegelKey.perioderManglerVedlegg,
-        alvorlighet: RegelAlvorlighet.INFO,
-        test: harPerioderManglendeVedleggTest,
-        slåsSammenVedOppsummering: true,
     },
     {
         key: UttaksplanRegelKey.farMedMorHarRettPåUttakRundtFødsel,
@@ -241,12 +234,6 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.harPerioderEtterFørsteStønadsdagNesteBarnDerToTette,
         alvorlighet: RegelAlvorlighet.INFO,
         test: harPerioderEtterFørsteStønadsdagNesteBarnDerToTette,
-    },
-    {
-        key: UttaksplanRegelKey.perioderManglerVedlegg,
-        alvorlighet: RegelAlvorlighet.INFO,
-        test: harPerioderManglendeVedleggTest,
-        slåsSammenVedOppsummering: true,
     },
 ];
 
