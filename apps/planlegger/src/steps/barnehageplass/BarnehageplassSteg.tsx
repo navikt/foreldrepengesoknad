@@ -5,7 +5,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import Kalender from 'components/ikoner/Kalender';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
@@ -269,7 +269,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                 </VStack>
 
                 <VStack gap="20">
-                    <HvorforSpørViOmDette text="TODO" />
+                    <HvorforSpørNAVOmDette text="TODO" />
                     <VStack>
                         <StepButtons
                             nextButtonOnClick={navigator.goToNextDefaultStep}
