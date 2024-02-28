@@ -222,8 +222,13 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
             [Skjemanummer.DOK_SYKDOM_MOR]: [],
+            [Skjemanummer.DOK_SYKDOM_FAR]: [],
             [Skjemanummer.DOK_INNLEGGELSE_BARN]: [],
             [Skjemanummer.DOK_INNLEGGELSE_MOR]: [],
+            [Skjemanummer.DOK_INNLEGGELSE_FAR]: [],
+            [Skjemanummer.DOK_ARBEID_MOR]: [],
+            [Skjemanummer.DOK_UTDANNING_MOR]: [],
+            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [],
         };
 
         oppdaterUttaksplanMetadata({

@@ -1,34 +1,38 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import dayjs from 'dayjs';
+
 import {
+    Arbeidsform,
     Forelder,
+    Oppholdsperiode,
+    Overføringsperiode,
+    OverføringÅrsakType,
+    Periode,
+    Periodetype,
     Situasjon,
     StønadskontoType,
-    OverføringÅrsakType,
-    hasValue,
-    Periode,
-    isUttaksperiode,
-    isOverføringsperiode,
-    isOppholdsperiode,
-    getStønadskontoFromOppholdsårsak,
-    Arbeidsform,
-    trimNumberValue,
-    Periodetype,
-    Overføringsperiode,
-    Oppholdsperiode,
-    getOppholdsÅrsakFromStønadskonto,
+    TidsperiodeDate,
+    UttakRundtFødselÅrsak,
     Uttaksperiode,
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
     getMorsAktivitet,
-    UttakRundtFødselÅrsak,
+    getOppholdsÅrsakFromStønadskonto,
+    getSisteUttaksdag6UkerEtterFødsel,
+    getStønadskontoFromOppholdsårsak,
+    hasValue,
+    isOppholdsperiode,
+    isOverføringsperiode,
+    isUttaksperiode,
+    trimNumberValue,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import dayjs from 'dayjs';
+
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
     erSamtidigUttakFarMedmorFørFødselWLB,
     erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
 } from './periodeUttakFormQuestionsConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 const getInitialKonto = (
     erDeltUttak: boolean,
@@ -320,6 +324,27 @@ const getKontoVerdi = (
     return inputKonto;
 };
 
+const getForelderForPeriode = (
+    angittForelder: Forelder,
+    tidsperiode: TidsperiodeDate,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    familiehendelsesdato: Date,
+): Forelder => {
+    const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
+
+    if (
+        dayjs(tidsperiode.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day') &&
+        erFarEllerMedmor &&
+        erDeltUttak &&
+        (angittForelder as any) === ''
+    ) {
+        return Forelder.farMedmor;
+    }
+
+    return angittForelder;
+};
+
 export const mapPeriodeUttakFormToPeriode = (
     values: Partial<PeriodeUttakFormData>,
     id: string,
@@ -333,7 +358,16 @@ export const mapPeriodeUttakFormToPeriode = (
         const periode: Overføringsperiode = {
             id,
             type,
-            forelder: values.hvemSkalTaUttak as Forelder,
+            forelder: getForelderForPeriode(
+                values.hvemSkalTaUttak as Forelder,
+                {
+                    fom: values.fom!,
+                    tom: values.tom!,
+                },
+                erFarEllerMedmor,
+                erDeltUttak,
+                familiehendelsesdato,
+            ),
             konto: values.konto as StønadskontoType,
             tidsperiode: {
                 fom: values.fom!,
