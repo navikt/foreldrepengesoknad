@@ -76,17 +76,19 @@ const ProgressStepper = <TYPE extends string>({
                 </Heading>
             </div>
             <div className="progressStepper__progressBarWrapper" role="presentation" aria-hidden={true}>
-                <div className="progressStepper__progressBar">
-                    {showGreenStatusBar && (
+                {showGreenStatusBar && (
+                    <div className="progressStepper__progressBar_green">
                         <div
                             className="progressStepper__progressBar__progress_green"
                             style={{ width: `${progress}%` }}
                         />
-                    )}
-                    {!showGreenStatusBar && (
+                    </div>
+                )}
+                {!showGreenStatusBar && (
+                    <div className="progressStepper__progressBar">
                         <div className="progressStepper__progressBar__progress" style={{ width: `${progress}%` }} />
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
             <nav aria-label={intl.formatMessage({ id: 'ProgressStepper.NavigasjonAriaLabel' })}>
                 <div className="progressStepper__stepsInfo">

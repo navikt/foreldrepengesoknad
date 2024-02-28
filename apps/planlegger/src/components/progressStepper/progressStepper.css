@@ -70,6 +70,11 @@
     background-color: var(--a-deepblue-300);
 }
 
+.progressStepper__progressBar_green {
+    background-color: var(--a-white);
+    width: 100%;
+    border-radius: 0.5rem;
+}
 .progressStepper__progressBar__progress_green {
     height: 1rem;
     border-top-left-radius: 0.5rem;
