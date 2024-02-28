@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import styles from './planleggerPage.module.css';
 import ProgressStepper, { ProgressStep } from 'components/progressStepper/ProgressStepper';
 import { PlanleggerRoutes } from 'appData/routes';
+import LanguageToggle from 'components/LanguageToggle';
 
 const EMPTY_STEPS = [] as Array<ProgressStep<PlanleggerRoutes>>;
 
@@ -20,7 +21,7 @@ const PlanleggerPage: React.FunctionComponent<Props> = ({ isFrontpage = false, s
             <div className={styles.header}>
                 <GreenHeading>
                     <Show below="md" asChild>
-                        <div>Språkvelger</div>
+                        <LanguageToggle />
                     </Show>
                     <>
                         {isFrontpage && (
