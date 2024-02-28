@@ -1,8 +1,11 @@
-import { Block, NavnPåForeldre, Periode, Situasjon, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
-import { Attachment } from '@navikt/fp-types';
 import React from 'react';
+
+import { Block, NavnPåForeldre, Periode, Situasjon, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+
 import UttakUploader from '../attachment-uploaders/UttakUploader';
 
 interface Props {
@@ -42,7 +45,7 @@ const BarnInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.DOK_INNLEGGELSE_BARN}
                 labelText="Dokumentasjon på at barnet er innlagt"
-                description="Du må laste opp dokumentasjon på at barnet er innlagt på sykehus"
+                description="Du kan laste opp dokumentasjon på at barnet er innlagt på sykehus"
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
             />
         </Block>

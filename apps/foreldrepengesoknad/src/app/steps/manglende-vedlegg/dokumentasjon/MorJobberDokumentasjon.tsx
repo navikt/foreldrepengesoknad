@@ -1,8 +1,11 @@
-import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
-import { Attachment } from '@navikt/fp-types';
 import React from 'react';
+
+import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+
 import UttakUploader from '../attachment-uploaders/UttakUploader';
 import { isPeriodeMedMorJobber } from '../util';
 
@@ -43,7 +46,7 @@ const MorJobberDokumentasjon: React.FunctionComponent<Props> = ({
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.DOK_ARBEID_MOR}
                 labelText="Dokumentasjon på at mor er i arbeid"
-                description="Du må laste opp dokumentasjon på at mor er i arbeid"
+                description="Du kan laste opp dokumentasjon på at mor er i arbeid"
                 attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
             />
         </Block>

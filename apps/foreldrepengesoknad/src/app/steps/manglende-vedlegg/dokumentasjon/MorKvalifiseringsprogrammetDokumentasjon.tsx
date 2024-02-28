@@ -1,8 +1,11 @@
-import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
-import { Attachment } from '@navikt/fp-types';
 import React from 'react';
+
+import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+
 import UttakUploader from '../attachment-uploaders/UttakUploader';
 import { isPeriodeMedMorKvalprogram } from '../util';
 
@@ -43,7 +46,7 @@ const MorKvalifiseringsprogrammetDokumentasjon: React.FunctionComponent<Props> =
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
                 labelText="Dokumentasjon på at mor deltar i introduksjonsprogrammet"
-                description="Du må laste opp dokumentasjon på at mor deltar i introduksjonsprogrammet"
+                description="Du kan laste opp dokumentasjon på at mor deltar i introduksjonsprogrammet"
                 attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
             />
         </Block>
