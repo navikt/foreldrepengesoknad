@@ -4,7 +4,7 @@ import { isRequired } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import useStepData from 'appData/useStepData';
 import GreenPanel from 'components/GreenPanel';
-import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -189,7 +189,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         </VStack>
                     )}
                     <VStack gap="20">
-                        <HvorforSpørViOmDette text="TODO" />
+                        <HvorforSpørNAVOmDette text="TODO" />
                         <VStack>
                             <StepButtonsHookForm
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
