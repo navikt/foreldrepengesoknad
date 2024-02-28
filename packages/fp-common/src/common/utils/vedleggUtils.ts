@@ -53,6 +53,11 @@ export const lagSendSenereDokumentNårIngenAndreFinnes = (
     if (dokumenter.length === 0) {
         return [lagSendSenereDokument(type, skjema, dokumenterer)];
     }
+
+    if (dokumenter.length === 1 && dokumenterer) {
+        return dokumenter.map((dok) => addMetadata(dok, dokumenterer));
+    }
+
     if (dokumenter.length === 1) {
         return dokumenter;
     }
