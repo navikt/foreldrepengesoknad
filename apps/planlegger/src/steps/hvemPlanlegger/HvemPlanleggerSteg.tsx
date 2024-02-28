@@ -1,6 +1,3 @@
-import { Radio, VStack } from '@navikt/ds-react';
-import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
-import { isRequired } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import useStepData from 'appData/useStepData';
 import GreenPanel from 'components/GreenPanel';
@@ -10,6 +7,12 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
+
+import { Radio, VStack } from '@navikt/ds-react';
+
+import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
+import { isRequired } from '@navikt/fp-validation';
+
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
 import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
 
@@ -193,8 +196,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         <VStack>
                             <StepButtonsHookForm
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                                nextButtonText="Neste"
-                                previousButtonText="Tilbake"
+                                useSimplifiedTexts
                             />
                         </VStack>
                     </VStack>

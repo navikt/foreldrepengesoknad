@@ -12,6 +12,7 @@ interface Props {
     isLoading?: boolean;
     isNexButtonVisible?: boolean;
     isSendButton?: boolean;
+    useSimplifiedTexts?: boolean;
 }
 
 const StepButtons: FunctionComponent<Props> = ({
@@ -22,8 +23,10 @@ const StepButtons: FunctionComponent<Props> = ({
     isLoading = false,
     isNexButtonVisible = true,
     isSendButton = false,
+    useSimplifiedTexts = false,
 }) => {
     return (
+<<<<<<< HEAD
         <HStack gap="2">
             <Button type="button" variant="secondary" onClick={goToPreviousStep} style={{ flex: 1 }}>
                 <FormattedMessage id="StepButtons.Forrige" />
@@ -43,6 +46,33 @@ const StepButtons: FunctionComponent<Props> = ({
                 </Button>
             )}
         </HStack>
+=======
+        <UiIntlProvider>
+            <StepButtonWrapper>
+                <Button type="button" variant="secondary" onClick={goToPreviousStep}>
+                    {useSimplifiedTexts ? (
+                        <FormattedMessage id="StepButtons.ForrigeSimple" />
+                    ) : (
+                        <FormattedMessage id="StepButtons.Forrige" />
+                    )}
+                </Button>
+                {isNexButtonVisible && (
+                    <Button
+                        icon={isSendButton ? <PaperplaneIcon aria-hidden /> : undefined}
+                        iconPosition="right"
+                        type={nextButtonOnClick ? 'button' : 'submit'}
+                        onClick={nextButtonOnClick}
+                        disabled={isDisabled || isDisabledAndLoading}
+                        loading={isLoading || isDisabledAndLoading}
+                    >
+                        {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
+                        {!isSendButton && !useSimplifiedTexts && <FormattedMessage id={'StepButtons.Neste'} />}
+                        {!isSendButton && useSimplifiedTexts && <FormattedMessage id={'StepButtons.NesteSimple'} />}
+                    </Button>
+                )}
+            </StepButtonWrapper>
+        </UiIntlProvider>
+>>>>>>> bf643cebc (rebase)
     );
 };
 

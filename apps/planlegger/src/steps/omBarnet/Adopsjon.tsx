@@ -1,4 +1,13 @@
-import { Heading, Radio, VStack } from '@navikt/ds-react';
+import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import GreenPanel from 'components/GreenPanel';
+import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { AdopsjonsEnum, OmBarnet } from 'types/Barnet';
+import { isAlene } from 'types/HvemPlanlegger';
+
+import { Radio, VStack } from '@navikt/ds-react';
+
 import { Datepicker, Form, RadioGroup } from '@navikt/fp-form-hooks';
 import {
     erI22SvangerskapsukeEllerSenere,
@@ -9,14 +18,6 @@ import {
     isValidDate,
     notEmpty,
 } from '@navikt/fp-validation';
-import dayjs from 'dayjs';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { useForm } from 'react-hook-form';
-import GreenPanel from 'components/GreenPanel';
-import styles from './omBarnetSteg.module.css';
-import { AdopsjonsEnum, OmBarnet } from 'types/Barnet';
-import { isAlene } from 'types/HvemPlanlegger';
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 
 const Adopsjon: React.FunctionComponent = () => {
     const formMethods = useForm<OmBarnet>();

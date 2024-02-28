@@ -1,6 +1,3 @@
-import { BodyLong, Button, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
-import { StepButtonWrapper } from '@navikt/fp-common';
-import { StepButtons } from '@navikt/fp-ui';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Kalender from 'components/ikoner/Kalender';
@@ -8,6 +5,11 @@ import OppsummeringCheck from 'components/ikoner/OppsummeringCheck';
 import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FormattedMessage } from 'react-intl';
+
+import { BodyLong, Button, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
+
+import { StepButtonWrapper } from '@navikt/fp-common';
+import { StepButtons } from '@navikt/fp-ui';
 
 const Oppsummering = () => {
     const navigator = usePlanleggerNavigator();
@@ -71,10 +73,9 @@ const Oppsummering = () => {
 
                     <VStack gap="10">
                         <StepButtons
-                            nextButtonText="Legg til i søknad"
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             nextButtonOnClick={() => undefined}
-                            previousButtonText="Tilbake"
+                            useSimplifiedTexts
                         ></StepButtons>
 
                         <VStack align="center">

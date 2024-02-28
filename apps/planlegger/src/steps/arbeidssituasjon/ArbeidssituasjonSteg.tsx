@@ -1,6 +1,3 @@
-import { VStack } from '@navikt/ds-react';
-import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
@@ -10,6 +7,12 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { isAlene } from 'types/HvemPlanlegger';
+
+import { VStack } from '@navikt/ds-react';
+
+import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { notEmpty } from '@navikt/fp-validation';
+
 import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
 
@@ -43,8 +46,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                             <StepButtonsHookForm
                                 saveDataOnPreviousClick={lagreArbeidssituasjon}
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                                nextButtonText="Neste"
-                                previousButtonText="Tilbake"
+                                useSimplifiedTexts
                             />
                         </VStack>
                     </VStack>

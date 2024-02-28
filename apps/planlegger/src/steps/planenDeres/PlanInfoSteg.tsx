@@ -1,6 +1,3 @@
-import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
-import { StepButtons } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
@@ -10,6 +7,11 @@ import Penn from 'components/ikoner/Penn';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FormattedMessage } from 'react-intl';
 import { isAlene } from 'types/HvemPlanlegger';
+
+import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
+
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 
 const PlanInfoSteg = () => {
     const navigator = usePlanleggerNavigator();
@@ -135,8 +137,7 @@ const PlanInfoSteg = () => {
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={navigator.goToNextDefaultStep}
-                        nextButtonText="Se oversikt"
-                        previousButtonText="Tilbake"
+                        useSimplifiedTexts
                     />
                 </VStack>
             </VStack>

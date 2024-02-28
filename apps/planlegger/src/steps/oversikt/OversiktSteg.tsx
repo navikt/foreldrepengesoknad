@@ -1,6 +1,3 @@
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
-import { StepButtons } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
@@ -14,9 +11,16 @@ import { FormattedMessage } from 'react-intl';
 import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 import { PeriodeEnum } from 'types/Periode';
+
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
 import Kalender from './kalender/Kalender';
 import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
+
 dayjs.locale('nb');
 
 const barnehagestartDato = (barnet: OmBarnet) => {
@@ -90,8 +94,7 @@ const OversiktSteg = () => {
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={navigator.goToNextDefaultStep}
-                        nextButtonText="Tilpass plan"
-                        previousButtonText="Tilbake"
+                        useSimplifiedTexts
                     />
                 </VStack>
             </VStack>
