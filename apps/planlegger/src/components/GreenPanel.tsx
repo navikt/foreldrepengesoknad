@@ -6,7 +6,7 @@ interface Props {
 
 const GreenPanel: React.FunctionComponent<Props> = ({ children }) => {
     return (
-        <Box background="surface-alt-2-moderate" borderRadius="medium" padding="4">
+        <Box background="surface-alt-2-moderate" borderRadius="large" padding="4">
             {children}
         </Box>
     );
