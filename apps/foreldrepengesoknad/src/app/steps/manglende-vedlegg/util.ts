@@ -7,6 +7,7 @@ import {
     isMorIntroprogram,
     isMorJobber,
     isMorJobberOgStuderer,
+    isMorKvalprogram,
     isMorStuderer,
     isOverføringFarForSyk,
     isOverføringFarInnlagt,
@@ -19,6 +20,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
+
 import { VedleggDataType } from 'app/types/VedleggDataType';
 
 export const isKvalifiseringsprogramVedlegg = (attachment: Attachment) => {
@@ -77,7 +79,7 @@ export const isPeriodeMedMorIntroprogram = (periode: Periode) => {
 };
 
 export const isPeriodeMedMorKvalprogram = (periode: Periode) => {
-    return isMorIntroprogram(periode);
+    return isMorKvalprogram(periode);
 };
 
 export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
