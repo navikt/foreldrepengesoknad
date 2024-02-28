@@ -475,7 +475,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 <AktivitetskravSpørsmål
                                     fieldName={PeriodeUttakFormField.aktivitetskravMor}
                                     navnPåForeldre={navnPåForeldre}
-                                    aktivitetskravMorValue={values.aktivitetskravMor!}
                                     FormComponents={PeriodeUttakFormComponents}
                                 />
                             </Block>

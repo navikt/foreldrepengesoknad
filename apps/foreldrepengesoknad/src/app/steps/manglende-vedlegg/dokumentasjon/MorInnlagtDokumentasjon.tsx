@@ -1,6 +1,7 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Periode, Situasjon, intlUtils } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -27,6 +28,8 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
+    const intl = useIntl();
+
     if (perioder.length === 0) {
         return null;
     }
@@ -42,8 +45,8 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
                 termindato={termindato}
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
-                labelText="Dokumentasjon på at mor er innlagt"
-                description="Du kan laste opp dokumentasjon på at mor er innlagt på sykehus"
+                labelText={intlUtils(intl, 'manglendeVedlegg.morInnlagt.label')}
+                description={intlUtils(intl, 'manglendeVedlegg.morInnlagt.description', { navn: navnPåForeldre.mor })}
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
             />
         </Block>

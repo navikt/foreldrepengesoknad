@@ -1,19 +1,22 @@
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
+import React, { FunctionComponent, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+
 import { BodyLong, Label, VStack } from '@navikt/ds-react';
+
 import { getSaveAttachment } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
-import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
-import Environment from 'app/Environment';
-import { FunctionComponent, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { useFormContext } from 'react-hook-form';
-import { ManglendeVedleggFormData } from '../manglendeVedleggFormUtils';
+import { FileUploader } from '@navikt/fp-ui';
+
+import Environment from 'app/Environment';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
+import { ManglendeVedleggFormData } from '../manglendeVedleggFormUtils';
 import './periode-attachment-uploader.css';
 
 interface Props {
@@ -26,7 +29,7 @@ interface Props {
     situasjon: Situasjon;
     skjemanummer: GyldigeSkjemanummerUttak;
     labelText: string;
-    description: string;
+    description: string | React.ReactNode;
     attachmentType: AttachmentType;
 }
 

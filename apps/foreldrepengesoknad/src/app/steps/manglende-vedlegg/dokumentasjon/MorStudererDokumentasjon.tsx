@@ -1,6 +1,9 @@
 import React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { BodyShort, VStack } from '@navikt/ds-react';
+
+import { Block, NavnPåForeldre, Periode, Situasjon, intlUtils } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -27,6 +30,8 @@ const MorStudererDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
+    const intl = useIntl();
+
     if (perioder.length === 0) {
         return null;
     }
@@ -42,8 +47,41 @@ const MorStudererDokumentasjon: React.FunctionComponent<Props> = ({
                 termindato={termindato}
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.DOK_UTDANNING_MOR}
-                labelText="Dokumentasjon på at mor studerer"
-                description="Du kan laste opp dokumentasjon på at mor studerer"
+                labelText={intlUtils(intl, 'manglendeVedlegg.studerer.label')}
+                description={
+                    <Block padBottom="m">
+                        <BodyShort>
+                            <FormattedMessage
+                                id="manglendeVedlegg.studerer.description.tittel"
+                                values={{ navn: navnPåForeldre.mor }}
+                            />
+                        </BodyShort>
+                        <ul style={{ margin: '0', padding: '0.5rem 2.5rem' }}>
+                            <VStack gap="2">
+                                <li>
+                                    <BodyShort>
+                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt1" />
+                                    </BodyShort>
+                                </li>
+                                <li>
+                                    <BodyShort>
+                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt2" />
+                                    </BodyShort>
+                                </li>
+                                <li>
+                                    <BodyShort>
+                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt3" />
+                                    </BodyShort>
+                                </li>
+                                <li>
+                                    <BodyShort>
+                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt4" />
+                                    </BodyShort>
+                                </li>
+                            </VStack>
+                        </ul>
+                    </Block>
+                }
                 attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
             />
         </Block>
@@ -51,3 +89,7 @@ const MorStudererDokumentasjon: React.FunctionComponent<Props> = ({
 };
 
 export default MorStudererDokumentasjon;
+
+// description={intlUtils(intl, 'manglendeVedlegg.studerer.description', {
+//     navn: navnPåForeldre.mor,
+// })}

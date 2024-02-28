@@ -1,9 +1,9 @@
 import { perioderSomKreverVedlegg } from '@navikt/uttaksplan';
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { Alert } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading } from '@navikt/ds-react';
 
 import {
     Block,
@@ -265,8 +265,12 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <Block padBottom="xl">
                     <Alert variant="info">
-                        Du kan gå videre uten å laste opp dokumentasjonen nå og heller sende inn i etterkant. Husk at
-                        all dokumentasjon må sendes inn i løpet av 3 uker.
+                        <Heading level="2" size="small">
+                            <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
+                        </Heading>
+                        <BodyLong>
+                            <FormattedMessage id="manglendeVedlegg.duKanSende.innhold" />
+                        </BodyLong>
                     </Alert>
                 </Block>
                 <StepButtonsHookForm<ManglendeVedleggFormData>
