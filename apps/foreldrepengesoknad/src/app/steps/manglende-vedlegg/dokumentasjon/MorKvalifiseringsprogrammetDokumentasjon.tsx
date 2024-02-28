@@ -7,7 +7,6 @@ import { Attachment } from '@navikt/fp-types';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
 import UttakUploader from '../attachment-uploaders/UttakUploader';
-import { isPeriodeMedMorKvalprogram } from '../util';
 
 interface Props {
     attachments: Attachment[];
@@ -28,9 +27,7 @@ const MorKvalifiseringsprogrammetDokumentasjon: React.FunctionComponent<Props> =
     situasjon,
     termindato,
 }) => {
-    const morKvalPerioder = perioder.filter(isPeriodeMedMorKvalprogram);
-
-    if (morKvalPerioder.length === 0) {
+    if (perioder.length === 0) {
         return null;
     }
 
@@ -39,7 +36,7 @@ const MorKvalifiseringsprogrammetDokumentasjon: React.FunctionComponent<Props> =
             <UttakUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
-                perioder={morKvalPerioder}
+                perioder={perioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}

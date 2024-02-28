@@ -7,7 +7,6 @@ import { Attachment } from '@navikt/fp-types';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
 import UttakUploader from '../attachment-uploaders/UttakUploader';
-import { isPeriodeMedMorStuderer } from '../util';
 
 interface Props {
     attachments: Attachment[];
@@ -28,9 +27,7 @@ const MorStudererDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
-    const morStudererPerioder = perioder.filter(isPeriodeMedMorStuderer);
-
-    if (morStudererPerioder.length === 0) {
+    if (perioder.length === 0) {
         return null;
     }
 
@@ -39,7 +36,7 @@ const MorStudererDokumentasjon: React.FunctionComponent<Props> = ({
             <UttakUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.DOK_UTDANNING_MOR)}
-                perioder={morStudererPerioder}
+                perioder={perioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Block, NavnPåForeldre, Periode, Situasjon, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -27,9 +27,7 @@ const BarnInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
-    const barnInnlagtPerioder = perioder.filter(isUtsettelseBarnInnlagt);
-
-    if (barnInnlagtPerioder.length === 0) {
+    if (perioder.length === 0) {
         return null;
     }
 
@@ -38,7 +36,7 @@ const BarnInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
             <UttakUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_BARN)}
-                perioder={barnInnlagtPerioder}
+                perioder={perioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}

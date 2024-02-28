@@ -7,7 +7,6 @@ import { Attachment } from '@navikt/fp-types';
 import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
 
 import UttakUploader from '../attachment-uploaders/UttakUploader';
-import { isPeriodeMedFarForSyk } from '../util';
 
 interface Props {
     attachments: Attachment[];
@@ -28,9 +27,7 @@ const FarForSykDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
 }) => {
-    const farForSykPerioder = perioder.filter(isPeriodeMedFarForSyk);
-
-    if (farForSykPerioder.length === 0) {
+    if (perioder.length === 0) {
         return null;
     }
 
@@ -39,7 +36,7 @@ const FarForSykDokumentasjon: React.FunctionComponent<Props> = ({
             <UttakUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.DOK_SYKDOM_FAR)}
-                perioder={farForSykPerioder}
+                perioder={perioder}
                 navnPåForeldre={navnPåForeldre}
                 familiehendelsesdato={familiehendelsesdato}
                 termindato={termindato}

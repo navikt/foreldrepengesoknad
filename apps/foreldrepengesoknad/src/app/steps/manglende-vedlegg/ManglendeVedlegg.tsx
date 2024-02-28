@@ -1,3 +1,10 @@
+import { perioderSomKreverVedlegg } from '@navikt/uttaksplan';
+import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+
+import { Alert } from '@navikt/ds-react';
+
 import {
     Block,
     ISOStringToDate,
@@ -5,15 +12,32 @@ import {
     getErSøkerFarEllerMedmor,
     getNavnPåForeldre,
     intlUtils,
+    isUtsettelseBarnInnlagt,
 } from '@navikt/fp-common';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import SøknadRoutes from 'app/routes/routes';
-import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
-import { perioderSomKreverVedlegg } from '@navikt/uttaksplan';
-import { useNavigate } from 'react-router-dom';
 import { Attachment, Søker } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
+
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+
+import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
+import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
+import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
+import MorForSykDokumentasjon from './dokumentasjon/MorForSykDokumentasjon';
+import MorInnlagtDokumentasjon from './dokumentasjon/MorInnlagtDokumentasjon';
+import MorIntroduksjonsprogrammetDokumentasjon from './dokumentasjon/MorIntroduksjonsprogrammetDokumentasjon';
+import MorJobberDokumentasjon from './dokumentasjon/MorJobberDokumentasjon';
+import MorJobberOgStudererDokumentasjon from './dokumentasjon/MorJobberOgStudererDokumentasjon';
+import MorKvalifiseringsprogrammetDokumentasjon from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
+import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
+import { ManglendeVedleggFormData } from './manglendeVedleggFormUtils';
 import {
     getBarnInnlagtVedlegg,
     getFarForSykVedlegg,
@@ -25,27 +49,17 @@ import {
     getMorJobberVedlegg,
     getMorKvalprogramVedlegg,
     getMorStudererVedlegg,
+    isPeriodeMedFarForSyk,
+    isPeriodeMedFarInnleggelse,
+    isPeriodeMedMorForSyk,
+    isPeriodeMedMorInnleggelse,
+    isPeriodeMedMorIntroprogram,
+    isPeriodeMedMorJobber,
+    isPeriodeMedMorJobberOgStuderer,
+    isPeriodeMedMorKvalprogram,
+    isPeriodeMedMorStuderer,
     isSendSenereVedlegg,
 } from './util';
-import { Skjemanummer } from '@navikt/fp-constants';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { notEmpty } from '@navikt/fp-validation';
-import { VedleggDataType } from 'app/types/VedleggDataType';
-import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
-import { GuidePanel } from '@navikt/ds-react';
-import useFpNavigator from 'app/appData/useFpNavigator';
-import useStepConfig from 'app/appData/useStepConfig';
-import MorInnlagtDokumentasjon from './dokumentasjon/MorInnlagtDokumentasjon';
-import MorForSykDokumentasjon from './dokumentasjon/MorForSykDokumentasjon';
-import { ManglendeVedleggFormData } from './manglendeVedleggFormUtils';
-import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
-import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
-import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
-import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
-import MorJobberDokumentasjon from './dokumentasjon/MorJobberDokumentasjon';
-import MorJobberOgStudererDokumentasjon from './dokumentasjon/MorJobberOgStudererDokumentasjon';
-import MorIntroduksjonsprogrammetDokumentasjon from './dokumentasjon/MorIntroduksjonsprogrammetDokumentasjon';
-import MorKvalifiseringsprogrammetDokumentasjon from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
 
 type Props = {
     søker: Søker;
@@ -85,6 +99,17 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(erEndringssøknad);
 
+    const morInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelse);
+    const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagt);
+    const farForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarForSyk);
+    const farInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarInnleggelse);
+    const morForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorForSyk);
+    const morIntroPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorIntroprogram);
+    const morJobberPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobber);
+    const morJobberOgStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobberOgStuderer);
+    const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
+    const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
+
     const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
@@ -92,18 +117,24 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
             ...vedlegg,
-            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:
-                formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM],
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: morKvalPerioder.length
+                ? formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]
+                : [],
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
-                formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET],
-            [Skjemanummer.DOK_INNLEGGELSE_MOR]: formValues[Skjemanummer.DOK_INNLEGGELSE_MOR],
-            [Skjemanummer.DOK_INNLEGGELSE_BARN]: formValues[Skjemanummer.DOK_INNLEGGELSE_BARN],
-            [Skjemanummer.DOK_INNLEGGELSE_FAR]: formValues[Skjemanummer.DOK_INNLEGGELSE_FAR],
-            [Skjemanummer.DOK_SYKDOM_MOR]: formValues[Skjemanummer.DOK_SYKDOM_MOR],
-            [Skjemanummer.DOK_SYKDOM_FAR]: formValues[Skjemanummer.DOK_SYKDOM_FAR],
-            [Skjemanummer.DOK_UTDANNING_MOR]: formValues[Skjemanummer.DOK_UTDANNING_MOR],
-            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: formValues[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR],
-            [Skjemanummer.DOK_ARBEID_MOR]: formValues[Skjemanummer.DOK_ARBEID_MOR],
+                morIntroPerioder.length > 0 ? formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET] : [],
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]:
+                morInnlagtPerioder.length > 0 ? formValues[Skjemanummer.DOK_INNLEGGELSE_MOR] : [],
+            [Skjemanummer.DOK_INNLEGGELSE_BARN]:
+                barnInnlagtPerioder.length > 0 ? formValues[Skjemanummer.DOK_INNLEGGELSE_BARN] : [],
+            [Skjemanummer.DOK_INNLEGGELSE_FAR]:
+                farInnlagtPerioder.length > 0 ? formValues[Skjemanummer.DOK_INNLEGGELSE_FAR] : [],
+            [Skjemanummer.DOK_SYKDOM_MOR]: morForSykPerioder.length > 0 ? formValues[Skjemanummer.DOK_SYKDOM_MOR] : [],
+            [Skjemanummer.DOK_SYKDOM_FAR]: farForSykPerioder.length > 0 ? formValues[Skjemanummer.DOK_SYKDOM_FAR] : [],
+            [Skjemanummer.DOK_UTDANNING_MOR]:
+                morStudererPerioder.length > 0 ? formValues[Skjemanummer.DOK_UTDANNING_MOR] : [],
+            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]:
+                morJobberOgStudererPerioder.length > 0 ? formValues[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR] : [],
+            [Skjemanummer.DOK_ARBEID_MOR]: morJobberPerioder.length > 0 ? formValues[Skjemanummer.DOK_ARBEID_MOR] : [],
         };
 
         saveVedlegg(alleVedlegg);
@@ -146,7 +177,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={morInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={morInnlagtPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -155,7 +186,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={morForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={morForSykPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -164,7 +195,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={farInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={farInnlagtPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -173,7 +204,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={farForSykvedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={farForSykPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -182,7 +213,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={barnInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={barnInnlagtPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -191,7 +222,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={morStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={morStudererPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -200,7 +231,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={morJobberVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={morJobberPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -209,7 +240,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={morJobberOgStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={morJobberOgStudererPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -218,7 +249,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={morIntroprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={morIntroPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
@@ -227,16 +258,16 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={morKvalprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
                     familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
                     navnPåForeldre={navnPåForeldre}
-                    perioder={perioderSomManglerVedlegg}
+                    perioder={morKvalPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
                 />
                 <Block padBottom="xl">
-                    <GuidePanel>
+                    <Alert variant="info">
                         Du kan gå videre uten å laste opp dokumentasjonen nå og heller sende inn i etterkant. Husk at
                         all dokumentasjon må sendes inn i løpet av 3 uker.
-                    </GuidePanel>
+                    </Alert>
                 </Block>
                 <StepButtonsHookForm<ManglendeVedleggFormData>
                     goToPreviousStep={() => {
