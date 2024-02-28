@@ -1,8 +1,10 @@
-import { BodyLong, Box, Heading, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Radio, VStack } from '@navikt/ds-react';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import GreenPanel from 'components/GreenPanel';
+import Infoboks from 'components/Infoboks';
+import InfoboksGenerell from 'components/InfoboksGenerell';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
@@ -87,27 +89,20 @@ const FlereForsørgere: FunctionComponent = () => {
             </VStack>
 
             <VStack gap="10">
-                <Box padding="4" borderRadius="large" borderColor="border-alt-3" borderWidth="2">
-                    <Heading size="small" spacing>
-                        <FormattedMessage id="periode.ikkeDekketTittel" />
-                    </Heading>
-
+                <Infoboks header={<FormattedMessage id="periode.ikkeDekketTittel" />}>
                     <BodyLong>
                         <FormattedMessage id="periode.ikkeDekketTekst" />
                     </BodyLong>
-                </Box>
+                </Infoboks>
 
-                <Box padding="4" borderColor="border-alt-3" borderRadius="large" background="bg-subtle">
-                    <Heading size="small" spacing>
-                        <FormattedMessage id="periode.utbetalingTittel" />
-                    </Heading>
+                <InfoboksGenerell header={<FormattedMessage id="periode.utbetalingTittel" />}>
                     <BodyLong>
                         <FormattedMessage id="periode.utbetalingTekst" />
                     </BodyLong>
                     <BodyLong>
                         <FormattedMessage id="periode.utbetalingTekst.del2" />
                     </BodyLong>
-                </Box>
+                </InfoboksGenerell>
             </VStack>
         </VStack>
     );
