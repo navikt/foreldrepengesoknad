@@ -6,6 +6,9 @@ import { FormattedMessage } from 'react-intl';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import LanguageToggle from 'components/LanguageToggle';
+
+import styles from './omPlanleggerenSteg.module.css';
 
 const OmPlanleggerenSteg = () => {
     const navigator = usePlanleggerNavigator();
@@ -35,13 +38,20 @@ const OmPlanleggerenSteg = () => {
                         </HStack>
                     </VStack>
                     <HStack justify="center">
-                        <Button onClick={navigator.goToNextDefaultStep} icon={<ArrowRightIcon />} iconPosition="right">
+                        <Button
+                            onClick={navigator.goToNextDefaultStep}
+                            icon={<ArrowRightIcon />}
+                            iconPosition="right"
+                            className={styles.button}
+                        >
                             <FormattedMessage id="om.start.planlegger" />
                         </Button>
                     </HStack>
                 </VStack>
                 <Show above="md" asChild>
-                    <div>Språkvelger</div>
+                    <HStack justify="center">
+                        <LanguageToggle />
+                    </HStack>
                 </Show>
             </VStack>
         </PlanleggerPage>
