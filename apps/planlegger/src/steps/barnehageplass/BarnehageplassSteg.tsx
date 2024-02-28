@@ -15,10 +15,10 @@ import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 dayjs.locale('nb');
 
-const BARNEHAGELOVEN_TEKST =
+export const BARNEHAGELOVEN_TEKST =
     'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/';
 
-const barnehageStartdato = (barnet: OmBarnet) => {
+export const barnehageStartdato = (barnet: OmBarnet) => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     if (erFødt || erIkkeFødt) {
