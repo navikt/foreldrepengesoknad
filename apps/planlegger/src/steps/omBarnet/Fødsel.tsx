@@ -1,4 +1,4 @@
-import { Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Radio, VStack } from '@navikt/ds-react';
 import { Datepicker, Form, RadioGroup } from '@navikt/fp-form-hooks';
 import {
     erI22SvangerskapsukeEllerSenere,
@@ -7,19 +7,25 @@ import {
     isLessThanThreeWeeksAgo,
     isRequired,
     isValidDate,
+    notEmpty,
 } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Foreldrepengeinfo from './Foreldrepengeinfo';
 import { useForm } from 'react-hook-form';
 import GreenPanel from 'components/GreenPanel';
 import { OmBarnet } from 'types/Barnet';
-import { isLessThanThreeMonthsLeft } from './OmBarnetSteg';
+import Infoboks from 'components/Infoboks';
+import { isAlene } from 'types/HvemPlanlegger';
+import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { finnNavn } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
+
+const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
 
 const Fødsel: React.FunctionComponent = () => {
     const formMethods = useForm<OmBarnet>();
     const intl = useIntl();
 
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erFødt = formMethods.watch('erBarnetFødt');
     const erFødselsdato = formMethods.watch('fødselsdato');
     const termindato = formMethods.watch('termindato');
@@ -109,10 +115,69 @@ const Fødsel: React.FunctionComponent = () => {
                                 ]}
                             />
                         </GreenPanel>
-                        {isLessThanThreeMonthsLeft(termindato) && (
-                            <VStack gap="10">
-                                <Foreldrepengeinfo />
-                            </VStack>
+
+                        {termindato !== undefined && dayjs(termindato).isBefore(DATO_3_MND_FRAM) && (
+                            <>
+                                {isAlene(hvemPlanlegger) && (
+                                    <Infoboks header={<FormattedMessage id="barnet.underTreMndTilTerminDeg" />}>
+                                        <BodyLong>
+                                            <FormattedMessage id="barnet.underTreMndTilTerminDeg" />
+                                        </BodyLong>
+
+                                        <BodyLong>
+                                            <FormattedMessage id="TODO" />
+                                        </BodyLong>
+                                    </Infoboks>
+                                )}
+                                {!isAlene(hvemPlanlegger) && (
+                                    <Infoboks header={<FormattedMessage id="barnet.underTreMndTilTerminInfo" />}>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="barnet.underTreMndTilTerminMor"
+                                                values={{ navn: finnNavn(hvemPlanlegger)[0] }}
+                                            />
+                                        </BodyLong>
+
+                                        <BodyLong>
+                                            <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />
+                                        </BodyLong>
+                                    </Infoboks>
+                                )}
+                            </>
+                        )}
+                        {dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
+                            <>
+                                {isAlene(hvemPlanlegger) && (
+                                    <Infoboks header={<FormattedMessage id="barnet.foreldrepengerInfoDeg" />}>
+                                        <BodyLong>
+                                            <FormattedMessage id="barnet.foreldrepengerInfoTekstDeg" />
+                                        </BodyLong>
+
+                                        <BodyLong>
+                                            <FormattedMessage id="barnet.foreldrepengerInfoTekstMor" />
+                                        </BodyLong>
+
+                                        <BodyLong>
+                                            <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />
+                                        </BodyLong>
+                                    </Infoboks>
+                                )}
+                                {!isAlene(hvemPlanlegger) && (
+                                    <Infoboks header={<FormattedMessage id="barnet.foreldrepengerInfo" />}>
+                                        <BodyLong>
+                                            <FormattedMessage id="barnet.foreldrepengerInfoTekst" />
+                                        </BodyLong>
+
+                                        <BodyLong>
+                                            <FormattedMessage id="barnet.foreldrepengerInfoTekstMor" />
+                                        </BodyLong>
+
+                                        <BodyLong>
+                                            <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />
+                                        </BodyLong>
+                                    </Infoboks>
+                                )}
+                            </>
                         )}
                     </VStack>
                 )}
