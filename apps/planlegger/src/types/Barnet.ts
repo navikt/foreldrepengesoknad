@@ -11,10 +11,16 @@ export type BarnetErIkkeFødt = {
 };
 
 export type BarnetErAdoptert = {
-    erFødsel: boolean;
+    hvorMange: string;
     adopsjonsdato: string;
     overtakelsesdato: string;
 };
+
+export enum AdopsjonsEnum {
+    ETT = 'ett',
+    TO = 'to',
+    FLERE = 'flere',
+}
 
 export type Fødsel = BarnetErFødt | BarnetErIkkeFødt;
 

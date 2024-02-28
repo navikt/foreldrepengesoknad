@@ -11,7 +11,7 @@ const Foreldrepengeinfo: FunctionComponent = () => {
 
     return (
         <VStack gap="10">
-            <Box borderColor="border-alt-3" padding="4" borderWidth="2" borderRadius="xlarge">
+            <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
                 <VStack gap="2">
                     {isAlene(hvemPlanlegger) && (
                         <VStack gap="2">
@@ -22,6 +22,10 @@ const Foreldrepengeinfo: FunctionComponent = () => {
                             <BodyLong>
                                 <FormattedMessage id="barnet.foreldrepengerInfoTekstDeg" />
                             </BodyLong>
+
+                            <BodyLong>
+                                <FormattedMessage id="TODO" />
+                            </BodyLong>
                         </VStack>
                     )}
                     {!isAlene(hvemPlanlegger) && (
@@ -30,6 +34,12 @@ const Foreldrepengeinfo: FunctionComponent = () => {
                                 <FormattedMessage id="barnet.foreldrepengerInfo" />
                             </Heading>
 
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="barnet.foreldrepengerInfoTekst"
+                                    values={{ navn: finnNavn(hvemPlanlegger)[0] }}
+                                />
+                            </BodyLong>
                             <BodyLong>
                                 <FormattedMessage
                                     id="barnet.foreldrepengerInfoTekstMor"
