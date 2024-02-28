@@ -1,19 +1,22 @@
-import { guid, intlUtils, ISOStringToDate, TidsperiodeDate } from '@navikt/fp-common';
-import { Periode } from 'app/types/Periode';
-import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
-import { StønadskontoType } from 'app/types/StønadskontoType';
-import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
-import { IntlShape } from 'react-intl';
-import { getNavnGenitivEierform, NavnPåForeldre } from './personUtils';
-import { capitalizeFirstLetter } from './stringUtils';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
+import { IntlShape } from 'react-intl';
+
+import { ISOStringToDate, TidsperiodeDate, guid, intlUtils } from '@navikt/fp-common';
 import { formatDateIso } from '@navikt/fp-utils';
-import { PeriodeResultat } from 'app/types/PeriodeResultat';
+
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
+import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
+import { Periode } from 'app/types/Periode';
+import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
-import { getTidsperiode, isValidTidsperiode, Tidsperioden } from './tidsperiodeUtils';
+import { StønadskontoType } from 'app/types/StønadskontoType';
+import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
+
 import { Uttaksdagen } from './Uttaksdagen';
+import { NavnPåForeldre, getNavnGenitivEierform } from './personUtils';
+import { capitalizeFirstLetter } from './stringUtils';
+import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
 
 export const Periodene = (perioder: Periode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
@@ -379,7 +382,7 @@ export const getPeriodeTittel = (
     return '';
 };
 
-const periodeErInnvilget = (periode: Periode): boolean => periode.resultat && periode.resultat.innvilget;
+const periodeErInnvilget = (periode: Periode): boolean => periode.resultat !== undefined && periode.resultat.innvilget;
 
 interface SplittetDatoType {
     dato: Date;
@@ -571,14 +574,14 @@ export const getOverlappendePeriodeTittel = (
 export const erAnnenPartsPrematurePeriode = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
     return (
         !!termindato &&
-        !annenPartsPeriode.resultat.innvilget &&
+        !(annenPartsPeriode.resultat !== undefined && annenPartsPeriode.resultat.innvilget) &&
         dayjs(annenPartsPeriode.tom).isBefore(dayjs(termindato), 'd') &&
         annenPartsPeriode.kontoType !== StønadskontoType.Fedrekvote
     );
 };
 
 export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
-    if (annenPartsPeriode.resultat.innvilget) {
+    if (annenPartsPeriode.resultat !== undefined && annenPartsPeriode.resultat.innvilget) {
         return true;
     }
     return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);
