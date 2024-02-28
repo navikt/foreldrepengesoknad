@@ -20,10 +20,12 @@ const PlanleggerPage: React.FunctionComponent<Props> = ({ isFrontpage = false, s
         <div className={styles.background}>
             <div className={styles.header}>
                 <GreenHeading>
-                    <Show below="md" asChild>
-                        <LanguageToggle />
-                    </Show>
                     <>
+                        {isFrontpage && (
+                            <Show below="md" asChild>
+                                <LanguageToggle />
+                            </Show>
+                        )}
                         {isFrontpage && (
                             <VStack gap="1">
                                 <Heading size="large">
