@@ -99,11 +99,9 @@ const Adopsjon: React.FunctionComponent = () => {
                 )}
                 {overtakelsesdato && (
                     <VStack gap="1">
-                        <div className={styles.greenPanel}>
-                            <Heading size="small">
-                                <FormattedMessage id="barnet.fødselsdato" />
-                            </Heading>
+                        <GreenPanel>
                             <Datepicker
+                                label={<FormattedMessage id="barnet.fødselsdato" />}
                                 name="fødselsdato"
                                 minDate={dayjs().subtract(3, 'week').toDate()}
                                 maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
@@ -126,7 +124,7 @@ const Adopsjon: React.FunctionComponent = () => {
                                     ),
                                 ]}
                             />
-                        </div>
+                        </GreenPanel>
                     </VStack>
                 )}
             </VStack>
