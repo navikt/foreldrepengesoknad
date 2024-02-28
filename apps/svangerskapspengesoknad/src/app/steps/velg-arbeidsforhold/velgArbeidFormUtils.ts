@@ -14,7 +14,7 @@ export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: Int
     if (type === Arbeidsforholdstype.FRILANSER) {
         return capitalizeFirstLetter(navn);
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG && navn.trim().length === 0) {
+    if (type === Arbeidsforholdstype.SELVSTENDIG && (!navn || navn.trim().length === 0)) {
         return intl.formatMessage({ id: 'egenNæring' });
     }
     return navn;
