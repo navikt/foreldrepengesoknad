@@ -4,7 +4,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import HvorforSpørViOmDette from 'components/expansionCard/HvorforSpørViOmDette';
+import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -38,7 +38,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     {isAlene(hvemPlanlegger) && <Aleneforsørger />}
                     {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
                     <VStack gap="20">
-                        <HvorforSpørViOmDette text="TODO" />
+                        <HvorforSpørNAVOmDette text="TODO" />
                         <VStack>
                             <StepButtonsHookForm
                                 saveDataOnPreviousClick={lagreArbeidssituasjon}

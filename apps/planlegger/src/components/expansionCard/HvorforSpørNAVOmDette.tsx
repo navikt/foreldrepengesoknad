@@ -5,7 +5,7 @@ import Info from 'components/ikoner/Info';
 interface Props {
     text: string;
 }
-const HvorforSpørViOmDette: React.FunctionComponent<Props> = ({ text }) => {
+const HvorforSpørNAVOmDette: React.FunctionComponent<Props> = ({ text }) => {
     return (
         <ExpansionCard aria-label="">
             <ExpansionCard.Header>
@@ -20,4 +20,4 @@ const HvorforSpørViOmDette: React.FunctionComponent<Props> = ({ text }) => {
         </ExpansionCard>
     );
 };
-export default HvorforSpørViOmDette;
+export default HvorforSpørNAVOmDette;
