@@ -40,7 +40,7 @@ const FlereForsørgere: FunctionComponent = () => {
             </Heading>
             <InfoboksGenerell
                 header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
-                icon={<CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" />}
+                icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
             >
                 <BodyLong>
                     <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
@@ -72,7 +72,7 @@ const FlereForsørgere: FunctionComponent = () => {
             <VStack gap="10">
                 <InfoboksGenerell
                     header={<FormattedMessage id="periode.infoboks.hvordanFordeleTittel" />}
-                    icon={<SectorChartIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" />}
+                    icon={<SectorChartIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                 >
                     <BodyLong>
                         <FormattedMessage id="periode.infoboks.hvordanFordeleTekst" />
