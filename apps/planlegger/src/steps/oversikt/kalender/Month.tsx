@@ -1,5 +1,6 @@
-import { Box, HGrid, Heading } from '@navikt/ds-react';
 import dayjs from 'dayjs';
+
+import { Box, HGrid, Heading } from '@navikt/ds-react';
 
 import styles from './month.module.css';
 
@@ -23,7 +24,7 @@ const Month: React.FunctionComponent<Props> = ({ year, month, children }) => {
     let arrayCounter = 0;
 
     return (
-        <Box borderColor="border-alt-1" className={styles.box} borderWidth="1" borderRadius="small">
+        <Box className={styles.box}>
             <Heading size="small">{monthNameUppercase}</Heading>
             {nrOfWeeks.map((weeknr) => (
                 <HGrid key={weeknr} columns={7}>
