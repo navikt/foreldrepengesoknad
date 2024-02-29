@@ -21,11 +21,10 @@ export const getRelevanteSkjemanummer = (sak: Sak): Skjemanummer[] => {
 export const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: Skjemanummer): boolean => {
     switch (skjemanummer) {
         case Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING:
-            // TODO Putt disse inn igjen om en måneds tid
-            // case Skjemanummer.DEPRECATED_TERMINBEKREFTELSE:
-            // case Skjemanummer.DEPRECATED_BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
-            // case Skjemanummer.DEPRECATED_DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID:
-            // case Skjemanummer.DEPRECATED_TILBAKEBETALING:
+        case Skjemanummer.DEPRECATED_TERMINBEKREFTELSE:
+        case Skjemanummer.DEPRECATED_BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
+        case Skjemanummer.DEPRECATED_DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID:
+            // case Skjemanummer.DEPRECATED_TILBAKEBETALING: // TODO Putt disse inn igjen om en måneds tid
             // case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
             return false;
         default:
@@ -55,10 +54,7 @@ export const isSkjemanummerForEndringssøknadForeldrepenger = (skjemanummer: Skj
         case Skjemanummer.HV_ØVELSE:
         case Skjemanummer.NAV_TILTAK:
         case Skjemanummer.TERMINBEKREFTELSE:
-        case Skjemanummer.DEPRECATED_TERMINBEKREFTELSE: // TODO fjern disse igjen om en måneds tid
-        case Skjemanummer.DEPRECATED_BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
-        case Skjemanummer.DEPRECATED_DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID:
-        case Skjemanummer.DEPRECATED_TILBAKEBETALING:
+        case Skjemanummer.DEPRECATED_TILBAKEBETALING: // TODO fjern disse igjen om en måneds tid
         case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
             return true;
         default:
