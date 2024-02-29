@@ -1,16 +1,19 @@
-import { BodyLong, Heading, Radio, VStack } from '@navikt/ds-react';
-import { RadioGroup } from '@navikt/fp-form-hooks';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { CalendarIcon, SectorChartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import GreenPanel from 'components/GreenPanel';
-import Infoboks from 'components/Infoboks';
 import InfoboksGenerell from 'components/InfoboksGenerell';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { finnHvemPlanlegger } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
 import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 import { PeriodeEnum } from 'types/Periode';
 
-const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
+import { BodyLong, Heading, Radio, Select, VStack } from '@navikt/ds-react';
+
+import { RadioGroup } from '@navikt/fp-form-hooks';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+export const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
     if (isMorOgMedmor(hvemPlanlegger)) {
         return [hvemPlanlegger.navnPåMor, hvemPlanlegger.navnPåMedmor];
     }
@@ -28,25 +31,25 @@ const FlereForsørgere: FunctionComponent = () => {
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
-    const navn = finnNavn(hvemPlanlegger);
-
-    const Nr1Penger100 = '34 000';
-    const Nr2Penger100 = '31 000';
-
-    const Nr1Penger80 = '27 000';
-    const Nr2Penger80 = '24 000';
+    const hvem = finnHvemPlanlegger(hvemPlanlegger);
 
     return (
         <VStack gap="10">
             <Heading size="large" spacing>
                 <FormattedMessage id="periode.tittel" />
             </Heading>
+            <InfoboksGenerell
+                header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
+                icon={<CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" />}
+            >
+                <BodyLong>
+                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
+                </BodyLong>
+            </InfoboksGenerell>
             <VStack gap="2">
-                <Heading size="small">
-                    <FormattedMessage id="periode.hvaGjelderBegge" />
-                </Heading>
                 <GreenPanel>
                     <RadioGroup
+                        label={<FormattedMessage id="periode.hvorLangPeriode" />}
                         name="periode"
                         validate={[
                             isRequired(
@@ -56,32 +59,10 @@ const FlereForsørgere: FunctionComponent = () => {
                             ),
                         ]}
                     >
-                        <Radio
-                            value={PeriodeEnum.HUNDRE}
-                            description={intl.formatMessage(
-                                { id: 'periode.hvaGjelder.beskrivelse' },
-                                {
-                                    navn1: navn[0],
-                                    kr1: Nr1Penger100,
-                                    navn2: navn[1],
-                                    kr2: Nr2Penger100,
-                                },
-                            )}
-                        >
+                        <Radio value={PeriodeEnum.HUNDRE}>
                             <FormattedMessage id="periode.100" />
                         </Radio>
-                        <Radio
-                            value={PeriodeEnum.ÅTTI}
-                            description={intl.formatMessage(
-                                { id: 'periode.hvaGjelder.beskrivelse' },
-                                {
-                                    navn1: navn[0],
-                                    kr1: Nr1Penger80,
-                                    navn2: navn[1],
-                                    kr2: Nr2Penger80,
-                                },
-                            )}
-                        >
+                        <Radio value={PeriodeEnum.ÅTTI}>
                             <FormattedMessage id="periode.80" />
                         </Radio>
                     </RadioGroup>
@@ -89,20 +70,33 @@ const FlereForsørgere: FunctionComponent = () => {
             </VStack>
 
             <VStack gap="10">
-                <Infoboks header={<FormattedMessage id="periode.ikkeDekketTittel" />}>
+                <InfoboksGenerell
+                    header={<FormattedMessage id="periode.infoboks.hvordanFordeleTittel" />}
+                    icon={<SectorChartIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" />}
+                >
                     <BodyLong>
-                        <FormattedMessage id="periode.ikkeDekketTekst" />
-                    </BodyLong>
-                </Infoboks>
-
-                <InfoboksGenerell header={<FormattedMessage id="periode.utbetalingTittel" />}>
-                    <BodyLong>
-                        <FormattedMessage id="periode.utbetalingTekst" />
-                    </BodyLong>
-                    <BodyLong>
-                        <FormattedMessage id="periode.utbetalingTekst.del2" />
+                        <FormattedMessage id="periode.infoboks.hvordanFordeleTekst" />
                     </BodyLong>
                 </InfoboksGenerell>
+            </VStack>
+
+            <VStack gap="2">
+                <GreenPanel>
+                    <Select label={<FormattedMessage id="periode.fordelingTittel" />} name="periode">
+                        <option value={PeriodeEnum.HUNDRE}>
+                            <FormattedMessage
+                                id="periode.fordelingOption1"
+                                values={{ hvem: hvem[0], hvem2: hvem[1] }}
+                            />
+                        </option>
+                        <option value={PeriodeEnum.ÅTTI}>
+                            <FormattedMessage id="periode.fordelingOption2" values={{ hvem: hvem[0] }} />
+                        </option>
+                        <option value={PeriodeEnum.ÅTTI}>
+                            <FormattedMessage id="periode.fordelingOption2" values={{ hvem: hvem[1] }} />
+                        </option>
+                    </Select>
+                </GreenPanel>
             </VStack>
         </VStack>
     );

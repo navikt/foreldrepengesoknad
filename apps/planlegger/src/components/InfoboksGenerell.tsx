@@ -1,4 +1,3 @@
-import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import React from 'react';
 
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -8,8 +7,9 @@ import styles from './Infoboks.module.css';
 interface Props {
     header: string | React.ReactNode;
     children: React.ReactNode;
+    icon?: React.ReactNode;
 }
-const InfoboksGenerell: React.FC<Props> = ({ header, children }) => {
+const InfoboksGenerell: React.FC<Props> = ({ header, children, icon }) => {
     return (
         <Box background="bg-subtle" padding="4" borderRadius="large">
             <VStack gap="2">
@@ -17,9 +17,7 @@ const InfoboksGenerell: React.FC<Props> = ({ header, children }) => {
                     <Heading size="small" className={styles.header}>
                         {header}
                     </Heading>
-                    <div className={`${styles.circle} ${styles.circle__general}`}>
-                        <BabyWrappedIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" />
-                    </div>
+                    <div className={`${styles.circle} ${styles.circle__general}`}>{icon}</div>
                 </HStack>
 
                 {children}
