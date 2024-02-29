@@ -19,7 +19,7 @@ const Infoboks: React.FC<Props> = ({ header, children }) => {
                         {header}
                     </Heading>
                     <div className={classnames(styles.circle, styles.circle__info)}>
-                        <BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" />
+                        <BabyWrappedIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />
                     </div>
                 </HStack>
 

@@ -20,7 +20,7 @@ const Aleneforsørger: FunctionComponent = () => {
             </Heading>
             <InfoboksGenerell
                 header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
-                icon={<CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" />}
+                icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
             >
                 <BodyLong>
                     <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstDeg" />
