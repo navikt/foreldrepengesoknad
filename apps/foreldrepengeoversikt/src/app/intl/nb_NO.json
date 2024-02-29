@@ -123,6 +123,8 @@
     "tidslinje.tittel.ENDRINGSSØKNAD": "Du søkte om å endre foreldrepengeplanen din",
     "tidslinje.tittel.INNTEKTSMELDING": "NAV mottok inntektsmelding",
     "tidslinje.tittel.VEDTAK": "Du har fått et svar på søknaden din",
+    "tidslinje.tittel.VEDTAK.innvilget": "Søknaden din ble innvilget",
+    "tidslinje.tittel.VEDTAK.avslått": "Søknaden din ble avslått",
     "tidslinje.tittel.FREMTIDIG_VEDTAK": "Du vil få et svar på søknaden din",
     "tidslinje.tittel.UTGÅENDE_INNHENT_OPPLYSNINGER": "NAV har etterspurt opplysninger",
     "tidslinje.tittel.UTGÅENDE_ETTERLYS_INNTEKTSMELDING": "NAV har sendt deg brev fordi vi mangler inntektsmelding",

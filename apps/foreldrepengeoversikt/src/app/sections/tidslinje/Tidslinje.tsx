@@ -19,6 +19,7 @@ import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser, getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
 import {
     VENTEÅRSAKER,
+    getAktivTidslinjeStegIndex,
     getAlleTidslinjehendelser,
     getHendelserForVisning,
     getTidslinjehendelseTittel,
@@ -63,6 +64,8 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         !!sak.gjeldendeVedtak &&
         (sak.gjeldendeVedtak.perioder.length === 0 ||
             sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
+    const erInnvilgetForeldrepengesøknad =
+        sak.ytelse === Ytelse.FORELDREPENGER && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
     if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
         return (
             <NoeGikkGalt>
@@ -93,10 +96,10 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         visHeleTidslinjen,
         alleSorterteHendelser,
         erAvslåttForeldrepengesøknad,
+        erInnvilgetForeldrepengesøknad,
     );
-    const aktivtStegIndex = hendelserForVisning.findIndex((hendelse) =>
-        dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'),
-    );
+
+    const aktivtStegIndex = getAktivTidslinjeStegIndex(hendelserForVisning, erInnvilgetForeldrepengesøknad);
     const finnesHendelserFørAktivtSteg = alleSorterteHendelser.find((hendelse) =>
         dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd'),
     );
@@ -115,7 +118,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                     <TidslinjeHendelse
                         date={hendelse.opprettet}
                         title={getTidslinjehendelseTittel(
-                            hendelse.tidslinjeHendelseType,
+                            hendelse,
                             intl,
                             hendelse.tidligstBehandlingsDato,
                             manglendeVedleggData,

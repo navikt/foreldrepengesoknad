@@ -1,8 +1,25 @@
+import { AxiosError } from 'axios';
+import React from 'react';
+import { useIntl } from 'react-intl';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+
+import { Alert } from '@navikt/ds-react';
+
 import { Block, bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
+import { Skjemanummer } from '@navikt/fp-constants';
+
 import Api from 'app/api/api';
+import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
+import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
+import { getSaksoversiktHeading } from 'app/components/header/Header';
 import SeDokumenter from 'app/components/se-dokumenter/SeDokumenter';
+import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
+import {
+    useGetRedirectedFromSøknadsnummer,
+    useSetRedirectedFromSøknadsnummer,
+} from 'app/hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
@@ -10,30 +27,15 @@ import DinPlan from 'app/sections/din-plan/DinPlan';
 import Oppgaver from 'app/sections/oppgaver/Oppgaver';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
+import { RedirectSource } from 'app/types/RedirectSource';
+import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
-import { AxiosError } from 'axios';
-
-import { useIntl } from 'react-intl';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Skjemanummer } from '@navikt/fp-constants';
+import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 
 import './saksoversikt.css';
-import { RequestStatus } from 'app/types/RequestStatus';
-import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
-import { Alert } from '@navikt/ds-react';
-import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
-import {
-    useGetRedirectedFromSøknadsnummer,
-    useSetRedirectedFromSøknadsnummer,
-} from 'app/hooks/useRedirectedFromSøknadsnummer';
-import React from 'react';
-import { RedirectSource } from 'app/types/RedirectSource';
-import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
-import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
-import { getSaksoversiktHeading } from 'app/components/header/Header';
 
 const EMPTY_ARRAY = [] as Skjemanummer[];
 
@@ -108,11 +110,11 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserData);
     const nettoppSendtInnSøknad =
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
-
+    const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak.åpenBehandling !== undefined;
     if (!oppdatertData) {
         return (
             <div className={bem.block}>
-                {nettoppSendtInnSøknad && (
+                {visBekreftelsePåSendtSøknad && (
                     <BekreftelseSendtSøknad
                         oppdatertData={oppdatertData}
                         relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
