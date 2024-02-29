@@ -1,6 +1,5 @@
-import { BabyWrappedIcon, CalendarIcon } from '@navikt/aksel-icons';
+import { CalendarIcon } from '@navikt/aksel-icons';
 import GreenPanel from 'components/GreenPanel';
-import Infoboks from 'components/Infoboks';
 import InfoboksGenerell from 'components/InfoboksGenerell';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
