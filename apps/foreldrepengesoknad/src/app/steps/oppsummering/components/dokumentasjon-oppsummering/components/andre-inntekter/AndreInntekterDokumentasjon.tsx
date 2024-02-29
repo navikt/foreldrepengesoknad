@@ -1,7 +1,4 @@
-import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
-
-import { BodyLong } from '@navikt/ds-react';
 
 import { Block, bemUtils } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
@@ -24,8 +21,7 @@ const AndreInntekterDokumentasjon: FunctionComponent<Props> = ({ vedlegg }) => {
     return (
         <div>
             <Block padBottom="l">
-                <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
-                <BodyLong>{getDokumentasjonStringAndreInntekter(vedlegg)}</BodyLong>
+                <div className={bem.block}>{getDokumentasjonStringAndreInntekter(vedlegg)}</div>
             </Block>
             <VedleggListe vedlegg={vedlegg} />
         </div>

@@ -1,8 +1,4 @@
-import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
-
-import { BodyLong } from '@navikt/ds-react';
 
 import { Block, bemUtils } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
@@ -16,16 +12,12 @@ interface Props {
 }
 
 const PeriodeDokumentasjon: FunctionComponent<Props> = ({ vedlegg }) => {
-    const intl = useIntl();
     const bem = bemUtils('dokumentasjon');
 
     return (
         <div>
             <Block padBottom="l">
-                <div className={bem.block}>
-                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
-                    <BodyLong weight="semibold">{getDokumentasjonStringPerioder(vedlegg, intl)}</BodyLong>
-                </div>
+                <div className={bem.block}>{getDokumentasjonStringPerioder(vedlegg)}</div>
             </Block>
             <VedleggListe vedlegg={vedlegg} />
         </div>

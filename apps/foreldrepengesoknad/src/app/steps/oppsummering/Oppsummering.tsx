@@ -1,10 +1,11 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import {
     Barn,
+    Block,
     ISOStringToDate,
     getErSøkerFarEllerMedmor,
     getNavnPåForeldre,
@@ -202,6 +203,18 @@ const Oppsummering: FunctionComponent<Props> = ({
                 >
                     <DokumentasjonOppsummering vedlegg={vedlegg!} setManglerDokumentasjon={setManglerDokumentasjon} />
                 </OppsummeringIndex.Punkt>
+                <Block visible={manglerDokumentasjon} margin="xl">
+                    <Alert variant="info">
+                        <VStack gap="2">
+                            <Heading size="small" level="2">
+                                <FormattedMessage id="oppsummering.manglerDokumentasjon.heading" />
+                            </Heading>
+                            <BodyLong>
+                                <FormattedMessage id="oppsummering.manglerDokumentasjon.content" />
+                            </BodyLong>
+                        </VStack>
+                    </Alert>
+                </Block>
             </OppsummeringIndex>
         </ContentWrapper>
     );

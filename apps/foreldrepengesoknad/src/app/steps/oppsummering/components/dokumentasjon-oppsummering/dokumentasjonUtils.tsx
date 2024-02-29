@@ -1,9 +1,9 @@
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, IntlShape } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { Tidsperiode, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
+import { Tidsperiode, bemUtils, formatDate } from '@navikt/fp-common';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
 
 import {
@@ -157,118 +157,229 @@ export const getDokumentasjonStringBarn = (attachments: Attachment[]) => {
     return '';
 };
 
-export const getDokumentasjonStringPerioder = (attachments: Attachment[], intl: IntlShape) => {
+export const getDokumentasjonStringPerioder = (attachments: Attachment[]) => {
     const tidsperioder = attachments[0].dokumenterer!.perioder!;
     const singleAttachment = attachments[0];
+    const bem = bemUtils('dokumentasjon');
 
     if (isIntroduksjonsprogramVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.introduksjonsprogram.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.introduksjonsprogram.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.introduksjonsprogram', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.introduksjonsprogram"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isKvalifiseringsprogramVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.kvalifiseringsprogram.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.kvalifiseringsprogram.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.kvalifiseringsprogram', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.kvalifiseringsprogram"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isMorInnleggelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morInnlagt.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.morInnlagt.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morInnlagt', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.morInnlagt"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isBarnInnleggelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.barnInnlagt.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.barnInnlagt.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.barnInnlagt', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.barnInnlagt"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isFarInnleggelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farInnlagt.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.farInnlagt.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farInnlagt', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.farInnlagt"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isMorForSykVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morForSyk.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.morForSyk.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morForSyk', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.morForSyk"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isFarForSykVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farForSyk.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.farForSyk.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.farForSyk', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.farForSyk"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isMorJobberVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobber.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.morJobber.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobber', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.morJobber"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isMorStudererVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morStuderer.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.morStuderer.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morStuderer', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.morStuderer"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     if (isMorJobberOgStudererVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobberOgStuderer.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.perioder.morJobberOgStuderer.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.perioder.morJobberOgStuderer', {
-            perioder: tidsperioder.length,
-            tidsperiode: getTidsperiodeString(tidsperioder),
-        });
+        return (
+            <BodyLong>
+                <FormattedMessage
+                    id="oppsummering.dokumentasjon.perioder.morJobberOgStuderer"
+                    values={{ perioder: tidsperioder.length, tidsperiode: getTidsperiodeString(tidsperioder) }}
+                />
+            </BodyLong>
+        );
     }
 
     return '';

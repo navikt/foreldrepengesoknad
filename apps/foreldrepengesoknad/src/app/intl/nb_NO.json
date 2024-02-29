@@ -515,6 +515,8 @@
     "oppsummering.senderInnSøknad": "Sender inn søknad",
     "oppsummering.dokumentasjon": "Dokumentasjon",
     "oppsummering.manglerDokumentasjon": "Dokumentasjon (mangler)",
+    "oppsummering.manglerDokumentasjon.heading": "Søknaden kan sendes, men du må huske å laste opp dokumentasjon du mangler i etterkant.",
+    "oppsummering.manglerDokumentasjon.content": "Du har ikke lastet opp all dokumentasjon som NAV trenger for å behandle søknaden din. Du kan sende søknaden din selv om dette ikke er på plass, så kan du laste det opp i etterkant på NAV sine sider. Søknaden din vil ikke bli behandlet før all dokumentasjon er sendt. Dokumentasjonen må sendes innen tre uker etter du har sendt søknad.",
     "oppsummering.dokumentasjon.perioder.introduksjonsprogram": "Dokumentasjon på at mor deltar i introduksjonsprogrammet i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",
     "oppsummering.dokumentasjon.perioder.introduksjonsprogram.sendSenere": "Husk å sende dokumentasjon på mors deltagelse i introduksjonsprogrammet",
     "oppsummering.dokumentasjon.perioder.kvalifiseringsprogram": "Dokumentasjon på at mor deltar i kvalifiseringsprogrammet i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",
