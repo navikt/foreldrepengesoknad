@@ -264,7 +264,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     updateAttachments={updateAttachments}
                 />
                 <Block padBottom="xl">
-                    <Alert variant="info">
+                    <Alert size="small" variant="info">
                         <Heading level="2" size="small">
                             <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
                         </Heading>
