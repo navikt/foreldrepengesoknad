@@ -1,11 +1,19 @@
-import { FunctionComponent } from 'react';
 import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import { FunctionComponent } from 'react';
+
+import { LocaleAll } from '@navikt/fp-types';
+
 import PlanleggerRouter from './PlanleggerRouter';
 
-const Planlegger: FunctionComponent = () => {
+interface Props {
+    locale: LocaleAll;
+    changeLocale: (locale: LocaleAll) => void;
+}
+
+const Planlegger: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     return (
         <PlanleggerDataContext>
-            <PlanleggerRouter />
+            <PlanleggerRouter locale={locale} changeLocale={changeLocale} />
         </PlanleggerDataContext>
     );
 };
