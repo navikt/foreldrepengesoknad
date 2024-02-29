@@ -1,36 +1,38 @@
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
 import { IntlShape } from 'react-intl';
+
+import { Accordion } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Arbeidsforhold,
-    bemUtils,
     Block,
+    NavnPåForeldre,
+    Periode,
+    PeriodeValidState,
+    Periodetype,
+    Situasjon,
+    TilgjengeligStønadskonto,
+    Utsettelsesperiode,
+    bemUtils,
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriode,
     isSlettbarAvslåttPeriode,
-    NavnPåForeldre,
-    Periode,
-    Periodetype,
-    PeriodeValidState,
-    Situasjon,
-    TilgjengeligStønadskonto,
-    Utsettelsesperiode,
 } from '@navikt/fp-common';
-import classNames from 'classnames';
-import { FunctionComponent } from 'react';
+
+import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
+import { VeilederMessage } from '../../validering/veilederInfo/types';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';
 import PeriodeHull from '../perioder/PeriodeHull';
 import PeriodeInfo from '../perioder/PeriodeInfo';
 import PeriodeUtenUttak from '../perioder/PeriodeUtenUttak';
+import SlettbarAvslåttPeriode from '../perioder/SlettbarAvslåttPeriode';
 import PeriodeFørFødselForm from '../uttaks-forms/periode-før-fødsel-form/PeriodeFørFødselForm';
 import PeriodeUtsettelseForm from '../uttaks-forms/periode-utsettelse-form/PeriodeUtsettelseForm';
 import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakForm';
-import { Accordion } from '@navikt/ds-react';
-import SlettbarAvslåttPeriode from '../perioder/SlettbarAvslåttPeriode';
-
 import './periodelisteItem.less';
-import { VeilederMessage } from '../../validering/veilederInfo/types';
-import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
 
 interface Props {
     egenPeriode: boolean;

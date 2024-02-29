@@ -1,4 +1,8 @@
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
+
 import { BodyShort } from '@navikt/ds-react';
+
 import {
     Block,
     ISOStringToDate,
@@ -8,15 +12,17 @@ import {
     intlUtils,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { Arbeidsforhold, Attachment, AttachmentMetadataType } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
+
 import AndreInntekter from './components/andre-inntekter/AndreInntekter';
 import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import EgenNæring from './components/egen-næring/EgenNæring';
@@ -28,8 +34,6 @@ import {
     getInitialInntektsinformasjonFormValues,
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
-import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import { Skjemanummer } from '@navikt/fp-constants';
 
 const getPerioderSomDokumenteres = (andreInntekterInformasjon: AnnenInntekt[], type: AnnenInntektType) => {
     return andreInntekterInformasjon.reduce((res, info) => {

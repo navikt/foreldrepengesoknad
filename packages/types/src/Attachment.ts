@@ -1,4 +1,5 @@
-import { Skjemanummer, AttachmentType } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+
 import { AttachmentMetadata } from './AttachmentMetadata';
 
 export enum InnsendingsType {

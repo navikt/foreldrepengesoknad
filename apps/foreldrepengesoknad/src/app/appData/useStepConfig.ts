@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 import { IntlShape, useIntl } from 'react-intl';
+import { useLocation } from 'react-router-dom';
+
 import { notEmpty } from '@navikt/fp-validation';
-import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../routes/routes';
+
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from 'app/context/FpDataContext';
+
+import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../routes/routes';
 
 // TODO Bør denne flyttast ut?
 const getPathToLabelMap = (intl: IntlShape) =>

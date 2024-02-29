@@ -1,3 +1,8 @@
+import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { FormattedMessage, IntlShape } from 'react-intl';
+
+import { Heading } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Arbeidsforhold,
@@ -10,11 +15,9 @@ import {
     TilgjengeligStønadskonto,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
+
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
-import { FormattedMessage, IntlShape } from 'react-intl';
-import { Heading } from '@navikt/ds-react';
+import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 
 interface Props {
     familiehendelsesdato: Date;

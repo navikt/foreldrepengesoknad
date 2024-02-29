@@ -1,14 +1,18 @@
-import { useState } from 'react';
-import { ArrayHelpers, useFormikContext } from 'formik';
 import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
-import { Block, deleteAttachment, intlUtils, isAttachmentWithError, mapFilTilVedlegg } from '@navikt/fp-common';
-import AttachmentApi from 'app/api/attachmentApi';
-import AttachmentList from '../attachment/AttachmentList';
+import { ArrayHelpers, useFormikContext } from 'formik';
+import { useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+
 import { BodyShort } from '@navikt/ds-react';
-import { Attachment } from '@navikt/fp-types';
+
+import { Block, deleteAttachment, intlUtils, isAttachmentWithError, mapFilTilVedlegg } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 import { ScanDocumentInfo } from '@navikt/fp-ui';
+
+import AttachmentApi from 'app/api/attachmentApi';
+
+import AttachmentList from '../attachment/AttachmentList';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;

@@ -1,8 +1,10 @@
 import { StoryFn } from '@storybook/react';
-import { Formik, Form } from 'formik';
-import FormikFileUploader, { Props } from './FormikFileUploader';
+import { Form, Formik } from 'formik';
+
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
+
+import FormikFileUploader, { Props } from './FormikFileUploader';
 
 export default {
     title: 'components/FormikFileUploader',

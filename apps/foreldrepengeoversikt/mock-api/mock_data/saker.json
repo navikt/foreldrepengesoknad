@@ -1,78 +1,40 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352014403",
+            "saksnummer": "352014464",
             "sakAvsluttet": false,
             "kanSøkeOmEndring": true,
-            "sakTilhørerMor": false,
+            "sakTilhørerMor": true,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "12449448004"
+                "fnr": "14529000325"
             },
             "familiehendelse": {
-                "fødselsdato": "2021-07-01",
+                "termindato": "2024-03-05",
                 "antallBarn": 1
             },
             "gjeldendeVedtak": {
                 "perioder": [
                     {
-                        "fom": "2022-02-03",
-                        "tom": "2022-02-04",
-                        "kontoType": "FEDREKVOTE",
-                        "resultat": {
-                            "innvilget": false,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-02-07",
-                        "tom": "2022-02-11",
-                        "kontoType": "FEDREKVOTE",
-                        "resultat": {
-                            "innvilget": false,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "AVSLAG_UTSETTELSE_TILBAKE_I_TID"
-                        },
-                        "utsettelseÅrsak": "LOVBESTEMT_FERIE",
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-02-14",
-                        "tom": "2022-02-18",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2024-02-13",
+                        "tom": "2024-03-04",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
-                            "årsak": "INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID"
+                            "årsak": "ANNET"
                         },
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2022-02-21",
-                        "tom": "2022-02-25",
-                        "kontoType": "FEDREKVOTE",
-                        "resultat": {
-                            "innvilget": false,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "AVSLAG_UTSETTELSE_TILBAKE_I_TID"
-                        },
-                        "utsettelseÅrsak": "ARBEID",
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-02-28",
-                        "tom": "2022-05-06",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2024-03-05",
+                        "tom": "2024-04-15",
+                        "kontoType": "MØDREKVOTE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
@@ -83,13 +45,9 @@
                     }
                 ]
             },
-            "barn": [
-                {
-                    "fnr": "01472152307"
-                }
-            ],
+            "barn": [],
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2024-02-21T09:37:03.806"
+            "oppdatertTidspunkt": "2024-02-28T21:19:08.911"
         }
     ],
     "engangsstønad": [],

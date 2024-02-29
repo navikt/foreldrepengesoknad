@@ -1,7 +1,8 @@
 import { StoryFn } from '@storybook/react';
 
-import AttachmentList from './AttachmentList';
 import { Attachment } from '@navikt/fp-types';
+
+import AttachmentList from './AttachmentList';
 
 export default {
     title: 'components/AttachmentList',

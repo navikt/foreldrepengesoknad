@@ -1,8 +1,11 @@
-import { intlUtils, Block, hasValue, OverføringÅrsakType, getNavnGenitivEierform } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+
+import { Block, OverføringÅrsakType, getNavnGenitivEierform, hasValue, intlUtils } from '@navikt/fp-common';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+
+import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+
 interface Props {
     navnAnnenForelder: string;
     erEndringssøknad: boolean;

@@ -1,5 +1,7 @@
-import { Attachment } from '@navikt/fp-types';
 import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+
+import { Attachment } from '@navikt/fp-types';
+
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 
 export enum AndreInntekterFormField {

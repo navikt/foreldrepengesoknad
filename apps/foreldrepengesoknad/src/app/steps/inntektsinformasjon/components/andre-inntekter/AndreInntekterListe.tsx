@@ -1,8 +1,10 @@
-import { formatTidsperiodeMedValgfriSluttdato, intlUtils } from '@navikt/fp-common';
-import InteractiveListElement from 'app/components/interactive-list-element/InteractiveListElement';
-import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+
+import { formatTidsperiodeMedValgfriSluttdato, intlUtils } from '@navikt/fp-common';
+
+import InteractiveListElement from 'app/components/interactive-list-element/InteractiveListElement';
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 
 interface Props {
     andreInntekter: AnnenInntekt[];

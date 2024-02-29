@@ -1,4 +1,5 @@
 import { AnnenForelder, Periode, isUttaksperiode } from '@navikt/fp-common';
+
 import { shouldPeriodeHaveAttachment } from './manglendeVedleggUtils';
 
 interface HarAktivitetskravIPeriodeUtenUttakParams {

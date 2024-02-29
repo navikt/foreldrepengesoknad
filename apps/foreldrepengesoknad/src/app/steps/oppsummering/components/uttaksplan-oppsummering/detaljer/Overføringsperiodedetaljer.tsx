@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
+
 import { NavnPåForeldre, Overføringsperiode, StønadskontoType } from '@navikt/fp-common';
+
 import { getÅrsakTekst } from '../OppsummeringUtils';
+import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
 
 interface OverføringsperiodedetaljerProps {
     periode: Overføringsperiode;

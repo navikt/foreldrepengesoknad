@@ -1,3 +1,8 @@
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, VStack } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Søkerrolle,
@@ -5,11 +10,10 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
+
 import SøkerData from 'app/context/types/SøkerData';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
-import { BodyShort, VStack } from '@navikt/ds-react';
 
 interface Props {
     annenForelder: AnnenForelder;

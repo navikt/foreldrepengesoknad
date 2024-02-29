@@ -1,6 +1,18 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
+
+import { Block, intlUtils } from '@navikt/fp-common';
+import { AttachmentType } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+
+import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
+import { validateRequiredTextInputField } from 'app/utils/validationUtil';
+
+import { validateAnnenInntektFom, validateAnnenInntektTom } from './../validation/andreInntekterValidation';
 import {
     AndreInntekterFormData,
     AndreInntekterFormField,
@@ -12,15 +24,7 @@ import {
     getSkjemanummer,
     mapAnnenInntektModalValuesToState,
 } from './andreInntekterModalFormUtils';
-import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import andreInntekterModalQuestionsConfig from './andreInntekterModalQuestionsConfig';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { validateAnnenInntektFom, validateAnnenInntektTom } from './../validation/andreInntekterValidation';
-import dayjs from 'dayjs';
-import { validateRequiredTextInputField } from 'app/utils/validationUtil';
-import { Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
-import { AttachmentType } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
 
 interface Props {
     isOpen: boolean;

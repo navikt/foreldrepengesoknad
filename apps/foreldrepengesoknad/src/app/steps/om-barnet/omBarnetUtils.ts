@@ -1,3 +1,6 @@
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+
 import {
     AdoptertBarn,
     Barn,
@@ -14,12 +17,12 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { VedleggDataType } from 'app/types/VedleggDataType';
 import { Arbeidsforhold } from '@navikt/fp-types';
+
+import { VedleggDataType } from 'app/types/VedleggDataType';
+
+import { OmBarnetFormData, OmBarnetFormField } from './omBarnetFormConfig';
 
 const getInitValues = (): Readonly<OmBarnetFormData> => ({
     [OmBarnetFormField.erBarnetFødt]: YesOrNo.UNANSWERED,

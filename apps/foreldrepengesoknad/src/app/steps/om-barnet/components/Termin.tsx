@@ -1,26 +1,31 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { isISODateString } from '@navikt/ds-datepicker';
+import { Alert, BodyShort, GuidePanel, Heading, Link, ReadMore } from '@navikt/ds-react';
+
 import {
+    Block,
+    Søkersituasjon,
     attenUkerTreDager,
     date21DaysAgo,
-    Block,
     dateToday,
+    erIUke22Pluss3,
     hasValue,
     intlUtils,
-    erIUke22Pluss3,
-    Søkersituasjon,
     isFarEllerMedmor,
     links,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { kanSøkePåTermin } from '../omBarnetQuestionsConfig';
 import { validateTerminbekreftelse, validateTermindato } from '../validation/omBarnetValidering';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { Alert, BodyShort, GuidePanel, Heading, Link, ReadMore } from '@navikt/ds-react';
-import { isISODateString } from '@navikt/ds-datepicker';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+
 interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;

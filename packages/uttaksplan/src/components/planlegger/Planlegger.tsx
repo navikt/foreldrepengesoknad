@@ -1,30 +1,32 @@
+import { FunctionComponent, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Button, Heading } from '@navikt/ds-react';
+
 import {
-    bemUtils,
-    InfoBlock,
-    intlUtils,
-    Block,
     ActionLink,
-    NavnPåForeldre,
-    Situasjon,
-    TilgjengeligStønadskonto,
+    AnnenForelder,
     Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
-    AnnenForelder,
-    isAnnenForelderOppgitt,
+    Block,
+    InfoBlock,
+    NavnPåForeldre,
     Periode,
-    Periodene,
-    Utsettelsesperiode,
     PeriodeValidState,
+    Periodene,
+    Situasjon,
+    TilgjengeligStønadskonto,
+    Utsettelsesperiode,
+    bemUtils,
+    intlUtils,
+    isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
-import Periodeliste from './../periodeliste/Periodeliste';
-import { Button, Heading } from '@navikt/ds-react';
-import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
+import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
+import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
+import Periodeliste from './../periodeliste/Periodeliste';
 import './planlegger.less';
 
 interface Props {

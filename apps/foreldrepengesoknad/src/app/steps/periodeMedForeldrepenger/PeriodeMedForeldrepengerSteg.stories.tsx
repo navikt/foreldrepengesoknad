@@ -1,19 +1,22 @@
-import dayjs from 'dayjs';
-import MockAdapter from 'axios-mock-adapter';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
-import { SøkersituasjonFp } from '@navikt/fp-types';
-import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
-import Environment from 'app/Environment';
+import { StoryFn } from '@storybook/react';
+import MockAdapter from 'axios-mock-adapter';
+import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+
+import Environment from 'app/Environment';
+import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+
+import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = `${Environment.REST_API_URL}/konto`;

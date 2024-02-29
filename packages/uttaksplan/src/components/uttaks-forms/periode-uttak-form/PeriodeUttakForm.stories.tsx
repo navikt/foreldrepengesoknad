@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction } from 'react';
 import { StoryFn } from '@storybook/react';
-import { IntlShape } from 'react-intl';
-import PeriodeUttakForm from './PeriodeUttakForm';
 import { PeriodeValidState } from 'Uttaksplan';
+import { Dispatch, SetStateAction } from 'react';
+import { IntlShape } from 'react-intl';
+
 import {
     AnnenForelder,
     Arbeidsforhold,
@@ -14,6 +14,8 @@ import {
     TilgjengeligStønadskonto,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
+
+import PeriodeUttakForm from './PeriodeUttakForm';
 
 const stønadskonto100MorFar = [
     { konto: StønadskontoType.Mødrekvote, dager: 75 },

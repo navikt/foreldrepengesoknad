@@ -1,8 +1,10 @@
 import { FileIcon } from '@navikt/aksel-icons';
+import { FunctionComponent } from 'react';
+
 import { BodyShort, Link } from '@navikt/ds-react';
+
 import { Block } from '@navikt/fp-common';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
-import { FunctionComponent } from 'react';
 
 interface Props {
     vedlegg: Attachment[];

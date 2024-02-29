@@ -1,14 +1,17 @@
-import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
-import { initAmplitude } from '@navikt/fp-metrics';
-import { Søker, SøkerBarn, SivilstandType, SøkersituasjonFp } from '@navikt/fp-types';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
-import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { SivilstandType, Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
+
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
 import AnnenForelder from './AnnenForelder';
 
 const promiseAction =
