@@ -31,6 +31,7 @@ import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
+import { søknadInneholderIngenVedlegg } from '../manglende-vedlegg/util';
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
 import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
 import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
@@ -117,6 +118,7 @@ const Oppsummering: FunctionComponent<Props> = ({
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
+    const inneholderIkkeVedlegg = søknadInneholderIngenVedlegg(vedlegg);
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, søkerErFarEllerMedmor, intl);
@@ -196,7 +198,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                     />
                 </OppsummeringIndex.Punkt>
                 <OppsummeringIndex.Punkt
-                    hide={vedlegg === undefined}
+                    hide={vedlegg === undefined || inneholderIkkeVedlegg}
                     tittel={intl.formatMessage({
                         id: manglerDokumentasjon ? 'oppsummering.manglerDokumentasjon' : 'oppsummering.dokumentasjon',
                     })}
