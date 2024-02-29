@@ -12,7 +12,7 @@ import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 import { PeriodeEnum } from 'types/Periode';
 
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
 
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -52,36 +52,41 @@ const OversiktSteg = () => {
                 {isAlene(hvemPlanlegger) && <Aleneforsørger />}
                 <VStack gap="2">
                     <HStack gap="32">
-                        <HStack gap="5" align="center">
-                            <BlåSirkel />
-                            <BodyShort>
-                                {valgtPeriode.periode === PeriodeEnum.HUNDRE && (
-                                    <FormattedMessage id="ukerForeldrepenger.100" />
-                                )}
-                                {valgtPeriode.periode === PeriodeEnum.ÅTTI && (
-                                    <FormattedMessage id="ukerForeldrepenger.80" />
-                                )}
-                            </BodyShort>
-                        </HStack>
-
-                        <HStack gap="5" align="center">
-                            <Hjerte />
-                            <BodyShort>
-                                <FormattedMessage id="termindatoIkontekst" />
-                            </BodyShort>
-                        </HStack>
+                        <Box background="surface-info-subtle" padding="2" borderRadius="xlarge">
+                            <HStack gap="5" align="center">
+                                <BlåSirkel />
+                                <BodyShort>
+                                    {valgtPeriode.periode === PeriodeEnum.HUNDRE && (
+                                        <FormattedMessage id="ukerForeldrepenger.100" />
+                                    )}
+                                    {valgtPeriode.periode === PeriodeEnum.ÅTTI && (
+                                        <FormattedMessage id="ukerForeldrepenger.80" />
+                                    )}
+                                </BodyShort>
+                            </HStack>
+                        </Box>
+                        <Box background="surface-danger-subtle" padding="2" borderRadius="xlarge">
+                            <HStack gap="5" align="center">
+                                <Hjerte />
+                                <BodyShort>
+                                    <FormattedMessage id="termindatoIkontekst" />
+                                </BodyShort>
+                            </HStack>
+                        </Box>
                     </HStack>
 
                     <HStack gap="4">
-                        <HStack gap="5" align="center">
-                            <RosaSirkel />
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="barnehagestartIkontekst"
-                                    values={{ mnd: barnehagestartDato(barnet) }}
-                                />
-                            </BodyShort>
-                        </HStack>
+                        <Box background="surface-success-subtle" padding="2" borderRadius="xlarge">
+                            <HStack gap="5" align="center">
+                                <RosaSirkel />
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="barnehagestartIkontekst"
+                                        values={{ mnd: barnehagestartDato(barnet) }}
+                                    />
+                                </BodyShort>
+                            </HStack>
+                        </Box>
                     </HStack>
                 </VStack>
                 <VStack gap="10">
