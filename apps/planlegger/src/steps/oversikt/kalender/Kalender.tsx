@@ -1,9 +1,12 @@
-import { HStack, VStack } from '@navikt/ds-react';
-import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import dayjs, { Dayjs } from 'dayjs';
 import { erBarnetIkkeFødt } from 'types/Barnet';
-import Day, { PeriodType } from './Day';
+
+import { HStack, VStack } from '@navikt/ds-react';
+
+import { notEmpty } from '@navikt/fp-validation';
+
+import Day, { DagIPeriode, PeriodType } from './Day';
 import Month from './Month';
 import Year from './Year';
 
@@ -25,21 +28,72 @@ const findMonthsOfYear = (year: number, treUkerFørTerminDato: Dayjs, sluttdato4
     throw new Error('År er ikke gyldig');
 };
 
+type Periode = {
+    fom: Dayjs;
+    tom: Dayjs;
+};
+
+const erFørsteDag = (date: Dayjs, day: number, perioder: Periode[]) => {
+    return (
+        date.isoWeekday() === 5 ||
+        date.isoWeekday() === 7 ||
+        day === 0 ||
+        perioder.some((periode) => date.startOf('day').isSame(periode.fom.startOf('day')))
+    );
+};
+
+const erSisteDag = (date: Dayjs, day: number, perioder: Periode[]) => {
+    return (
+        date.isoWeekday() === 6 ||
+        date.isoWeekday() === 4 ||
+        day === date.daysInMonth() - 1 ||
+        perioder.some((periode) => date.startOf('day').isSame(periode.tom.startOf('day')))
+    );
+};
+const finnStartEllerSlutt = (year: number, month: number, day: number, perioder: Periode[]) => {
+    const date = dayjs().year(year).month(month).date(day);
+    const førsteDag = erFørsteDag(date, day, perioder);
+    const sisteDag = erSisteDag(date, day, perioder);
+
+    if (førsteDag && sisteDag) {
+        return DagIPeriode.FØRSTE_OG_SISTE_DAG;
+    }
+    if (førsteDag) {
+        return DagIPeriode.FØRSTE_DAG;
+    }
+    if (sisteDag) {
+        return DagIPeriode.SISTE_DAG;
+    }
+    return DagIPeriode.DAG_MELLOM;
+};
+
 const finnPeriodeType = (
     year: number,
     month: number,
     day: number,
     treUkerFørTerminDato: Dayjs,
+    sluttdatoMor: Dayjs,
     sluttdato49: Dayjs,
     termindato: Dayjs,
 ) => {
     const date = dayjs().year(year).month(month).date(day);
+
+    if (date.isBefore(treUkerFørTerminDato) || date.isAfter(sluttdato49)) {
+        return PeriodType.INGEN;
+    }
+    if (date.isoWeekday() === 5 || date.isoWeekday() === 6) {
+        return PeriodType.HELGEDAG;
+    }
     if (date.isSame(termindato, 'date')) {
         return PeriodType.TERMINDATO;
     }
 
-    if (date.isBetween(treUkerFørTerminDato, sluttdato49)) {
-        return PeriodType.FORELDREPENGER;
+    if (date.isBetween(treUkerFørTerminDato, sluttdatoMor)) {
+        return PeriodType.FORELDREPENGER_MOR;
+    }
+
+    if (date.isBetween(sluttdatoMor, sluttdato49)) {
+        return PeriodType.FORELDREPENGER_FAR;
     }
     return PeriodType.INGEN;
 };
@@ -52,7 +106,14 @@ const Kalender = () => {
     }
 
     const treUkerFørTerminDato = dayjs(termindato).subtract(3, 'weeks').startOf('day');
-    const sluttdato49 = dayjs(treUkerFørTerminDato).add(46, 'weeks');
+    const sluttdatoMor = dayjs(treUkerFørTerminDato).add(31, 'weeks');
+    const sluttdato49 = dayjs(sluttdatoMor).add(15, 'weeks');
+
+    const perioder = [
+        { fom: treUkerFørTerminDato, tom: dayjs(termindato).subtract(1, 'day') },
+        { fom: dayjs(termindato).add(1, 'day'), tom: dayjs(sluttdatoMor).subtract(1, 'day') },
+        { fom: dayjs(sluttdatoMor), tom: dayjs(sluttdato49).subtract(1, 'day') },
+    ];
 
     const years = [...new Set([treUkerFørTerminDato.year(), sluttdato49.year()])];
 
@@ -72,9 +133,13 @@ const Kalender = () => {
                                             month,
                                             day,
                                             treUkerFørTerminDato,
+                                            sluttdatoMor,
                                             sluttdato49,
                                             dayjs(termindato),
                                         )}
+                                        startEllerSlutt={finnStartEllerSlutt(year, month, day, perioder)}
+                                        isFirstDay={day === 0}
+                                        isLastDay={day === dayjs().year(year).month(month).daysInMonth() - 1}
                                     />
                                 ))}
                             </Month>
