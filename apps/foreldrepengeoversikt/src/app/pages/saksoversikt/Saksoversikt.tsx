@@ -148,7 +148,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     return (
         <div className={bem.block}>
-            {nettoppSendtInnSøknad && (
+            {visBekreftelsePåSendtSøknad && (
                 <BekreftelseSendtSøknad
                     oppdatertData={oppdatertData}
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
