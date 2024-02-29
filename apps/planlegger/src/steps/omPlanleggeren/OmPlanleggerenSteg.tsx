@@ -1,20 +1,28 @@
-import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
-import Kalender from 'components/ikoner/Kalender';
-import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
-import { FormattedMessage } from 'react-intl';
-
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import LanguageToggle from 'components/LanguageToggle';
+import Kalender from 'components/ikoner/Kalender';
+import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
+import PlanleggerFrontpage from 'components/planleggerPage/PlanleggerFrontpage';
+import { FunctionComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
+
+import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+
+import { LocaleAll } from '@navikt/fp-types';
 
 import styles from './omPlanleggerenSteg.module.css';
 
-const OmPlanleggerenSteg = () => {
+interface Props {
+    locale: LocaleAll;
+    changeLocale: (locale: LocaleAll) => void;
+}
+
+const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const navigator = usePlanleggerNavigator();
 
     return (
-        <PlanleggerPage isFrontpage steps={[]}>
+        <PlanleggerFrontpage locale={locale} changeLocale={changeLocale}>
             <VStack gap="10">
                 <BodyShort size="large">
                     <FormattedMessage id="om.ingress" />
@@ -50,11 +58,13 @@ const OmPlanleggerenSteg = () => {
                 </VStack>
                 <Show above="md" asChild>
                     <HStack justify="center">
-                        <LanguageToggle />
+                        <div className={styles.languageToggle}>
+                            <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                        </div>
                     </HStack>
                 </Show>
             </VStack>
-        </PlanleggerPage>
+        </PlanleggerFrontpage>
     );
 };
 

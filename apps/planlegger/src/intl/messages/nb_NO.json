@@ -8,7 +8,7 @@
     "om.ingress": "Planleggeren er både for de som er i permisjon, venter barn og for de som planlegger å få barn.",
     "om.underoverskrift": "Planleggeren består av to deler:",
     "om.trinn1": "Man må svare på noen spørsmål",
-    "om.trinn2": "Så kan man se og tilpasse permisjonen",
+    "om.trinn2": "Så kan du se hvordan permisjonen din kan se ut",
     "om.start.planlegger": "Start",
     "HvemPlanleggerSteg.HvemPlanlegger": "Hvem planlegger",
     "hvem.tittel": "Hvem planlegges det for?",
@@ -150,5 +150,7 @@
     "feilmelding.arbeidssituasjonFlere.duMåOppgi": "Du må oppgi arbeidssituasjon for {hvem}.",
     "feilmelding.periode.hvorLangPeriodeAlene.duMåOppgi": "Du må oppgi hvor lang periode du ønsker.",
     "feilmelding.periode.hvorLangPeriode.duMåOppgi": "Dere må oppgi hvor lang periode dere ønsker.",
-    "detErMindreEnnTreMndTilTermin": "Det er mindre enn 3 måneder til termin"
+    "detErMindreEnnTreMndTilTermin": "Det er mindre enn 3 måneder til termin",
+    "LanguageToggle.Norsk": "Norwegian",
+    "LanguageToggle.Engelsk": "English"
 }

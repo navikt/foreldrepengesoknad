@@ -1,20 +1,30 @@
+import { PlanleggerRoutes } from 'appData/routes';
 import { FunctionComponent } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import HvemPlanleggerSteg from 'steps/hvemPlanlegger/HvemPlanleggerSteg';
-import OmPlanleggerenSteg from 'steps/omPlanleggeren/OmPlanleggerenSteg';
-import OmBarnetSteg from 'steps/omBarnet/OmBarnetSteg';
-import BarnehageplassSteg from 'steps/barnehageplass/BarnehageplassSteg';
 import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
-import PeriodeSteg from 'steps/periode/PeriodeSteg';
-import PlanInfoSteg from 'steps/planenDeres/PlanInfoSteg';
+import BarnehageplassSteg from 'steps/barnehageplass/BarnehageplassSteg';
+import HvemPlanleggerSteg from 'steps/hvemPlanlegger/HvemPlanleggerSteg';
+import OmBarnetSteg from 'steps/omBarnet/OmBarnetSteg';
+import OmPlanleggerenSteg from 'steps/omPlanleggeren/OmPlanleggerenSteg';
 import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
 import OversiktSteg from 'steps/oversikt/OversiktSteg';
-import { PlanleggerRoutes } from 'appData/routes';
+import PeriodeSteg from 'steps/periode/PeriodeSteg';
+import PlanInfoSteg from 'steps/planenDeres/PlanInfoSteg';
 
-const PlanleggerRouter: FunctionComponent = () => {
+import { LocaleAll } from '@navikt/fp-types';
+
+interface Props {
+    locale: LocaleAll;
+    changeLocale: (locale: LocaleAll) => void;
+}
+
+const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     return (
         <Routes>
-            <Route path={PlanleggerRoutes.OM_PLANLEGGEREN} element={<OmPlanleggerenSteg />} />
+            <Route
+                path={PlanleggerRoutes.OM_PLANLEGGEREN}
+                element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />}
+            />
             <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
             <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
             <Route path={PlanleggerRoutes.BARNEHAGEPLASS} element={<BarnehageplassSteg />} />
