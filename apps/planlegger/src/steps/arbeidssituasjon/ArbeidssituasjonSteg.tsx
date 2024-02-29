@@ -17,6 +17,9 @@ import { notEmpty } from '@navikt/fp-validation';
 import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
 
+export const HVOR_LENGE_LENKE = 'https://www.nav.no/foreldrepenger#hvor-lenge';
+export const VEIVISER_LENKE = 'https://familie.nav.no/veiviser';
+
 const ArbeidssituasjonSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();

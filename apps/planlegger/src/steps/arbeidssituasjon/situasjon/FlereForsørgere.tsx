@@ -1,12 +1,19 @@
-import { Radio, VStack } from '@navikt/ds-react';
-import { intlUtils } from '@navikt/fp-common';
-import { RadioGroup } from '@navikt/fp-form-hooks';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import GreenPanel from 'components/GreenPanel';
+import Infoboks from 'components/Infoboks';
 import { FunctionComponent } from 'react';
+import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
+
+import { BodyLong, Link, Radio, VStack } from '@navikt/ds-react';
+
+import { intlUtils } from '@navikt/fp-common';
+import { Form, RadioGroup } from '@navikt/fp-form-hooks';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+import { HVOR_LENGE_LENKE, VEIVISER_LENKE } from '../ArbeidssituasjonSteg';
 
 export const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
     if (isMorOgMedmor(hvemPlanlegger)) {
@@ -37,87 +44,133 @@ const finnHvemPlanlegger = (hvemPlanlegger: HvemPlanlegger) => {
 const FlereForsørgere: FunctionComponent = () => {
     const intl = useIntl();
 
+    const formMethods = useForm<Arbeidssituasjon>();
+    const arbeidssituasjonFørste = formMethods.watch('arbeidssituasjonFørste');
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
     const navn = finnNavn(hvemPlanlegger);
     const hvem = finnHvemPlanlegger(hvemPlanlegger);
 
+    const fornavnFørste = navn[0].split(' ')[0];
+
     return (
-        <VStack gap="10">
-            <VStack gap="1">
-                <GreenPanel>
-                    <RadioGroup
-                        name="arbeidssituasjonFørste"
-                        label={<FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: navn[0] }} />}
-                        validate={[
-                            isRequired(
-                                intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[0] }),
-                            ),
-                        ]}
-                    >
-                        <Radio
-                            value={true}
-                            description={intl.formatMessage(
-                                { id: 'arbeid.jobber.beskrivelse' },
-                                {
-                                    navn: navn[0],
-                                },
-                            )}
+        <Form formMethods={formMethods}>
+            <VStack gap="10">
+                <VStack gap="5">
+                    <GreenPanel>
+                        <RadioGroup
+                            name="arbeidssituasjonFørste"
+                            label={<FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: navn[0] }} />}
+                            validate={[
+                                isRequired(
+                                    intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[0] }),
+                                ),
+                            ]}
                         >
-                            <FormattedMessage id="arbeid.jobber" />
-                        </Radio>
+                            <Radio value={ArbeidssituasjonEnum.JOBBER}>
+                                <FormattedMessage id="arbeid.jobber" />
+                            </Radio>
 
-                        <Radio
-                            value={false}
-                            description={intl.formatMessage(
-                                { id: 'arbeid.jobberIkke.beskrivelse' },
-                                {
-                                    navn: navn[0],
-                                },
-                            )}
+                            <Radio value={ArbeidssituasjonEnum.UFØR}>
+                                <FormattedMessage id="arbeid.ufør" />
+                            </Radio>
+
+                            <Radio value={ArbeidssituasjonEnum.INGEN}>
+                                <FormattedMessage id="arbeid.ingen" />
+                            </Radio>
+                        </RadioGroup>
+                    </GreenPanel>
+
+                    {arbeidssituasjonFørste === ArbeidssituasjonEnum.JOBBER && (
+                        <Infoboks header={<FormattedMessage id="arbeid.jobber.infoboks" values={{ navn: navn[0] }} />}>
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="arbeid.jobber.infoboks.beskrivelse"
+                                    values={{ navn: fornavnFørste }}
+                                />
+                            </BodyLong>
+                        </Infoboks>
+                    )}
+                    {arbeidssituasjonFørste === ArbeidssituasjonEnum.UFØR && (
+                        <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: navn[0] }} />}>
+                            <BodyLong>
+                                <FormattedMessage id="arbeid.infoboks.aktivitet" />
+                            </BodyLong>
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="arbeid.ufør.infoboks.beskrivelseDel3"
+                                    values={{
+                                        a: (msg: any) => (
+                                            <Link
+                                                href={HVOR_LENGE_LENKE}
+                                                className="lenke"
+                                                rel="noreferrer"
+                                                target="_blank"
+                                            >
+                                                {msg}
+                                            </Link>
+                                        ),
+                                        navn: fornavnFørste,
+                                    }}
+                                />
+                            </BodyLong>
+                        </Infoboks>
+                    )}
+                    {arbeidssituasjonFørste === ArbeidssituasjonEnum.INGEN && (
+                        <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: navn[0] }} />}>
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="arbeid.ingen.infoboks.beskrivelse"
+                                    values={{ navn: fornavnFørste }}
+                                />
+                            </BodyLong>
+                            <BodyLong>
+                                <FormattedMessage id="arbeid.infoboks.aktivitet" />
+                            </BodyLong>
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="arbeid.ingen.infoboks.beskrivelseDel3"
+                                    values={{
+                                        a: (msg: any) => (
+                                            <Link
+                                                href={VEIVISER_LENKE}
+                                                className="lenke"
+                                                rel="noreferrer"
+                                                target="_blank"
+                                            >
+                                                {msg}
+                                            </Link>
+                                        ),
+                                        navn: fornavnFørste,
+                                    }}
+                                />
+                            </BodyLong>
+                        </Infoboks>
+                    )}
+                </VStack>
+
+                <VStack gap="1">
+                    <GreenPanel>
+                        <RadioGroup
+                            name="arbeidssituasjonAndre"
+                            label={<FormattedMessage id={'arbeid.andreForelder'} values={{ navn: navn[1] }} />}
+                            validate={[
+                                isRequired(
+                                    intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[1] }),
+                                ),
+                            ]}
                         >
-                            <FormattedMessage id="arbeid.jobberIkke" />
-                        </Radio>
-                    </RadioGroup>
-                </GreenPanel>
+                            <Radio value={true}>
+                                <FormattedMessage id="ja" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="nei" />
+                            </Radio>
+                        </RadioGroup>
+                    </GreenPanel>
+                </VStack>
             </VStack>
-
-            <VStack gap="1">
-                <GreenPanel>
-                    <RadioGroup
-                        name="arbeidssituasjonAndre"
-                        label={<FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: navn[1] }} />}
-                        validate={[
-                            isRequired(
-                                intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[1] }),
-                            ),
-                        ]}
-                    >
-                        <Radio
-                            value={true}
-                            description={intl.formatMessage(
-                                { id: 'arbeid.jobber.beskrivelse' },
-                                {
-                                    navn: navn[1],
-                                },
-                            )}
-                        >
-                            <FormattedMessage id="arbeid.jobber" />
-                        </Radio>
-                        <Radio
-                            value={false}
-                            description={intl.formatMessage(
-                                { id: 'arbeid.jobberIkke.beskrivelse' },
-
-                                { navn: navn[1] },
-                            )}
-                        >
-                            <FormattedMessage id="arbeid.jobberIkke" />
-                        </Radio>
-                    </RadioGroup>
-                </GreenPanel>
-            </VStack>
-        </VStack>
+        </Form>
     );
 };
 

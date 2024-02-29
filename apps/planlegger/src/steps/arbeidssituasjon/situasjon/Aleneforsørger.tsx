@@ -5,10 +5,12 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 
-import { BodyLong, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Link, Radio, VStack } from '@navikt/ds-react';
 
 import { Form, RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
+
+import { HVOR_LENGE_LENKE, VEIVISER_LENKE } from '../ArbeidssituasjonSteg';
 
 const Aleneforsørger: FunctionComponent = () => {
     const intl = useIntl();
@@ -54,7 +56,21 @@ const Aleneforsørger: FunctionComponent = () => {
                             <FormattedMessage id="arbeid.infoboks.aktivitet" />
                         </BodyLong>
                         <BodyLong>
-                            <FormattedMessage id="arbeid.ufør.infoboks.beskrivelseDel3Deg" />
+                            <FormattedMessage
+                                id="arbeid.ufør.infoboks.beskrivelseDel3Deg"
+                                values={{
+                                    a: (msg: any) => (
+                                        <Link
+                                            href={HVOR_LENGE_LENKE}
+                                            className="lenke"
+                                            rel="noreferrer"
+                                            target="_blank"
+                                        >
+                                            {msg}
+                                        </Link>
+                                    ),
+                                }}
+                            />
                         </BodyLong>
                     </Infoboks>
                 )}
@@ -67,7 +83,16 @@ const Aleneforsørger: FunctionComponent = () => {
                             <FormattedMessage id="arbeid.infoboks.aktivitet" />
                         </BodyLong>
                         <BodyLong>
-                            <FormattedMessage id="arbeid.ingen.infoboks.beskrivelseDel3Deg" />
+                            <FormattedMessage
+                                id="arbeid.ingen.infoboks.beskrivelseDel3Deg"
+                                values={{
+                                    a: (msg: any) => (
+                                        <Link href={VEIVISER_LENKE} className="lenke" rel="noreferrer" target="_blank">
+                                            {msg}
+                                        </Link>
+                                    ),
+                                }}
+                            />
                         </BodyLong>
                     </Infoboks>
                 )}
