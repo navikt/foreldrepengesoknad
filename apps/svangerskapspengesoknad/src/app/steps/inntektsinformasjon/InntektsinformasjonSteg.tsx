@@ -37,12 +37,7 @@ const søkerHarKunEttARegArbeidsforholdForTilrettelegging = (
         formValues.harJobbetSomFrilans,
         formValues.harJobbetSomSelvstendigNæringsdrivende,
     );
-    return (
-        formValues.harJobbetSomFrilans &&
-        formValues.harJobbetSomSelvstendigNæringsdrivende &&
-        kunEttAktivt &&
-        aktiveArbeidsforhold.length > 0
-    );
+    return kunEttAktivt && aktiveArbeidsforhold.length > 0;
 };
 
 export const getAutomatiskValgtTilretteleggingHvisKunEtArbeid = (
