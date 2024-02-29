@@ -298,18 +298,11 @@
             },
             "barn": [
                 {
-<<<<<<< HEAD
-                    "fnr": "26502363211"
-                },
-                {
-                    "fnr": "10452287507"
-=======
                     "fnr": "01472152307",
                     "fødselsdato": "2024-02-26",
                     "annenForelder": {
                         "fnr": "01472152308"
                     }
->>>>>>> master
                 }
             ],
             "dekningsgrad": "HUNDRE",
