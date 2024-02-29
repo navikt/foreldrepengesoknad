@@ -28,7 +28,7 @@ export const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
     return [hvemPlanlegger.navnPåFar, hvemPlanlegger.navnPåMedfar];
 };
 
-const finnHvemPlanlegger = (hvemPlanlegger: HvemPlanlegger) => {
+export const finnHvemPlanlegger = (hvemPlanlegger: HvemPlanlegger) => {
     if (isMorOgFar(hvemPlanlegger)) {
         return ['mor', 'far'];
     }
@@ -52,6 +52,7 @@ const FlereForsørgere: FunctionComponent = () => {
     const hvem = finnHvemPlanlegger(hvemPlanlegger);
 
     const fornavnFørste = navn[0].split(' ')[0];
+    const fornavnAndre = navn[1].split(' ')[0];
 
     return (
         <Form formMethods={formMethods}>
@@ -60,7 +61,7 @@ const FlereForsørgere: FunctionComponent = () => {
                     <GreenPanel>
                         <RadioGroup
                             name="arbeidssituasjonFørste"
-                            label={<FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: navn[0] }} />}
+                            label={<FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: fornavnFørste }} />}
                             validate={[
                                 isRequired(
                                     intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[0] }),
@@ -82,7 +83,9 @@ const FlereForsørgere: FunctionComponent = () => {
                     </GreenPanel>
 
                     {arbeidssituasjonFørste === ArbeidssituasjonEnum.JOBBER && (
-                        <Infoboks header={<FormattedMessage id="arbeid.jobber.infoboks" values={{ navn: navn[0] }} />}>
+                        <Infoboks
+                            header={<FormattedMessage id="arbeid.jobber.infoboks" values={{ navn: fornavnFørste }} />}
+                        >
                             <BodyLong>
                                 <FormattedMessage
                                     id="arbeid.jobber.infoboks.beskrivelse"
@@ -92,7 +95,7 @@ const FlereForsørgere: FunctionComponent = () => {
                         </Infoboks>
                     )}
                     {arbeidssituasjonFørste === ArbeidssituasjonEnum.UFØR && (
-                        <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: navn[0] }} />}>
+                        <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: fornavnFørste }} />}>
                             <BodyLong>
                                 <FormattedMessage id="arbeid.infoboks.aktivitet" />
                             </BodyLong>
@@ -117,7 +120,7 @@ const FlereForsørgere: FunctionComponent = () => {
                         </Infoboks>
                     )}
                     {arbeidssituasjonFørste === ArbeidssituasjonEnum.INGEN && (
-                        <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: navn[0] }} />}>
+                        <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: fornavnFørste }} />}>
                             <BodyLong>
                                 <FormattedMessage
                                     id="arbeid.ingen.infoboks.beskrivelse"
@@ -153,7 +156,7 @@ const FlereForsørgere: FunctionComponent = () => {
                     <GreenPanel>
                         <RadioGroup
                             name="arbeidssituasjonAndre"
-                            label={<FormattedMessage id={'arbeid.andreForelder'} values={{ navn: navn[1] }} />}
+                            label={<FormattedMessage id={'arbeid.andreForelder'} values={{ navn: fornavnAndre }} />}
                             validate={[
                                 isRequired(
                                     intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[1] }),
