@@ -69,7 +69,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                     </VStack>
                     {planleggerType === SøkersituasjonEnum.MOR_OG_FAR && (
                         <VStack gap="5">
-                            <div className="panel green">
+                            <GreenPanel>
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.mor' })}
                                     name="navnPåMor"
@@ -81,8 +81,8 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </div>
-                            <div className="panel green">
+                            </GreenPanel>
+                            <GreenPanel>
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.far' })}
                                     name="navnPåFar"
@@ -94,12 +94,12 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </div>
+                            </GreenPanel>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR && (
                         <VStack gap="5">
-                            <div className="panel green">
+                            <GreenPanel>
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.mor' })}
                                     name="navnPåMor"
@@ -111,8 +111,8 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </div>
-                            <div className="panel green">
+                            </GreenPanel>
+                            <GreenPanel>
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.medmor' })}
                                     name="navnPåMedmor"
@@ -124,12 +124,12 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </div>
+                            </GreenPanel>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.FAR_OG_FAR && (
                         <VStack gap="5">
-                            <div className="panel green">
+                            <GreenPanel>
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.far' })}
                                     name="navnPåFar"
@@ -141,8 +141,8 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </div>
-                            <div className="panel green">
+                            </GreenPanel>
+                            <GreenPanel>
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.far' })}
                                     name="navnPåMedfar"
@@ -154,12 +154,12 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </div>
+                            </GreenPanel>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.MOR && (
                         <VStack gap="5">
-                            <div className="panel green">
+                            <GreenPanel>
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.mor' })}
                                     name="navnPåMor"
@@ -171,12 +171,12 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </div>
+                            </GreenPanel>
                         </VStack>
                     )}
                     {planleggerType === SøkersituasjonEnum.FAR && (
                         <VStack gap="5">
-                            <div className="panel green">
+                            <GreenPanel>
                                 <TextField
                                     label={intl.formatMessage({ id: 'navn.far' })}
                                     name="navnPåFar"
@@ -188,7 +188,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                 />
-                            </div>
+                            </GreenPanel>
                         </VStack>
                     )}
                     <VStack gap="20">
