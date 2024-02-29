@@ -1,14 +1,14 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { useEffect, useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Stepper } from '@navikt/ds-react';
 
 import './progressStepper.css';
-import { useIntl } from 'react-intl';
 
 export type ProgressStep<TYPE> = {
     id: TYPE;
-    label: string;
+    label?: string;
     isSelected: boolean;
     completed?: boolean;
 };
@@ -64,17 +64,19 @@ const ProgressStepper = <TYPE extends string>({
 
     return (
         <div className="progressStepper">
-            <div className="progressStepper__heading">
-                <Heading
-                    tabIndex={-1}
-                    size="medium"
-                    level="2"
-                    className="progressStepper__heading__title"
-                    ref={headingRef}
-                >
-                    {step.label}
-                </Heading>
-            </div>
+            {step.label && (
+                <div className="progressStepper__heading">
+                    <Heading
+                        tabIndex={-1}
+                        size="medium"
+                        level="2"
+                        className="progressStepper__heading__title"
+                        ref={headingRef}
+                    >
+                        {step.label}
+                    </Heading>
+                </div>
+            )}
             <div className="progressStepper__progressBarWrapper" role="presentation" aria-hidden={true}>
                 {showGreenStatusBar && (
                     <div className="progressStepper__progressBar_green">
@@ -129,7 +131,7 @@ const ProgressStepper = <TYPE extends string>({
                                         completed={s.completed}
                                         interactive={onStepSelect !== undefined && s.completed === true}
                                     >
-                                        {s.label}
+                                        {s.label || ''}
                                     </Stepper.Step>
                                 ))}
                             </Stepper>

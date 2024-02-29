@@ -10,7 +10,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
-import { Radio, VStack } from '@navikt/ds-react';
+import { Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isSameOrAfterToday } from '@navikt/fp-utils';
@@ -45,7 +45,10 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
+                <VStack gap="6">
+                    <Heading level="2" size="medium">
+                        <FormattedMessage id="barnet.tittel" />
+                    </Heading>
                     <VStack gap="10">
                         <VStack gap="1">
                             <GreenPanel>

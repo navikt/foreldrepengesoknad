@@ -5,10 +5,11 @@ import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDe
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { isAlene } from 'types/HvemPlanlegger';
 
-import { VStack } from '@navikt/ds-react';
+import { Heading, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { notEmpty } from '@navikt/fp-validation';
@@ -38,6 +39,9 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
+                    <Heading level="2" size="medium">
+                        <FormattedMessage id="arbeid.tittel" />
+                    </Heading>
                     {isAlene(hvemPlanlegger) && <Aleneforsørger />}
                     {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
                     <VStack gap="20">
