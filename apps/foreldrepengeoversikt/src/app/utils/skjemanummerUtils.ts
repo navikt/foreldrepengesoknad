@@ -1,5 +1,6 @@
-import { Sak } from 'app/types/Sak';
 import { Skjemanummer } from '@navikt/fp-constants';
+
+import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 
 export const getRelevanteSkjemanummer = (sak: Sak): Skjemanummer[] => {
@@ -20,11 +21,12 @@ export const getRelevanteSkjemanummer = (sak: Sak): Skjemanummer[] => {
 export const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: Skjemanummer): boolean => {
     switch (skjemanummer) {
         case Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING:
-        case Skjemanummer.DEPRECATED_TERMINBEKREFTELSE:
-        case Skjemanummer.DEPRECATED_BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
-        case Skjemanummer.DEPRECATED_DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID:
-        case Skjemanummer.DEPRECATED_TILBAKEBETALING:
-        case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
+            // TODO Putt disse inn igjen om en måneds tid
+            // case Skjemanummer.DEPRECATED_TERMINBEKREFTELSE:
+            // case Skjemanummer.DEPRECATED_BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
+            // case Skjemanummer.DEPRECATED_DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID:
+            // case Skjemanummer.DEPRECATED_TILBAKEBETALING:
+            // case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
             return false;
         default:
             return true;
@@ -52,6 +54,13 @@ export const isSkjemanummerForEndringssøknadForeldrepenger = (skjemanummer: Skj
         case Skjemanummer.TILBAKEBETALING:
         case Skjemanummer.HV_ØVELSE:
         case Skjemanummer.NAV_TILTAK:
+        case Skjemanummer.TERMINBEKREFTELSE:
+        // TODO fjern disse igjen om en måneds tid
+        case Skjemanummer.DEPRECATED_TERMINBEKREFTELSE:
+        case Skjemanummer.DEPRECATED_BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
+        case Skjemanummer.DEPRECATED_DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID:
+        case Skjemanummer.DEPRECATED_TILBAKEBETALING:
+        case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
             return true;
         default:
             return false;

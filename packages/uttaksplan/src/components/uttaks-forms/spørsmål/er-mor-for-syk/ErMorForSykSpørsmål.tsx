@@ -1,17 +1,16 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { Block, intlUtils } from '@navikt/fp-common';
+
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import MorErForSykDokumentasjonOpplastning from '../er-mor-for-syk-dokumentasjon/MorErForSykDokumentasjonOpplastning';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     fieldName: PeriodeUttakFormField;
-    erMorForSyk: YesOrNo;
-    navnMor: string;
 }
 
-const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSyk, navnMor }) => {
+const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName }) => {
     const intl = useIntl();
 
     return (
@@ -28,9 +27,6 @@ const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName, erMorForSy
                         return undefined;
                     }}
                 />
-            </Block>
-            <Block padBottom="l" visible={erMorForSyk === YesOrNo.YES}>
-                <MorErForSykDokumentasjonOpplastning navnMor={navnMor} />
             </Block>
         </>
     );

@@ -514,6 +514,7 @@
     "oppsummering.sendInnSøknad": "Send inn søknad",
     "oppsummering.senderInnSøknad": "Sender inn søknad",
     "oppsummering.dokumentasjon": "Dokumentasjon",
+    "oppsummering.manglerDokumentasjon": "Dokumentasjon (mangler)",
     "oppsummering.dokumentasjon.perioder.introduksjonsprogram": "Dokumentasjon på at mor deltar i introduksjonsprogrammet i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",
     "oppsummering.dokumentasjon.perioder.introduksjonsprogram.sendSenere": "Husk å sende dokumentasjon på mors deltagelse i introduksjonsprogrammet",
     "oppsummering.dokumentasjon.perioder.kvalifiseringsprogram": "Dokumentasjon på at mor deltar i kvalifiseringsprogrammet i {perioder, plural, one {perioden} other {periodene}} {tidsperiode}",

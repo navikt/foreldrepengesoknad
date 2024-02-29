@@ -1,3 +1,7 @@
+import { FunctionComponent } from 'react';
+
+import { InnsendingsType } from '@navikt/fp-types';
+
 import {
     getBarnInnlagtVedlegg,
     getFarForSykVedlegg,
@@ -10,16 +14,17 @@ import {
     getMorKvalprogramVedlegg,
     getMorStudererVedlegg,
 } from 'app/steps/manglende-vedlegg/util';
-import { FunctionComponent } from 'react';
-import DokumentasjonContainer from '../DokumentasjonContainer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
+
+import DokumentasjonContainer from '../DokumentasjonContainer';
 import PeriodeDokumentasjon from './PeriodeDokumentasjon';
 
 interface Props {
     vedlegg: VedleggDataType;
+    setManglerDokumentasjon: (manglerDokumentajson: boolean) => void;
 }
 
-const PeriodeDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg }) => {
+const PeriodeDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg, setManglerDokumentasjon }) => {
     const aktivitetskravIntro = getMorIntroprogramVedlegg(vedlegg);
     const aktivitetskravKval = getMorKvalprogramVedlegg(vedlegg);
     const morInnlagtVedlegg = getMorInnlagtVedlegg(vedlegg);
@@ -48,6 +53,22 @@ const PeriodeDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg })
 
     if (ingenVedlegg()) {
         return null;
+    }
+    const alleVedlegg = [
+        ...aktivitetskravIntro,
+        ...aktivitetskravKval,
+        ...morInnlagtVedlegg,
+        ...farInnlagtVedlegg,
+        ...barnInnlagtVedlegg,
+        ...morForSykVedlegg,
+        ...farForSykVedlegg,
+        ...morUtdanning,
+        ...morArbeid,
+        ...morArbeidOgUtdanning,
+    ];
+
+    if (alleVedlegg.find((v) => v.innsendingsType === InnsendingsType.SEND_SENERE)) {
+        setManglerDokumentasjon(true);
     }
 
     return (

@@ -1,7 +1,5 @@
 import { FunctionComponent } from 'react';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-
-import { BodyLong, BodyShort, ReadMore } from '@navikt/ds-react';
+import { IntlShape, useIntl } from 'react-intl';
 
 import { Block, MorsAktivitet, NavnPåForeldre, hasValue, intlUtils } from '@navikt/fp-common';
 
@@ -28,39 +26,6 @@ const renderOptions = (intl: IntlShape) => {
         ));
 };
 
-const renderReadMore = () => {
-    return (
-        <ReadMore header="Hva mener NAV med at mor må være i aktivitet?">
-            <BodyShort>
-                <FormattedMessage id="uttaksplan.morsAktivitet.readMore.del1" />
-            </BodyShort>
-            <ul>
-                <li>
-                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt1" />
-                </li>
-                <li>
-                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt2" />
-                </li>
-                <li>
-                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt3" />
-                </li>
-                <li>
-                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt4" />
-                </li>
-                <li>
-                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt5" />
-                </li>
-                <li>
-                    <FormattedMessage id="uttaksplan.morsAktivitet.readMore.punkt6" />
-                </li>
-            </ul>
-            <BodyLong>
-                <FormattedMessage id="uttaksplan.morsAktivitet.readMore.del2" />
-            </BodyLong>
-        </ReadMore>
-    );
-};
-
 const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPåForeldre, FormComponents }) => {
     const intl = useIntl();
 
@@ -82,7 +47,6 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPå
                     <option value="" />
                     {renderOptions(intl)}
                 </FormComponents.Select>
-                <div style={{ padding: '1rem 0' }}>{renderReadMore()}</div>
             </Block>
         </>
     );

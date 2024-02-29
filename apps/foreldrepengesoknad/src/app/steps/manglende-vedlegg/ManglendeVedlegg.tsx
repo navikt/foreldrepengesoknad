@@ -138,7 +138,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
         };
 
         saveVedlegg(alleVedlegg);
-        saveNextRoute(SøknadRoutes.UTENLANDSOPPHOLD);
+        saveNextRoute(erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD);
 
         return mellomlagreSøknadOgNaviger();
     };

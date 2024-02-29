@@ -1,15 +1,20 @@
+import { FunctionComponent } from 'react';
+
+import { Skjemanummer } from '@navikt/fp-constants';
+import { InnsendingsType } from '@navikt/fp-types';
+
 import { getAndreInntekterVedlegg } from 'app/steps/manglende-vedlegg/util';
 import { VedleggDataType } from 'app/types/VedleggDataType';
-import { FunctionComponent } from 'react';
-import AndreInntekterDokumentasjon from './AndreInntekterDokumentasjon';
+
 import DokumentasjonContainer from '../DokumentasjonContainer';
-import { Skjemanummer } from '@navikt/fp-constants';
+import AndreInntekterDokumentasjon from './AndreInntekterDokumentasjon';
 
 interface Props {
     vedlegg: VedleggDataType;
+    setManglerDokumentasjon: (manglerDokumentajson: boolean) => void;
 }
 
-const AndreInntekterDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg }) => {
+const AndreInntekterDokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg, setManglerDokumentasjon }) => {
     const andreInntekerVedlegg = getAndreInntekterVedlegg(vedlegg);
 
     const militærVedlegg = andreInntekerVedlegg.filter(
@@ -21,6 +26,10 @@ const AndreInntekterDokumentasjonOppsummering: FunctionComponent<Props> = ({ ved
 
     if (andreInntekerVedlegg.length === 0) {
         return null;
+    }
+
+    if (andreInntekerVedlegg.find((v) => v.innsendingsType === InnsendingsType.SEND_SENERE)) {
+        setManglerDokumentasjon(true);
     }
 
     return (

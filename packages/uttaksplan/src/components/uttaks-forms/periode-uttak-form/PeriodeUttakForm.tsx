@@ -416,8 +416,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             >
                                 <UttakRundtFødselÅrsakSpørsmål
                                     fieldName={PeriodeUttakFormField.uttakRundtFødselÅrsak}
-                                    uttakRundtFødselÅrsak={values.uttakRundtFødselÅrsak!}
-                                    navnMor={navnPåForeldre.mor}
                                 />
                             </Block>
                             {startDatoPeriodeRundtFødselFarMedmor !== undefined &&
@@ -450,11 +448,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 <FlerbarnsdagerSpørsmål fieldName={PeriodeUttakFormField.ønskerFlerbarnsdager} />
                             </Block>
                             <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.erMorForSyk)}>
-                                <ErMorForSykSpørsmål
-                                    fieldName={PeriodeUttakFormField.erMorForSyk}
-                                    erMorForSyk={values.erMorForSyk!}
-                                    navnMor={navnPåForeldre.mor}
-                                />
+                                <ErMorForSykSpørsmål fieldName={PeriodeUttakFormField.erMorForSyk} />
                             </Block>
                             <Block padBottom="xl" visible={visibility.isVisible(PeriodeUttakFormField.samtidigUttak)}>
                                 <SamtidigUttakSpørsmål

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -102,6 +102,7 @@ const Oppsummering: FunctionComponent<Props> = ({
 
     const stepConfig = useStepConfig(erEndringssøknad);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const [manglerDokumentasjon, setManglerDokumentasjon] = useState(false);
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -195,9 +196,11 @@ const Oppsummering: FunctionComponent<Props> = ({
                 </OppsummeringIndex.Punkt>
                 <OppsummeringIndex.Punkt
                     hide={vedlegg === undefined}
-                    tittel={intl.formatMessage({ id: 'oppsummering.dokumentasjon' })}
+                    tittel={intl.formatMessage({
+                        id: manglerDokumentasjon ? 'oppsummering.manglerDokumentasjon' : 'oppsummering.dokumentasjon',
+                    })}
                 >
-                    <DokumentasjonOppsummering vedlegg={vedlegg!} />
+                    <DokumentasjonOppsummering vedlegg={vedlegg!} setManglerDokumentasjon={setManglerDokumentasjon} />
                 </OppsummeringIndex.Punkt>
             </OppsummeringIndex>
         </ContentWrapper>

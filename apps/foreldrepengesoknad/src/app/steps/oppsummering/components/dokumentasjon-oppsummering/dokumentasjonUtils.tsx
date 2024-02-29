@@ -1,23 +1,28 @@
-import { Tidsperiode, formatDate, intlUtils } from '@navikt/fp-common';
+import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
+import { FormattedMessage, IntlShape } from 'react-intl';
+
+import { BodyLong } from '@navikt/ds-react';
+
+import { Tidsperiode, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
 import { Attachment, InnsendingsType } from '@navikt/fp-types';
+
 import {
     isAleneOmOmsorgVedlegg,
+    isBarnInnleggelseVedlegg,
     isEtterlønnVedlegg,
-    isMorInnleggelseVedlegg,
+    isFarForSykVedlegg,
+    isFarInnleggelseVedlegg,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
     isMilitærVedlegg,
-    isOmsorgsovertakelseVedlegg,
-    isTerminbekreftelseVedlegg,
-    isBarnInnleggelseVedlegg,
-    isFarInnleggelseVedlegg,
     isMorForSykVedlegg,
-    isFarForSykVedlegg,
+    isMorInnleggelseVedlegg,
+    isMorJobberOgStudererVedlegg,
     isMorJobberVedlegg,
     isMorStudererVedlegg,
-    isMorJobberOgStudererVedlegg,
+    isOmsorgsovertakelseVedlegg,
+    isTerminbekreftelseVedlegg,
 } from 'app/steps/manglende-vedlegg/util';
-import { IntlShape } from 'react-intl';
 
 const getTidsperiodeString = (tidsperioder: Tidsperiode[]) => {
     let periodeString: string | undefined = undefined;
@@ -43,53 +48,110 @@ const getTidsperiodeString = (tidsperioder: Tidsperiode[]) => {
     return periodeString;
 };
 
-export const getDokumentasjonStringAndreInntekter = (attachments: Attachment[], intl: IntlShape) => {
+export const getDokumentasjonStringAndreInntekter = (attachments: Attachment[]) => {
     const singleAttachment = attachments[0];
+    const bem = bemUtils('dokumentasjon');
 
     if (isEtterlønnVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.etterlønn.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.etterlønn.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.etterlønn');
+        return (
+            <BodyLong>
+                <FormattedMessage id="oppsummering.dokumentasjon.etterlønn" />
+            </BodyLong>
+        );
     }
 
     if (isMilitærVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.militær.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.militær.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.militær');
+        return (
+            <BodyLong>
+                <FormattedMessage id="oppsummering.dokumentasjon.militær" />
+            </BodyLong>
+        );
     }
 
     return 'Dokumentasjon av andre inntekter';
 };
 
-export const getDokumentasjonStringBarn = (attachments: Attachment[], intl: IntlShape) => {
+export const getDokumentasjonStringBarn = (attachments: Attachment[]) => {
     const singleAttachment = attachments[0];
+    const bem = bemUtils('dokumentasjon');
 
     if (isOmsorgsovertakelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.overtakelseAvOmsorg.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.overtakelseAvOmsorg.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.overtakelseAvOmsorg');
+        return (
+            <BodyLong>
+                <FormattedMessage id="oppsummering.dokumentasjon.overtakelseAvOmsorg" />
+            </BodyLong>
+        );
     }
 
     if (isAleneOmOmsorgVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.aleneOmOmsorg.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.aleneOmOmsorg.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.aleneOmOmsorg');
+        return (
+            <BodyLong>
+                <FormattedMessage id="oppsummering.dokumentasjon.aleneOmOmsorg" />
+            </BodyLong>
+        );
     }
 
     if (isTerminbekreftelseVedlegg(singleAttachment)) {
         if (singleAttachment.innsendingsType === InnsendingsType.SEND_SENERE) {
-            return intlUtils(intl, 'oppsummering.dokumentasjon.terminbekreftelse.sendSenere');
+            return (
+                <>
+                    <ExclamationmarkTriangleIcon className={bem.element('ikon')} fontSize="1.5rem" />
+                    <BodyLong weight="semibold">
+                        <FormattedMessage id="oppsummering.dokumentasjon.terminbekreftelse.sendSenere" />
+                    </BodyLong>
+                </>
+            );
         }
 
-        return intlUtils(intl, 'oppsummering.dokumentasjon.terminbekreftelse');
+        return (
+            <BodyLong>
+                <FormattedMessage id="oppsummering.dokumentasjon.terminbekreftelse" />
+            </BodyLong>
+        );
     }
 
     return '';
