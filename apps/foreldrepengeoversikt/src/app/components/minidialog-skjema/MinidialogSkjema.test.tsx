@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './MinidialogSkjema.stories';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 const { SkalIkkeFeileOpplasting } = composeStories(stories);
 
@@ -29,7 +30,7 @@ describe('<MinidialogSkjema>', () => {
         expect(send).toHaveBeenCalledTimes(1);
         expect(send).toHaveBeenNthCalledWith(1, {
             brukerTekst: {
-                dokumentType: 'I000114',
+                dokumentType: Skjemanummer.TILBAKEBETALING,
                 overskrift: 'Svar på tilbakebetalingen',
                 tekst: 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som NAV har tilgjengelig.',
             },
@@ -76,7 +77,7 @@ describe('<MinidialogSkjema>', () => {
         expect(send).toHaveBeenCalledTimes(1);
         expect(send).toHaveBeenNthCalledWith(1, {
             brukerTekst: {
-                dokumentType: 'I000114',
+                dokumentType: Skjemanummer.TILBAKEBETALING,
                 overskrift: 'Svar på tilbakebetalingen',
                 tekst: 'Dette er et svar som er minst 25 tegn langt',
             },

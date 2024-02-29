@@ -51,7 +51,7 @@ describe('<DokumentasjonSteg>', () => {
                         filename: 'hello.png',
                         filesize: 5,
                         pending: false,
-                        skjemanummer: 'I000062',
+                        skjemanummer: 'I000141',
                         type: 'terminbekreftelse',
                         uploaded: true,
                         url: undefined,

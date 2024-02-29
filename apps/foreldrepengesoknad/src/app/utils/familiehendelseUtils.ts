@@ -1,5 +1,6 @@
-import { FamiliehendelseType, intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
+
+import { FamiliehendelseType, intlUtils } from '@navikt/fp-common';
 
 export const getFamiliehendelseType = (
     fødselsdato: string | undefined,

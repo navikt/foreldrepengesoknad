@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { hasValue } from './validationUtils';
-import { isAnnenForelderOppgitt, AnnenForelder, MorsAktivitet, Skjemanummer } from '../types';
+import { isAnnenForelderOppgitt, AnnenForelder, MorsAktivitet } from '../types';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {
@@ -20,17 +21,19 @@ export const aktivitetskravMorUtil = {
 export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skjemanummer => {
     switch (morsAktivitet) {
         case MorsAktivitet.Innlagt:
-            return Skjemanummer.DOK_INNLEGGELSE;
+            return Skjemanummer.DOK_INNLEGGELSE_MOR;
         case MorsAktivitet.Kvalifiseringsprogrammet:
             return Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
         case MorsAktivitet.Introduksjonsprogrammet:
             return Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET;
         case MorsAktivitet.ArbeidOgUtdanning:
+            return Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR;
         case MorsAktivitet.Arbeid:
+            return Skjemanummer.DOK_ARBEID_MOR;
         case MorsAktivitet.TrengerHjelp:
-            return Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
+            return Skjemanummer.DOK_SYKDOM_MOR;
         case MorsAktivitet.Utdanning:
-            return Skjemanummer.BEKREFTELSE_FRA_STUDIESTED;
+            return Skjemanummer.DOK_UTDANNING_MOR;
         default:
             return Skjemanummer.ANNET;
     }

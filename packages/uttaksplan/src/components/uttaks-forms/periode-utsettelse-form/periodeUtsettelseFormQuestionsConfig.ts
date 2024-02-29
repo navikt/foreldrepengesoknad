@@ -30,11 +30,6 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
         isIncluded: ({ values }) => hasValue(values.årsak) && values.årsak === UtsettelseÅrsakType.Arbeid,
         visibilityFilter: ({ values }) => hasValue(values.årsak),
     },
-    [PeriodeUtsettelseFormField.vedlegg]: {
-        isAnswered: () => true,
-        isIncluded: ({ values }) => hasValue(values.årsak),
-        visibilityFilter: ({ values }) => hasValue(values.årsak),
-    },
     [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: {
         isAnswered: ({ values, søkerErFarEllerMedmorOgKunDeHarRett }) =>
             hasValue(values.morsAktivitetIPerioden) || !søkerErFarEllerMedmorOgKunDeHarRett,

@@ -1,12 +1,16 @@
-import { BodyLong, VStack } from '@navikt/ds-react';
-import './oversikt-per-del.css';
-import { bemUtils, guid } from '@navikt/fp-common';
-import DelGraf from '../grafer/del-graf/DelGraf';
-import { Dispatch, SetStateAction } from 'react';
-import { getFordelingDelTittel } from '../fordelingOversiktUtils';
 import classNames from 'classnames';
+import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from 'react-intl';
+
+import { BodyLong, VStack } from '@navikt/ds-react';
+
+import { bemUtils, guid } from '@navikt/fp-common';
+
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
+
+import { getFordelingDelTittel } from '../fordelingOversiktUtils';
+import DelGraf from '../grafer/del-graf/DelGraf';
+import './oversikt-per-del.css';
 
 interface Props {
     delInformasjon: DelInformasjon;

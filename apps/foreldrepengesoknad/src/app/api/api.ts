@@ -1,13 +1,5 @@
-import {
-    Attachment,
-    BarnFraNesteSak,
-    Dekningsgrad,
-    EksisterendeSak,
-    Periode,
-    formaterDato,
-    hasValue,
-} from '@navikt/fp-common';
-import { Søkerinfo } from '@navikt/fp-types';
+import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode, formaterDato, hasValue } from '@navikt/fp-common';
+import { Attachment, Søkerinfo } from '@navikt/fp-types';
 import Environment from 'app/Environment';
 import { Søknad } from 'app/context/types/Søknad';
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';

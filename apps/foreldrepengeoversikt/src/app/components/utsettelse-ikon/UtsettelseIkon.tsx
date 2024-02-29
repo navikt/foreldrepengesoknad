@@ -1,11 +1,13 @@
+import { useIntl } from 'react-intl';
+
 import { intlUtils } from '@navikt/fp-common';
 
-import { useIntl } from 'react-intl';
-import IconBox from '../icon-box/IconBox';
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
-import { finnTekstForUtsettelseÅrsak } from 'app/utils/periodeUtils';
-import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 import { UttaksplanColor } from 'app/types/UttaksplanColor';
+import { finnTekstForUtsettelseÅrsak } from 'app/utils/periodeUtils';
+
+import IconBox from '../icon-box/IconBox';
+import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
 export const getUtsettelseFarge = (): UttaksplanColor => {
     return UttaksplanColor.purple;

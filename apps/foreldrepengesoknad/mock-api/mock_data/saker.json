@@ -1,78 +1,291 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352014403",
+            "saksnummer": "3470",
             "sakAvsluttet": false,
-            "kanSøkeOmEndring": false,
-            "sakTilhørerMor": false,
+            "kanSøkeOmEndring": true,
+            "sakTilhørerMor": true,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "12449448004"
+                "fnr": "22469641957"
             },
             "familiehendelse": {
-                "fødselsdato": "2021-07-01",
-                "antallBarn": 1
+                "fødselsdato": "2019-11-01",
+                "termindato": "2019-11-01",
+                "antallBarn": 2
             },
             "åpenBehandling": {
                 "saksperioder": [
                     {
-                        "fom": "2022-02-03",
-                        "tom": "2022-02-04",
-                        "kontoType": "FEDREKVOTE",
-                        "resultat": {
-                            "innvilget": false,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER"
-                        },
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-02-07",
-                        "tom": "2022-02-11",
-                        "kontoType": "FEDREKVOTE",
-                        "resultat": {
-                            "innvilget": false,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "AVSLAG_UTSETTELSE_TILBAKE_I_TID"
-                        },
-                        "utsettelseÅrsak": "LOVBESTEMT_FERIE",
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2022-02-14",
-                        "tom": "2022-02-18",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2019-10-04",
+                        "tom": "2019-10-10",
+                        "kontoType": "FELLESPERIODE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
-                            "årsak": "INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID"
+                            "årsak": "ANNET"
                         },
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2022-02-21",
-                        "tom": "2022-02-25",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2019-10-11",
+                        "tom": "2019-10-31",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
                         "resultat": {
-                            "innvilget": false,
+                            "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
-                            "årsak": "AVSLAG_UTSETTELSE_TILBAKE_I_TID"
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2019-11-01",
+                        "tom": "2019-12-12",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2019-12-13",
+                        "tom": "2019-12-26",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": false,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "utsettelseÅrsak": "BARN_INNLAGT",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2019-12-27",
+                        "tom": "2020-01-02",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "utsettelseÅrsak": "BARN_INNLAGT",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-01-03",
+                        "tom": "2020-01-23",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "utsettelseÅrsak": "SØKER_INNLAGT",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-01-24",
+                        "tom": "2020-02-13",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "utsettelseÅrsak": "SØKER_SYKDOM",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-02-14",
+                        "tom": "2020-02-20",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
                         },
                         "utsettelseÅrsak": "ARBEID",
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2022-02-28",
-                        "tom": "2022-05-06",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2020-02-21",
+                        "tom": "2020-02-27",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "utsettelseÅrsak": "HV_ØVELSE",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-02-28",
+                        "tom": "2020-03-05",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "utsettelseÅrsak": "NAV_TILTAK",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-03-06",
+                        "tom": "2020-03-12",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "oppholdÅrsak": "FEDREKVOTE_ANNEN_FORELDER",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-03-13",
+                        "tom": "2020-03-26",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": false,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "gradering": {
+                            "arbeidstidprosent": 33.00,
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": {
+                                    "id": "992260432",
+                                    "type": "ORGANISASJON"
+                                }
+                            }
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-03-27",
+                        "tom": "2020-04-02",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "samtidigUttak": 100.00,
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-04-03",
+                        "tom": "2020-04-24",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "samtidigUttak": 50.00,
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-04-25",
+                        "tom": "2020-05-14",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "samtidigUttak": 50.00,
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-05-15",
+                        "tom": "2020-05-18",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-05-19",
+                        "tom": "2020-05-19",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "gradering": {
+                            "arbeidstidprosent": 20.00,
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": {
+                                    "id": "992260432",
+                                    "type": "ORGANISASJON"
+                                }
+                            }
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-05-20",
+                        "tom": "2020-05-20",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-05-21",
+                        "tom": "2020-05-21",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "gradering": {
+                            "arbeidstidprosent": 20.00,
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": {
+                                    "id": "992260432",
+                                    "type": "ORGANISASJON"
+                                }
+                            }
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2020-05-22",
+                        "tom": "2020-05-22",
+                        "kontoType": "FELLESPERIODE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
@@ -89,11 +302,11 @@
                     "fødselsdato": "2024-02-26",
                     "annenForelder": {
                         "fnr": "01472152308"
-                      } 
+                    }
                 }
             ],
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2024-02-21T09:37:03.806"
+            "oppdatertTidspunkt": "2024-01-08T15:44:02.71"
         }
     ],
     "engangsstønad": [],

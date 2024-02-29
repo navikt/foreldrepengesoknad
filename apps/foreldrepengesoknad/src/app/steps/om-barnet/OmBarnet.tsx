@@ -1,5 +1,6 @@
 import {
     andreAugust2022ReglerGjelder,
+    BarnType,
     Block,
     convertYesOrNoOrUndefinedToBoolean,
     hasValue,
@@ -8,9 +9,10 @@ import {
     isFødtBarn,
     ISOStringToDate,
     isUfødtBarn,
+    lagSendSenereDokumentNårIngenAndreFinnes,
     Step,
 } from '@navikt/fp-common';
-import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
+import { SøkerBarn, Søkerinfo, AttachmentMetadataType } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -29,6 +31,9 @@ import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig, { OmBarnetQuestionPayload } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
+import { VedleggDataType } from 'app/types/VedleggDataType';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 type Props = {
     søkerInfo: Søkerinfo;
@@ -52,6 +57,8 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
@@ -87,6 +94,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         setIsSubmitting(true);
 
         const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
+
         const oppdatertBarn = mapOmBarnetFormDataToState(
             values,
             arbeidsforhold,
@@ -95,6 +103,45 @@ const OmBarnet: React.FunctionComponent<Props> = ({
             barnSøktOmFørMenIkkeRegistrert,
         );
 
+        if (
+            (values.adopsjonAvEktefellesBarn === YesOrNo.YES && oppdatertBarn.type === BarnType.ADOPTERT_STEBARN) ||
+            oppdatertBarn.type === BarnType.ADOPTERT_ANNET_BARN
+        ) {
+            const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
+                values.omsorgsovertakelse!,
+                AttachmentType.OMSORGSOVERTAKELSE,
+                Skjemanummer.OMSORGSOVERTAKELSE,
+                {
+                    type: AttachmentMetadataType.BARN,
+                },
+            );
+
+            const nyeVedlegg = {
+                ...vedlegg,
+                [Skjemanummer.OMSORGSOVERTAKELSE]: omsorgsovertakelse,
+            };
+
+            oppdaterVedlegg(nyeVedlegg);
+        }
+
+        if (values.erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0) {
+            const terminbekreftelse = lagSendSenereDokumentNårIngenAndreFinnes(
+                values.terminbekreftelse!,
+                AttachmentType.TERMINBEKREFTELSE,
+                Skjemanummer.TERMINBEKREFTELSE,
+                {
+                    type: AttachmentMetadataType.BARN,
+                },
+            );
+
+            const nyeVedlegg = {
+                ...vedlegg,
+                [Skjemanummer.TERMINBEKREFTELSE]: terminbekreftelse,
+            };
+
+            oppdaterVedlegg(nyeVedlegg);
+        }
+
         oppdaterOmBarnet(oppdatertBarn);
 
         return navigator.goToNextDefaultStep();
@@ -102,7 +149,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(arbeidsforhold, omBarnet)}
+            initialValues={getOmBarnetInitialValues(arbeidsforhold, vedlegg, omBarnet)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({

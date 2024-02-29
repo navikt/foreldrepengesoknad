@@ -1,5 +1,6 @@
-import { Situasjon, Tidsperioden } from '@navikt/fp-common';
 import dayjs from 'dayjs';
+
+import { Situasjon, Tidsperioden } from '@navikt/fp-common';
 
 export const skalViseInfoOmPrematuruker = (
     fødselsdato: Date | undefined,

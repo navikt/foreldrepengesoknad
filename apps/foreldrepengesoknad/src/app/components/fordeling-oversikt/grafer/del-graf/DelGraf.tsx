@@ -1,7 +1,10 @@
-import { bemUtils, guid } from '@navikt/fp-common';
-import './../graf.css';
 import classNames from 'classnames';
+
+import { bemUtils, guid } from '@navikt/fp-common';
+
 import { FordelingDager } from 'app/types/FordelingOversikt';
+
+import './../graf.css';
 
 interface Props {
     fordelingsdager: FordelingDager[];

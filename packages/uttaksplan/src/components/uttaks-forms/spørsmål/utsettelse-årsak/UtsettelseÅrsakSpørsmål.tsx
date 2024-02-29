@@ -1,21 +1,21 @@
-import { Attachment, AttachmentType, Block, intlUtils, Skjemanummer, UtsettelseÅrsakType } from '@navikt/fp-common';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
+import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import { BodyShort, GuidePanel } from '@navikt/ds-react';
+
+import { Block, UtsettelseÅrsakType, intlUtils } from '@navikt/fp-common';
+
 import {
     PeriodeUtsettelseFormComponents,
     PeriodeUtsettelseFormField,
 } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
-import { BodyShort, GuidePanel } from '@navikt/ds-react';
-import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
 
 interface Props {
     periodenErKunHelligdager: boolean;
     skalViseGamleUtsettelseÅrsaker: boolean;
     erFarEllerMedmor: boolean;
     tidsperiodenErInnenforFørsteSeksUker: boolean;
-    utsettelseårsak: UtsettelseÅrsakType | '';
-    vedlegg: Attachment[];
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
     isOpen: boolean;
@@ -113,90 +113,13 @@ const getUtsettelseÅrsakOptions = (
     return defaultRadios;
 };
 
-const getUtsettelseårsakSkjemanummer = (årsak: UtsettelseÅrsakType | '') => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-            return Skjemanummer.DOK_OVERFØRING_FOR_SYK;
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-            return Skjemanummer.DOK_INNLEGGELSE;
-        case UtsettelseÅrsakType.HvØvelse:
-            return Skjemanummer.HV_ØVELSE;
-        case UtsettelseÅrsakType.NavTiltak:
-            return Skjemanummer.NAV_TILTAK;
-        default:
-            return Skjemanummer.ANNET;
-    }
-};
-
-const showAttachmentUploader = (årsak: UtsettelseÅrsakType | ''): boolean => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-        case UtsettelseÅrsakType.HvØvelse:
-        case UtsettelseÅrsakType.NavTiltak:
-            return true;
-        default:
-            return false;
-    }
-};
-
-const getAttachmentUploaderLabel = (årsak: UtsettelseÅrsakType | ''): string => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-            return 'Last opp dokumentasjon for sykdom';
-        case UtsettelseÅrsakType.HvØvelse:
-            return 'Last opp dokumentasjon for HV-øvelse';
-        case UtsettelseÅrsakType.NavTiltak:
-            return 'Last opp dokumentasjon for NAV tiltak';
-        default:
-            return '';
-    }
-};
-
-const getAttachmentUploaderType = (årsak: UtsettelseÅrsakType | ''): AttachmentType => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-            return AttachmentType.UTSETTELSE_SYKDOM;
-        case UtsettelseÅrsakType.HvØvelse:
-            return AttachmentType.HV_ØVELSE;
-        case UtsettelseÅrsakType.NavTiltak:
-            return AttachmentType.NAV_TILTAK;
-        default:
-            return AttachmentType.UTSETTELSE_SYKDOM; // Should never happen
-    }
-};
-
-const getVeilederTekst = (årsak: UtsettelseÅrsakType | ''): React.ReactElement => {
-    switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-            return <FormattedMessage id="uttaksplan.veileder.sykdom" />;
-        case UtsettelseÅrsakType.HvØvelse:
-            return <FormattedMessage id="uttaksplan.veileder.hvØvelse" />;
-        case UtsettelseÅrsakType.NavTiltak:
-            return <FormattedMessage id="uttaksplan.veileder.navTiltak" />;
-        default:
-            return <FormattedMessage id="uttaksplan.veileder.sykdom" />; // Should never happen
-    }
-};
-
 const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     periodenErKunHelligdager,
     skalViseGamleUtsettelseÅrsaker,
     erFarEllerMedmor,
     tidsperiodenErInnenforFørsteSeksUker,
-    utsettelseårsak,
-    vedlegg,
     erMorUfør,
     søkerErFarEllerMedmorOgKunDeHarRett,
-    isOpen,
 }) => {
     const intl = useIntl();
     const årsakOptions = getUtsettelseÅrsakOptions(
@@ -246,19 +169,6 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
                         }
                         return undefined;
                     }}
-                />
-            </Block>
-            <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak)}>
-                <GuidePanel>{getVeilederTekst(utsettelseårsak)}</GuidePanel>
-            </Block>
-            <Block padBottom="l" visible={showAttachmentUploader(utsettelseårsak) && isOpen}>
-                <FormikFileUploader
-                    legend="Dokumentasjon for utsettelsesårsak"
-                    label={getAttachmentUploaderLabel(utsettelseårsak)}
-                    name={PeriodeUtsettelseFormField.vedlegg}
-                    attachments={vedlegg || []}
-                    attachmentType={getAttachmentUploaderType(utsettelseårsak)}
-                    skjemanummer={getUtsettelseårsakSkjemanummer(utsettelseårsak)}
                 />
             </Block>
         </>

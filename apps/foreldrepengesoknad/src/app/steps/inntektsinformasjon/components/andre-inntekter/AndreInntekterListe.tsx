@@ -40,9 +40,7 @@ const AndreInntekterListe: FunctionComponent<Props> = ({ andreInntekter, deleteA
                     title={getTitle(annenInntekt.type, intl)}
                     deleteButtonAriaText={`Slett annen inntekt`}
                     editButtonAriaText={`Rediger annen inntekt`}
-                    missingDocumentation={
-                        annenInntekt.vedlegg.length === 0 && annenInntekt.type !== AnnenInntektType.JOBB_I_UTLANDET
-                    }
+                    missingDocumentation={false}
                     key={`${annenInntekt.type}${annenInntekt.tidsperiode.fom}${index}`}
                 />
             ))}

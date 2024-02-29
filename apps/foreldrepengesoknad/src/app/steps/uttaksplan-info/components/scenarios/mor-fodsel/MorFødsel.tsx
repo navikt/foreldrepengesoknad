@@ -1,8 +1,9 @@
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
+
 import { VStack } from '@navikt/ds-react';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import { notEmpty } from '@navikt/fp-validation';
+
 import {
     Block,
     Dekningsgrad,
@@ -14,25 +15,28 @@ import {
     isFarEllerMedmor,
     uttaksConstants,
 } from '@navikt/fp-common';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { MorFødselFormComponents, MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
-import { getInitialMorFødselValues, mapMorFødselFormToState } from './morFødselUtils';
-import StartdatoPermisjonMor from './StartdatoPermisjonMor';
-import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
-import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { MorFødselQuestionsPayload, morFødselQuestionsConfig } from './morFødselQuestionsConfig';
-import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { Søker } from '@navikt/fp-types';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
 import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import { StepButtons } from '@navikt/fp-ui';
-import { Søker } from '@navikt/fp-types';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { leggTilAnnenPartsPerioderISøkerenesUttaksplan } from 'app/steps/uttaksplan-info/utils/leggTilAnnenPartsPerioderISøkerensUttaksplan';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+
+import FordelingFellesperiodeSpørsmål from '../../fordelingFellesperiode/FordelingFellesperiodeSpørsmål';
+import StartdatoPermisjonMor from './StartdatoPermisjonMor';
+import { MorFødselFormComponents, MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
+import { MorFødselQuestionsPayload, morFødselQuestionsConfig } from './morFødselQuestionsConfig';
+import { getInitialMorFødselValues, mapMorFødselFormToState } from './morFødselUtils';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

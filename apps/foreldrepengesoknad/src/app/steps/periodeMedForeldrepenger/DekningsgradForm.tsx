@@ -1,27 +1,30 @@
-import { useIntl, FormattedMessage, IntlShape } from 'react-intl';
-import { useForm } from 'react-hook-form';
+import { ExternalLinkIcon, FeedingBottleIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { FeedingBottleIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
-import { Radio, VStack, ReadMore, Link, Box, BodyShort, Heading, HStack } from '@navikt/ds-react';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import { BodyShort, Box, HStack, Heading, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
+
 import {
     Barn,
     Dekningsgrad,
+    StønadskontoType,
     TilgjengeligStønadskonto,
     Uttaksdagen,
     bemUtils,
-    isAnnenForelderOppgitt,
     capitalizeFirstLetter,
     getFlerbarnsuker,
     isAdoptertBarn,
-    StønadskontoType,
+    isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { links } from '@navikt/fp-constants';
+import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 

@@ -235,9 +235,7 @@ MorSøkerAdopsjonMedAleneomsorg.args = {
         antallBarn: 1,
         adopsjonsdato: dayjs('2021-03-15').toDate(),
         adoptertIUtlandet: false,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [],
-        omsorgsovertakelse: [],
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -269,9 +267,7 @@ MorSøkerAdopsjonMedDeltUttak.args = {
         antallBarn: 1,
         adopsjonsdato: dayjs('2021-03-15').toDate(),
         adoptertIUtlandet: false,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [],
-        omsorgsovertakelse: [],
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -307,9 +303,7 @@ FarSøkerAdopsjonMedDeltUttak.args = {
         antallBarn: 1,
         adopsjonsdato: dayjs('2021-03-15').toDate(),
         adoptertIUtlandet: false,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [],
-        omsorgsovertakelse: [],
     },
     annenForelder: {
         fornavn: 'Helga',
@@ -345,9 +339,7 @@ MorSøkerAdopsjonDerFarHarRettIEOS.args = {
         antallBarn: 1,
         adopsjonsdato: dayjs('2021-03-15').toDate(),
         adoptertIUtlandet: false,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [],
-        omsorgsovertakelse: [],
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -380,7 +372,6 @@ MorSøkerFodselDerFarHarRettIEOS.args = {
         rolle: 'mor',
     },
     barnet: {
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2022-06-14').toDate()],
         termindato: dayjs('2022-08-14').toDate(),
         antallBarn: 1,
@@ -425,7 +416,6 @@ MorAleneomsorgFødsel.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -456,7 +446,6 @@ MorFødselDeltUttakPrematurFødsel.args = {
         type: BarnType.FØDT,
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2021-01-11').toDate()],
         termindato: dayjs('2021-03-11').toDate(),
     },
@@ -482,7 +471,6 @@ MorAleneomsorgPrematurFødsel.args = {
         type: BarnType.FØDT,
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2021-01-11').toDate()],
         termindato: dayjs('2021-03-11').toDate(),
     },
@@ -516,7 +504,6 @@ MorFødselDeltUttak.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -540,7 +527,6 @@ MorFødselMedTvillingFlerbarnsuker.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 2,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -583,7 +569,6 @@ MorFødselAleneomsorgMedTrillingFlerbarnsuker.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 3,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -621,7 +606,6 @@ FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 2,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         fornavn: 'Helga',

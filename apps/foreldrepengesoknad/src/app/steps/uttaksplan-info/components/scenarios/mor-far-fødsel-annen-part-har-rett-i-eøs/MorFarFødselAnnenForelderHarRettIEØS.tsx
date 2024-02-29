@@ -1,8 +1,9 @@
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
+
 import { VStack } from '@navikt/ds-react';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import { notEmpty } from '@navikt/fp-validation';
+
 import {
     Block,
     Dekningsgrad,
@@ -14,7 +15,12 @@ import {
     isFarEllerMedmor,
     uttaksConstants,
 } from '@navikt/fp-common';
+import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
@@ -24,24 +30,22 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+
+import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
 import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
-import {
-    morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
-    MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
-} from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
 import {
     MorFarFødselAnnenForelderHarRettIEØSFormComponents,
     MorFarFødselAnnenForelderHarRettIEØSFormData,
     MorFarFødselAnnenForelderHarRettIEØSFormField,
 } from './morFarFødselAnnenForelderHarRettIEØSFormConfig';
 import {
+    MorFarFødselAnnenForelderHarRettIEØSQuestionsPayload,
+    morFarFødselAnnenForelderHarRettIEØSQuestionsConfig,
+} from './morFarFødselAnnenForelderHarRettIEØSQuestionsConfig';
+import {
     getInitialMorFarFødselAnnenForelderHarRettIEØSValues,
     mapMorFarFødselAnnenForelderHarRettIEØSFormToState,
 } from './morFarFødselAnnenForelderHarRettIEØSUtils';
-import StartdatoPermisjonMor from '../mor-fodsel/StartdatoPermisjonMor';
-import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

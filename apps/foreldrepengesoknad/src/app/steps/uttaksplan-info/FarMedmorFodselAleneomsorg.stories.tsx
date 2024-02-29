@@ -1,20 +1,23 @@
-import dayjs from 'dayjs';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import { BarnType, Dekningsgrad } from '@navikt/fp-common';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import { RequestStatus } from 'app/types/RequestState';
+import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
 import stønadskonto80AleneomsorgFar from 'storybook/storyData/stonadskontoer/stønadskonto80AleneomsorgFar.json';
 import stønadskonto100AleneomsorgFar from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFar.json';
-import stønadskonto100AleneomsorgFarTrillinger from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFarTrillinger.json';
 import stønadskonto100AleneomsorgFarPrematur from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFarPrematur.json';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import UttaksplanInfo from './UttaksplanInfo';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import SøknadRoutes from 'app/routes/routes';
-import { MemoryRouter } from 'react-router-dom';
+import stønadskonto100AleneomsorgFarTrillinger from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFarTrillinger.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { BarnType, Dekningsgrad } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
+
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { RequestStatus } from 'app/types/RequestState';
+
+import UttaksplanInfo from './UttaksplanInfo';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = 'test/konto';
@@ -59,7 +62,6 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
                             termindato: args.termindato,
                             antallBarn: args.antallBarn,
                             datoForAleneomsorg: dayjs('2022-03-24').toDate(),
-                            dokumentasjonAvAleneomsorg: [],
                         },
                         [ContextDataType.SØKER_DATA]: {
                             erAleneOmOmsorg: true,

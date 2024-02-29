@@ -1,21 +1,24 @@
-import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
+import stønadskonto80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskonto80Adopsjon.json';
+import stønadskonto100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskonto100Adopsjon.json';
+import stønadskontoDeltUttak80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80Adopsjon.json';
+import stønadskontoDeltUttak100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Adopsjon.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo } from '@navikt/fp-types';
+
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøkerData from 'app/context/types/SøkerData';
 import SøknadRoutes from 'app/routes/routes';
 import { RequestStatus } from 'app/types/RequestState';
-import { MemoryRouter } from 'react-router-dom';
-import stønadskonto100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskonto100Adopsjon.json';
-import stønadskonto80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskonto80Adopsjon.json';
-import stønadskontoDeltUttak80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80Adopsjon.json';
-import stønadskontoDeltUttak100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Adopsjon.json';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import AxiosMock from 'storybook/utils/AxiosMock';
+
 import UttaksplanInfo from './UttaksplanInfo';
-import { initAmplitude } from '@navikt/fp-metrics';
-import { Søkerinfo } from '@navikt/fp-types';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -103,9 +106,7 @@ const Template: StoryFn<
                             antallBarn: args.antallBarn,
                             adopsjonsdato: args.adopsjonsdato,
                             adoptertIUtlandet: false,
-                            dokumentasjonAvAleneomsorg: [],
                             fødselsdatoer: [],
-                            omsorgsovertakelse: [],
                         },
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,

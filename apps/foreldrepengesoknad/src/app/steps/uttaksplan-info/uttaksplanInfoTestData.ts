@@ -1,5 +1,6 @@
 import { Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
 import { Søkerinfo } from '@navikt/fp-types';
+
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 
 interface UttaksplanInfoTestData {

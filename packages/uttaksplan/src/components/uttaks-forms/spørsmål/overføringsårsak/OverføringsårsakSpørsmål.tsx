@@ -1,34 +1,16 @@
-import {
-    intlUtils,
-    Block,
-    hasValue,
-    Attachment,
-    OverføringÅrsakType,
-    AttachmentType,
-    Skjemanummer,
-    getNavnGenitivEierform,
-} from '@navikt/fp-common';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
+import { intlUtils, Block, hasValue, OverføringÅrsakType, getNavnGenitivEierform } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import { GuidePanel } from '@navikt/ds-react';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 interface Props {
-    vedlegg: Attachment[];
     navnAnnenForelder: string;
     erEndringssøknad: boolean;
     valgtOverføringsårsak: OverføringÅrsakType | '';
     isOpen: boolean;
 }
 
-const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
-    vedlegg,
-    navnAnnenForelder,
-    erEndringssøknad,
-    valgtOverføringsårsak,
-    isOpen,
-}) => {
+const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ navnAnnenForelder, erEndringssøknad }) => {
     const intl = useIntl();
     const navn = capitalizeFirstLetter(navnAnnenForelder);
     const radios = [
@@ -59,11 +41,6 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
         });
     }
 
-    const beOmDokumentasjon =
-        valgtOverføringsårsak !== '' &&
-        valgtOverføringsårsak !== OverføringÅrsakType.aleneomsorg &&
-        valgtOverføringsårsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
-
     return (
         <>
             <Block padBottom="l">
@@ -82,28 +59,6 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({
                     }}
                 />
             </Block>
-            {beOmDokumentasjon && (
-                <Block padBottom="l">
-                    <GuidePanel>
-                        <FormattedMessage
-                            id="uttaksplan.overføringsårsak.informasjonVedSykdomAnnenForelder"
-                            values={{ navnAnnenForelder }}
-                        />
-                    </GuidePanel>
-                </Block>
-            )}
-            {beOmDokumentasjon && isOpen && (
-                <Block padBottom="l">
-                    <FormikFileUploader
-                        legend="Dokumentasjon for overføringsårsak"
-                        label={intlUtils(intl, 'uttaksplan.overføringsårsak.dokumentasjon')}
-                        name={PeriodeUttakFormField.overføringsdokumentasjon}
-                        attachments={vedlegg || []}
-                        attachmentType={AttachmentType.OVERFØRING_KVOTE}
-                        skjemanummer={Skjemanummer.DOK_OVERFØRING_FOR_SYK}
-                    />
-                </Block>
-            )}
         </>
     );
 };

@@ -1,11 +1,11 @@
 export enum MorsAktivitet {
     Arbeid = 'ARBEID',
     Utdanning = 'UTDANNING',
-    Kvalifiseringsprogrammet = 'KVALPROG',
-    Introduksjonsprogrammet = 'INTROPROG',
+    ArbeidOgUtdanning = 'ARBEID_OG_UTDANNING',
     TrengerHjelp = 'TRENGER_HJELP',
     Innlagt = 'INNLAGT',
-    ArbeidOgUtdanning = 'ARBEID_OG_UTDANNING',
+    Kvalifiseringsprogrammet = 'KVALPROG',
+    Introduksjonsprogrammet = 'INTROPROG',
     Uføre = 'UFØRE',
     IkkeOppgitt = 'IKKE_OPPGITT',
 }

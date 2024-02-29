@@ -1,7 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import {
     AnnenForelder,
-    Attachment,
     Barn,
     BarnFraNesteSak,
     Block,
@@ -97,7 +96,6 @@ interface Props {
     familiehendelsesdatoNesteSak: Date | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
     minsterettUkerToTette: number | undefined;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 export interface PeriodeValidState {
@@ -139,7 +137,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
     familiehendelsesdatoNesteSak,
     førsteUttaksdagNesteBarnsSak,
     minsterettUkerToTette,
-    saveAttachment,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -301,7 +298,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleResetUttaksplan();
     };
 
-    const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
+    const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, true);
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 
     const utsettelserIPlan = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
@@ -335,7 +332,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     utsettelserIPlan={utsettelserIPlan}
                     barnFraNesteSak={barnFraNesteSak}
                     perioderErGyldige={perioderErGyldige}
-                    saveAttachment={saveAttachment}
                 />
             </Block>
 

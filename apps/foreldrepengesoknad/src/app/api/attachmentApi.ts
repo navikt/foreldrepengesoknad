@@ -1,6 +1,6 @@
 import Environment from 'app/Environment';
 import getAxiosInstance from './apiInterceptor';
-import { Attachment } from '@navikt/fp-common';
+import { Attachment } from '@navikt/fp-types';
 
 function saveAttachment(attachment: Attachment) {
     const config = {

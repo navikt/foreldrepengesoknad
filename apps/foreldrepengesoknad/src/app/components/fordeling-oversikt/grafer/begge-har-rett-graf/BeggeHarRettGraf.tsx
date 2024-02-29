@@ -1,13 +1,17 @@
-import { TilgjengeligStønadskonto, bemUtils, capitalizeFirstLetter, guid } from '@navikt/fp-common';
-import { BodyShort } from '@navikt/ds-react';
-import './../graf.css';
-import { Dispatch, SetStateAction } from 'react';
-import { getBeggeHarRettGrafFordeling, getFordelingShadowClass } from '../../fordelingOversiktUtils';
-import FamiliehendelseVisning from './FamiliehendelseVisning';
 import classNames from 'classnames';
+import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from 'react-intl';
-import { getFamiliehendelseNavn } from 'app/utils/familiehendelseUtils';
+
+import { BodyShort } from '@navikt/ds-react';
+
+import { TilgjengeligStønadskonto, bemUtils, capitalizeFirstLetter, guid } from '@navikt/fp-common';
+
 import { FordelingEier, FordelingGrafInfo } from 'app/types/FordelingOversikt';
+import { getFamiliehendelseNavn } from 'app/utils/familiehendelseUtils';
+
+import { getBeggeHarRettGrafFordeling, getFordelingShadowClass } from '../../fordelingOversiktUtils';
+import './../graf.css';
+import FamiliehendelseVisning from './FamiliehendelseVisning';
 
 const getRowClass = (antallPerioder: number, periodeIndex: number) => {
     if (antallPerioder % 2 === 0) {
