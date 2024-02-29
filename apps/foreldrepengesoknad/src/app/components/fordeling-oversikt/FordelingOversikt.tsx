@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import OversiktPerDel from './oversikt-per-del/OversiktPerDel';
+
 import {
     Block,
     ISOStringToDate,
@@ -12,17 +13,19 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
-import { useState } from 'react';
+import { notEmpty } from '@navikt/fp-validation';
+
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import FlerbarnsdagerInformasjon from 'app/steps/uttaksplan-info/components/flerbarnsdagerInformasjon/FlerbarnsdagerInformasjon';
 import SammenhengendeUttakInformasjon from 'app/steps/uttaksplan-info/components/sammenhengendeUttakInformasjon/SammenhengendeUttakInformasjon';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
-import FordelingPåvirkninger from './fordeling-påvirkninger/FordelingPåvirkninger';
-import { notEmpty } from '@navikt/fp-validation';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+
+import FordelingPåvirkninger from './fordeling-påvirkninger/FordelingPåvirkninger';
 import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
+import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
+import OversiktPerDel from './oversikt-per-del/OversiktPerDel';
 
 export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
     return (

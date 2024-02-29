@@ -19,6 +19,7 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold.senere' }),
         [SøknadRoutes.INNTEKTSINFORMASJON]: intl.formatMessage({ id: 'steps.label.inntektsinformasjon' }),
         [SøknadRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'steps.label.oppsummering' }),
+        [SøknadRoutes.DOKUMENTASJON]: intl.formatMessage({ id: 'søknad.manglendeVedlegg' }),
     }) as Record<string, string>;
 
 const isAfterStep = (previousStepPath: SøknadRoutes, currentStepPath: SøknadRoutes): boolean => {
@@ -45,6 +46,17 @@ const showUtenlandsoppholdStep = (
     return false;
 };
 
+const showManglendeDokumentasjonSteg = (
+    path: SøknadRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+) => {
+    if (path === SøknadRoutes.DOKUMENTASJON) {
+        return getData(ContextDataType.MANGLER_DOKUMENTASJON) === true;
+    }
+
+    return false;
+};
+
 const useStepConfig = (erEndringssøknad = false) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
@@ -61,7 +73,11 @@ const useStepConfig = (erEndringssøknad = false) => {
     const appPathList = useMemo(
         () =>
             ROUTES_ORDER.flatMap((path) =>
-                requiredSteps.includes(path) || showUtenlandsoppholdStep(path, currentPath, getStateData) ? [path] : [],
+                requiredSteps.includes(path) ||
+                showUtenlandsoppholdStep(path, currentPath, getStateData) ||
+                showManglendeDokumentasjonSteg(path, getStateData)
+                    ? [path]
+                    : [],
             ),
         [requiredSteps, currentPath, getStateData],
     );

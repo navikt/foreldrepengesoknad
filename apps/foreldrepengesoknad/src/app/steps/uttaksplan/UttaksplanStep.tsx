@@ -1,5 +1,5 @@
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { Uttaksplan, getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import { Uttaksplan, getHarAktivitetskravIPeriodeUtenUttak, kreverUttaksplanVedlegg } from '@navikt/uttaksplan';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
@@ -34,6 +34,7 @@ import {
     isUttakAvForeldrepengerFørFødsel,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -47,8 +48,10 @@ import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { RequestStatus } from 'app/types/RequestState';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
 import {
@@ -59,8 +62,8 @@ import useDebounce from 'app/utils/hooks/useDebounce';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 
-import AttachmentApi from '../../api/attachmentApi';
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
+import { getUttaksplanNextStep } from '../stepsConfig';
 import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
@@ -107,12 +110,16 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterBarnFraNesteSak = useContextSaveData(ContextDataType.BARN_FRA_NESTE_SAK);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
+    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const oppdaterManglerDokumentasjon = useContextSaveData(ContextDataType.MANGLER_DOKUMENTASJON);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(
@@ -210,6 +217,31 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const goToPreviousStep = () => {
         setGåTilbakeIsOpen(false);
+
+        const nullstiltePeriodeVedlegg: VedleggDataType = {
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
+            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
+            [Skjemanummer.DOK_SYKDOM_MOR]: [],
+            [Skjemanummer.DOK_SYKDOM_FAR]: [],
+            [Skjemanummer.DOK_INNLEGGELSE_BARN]: [],
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]: [],
+            [Skjemanummer.DOK_INNLEGGELSE_FAR]: [],
+            [Skjemanummer.DOK_ARBEID_MOR]: [],
+            [Skjemanummer.DOK_UTDANNING_MOR]: [],
+            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [],
+        };
+
+        oppdaterUttaksplanMetadata({
+            ...uttaksplanMetadata,
+            perioderSomSkalSendesInn: [],
+            endringstidspunkt: undefined,
+            ønskerJustertUttakVedFødsel: undefined,
+        });
+        oppdaterUttaksplan([]);
+        oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
+        oppdaterManglerDokumentasjon(false);
+        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+        mellomlagreSøknadOgNaviger();
         navigator.goToPreviousDefaultStep();
     };
 
@@ -373,8 +405,12 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     ]);
 
     const onSubmit = async () => {
+        const planKreverVedlegg = kreverUttaksplanVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
+        const nextRoute = getUttaksplanNextStep(erEndringssøknad, planKreverVedlegg);
+
         setIsSubmitting(true);
         setSubmitIsClicked(true);
+        oppdaterManglerDokumentasjon(planKreverVedlegg);
 
         oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
@@ -382,7 +418,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             perioderSomSkalSendesInn,
         });
 
-        navigator.goToNextDefaultStep();
+        navigator.goToNextStep(nextRoute);
     };
 
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
@@ -632,7 +668,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             handleResetUttaksplan={handleResetUttaksplan}
                             termindato={termindato}
                             barn={barn}
-                            saveAttachment={AttachmentApi.saveAttachment}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                             barnFraNesteSak={barnFraNesteSak}

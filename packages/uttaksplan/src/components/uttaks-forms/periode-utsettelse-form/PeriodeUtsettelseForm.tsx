@@ -1,50 +1,50 @@
+import { Dispatch, FunctionComponent, useEffect, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Button } from '@navikt/ds-react';
+
 import {
-    bemUtils,
+    ActionLink,
+    Arbeidsforhold,
     Block,
+    ISOStringToDate,
+    NavnPåForeldre,
+    Periode,
+    PeriodeValidState,
+    Situasjon,
+    Tidsperioden,
+    Utsettelsesperiode,
+    bemUtils,
+    førsteOktober2021ReglerGjelder,
+    getIsValidStateForPerioder,
+    getSlettPeriodeTekst,
     guid,
     hasValue,
     intlUtils,
-    ActionLink,
-    NavnPåForeldre,
-    Situasjon,
-    Arbeidsforhold,
-    Periode,
-    Utsettelsesperiode,
-    førsteOktober2021ReglerGjelder,
-    getIsValidStateForPerioder,
-    Tidsperioden,
     isValidTidsperiode,
-    ISOStringToDate,
-    getSlettPeriodeTekst,
-    Attachment,
-    PeriodeValidState,
 } from '@navikt/fp-common';
-import { Dispatch, FunctionComponent, useEffect, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+
+import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
+import UtsettelseEndreTidsperiodeSpørsmål from '../../utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
+import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
+import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/UtsettelseÅrsakSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
 import TidsperiodeForm from '../tidsperiode-form/TidsperiodeForm';
+import './periodeUtsettelseForm.less';
 import {
     PeriodeUtsettelseFormComponents,
     PeriodeUtsettelseFormData,
     PeriodeUtsettelseFormField,
 } from './periodeUtsettelseFormConfig';
 import {
+    PeriodeUtsettelseFormConfigPayload,
+    periodeUtsettelseFormQuestionsConfig,
+} from './periodeUtsettelseFormQuestionsConfig';
+import {
     cleanupPeriodeUtsettelseFormData,
     getPeriodeUtsettelseFormInitialValues,
     mapPeriodeUtsettelseFormToPeriode,
 } from './periodeUtsettelseFormUtils';
-
-import {
-    PeriodeUtsettelseFormConfigPayload,
-    periodeUtsettelseFormQuestionsConfig,
-} from './periodeUtsettelseFormQuestionsConfig';
-import UtsettelseÅrsakSpørsmål from '../spørsmål/utsettelse-årsak/UtsettelseÅrsakSpørsmål';
-import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
-import { Button } from '@navikt/ds-react';
-import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
-import UtsettelseEndreTidsperiodeSpørsmål from '../../utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
-
-import './periodeUtsettelseForm.less';
 
 interface Props {
     periode: Periode;
@@ -65,7 +65,6 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
     isOpen: boolean;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -86,7 +85,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     utsettelserIPlan,
     setPerioderErGyldige,
     isOpen,
-    saveAttachment,
 }) => {
     const intl = useIntl();
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -202,8 +200,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                         fom: values.fom!,
                                         tom: values.tom!,
                                     }).erInnenforFørsteSeksUker(familiehendelsesdato)}
-                                    utsettelseårsak={values.årsak!}
-                                    vedlegg={values.vedlegg!}
                                     erMorUfør={erMorUfør}
                                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
                                     isOpen={isOpen}
@@ -230,14 +226,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 padBottom="xl"
                             >
                                 <AktivitetskravSpørsmål
-                                    aktivitetskravMorValue={values.morsAktivitetIPerioden!}
-                                    aktivitetskravVedlegg={values.morsAktivitetIPeriodenDokumentasjon!}
                                     fieldName={PeriodeUtsettelseFormField.morsAktivitetIPerioden}
                                     navnPåForeldre={navnPåForeldre}
                                     FormComponents={PeriodeUtsettelseFormComponents}
-                                    vedleggFieldName={PeriodeUtsettelseFormField.morsAktivitetIPeriodenDokumentasjon}
-                                    isOpen={isOpen}
-                                    saveAttachment={saveAttachment}
                                 />
                             </Block>
                             <Block

@@ -1,7 +1,8 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
+
 import * as stories from './FarMedmorFodselOgMorHarIkkeRett.stories';
 
 const {

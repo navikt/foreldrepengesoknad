@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { TilgjengeligStønadskonto, intlUtils } from '@navikt/fp-common';
-import RangeInput from './range-input/RangeInput';
-import { getAntallUkerFellesperiode } from '../../utils/stønadskontoer';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort, Ingress } from '@navikt/ds-react';
 
+import { TilgjengeligStønadskonto, intlUtils } from '@navikt/fp-common';
+
+import { getAntallUkerFellesperiode } from '../../utils/stønadskontoer';
 import './fordelingFellesperiodeSpørsmål.less';
+import RangeInput from './range-input/RangeInput';
 
 export interface OwnProps {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;

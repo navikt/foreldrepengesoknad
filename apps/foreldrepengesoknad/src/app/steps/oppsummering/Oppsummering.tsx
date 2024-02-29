@@ -1,9 +1,13 @@
-import { Heading } from '@navikt/ds-react';
+import { FunctionComponent, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
+
 import {
     Barn,
+    Block,
     ISOStringToDate,
     getErSøkerFarEllerMedmor,
-    getFarMedmorErAleneOmOmsorg,
     getNavnPåForeldre,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
@@ -12,24 +16,26 @@ import {
 } from '@navikt/fp-common';
 import {
     BoIUtlandetOppsummeringspunkt,
-    SøkerOppsummeringspunkt,
     HendelseType,
     OppsummeringIndex,
+    SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
 import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { formatDateIso } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+
+import { søknadInneholderIngenVedlegg } from '../manglende-vedlegg/util';
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
 import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
 import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
+import DokumentasjonOppsummering from './components/dokumentasjon-oppsummering/DokumentasjonOppsummering';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const getDatoOgHendelsetype = (barn: Barn): [string, HendelseType] => {
@@ -98,6 +104,7 @@ const Oppsummering: FunctionComponent<Props> = ({
 
     const stepConfig = useStepConfig(erEndringssøknad);
     const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const [manglerDokumentasjon, setManglerDokumentasjon] = useState(false);
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -110,14 +117,12 @@ const Oppsummering: FunctionComponent<Props> = ({
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
+    const inneholderIkkeVedlegg = søknadInneholderIngenVedlegg(vedlegg);
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, søkerErFarEllerMedmor, intl);
-    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
-        søkerErFarEllerMedmor,
-        søkerData.erAleneOmOmsorg,
-        annenForelder,
-    );
+
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -156,8 +161,6 @@ const Oppsummering: FunctionComponent<Props> = ({
                         annenForelder={annenForelder}
                         søkerData={søkerData}
                         søkerrolle={søkersituasjon.rolle}
-                        barn={barn}
-                        farMedmorErAleneOmOmsorg={farMedmorErAleneOmOmsorg}
                     />
                 </OppsummeringIndex.Punkt>
                 <BoIUtlandetOppsummeringspunkt
@@ -194,6 +197,26 @@ const Oppsummering: FunctionComponent<Props> = ({
                         ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
                     />
                 </OppsummeringIndex.Punkt>
+                <OppsummeringIndex.Punkt
+                    hide={vedlegg === undefined || inneholderIkkeVedlegg}
+                    tittel={intl.formatMessage({
+                        id: manglerDokumentasjon ? 'oppsummering.manglerDokumentasjon' : 'oppsummering.dokumentasjon',
+                    })}
+                >
+                    <DokumentasjonOppsummering vedlegg={vedlegg!} setManglerDokumentasjon={setManglerDokumentasjon} />
+                </OppsummeringIndex.Punkt>
+                <Block visible={manglerDokumentasjon} margin="xl">
+                    <Alert variant="info">
+                        <VStack gap="2">
+                            <Heading size="small" level="2">
+                                <FormattedMessage id="oppsummering.manglerDokumentasjon.heading" />
+                            </Heading>
+                            <BodyLong>
+                                <FormattedMessage id="oppsummering.manglerDokumentasjon.content" />
+                            </BodyLong>
+                        </VStack>
+                    </Alert>
+                </Block>
             </OppsummeringIndex>
         </ContentWrapper>
     );

@@ -1,7 +1,10 @@
 export type { Kjønn } from './src/Kjønn';
 export type { Kvittering } from './src/Kvittering';
 export type { LocaleNo, LocaleAll } from './src/Locale';
-export type { Attachment, InnsendingsType } from './src/Attachment';
+export type { Attachment } from './src/Attachment';
+export { InnsendingsType } from './src/Attachment';
+export type { AttachmentMetadata } from './src/AttachmentMetadata';
+export { AttachmentMetadataType } from './src/AttachmentMetadata';
 export type { Søkersituasjon, SøkersituasjonFp } from './src/Søkersituasjon';
 export type { Situasjon } from './src/Situasjon';
 export type { Søkerrolle } from './src/Søkerrolle';

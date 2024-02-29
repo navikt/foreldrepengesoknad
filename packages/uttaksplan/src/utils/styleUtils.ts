@@ -1,4 +1,5 @@
 import { Forelder, Oppholdsperiode, StønadskontoType } from '@navikt/fp-common';
+
 import { UttaksplanColor } from '../types/UttaksplanColor';
 
 export const getForelderFarge = (forelder: Forelder, erFarEllerMedmor: boolean) => {

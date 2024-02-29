@@ -1,12 +1,14 @@
 import {
-    StethoscopeIcon,
+    BabyWrappedIcon,
+    BriefcaseIcon,
     PersonGroupIcon,
     PersonPregnantIcon,
-    BriefcaseIcon,
-    BabyWrappedIcon,
+    StethoscopeIcon,
 } from '@navikt/aksel-icons';
-import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
+
 import {
     Block,
     andreAugust2022ReglerGjelder,
@@ -15,16 +17,18 @@ import {
     intlUtils,
     uttaksConstants,
 } from '@navikt/fp-common';
-import './fordeling-påvirkninger.css';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
+
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+
 import {
-    getDegEllerMorTekst,
     getBarnetEllerBarnaTekst,
-    getDuEllerDereTekst,
+    getDegEllerMorTekst,
     getDegEllerSegTekst,
+    getDuEllerDereTekst,
 } from '../fordelingOversiktUtils';
+import './fordeling-påvirkninger.css';
 
 interface Props {
     deltUttak: boolean;

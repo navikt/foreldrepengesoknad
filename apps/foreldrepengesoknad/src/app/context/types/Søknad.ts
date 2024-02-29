@@ -1,5 +1,6 @@
 import Barn from '@navikt/fp-common/src/common/types/Barn';
 import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import SøkerData from './SøkerData';
 import { AnnenForelder, Dekningsgrad, Periode, Søkersituasjon } from '@navikt/fp-common';
 
@@ -16,4 +17,6 @@ export interface Søknad {
     uttaksplan: Periode[];
     saksnummer?: string;
     ønskerJustertUttakVedFødsel: boolean | undefined;
+    vedlegg: VedleggDataType;
+    manglerDokumentasjon: boolean;
 }

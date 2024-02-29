@@ -1,11 +1,11 @@
 import { ISOStringToDate } from '@navikt/fp-common';
-import { LocaleNo } from '@navikt/fp-types';
+import { AttachmentMetadataType, LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataMap, ContextDataType } from 'app/context/SvpDataContext';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
-import { AttachmentDTO, DokumentererType } from 'app/types/AttachmentDTO';
+import { AttachmentDTO } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
 import { EgenNæring, EgenNæringDTO, Næringstype } from 'app/types/EgenNæring';
 import { Frilans, FrilansDTO } from 'app/types/Frilans';
@@ -235,7 +235,7 @@ const mapVedleggForInnsending = (tilrettelegginger: Tilrettelegging[]): Attachme
         const vedleggForInnsending = t.vedlegg.map((v) => ({
             ...v,
             dokumenterer: {
-                type: DokumentererType.TILRETTELEGGING,
+                type: AttachmentMetadataType.TILRETTELEGGING,
                 arbeidsforhold: mappedArbeid,
             },
         }));

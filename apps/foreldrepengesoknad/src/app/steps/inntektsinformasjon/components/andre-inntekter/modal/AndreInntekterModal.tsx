@@ -1,4 +1,4 @@
-import { AttachmentType, Block, intlUtils } from '@navikt/fp-common';
+import { Block, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -19,14 +19,18 @@ import { validateAnnenInntektFom, validateAnnenInntektTom } from './../validatio
 import dayjs from 'dayjs';
 import { validateRequiredTextInputField } from 'app/utils/validationUtil';
 import { Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
+import { AttachmentType } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 interface Props {
     isOpen: boolean;
     contentLabel: string;
     onRequestClose: () => void;
-    addAnnenInntekt: (annenInntekt: AnnenInntekt) => void;
-    editAnnenInntekt: (annenInntekt: AnnenInntekt) => void;
+    addAnnenInntekt: (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => void;
+    editAnnenInntekt: (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => void;
     selectedAnnenInntekt: AnnenInntekt | undefined;
+    etterlønnVedlegg: Attachment[];
+    militærVedlegg: Attachment[];
 }
 
 const AndreInntekterModal: FunctionComponent<Props> = ({
@@ -36,14 +40,22 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
     selectedAnnenInntekt,
     addAnnenInntekt,
     editAnnenInntekt,
+    etterlønnVedlegg,
+    militærVedlegg,
 }) => {
     const intl = useIntl();
 
+    if (!isOpen) {
+        return null;
+    }
+
     const onValidSubmit = (values: Partial<AndreInntekterFormData>) => {
+        const vedlegg = values.dokumentasjon ? values.dokumentasjon : [];
+
         if (!selectedAnnenInntekt) {
-            addAnnenInntekt(mapAnnenInntektModalValuesToState(values));
+            addAnnenInntekt(mapAnnenInntektModalValuesToState(values), vedlegg);
         } else {
-            editAnnenInntekt(mapAnnenInntektModalValuesToState(values));
+            editAnnenInntekt(mapAnnenInntektModalValuesToState(values), vedlegg);
         }
         onRequestClose();
     };
@@ -59,7 +71,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
 
     return (
         <AndreInntekterModalFormComponents.FormikWrapper
-            initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt)}
+            initialValues={getInitialAndreInntekterFormValues(selectedAnnenInntekt, etterlønnVedlegg, militærVedlegg)}
             onSubmit={onValidSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = andreInntekterModalQuestionsConfig.getVisbility(
@@ -158,7 +170,11 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     />
                                 </Block>
                                 <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
-                                    <Button type="submit">{intlUtils(intl, 'søknad.gåVidere')}</Button>
+                                    <Button type="submit">
+                                        {!selectedAnnenInntekt
+                                            ? intlUtils(intl, 'inntektsinformasjon.leggTilOppdrag')
+                                            : 'Lagre endringer'}
+                                    </Button>
                                 </Block>
                             </AndreInntekterModalFormComponents.Form>
                         </Modal.Body>

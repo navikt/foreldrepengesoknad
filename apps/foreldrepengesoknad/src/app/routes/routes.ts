@@ -10,6 +10,7 @@ enum SøknadRoutes {
     TIDLIGERE_UTENLANDSOPPHOLD = '/soknad/tidligere-utenlandsopphold',
     SENERE_UTENLANDSOPPHOLD = '/soknad/senere-utenlandsopphold',
     INNTEKTSINFORMASJON = '/soknad/inntektsinformasjon',
+    DOKUMENTASJON = '/soknad/dokumentasjon',
     OPPSUMMERING = '/soknad/oppsummering',
     IKKE_MYNDIG = 'ikke-myndig',
 }
@@ -22,6 +23,7 @@ export const ROUTES_ORDER = [
     SøknadRoutes.PERIODE_MED_FORELDREPENGER,
     SøknadRoutes.UTTAKSPLAN_INFO,
     SøknadRoutes.UTTAKSPLAN,
+    SøknadRoutes.DOKUMENTASJON,
     SøknadRoutes.UTENLANDSOPPHOLD,
     SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
     SøknadRoutes.SENERE_UTENLANDSOPPHOLD,

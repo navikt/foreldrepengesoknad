@@ -9,8 +9,6 @@ import {
     Søkersituasjon,
     isFarEllerMedmor,
     links,
-    AttachmentType,
-    Skjemanummer,
 } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
@@ -22,6 +20,7 @@ import { validateTerminbekreftelse, validateTermindato } from '../validation/omB
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { Alert, BodyShort, GuidePanel, Heading, Link, ReadMore } from '@navikt/ds-react';
 import { isISODateString } from '@navikt/ds-datepicker';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 interface Props {
     søkersituasjon: Søkersituasjon;
     formValues: OmBarnetFormData;

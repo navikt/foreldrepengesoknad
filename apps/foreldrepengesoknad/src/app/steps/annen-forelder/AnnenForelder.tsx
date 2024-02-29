@@ -7,12 +7,10 @@ import { Link } from 'react-router-dom';
 import { Alert, BodyLong, BodyShort, ReadMore } from '@navikt/ds-react';
 
 import {
-    AttachmentType,
     Barn,
     Block,
     ISOStringToDate,
     SivilstandType,
-    Skjemanummer,
     Step,
     convertYesOrNoOrUndefinedToBoolean,
     getKjønnFromFnrString,
@@ -22,8 +20,10 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
+    lagSendSenereDokumentNårIngenAndreFinnes,
     links,
 } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -32,7 +32,7 @@ import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøkerData from 'app/context/types/SøkerData';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 
 import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
@@ -68,11 +68,13 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER) || {
         kanIkkeOppgis: false,
     };
-    const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
+    const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
 
     const familiehendelsedato = dayjs(getFamiliehendelsedato(barn));
     const funnetRegistrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
@@ -108,20 +110,31 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
             ...(søkerData || {}),
             erAleneOmOmsorg: values.kanIkkeOppgis ? true : !!convertYesOrNoOrUndefinedToBoolean(values.aleneOmOmsorg),
         };
+
         const newBarn: Barn = {
             ...barn,
             datoForAleneomsorg: hasValue(values.datoForAleneomsorg)
                 ? ISOStringToDate(values.datoForAleneomsorg)
                 : undefined,
-            dokumentasjonAvAleneomsorg:
-                values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
-                    ? values.dokumentasjonAvAleneomsorg
-                    : undefined,
+        };
+        const dokumentasjonAvAleneomsorg =
+            values.dokumentasjonAvAleneomsorg && values.dokumentasjonAvAleneomsorg.length > 0
+                ? lagSendSenereDokumentNårIngenAndreFinnes(
+                      values.dokumentasjonAvAleneomsorg,
+                      AttachmentType.ALENEOMSORG,
+                      Skjemanummer.DOK_AV_ALENEOMSORG,
+                  )
+                : [];
+
+        const nyeVedlegg = {
+            ...vedlegg,
+            [Skjemanummer.DOK_AV_ALENEOMSORG]: dokumentasjonAvAleneomsorg,
         };
 
         oppdaterOmBarnet(newBarn);
-        oppdaterSøker(newSøker);
         oppdaterAnnenForeldre(mapAnnenForelderFormToState(values));
+        oppdaterVedlegg(nyeVedlegg);
+        oppdaterSøker(newSøker);
 
         return navigator.goToNextDefaultStep();
     };

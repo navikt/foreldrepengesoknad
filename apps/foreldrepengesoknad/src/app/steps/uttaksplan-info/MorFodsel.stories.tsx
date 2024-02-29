@@ -1,24 +1,27 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import { RequestStatus } from 'app/types/RequestState';
-import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
-import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
-import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
-import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100WLB.json';
-import stønadskontoDeltUttak100PrematurWLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100PrematurWLB.json';
-import stønadskontoFlerbarnsuker80 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker80.json';
-import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker100.json';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
+import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
+import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
+import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
+import stønadskontoDeltUttak100PrematurWLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100PrematurWLB.json';
+import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100WLB.json';
+import stønadskontoFlerbarnsuker80 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker80.json';
+import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/stønadskontoFlerbarnsuker100.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøkerData from 'app/context/types/SøkerData';
+import SøknadRoutes from 'app/routes/routes';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { RequestStatus } from 'app/types/RequestState';
+
+import UttaksplanInfo from './UttaksplanInfo';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -139,7 +142,6 @@ MorAleneomsorgDekningsgrad100Før1Okt2021.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -162,7 +164,6 @@ MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -186,7 +187,6 @@ MorAleneomsorgPrematurFødsel.args = {
         termindato: dayjs('2023-04-01').toDate(),
         antallBarn: 1,
         datoForAleneomsorg: new Date(),
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -206,6 +206,7 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
     barn: {
         type: BarnType.FØDT,
         antallBarn: 1,
+        datoForAleneomsorg: new Date(),
         fødselsdatoer: [dayjs('2023-01-11').toDate()],
         termindato: dayjs('2023-03-11').toDate(),
     },
@@ -258,6 +259,7 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-07-15').toDate()],
         antallBarn: 2,
+        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         fornavn: 'Espen',

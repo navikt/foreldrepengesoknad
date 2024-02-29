@@ -6,6 +6,7 @@ import SøknadRoutes from 'app/routes/routes';
 import SøkerData from './types/SøkerData';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import UttaksplanInfo from './types/UttaksplanInfo';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import PeriodeMedForeldrepenger from './types/PeriodeMedForeldrepenger';
 
 export enum ContextDataType {
@@ -23,6 +24,8 @@ export enum ContextDataType {
     UTTAKSPLAN_INFO = 'UTTAKSPLAN_INFO',
     UTTAKSPLAN = 'UTTAKSPLAN',
     UTTAKSPLAN_METADATA = 'UTTAKSPLAN_METADATA',
+    VEDLEGG = 'VEDLEGG',
+    MANGLER_DOKUMENTASJON = 'MANGLER_DOKUMENTASJON',
 }
 
 export type ContextDataMap = {
@@ -40,6 +43,8 @@ export type ContextDataMap = {
     [ContextDataType.UTTAKSPLAN_INFO]?: UttaksplanInfo;
     [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
+    [ContextDataType.VEDLEGG]?: VedleggDataType;
+    [ContextDataType.MANGLER_DOKUMENTASJON]?: boolean;
 };
 
 const defaultInitialState = {} as ContextDataMap;

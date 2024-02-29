@@ -1,8 +1,5 @@
 import {
     AnnenForelder,
-    Attachment,
-    AttachmentType,
-    InnsendingsType,
     MissingAttachment,
     MorsAktivitet,
     Overføringsperiode,
@@ -10,7 +7,6 @@ import {
     Periode,
     PeriodeUtenUttakUtsettelse,
     Periodetype,
-    Skjemanummer,
     StønadskontoType,
     Søknadsinfo,
     Utsettelsesperiode,
@@ -23,6 +19,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { Skjemanummer, AttachmentType } from '@navikt/fp-constants';
 import { aktivitetskravMorSkalBesvares } from './uttaksskjema/aktivitetskravMorSkalBesvares';
 
 const createMissingAttachment = (
@@ -38,11 +35,6 @@ const createMissingAttachment = (
         periodeId,
     };
 };
-
-const isAttachmentMissing = (attachments?: Attachment[], type?: AttachmentType): boolean =>
-    attachments === undefined ||
-    attachments.length === 0 ||
-    (type !== undefined && attachments.find((a) => a.type === type) === undefined);
 
 export const shouldPeriodeHaveAttachment = (
     periode: Periode,
@@ -71,10 +63,7 @@ export const hasPeriodeMissingAttachment = (periode: Periode, søknadsinfo: Søk
         søknadsinfo.annenForelder,
     );
 
-    return (
-        shouldHave &&
-        isAttachmentMissing(periode.vedlegg?.filter((p) => p.innsendingsType !== InnsendingsType.SEND_SENERE))
-    );
+    return shouldHave;
 };
 
 export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): MissingAttachment[] => {
@@ -138,14 +127,22 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (
-                        periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
-                        periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet
-                    ) {
+                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
-                                Skjemanummer.DOK_INNLEGGELSE,
+                                Skjemanummer.DOK_INNLEGGELSE_BARN,
+                                AttachmentType.UTSETTELSE_SYKDOM,
+                                periode.id,
+                            ),
+                        );
+                    }
+
+                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonSøker) {
+                        missingAttachments.push(
+                            createMissingAttachment(
+                                index,
+                                Skjemanummer.DOK_INNLEGGELSE_MOR,
                                 AttachmentType.UTSETTELSE_SYKDOM,
                                 periode.id,
                             ),
@@ -237,27 +234,21 @@ const missingAttachmentForAktivitetskrav = (
     const erSamtidigUttak = isUttaksperiode(periode) ? periode.ønskerSamtidigUttak : undefined;
     const morErForSyk = isUttaksperiode(periode) ? periode.erMorForSyk : undefined;
     const konto = isUttaksperiode(periode) ? periode.konto : undefined;
-    return (
-        aktivitetskravMorSkalBesvares(
-            ønskerFlerBarnsdager,
-            erSamtidigUttak,
-            morErForSyk,
-            periode.type,
-            konto,
-            søkerErMor,
-            søknadsinfo.søkerErAleneOmOmsorg,
-            søknadsinfo.annenForelder.kanIkkeOppgis,
-            søknadsinfo.søkerHarMidlertidigOmsorg,
-            periode.tidsperiode,
-            søknadsinfo.familiehendelsesdato,
-            søknadsinfo.termindato,
-            søknadsinfo.søkersituasjon.situasjon,
-            søknadsinfo.stønadskontoer,
-            !søknadsinfo.morHarRett,
-        ) &&
-        isAttachmentMissing(
-            periode.vedlegg?.filter((p) => p.innsendingsType !== InnsendingsType.SEND_SENERE),
-            AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-        )
+    return aktivitetskravMorSkalBesvares(
+        ønskerFlerBarnsdager,
+        erSamtidigUttak,
+        morErForSyk,
+        periode.type,
+        konto,
+        søkerErMor,
+        søknadsinfo.søkerErAleneOmOmsorg,
+        søknadsinfo.annenForelder.kanIkkeOppgis,
+        søknadsinfo.søkerHarMidlertidigOmsorg,
+        periode.tidsperiode,
+        søknadsinfo.familiehendelsesdato,
+        søknadsinfo.termindato,
+        søknadsinfo.søkersituasjon.situasjon,
+        søknadsinfo.stønadskontoer,
+        !søknadsinfo.morHarRett,
     );
 };

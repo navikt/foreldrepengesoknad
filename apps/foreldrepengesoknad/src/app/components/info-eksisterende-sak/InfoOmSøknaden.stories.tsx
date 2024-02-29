@@ -67,7 +67,6 @@ const Template: StoryFn<Props> = ({
                     fødselsdatoer: [new Date('2021-03-15')],
                     antallBarn: 1,
                     datoForAleneomsorg: undefined,
-                    dokumentasjonAvAleneomsorg: [],
                 },
                 [ContextDataType.ANNEN_FORELDER]: annenForelder,
                 [ContextDataType.SØKER_DATA]: søkerData,

@@ -67,7 +67,6 @@ const Template: StoryFn<Props> = ({
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: undefined,
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder = {
         kanIkkeOppgis: true,
@@ -126,7 +125,6 @@ Default.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: dayjs('2021-03-15').toDate(),
-        dokumentasjonAvAleneomsorg: [],
         fnr: ['21091981146'],
     },
     søker,
@@ -186,7 +184,6 @@ ForFar.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: dayjs('2021-03-15').toDate(),
-        dokumentasjonAvAleneomsorg: [],
         fnr: ['21091981146'],
     },
     søkersituasjon: {

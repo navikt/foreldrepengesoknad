@@ -52,7 +52,7 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
     try {
         const response = await saveAttachment(attachment);
         attachment.pending = false;
-        attachment.url = response.headers.location;
+        attachment.url = response.headers.location; // TODELETE
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } catch (error) {

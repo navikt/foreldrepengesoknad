@@ -1,6 +1,14 @@
 import { BodyShort } from '@navikt/ds-react';
-import { Block, ISOStringToDate, Step, getAktiveArbeidsforhold, intlUtils, isFarEllerMedmor } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import {
+    Block,
+    ISOStringToDate,
+    Step,
+    TidsperiodeMedValgfriSluttdato,
+    getAktiveArbeidsforhold,
+    intlUtils,
+    isFarEllerMedmor,
+} from '@navikt/fp-common';
+import { Arbeidsforhold, Attachment, AttachmentMetadataType } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -20,6 +28,43 @@ import {
     getInitialInntektsinformasjonFormValues,
     mapInntektsinformasjonFormDataToState,
 } from './inntektsinformasjonFormUtils';
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
+import { Skjemanummer } from '@navikt/fp-constants';
+
+const getPerioderSomDokumenteres = (andreInntekterInformasjon: AnnenInntekt[], type: AnnenInntektType) => {
+    return andreInntekterInformasjon.reduce((res, info) => {
+        if (info.type === type) {
+            const tidsperiode: TidsperiodeMedValgfriSluttdato = {
+                fom: info.tidsperiode.fom,
+                tom: info.tidsperiode.tom,
+            };
+
+            res.push(tidsperiode);
+        }
+
+        return res;
+    }, [] as TidsperiodeMedValgfriSluttdato[]);
+};
+
+const leggTilMetadataPåAndreInntekter = (
+    vedlegg: Attachment[] | undefined,
+    andreInntekterInformasjon: AnnenInntekt[],
+    type: AnnenInntektType,
+) => {
+    if (!vedlegg || vedlegg.length === 0) {
+        return vedlegg;
+    }
+
+    return vedlegg.map((v) => {
+        return {
+            ...v,
+            dokumenterer: {
+                type: AttachmentMetadataType.OPPTJENING,
+                perioder: getPerioderSomDokumenteres(andreInntekterInformasjon, type),
+            },
+        } as Attachment;
+    });
+};
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];
@@ -41,8 +86,10 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const søker = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
 
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -53,6 +100,14 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     );
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
         søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
+    );
+
+    const [etterlønnVedlegg, setEtterlønnVedlegg] = useState(
+        vedlegg ? vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG] : [],
+    );
+
+    const [militærVedlegg, setMilitærVedlegg] = useState(
+        vedlegg ? vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE] : [],
     );
 
     const onSubmit = (values: Partial<InntektsinformasjonFormData>) => {
@@ -66,6 +121,37 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
         );
 
         oppdaterSøker(updatedSøker);
+
+        if (vedlegg) {
+            oppdaterVedlegg({
+                ...vedlegg,
+                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: leggTilMetadataPåAndreInntekter(
+                    etterlønnVedlegg,
+                    andreInntekterInformasjon,
+                    AnnenInntektType.SLUTTPAKKE,
+                ),
+                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: leggTilMetadataPåAndreInntekter(
+                    militærVedlegg,
+                    andreInntekterInformasjon,
+                    AnnenInntektType.MILITÆRTJENESTE,
+                ),
+            });
+        }
+
+        if (!vedlegg) {
+            oppdaterVedlegg({
+                [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: leggTilMetadataPåAndreInntekter(
+                    etterlønnVedlegg,
+                    andreInntekterInformasjon,
+                    AnnenInntektType.SLUTTPAKKE,
+                ),
+                [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: leggTilMetadataPåAndreInntekter(
+                    militærVedlegg,
+                    andreInntekterInformasjon,
+                    AnnenInntektType.MILITÆRTJENESTE,
+                ),
+            });
+        }
 
         return navigator.goToNextDefaultStep();
     };
@@ -122,6 +208,10 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                                 <AndreInntekter
                                     andreInntekterInformasjon={andreInntekterInformasjon}
                                     setAndreInntekterInformasjon={setAndreInntekterInformasjon}
+                                    setEtterlønnVedlegg={setEtterlønnVedlegg}
+                                    setMilitærVedlegg={setMilitærVedlegg}
+                                    etterlønnVedlegg={etterlønnVedlegg || []}
+                                    militærVedlegg={militærVedlegg || []}
                                     visibility={visibility}
                                     formValues={formValues as InntektsinformasjonFormData}
                                 />

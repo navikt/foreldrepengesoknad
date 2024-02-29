@@ -1,9 +1,10 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './FarMedmorFodselBeggeHarRett.stories';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
+
+import * as stories from './FarMedmorFodselBeggeHarRett.stories';
 
 const {
     FarMedmorFødselBeggeHarRettDekningsgrad100FørWLB,

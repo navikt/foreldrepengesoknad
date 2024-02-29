@@ -1,22 +1,24 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
-import AxiosMock from 'storybook/utils/AxiosMock';
-import FarMedmorFødselOgMorHarIkkeRett from 'app/steps/uttaksplan-info/components/scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
-import { RequestStatus } from 'app/types/RequestState';
+import { MemoryRouter } from 'react-router-dom';
 import stønadskonto80MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto80MorHarIkkeRett.json';
 import stønadskonto100MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRett.json';
-import stønadskonto100MorHarIkkeRettPrematur from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettPrematur.json';
 import stønadskonto100MorHarIkkeRettErUfør from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettErUfør.json';
 import stønadskonto100MorHarIkkeRettErUførFør1okt2021 from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettErUførFør1okt2021.json';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import stønadskonto100MorHarIkkeRettPrematur from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettPrematur.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
 import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
-import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
+
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import FarMedmorFødselOgMorHarIkkeRett from 'app/steps/uttaksplan-info/components/scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
+import { RequestStatus } from 'app/types/RequestState';
+
+import UttaksplanInfo from './UttaksplanInfo';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';

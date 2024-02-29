@@ -1,5 +1,4 @@
 import {
-    Attachment,
     Forelder,
     MorsAktivitet,
     StønadskontoType,
@@ -15,14 +14,11 @@ export enum PeriodeUttakFormField {
     konto = 'konto',
     samtidigUttak = 'samtidigUttak',
     aktivitetskravMor = 'aktivitetskravMor',
-    aktivitetskravMorDokumentasjon = 'aktivitetskravMorDokumentasjon',
     overføringsårsak = 'overføringsårsak',
-    overføringsdokumentasjon = 'overføringsdokumentasjon',
     skalHaGradering = 'skalHaGradering',
     stillingsprosent = 'stillingsprosent',
     arbeidsformer = 'arbeidsformer',
     erMorForSyk = 'erMorForSyk',
-    erMorForSykDokumentasjon = 'erMorForSykDokumentasjon',
     uttakRundtFødselÅrsak = 'uttakRundtFødselÅrsak',
     samtidigUttakProsent = 'samtidigUttakProsent',
     hvemSkalTaUttak = 'hvemSkalTaUttak',
@@ -35,14 +31,11 @@ export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.konto]: StønadskontoType | '';
     [PeriodeUttakFormField.samtidigUttak]: YesOrNo;
     [PeriodeUttakFormField.aktivitetskravMor]: MorsAktivitet | '';
-    [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: Attachment[];
     [PeriodeUttakFormField.overføringsårsak]: OverføringÅrsakType | '';
-    [PeriodeUttakFormField.overføringsdokumentasjon]: Attachment[];
     [PeriodeUttakFormField.skalHaGradering]: YesOrNo;
     [PeriodeUttakFormField.stillingsprosent]: string;
     [PeriodeUttakFormField.arbeidsformer]: Arbeidsform | '';
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
-    [PeriodeUttakFormField.erMorForSykDokumentasjon]: Attachment[];
     [PeriodeUttakFormField.uttakRundtFødselÅrsak]: UttakRundtFødselÅrsak | '';
     [PeriodeUttakFormField.samtidigUttakProsent]: string;
     [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';

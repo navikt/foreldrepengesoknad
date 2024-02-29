@@ -1,6 +1,10 @@
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { Alert } from '@navikt/ds-react';
+
 import { Block, getVarighetString, intlUtils } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
+
 import {
     getDegEllerMorTekst,
     getDinEllerFarGenitivEierformTekst,
@@ -8,7 +12,6 @@ import {
 } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { getTekstForAntallBarn } from 'app/utils/barnUtils';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 interface Props {
     flerbarnsDager: number;

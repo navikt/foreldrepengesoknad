@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import OppsummeringAvDokumentasjon from '../oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
-import { Attachment, MorsAktivitet, assertUnreachable } from '@navikt/fp-common';
+import { MorsAktivitet, assertUnreachable } from '@navikt/fp-common';
 
 interface MorsAktivitetDetaljerProps {
     morsAktivitet: MorsAktivitet;
-    dokumentasjonAvMorsAktivitet: Attachment[];
-    visOppsummeringAvDokumentasjon: boolean;
 }
 
 type Props = MorsAktivitetDetaljerProps;
@@ -37,11 +34,7 @@ const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): strin
     }
 };
 
-const MorsAktivitetDetaljer: React.FunctionComponent<Props> = ({
-    morsAktivitet,
-    dokumentasjonAvMorsAktivitet,
-    visOppsummeringAvDokumentasjon,
-}) => {
+const MorsAktivitetDetaljer: React.FunctionComponent<Props> = ({ morsAktivitet }) => {
     const intl = useIntl();
 
     return (
@@ -50,12 +43,6 @@ const MorsAktivitetDetaljer: React.FunctionComponent<Props> = ({
                 feltnavn={intl.formatMessage({ id: 'oppsummering.morsAktivitet' })}
                 verdi={getMorsAktivitetTekst(intl, morsAktivitet)}
             />
-            {visOppsummeringAvDokumentasjon && (
-                <OppsummeringAvDokumentasjon
-                    ledetekst={intl.formatMessage({ id: 'oppsummering.morsAktivitet.dokumentasjon' })}
-                    vedlegg={dokumentasjonAvMorsAktivitet}
-                />
-            )}
         </>
     );
 };
