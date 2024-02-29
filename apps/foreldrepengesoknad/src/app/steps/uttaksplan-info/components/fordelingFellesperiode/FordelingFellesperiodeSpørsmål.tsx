@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { Block, TilgjengeligStønadskonto, intlUtils, links } from '@navikt/fp-common';
-import RangeInput from './range-input/RangeInput';
-import {
-    getAntallUkerFedrekvote,
-    getAntallUkerFellesperiode,
-    getAntallUkerMødrekvote,
-} from '../../utils/stønadskontoer';
-import { BodyShort, Ingress, Link } from '@navikt/ds-react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
+import { BodyShort, Ingress } from '@navikt/ds-react';
+
+import { TilgjengeligStønadskonto, intlUtils } from '@navikt/fp-common';
+
+import { getAntallUkerFellesperiode } from '../../utils/stønadskontoer';
 import './fordelingFellesperiodeSpørsmål.less';
+import RangeInput from './range-input/RangeInput';
 
 export interface OwnProps {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
@@ -44,29 +42,11 @@ const FordelingFellesperiodeSpørsmål: React.FunctionComponent<OwnProps> = ({
     }
 
     const ukerFellesperiode = Math.floor(getAntallUkerFellesperiode(valgtStønadskonto));
-    const antallUkerFedreKvote = getAntallUkerFedrekvote(valgtStønadskonto);
-    const antallUkerMødreKvote = getAntallUkerMødrekvote(valgtStønadskonto);
-
-    const infotekst = intlUtils(intl, 'uttaksplaninfo.fordeling.veiledning', {
-        pakrevdForelder1: antallUkerMødreKvote,
-        pakrevdForelder2: antallUkerFedreKvote,
-        navnForelder1: mor,
-        navnForelder2: farMedmor,
-    });
 
     const annenForeldersNavn = annenForelderErFarEllerMedmor ? farMedmor : mor;
     return (
         <RangeInput
             label={intlUtils(intl, 'uttaksplaninfo.spørsmål.fordeling')}
-            hjelpetekst={
-                <BodyShort as="div">
-                    <Block padBottom="l">{infotekst}</Block>
-                    <Link href={links.nav_aktivitetskrav} target="_blank">
-                        <FormattedMessage id="uttaksplaninfo.fordeling.veiledning.lenketekst" />
-                    </Link>
-                </BodyShort>
-            }
-            hjelpetekstApneLabel={intlUtils(intl, 'uttaksplaninfo.fordeling.veiledning.lenketekst.apneLabel')}
             ariaLabelText={intlUtils(intl, 'uttaksplaninfo.spørsmål.fordeling')}
             value={fellesperiodeukerMor!}
             min={0}

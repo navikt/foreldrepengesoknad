@@ -1,22 +1,24 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
+import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
+import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
+import stønadskontoDeltUttak80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80Adopsjon.json';
+import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Adopsjon.json';
 import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøkerData from 'app/context/types/SøkerData';
+import SøknadRoutes from 'app/routes/routes';
 import { RequestStatus } from 'app/types/RequestState';
 
-import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
-import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
-
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
-import SøkerData from 'app/context/types/SøkerData';
-import dayjs from 'dayjs';
-import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
-import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
-import { initAmplitude } from '@navikt/fp-metrics';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -63,8 +65,8 @@ const Template: StoryFn<
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
     };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
@@ -92,10 +94,10 @@ const Template: StoryFn<
     );
 };
 
-export const UttaksplanAdopsjonMorSøkerFarHarRettIEOS = Template.bind({});
-UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021 = Template.bind({});
+AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021.args = {
+    stønadskonto100: stønadskontoDeltUttak100Adopsjon,
+    stønadskonto80: stønadskontoDeltUttak80Adopsjon,
     søkersituasjon: {
         situasjon: 'adopsjon',
         rolle: 'mor',
@@ -108,7 +110,7 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
         fødselsdatoer: [],
     },
     annenForelder: {
-        fornavn: 'Far',
+        fornavn: 'Eksotisk',
         etternavn: 'EØS',
         fnr: '1111UUUUU',
         harRettPåForeldrepengerINorge: false,
@@ -149,10 +151,10 @@ UttaksplanAdopsjonMorSøkerFarHarRettIEOS.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanAdopsjonFarSøkerMorHarRettIEOS = Template.bind({});
-UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021 = Template.bind({});
+AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021.args = {
+    stønadskonto100: stønadskontoDeltUttak100Adopsjon,
+    stønadskonto80: stønadskontoDeltUttak80Adopsjon,
     søkersituasjon: {
         situasjon: 'adopsjon',
         rolle: 'far',
@@ -165,7 +167,7 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
         fødselsdatoer: [],
     },
     annenForelder: {
-        fornavn: 'Mor',
+        fornavn: 'Palme',
         etternavn: 'EØS',
         fnr: '2222UUUUU',
         harRettPåForeldrepengerINorge: false,
@@ -182,17 +184,16 @@ UttaksplanAdopsjonFarSøkerMorHarRettIEOS.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger = Template.bind({});
-UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021 = Template.bind({});
+FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
     søkersituasjon: {
         situasjon: 'fødsel',
         rolle: 'far',
     },
     barn: {
-        type: BarnType.ADOPTERT_ANNET_BARN,
-        dokumentasjonAvAleneomsorg: [],
+        type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-06-14').toDate(), dayjs('2022-06-14').toDate()],
         antallBarn: 2,
         // @ts-ignore FIX
@@ -200,7 +201,7 @@ UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
         adoptertIUtlandet: undefined,
     },
     annenForelder: {
-        fornavn: 'Mor',
+        fornavn: 'Palme',
         etternavn: 'EØS',
         fnr: '2222UUUUU',
         harRettPåForeldrepengerINorge: false,
@@ -217,17 +218,17 @@ UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger.args = {
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const UttaksplanFødselMorSøkerFarHarRettIEOSPrematur = Template.bind({});
-UttaksplanFødselMorSøkerFarHarRettIEOSPrematur.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const FødselMorSøkerFarHarRettIEOSPrematurEtterWLB = Template.bind({});
+FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
+    stønadskonto100: stønadskontoDeltUttak100,
+    stønadskonto80: stønadskontoDeltUttak80,
     søkersituasjon: {
         situasjon: 'fødsel',
         rolle: 'mor',
     },
     barn: {
-        fødselsdatoer: [dayjs('2022-06-14').toDate()],
-        termindato: dayjs('2022-08-14').toDate(),
+        fødselsdatoer: [dayjs('2022-08-14').toDate()],
+        termindato: dayjs('2022-10-14').toDate(),
         antallBarn: 1,
         // @ts-ignore FIX
         adopsjonsdato: undefined,

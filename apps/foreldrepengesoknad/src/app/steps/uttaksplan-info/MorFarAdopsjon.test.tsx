@@ -1,30 +1,24 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './MorFarAdopsjon.stories';
 import dayjs from 'dayjs';
 
+import * as stories from './MorFarAdopsjon.stories';
+
 const {
-    UttaksplanMedAleneomsorgDekningsgrad100,
-    UttaksplanMedAleneomsorgDekningsgrad80,
-    UttaksplanMedDeltUttakDerFarSøker80,
-    UttaksplanMedDeltUttakDerMorSøker,
+    AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021,
+    AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021,
+    AdopsjonMedDeltUttakDerFarSøker80,
+    AdopsjonDeltUttakDerMorSøker,
 } = composeStories(stories);
 
 describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     // TODO Noko tull med locale og datoar
     it.skip('skal fylle ut dekningsgrad med 80 prosent og velge omsorgovertakelsedato før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorgDekningsgrad80 />);
+        render(<AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021 />);
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
-        expect(screen.getByText('3 + 56 uker')).toBeInTheDocument();
-        //TODO (TOR) Denne teksten er feil. Gjeld fødsel
-        expect(
-            screen.getByText(
-                'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
-            ),
-        ).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
@@ -35,17 +29,10 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
 
     // TODO Noko tull med locale og datoar
     it.skip('skal fylle ut dekningsgrad med 100 prosent og velge omsorgovertakelsedato før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorgDekningsgrad100 />);
+        render(<AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021 />);
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
-        expect(screen.getByText('3 + 46 uker')).toBeInTheDocument();
-        //TODO (TOR) Denne teksten er feil. Gjeld fødsel
-        expect(
-            screen.getByText(
-                'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
-            ),
-        ).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Omsorgsovertakelsen 15. mars 2021'));
@@ -55,17 +42,10 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal fylle ut dekningsgrad og velge annen dato før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorgDekningsgrad100 />);
+        render(<AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021 />);
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
-        expect(screen.getByText('3 + 56 uker')).toBeInTheDocument();
-        //TODO (TOR) Denne teksten er feil. Gjeld fødsel
-        expect(
-            screen.getByText(
-                'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
-            ),
-        ).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Annen dato'));
@@ -82,17 +62,10 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal fylle ut dekningsgrad og velge annen dato før en kan gå videre når en har aleneomsorg', async () => {
-        render(<UttaksplanMedAleneomsorgDekningsgrad80 />);
+        render(<AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021 />);
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
-        expect(screen.getByText('3 + 46 uker')).toBeInTheDocument();
-        //TODO (TOR) Denne teksten er feil. Gjeld fødsel
-        expect(
-            screen.getByText(
-                'Tar du ut mer enn 3 uker før termindato trekkes disse dagene av foreldrepenger du kan få etter fødsel',
-            ),
-        ).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Annen dato'));
@@ -109,20 +82,16 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 80', async () => {
-        render(<UttaksplanMedDeltUttakDerFarSøker80 />);
+        render(<AdopsjonMedDeltUttakDerFarSøker80 />);
 
-        expect(await screen.findByText('Har TALENTFULL foreldrepenger?')).toBeInTheDocument();
+        expect(await screen.findByText('Har Talentfull foreldrepenger?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('3 + 15 uker')).toBeInTheDocument();
-        expect(screen.getByText('16 uker')).toBeInTheDocument();
-        expect(screen.getByText('15 uker')).toBeInTheDocument();
-
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Når er TALENTFULL MYGG siste dag med foreldrepenger?')).toBeInTheDocument();
-        const sisteDagInput = screen.getByLabelText('Når er TALENTFULL MYGG siste dag med foreldrepenger?');
+        expect(screen.getByText('Når er Talentfull siste dag med foreldrepenger?')).toBeInTheDocument();
+        const sisteDagInput = screen.getByLabelText('Når er Talentfull siste dag med foreldrepenger?');
         await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -135,21 +104,17 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal ved delt uttak der far søker velge at mor har foreldrepenger med dekningsgrad 100', async () => {
-        render(<UttaksplanMedDeltUttakDerFarSøker80 />);
+        render(<AdopsjonMedDeltUttakDerFarSøker80 />);
 
-        expect(await screen.findByText('Har TALENTFULL foreldrepenger?')).toBeInTheDocument();
+        expect(await screen.findByText('Har Talentfull foreldrepenger?')).toBeInTheDocument();
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('3 + 15 uker')).toBeInTheDocument();
-        expect(screen.getByText('16 uker')).toBeInTheDocument();
-        expect(screen.getByText('15 uker')).toBeInTheDocument();
-
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Når er TALENTFULL MYGG siste dag med foreldrepenger?')).toBeInTheDocument();
-        const sisteDagInput = screen.getByLabelText('Når er TALENTFULL MYGG siste dag med foreldrepenger?');
+        expect(screen.getByText('Når er Talentfull siste dag med foreldrepenger?')).toBeInTheDocument();
+        const sisteDagInput = screen.getByLabelText('Når er Talentfull siste dag med foreldrepenger?');
         await userEvent.type(sisteDagInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -162,15 +127,11 @@ describe('<UttaksplanInfo_MorFarAdopsjon>', () => {
     });
 
     it('skal ved delt uttak der mor søker velge at far har foreldrepenger med dekningsgrad 80', async () => {
-        render(<UttaksplanMedDeltUttakDerMorSøker />);
+        render(<AdopsjonDeltUttakDerMorSøker />);
 
         expect(await screen.findByText('Har Espen foreldrepenger?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ja'));
-
-        expect(screen.getByText('3 + 19 uker')).toBeInTheDocument();
-        expect(screen.getByText('18 uker')).toBeInTheDocument();
-        expect(screen.getByText('19 uker')).toBeInTheDocument();
 
         expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
 

@@ -38,13 +38,20 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
                 kontoType.konto === StønadskontoType.AktivitetsfriKvote,
         )
         .map((kontoType) => kontoType.konto);
+
 export const getStønadskontoNavn = (
     intl: IntlShape,
     konto: StønadskontoType,
     navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor?: boolean,
+    erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
+    if (
+        (erFarEllerMedmor && konto === StønadskontoType.Fedrekvote) ||
+        (!erFarEllerMedmor && konto === StønadskontoType.Mødrekvote)
+    ) {
+        return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.dinKvote' });
+    }
     let navn;
 
     switch (konto) {
@@ -82,7 +89,7 @@ export const getUttakAnnenPartStønadskontoNavn = (
     periodeForelder: Forelder,
     navnPåForeldre: NavnPåForeldre,
     samtidigUttakProsent: string | undefined,
-    erFarEllerMedmor?: boolean,
+    erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
     const forelderNavn = getForelderNavn(periodeForelder, navnPåForeldre);

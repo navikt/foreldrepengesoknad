@@ -1,5 +1,6 @@
 import { FamiliehendelseType } from '@navikt/fp-common';
-import { getFamiliehendelseType } from './getFamiliehendelseType';
+
+import { getFamiliehendelseType } from './familiehendelseUtils';
 
 describe('getFamiliehendelseType', () => {
     it('skal finne type FØDSEL når en har fødselsdato', () => {

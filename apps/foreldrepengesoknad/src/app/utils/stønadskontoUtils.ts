@@ -1,4 +1,5 @@
 import { Dekningsgrad, StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
+
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 
 const opprettAktivitetsFriKonto = (
@@ -11,7 +12,7 @@ const opprettAktivitetsFriKonto = (
     return nyeKontoer;
 };
 
-const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
+export const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
     stønadskontoerDTO: TilgjengeligeStønadskontoerDTO,
 ): TilgjengeligStønadskonto[] => {
     let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];

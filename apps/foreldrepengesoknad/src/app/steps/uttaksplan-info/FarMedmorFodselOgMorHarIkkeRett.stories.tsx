@@ -1,20 +1,24 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
-import AxiosMock from 'storybook/utils/AxiosMock';
-import FarMedmorFødselOgMorHarIkkeRett from 'app/steps/uttaksplan-info/components/scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
-import { RequestStatus } from 'app/types/RequestState';
+import { MemoryRouter } from 'react-router-dom';
 import stønadskonto80MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto80MorHarIkkeRett.json';
 import stønadskonto100MorHarIkkeRett from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRett.json';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import stønadskonto100MorHarIkkeRettErUfør from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettErUfør.json';
+import stønadskonto100MorHarIkkeRettErUførFør1okt2021 from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettErUførFør1okt2021.json';
+import stønadskonto100MorHarIkkeRettPrematur from 'storybook/storyData/stonadskontoer/stønadskonto100MorHarIkkeRettPrematur.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
 import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
-import dayjs from 'dayjs';
-import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
+
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import FarMedmorFødselOgMorHarIkkeRett from 'app/steps/uttaksplan-info/components/scenarios/far-medmor-fødsel-og-mor-har-ikke-rett/FarMedmorFødselOgMorHarIkkeRett';
+import { RequestStatus } from 'app/types/RequestState';
+
+import UttaksplanInfo from './UttaksplanInfo';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -55,8 +59,8 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
     };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
@@ -69,9 +73,9 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
                         },
                         [ContextDataType.OM_BARNET]: {
                             type: BarnType.FØDT,
-                            fødselsdatoer: [dayjs('2021-07-01').toDate()],
+                            fødselsdatoer: args.fødselsdatoer,
                             antallBarn: 1,
-                            termindato: dayjs('2021-07-01').toDate(),
+                            termindato: args.termindato,
                         },
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
@@ -97,12 +101,12 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
     );
 };
 
-export const UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad100 = Template.bind({});
-UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad100.args = {
+export const BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB = Template.bind({});
+BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB.args = {
     stønadskonto100: stønadskonto100MorHarIkkeRett,
     stønadskonto80: stønadskonto80MorHarIkkeRett,
     annenForelder: {
-        etternavn: 'dfg',
+        etternavn: 'Hanne',
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
@@ -112,14 +116,16 @@ UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad100.args = {
         harRettPåForeldrepengerIEØS: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    fødselsdatoer: [new Date('2022-08-03')],
+    termindato: new Date('2022-08-03'),
 };
 
-export const UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80 = Template.bind({});
-UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80.args = {
+export const BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB = Template.bind({});
+BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB.args = {
     stønadskonto100: stønadskonto100MorHarIkkeRett,
     stønadskonto80: stønadskonto80MorHarIkkeRett,
     annenForelder: {
-        etternavn: 'dfg',
+        etternavn: 'Hanne',
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
@@ -129,14 +135,17 @@ UttaksplanDerMorIkkeHarRettPåForeldrepengerDekningsgrad80.args = {
         harRettPåForeldrepengerIEØS: false,
     },
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    fødselsdatoer: [new Date('2022-08-03')],
+    termindato: new Date('2022-08-03'),
 };
 
-export const UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør = Template.bind({});
-UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør.args = {
-    stønadskonto100: stønadskonto100MorHarIkkeRett,
-    stønadskonto80: stønadskonto80MorHarIkkeRett,
+export const BareFarHarRettOgMorErUførEtterWLB = Template.bind({});
+BareFarHarRettOgMorErUførEtterWLB.args = {
+    stønadskonto100: stønadskonto100MorHarIkkeRettErUfør,
+    stønadskonto80: stønadskonto100MorHarIkkeRettErUfør,
+    søkerinfo: søkerinfoFarSøker,
     annenForelder: {
-        etternavn: 'dfg',
+        etternavn: 'Hanne',
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
@@ -145,4 +154,47 @@ UttaksplanDerMorIkkeHarRettPåForeldrepengerOgMorErUfør.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
     },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    fødselsdatoer: [new Date('2022-08-03')],
+    termindato: new Date('2022-08-03'),
+};
+
+export const BareFarHarRettOgMorErUførFør1Okt2021 = Template.bind({});
+BareFarHarRettOgMorErUførFør1Okt2021.args = {
+    stønadskonto100: stønadskonto100MorHarIkkeRettErUførFør1okt2021,
+    stønadskonto80: stønadskonto100MorHarIkkeRettErUførFør1okt2021,
+    søkerinfo: søkerinfoFarSøker,
+    annenForelder: {
+        etternavn: 'Hanne',
+        fornavn: 'dsgdfg',
+        fnr: '123123123',
+        utenlandskFnr: false,
+        erUfør: true,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: false,
+    },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    fødselsdatoer: [new Date('2021-09-29')],
+    termindato: new Date('2021-01-29'),
+};
+
+export const BareFarHarRettOgPrematurFødsel = Template.bind({});
+BareFarHarRettOgPrematurFødsel.args = {
+    stønadskonto100: stønadskonto100MorHarIkkeRettPrematur,
+    stønadskonto80: stønadskonto100MorHarIkkeRettPrematur,
+    søkerinfo: søkerinfoFarSøker,
+    annenForelder: {
+        etternavn: 'Hanne',
+        fornavn: 'dsgdfg',
+        fnr: '123123123',
+        utenlandskFnr: false,
+        erUfør: true,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: false,
+        harRettPåForeldrepengerIEØS: false,
+    },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    fødselsdatoer: [new Date('2023-01-25')],
+    termindato: new Date('2023-04-01'),
 };

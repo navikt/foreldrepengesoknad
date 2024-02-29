@@ -1,19 +1,20 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './MorFarAnnenForelderHarRettIEOS.stories';
 import dayjs from 'dayjs';
 
+import * as stories from './MorFarAnnenForelderHarRettIEOS.stories';
+
 const {
-    UttaksplanAdopsjonFarSøkerMorHarRettIEOS,
-    UttaksplanAdopsjonMorSøkerFarHarRettIEOS,
-    UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger,
-    UttaksplanFødselMorSøkerFarHarRettIEOSPrematur,
+    AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021,
+    AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021,
+    FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021,
+    FødselMorSøkerFarHarRettIEOSPrematurEtterWLB,
 } = composeStories(stories);
 
 const farEllerMedMorSøkerAdopsjon = [
-    UttaksplanAdopsjonFarSøkerMorHarRettIEOS,
-    UttaksplanAdopsjonMorSøkerFarHarRettIEOS,
+    AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021,
+    AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021,
 ];
 
 describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
@@ -36,11 +37,10 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
 
             //Skal ikke vise informasjon om dag/fellesperiode fordelingen mellom mor og far
             expect(screen.queryByText('dager', { exact: false })).not.toBeInTheDocument();
-            expect(screen.queryByText('Fellesperiode', { exact: false })).not.toBeInTheDocument();
         },
     );
     it('Skal fungere for fødsel der far søker, mor har rett i EØS og det er tvillinger', async () => {
-        render(<UttaksplanFødselFarSøkerMorHarRettIEOSTvillinger />);
+        render(<FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021 />);
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
 
@@ -51,14 +51,24 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         await userEvent.tab();
 
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
-        expect(screen.getByText('uker med flerbarnsuker', { exact: false }));
-        expect(screen.queryByText('Fellesperiode', { exact: false })).not.toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Dere kan velge om dere vil ha foreldrepenger samtidig i opp til 17 uker fordi dere har fått tvillinger',
+                {
+                    exact: false,
+                },
+            ),
+        );
     });
     it('Skal fungere for fødsel der mor søker, far har rett i EØS og det er prematur fødsel', async () => {
-        render(<UttaksplanFødselMorSøkerFarHarRettIEOSPrematur />);
+        render(<FødselMorSøkerFarHarRettIEOSPrematurEtterWLB />);
 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Stønadsperioden din er forlenget med', { exact: false }));
+        expect(
+            screen.getByText('er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33', {
+                exact: false,
+            }),
+        );
 
         expect(screen.getByText('Når ønsker du å starte perioden?')).toBeInTheDocument();
         expect(screen.getByText('Jeg tok ikke ut foreldrepenger før termin')).toBeInTheDocument();
@@ -68,7 +78,5 @@ describe('<UttaksplanInfo - annen forelder har rett i EØS>', () => {
         await userEvent.tab();
 
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
-
-        expect(screen.queryByText('Fellesperiode', { exact: false })).not.toBeInTheDocument();
     });
 });

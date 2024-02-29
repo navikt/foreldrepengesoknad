@@ -1,10 +1,13 @@
 import classnames from 'classnames';
-import { Fieldset, bemUtils, guid } from '@navikt/fp-common';
-import RangeStepper from './RangeStepper';
-import { BodyShort, ReadMore } from '@navikt/ds-react';
-import './rangeInput.less';
 import { Component } from 'react';
+
+import { BodyShort, ReadMore } from '@navikt/ds-react';
+
+import { Fieldset, bemUtils, guid } from '@navikt/fp-common';
+
 import AriaText from './AriaText';
+import RangeStepper from './RangeStepper';
+import './rangeInput.less';
 
 export interface RangeInputElementRendererOptions {
     value: number;
@@ -20,7 +23,7 @@ interface Props {
     label: string;
     hjelpetekst?: React.ReactNode;
     ariaLabelText: string;
-    hjelpetekstApneLabel: string;
+    hjelpetekstApneLabel?: string;
     value: number;
     min: number;
     max: number;
@@ -165,7 +168,9 @@ class RangeInput extends Component<Props, State> {
                         {valueLabelPlacement === 'below' && labelRenderer({ value, min, max })}
                     </div>
                     {bottomRenderer({ value, min, max })}
-                    <ReadMore header={hjelpetekstApneLabel}>{hjelpetekst}</ReadMore>
+                    {hjelpetekstApneLabel && hjelpetekst && (
+                        <ReadMore header={hjelpetekstApneLabel}>{hjelpetekst}</ReadMore>
+                    )}
                 </Fieldset>
             </div>
         );

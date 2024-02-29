@@ -101,6 +101,7 @@
     "kontaktOss.ringOss.åpningstider": "Åpningstider: hverdager 09.00-15.00. Vi kan ringe deg tilbake hvis ventetiden er over 5 min.",
     "kontaktOss.ringOss.flereTelefonnummere": "Se flere telefonnummer",
     "uttaksplan.avslåttPeriode": "Avslått periode",
+    "uttaksplan.avslåttPeriode.utsettelse": "Avslått utsettelse",
     "uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
     "uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR": "Foreldrepenger",
     "uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR": "Foreldrepenger med aktivitetskrav",
@@ -131,6 +132,7 @@
     "tidslinje.tittel.FAMILIEHENDELSE.termindato": "Termindato",
     "tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.tilbakeITid": "{navn} ble adoptert",
     "tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.fremITid": "{navn} blir adoptert",
+    "tidslinje.tittel.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV": "Du har fått et brev fra NAV",
     "tidslinje.tittel.ENDRINGSSØKNAD": "Du søkte om å endre foreldrepengeplanen din",
     "tidslinje.tittel.INNTEKTSMELDING": "NAV mottok inntektsmelding",
     "tidslinje.tittel.VEDTAK": "Du har fått et svar på søknaden din",
@@ -164,5 +166,6 @@
     "tidslinje.navVenterPå": "Du må sende inn {dokumentasjon}",
     "periodeOversikt.ingenPerioder.visKunNåværendeOgNeste": "Du har ingen løpende perioder med foreldrepenger. Klikk på 'Se hele planen' for en oversikt over tidligere perioder med foreldrepenger.",
     "periodeOversikt.ingenPerioder.visHelePlanen": "Du har ingen perioder med foreldrepenger. ",
-    "ok": "Ok"
+    "ok": "Ok",
+    "uttaksplan.stønadskontotype.dinKvote": "Din kvote"
 }

@@ -1,21 +1,24 @@
-import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
+import stønadskonto80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskonto80Adopsjon.json';
+import stønadskonto100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskonto100Adopsjon.json';
+import stønadskontoDeltUttak80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80Adopsjon.json';
+import stønadskontoDeltUttak100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Adopsjon.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder, BarnType, Dekningsgrad } from '@navikt/fp-common';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { Søkerinfo } from '@navikt/fp-types';
+
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøkerData from 'app/context/types/SøkerData';
 import SøknadRoutes from 'app/routes/routes';
 import { RequestStatus } from 'app/types/RequestState';
-import { MemoryRouter } from 'react-router-dom';
-import stønadskonto100 from 'storybook/storyData/stonadskontoer/stønadskonto100.json';
-import stønadskonto80 from 'storybook/storyData/stonadskontoer/stønadskonto80.json';
-import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
-import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
-import AxiosMock from 'storybook/utils/AxiosMock';
+
 import UttaksplanInfo from './UttaksplanInfo';
 import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import { initAmplitude } from '@navikt/fp-metrics';
-import { Søkerinfo } from '@navikt/fp-types';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -86,8 +89,8 @@ const Template: StoryFn<
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, undefined, RequestStatus.FINISHED);
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto80);
+        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
     };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
@@ -100,8 +103,8 @@ const Template: StoryFn<
                         },
                         [ContextDataType.OM_BARNET]: {
                             type: BarnType.ADOPTERT_ANNET_BARN,
-                            antallBarn: 1,
-                            adopsjonsdato: dayjs('2021-03-15').toDate(),
+                            antallBarn: args.antallBarn,
+                            adopsjonsdato: args.adopsjonsdato,
                             adoptertIUtlandet: false,
                             fødselsdatoer: [],
                         },
@@ -124,10 +127,10 @@ const Template: StoryFn<
     );
 };
 
-export const UttaksplanMedAleneomsorgDekningsgrad100 = Template.bind({});
-UttaksplanMedAleneomsorgDekningsgrad100.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021 = Template.bind({});
+AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021.args = {
+    stønadskonto100: stønadskonto100Adopsjon,
+    stønadskonto80: stønadskonto80Adopsjon,
     søkerinfo: søkerinfoMor,
     erMor: true,
     annenForelder: {
@@ -140,12 +143,34 @@ UttaksplanMedAleneomsorgDekningsgrad100.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    adopsjonsdato: dayjs('2021-03-15').toDate(),
+    antallBarn: 1,
 };
 
-export const UttaksplanMedAleneomsorgDekningsgrad80 = Template.bind({});
-UttaksplanMedAleneomsorgDekningsgrad80.args = {
-    stønadskonto100,
-    stønadskonto80,
+export const AdopsjonFarMedAleneomsorgDekningsgrad80TvillingerFør1Okt2021 = Template.bind({});
+AdopsjonFarMedAleneomsorgDekningsgrad80TvillingerFør1Okt2021.args = {
+    stønadskonto100: stønadskonto100Adopsjon,
+    stønadskonto80: stønadskonto80Adopsjon,
+    søkerinfo: søkerinfoFar,
+    erMor: false,
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    søkerData: {
+        erAleneOmOmsorg: true,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    adopsjonsdato: dayjs('2021-03-15').toDate(),
+    antallBarn: 2,
+};
+
+export const AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021 = Template.bind({});
+AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021.args = {
+    stønadskonto100: stønadskonto100Adopsjon,
+    stønadskonto80: stønadskonto80Adopsjon,
     søkerinfo: søkerinfoMor,
     erMor: true,
     annenForelder: {
@@ -158,12 +183,34 @@ UttaksplanMedAleneomsorgDekningsgrad80.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    adopsjonsdato: dayjs('2022-06-15').toDate(),
+    antallBarn: 1,
 };
 
-export const UttaksplanMedDeltUttakDerMorSøker = Template.bind({});
-UttaksplanMedDeltUttakDerMorSøker.args = {
-    stønadskonto100: stønadskontoDeltUttak100,
-    stønadskonto80: stønadskontoDeltUttak80,
+export const AdopsjonFarMedAleneomsorgDekningsgrad100Etter1Okt2021 = Template.bind({});
+AdopsjonFarMedAleneomsorgDekningsgrad100Etter1Okt2021.args = {
+    stønadskonto100: stønadskonto100Adopsjon,
+    stønadskonto80: stønadskonto80Adopsjon,
+    søkerinfo: søkerinfoFar,
+    erMor: false,
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    søkerData: {
+        erAleneOmOmsorg: true,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    adopsjonsdato: dayjs('2022-09-15').toDate(),
+    antallBarn: 1,
+};
+
+export const AdopsjonDeltUttakDerMorSøker = Template.bind({});
+AdopsjonDeltUttakDerMorSøker.args = {
+    stønadskonto100: stønadskontoDeltUttak100Adopsjon,
+    stønadskonto80: stønadskontoDeltUttak80Adopsjon,
     erMor: true,
     annenForelder: {
         fornavn: 'Espen',
@@ -180,16 +227,17 @@ UttaksplanMedDeltUttakDerMorSøker.args = {
     },
     søkerinfo: søkerinfoMor,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    antallBarn: 1,
 };
 
-export const UttaksplanMedDeltUttakDerFarSøker100 = Template.bind({});
-UttaksplanMedDeltUttakDerFarSøker100.args = {
-    stønadskonto100: stønadskontoDeltUttak100,
-    stønadskonto80: stønadskontoDeltUttak80,
+export const AdopsjonDeltUttakDerFarSøker100 = Template.bind({});
+AdopsjonDeltUttakDerFarSøker100.args = {
+    stønadskonto100: stønadskontoDeltUttak100Adopsjon,
+    stønadskonto80: stønadskontoDeltUttak80Adopsjon,
     erMor: false,
     annenForelder: {
-        fornavn: 'TALENTFULL',
-        etternavn: 'MYGG',
+        fornavn: 'Talentfull',
+        etternavn: 'Mygg',
         fnr: '19047815714',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
@@ -202,16 +250,17 @@ UttaksplanMedDeltUttakDerFarSøker100.args = {
     },
     søkerinfo: søkerinfoFar,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    antallBarn: 1,
 };
 
-export const UttaksplanMedDeltUttakDerFarSøker80 = Template.bind({});
-UttaksplanMedDeltUttakDerFarSøker80.args = {
-    stønadskonto100: stønadskontoDeltUttak100,
-    stønadskonto80: stønadskontoDeltUttak80,
+export const AdopsjonMedDeltUttakDerFarSøker80 = Template.bind({});
+AdopsjonMedDeltUttakDerFarSøker80.args = {
+    stønadskonto100: stønadskontoDeltUttak100Adopsjon,
+    stønadskonto80: stønadskontoDeltUttak80Adopsjon,
     erMor: false,
     annenForelder: {
-        fornavn: 'TALENTFULL',
-        etternavn: 'MYGG',
+        fornavn: 'Talentfull',
+        etternavn: 'Mygg',
         fnr: '19047815714',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
@@ -224,4 +273,28 @@ UttaksplanMedDeltUttakDerFarSøker80.args = {
     },
     søkerinfo: søkerinfoFar,
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    antallBarn: 1,
+};
+
+export const AdopsjonMedDeltUttakDerFarSøker80Tvillinger = Template.bind({});
+AdopsjonMedDeltUttakDerFarSøker80Tvillinger.args = {
+    stønadskonto100: stønadskontoDeltUttak100Adopsjon,
+    stønadskonto80: stønadskontoDeltUttak80Adopsjon,
+    erMor: false,
+    annenForelder: {
+        fornavn: 'Talentfull',
+        etternavn: 'Mygg',
+        fnr: '19047815714',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+    },
+    søkerData: {
+        erAleneOmOmsorg: false,
+        harJobbetSomFrilansSiste10Mnd: false,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+        harHattAnnenInntektSiste10Mnd: false,
+    },
+    søkerinfo: søkerinfoFar,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    antallBarn: 2,
 };

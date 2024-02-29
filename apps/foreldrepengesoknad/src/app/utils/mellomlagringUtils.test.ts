@@ -1,6 +1,7 @@
-import SøknadRoutes from 'app/routes/routes';
-import { shouldApplyStorage } from './mellomlagringUtils';
 import { FpMellomlagretData } from 'app/api/api';
+import SøknadRoutes from 'app/routes/routes';
+
+import { shouldApplyStorage } from './mellomlagringUtils';
 
 describe('Test av mellomlagring', () => {
     it('Burde ikke bruke mellomlagrede data hvis versjon ikke er lik current version', () => {

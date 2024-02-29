@@ -182,6 +182,8 @@ const finnTekstForTidslinjehendelse = (
             return intl.formatMessage({ id: 'tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD' });
         case TidslinjehendelseType.VENT_DOKUMENTASJON:
             return intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' });
+        case TidslinjehendelseType.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV:
+            return intl.formatMessage({ id: 'tidslinje.tittel.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV' });
     }
 };
 

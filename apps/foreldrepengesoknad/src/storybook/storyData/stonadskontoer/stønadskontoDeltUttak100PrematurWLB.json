@@ -1,0 +1,13 @@
+{
+    "kontoer": {
+        "MØDREKVOTE": 75,
+        "FEDREKVOTE": 75,
+        "FELLESPERIODE": 127,
+        "FORELDREPENGER_FØR_FØDSEL": 15
+    },
+    "minsteretter": {
+        "farRundtFødsel": 10,
+        "generellMinsterett": 0,
+        "toTette": 0
+    }
+}

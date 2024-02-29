@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, Heading } from '@navikt/ds-react';
 
-import { AdvarselIkon, bemUtils } from '@navikt/fp-common';
+import { AdvarselIkon, Block, bemUtils } from '@navikt/fp-common';
 
 import StønadskontoIkon from 'app/components/stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from 'app/components/utsettelse-ikon/UtsettelseIkon';
@@ -18,6 +18,7 @@ import {
 } from 'app/utils/dateUtils';
 import {
     getOverlappendePeriodeTittel,
+    getPeriodeForelder,
     getPeriodeTittel,
     isAvslåttPeriode,
     isOppholdsperiode,
@@ -68,8 +69,12 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
             periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) ||
         (isUttaksperiode(periode) &&
             periode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID);
+    const visGraderingTilbakeITidAvslagTekst =
+        isUttaksperiode(periode) &&
+        periode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID;
 
     const visUtsettelsesIkon = !visStønadskontoIkon && isUtsettelsesperiode(periode);
+    const forelder = getPeriodeForelder(erFarEllerMedmor, periode);
     return (
         <div
             className={classNames(
@@ -89,6 +94,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                             erAleneOmOmsorg={erAleneOmOmsorg}
                             periodeResultat={periode.resultat}
                             morsAktivitet={periode.morsAktivitet}
+                            forelder={forelder}
                         />
                     )}
                     {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
@@ -121,6 +127,14 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                         </BodyShort>
                     </div>
                 </div>
+                <Block margin="l">
+                    {visGraderingTilbakeITidAvslagTekst && (
+                        <div>
+                            Du søkte om å kombinere foreldrepenger med delvis arbeid, men fikk dette avslått. I stedet
+                            fikk du delvis utbetaling og brukte fulle dager.
+                        </div>
+                    )}
+                </Block>
                 {overlappendePeriodeAnnenPart && (
                     <div
                         className={classNames(
@@ -135,6 +149,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                                     overlappendePeriodeAnnenPart,
                                     intl,
                                     navnPåForeldre,
+                                    erFarEllerMedmor,
                                 )}
                             </BodyShort>
                             <div className={bem.element('beskrivelse')}>

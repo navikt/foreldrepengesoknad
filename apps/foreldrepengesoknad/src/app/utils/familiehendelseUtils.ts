@@ -1,4 +1,6 @@
-import { FamiliehendelseType } from '@navikt/fp-common';
+import { IntlShape } from 'react-intl';
+
+import { FamiliehendelseType, intlUtils } from '@navikt/fp-common';
 
 export const getFamiliehendelseType = (
     fødselsdato: string | undefined,
@@ -14,4 +16,14 @@ export const getFamiliehendelseType = (
     } else {
         throw new Error('Fødselsdato/ termindato/ omsorgsovertakelsedato mangler');
     }
+};
+
+export const getFamiliehendelseNavn = (erAdopsjon: boolean, erBarnetFødt: boolean, intl: IntlShape) => {
+    if (erAdopsjon) {
+        return intlUtils(intl, 'adopsjon');
+    }
+    if (erBarnetFødt) {
+        return intlUtils(intl, 'fødsel');
+    }
+    return intlUtils(intl, 'termin');
 };

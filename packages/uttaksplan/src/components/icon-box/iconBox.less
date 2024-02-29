@@ -13,39 +13,90 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    &--green {
-        background-color: @c-periodefarge-gronn;
+    &--orange {
+        background-color: var(--a-data-surface-3);
         &--striped {
-            .striped(@c-periodefarge-gronn, @c-periodefarge-gronn--gradert);
+            .striped(var(--a-data-surface-3),var(--a-data-surface-3));
+        }
+    }
+
+    &--purple {
+        background-color: var(--a-data-surface-6);
+        &--striped {
+            .striped(var(--a-data-surface-6),var(--a-data-surface-6));
+        }
+    }
+
+    &--green {
+        background-color: var(--a-data-surface-5);
+        &--striped {
+            .striped(var(--a-data-surface-5), var(--a-data-surface-5-subtle));
+        }
+    }
+
+    &--lightGreen {
+        background-color: var(--a-data-surface-5-subtle);
+        &--striped {
+            .striped(var(--a-data-surface-5-subtle), var(--a-data-surface-5));
         }
     }
     &--blue {
-        background-color: @c-periodefarge-blaa;
+        background-color: var(--a-data-surface-1);
         &--striped {
-            .striped(@c-periodefarge-blaa, @c-periodefarge-blaa--gradert);
+            .striped(var(--a-data-surface-1), var(--a-data-surface-2-subtle));
         }
     }
-    &--purple {
-        background-color: @c-periodefarge-lilla;
+
+    &--lightBlue {
+        background-color: var(--a-data-surface-2-subtle);
         &--striped {
-            .striped(@c-periodefarge-lilla, @c-periodefarge-lilla--gradert);
+            .striped(var(--a-data-surface-2-subtle),var(--a-data-surface-1));
         }
     }
-    &--purpleBlue {
+
+    &--blueLightGreen {
         background: repeating-linear-gradient(
             -45deg,
-            @c-periodefarge-blaa,
-            @c-periodefarge-blaa 50%,
-            @c-periodefarge-lilla 50%,
-            @c-periodefarge-lilla 100%
+            var(--a-data-surface-1),
+            var(--a-data-surface-1) 50%,
+            var(--a-data-surface-5-subtle) 50%,
+            var(--a-data-surface-5-subtle) 100%
         );
         &--striped {
             background: repeating-linear-gradient(
                 -45deg,
-                @c-periodefarge-blaa,
-                @c-periodefarge-blaa 50%,
-                @c-periodefarge-lilla 50%,
-                @c-periodefarge-lilla 100%
+                var(--a-data-surface-1),
+                var(--a-data-surface-1) 50%,
+                var(--a-data-surface-5-subtle) 50%,
+                var(--a-data-surface-5-subtle) 100%
+            );
+            &:before {
+                position: absolute;
+                content: '';
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                .striped(transparent, rgba(255, 255, 255, 0.6));
+            }
+        }
+    }
+
+    &--greenLightBlue {
+        background: repeating-linear-gradient(
+            -45deg,
+            var(--a-data-surface-5),
+            var(--a-data-surface-5) 50%,
+            var(--a-data-surface-2-subtle) 50%,
+            var(--a-data-surface-2-subtle) 100%
+        );
+        &--striped {
+            background: repeating-linear-gradient(
+                -45deg,
+                var(--a-data-surface-5),
+                var(--a-data-surface-5) 50%,
+                var(--a-data-surface-2-subtle) 50%,
+                var(--a-data-surface-2-subtle) 100%
             );
             &:before {
                 position: absolute;

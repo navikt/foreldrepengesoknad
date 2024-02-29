@@ -1,11 +1,14 @@
-import Api from 'app/api/api';
-import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { notEmpty } from '@navikt/fp-validation';
 import { useNavigate } from 'react-router-dom';
-import { redirectToLogin } from 'app/utils/redirectToLogin';
-import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+
 import { LocaleNo } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
+
+import Api from 'app/api/api';
+import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import { redirectToLogin } from 'app/utils/redirectToLogin';
+
+import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 import SøkerData from './types/SøkerData';
 
 const mellomlagre = (

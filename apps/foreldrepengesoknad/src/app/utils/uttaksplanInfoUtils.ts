@@ -1,5 +1,6 @@
-import { Situasjon } from '@navikt/fp-common';
 import dayjs from 'dayjs';
+
+import { Situasjon, Tidsperioden } from '@navikt/fp-common';
 
 export const skalViseInfoOmPrematuruker = (
     fødselsdato: Date | undefined,
@@ -21,4 +22,8 @@ export const getSamtidigUttaksprosent = (
     stillingsprosent: string | undefined,
 ): string => {
     return gradertPeriode && stillingsprosent ? (100 - parseInt(stillingsprosent, 10)).toString() : '100';
+};
+
+export const getAntallPrematurdager = (fødselsdato: Date, termindato: Date) => {
+    return Tidsperioden({ fom: fødselsdato, tom: termindato }).getAntallUttaksdager() - 1;
 };
