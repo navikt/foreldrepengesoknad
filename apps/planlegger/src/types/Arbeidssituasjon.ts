@@ -1,5 +1,10 @@
 export type Arbeidssituasjon = {
-    arbeidssituasjonAlene?: boolean;
-    arbeidssituasjonFørste?: boolean;
-    arbeidssituasjonAndre?: boolean;
+    arbeidssituasjonAlene?: ArbeidssituasjonEnum;
+    arbeidssituasjonMedAndre?: ArbeidssituasjonEnum;
 };
+
+export enum ArbeidssituasjonEnum {
+    JOBBER = 'jobber',
+    UFØR = 'ufør',
+    INGEN = 'ingen',
+}
