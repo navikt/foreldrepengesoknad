@@ -414,7 +414,7 @@
     "manglendeVedlegg.morJobber.label": "Dokumentasjon på at mor er i arbeid",
     "manglendeVedlegg.morJobber.description": "Du må legge ved bekreftelse fra {navn} sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom {navn} er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
     "manglendeVedlegg.studererOgJobber.label": "Dokumentasjon på at mor studerer og er i arbeid",
-    "manglendeVedlegg.studererOgJobber.description.tittel": "Du må legge ved dokumentasjon på MOR sitt arbeidsforhold og studier. Dokumentasjon fra studiestedet må vise",
+    "manglendeVedlegg.studererOgJobber.description.tittel": "Du må legge ved dokumentasjon på {navn} sitt arbeidsforhold og studier. Dokumentasjon fra studiestedet må vise",
     "manglendeVedlegg.studerer.label": "Dokumentasjon på at mor studerer",
     "manglendeVedlegg.studerer.description.tittel": "Du må legge ved bekreftelse på at {navn} er fulltidsstudent. Bekreftelsen må vise",
     "manglendeVedlegg.studerer.description.punkt1": "navn og fødselsnummer",
