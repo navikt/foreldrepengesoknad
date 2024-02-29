@@ -1,3 +1,4 @@
+import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import Infoboks from 'components/Infoboks';
 import InfoboksGenerell from 'components/InfoboksGenerell';
@@ -76,7 +77,10 @@ const FlereForsørgere: FunctionComponent = () => {
                 </BodyLong>
             </Infoboks>
 
-            <InfoboksGenerell header={<FormattedMessage id="barnehageplass.barnehageTittel" />}>
+            <InfoboksGenerell
+                header={<FormattedMessage id="barnehageplass.barnehageTittel" />}
+                icon={<BabyWrappedIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" />}
+            >
                 <BodyLong>
                     <FormattedMessage id="barnehageplass.barnehageTekst" />
                 </BodyLong>
