@@ -1,11 +1,13 @@
-import { MemoryRouter } from 'react-router-dom';
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { initAmplitude } from '@navikt/fp-metrics';
+import { MemoryRouter } from 'react-router-dom';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
 import PeriodeSteg from './PeriodeSteg';
 
 export default {
