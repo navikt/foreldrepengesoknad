@@ -1,10 +1,11 @@
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import dayjs from 'dayjs';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+
 import { GuidePanel, VStack } from '@navikt/ds-react';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
-import { notEmpty } from '@navikt/fp-validation';
+
 import {
     Block,
     Dekningsgrad,
@@ -17,7 +18,12 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
+import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { MorFarAdopsjonAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
@@ -28,6 +34,7 @@ import { findEldsteDato } from 'app/utils/dateUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+
 import StartdatoAdopsjon, { finnStartdatoAdopsjon } from '../mor-far-adopsjon/StartdatoAdopsjon';
 import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
 import {
@@ -43,9 +50,6 @@ import {
     getInitialMorFarAdopsjonAnnenForelderHarRettIEØSValues,
     mapMorFarAdopsjonAnnenForelderHarRettIEØSFormToState,
 } from './morFarAdopsjonAnnenForelderHarRettIEØSUtils';
-import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

@@ -1,14 +1,11 @@
-import { Søknad } from 'app/context/types/Søknad';
-import SøkerData from 'app/context/types/SøkerData';
-import dayjs from 'dayjs';
-import { getTermindato } from 'app/utils/barnUtils';
-import { AxiosError } from 'axios';
 import * as Sentry from '@sentry/browser';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+
 import {
     AnnenForelder,
     AnnenForelderIkkeOppgitt,
     Arbeidsform,
-    Attachment,
     Barn,
     Forelder,
     MorsAktivitet,
@@ -24,26 +21,29 @@ import {
     UttaksperiodeBase,
     andreAugust2022ReglerGjelder,
     assertUnreachable,
-    extractAttachments,
     førsteOktober2021ReglerGjelder,
     guid,
     isAdoptertBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
-    isArrayOfAttachments,
     isFarEllerMedmor,
     isForeldrepengerFørFødselUttaksperiode,
     isFødtBarn,
     isUttaksperiode,
     isValidTidsperiode,
-    removeAttachmentsWithUploadError,
-    removeDuplicateAttachments,
     sorterPerioder,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
-import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
+import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
-import { LocaleNo } from '@navikt/fp-types';
+
+import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
+import SøkerData from 'app/context/types/SøkerData';
+import { Søknad } from 'app/context/types/Søknad';
+import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
+import { VedleggDataType } from 'app/types/VedleggDataType';
+import { getTermindato } from 'app/utils/barnUtils';
+
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
@@ -81,7 +81,17 @@ export interface SøkerForInnsending extends Omit<SøkerData, 'andreInntekterSis
 }
 
 export interface SøknadForInnsending
-    extends Omit<Søknad, 'barn' | 'annenForelder' | 'uttaksplan' | 'søker' | 'søkersituasjon'> {
+    extends Omit<
+        Søknad,
+        | 'barn'
+        | 'annenForelder'
+        | 'uttaksplan'
+        | 'søker'
+        | 'søkersituasjon'
+        | 'tilleggsopplysninger'
+        | 'manglerDokumentasjon'
+        | 'vedlegg'
+    > {
     barn: BarnForInnsending;
     annenForelder: AnnenForelderForInnsending;
     uttaksplan: PeriodeForInnsending[];
@@ -345,6 +355,24 @@ export const getUttaksplanMedFriUtsettelsesperiode = (uttaksplan: Periode[], end
     return uttaksplan;
 };
 
+export const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
+    if (!vedlegg) {
+        return [];
+    }
+
+    const vedleggArray: Attachment[] = [];
+
+    Object.keys(vedlegg).forEach((key: unknown) => {
+        const vedleggAvTypeSkjemanummer = vedlegg[key as GyldigeSkjemanummer];
+
+        if (vedleggAvTypeSkjemanummer && vedleggAvTypeSkjemanummer.length > 0) {
+            vedleggArray.push(...vedleggAvTypeSkjemanummer);
+        }
+    });
+
+    return vedleggArray;
+};
+
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     familiehendelsesdato: Date,
@@ -361,6 +389,7 @@ export const cleanSøknad = (
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
     const eksisterendeSak = hentData(ContextDataType.EKSISTERENDE_SAK);
+    const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
     const søkerInnsending = cleanSøker(søker, søkersituasjon, locale);
@@ -392,12 +421,10 @@ export const cleanSøknad = (
         },
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-        vedlegg: [], //Vedlegga blir lagt til i funksjonen under
+        vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 
-    removeDuplicateAttachments(cleanedSøknad.uttaksplan);
-
-    return mapAttachmentsToSøknadForInnsending(cleanedSøknad) as SøknadForInnsending;
+    return cleanedSøknad;
 };
 
 const cleanSøker = (søkerData: SøkerData, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
@@ -424,29 +451,6 @@ export const getSøknadsdataForInnsending = (
     }
 };
 
-export const cleanAttachments = (object: any): Attachment[] => {
-    const foundAttachments = [] as Attachment[];
-
-    if (object === null || object === undefined) {
-        return foundAttachments;
-    }
-
-    Object.keys(object).forEach((key: string) => {
-        if (typeof object[key] === 'object') {
-            if (isArrayOfAttachments(object[key])) {
-                const attachmentWithoutUploadError = [...removeAttachmentsWithUploadError(object[key])];
-                foundAttachments.push(...attachmentWithoutUploadError);
-                object[key] = (object[key] as Attachment[])
-                    .filter((attachment: Attachment) => attachmentWithoutUploadError.includes(attachment))
-                    .map((attachment: Attachment) => attachment.id);
-            } else {
-                foundAttachments.push(...cleanAttachments(object[key]));
-            }
-        }
-    });
-    return foundAttachments;
-};
-
 export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
@@ -463,6 +467,8 @@ export const cleanEndringssøknad = (
     const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const termindato = getTermindato(barn);
+    const vedlegg = hentData(ContextDataType.VEDLEGG);
+
     const cleanedSøknad: EndringssøknadForInnsending = {
         type: 'foreldrepenger',
         erEndringssøknad: true,
@@ -482,12 +488,10 @@ export const cleanEndringssøknad = (
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         situasjon: søkersituasjon.situasjon,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-        vedlegg: [], //Vedlegga blir lagt til i funksjonen under
+        vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 
-    removeDuplicateAttachments(cleanedSøknad.uttaksplan);
-
-    return mapAttachmentsToSøknadForInnsending(cleanedSøknad);
+    return cleanedSøknad;
 };
 
 export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
@@ -515,25 +519,4 @@ export const getErrorCallId = (error: AxiosError<any>): string => {
 
 export const getErrorTimestamp = (error: AxiosError<any>): string => {
     return error.response && error.response.data && error.response.data.timestamp ? error.response.data.timestamp : '';
-};
-
-export const mapAttachmentsToSøknadForInnsending = (
-    søknad: SøknadForInnsending | EndringssøknadForInnsending,
-): SøknadForInnsending | EndringssøknadForInnsending => {
-    const vedlegg: Attachment[] = [];
-    const søknadCopy = extractAttachments(søknad, vedlegg);
-
-    const vedleggWithoutDuplicates = vedlegg.reduce((result, current) => {
-        if (result.find((att: Attachment) => att.id === current.id)) {
-            return result;
-        }
-
-        result.push(current);
-        return result;
-    }, [] as Attachment[]);
-
-    return {
-        ...søknadCopy,
-        vedlegg: vedleggWithoutDuplicates,
-    };
 };

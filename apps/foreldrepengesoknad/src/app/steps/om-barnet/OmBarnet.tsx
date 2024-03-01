@@ -1,25 +1,33 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
+
 import {
-    andreAugust2022ReglerGjelder,
+    BarnType,
     Block,
+    ISOStringToDate,
+    Step,
+    andreAugust2022ReglerGjelder,
     convertYesOrNoOrUndefinedToBoolean,
     hasValue,
     intlUtils,
     isFarEllerMedmor,
     isFødtBarn,
-    ISOStringToDate,
     isUfødtBarn,
-    Step,
+    lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
-import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentMetadataType, SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
+
 import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
 import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
 import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
@@ -52,6 +60,8 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
@@ -87,6 +97,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
         setIsSubmitting(true);
 
         const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
+
         const oppdatertBarn = mapOmBarnetFormDataToState(
             values,
             arbeidsforhold,
@@ -95,6 +106,45 @@ const OmBarnet: React.FunctionComponent<Props> = ({
             barnSøktOmFørMenIkkeRegistrert,
         );
 
+        if (
+            (values.adopsjonAvEktefellesBarn === YesOrNo.YES && oppdatertBarn.type === BarnType.ADOPTERT_STEBARN) ||
+            oppdatertBarn.type === BarnType.ADOPTERT_ANNET_BARN
+        ) {
+            const omsorgsovertakelse = lagSendSenereDokumentNårIngenAndreFinnes(
+                values.omsorgsovertakelse!,
+                AttachmentType.OMSORGSOVERTAKELSE,
+                Skjemanummer.OMSORGSOVERTAKELSE,
+                {
+                    type: AttachmentMetadataType.BARN,
+                },
+            );
+
+            const nyeVedlegg = {
+                ...vedlegg,
+                [Skjemanummer.OMSORGSOVERTAKELSE]: omsorgsovertakelse,
+            };
+
+            oppdaterVedlegg(nyeVedlegg);
+        }
+
+        if (values.erBarnetFødt === YesOrNo.NO && arbeidsforhold.length === 0) {
+            const terminbekreftelse = lagSendSenereDokumentNårIngenAndreFinnes(
+                values.terminbekreftelse!,
+                AttachmentType.TERMINBEKREFTELSE,
+                Skjemanummer.TERMINBEKREFTELSE,
+                {
+                    type: AttachmentMetadataType.BARN,
+                },
+            );
+
+            const nyeVedlegg = {
+                ...vedlegg,
+                [Skjemanummer.TERMINBEKREFTELSE]: terminbekreftelse,
+            };
+
+            oppdaterVedlegg(nyeVedlegg);
+        }
+
         oppdaterOmBarnet(oppdatertBarn);
 
         return navigator.goToNextDefaultStep();
@@ -102,7 +152,7 @@ const OmBarnet: React.FunctionComponent<Props> = ({
 
     return (
         <OmBarnetFormComponents.FormikWrapper
-            initialValues={getOmBarnetInitialValues(arbeidsforhold, omBarnet)}
+            initialValues={getOmBarnetInitialValues(arbeidsforhold, vedlegg, omBarnet)}
             onSubmit={onSubmit}
             renderForm={({ values: formValues }) => {
                 const visibility = omBarnetQuestionsConfig.getVisbility({

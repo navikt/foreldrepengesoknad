@@ -1,9 +1,6 @@
-import { getFamiliehendelseType } from './familiehendelseUtils';
-import { getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
-import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
-import { Søknad } from 'app/context/types/Søknad';
-import SøkerData from 'app/context/types/SøkerData';
-import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { IntlShape } from 'react-intl';
+
 import {
     AnnenForelder,
     Arbeidsform,
@@ -34,13 +31,19 @@ import {
     isInfoPeriode,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { IntlShape } from 'react-intl';
-import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
-import { ValgtBarn } from 'app/types/ValgtBarn';
+import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
+
+import SøkerData from 'app/context/types/SøkerData';
+import { Søknad } from 'app/context/types/Søknad';
+import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { ValgtBarn } from 'app/types/ValgtBarn';
+
+import { getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
+import { getFamiliehendelseType } from './familiehendelseUtils';
+import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {
@@ -341,7 +344,6 @@ const getBarnFromSaksgrunnlag = (
                 type: BarnType.UFØDT,
                 antallBarn: sak.antallBarn,
                 termindato: ISOStringToDate(sak.termindato)!,
-                terminbekreftelse: [],
             };
         case 'adopsjon':
             return {
@@ -349,7 +351,6 @@ const getBarnFromSaksgrunnlag = (
                 adopsjonsdato: ISOStringToDate(sak.omsorgsovertakelsesdato)!,
                 antallBarn: sak.antallBarn,
                 fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
-                omsorgsovertakelse: [],
                 fnr: valgteBarn?.fnr,
             };
         default:

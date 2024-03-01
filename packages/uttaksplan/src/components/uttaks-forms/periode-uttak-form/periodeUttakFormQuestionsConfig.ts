@@ -1,26 +1,29 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import dayjs from 'dayjs';
+
 import {
-    andreAugust2022ReglerGjelder,
     AnnenForelder,
-    erFarMedmorSinWLBTidsperiodeRundtFødsel,
-    getSisteUttaksdag6UkerEtterFødsel,
-    harAnnenForelderRettIEØS,
-    hasValue,
-    isValidTidsperiode,
     Periodetype,
     Situasjon,
     StønadskontoType,
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
+    andreAugust2022ReglerGjelder,
+    erFarMedmorSinWLBTidsperiodeRundtFødsel,
+    getSisteUttaksdag6UkerEtterFødsel,
+    harAnnenForelderRettIEØS,
+    hasValue,
+    isValidTidsperiode,
 } from '@navikt/fp-common';
-import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import dayjs from 'dayjs';
-import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import getUttakSkjemaregler, {
-    UttakSkjemaregler,
-    UttakSkjemaReglerProps,
-} from '../../../utils/uttaksskjema/uttakSkjemaregler';
+
 import hvemSkalTaUttakSkalBesvares from '../../../utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
+import getUttakSkjemaregler, {
+    UttakSkjemaReglerProps,
+    UttakSkjemaregler,
+} from '../../../utils/uttaksskjema/uttakSkjemaregler';
+import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
+
 export interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;
     regelProps: UttakSkjemaReglerProps;
@@ -310,22 +313,10 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
         isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).overføringsårsakSkalBesvares(),
         visibilityFilter: ({ values }) => hasValue(values.konto),
     },
-    [PeriodeUttakFormField.overføringsdokumentasjon]: {
-        isAnswered: ({ values }) => values.overføringsdokumentasjon.length >= 0,
-        isIncluded: ({ values, regelProps }) => getUttakSkjemaregler(values, regelProps).overføringsårsakSkalBesvares(),
-        visibilityFilter: ({ values }) => hasValue(values.overføringsårsak),
-    },
     [PeriodeUttakFormField.aktivitetskravMor]: {
         isAnswered: ({ values }) => hasValue(values.aktivitetskravMor),
         isIncluded: ({ values, regelProps }) =>
             getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares(),
-        visibilityFilter: ({ values, regelProps }) =>
-            skalViseAktivitetskrav(getUttakSkjemaregler(values, regelProps), values),
-    },
-    [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: {
-        isAnswered: ({ values }) => values.aktivitetskravMorDokumentasjon.length >= 0,
-        isIncluded: ({ values, regelProps, isOpen }) =>
-            getUttakSkjemaregler(values, regelProps).aktivitetskravMorSkalBesvares() && isOpen,
         visibilityFilter: ({ values, regelProps }) =>
             skalViseAktivitetskrav(getUttakSkjemaregler(values, regelProps), values),
     },

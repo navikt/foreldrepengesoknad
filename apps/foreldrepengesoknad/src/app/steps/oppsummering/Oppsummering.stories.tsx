@@ -1,20 +1,23 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
-import { AnnenForelder, Attachment, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import { Næringstype } from 'app/context/types/Næring';
-import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import Oppsummering from './Oppsummering';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import SøkerData from 'app/context/types/SøkerData';
-import { Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import SøknadRoutes from 'app/routes/routes';
 import { MemoryRouter } from 'react-router-dom';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
+import { ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
+import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { Næringstype } from 'app/context/types/Næring';
+import SøkerData from 'app/context/types/SøkerData';
+import SøknadRoutes from 'app/routes/routes';
+
+import Oppsummering from './Oppsummering';
 
 const promiseAction =
     () =>
@@ -115,6 +118,24 @@ const defaultUttaksplan = [
     },
 ] as Periode[];
 
+const defaultVedlegg = {
+    [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
+    [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
+    [Skjemanummer.DOK_INNLEGGELSE_BARN]: [],
+    [Skjemanummer.DOK_INNLEGGELSE_MOR]: [],
+    [Skjemanummer.DOK_INNLEGGELSE_FAR]: [],
+    [Skjemanummer.DOK_SYKDOM_MOR]: [],
+    [Skjemanummer.DOK_SYKDOM_FAR]: [],
+    [Skjemanummer.DOK_ARBEID_MOR]: [],
+    [Skjemanummer.DOK_UTDANNING_MOR]: [],
+    [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [],
+    [Skjemanummer.OMSORGSOVERTAKELSE]: [],
+    [Skjemanummer.DOK_AV_ALENEOMSORG]: [],
+    [Skjemanummer.TERMINBEKREFTELSE]: [],
+    [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: [],
+    [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [],
+};
+
 export default {
     title: 'steps/Oppsummering',
     component: Oppsummering,
@@ -175,6 +196,7 @@ const Template: StoryFn<Props> = ({
                         [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
                         [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
+                        [ContextDataType.VEDLEGG]: defaultVedlegg,
                     }}
                 >
                     <Oppsummering
@@ -458,7 +480,6 @@ MedAndreInntekterJobbIUtlandet.args = {
                 },
                 arbeidsgiverNavn: 'Statoil',
                 land: 'SE',
-                vedlegg: [],
             },
         ],
         harJobbetSomFrilansSiste10Mnd: false,
@@ -479,13 +500,6 @@ MedAndreInntekterMilitærtjeneste.args = {
                     fom: '2018-01-01',
                     tom: '2021-01-01',
                 },
-                vedlegg: [
-                    {
-                        id: '1',
-                        url: 'Dette er en url',
-                        filename: 'Filnavn',
-                    },
-                ] as Attachment[],
             },
         ],
         harJobbetSomFrilansSiste10Mnd: false,

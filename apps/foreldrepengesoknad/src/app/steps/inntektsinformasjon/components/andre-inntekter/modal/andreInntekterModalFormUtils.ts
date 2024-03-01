@@ -1,14 +1,17 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+
 import {
-    AttachmentType,
-    Skjemanummer,
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
+
+import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 
 const initialAndreInntekterFormValues: AndreInntekterFormData = {
     [AndreInntekterFormField.type]: undefined,
@@ -57,7 +60,11 @@ export const cleanupAndreInntekterForm = (
     };
 };
 
-export const getInitialAndreInntekterFormValues = (annenInntekt: AnnenInntekt | undefined): AndreInntekterFormData => {
+export const getInitialAndreInntekterFormValues = (
+    annenInntekt: AnnenInntekt | undefined,
+    etterlønnVedlegg: Attachment[],
+    militærVedlegg: Attachment[],
+): AndreInntekterFormData => {
     if (!annenInntekt) {
         return {
             ...initialAndreInntekterFormValues,
@@ -71,7 +78,17 @@ export const getInitialAndreInntekterFormValues = (annenInntekt: AnnenInntekt | 
             land: annenInntekt.land,
             fom: annenInntekt.tidsperiode.fom,
             tom: annenInntekt.tidsperiode.tom || '',
-            dokumentasjon: annenInntekt.vedlegg,
+            pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
+            type: annenInntekt.type,
+        };
+    }
+
+    if (annenInntekt.type === AnnenInntektType.MILITÆRTJENESTE) {
+        return {
+            ...initialAndreInntekterFormValues,
+            fom: annenInntekt.tidsperiode.fom,
+            tom: annenInntekt.tidsperiode.tom || '',
+            dokumentasjon: militærVedlegg ? militærVedlegg : [],
             pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
             type: annenInntekt.type,
         };
@@ -81,7 +98,7 @@ export const getInitialAndreInntekterFormValues = (annenInntekt: AnnenInntekt | 
         ...initialAndreInntekterFormValues,
         fom: annenInntekt.tidsperiode.fom,
         tom: annenInntekt.tidsperiode.tom || '',
-        dokumentasjon: annenInntekt.vedlegg,
+        dokumentasjon: etterlønnVedlegg ? etterlønnVedlegg : [],
         pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
         type: annenInntekt.type,
     };
@@ -98,7 +115,6 @@ export const mapAnnenInntektModalValuesToState = (annenInntekt: Partial<AndreInn
                 tom: annenInntekt.tom,
             },
             type: annenInntekt.type,
-            vedlegg: [],
         };
     }
 
@@ -109,6 +125,5 @@ export const mapAnnenInntektModalValuesToState = (annenInntekt: Partial<AndreInn
             tom: annenInntekt.tom,
         },
         type: annenInntekt.type!,
-        vedlegg: annenInntekt.dokumentasjon || [],
     };
 };

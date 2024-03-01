@@ -1,8 +1,15 @@
-import { Block, intlUtils } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { AnnenInntekt } from 'app/context/types/AnnenInntekt';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Button } from '@navikt/ds-react';
+
+import { Block, intlUtils } from '@navikt/fp-common';
+import { Attachment } from '@navikt/fp-types';
+
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
+
 import {
     InntektsinformasjonFormComponents,
     InntektsinformasjonFormData,
@@ -10,12 +17,14 @@ import {
 } from '../../inntektsinformasjonFormConfig';
 import AndreInntekterListe from './AndreInntekterListe';
 import AndreInntekterModal from './modal/AndreInntekterModal';
-import { Button } from '@navikt/ds-react';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     andreInntekterInformasjon: AnnenInntekt[];
     setAndreInntekterInformasjon: any;
+    setEtterlønnVedlegg: (attachments: Attachment[]) => void;
+    setMilitærVedlegg: (attachments: Attachment[]) => void;
+    etterlønnVedlegg: Attachment[];
+    militærVedlegg: Attachment[];
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
 }
@@ -23,8 +32,12 @@ interface Props {
 const AndreInntekter: FunctionComponent<Props> = ({
     andreInntekterInformasjon,
     setAndreInntekterInformasjon,
+    setEtterlønnVedlegg,
+    setMilitærVedlegg,
     visibility,
     formValues,
+    etterlønnVedlegg,
+    militærVedlegg,
 }) => {
     const intl = useIntl();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,10 +47,19 @@ const AndreInntekter: FunctionComponent<Props> = ({
         setIsModalOpen(true);
     };
 
-    const addAnnenInntekt = (annenInntekt: AnnenInntekt) => {
+    const addAnnenInntekt = (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => {
         const updatedandreInntekterInformasjon = andreInntekterInformasjon.concat(annenInntekt);
 
+        if (annenInntekt.type === AnnenInntektType.MILITÆRTJENESTE) {
+            setMilitærVedlegg(vedlegg);
+        }
+
+        if (annenInntekt.type === AnnenInntektType.SLUTTPAKKE) {
+            setEtterlønnVedlegg(vedlegg);
+        }
+
         setAndreInntekterInformasjon(updatedandreInntekterInformasjon);
+        setSelectedAnnenInntekt(undefined);
     };
 
     const deleteAnnenInntekt = (annenInntekt: AnnenInntekt) => {
@@ -45,15 +67,32 @@ const AndreInntekter: FunctionComponent<Props> = ({
             (inntekt) => inntekt !== annenInntekt,
         );
 
+        if (annenInntekt.type === AnnenInntektType.MILITÆRTJENESTE) {
+            setMilitærVedlegg([]);
+        }
+
+        if (annenInntekt.type === AnnenInntektType.SLUTTPAKKE) {
+            setEtterlønnVedlegg([]);
+        }
+
         setAndreInntekterInformasjon(updatedAndreInntekterInformasjon);
     };
 
-    const editAnnenInntekt = (annenInntekt: AnnenInntekt) => {
+    const editAnnenInntekt = (annenInntekt: AnnenInntekt, vedlegg: Attachment[]) => {
         const updatedAndreInntekterInformasjon = andreInntekterInformasjon
             .filter((inntekt) => inntekt !== selectedAnnenInntekt)
             .concat(annenInntekt);
 
+        if (annenInntekt.type === AnnenInntektType.MILITÆRTJENESTE) {
+            setMilitærVedlegg(vedlegg);
+        }
+
+        if (annenInntekt.type === AnnenInntektType.SLUTTPAKKE) {
+            setEtterlønnVedlegg(vedlegg);
+        }
+
         setAndreInntekterInformasjon(updatedAndreInntekterInformasjon);
+        setSelectedAnnenInntekt(undefined);
     };
 
     const selectAnnenInntekt = (annenInntekt: AnnenInntekt) => {
@@ -86,10 +125,15 @@ const AndreInntekter: FunctionComponent<Props> = ({
                     <AndreInntekterModal
                         isOpen={isModalOpen}
                         contentLabel={intlUtils(intl, 'inntektsinformasjon.andreInntekterModal.contentLabel')}
-                        onRequestClose={() => setIsModalOpen(false)}
+                        onRequestClose={() => {
+                            setSelectedAnnenInntekt(undefined);
+                            setIsModalOpen(false);
+                        }}
                         selectedAnnenInntekt={selectedAnnenInntekt}
                         addAnnenInntekt={addAnnenInntekt}
                         editAnnenInntekt={editAnnenInntekt}
+                        etterlønnVedlegg={etterlønnVedlegg}
+                        militærVedlegg={militærVedlegg}
                     />
                     <Block padBottom="l" visible={andreInntekterInformasjon.length > 0}>
                         <AndreInntekterListe

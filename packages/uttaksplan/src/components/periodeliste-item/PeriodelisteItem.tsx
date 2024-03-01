@@ -1,37 +1,38 @@
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
 import { IntlShape } from 'react-intl';
+
+import { Accordion } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Arbeidsforhold,
-    Attachment,
-    bemUtils,
     Block,
+    NavnPåForeldre,
+    Periode,
+    PeriodeValidState,
+    Periodetype,
+    Situasjon,
+    TilgjengeligStønadskonto,
+    Utsettelsesperiode,
+    bemUtils,
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriode,
     isSlettbarAvslåttPeriode,
-    NavnPåForeldre,
-    Periode,
-    Periodetype,
-    PeriodeValidState,
-    Situasjon,
-    TilgjengeligStønadskonto,
-    Utsettelsesperiode,
 } from '@navikt/fp-common';
-import classNames from 'classnames';
-import { FunctionComponent } from 'react';
+
+import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
+import { VeilederMessage } from '../../validering/veilederInfo/types';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';
 import PeriodeHull from '../perioder/PeriodeHull';
 import PeriodeInfo from '../perioder/PeriodeInfo';
 import PeriodeUtenUttak from '../perioder/PeriodeUtenUttak';
+import SlettbarAvslåttPeriode from '../perioder/SlettbarAvslåttPeriode';
 import PeriodeFørFødselForm from '../uttaks-forms/periode-før-fødsel-form/PeriodeFørFødselForm';
 import PeriodeUtsettelseForm from '../uttaks-forms/periode-utsettelse-form/PeriodeUtsettelseForm';
 import PeriodeUttakForm from '../uttaks-forms/periode-uttak-form/PeriodeUttakForm';
-import { Accordion } from '@navikt/ds-react';
-import SlettbarAvslåttPeriode from '../perioder/SlettbarAvslåttPeriode';
-
 import './periodelisteItem.less';
-import { VeilederMessage } from '../../validering/veilederInfo/types';
-import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
 
 interface Props {
     egenPeriode: boolean;
@@ -61,7 +62,6 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
     periodeErGyldig: boolean;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const renderPeriodeListeInnhold = (
@@ -88,7 +88,6 @@ const renderPeriodeListeInnhold = (
     utsettelserIPlan: Utsettelsesperiode[],
     intl: IntlShape,
     isOpen: boolean,
-    saveAttachment: (vedlegg: Attachment) => void,
 ) => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -133,7 +132,6 @@ const renderPeriodeListeInnhold = (
                     utsettelserIPlan={utsettelserIPlan}
                     intl={intl}
                     isOpen={isOpen}
-                    saveAttachment={saveAttachment}
                 />
             );
         case Periodetype.Utsettelse:
@@ -154,7 +152,6 @@ const renderPeriodeListeInnhold = (
                     utsettelserIPlan={utsettelserIPlan}
                     setPerioderErGyldige={setPerioderErGyldige}
                     isOpen={isOpen}
-                    saveAttachment={saveAttachment}
                 />
             );
         case Periodetype.Hull:
@@ -221,7 +218,6 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     utsettelserIPlan,
     intl,
     periodeErGyldig,
-    saveAttachment,
 }) => {
     const bem = bemUtils('periodelisteItem');
     let melding = meldinger.length > 0 ? meldinger[0] : undefined;
@@ -300,7 +296,6 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                             utsettelserIPlan,
                             intl,
                             isOpen,
-                            saveAttachment,
                         )}
                     </Accordion.Content>
                 </Accordion.Item>

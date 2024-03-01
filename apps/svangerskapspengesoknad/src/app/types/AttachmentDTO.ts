@@ -1,13 +1,10 @@
-import { Attachment } from '@navikt/fp-types';
-import { ArbeidsforholdDTO } from './Arbeidsforhold';
+import { Attachment, AttachmentMetadataType } from '@navikt/fp-types';
 
-export enum DokumentererType {
-    TILRETTELEGGING = 'tilrettelegging',
-}
+import { ArbeidsforholdDTO } from './Arbeidsforhold';
 
 export interface AttachmentDTO extends Attachment {
     dokumenterer: {
-        type: DokumentererType;
+        type: AttachmentMetadataType;
         arbeidsforhold: ArbeidsforholdDTO;
     };
 }

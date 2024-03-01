@@ -1,5 +1,3 @@
-import { Attachment } from './Attachment';
-
 export enum BarnType {
     FØDT = 'født',
     UFØDT = 'ufødt',
@@ -11,7 +9,6 @@ export enum BarnType {
 interface Common {
     type: BarnType;
     antallBarn: number;
-    dokumentasjonAvAleneomsorg?: Attachment[];
     datoForAleneomsorg?: Date;
 }
 
@@ -31,7 +28,6 @@ export interface FødtBarn extends Common {
 export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
     termindato: Date;
-    terminbekreftelse?: Attachment[];
     terminbekreftelsedato?: Date;
 }
 
@@ -39,7 +35,6 @@ export interface AdoptertBarn extends Common {
     type: BarnType.ADOPTERT_STEBARN | BarnType.ADOPTERT_ANNET_BARN;
     adopsjonsdato: Date;
     fødselsdatoer: Date[];
-    omsorgsovertakelse: Attachment[];
     fnr?: string[];
 }
 

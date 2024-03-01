@@ -1,22 +1,29 @@
-import { formatDate, intlUtils } from '@navikt/fp-common';
-import { AktørType } from 'app/types/AktørType';
-import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from 'app/types/ÅpenBehandling';
-import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
-import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
-import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import OversiktRoutes, { NavRoutes } from 'app/routes/routes';
-import { Uttaksdagen, UTTAKSDAGER_PER_UKE } from 'app/utils/Uttaksdagen';
-import { Skjemanummer } from '@navikt/fp-constants';
-import { Ytelse } from 'app/types/Ytelse';
-import { formaterDato } from './dateUtils';
-import { Familiehendelse } from 'app/types/Familiehendelse';
-import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
-import { BarnGruppering } from 'app/types/BarnGruppering';
-import { Sak } from 'app/types/Sak';
-import { Tilretteleggingstype } from 'app/types/TilretteleggingsperiodeSVP';
 
+import { formatDate, intlUtils } from '@navikt/fp-common';
+import { Skjemanummer } from '@navikt/fp-constants';
+
+import OversiktRoutes, { NavRoutes } from 'app/routes/routes';
+import { AktørType } from 'app/types/AktørType';
+import { BarnGruppering } from 'app/types/BarnGruppering';
+import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
+import { Familiehendelse } from 'app/types/Familiehendelse';
+import { Sak } from 'app/types/Sak';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
+import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
+import { Tilretteleggingstype } from 'app/types/TilretteleggingsperiodeSVP';
+import { Ytelse } from 'app/types/Ytelse';
+import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from 'app/types/ÅpenBehandling';
+import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from 'app/utils/Uttaksdagen';
+
+import { formaterDato } from './dateUtils';
+import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
+
+enum Vedtaksbrev {
+    AVSLAGSBREV = 'Avslagsbrev',
+    INNVILGELSESBREV = 'Innvilgelsesbrev',
+}
 export const VENTEÅRSAKER = [
     BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
     BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON,
@@ -30,6 +37,22 @@ export const TIDSLINJEHENDELSER_PÅ_VENT = [
     TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD,
     TidslinjehendelseType.VENT_DOKUMENTASJON,
 ];
+
+export const getAktivTidslinjeStegIndex = (
+    hendelserForVisning: Tidslinjehendelse[],
+    erInnvilgetForeldrepengesøknad: boolean,
+): number => {
+    if (erInnvilgetForeldrepengesøknad) {
+        const indexForSisteVedtak = hendelserForVisning.findLastIndex(
+            (hendelse) => hendelse.tidslinjeHendelseType === TidslinjehendelseType.VEDTAK,
+        );
+
+        if (indexForSisteVedtak >= 0) {
+            return indexForSisteVedtak;
+        }
+    }
+    return hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
+};
 
 export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: Date | undefined): Date | undefined => {
     return førsteUttaksdagISaken
@@ -139,11 +162,21 @@ const getTidslinjeTittelForFamiliehendelse = (
     }
 };
 
-const finnTekstForTidslinjehendelse = (
-    intl: IntlShape,
-    hendelsetype: TidslinjehendelseType,
-    erOmsorgsovertakelse: boolean,
-) => {
+const getTittelSvarPåSøknad = (hendelse: Tidslinjehendelse, intl: IntlShape) => {
+    const dokumenter = hendelse.dokumenter;
+    if (dokumenter && dokumenter.length > 0) {
+        if (dokumenter.find((d) => d.tittel.includes(Vedtaksbrev.AVSLAGSBREV))) {
+            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' });
+        }
+        if (dokumenter.find((d) => d.tittel.includes(Vedtaksbrev.INNVILGELSESBREV))) {
+            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' });
+        }
+    }
+    return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
+};
+
+const finnTekstForTidslinjehendelse = (intl: IntlShape, hendelse: Tidslinjehendelse, erOmsorgsovertakelse: boolean) => {
+    const hendelsetype = hendelse.tidslinjeHendelseType;
     switch (hendelsetype) {
         case TidslinjehendelseType.BARNET_TRE_ÅR:
             return erOmsorgsovertakelse
@@ -170,7 +203,7 @@ const finnTekstForTidslinjehendelse = (
         case TidslinjehendelseType.UTGÅENDE_VARSEL_TILBAKEBETALING:
             return intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_VARSEL_TILBAKEBETALING' });
         case TidslinjehendelseType.VEDTAK:
-            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
+            return getTittelSvarPåSøknad(hendelse, intl);
         case TidslinjehendelseType.VENTER_INNTEKTSMELDING:
             return intl.formatMessage({ id: 'tidslinje.tittel.VENTER_INNTEKTSMELDING' });
         case TidslinjehendelseType.VENTER_MELDEKORT:
@@ -179,17 +212,20 @@ const finnTekstForTidslinjehendelse = (
             return intl.formatMessage({ id: 'tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD' });
         case TidslinjehendelseType.VENT_DOKUMENTASJON:
             return intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' });
+        case TidslinjehendelseType.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV:
+            return intl.formatMessage({ id: 'tidslinje.tittel.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV' });
     }
 };
 
 export const getTidslinjehendelseTittel = (
-    hendelsetype: TidslinjehendelseType,
+    hendelse: Tidslinjehendelse,
     intl: IntlShape,
     tidlistBehandlingsdato: Date | undefined,
     manglendeVedleggData: Skjemanummer[] | undefined,
     barnFraSak: BarnGruppering,
     sak: Sak,
 ): string => {
+    const hendelsetype = hendelse.tidslinjeHendelseType;
     const { familiehendelse, ytelse, gjelderAdopsjon } = sak;
     const antallBarn = familiehendelse?.antallBarn;
     if (hendelsetype === TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD && tidlistBehandlingsdato !== undefined) {
@@ -227,7 +263,7 @@ export const getTidslinjehendelseTittel = (
     ) {
         return getTidslinjeTittelForBarnTreÅr(barnFraSak, antallBarn, familiehendelse?.omsorgsovertakelse, intl);
     }
-    return finnTekstForTidslinjehendelse(intl, hendelsetype, !!familiehendelse?.omsorgsovertakelse);
+    return finnTekstForTidslinjehendelse(intl, hendelse, !!familiehendelse?.omsorgsovertakelse);
 };
 
 export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand) => {
@@ -440,7 +476,11 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
 ): Tidslinjehendelse[] => {
     let hendelseVenterPåDokumentasjon = undefined;
     if (
-        åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING &&
+        [
+            BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
+            BehandlingTilstand.VENTER_PÅ_MELDEKORT,
+            BehandlingTilstand.TIDLIG_SØKNAD,
+        ].includes(åpenBehandling.tilstand) &&
         manglendeVedleggData &&
         manglendeVedleggData.length > 0
     ) {
@@ -516,10 +556,27 @@ const getSisteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
     }
 };
 
+const getGjeldendeInnvilgelseshendelse = (sorterteHendelser: Tidslinjehendelse[]) => {
+    const sisteInnvilgelseIndex = sorterteHendelser.findLastIndex((hendelse) =>
+        hendelse.dokumenter.find((dok) => dok.tittel.includes('Innvilgelsesbrev')),
+    );
+    const hendelserEtterInvilgelse =
+        sisteInnvilgelseIndex >= 0 ? sorterteHendelser.slice(sisteInnvilgelseIndex) : undefined;
+    const finnesNyeSøknaderEtterInnvilgelse = hendelserEtterInvilgelse?.find((hendelse) =>
+        [
+            TidslinjehendelseType.ENDRINGSSØKNAD,
+            TidslinjehendelseType.FØRSTEGANGSSØKNAD,
+            TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY,
+        ].includes(hendelse.tidslinjeHendelseType),
+    );
+    return finnesNyeSøknaderEtterInnvilgelse ? undefined : sorterteHendelser[sisteInnvilgelseIndex];
+};
+
 export const getHendelserForVisning = (
     visHeleTidslinjen: boolean,
     sorterteHendelser: Tidslinjehendelse[],
     erAvslåttForeldrepengesøknad: boolean,
+    erInnvilgetForeldrepengesøknad: boolean,
 ): Tidslinjehendelse[] => {
     const hendelserForVisning = [] as Tidslinjehendelse[];
     if (visHeleTidslinjen) {
@@ -527,6 +584,17 @@ export const getHendelserForVisning = (
     } else if (erAvslåttForeldrepengesøknad) {
         const sisteHendelser = getSisteHendelser(sorterteHendelser);
         hendelserForVisning.push(...sisteHendelser);
+    } else if (erInnvilgetForeldrepengesøknad) {
+        const gjeldendeInnvilgelseHendelse = erInnvilgetForeldrepengesøknad
+            ? getGjeldendeInnvilgelseshendelse(sorterteHendelser)
+            : undefined;
+        if (gjeldendeInnvilgelseHendelse) {
+            hendelserForVisning.push(gjeldendeInnvilgelseHendelse);
+        }
+        const nesteHendelser = getNesteHendelser(sorterteHendelser);
+        if (nesteHendelser.length > 0) {
+            hendelserForVisning.push(...nesteHendelser);
+        }
     } else {
         const nesteHendelser = getNesteHendelser(sorterteHendelser);
         if (nesteHendelser.length > 0) {

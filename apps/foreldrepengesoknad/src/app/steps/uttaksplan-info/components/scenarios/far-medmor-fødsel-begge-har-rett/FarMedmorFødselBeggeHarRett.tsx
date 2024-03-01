@@ -1,7 +1,8 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { notEmpty } from '@navikt/fp-validation';
+
 import { GuidePanel, VStack } from '@navikt/ds-react';
+
 import {
     Block,
     Dekningsgrad,
@@ -13,35 +14,38 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
+import { Søker } from '@navikt/fp-types';
+import { StepButtons } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
+import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+
+import { getTilgjengeligeDager } from '../../../../../utils/tilgjengeligeDagerUtils';
+import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
+import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
+import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
 import {
     FarMedmorFødselBeggeHarRettFormComponents,
     FarMedmorFødselBeggeHarRettFormData,
     FarMedmorFødselBeggeHarRettFormField,
 } from './farMedmorFødselBeggeHarRettFormConfig';
+import farMedmorFødselBeggeHarRettQuestionsConfig, {
+    FarMedmorFødselBeggeHarRettFormPayload,
+} from './farMedmorFødselBeggeHarRettQuestionsConfig';
 import {
     getInitialFarMedmorFødselBeggeHarRettValues,
     mapFarMedmorFødselBeggeHarRettToState,
 } from './farMedmorFødselBeggeHarRettUtils';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import farMedmorFødselBeggeHarRettQuestionsConfig, {
-    FarMedmorFødselBeggeHarRettFormPayload,
-} from './farMedmorFødselBeggeHarRettQuestionsConfig';
-import MorsSisteDagSpørsmål from '../spørsmål/MorsSisteDagSpørsmål';
-import FarMedmorsFørsteDag from '../spørsmål/FarMedmorsFørsteDag';
-import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from '../spørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
-import { FarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import { getTilgjengeligeDager } from '../../../../../utils/tilgjengeligeDagerUtils';
-import { StepButtons } from '@navikt/fp-ui';
-import { Søker } from '@navikt/fp-types';
 
 interface Props {
     tilgjengeligeStønadskontoer100DTO: TilgjengeligeStønadskontoerDTO;

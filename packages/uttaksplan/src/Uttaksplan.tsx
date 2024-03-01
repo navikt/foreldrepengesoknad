@@ -1,7 +1,9 @@
+import dayjs from 'dayjs';
 import { FunctionComponent, useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
+
 import {
     AnnenForelder,
-    Attachment,
     Barn,
     BarnFraNesteSak,
     Block,
@@ -10,6 +12,8 @@ import {
     Forelder,
     ForeldreparSituasjon,
     ISOStringToDate,
+    NavnPåForeldre,
+    Arbeidsforhold as OldArbeidsforhold,
     Periode,
     Situasjon,
     Søkersituasjon,
@@ -23,23 +27,20 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
     tidperiodeOverlapperDato,
-    NavnPåForeldre,
-    Arbeidsforhold as OldArbeidsforhold,
 } from '@navikt/fp-common';
-import Planlegger from './components/planlegger/Planlegger';
-import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
-import { validerUttaksplan } from './validering/validerUttaksplan';
-import VeilederInfo from './validering/veilederInfo/VeilederInfo';
-import { useIntl } from 'react-intl';
-import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
-import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
-import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
-import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
-import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import dayjs from 'dayjs';
+
+import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
+import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
+import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
+import Planlegger from './components/planlegger/Planlegger';
+import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
+import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
+import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
+import { validerUttaksplan } from './validering/validerUttaksplan';
+import VeilederInfo from './validering/veilederInfo/VeilederInfo';
+import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
 
 //TODO (TOR) temp-mapping. Fjern
 const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[] | undefined): OldArbeidsforhold[] => {
@@ -97,7 +98,6 @@ interface Props {
     familiehendelsesdatoNesteSak: Date | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
     minsterettUkerToTette: number | undefined;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 export interface PeriodeValidState {
@@ -139,7 +139,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
     familiehendelsesdatoNesteSak,
     førsteUttaksdagNesteBarnsSak,
     minsterettUkerToTette,
-    saveAttachment,
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
@@ -301,7 +300,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleResetUttaksplan();
     };
 
-    const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, false);
+    const uttaksplanVeilederInfo = getUttaksplanVeilederinfo(uttaksplanValidering.avvik, intl, true);
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 
     const utsettelserIPlan = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
@@ -335,7 +334,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     utsettelserIPlan={utsettelserIPlan}
                     barnFraNesteSak={barnFraNesteSak}
                     perioderErGyldige={perioderErGyldige}
-                    saveAttachment={saveAttachment}
                 />
             </Block>
 

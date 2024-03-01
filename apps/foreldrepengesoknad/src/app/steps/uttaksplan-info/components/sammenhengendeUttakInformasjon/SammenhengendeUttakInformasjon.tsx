@@ -1,6 +1,8 @@
-import { Alert } from '@navikt/ds-react';
-import { Block } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
+
+import { Alert } from '@navikt/ds-react';
+
+import { Block } from '@navikt/fp-common';
 
 interface Props {
     annenForeldrerHarRett: boolean;

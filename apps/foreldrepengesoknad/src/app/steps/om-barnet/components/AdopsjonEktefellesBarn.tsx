@@ -1,22 +1,19 @@
-import {
-    AttachmentType,
-    Block,
-    ISOStringToDate,
-    Skjemanummer,
-    Søkersituasjon,
-    guid,
-    intlUtils,
-} from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
 import dayjs from 'dayjs';
 import { FieldArray } from 'formik';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { BodyShort, Heading } from '@navikt/ds-react';
+
+import { Block, ISOStringToDate, Søkersituasjon, guid, intlUtils } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+
+import FormikFileUploader from 'app/components/formik-file-uploader/FormikFileUploader';
+
 import { OmBarnetFormComponents, OmBarnetFormData, OmBarnetFormField } from '../omBarnetFormConfig';
 import { validateAdopsjonsdato, validateFødselsdatoAdopsjon } from '../validation/omBarnetValidering';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { BodyShort, Heading } from '@navikt/ds-react';
 
 interface Props {
     søkersituasjon: Søkersituasjon;
@@ -128,7 +125,7 @@ const AdopsjonEktefellesBarn: FunctionComponent<Props> = ({
                     name={OmBarnetFormField.omsorgsovertakelse}
                     attachments={formValues.omsorgsovertakelse || []}
                     attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
-                    skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
+                    skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
                 />
             </Block>
         </>

@@ -1,22 +1,24 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-
-import AxiosMock from 'storybook/utils/AxiosMock';
-import { RequestStatus } from 'app/types/RequestState';
-import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
-import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
-import stønadskontoDeltUttak100PrematurWLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100PrematurWLB.json';
-import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
-import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100WLB.json';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import { Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
+import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
+import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
+import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoDeltUttak100PrematurWLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100PrematurWLB.json';
+import stønadskontoDeltUttak100WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100WLB.json';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
+
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { RequestStatus } from 'app/types/RequestState';
+
+import UttaksplanInfo from './UttaksplanInfo';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -108,7 +110,6 @@ FarMedmorFødselBeggeHarRettDekningsgrad100FørWLB.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-08-01').toDate()],
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -122,7 +123,6 @@ FarMedmorFødselBeggeHarRettDekningsgrad100EtterWLB.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-08-03').toDate()],
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -136,7 +136,6 @@ FarMedmorFødselBeggeHarRettDekningsgrad80EtterWLBTermin.args = {
         type: BarnType.UFØDT,
         termindato: new Date('2022-08-31'),
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
@@ -150,7 +149,6 @@ FarMedmorFødselBeggeHarRettFødselFør1Okt2021.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-09-02').toDate()],
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -164,7 +162,6 @@ FarMedmorFødselBeggeHarRettTvillinger.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-09-02').toDate()],
         antallBarn: 2,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -179,8 +176,5 @@ FarMedmorPrematurFødselBeggeHarRettPrematur.args = {
         fødselsdatoer: [dayjs('2023-01-25').toDate()],
         termindato: dayjs('2023-04-01').toDate(),
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
-    søkerinfo,
-    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };

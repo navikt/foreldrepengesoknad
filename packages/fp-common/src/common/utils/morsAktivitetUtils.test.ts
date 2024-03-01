@@ -1,4 +1,5 @@
-import { AnnenForelder, AnnenForelderOppgitt, MorsAktivitet, Skjemanummer } from '../types';
+import { Skjemanummer } from '@navikt/fp-constants';
+import { AnnenForelder, AnnenForelderOppgitt, MorsAktivitet } from '../types';
 import { aktivitetskravMorUtil, getMorsAktivitet, getMorsAktivitetSkjemanummer } from './morsAktivitetUtils';
 
 describe('Aktivitetskrav ved utsettelse', () => {
@@ -45,7 +46,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
 
 describe('getMorsAktivitetSkjemanummer', () => {
     it('should require Skjemanummer.DOK_INNLEGGELSE when morsAktivitet=Innlagt', () => {
-        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Innlagt)).toBe(Skjemanummer.DOK_INNLEGGELSE);
+        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Innlagt)).toBe(Skjemanummer.DOK_INNLEGGELSE_MOR);
     });
 
     it('should require Skjemanummer.BEKREFTELS_DELTAR_KVALIFISERINGSPROGRAM when morsAktivitet=Kvalifiseringsprogrammet', () => {
@@ -61,17 +62,15 @@ describe('getMorsAktivitetSkjemanummer', () => {
     });
 
     it('should require Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM when morsAktivitet is ArbeidOgUtdanning, Arbeid or TrengerHjelp', () => {
-        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Arbeid)).toBe(Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM);
+        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Arbeid)).toBe(Skjemanummer.DOK_ARBEID_MOR);
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.ArbeidOgUtdanning)).toBe(
-            Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
+            Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR,
         );
-        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.TrengerHjelp)).toBe(
-            Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
-        );
+        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.TrengerHjelp)).toBe(Skjemanummer.DOK_SYKDOM_MOR);
     });
 
     it('should require Skjemanummer.BEKREFTELSE_FRA_STUDIESTED when morsAktivitet=Utdanning', () => {
-        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Utdanning)).toBe(Skjemanummer.BEKREFTELSE_FRA_STUDIESTED);
+        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Utdanning)).toBe(Skjemanummer.DOK_UTDANNING_MOR);
     });
 });
 

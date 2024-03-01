@@ -1,5 +1,7 @@
-import { hasValue, isValidTidsperiode, UtsettelseÅrsakType } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+
+import { UtsettelseÅrsakType, hasValue, isValidTidsperiode } from '@navikt/fp-common';
+
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 
 export interface PeriodeUtsettelseFormConfigPayload {
@@ -28,11 +30,6 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
             values.årsak !== UtsettelseÅrsakType.Arbeid ||
             (hasValue(values.bekrefterArbeidIPerioden) && values.bekrefterArbeidIPerioden !== undefined),
         isIncluded: ({ values }) => hasValue(values.årsak) && values.årsak === UtsettelseÅrsakType.Arbeid,
-        visibilityFilter: ({ values }) => hasValue(values.årsak),
-    },
-    [PeriodeUtsettelseFormField.vedlegg]: {
-        isAnswered: () => true,
-        isIncluded: ({ values }) => hasValue(values.årsak),
         visibilityFilter: ({ values }) => hasValue(values.årsak),
     },
     [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: {

@@ -148,7 +148,6 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
 
     const createOppsummeringslisteelementPropsForOverføringsperiode = (
         periode: Overføringsperiode,
-        periodeErNyEllerEndret: boolean,
     ): OppsummeringslisteelementProps => {
         const kontonavn = getStønadskontoNavnFromKonto(periode.konto);
         return {
@@ -159,14 +158,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
                 },
             ),
             høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
-            content: (
-                <Overføringsperiodedetaljer
-                    periode={periode}
-                    navnPåForeldre={navnPåForeldre}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    periodeErNyEllerEndret={periodeErNyEllerEndret}
-                />
-            ),
+            content: <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />,
         };
     };
 
@@ -180,7 +172,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
             case Periodetype.Utsettelse:
                 return createOppsummeringslisteelementPropsForUtsettelsesperiode(periode, periodeErNyEllerEndret);
             case Periodetype.Overføring:
-                return createOppsummeringslisteelementPropsForOverføringsperiode(periode, periodeErNyEllerEndret);
+                return createOppsummeringslisteelementPropsForOverføringsperiode(periode);
             case Periodetype.Opphold:
                 return createOppsummeringslisteelementPropsForOppholdsperiode(periode);
             default:

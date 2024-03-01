@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { VStack } from '@navikt/ds-react';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
+import { VStack } from '@navikt/ds-react';
+
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+
+import UiIntlProvider from '../i18n/ui/UiIntlProvider';
+import { mapFileToAttachment } from './fileUtils';
 import FileInput from './input/FileInput';
 import AttachmentList from './liste/AttachmentList';
-import { Attachment } from '@navikt/fp-types';
-import { mapFileToAttachment } from './fileUtils';
 import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';
-import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_KB = 16777;
@@ -52,7 +54,7 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
     try {
         const response = await saveAttachment(attachment);
         attachment.pending = false;
-        attachment.url = response.headers.location;
+        attachment.url = response.headers.location; // TODELETE
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } catch (error) {

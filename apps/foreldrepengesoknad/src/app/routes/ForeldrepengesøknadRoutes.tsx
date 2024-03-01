@@ -1,28 +1,32 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Route, useNavigate, Navigate, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+
 import { Sak } from '@navikt/fp-common';
-import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
-import Velkommen from 'app/pages/velkommen/Velkommen';
-import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
-import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
-import OmBarnet from 'app/steps/om-barnet/OmBarnet';
-import Oppsummering from 'app/steps/oppsummering/Oppsummering';
-import SøkersituasjonSteg from 'app/steps/søkersituasjon/SøkersituasjonSteg';
-import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
-import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
+import { ErrorPage, Umyndig } from '@navikt/fp-ui';
+import { erMyndig } from '@navikt/fp-utils';
+
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
 import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
 import useSendSøknad from 'app/context/useSendSøknad';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { Kvittering } from 'app/types/Kvittering';
-import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
+import Velkommen from 'app/pages/velkommen/Velkommen';
+import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
+import FordelingSteg from 'app/steps/fordeling/FordelingSteg';
+import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
+import ManglendeVedlegg from 'app/steps/manglende-vedlegg/ManglendeVedlegg';
+import OmBarnet from 'app/steps/om-barnet/OmBarnet';
+import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import PeriodeMedForeldrepengerSteg from 'app/steps/periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
+import SøkersituasjonSteg from 'app/steps/søkersituasjon/SøkersituasjonSteg';
+import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
+import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
+import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
+import { Kvittering } from 'app/types/Kvittering';
+
 import isAvailable from './isAvailable';
 import SøknadRoutes from './routes';
-import FordelingSteg from 'app/steps/fordeling/FordelingSteg';
-import { erMyndig } from '@navikt/fp-utils';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
@@ -49,6 +53,17 @@ const renderSøknadRoutes = (
                     element={
                         <UttaksplanStep
                             søkerInfo={søkerInfo}
+                            erEndringssøknad={erEndringssøknad}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    }
+                />
+                <Route
+                    path={SøknadRoutes.DOKUMENTASJON}
+                    element={
+                        <ManglendeVedlegg
+                            søker={søkerInfo.søker}
                             erEndringssøknad={erEndringssøknad}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
@@ -128,6 +143,17 @@ const renderSøknadRoutes = (
                 element={
                     <UttaksplanStep
                         søkerInfo={søkerInfo}
+                        erEndringssøknad={erEndringssøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.DOKUMENTASJON}
+                element={
+                    <ManglendeVedlegg
+                        søker={søkerInfo.søker}
                         erEndringssøknad={erEndringssøknad}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

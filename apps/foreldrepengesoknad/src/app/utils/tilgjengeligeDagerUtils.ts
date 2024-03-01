@@ -1,4 +1,5 @@
 import { Forelder, StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
+
 import { TilgjengeligeDager } from '../types/TilgjengeligeDager';
 
 export const summerAntallDagerIKontoer = (kontoer: TilgjengeligStønadskonto[]): number => {

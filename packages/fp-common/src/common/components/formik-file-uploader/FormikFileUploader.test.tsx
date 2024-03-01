@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import FormikFileUploader from './FormikFileUploader';
 import { Formik } from 'formik';
-import { Attachment, AttachmentType, Skjemanummer } from '../../types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 describe('<FormikFileUploader>', () => {
     it.skip('skal vise opplastingskomponent men ingen opplastede vedlegg', () => {

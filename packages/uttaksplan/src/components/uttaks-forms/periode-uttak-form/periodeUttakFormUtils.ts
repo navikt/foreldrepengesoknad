@@ -1,40 +1,38 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import dayjs from 'dayjs';
+
 import {
-    Attachment,
-    AttachmentType,
-    Forelder,
-    MorsAktivitet,
-    Situasjon,
-    Skjemanummer,
-    StønadskontoType,
-    OverføringÅrsakType,
-    hasValue,
-    Periode,
-    isUttaksperiode,
-    isOverføringsperiode,
-    isOppholdsperiode,
-    getStønadskontoFromOppholdsårsak,
     Arbeidsform,
-    trimNumberValue,
-    Periodetype,
-    Overføringsperiode,
+    Forelder,
     Oppholdsperiode,
-    getOppholdsÅrsakFromStønadskonto,
+    Overføringsperiode,
+    OverføringÅrsakType,
+    Periode,
+    Periodetype,
+    Situasjon,
+    StønadskontoType,
+    TidsperiodeDate,
+    UttakRundtFødselÅrsak,
     Uttaksperiode,
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
-    lagSendSenereDokumentNårIngenAndreFinnes,
     getMorsAktivitet,
-    UttakRundtFødselÅrsak,
+    getOppholdsÅrsakFromStønadskonto,
+    getSisteUttaksdag6UkerEtterFødsel,
+    getStønadskontoFromOppholdsårsak,
+    hasValue,
+    isOppholdsperiode,
+    isOverføringsperiode,
+    isUttaksperiode,
+    trimNumberValue,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import dayjs from 'dayjs';
+
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
     erSamtidigUttakFarMedmorFørFødselWLB,
     erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
 } from './periodeUttakFormQuestionsConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { getMorsAktivitetSkjemanummer } from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
 
 const getInitialKonto = (
     erDeltUttak: boolean,
@@ -109,14 +107,11 @@ const getInitialValues = (
         [PeriodeUttakFormField.konto]: konto,
         [PeriodeUttakFormField.samtidigUttak]: YesOrNo.UNANSWERED,
         [PeriodeUttakFormField.aktivitetskravMor]: '',
-        [PeriodeUttakFormField.aktivitetskravMorDokumentasjon]: [],
         [PeriodeUttakFormField.overføringsårsak]: '',
-        [PeriodeUttakFormField.overføringsdokumentasjon]: [],
         [PeriodeUttakFormField.skalHaGradering]: YesOrNo.UNANSWERED,
         [PeriodeUttakFormField.stillingsprosent]: '',
         [PeriodeUttakFormField.arbeidsformer]: '',
         [PeriodeUttakFormField.erMorForSyk]: YesOrNo.UNANSWERED,
-        [PeriodeUttakFormField.erMorForSykDokumentasjon]: [],
         [PeriodeUttakFormField.uttakRundtFødselÅrsak]: '',
         [PeriodeUttakFormField.samtidigUttakProsent]: '',
         [PeriodeUttakFormField.hvemSkalTaUttak]: hvemSkalTaUttak,
@@ -151,25 +146,14 @@ export const cleanPeriodeUttakFormData = (
         aktivitetskravMor: visibility.isVisible(PeriodeUttakFormField.aktivitetskravMor)
             ? values.aktivitetskravMor
             : '',
-        aktivitetskravMorDokumentasjon: visibility.isVisible(PeriodeUttakFormField.aktivitetskravMorDokumentasjon)
-            ? values.aktivitetskravMorDokumentasjon
-            : [],
         erMorForSyk: visibility.isVisible(PeriodeUttakFormField.erMorForSyk)
             ? values.erMorForSyk
             : initialValues.erMorForSyk,
-        erMorForSykDokumentasjon:
-            visibility.isVisible(PeriodeUttakFormField.erMorForSyk) ||
-            values.uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk
-                ? values.erMorForSykDokumentasjon
-                : initialValues.erMorForSykDokumentasjon,
         uttakRundtFødselÅrsak: visibility.isVisible(PeriodeUttakFormField.uttakRundtFødselÅrsak)
             ? values.uttakRundtFødselÅrsak
             : initialValues.uttakRundtFødselÅrsak,
         arbeidsformer: visibility.isVisible(PeriodeUttakFormField.arbeidsformer) ? values.arbeidsformer : '',
         konto: values.konto,
-        overføringsdokumentasjon: visibility.isVisible(PeriodeUttakFormField.overføringsdokumentasjon)
-            ? values.overføringsdokumentasjon
-            : [],
         overføringsårsak: visibility.isVisible(PeriodeUttakFormField.overføringsårsak)
             ? values.overføringsårsak
             : initialValues.overføringsårsak,
@@ -236,9 +220,7 @@ export const getPeriodeUttakFormInitialValues = (
                 fom: periode.tidsperiode.fom,
                 tom: periode.tidsperiode.tom,
                 aktivitetskravMor: periode.morsAktivitetIPerioden || '',
-                aktivitetskravMorDokumentasjon: periode.vedlegg || [],
                 erMorForSyk: convertBooleanOrUndefinedToYesOrNo(periode.erMorForSyk),
-                erMorForSykDokumentasjon: periode.vedlegg || [],
                 hvemSkalTaUttak: periode.forelder || initialValues.hvemSkalTaUttak,
                 arbeidsformer:
                     periode.arbeidsformer && periode.arbeidsformer.length > 0
@@ -264,7 +246,6 @@ export const getPeriodeUttakFormInitialValues = (
                 fom: periode.tidsperiode.fom,
                 tom: periode.tidsperiode.tom,
                 overføringsårsak: periode.årsak,
-                overføringsdokumentasjon: periode.vedlegg || [],
             };
         }
 
@@ -325,33 +306,6 @@ const getSamtidigUttaksProsentWLB = (
         : '100';
 };
 
-const velgVedleggSomSkalBrukes = (
-    aktivitetskravMorDokumentasjon: Attachment[],
-    erMorForSykDokumentasjon: Attachment[],
-): Attachment[] => {
-    if (aktivitetskravMorDokumentasjon.length > 0) {
-        return aktivitetskravMorDokumentasjon;
-    }
-
-    return erMorForSykDokumentasjon;
-};
-
-const skalVedleggPåkreves = (
-    morsAktivitetIPerioden: '' | MorsAktivitet | undefined,
-    erMorForSyk: boolean,
-    uttakRundtFødselÅrsak: UttakRundtFødselÅrsak | '' | undefined,
-): boolean => {
-    if (
-        hasValue(morsAktivitetIPerioden) ||
-        erMorForSyk ||
-        (uttakRundtFødselÅrsak !== undefined && uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk)
-    ) {
-        return true;
-    }
-
-    return false;
-};
-
 const getKontoVerdi = (
     samtidigWLBUttakFørFødselFarMedmor: boolean,
     erFarEllerMedmor: boolean,
@@ -370,6 +324,27 @@ const getKontoVerdi = (
     return inputKonto;
 };
 
+const getForelderForPeriode = (
+    angittForelder: Forelder,
+    tidsperiode: TidsperiodeDate,
+    erFarEllerMedmor: boolean,
+    erDeltUttak: boolean,
+    familiehendelsesdato: Date,
+): Forelder => {
+    const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
+
+    if (
+        dayjs(tidsperiode.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day') &&
+        erFarEllerMedmor &&
+        erDeltUttak &&
+        (angittForelder as any) === ''
+    ) {
+        return Forelder.farMedmor;
+    }
+
+    return angittForelder;
+};
+
 export const mapPeriodeUttakFormToPeriode = (
     values: Partial<PeriodeUttakFormData>,
     id: string,
@@ -380,27 +355,25 @@ export const mapPeriodeUttakFormToPeriode = (
     situasjon: Situasjon,
 ): Periode => {
     if (type === Periodetype.Overføring) {
-        const overføringTrengerDokumentasjon =
-            values.overføringsårsak !== OverføringÅrsakType.aleneomsorg &&
-            values.overføringsårsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
-        const vedlegg = overføringTrengerDokumentasjon
-            ? lagSendSenereDokumentNårIngenAndreFinnes(
-                  values.overføringsdokumentasjon!,
-                  AttachmentType.OVERFØRING_KVOTE,
-                  Skjemanummer.DOK_OVERFØRING_FOR_SYK,
-              )
-            : undefined;
         const periode: Overføringsperiode = {
             id,
             type,
-            forelder: values.hvemSkalTaUttak as Forelder,
+            forelder: getForelderForPeriode(
+                values.hvemSkalTaUttak as Forelder,
+                {
+                    fom: values.fom!,
+                    tom: values.tom!,
+                },
+                erFarEllerMedmor,
+                erDeltUttak,
+                familiehendelsesdato,
+            ),
             konto: values.konto as StønadskontoType,
             tidsperiode: {
                 fom: values.fom!,
                 tom: values.tom!,
             },
             årsak: values.overføringsårsak as OverføringÅrsakType,
-            vedlegg,
         };
 
         return periode;
@@ -433,18 +406,6 @@ export const mapPeriodeUttakFormToPeriode = (
         erFarEllerMedmor,
         erDeltUttak,
         situasjon,
-    );
-    const attachmentType = hasValue(values.aktivitetskravMor)
-        ? AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-        : AttachmentType.UTSETTELSE_SYKDOM;
-
-    const skjemanummer = hasValue(values.aktivitetskravMor)
-        ? getMorsAktivitetSkjemanummer(values.aktivitetskravMor as MorsAktivitet)
-        : Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
-
-    const relevantVedlegg = velgVedleggSomSkalBrukes(
-        values.aktivitetskravMorDokumentasjon!,
-        values.erMorForSykDokumentasjon!,
     );
 
     const morErForSyk =
@@ -510,13 +471,6 @@ export const mapPeriodeUttakFormToPeriode = (
         ønskerFlerbarnsdager: convertYesOrNoOrUndefinedToBoolean(values.ønskerFlerbarnsdager),
         ønskerSamtidigUttak: erSamtidigUttak,
         samtidigUttakProsent: samtidigUttakProsentVerdi,
-        vedlegg: skalVedleggPåkreves(
-            values.aktivitetskravMor,
-            convertYesOrNoOrUndefinedToBoolean(values.erMorForSyk) || false,
-            values.uttakRundtFødselÅrsak,
-        )
-            ? lagSendSenereDokumentNårIngenAndreFinnes(relevantVedlegg, attachmentType, skjemanummer)
-            : [],
     };
 
     return periode;

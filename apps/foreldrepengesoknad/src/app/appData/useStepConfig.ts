@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 import { IntlShape, useIntl } from 'react-intl';
+import { useLocation } from 'react-router-dom';
+
 import { notEmpty } from '@navikt/fp-validation';
-import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../routes/routes';
+
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from 'app/context/FpDataContext';
+
+import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../routes/routes';
 
 // TODO Bør denne flyttast ut?
 const getPathToLabelMap = (intl: IntlShape) =>
@@ -19,6 +22,7 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold.senere' }),
         [SøknadRoutes.INNTEKTSINFORMASJON]: intl.formatMessage({ id: 'steps.label.inntektsinformasjon' }),
         [SøknadRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'steps.label.oppsummering' }),
+        [SøknadRoutes.DOKUMENTASJON]: intl.formatMessage({ id: 'søknad.manglendeVedlegg' }),
     }) as Record<string, string>;
 
 const isAfterStep = (previousStepPath: SøknadRoutes, currentStepPath: SøknadRoutes): boolean => {
@@ -45,6 +49,17 @@ const showUtenlandsoppholdStep = (
     return false;
 };
 
+const showManglendeDokumentasjonSteg = (
+    path: SøknadRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+) => {
+    if (path === SøknadRoutes.DOKUMENTASJON) {
+        return getData(ContextDataType.MANGLER_DOKUMENTASJON) === true;
+    }
+
+    return false;
+};
+
 const useStepConfig = (erEndringssøknad = false) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
@@ -61,7 +76,11 @@ const useStepConfig = (erEndringssøknad = false) => {
     const appPathList = useMemo(
         () =>
             ROUTES_ORDER.flatMap((path) =>
-                requiredSteps.includes(path) || showUtenlandsoppholdStep(path, currentPath, getStateData) ? [path] : [],
+                requiredSteps.includes(path) ||
+                showUtenlandsoppholdStep(path, currentPath, getStateData) ||
+                showManglendeDokumentasjonSteg(path, getStateData)
+                    ? [path]
+                    : [],
             ),
         [requiredSteps, currentPath, getStateData],
     );

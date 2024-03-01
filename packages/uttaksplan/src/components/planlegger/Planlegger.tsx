@@ -1,32 +1,33 @@
+import { FunctionComponent, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Button, Heading } from '@navikt/ds-react';
+
 import {
-    bemUtils,
-    InfoBlock,
-    intlUtils,
-    Block,
     ActionLink,
-    NavnPåForeldre,
-    Situasjon,
-    TilgjengeligStønadskonto,
+    AnnenForelder,
     Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
-    AnnenForelder,
-    isAnnenForelderOppgitt,
+    Block,
+    InfoBlock,
+    NavnPåForeldre,
     Periode,
-    Periodene,
-    Utsettelsesperiode,
-    Attachment,
     PeriodeValidState,
+    Periodene,
+    Situasjon,
+    TilgjengeligStønadskonto,
+    Utsettelsesperiode,
+    bemUtils,
+    intlUtils,
+    isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { FunctionComponent, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
+import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
-import { Button, Heading } from '@navikt/ds-react';
-
 import './planlegger.less';
-import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 interface Props {
     uttaksplan: Periode[];
@@ -54,7 +55,6 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
     barnFraNesteSak: BarnFraNesteSak | undefined;
     perioderErGyldige: PeriodeValidState[];
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const Planlegger: FunctionComponent<Props> = ({
@@ -83,7 +83,6 @@ const Planlegger: FunctionComponent<Props> = ({
     utsettelserIPlan,
     barnFraNesteSak,
     perioderErGyldige,
-    saveAttachment,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('planlegger');
@@ -151,7 +150,6 @@ const Planlegger: FunctionComponent<Props> = ({
                                 barnFraNesteSak={barnFraNesteSak}
                                 intl={intl}
                                 perioderErGyldige={perioderErGyldige}
-                                saveAttachment={saveAttachment}
                             />
                         </section>
                     </Block>
@@ -180,7 +178,6 @@ const Planlegger: FunctionComponent<Props> = ({
                                 antallBarn={barn.antallBarn}
                                 utsettelserIPlan={utsettelserIPlan}
                                 intl={intl}
-                                saveAttachment={saveAttachment}
                             />
                         </div>
                     )}

@@ -1,17 +1,11 @@
-import * as React from 'react';
 import classnames from 'classnames';
-
+import * as React from 'react';
 import { useIntl } from 'react-intl';
 
-import {
-    Attachment as AttachmentType,
-    bemUtils,
-    bytesString,
-    intlUtils,
-    SlettKnapp,
-    VedleggIkon,
-} from '@navikt/fp-common';
 import { Link, Loader } from '@navikt/ds-react';
+
+import { SlettKnapp, VedleggIkon, bemUtils, bytesString, intlUtils } from '@navikt/fp-common';
+import { Attachment as AttachmentType } from '@navikt/fp-types';
 
 import './attachment.less';
 

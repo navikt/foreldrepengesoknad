@@ -1,7 +1,11 @@
 import { HeartFillIcon } from '@navikt/aksel-icons';
+
 import { BodyShort } from '@navikt/ds-react';
-import './../graf.css';
+
 import { bemUtils } from '@navikt/fp-common';
+
+import './../graf.css';
+
 interface Props {
     rowHeight: number;
     familiehendelseNavn: string;
@@ -22,6 +26,7 @@ const FamiliehendelseVisning: React.FunctionComponent<Props> = ({
                 width: `${fieldWidthPercent}%`,
                 justifyContent: 'center',
                 alignItems: 'center',
+                padding: '1.5rem',
             }}
         >
             <BodyShort

@@ -1,8 +1,11 @@
+import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
+
 import { DatepickerDateRange } from '@navikt/ds-datepicker';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { VStack } from '@navikt/ds-react';
+
 import {
     Block,
     Dekningsgrad,
@@ -16,9 +19,12 @@ import {
     isFarEllerMedmor,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
+import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+
+import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
@@ -26,23 +32,21 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { lagUttaksplan } from 'app/utils/uttaksplan/lagUttaksplan';
+
 import {
     FarMedmorFødselOgMorHarIkkeRettFormComponents,
     FarMedmorFødselOgMorHarIkkeRettFormData,
     FarMedmorFødselOgMorHarIkkeRettFormField,
 } from './farMedmorFødselOgMorHarIkkeRettFormConfig';
 import {
-    getInitialFarMedmorFødselOgMorHarIkkeRettValues,
-    mapFarMedmorFødselOgMorHarIkkeRettFormToState,
-} from './farMedmorFødselOgMorHarIkkeRettUtils';
-import {
     FarMedmorFødselOgMorHarIkkeRettQuestionsPayload,
     farMedmorFødselOgMorHarIkkeRettQuestionsConfig,
 } from './farMedmorFødselOgMorHarIkkeRettQuestionsConfig';
+import {
+    getInitialFarMedmorFødselOgMorHarIkkeRettValues,
+    mapFarMedmorFødselOgMorHarIkkeRettFormToState,
+} from './farMedmorFødselOgMorHarIkkeRettUtils';
 import { validateStartdatoFarMedmor } from './validation/farMedmorFødselOgMorHarIkkeRettValidering';
-import { getFordelingFraKontoer } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { Søker } from '@navikt/fp-types';
 
 const konverterStringTilDate = (invalidDateRanges?: DatepickerDateRange[]): DateRange[] | undefined => {
     if (!invalidDateRanges) {

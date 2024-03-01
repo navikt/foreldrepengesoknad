@@ -1,11 +1,12 @@
-import { AnnenForelder, StønadskontoType, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
+
+import { AnnenForelder, StønadskontoType, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
+
+import { getArbeidsformTekst } from '../OppsummeringUtils';
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
-import { getArbeidsformTekst } from '../OppsummeringUtils';
-import { shouldPeriodeHaveAttachment } from '@navikt/uttaksplan';
-import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface UttaksperiodedetaljerProps {
     periode: UttaksperiodeBase;
@@ -20,8 +21,6 @@ type Props = UttaksperiodedetaljerProps;
 const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
     periode,
     registrerteArbeidsforhold,
-    periodeErNyEllerEndret,
-    søkerErFarEllerMedmor,
     annenForelder,
 }) => {
     const {
@@ -32,7 +31,6 @@ const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
         stillingsprosent,
         orgnumre,
         arbeidsformer,
-        vedlegg,
         ønskerFlerbarnsdager,
     } = periode;
     const intl = useIntl();
@@ -78,13 +76,7 @@ const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
                     verdi={arbeidsformTekst}
                 />
             )}
-            {shouldPeriodeHaveAttachment(periode, søkerErFarEllerMedmor, annenForelder) && morsAktivitetIPerioden && (
-                <MorsAktivitetDetaljer
-                    morsAktivitet={morsAktivitetIPerioden}
-                    dokumentasjonAvMorsAktivitet={vedlegg || []}
-                    visOppsummeringAvDokumentasjon={periodeErNyEllerEndret}
-                />
-            )}
+            {morsAktivitetIPerioden && <MorsAktivitetDetaljer morsAktivitet={morsAktivitetIPerioden} />}
         </>
     );
 };

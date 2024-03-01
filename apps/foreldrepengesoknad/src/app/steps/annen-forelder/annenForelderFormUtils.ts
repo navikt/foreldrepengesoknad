@@ -1,9 +1,11 @@
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { IntlShape } from 'react-intl';
+
 import {
     AnnenForelder,
-    AttachmentType,
     Barn,
     RegistrertAnnenForelder,
-    Skjemanummer,
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
     hasValue,
@@ -12,12 +14,12 @@ import {
     isAnnenForelderOppgitt,
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import SøkerData from 'app/context/types/SøkerData';
-import { IntlShape } from 'react-intl';
-import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+
+import SøkerData from 'app/context/types/SøkerData';
+
+import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.kanIkkeOppgis]: false,
@@ -135,7 +137,6 @@ export const getAnnenForelderFormInitialValues = (
             bostedsland: annenForelder.bostedsland || '',
             erInformertOmSøknaden: convertBooleanOrUndefinedToYesOrNo(annenForelder.erInformertOmSøknaden),
             erMorUfør: convertBooleanOrUndefinedToYesOrNo(annenForelder.erUfør),
-            dokumentasjonAvAleneomsorg: barn.dokumentasjonAvAleneomsorg || [],
             etternavn: annenForelder.etternavn,
             fornavn: annenForelder.fornavn === intlUtils(intl, 'annen.forelder') ? '' : annenForelder.fornavn,
             kanIkkeOppgis: annenForelder.kanIkkeOppgis,

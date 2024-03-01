@@ -1,20 +1,23 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import { RequestStatus } from 'app/types/RequestState';
+import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
 import stønadskontoDeltUttak100Tvillinger from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100Tvillinger.json';
-import UttaksplanInfoTestData from './uttaksplanInfoTestData';
-import UttaksplanInfo from './UttaksplanInfo';
-import { FpDataContext, ContextDataType } from 'app/context/FpDataContext';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
 import { Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
-import dayjs from 'dayjs';
-import { MemoryRouter } from 'react-router-dom';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
+
+import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { RequestStatus } from 'app/types/RequestState';
+
+import UttaksplanInfo from './UttaksplanInfo';
+import UttaksplanInfoTestData from './uttaksplanInfoTestData';
 
 const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
 const STØNADSKONTO_URL = '/konto';
@@ -150,7 +153,6 @@ FarSøkerEtterMorFør1Okt2021.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2021-06-14').toDate()],
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     uttaksplanAnnenPart: [uttaksperiodeFellesperiode],
@@ -164,7 +166,6 @@ FarSøkerEtterMorEtter1Okt2021.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-09-14').toDate()],
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -179,7 +180,6 @@ FarSøkerEtterMorTrillinger.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-09-14').toDate()],
         antallBarn: 3,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -194,7 +194,6 @@ FarSøkerEtterMorDerMorHarTattUtFarsKvote.args = {
         type: BarnType.FØDT,
         fødselsdatoer: [dayjs('2022-09-14').toDate()],
         antallBarn: 1,
-        dokumentasjonAvAleneomsorg: [],
     },
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,

@@ -1,3 +1,7 @@
+import { StoryFn } from '@storybook/react';
+import dayjs from 'dayjs';
+import withRouter from 'storybook/decorators/withRouter';
+
 import {
     AnnenForelder as AnnenForelderType,
     BarnType,
@@ -8,11 +12,10 @@ import {
     StønadskontoType,
 } from '@navikt/fp-common';
 import { Søker, SøkersituasjonFp } from '@navikt/fp-types';
-import { StoryFn } from '@storybook/react';
+
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøkerData from 'app/context/types/SøkerData';
-import dayjs from 'dayjs';
-import withRouter from 'storybook/decorators/withRouter';
+
 import InfoOmSøknaden from './InfoOmSøknaden';
 
 const søker = {
@@ -67,7 +70,6 @@ const Template: StoryFn<Props> = ({
                     fødselsdatoer: [new Date('2021-03-15')],
                     antallBarn: 1,
                     datoForAleneomsorg: undefined,
-                    dokumentasjonAvAleneomsorg: [],
                 },
                 [ContextDataType.ANNEN_FORELDER]: annenForelder,
                 [ContextDataType.SØKER_DATA]: søkerData,

@@ -1,14 +1,17 @@
-import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
-import { initAmplitude } from '@navikt/fp-metrics';
-import { Søker, SøkerBarn, SivilstandType, SøkersituasjonFp } from '@navikt/fp-types';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
-import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { SivilstandType, Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
+
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
 import AnnenForelder from './AnnenForelder';
 
 const promiseAction =
@@ -67,7 +70,6 @@ const Template: StoryFn<Props> = ({
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: undefined,
-        dokumentasjonAvAleneomsorg: [],
     },
     annenForelder = {
         kanIkkeOppgis: true,
@@ -126,7 +128,6 @@ Default.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: dayjs('2021-03-15').toDate(),
-        dokumentasjonAvAleneomsorg: [],
         fnr: ['21091981146'],
     },
     søker,
@@ -186,7 +187,6 @@ ForFar.args = {
         fødselsdatoer: [dayjs('2021-03-15').toDate()],
         antallBarn: 1,
         datoForAleneomsorg: dayjs('2021-03-15').toDate(),
-        dokumentasjonAvAleneomsorg: [],
         fnr: ['21091981146'],
     },
     søkersituasjon: {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -58,13 +58,10 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     }, [søkerinfoError, sakerError]);
 
     // TODO (TOR) Dropp mapping her og dytt mellomlagra data inn i context rått
-    const initialState = useMemo(
-        () =>
-            storageData && shouldApplyStorage(storageData)
-                ? konverterMellomlagretDataTilAppData(storageData)
-                : undefined,
-        [storageData],
-    );
+    const initialState =
+        storageData && shouldApplyStorage(storageData) ? konverterMellomlagretDataTilAppData(storageData) : undefined;
+
+    const applyStorage = storageData !== undefined && shouldApplyStorage(storageData);
 
     useEffect(() => {
         if (storageData?.søknad?.søker?.språkkode && storageData.søknad.søker.språkkode !== locale) {
@@ -98,10 +95,10 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
                         onChangeLocale={onChangeLocale}
                         søkerInfo={søkerinfoData}
                         saker={sakerData.foreldrepenger}
-                        currentRoute={storageData ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
-                        lagretErEndringssøknad={storageData?.søknad?.erEndringssøknad}
-                        lagretHarGodkjentVilkår={storageData?.søknad?.harGodkjentVilkår}
-                        lagretSøknadGjelderNyttBarn={storageData?.søknadGjelderEtNyttBarn}
+                        currentRoute={applyStorage ? storageData.currentRoute : SøknadRoutes.VELKOMMEN}
+                        lagretErEndringssøknad={applyStorage ? storageData.søknad?.erEndringssøknad : false}
+                        lagretHarGodkjentVilkår={applyStorage ? storageData.søknad?.harGodkjentVilkår : false}
+                        lagretSøknadGjelderNyttBarn={applyStorage ? storageData.søknadGjelderEtNyttBarn : false}
                         setKvittering={setKvittering}
                     />
                 </BrowserRouter>

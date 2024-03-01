@@ -1,5 +1,5 @@
+import { Attachment } from '@navikt/fp-types';
 import { Arbeidsform } from './Arbeidsform';
-import { Attachment } from './Attachment';
 import { Forelder } from './Forelder';
 import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakType } from './OppholdÅrsakType';
@@ -24,7 +24,6 @@ export interface PeriodeBase {
     id: string;
     type: Periodetype;
     tidsperiode: TidsperiodeDate;
-    vedlegg?: Attachment[];
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
@@ -170,6 +169,102 @@ export const isUttakAvFellesperiode = (periode: Periode): periode is Uttaksperio
 
 export const isUttakAvForeldrepengerFørFødsel = (periode: Periode): periode is ForeldrepengerFørFødselUttaksperiode => {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
+};
+
+export const isUttakAvFedrekvoteMorForSyk = (periode: Periode): periode is Uttaksperiode => {
+    return (
+        periode.type === Periodetype.Uttak &&
+        periode.erMorForSyk === true &&
+        periode.konto === StønadskontoType.Fedrekvote
+    );
+};
+
+export const isOverføringMorInnlagt = (periode: Periode) => {
+    return (
+        isOverføringsperiode(periode) &&
+        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
+        periode.forelder === Forelder.farMedmor
+    );
+};
+
+export const isOverføringMorForSyk = (periode: Periode) => {
+    return (
+        isOverføringsperiode(periode) &&
+        periode.forelder === Forelder.farMedmor &&
+        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+    );
+};
+
+export const isOverføringFarInnlagt = (periode: Periode) => {
+    return (
+        isOverføringsperiode(periode) &&
+        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
+        periode.forelder === Forelder.mor
+    );
+};
+
+export const isOverføringFarForSyk = (periode: Periode) => {
+    return (
+        isOverføringsperiode(periode) &&
+        periode.forelder === Forelder.mor &&
+        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+    );
+};
+
+export const isUtsettelseBarnInnlagt = (periode: Periode) => {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
+};
+
+export const isMorStuderer = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Utdanning;
+};
+
+export const isMorJobber = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Arbeid;
+};
+
+export const isMorJobberOgStuderer = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning;
+};
+
+export const isMorIntroprogram = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet;
+};
+
+export const isMorKvalprogram = (periode: Periode) => {
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Kvalifiseringsprogrammet;
+};
+
+export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
+    return (
+        isUttaksperiode(periode) &&
+        periode.konto === StønadskontoType.Foreldrepenger &&
+        periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+    );
+};
+
+export const isForeldrepengerMedAktivitetskravMorForSyk = (periode: Periode) => {
+    return (
+        isUttaksperiode(periode) &&
+        periode.konto === StønadskontoType.Foreldrepenger &&
+        periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
+    );
+};
+
+export const isUtsettelseMorInnlagt = (periode: Periode) => {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.InstitusjonSøker;
+};
+
+export const isFellesperiodeMorInnlagt = (periode: Periode) => {
+    return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt;
+};
+
+export const isFellesperiodeMorForSyk = (periode: Periode) => {
+    return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp;
+};
+
+export const isUtsettelseMorForSyk = (periode: Periode) => {
+    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Sykdom;
 };
 
 export const isSkalIkkeHaForeldrepengerFørFødselPeriode = (periode: Periode): boolean => {

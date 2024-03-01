@@ -107,9 +107,7 @@ AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021.args = {
         type: BarnType.ADOPTERT_ANNET_BARN,
         adopsjonsdato: dayjs('2021-03-15').toDate(),
         adoptertIUtlandet: false,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [],
-        omsorgsovertakelse: [],
     },
     annenForelder: {
         fornavn: 'Eksotisk',
@@ -166,9 +164,7 @@ AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021.args = {
         type: BarnType.ADOPTERT_ANNET_BARN,
         adopsjonsdato: dayjs('2021-03-15').toDate(),
         adoptertIUtlandet: false,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [],
-        omsorgsovertakelse: [],
     },
     annenForelder: {
         fornavn: 'Palme',
@@ -198,7 +194,6 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
     },
     barn: {
         type: BarnType.FØDT,
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2022-06-14').toDate(), dayjs('2022-06-14').toDate()],
         antallBarn: 2,
         // @ts-ignore FIX
@@ -232,7 +227,6 @@ FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
         rolle: 'mor',
     },
     barn: {
-        dokumentasjonAvAleneomsorg: [],
         fødselsdatoer: [dayjs('2022-08-14').toDate()],
         termindato: dayjs('2022-10-14').toDate(),
         antallBarn: 1,

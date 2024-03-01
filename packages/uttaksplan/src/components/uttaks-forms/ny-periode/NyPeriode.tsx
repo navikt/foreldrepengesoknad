@@ -1,7 +1,11 @@
+import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { FormattedMessage, IntlShape } from 'react-intl';
+
+import { Heading } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Arbeidsforhold,
-    Attachment,
     Block,
     NavnPåForeldre,
     Periode,
@@ -11,11 +15,9 @@ import {
     TilgjengeligStønadskonto,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
-import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
+
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
-import { FormattedMessage, IntlShape } from 'react-intl';
-import { Heading } from '@navikt/ds-react';
+import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 
 interface Props {
     familiehendelsesdato: Date;
@@ -40,7 +42,6 @@ interface Props {
     antallBarn: number;
     utsettelserIPlan: Utsettelsesperiode[];
     intl: IntlShape;
-    saveAttachment: (vedlegg: Attachment) => void;
 }
 
 const NyPeriode: FunctionComponent<Props> = ({
@@ -66,7 +67,6 @@ const NyPeriode: FunctionComponent<Props> = ({
     antallBarn,
     utsettelserIPlan,
     intl,
-    saveAttachment,
 }) => {
     const [periode, setPeriode] = useState<Periode>({
         type: isUtsettelse ? Periodetype.Utsettelse : Periodetype.Uttak,
@@ -105,7 +105,6 @@ const NyPeriode: FunctionComponent<Props> = ({
                 utsettelserIPlan={utsettelserIPlan}
                 intl={intl}
                 isOpen={true}
-                saveAttachment={saveAttachment}
             />
         </>
     ) : (
@@ -126,7 +125,6 @@ const NyPeriode: FunctionComponent<Props> = ({
             utsettelserIPlan={utsettelserIPlan}
             setPerioderErGyldige={setPerioderErGyldige}
             isOpen={true}
-            saveAttachment={saveAttachment}
         />
     );
 };

@@ -1,13 +1,8 @@
-import {
-    Attachment,
-    BarnFraNesteSak,
-    Dekningsgrad,
-    EksisterendeSak,
-    Periode,
-    formaterDato,
-    hasValue,
-} from '@navikt/fp-common';
-import { Søkerinfo } from '@navikt/fp-types';
+import { AxiosResponse } from 'axios';
+
+import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode, formaterDato, hasValue } from '@navikt/fp-common';
+import { Attachment, Søkerinfo } from '@navikt/fp-types';
+
 import Environment from 'app/Environment';
 import { Søknad } from 'app/context/types/Søknad';
 import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
@@ -16,7 +11,7 @@ import { Kvittering } from 'app/types/Kvittering';
 import { SakerOppslag } from 'app/types/SakerOppslag';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { useGetRequest } from 'app/utils/hooks/useRequest';
-import { AxiosResponse } from 'axios';
+
 import getAxiosInstance from './apiInterceptor';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { storageParser } from './storageParser';

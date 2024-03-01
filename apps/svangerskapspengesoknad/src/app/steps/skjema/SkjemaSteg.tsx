@@ -1,23 +1,27 @@
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+
 import { VStack } from '@navikt/ds-react';
-import { AttachmentType, Step } from '@navikt/fp-common';
-import { notEmpty } from '@navikt/fp-validation';
-import { FileUploader } from '@navikt/fp-ui';
-import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
+
 import { getSaveAttachment } from '@navikt/fp-api';
+import { Step } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import SøknadRoutes from 'app/routes/routes';
-import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
+import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
+import { FileUploader } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
 import Environment from 'app/Environment';
-import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
-import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
-import { getBackLinkForSkjemaSteg, useStepConfig } from '../stepsConfig';
+import Bedriftsbanner from 'app/components/bedriftsbanner/Bedriftsbanner';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { Skjemanummer } from '@navikt/fp-constants';
+
+import { getBackLinkForSkjemaSteg, useStepConfig } from '../stepsConfig';
+import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
+import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
