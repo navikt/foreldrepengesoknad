@@ -1,7 +1,7 @@
 .days {
     height: 19px;
     width: 22px;
-    padding: 2px 2px 0 2px;
+    padding: 2px 2px 2px 2px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,13 +13,22 @@
 
 .foreldrepengerMor {
     background-color: #66A5F4;
-
 }
 
 .foreldrepengerFar {
     background-color: #CCF1D6;
     border-top: 1px solid #66C786;
     border-bottom: 1px solid #66C786;
+}
+
+.foreldrepengerFar.firstDay {
+    border-left: 1px solid #66C786;
+
+}
+
+.foreldrepengerFar.lastDay {
+    border-right: 1px solid #66C786;
+
 }
 
 .helgedag {
