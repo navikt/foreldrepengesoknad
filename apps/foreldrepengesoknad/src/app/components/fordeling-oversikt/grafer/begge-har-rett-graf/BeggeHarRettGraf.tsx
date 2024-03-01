@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { TilgjengeligStønadskonto, bemUtils, capitalizeFirstLetter, guid } from '@navikt/fp-common';
+import { TilgjengeligStønadskonto, bemUtils, capitalizeFirstLetter } from '@navikt/fp-common';
 
 import { FordelingEier, FordelingGrafInfo } from 'app/types/FordelingOversikt';
 import { getFamiliehendelseNavn } from 'app/utils/familiehendelseUtils';
@@ -67,6 +67,8 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
         <div className={bem.block}>
             {fordelingList.map((fordeling: FordelingGrafInfo, index) => {
                 const width = (fordeling.antallDager / sumBredde) * 100;
+                const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
+                const finalWidth = index === indexForFamiliehendelse ? width + famiHendelseFieldWidth : width;
                 const erUthevet = currentUthevet === fordeling.eier;
                 const shadowClass = getFordelingShadowClass(erUthevet);
                 const rowClass = getRowClass(fordelingList.length, index);
@@ -74,25 +76,23 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                 const handleOnMouseEnter = () => {
                     setCurrentUthevet(fordeling.eier);
                 };
-                const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
 
                 return (
-                    <>
+                    <div
+                        className={bem.element('container')}
+                        style={{
+                            width: `${finalWidth}%`,
+                        }}
+                        key={`${fordeling.eier}-${fordeling.konto}-${fordeling.antallDager}`}
+                    >
                         {index === indexForFamiliehendelse && (
                             <FamiliehendelseVisning
-                                key={'familiehendelse'}
                                 rowHeight={rowHeight}
                                 familiehendelseNavn={familiehendelseNavn}
                                 fieldWidthPercent={famiHendelseFieldWidth}
                             />
                         )}
-                        <div
-                            className={bem.element('søyle')}
-                            key={`${fordeling.eier}-${fordeling.antallDager}-${fordeling.konto}`}
-                            style={{
-                                width: `${width}%`,
-                            }}
-                        >
+                        <div className={bem.element('søyle')}>
                             <div className={bem.element('del')}>
                                 <div
                                     className={classNames(
@@ -100,7 +100,6 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                                         bem.modifier(`${fordeling.fargekode}`),
                                         bem.modifier(`${shadowClass}`),
                                     )}
-                                    key={guid()}
                                     onMouseEnter={handleOnMouseEnter}
                                     onMouseLeave={handleOnMouseLeave}
                                     style={{
@@ -118,7 +117,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                                 {fordeling.beskrivelse}
                             </BodyShort>
                         </div>
-                    </>
+                    </div>
                 );
             })}
         </div>

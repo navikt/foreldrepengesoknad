@@ -26,6 +26,7 @@ const FamiliehendelseVisning: React.FunctionComponent<Props> = ({
                 width: `${fieldWidthPercent}%`,
                 justifyContent: 'center',
                 alignItems: 'center',
+                padding: '1.5rem',
             }}
         >
             <BodyShort
