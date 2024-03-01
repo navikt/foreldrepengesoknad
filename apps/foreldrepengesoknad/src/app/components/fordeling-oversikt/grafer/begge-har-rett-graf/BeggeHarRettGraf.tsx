@@ -80,6 +80,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                     <>
                         {index === indexForFamiliehendelse && (
                             <FamiliehendelseVisning
+                                key={'familiehendelse'}
                                 rowHeight={rowHeight}
                                 familiehendelseNavn={familiehendelseNavn}
                                 fieldWidthPercent={famiHendelseFieldWidth}
@@ -87,7 +88,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                         )}
                         <div
                             className={bem.element('søyle')}
-                            key={fordeling.eier}
+                            key={`${fordeling.eier}-${fordeling.antallDager}-${fordeling.konto}`}
                             style={{
                                 width: `${width}%`,
                             }}
