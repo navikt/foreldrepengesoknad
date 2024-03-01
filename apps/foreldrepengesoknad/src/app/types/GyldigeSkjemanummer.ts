@@ -11,4 +11,6 @@ export type GyldigeSkjemanummer =
     | Skjemanummer.DOK_UTDANNING_MOR
     | Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
     | Skjemanummer.DOK_ARBEID_MOR
-    | Skjemanummer.DOK_AV_ALENEOMSORG;
+    | Skjemanummer.DOK_AV_ALENEOMSORG
+    | Skjemanummer.TERMINBEKREFTELSE
+    | Skjemanummer.OMSORGSOVERTAKELSE;

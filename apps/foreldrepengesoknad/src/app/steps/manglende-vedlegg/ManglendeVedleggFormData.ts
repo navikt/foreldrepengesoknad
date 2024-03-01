@@ -13,4 +13,6 @@ export interface ManglendeVedleggFormData {
     [Skjemanummer.DOK_UTDANNING_MOR]: Attachment[];
     [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: Attachment[];
     [Skjemanummer.DOK_AV_ALENEOMSORG]: Attachment[];
+    [Skjemanummer.TERMINBEKREFTELSE]: Attachment[];
+    [Skjemanummer.OMSORGSOVERTAKELSE]: Attachment[];
 }

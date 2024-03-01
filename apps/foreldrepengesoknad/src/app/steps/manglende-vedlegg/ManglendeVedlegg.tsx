@@ -37,6 +37,8 @@ import MorJobberDokumentasjon from './dokumentasjon/MorJobberDokumentasjon';
 import MorJobberOgStudererDokumentasjon from './dokumentasjon/MorJobberOgStudererDokumentasjon';
 import MorKvalifiseringsprogrammetDokumentasjon from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
 import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
+import OmsorgsovertakelseDokumentasjon from './dokumentasjon/OmsorgsovertakelseDokumentasjon';
+import TerminbekreftelseDokumentasjon from './dokumentasjon/TerminbekreftelseDokumentasjon';
 import {
     getBarnInnlagtVedlegg,
     getFarForSykVedlegg,
@@ -104,7 +106,9 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const morJobberOgStudererVedlegg = getMorJobberOgStudererVedlegg(vedlegg);
     const morIntroprogramVedlegg = getMorIntroprogramVedlegg(vedlegg);
     const morKvalprogramVedlegg = getMorKvalprogramVedlegg(vedlegg);
-    const annenForelderVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [];
+    const aleneomsorgVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [];
+    const terminbekreftelseVedlegg = vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [];
+    const adopsjonVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [];
 
     const morInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelse);
     const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagt);
@@ -143,6 +147,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 morJobberOgStudererPerioder.length > 0 ? formValues[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR] : [],
             [Skjemanummer.DOK_ARBEID_MOR]: morJobberPerioder.length > 0 ? formValues[Skjemanummer.DOK_ARBEID_MOR] : [],
             [Skjemanummer.DOK_AV_ALENEOMSORG]: formValues[Skjemanummer.DOK_AV_ALENEOMSORG] || [],
+            [Skjemanummer.TERMINBEKREFTELSE]: formValues[Skjemanummer.TERMINBEKREFTELSE] || [],
+            [Skjemanummer.OMSORGSOVERTAKELSE]: formValues[Skjemanummer.OMSORGSOVERTAKELSE] || [],
         };
 
         saveVedlegg(alleVedlegg);
@@ -166,6 +172,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR] || [],
             [Skjemanummer.DOK_ARBEID_MOR]: vedlegg[Skjemanummer.DOK_ARBEID_MOR] || [],
             [Skjemanummer.DOK_AV_ALENEOMSORG]: vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [],
+            [Skjemanummer.TERMINBEKREFTELSE]: vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [],
+            [Skjemanummer.OMSORGSOVERTAKELSE]: vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [],
         },
     });
 
@@ -273,9 +281,21 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     updateAttachments={updateAttachments}
                 />
                 <AleneomsorgDokumentasjon
-                    attachments={annenForelderVedlegg}
+                    attachments={aleneomsorgVedlegg}
                     updateAttachments={updateAttachments}
                     annenForelder={annenForelder}
+                />
+                <TerminbekreftelseDokumentasjon
+                    attachments={terminbekreftelseVedlegg}
+                    updateAttachments={updateAttachments}
+                    barn={barn}
+                    arbeidsforhold={søkerInfo.arbeidsforhold}
+                    rolle={søkersituasjon.rolle}
+                />
+                <OmsorgsovertakelseDokumentasjon
+                    attachments={adopsjonVedlegg}
+                    updateAttachments={updateAttachments}
+                    søkersituasjon={søkersituasjon}
                 />
                 <Block padBottom="xl">
                     <Alert size="small" variant="info">

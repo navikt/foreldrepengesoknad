@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { AnnenForelder, Block, intlUtils, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, Block, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, AttachmentMetadataType } from '@navikt/fp-types';
 
@@ -32,8 +32,8 @@ const AleneomsorgDokumentasjon: React.FunctionComponent<Props> = ({
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.DOK_AV_ALENEOMSORG)}
                 skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
-                labelText={intlUtils(intl, 'manglendeVedlegg.studerer.label')}
-                description={intlUtils(intl, 'manglendeVedlegg.barnInnlagt.description')}
+                labelText={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.tittel' })}
+                description={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.description' })}
                 attachmentType={AttachmentType.ALENEOMSORG}
                 metadataType={AttachmentMetadataType.BARN}
             />

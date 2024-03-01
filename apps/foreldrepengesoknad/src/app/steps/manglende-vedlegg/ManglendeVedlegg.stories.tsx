@@ -1,10 +1,12 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
 
+import { attachmentApi } from '@navikt/fp-api';
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Søkerinfo } from '@navikt/fp-types';
+import { Situasjon, Søkerinfo } from '@navikt/fp-types';
 
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
@@ -89,6 +91,7 @@ export default {
 
 interface Props {
     søkerInfo: Søkerinfo;
+    situasjon?: Situasjon;
     annenForelder: AnnenForelder;
     barn: Barn;
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
@@ -97,12 +100,18 @@ interface Props {
 
 const Template: StoryFn<Props> = ({
     søkerInfo,
+    situasjon = 'fødsel',
     annenForelder = defaultAnnenForelder,
     barn = defaultBarn,
     gåTilNesteSide = action('button-click'),
     mellomlagreSøknadOgNaviger = promiseAction(),
 }) => {
     initAmplitude();
+
+    const apiMock = new MockAdapter(attachmentApi);
+    apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(200); //story
+    apiMock.onPost('http://localhost:8888/rest/storage/foreldrepenger/vedlegg').reply(200); //test
+
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
             <FpDataContext
@@ -114,7 +123,7 @@ const Template: StoryFn<Props> = ({
                     [ContextDataType.OM_BARNET]: barn,
                     [ContextDataType.SØKERSITUASJON]: {
                         rolle: 'mor',
-                        situasjon: 'fødsel',
+                        situasjon: situasjon,
                     },
                 }}
             >
@@ -139,8 +148,21 @@ Termindatodokumentasjon.args = {
     },
 };
 
-export const Adopsjonsdokumentasjon = Template.bind({});
-Adopsjonsdokumentasjon.args = {
+export const Omsorgsovertakelsedokumentasjon = Template.bind({});
+Omsorgsovertakelsedokumentasjon.args = {
+    søkerInfo: defaultSøkerinfo,
+    situasjon: 'adopsjon',
+    barn: {
+        antallBarn: 1,
+        type: BarnType.ADOPTERT_ANNET_BARN,
+        adopsjonsdato: '2023-01-01',
+        adoptertIUtlandet: false,
+        fødselsdatoer: ['2022-01-01'],
+    },
+};
+
+export const Aleneomsorgdokumentasjon = Template.bind({});
+Aleneomsorgdokumentasjon.args = {
     søkerInfo: defaultSøkerinfo,
     annenForelder: {
         ...defaultAnnenForelder,
