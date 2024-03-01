@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -58,13 +58,8 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     }, [søkerinfoError, sakerError]);
 
     // TODO (TOR) Dropp mapping her og dytt mellomlagra data inn i context rått
-    const initialState = useMemo(
-        () =>
-            storageData && shouldApplyStorage(storageData)
-                ? konverterMellomlagretDataTilAppData(storageData)
-                : undefined,
-        [storageData],
-    );
+    const initialState =
+        storageData && shouldApplyStorage(storageData) ? konverterMellomlagretDataTilAppData(storageData) : undefined;
 
     const applyStorage = storageData !== undefined && shouldApplyStorage(storageData);
 
