@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 
 import { BodyLong, Link, Radio, VStack } from '@navikt/ds-react';
 
@@ -34,6 +34,12 @@ export const finnHvemPlanlegger = (hvemPlanlegger: HvemPlanlegger) => {
     }
     if (isMorOgMedmor(hvemPlanlegger)) {
         return ['mor', 'medmor'];
+    }
+    if (isMor(hvemPlanlegger)) {
+        return ['mor'];
+    }
+    if (isFar(hvemPlanlegger)) {
+        return ['far'];
     }
     if (!isFarOgFar(hvemPlanlegger)) {
         throw new Error('Feil i kode: Ugyldig hvemPlanlegger');

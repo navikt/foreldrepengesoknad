@@ -1,14 +1,16 @@
-import { MemoryRouter } from 'react-router-dom';
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { initAmplitude } from '@navikt/fp-metrics';
-import OversiktSteg from './OversiktSteg';
+import { MemoryRouter } from 'react-router-dom';
+import { OmBarnet } from 'types/Barnet';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Periode, PeriodeEnum } from 'types/Periode';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { OmBarnet } from 'types/Barnet';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import OversiktSteg from './OversiktSteg';
 
 export default {
     title: 'OversiktSteg',
@@ -38,8 +40,8 @@ const Template: StoryFn<{
     );
 };
 
-export const PeriodeFlereForsørgereHundreProsent = Template.bind({});
-PeriodeFlereForsørgereHundreProsent.args = {
+export const PeriodeFlereForsørgereHundreProsentTermin = Template.bind({});
+PeriodeFlereForsørgereHundreProsentTermin.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
@@ -49,14 +51,14 @@ PeriodeFlereForsørgereHundreProsent.args = {
         periode: PeriodeEnum.HUNDRE,
     },
     omBarnet: {
-        erFødsel: false,
+        erFødsel: true,
         erBarnetFødt: false,
         termindato: '2022-10-24',
     },
 };
 
-export const PeriodeAleneforsørgerÅttiProsent = Template.bind({});
-PeriodeAleneforsørgerÅttiProsent.args = {
+export const PeriodeAleneforsørgerÅttiProsentFødt = Template.bind({});
+PeriodeAleneforsørgerÅttiProsentFødt.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
@@ -65,8 +67,30 @@ PeriodeAleneforsørgerÅttiProsent.args = {
         periode: PeriodeEnum.ÅTTI,
     },
     omBarnet: {
+        erBarnetFødt: true,
+        erFødsel: true,
+        fødselsdato: '2024-09-01',
+        termindato: '2024-09-01',
+    },
+};
+
+export const PeriodeFlereForsørgereÅttiProsentAdoptert = Template.bind({});
+PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
+    hvemPlanlegger: {
+        navnPåMor: 'Klara Utvikler',
+        navnPåFar: 'Espen Utvikler',
+        type: SøkersituasjonEnum.MOR_OG_FAR,
+    },
+    periode: {
+        periode: PeriodeEnum.ÅTTI,
+    },
+    omBarnet: {
+        erBarnetFødt: true,
         erFødsel: false,
-        erBarnetFødt: false,
-        termindato: '2022-10-24',
+        erAdoptert: true,
+        fødselsdato: '2024-09-01',
+        termindato: '2024-09-01',
+        overtakelsesdato: '2024-09-01',
+        adopsjonsdato: '2024-09-01',
     },
 };
