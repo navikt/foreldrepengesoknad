@@ -110,11 +110,11 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserData);
     const nettoppSendtInnSøknad =
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
-    const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak.åpenBehandling !== undefined;
+    const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
     if (!oppdatertData) {
         return (
             <div className={bem.block}>
-                {visBekreftelsePåSendtSøknad && (
+                {nettoppSendtInnSøknad && (
                     <BekreftelseSendtSøknad
                         oppdatertData={oppdatertData}
                         relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
