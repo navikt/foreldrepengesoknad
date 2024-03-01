@@ -12,27 +12,27 @@
 }
 
 .foreldrepengerMor {
-    background-color: #66A5F4;
+    background-color: var(--a-blue-300);
 }
 
 .foreldrepengerFar {
-    background-color: #CCF1D6;
-    border-top: 1px solid #66C786;
-    border-bottom: 1px solid #66C786;
+    background-color: var(--a-green-100);
+    border-top: 1px solid var(--a-green-300);
+    border-bottom: 1px solid var(--a-green-300);
 }
 
 .foreldrepengerFar.firstDay {
-    border-left: 1px solid #66C786;
+    border-left: 1px solid var(--a-green-300);
 
 }
 
 .foreldrepengerFar.lastDay {
-    border-right: 1px solid #66C786;
+    border-right: 1px solid var(--a-green-300);
 
 }
 
 .helgedag {
-    background-color: #E0E3E6;
+    background-color: var(--a-gray-200);
 }
 
 .none {

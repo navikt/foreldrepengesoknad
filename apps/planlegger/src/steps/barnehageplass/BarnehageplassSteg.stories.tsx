@@ -1,13 +1,15 @@
-import { MemoryRouter } from 'react-router-dom';
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Action, PlanleggerDataContext, ContextDataType } from 'appData/PlanleggerDataContext';
+import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { initAmplitude } from '@navikt/fp-metrics';
-import BarnehageplassSteg from './BarnehageplassSteg';
+import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import BarnehageplassSteg from './BarnehageplassSteg';
 
 export default {
     title: 'BarnehageplassSteg',
@@ -60,6 +62,7 @@ FlereForsørgereBarnFødtSeptemberStartSeptember.args = {
         erBarnetFødt: true,
         erFødsel: true,
         fødselsdato: '2024-09-01',
+        termindato: '2024-09-01',
     },
 };
 
@@ -73,5 +76,23 @@ AleneforsørgerBarnFødtJanuarStartAugust.args = {
         erBarnetFødt: true,
         erFødsel: true,
         fødselsdato: '2024-01-01',
+        termindato: '2023-08-01',
+    },
+};
+
+export const FlereForsørgereAdoptertBarnFødtJanuarStartAugust = Template.bind({});
+FlereForsørgereAdoptertBarnFødtJanuarStartAugust.args = {
+    hvemPlanlegger: {
+        navnPåMor: 'Klara Utvikler',
+        navnPåFar: 'Espen Utvikler',
+        type: SøkersituasjonEnum.MOR_OG_FAR,
+    },
+    omBarnet: {
+        hvorMange: 'ett',
+        erAdoptert: true,
+        erBarnetFødt: true,
+        fødselsdato: '2024-02-11',
+        overtakelsesdato: '2024-03-01',
+        adopsjonsdato: '2024-02-10',
     },
 };

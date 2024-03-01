@@ -13,7 +13,7 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { BARNEHAGELOVEN_TEKST } from '../BarnehageplassSteg';
-import { barnehageStartdato } from '../BarnehageplassSteg';
+import { barnehagestartDato } from '../BarnehageplassSteg';
 
 const Aleneforsørger: FunctionComponent = () => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -31,7 +31,7 @@ const Aleneforsørger: FunctionComponent = () => {
                     <FormattedMessage
                         id="barnehageplass.datoTittel"
                         values={{
-                            dato: barnehageStartdato(barnet),
+                            dato: barnehagestartDato(barnet),
                         }}
                     />
                 }

@@ -3,17 +3,19 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import BlåSirkel from 'components/ikoner/BlåSirkel';
 import Hjerte from 'components/ikoner/Hjerte';
-import RosaSirkel from 'components/ikoner/RosaSirkel';
+import GrønnSirkel from 'components/ikoner/RosaSirkel';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { finnHvemPlanlegger } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
+import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
+import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
-import { PeriodeEnum } from 'types/Periode';
 
-import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, Spacer, VStack } from '@navikt/ds-react';
 
+import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -23,72 +25,116 @@ import FlereForsørgere from './situasjon/FlereForsørgere';
 
 dayjs.locale('nb');
 
-const barnehagestartDato = (barnet: OmBarnet) => {
+const termindatoEllerFødselsdato = (barnet: OmBarnet) => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
-    if (erFødt || erIkkeFødt) {
-        const dato = erIkkeFødt ? barnet.termindato : barnet.fødselsdato;
-
-        if (dayjs(dato).month() < 8) return dayjs(dato).format('MMMM');
-
-        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM');
-
-        if (dayjs(dato).month() === 11)
-            return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM');
+    const erAdoptert = erBarnetAdoptert(barnet);
+    if (erFødt || erAdoptert) {
+        const dato = barnet.fødselsdato;
+        return dayjs(dato).format('DD. MMM');
+    }
+    if (erIkkeFødt) {
+        const dato = barnet.termindato;
+        return dayjs(dato).format('DD. MMM');
     }
     return undefined;
 };
+
 const OversiktSteg = () => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const valgtPeriode = notEmpty(useContextGetData(ContextDataType.PERIODE));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const erFødt = erBarnetFødt(barnet);
+    const erIkkeFødt = erBarnetIkkeFødt(barnet);
+    const erAdoptert = erBarnetAdoptert(barnet);
+    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
+    const treUkerFørTerminDato = dayjs(termindato).subtract(3, 'weeks').startOf('day');
+    const sluttdatoMor = dayjs(treUkerFørTerminDato).add(31, 'weeks');
+    const sluttdato49 = dayjs(sluttdatoMor).add(15, 'weeks');
 
+    const morsPeriode = dayjs(sluttdatoMor).diff(treUkerFørTerminDato, 'weeks');
+    const farsPeriode = dayjs(sluttdato49).diff(sluttdatoMor, 'weeks');
     return (
         <PlanleggerPage steps={stepConfig}>
             <VStack gap="10">
                 {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
                 {isAlene(hvemPlanlegger) && <Aleneforsørger />}
                 <VStack gap="2">
-                    <HStack gap="32">
-                        <Box background="surface-info-subtle" padding="2" borderRadius="xlarge">
-                            <HStack gap="5" align="center">
-                                <BlåSirkel />
-                                <BodyShort>
-                                    {valgtPeriode.periode === PeriodeEnum.HUNDRE && (
-                                        <FormattedMessage id="ukerForeldrepenger.100" />
-                                    )}
-                                    {valgtPeriode.periode === PeriodeEnum.ÅTTI && (
-                                        <FormattedMessage id="ukerForeldrepenger.80" />
-                                    )}
-                                </BodyShort>
-                            </HStack>
-                        </Box>
-                        <Box background="surface-danger-subtle" padding="2" borderRadius="xlarge">
-                            <HStack gap="5" align="center">
+                    <VStack gap="2">
+                        <HStack gap="1" wrap={false}>
+                            <div className="bluePanel">
+                                <HStack gap="2" align="center">
+                                    <BlåSirkel />
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="ukerForeldrepenger"
+                                            values={{
+                                                hvem: finnHvemPlanlegger(hvemPlanlegger)
+                                                    .slice(0, -1)
+                                                    .map(capitalizeFirstLetter),
+                                                uker: morsPeriode,
+                                                dato: dayjs(treUkerFørTerminDato).add(1, 'day').format('dddd D MMM'),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </HStack>
+                            </div>
+                            <Spacer />
+                            {!isAlene(hvemPlanlegger) && (
+                                <HStack gap="3">
+                                    <div className="greenPanel">
+                                        <HStack gap="2" align="center">
+                                            <GrønnSirkel />
+                                            <BodyShort>
+                                                <FormattedMessage
+                                                    id="ukerForeldrepenger"
+                                                    values={{
+                                                        hvem: finnHvemPlanlegger(hvemPlanlegger)
+                                                            .slice(0, 3)
+                                                            .slice(-1)
+                                                            .map(capitalizeFirstLetter),
+                                                        uker: farsPeriode,
+                                                        dato: dayjs(sluttdatoMor).add(1, 'day').format('dddd D MMM'),
+                                                    }}
+                                                />
+                                            </BodyShort>
+                                        </HStack>
+                                    </div>
+                                </HStack>
+                            )}
+                        </HStack>
+                    </VStack>
+                    <VStack gap="10">
+                        <div className="pinkPanel">
+                            <HStack gap="2" align="center">
                                 <Hjerte />
                                 <BodyShort>
-                                    <FormattedMessage id="termindatoIkontekst" />
+                                    {erFødt ||
+                                        (erAdoptert && (
+                                            <FormattedMessage
+                                                id="fødselsdatoIkontekst"
+                                                values={{
+                                                    mnd: barnehagestartDato(barnet),
+                                                    dato: termindatoEllerFødselsdato(barnet),
+                                                }}
+                                            />
+                                        ))}
+                                    {erIkkeFødt && (
+                                        <FormattedMessage
+                                            id="termindatoIkontekst"
+                                            values={{
+                                                mnd: barnehagestartDato(barnet),
+                                                dato: termindatoEllerFødselsdato(barnet),
+                                            }}
+                                        />
+                                    )}
                                 </BodyShort>
                             </HStack>
-                        </Box>
-                    </HStack>
-
-                    <HStack gap="4">
-                        <Box background="surface-success-subtle" padding="2" borderRadius="xlarge">
-                            <HStack gap="5" align="center">
-                                <RosaSirkel />
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="barnehagestartIkontekst"
-                                        values={{ mnd: barnehagestartDato(barnet) }}
-                                    />
-                                </BodyShort>
-                            </HStack>
-                        </Box>
-                    </HStack>
+                        </div>
+                    </VStack>
                 </VStack>
+
                 <VStack gap="10">
                     <VStack gap="2">
                         <Kalender />

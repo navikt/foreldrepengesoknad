@@ -5,7 +5,7 @@ import InfoboksGenerell from 'components/InfoboksGenerell';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
@@ -13,13 +13,14 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { BARNEHAGELOVEN_TEKST } from '../BarnehageplassSteg';
-import { barnehageStartdato } from '../BarnehageplassSteg';
+import { barnehagestartDato } from '../BarnehageplassSteg';
 
 const FlereForsørgere: FunctionComponent = () => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
+    const erAdoptert = erBarnetAdoptert(barnet);
 
     return (
         <VStack gap="10">
@@ -31,13 +32,13 @@ const FlereForsørgere: FunctionComponent = () => {
                     <FormattedMessage
                         id="barnehageplass.datoTittel"
                         values={{
-                            dato: barnehageStartdato(barnet),
+                            dato: barnehagestartDato(barnet),
                         }}
                     />
                 }
             >
                 <BodyLong>
-                    {erFødt ? (
+                    {erFødt || erAdoptert ? (
                         <FormattedMessage
                             id="barnehageplass.datoTekst"
                             values={{

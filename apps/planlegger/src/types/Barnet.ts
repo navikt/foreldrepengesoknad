@@ -2,6 +2,7 @@ export type BarnetErFødt = {
     erFødsel: boolean;
     erBarnetFødt: boolean;
     fødselsdato: string;
+    termindato: string;
 };
 
 export type BarnetErIkkeFødt = {
@@ -11,9 +12,11 @@ export type BarnetErIkkeFødt = {
 };
 
 export type BarnetErAdoptert = {
+    erAdoptert: boolean;
     hvorMange: string;
     adopsjonsdato: string;
     overtakelsesdato: string;
+    fødselsdato: string;
 };
 
 export enum AdopsjonsEnum {
@@ -35,6 +38,12 @@ export const erBarnetIkkeFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeF
 
 export const erBarnetFødt = (omBarnet: OmBarnet): omBarnet is BarnetErFødt => {
     if ((omBarnet as BarnetErFødt).erBarnetFødt === true) {
+        return true;
+    }
+    return false;
+};
+export const erBarnetAdoptert = (omBarnet: OmBarnet): omBarnet is BarnetErAdoptert => {
+    if ((omBarnet as BarnetErAdoptert).erAdoptert === true) {
         return true;
     }
     return false;

@@ -6,7 +6,7 @@ import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
 import { Heading, VStack } from '@navikt/ds-react';
@@ -22,19 +22,19 @@ dayjs.locale('nb');
 export const BARNEHAGELOVEN_TEKST =
     'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/';
 
-export const barnehageStartdato = (barnet: OmBarnet) => {
+export const barnehagestartDato = (barnet: OmBarnet) => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
-    if (erFødt || erIkkeFødt) {
-        const dato = erIkkeFødt ? barnet.termindato : barnet.fødselsdato;
+    const erAdoptert = erBarnetAdoptert(barnet);
+    if (erFødt || erIkkeFødt || erAdoptert) {
+        const dato = erIkkeFødt || erFødt ? barnet.termindato : barnet.fødselsdato;
 
-        if (dayjs(dato).month() < 8)
-            return dayjs(dato).startOf('year').add(1, 'year').add(7, 'months').format('MMMM YYYY');
+        if (dayjs(dato).month() < 8) return dayjs(dato).format('MMMM');
 
-        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM YYYY');
+        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM');
 
         if (dayjs(dato).month() === 11)
-            return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM YYYY');
+            return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM');
     }
     return undefined;
 };
@@ -43,8 +43,6 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-
-    //TODO Bytt ut <a href> med Link-komponent (Aksel)
 
     return (
         <PlanleggerPage steps={stepConfig}>
