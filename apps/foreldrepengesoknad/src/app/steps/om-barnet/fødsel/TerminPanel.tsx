@@ -1,4 +1,9 @@
+import { FunctionComponent } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
+
 import {
     Block,
     Søkersituasjon,
@@ -13,12 +18,10 @@ import {
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
-import { FunctionComponent } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import { UfødtBarn } from '../OmBarnetFormValues';
 
-const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
+export const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
     if (!isFarEllerMedmor(rolle)) {
         return true;
     }

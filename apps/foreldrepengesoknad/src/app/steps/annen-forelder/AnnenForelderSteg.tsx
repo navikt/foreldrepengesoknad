@@ -45,6 +45,7 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
 
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
+    const oppdaterManglendeDokumentasjon = useContextSaveData(ContextDataType.MANGLER_DOKUMENTASJON);
 
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søker);
 
@@ -77,6 +78,10 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
                 fnr: replaceInvisibleCharsWithSpace(fnr.trim()),
                 harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
             });
+
+            if (values.datoForAleneomsorg) {
+                oppdaterManglendeDokumentasjon(true);
+            }
         }
 
         return navigator.goToNextDefaultStep();

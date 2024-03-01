@@ -63,7 +63,7 @@ const renderSøknadRoutes = (
                     path={SøknadRoutes.DOKUMENTASJON}
                     element={
                         <ManglendeVedlegg
-                            søker={søkerInfo.søker}
+                            søkerInfo={søkerInfo}
                             erEndringssøknad={erEndringssøknad}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
@@ -154,7 +154,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.DOKUMENTASJON}
                 element={
                     <ManglendeVedlegg
-                        søker={søkerInfo.søker}
+                        søkerInfo={søkerInfo}
                         erEndringssøknad={erEndringssøknad}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

@@ -15,9 +15,9 @@ import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata'
 import { FileUploader } from '@navikt/fp-ui';
 
 import Environment from 'app/Environment';
-import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
-import { ManglendeVedleggFormData } from '../manglendeVedleggFormUtils';
+import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 import './periode-attachment-uploader.css';
 
 interface Props {
@@ -25,10 +25,10 @@ interface Props {
     updateAttachments: (attachments: Attachment[]) => void;
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: Date;
+    familiehendelsesdato: string;
     termindato: string | undefined;
     situasjon: Situasjon;
-    skjemanummer: GyldigeSkjemanummerUttak;
+    skjemanummer: GyldigeSkjemanummer;
     labelText: string;
     description: string | React.ReactNode;
     attachmentType: AttachmentType;
@@ -81,7 +81,7 @@ const UttakUploader: FunctionComponent<Props> = ({
                                 erAleneOmOmsorg={false}
                                 erFarEllerMedmor={true}
                                 navnPåForeldre={navnPåForeldre}
-                                familiehendelsesdato={familiehendelsesdato}
+                                familiehendelsesdato={dayjs(familiehendelsesdato).toDate()}
                                 termindato={termindato ? dayjs(termindato).toDate() : undefined}
                                 situasjon={situasjon}
                                 melding={undefined}
