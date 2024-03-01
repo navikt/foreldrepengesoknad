@@ -1,11 +1,14 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
-import * as stories from './Inntektsinformasjon.stories';
+
+import { Skjemanummer } from '@navikt/fp-constants';
+
 import { ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import { Skjemanummer } from '@navikt/fp-constants';
+
+import * as stories from './Inntektsinformasjon.stories';
 
 const { HarIkkeArbeidsforhold, HarArbeidsforhold } = composeStories(stories);
 

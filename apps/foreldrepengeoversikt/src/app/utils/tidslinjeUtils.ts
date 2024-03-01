@@ -20,6 +20,10 @@ import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from 'app/utils/Uttaksdagen';
 import { formaterDato } from './dateUtils';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 
+enum Vedtaksbrev {
+    AVSLAGSBREV = 'Avslagsbrev',
+    INNVILGELSESBREV = 'Innvilgelsesbrev',
+}
 export const VENTEÅRSAKER = [
     BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
     BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON,
@@ -33,6 +37,22 @@ export const TIDSLINJEHENDELSER_PÅ_VENT = [
     TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD,
     TidslinjehendelseType.VENT_DOKUMENTASJON,
 ];
+
+export const getAktivTidslinjeStegIndex = (
+    hendelserForVisning: Tidslinjehendelse[],
+    erInnvilgetForeldrepengesøknad: boolean,
+): number => {
+    if (erInnvilgetForeldrepengesøknad) {
+        const indexForSisteVedtak = hendelserForVisning.findLastIndex(
+            (hendelse) => hendelse.tidslinjeHendelseType === TidslinjehendelseType.VEDTAK,
+        );
+
+        if (indexForSisteVedtak >= 0) {
+            return indexForSisteVedtak;
+        }
+    }
+    return hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
+};
 
 export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: Date | undefined): Date | undefined => {
     return førsteUttaksdagISaken
@@ -142,11 +162,21 @@ const getTidslinjeTittelForFamiliehendelse = (
     }
 };
 
-const finnTekstForTidslinjehendelse = (
-    intl: IntlShape,
-    hendelsetype: TidslinjehendelseType,
-    erOmsorgsovertakelse: boolean,
-) => {
+const getTittelSvarPåSøknad = (hendelse: Tidslinjehendelse, intl: IntlShape) => {
+    const dokumenter = hendelse.dokumenter;
+    if (dokumenter && dokumenter.length > 0) {
+        if (dokumenter.find((d) => d.tittel.includes(Vedtaksbrev.AVSLAGSBREV))) {
+            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' });
+        }
+        if (dokumenter.find((d) => d.tittel.includes(Vedtaksbrev.INNVILGELSESBREV))) {
+            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' });
+        }
+    }
+    return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
+};
+
+const finnTekstForTidslinjehendelse = (intl: IntlShape, hendelse: Tidslinjehendelse, erOmsorgsovertakelse: boolean) => {
+    const hendelsetype = hendelse.tidslinjeHendelseType;
     switch (hendelsetype) {
         case TidslinjehendelseType.BARNET_TRE_ÅR:
             return erOmsorgsovertakelse
@@ -173,7 +203,7 @@ const finnTekstForTidslinjehendelse = (
         case TidslinjehendelseType.UTGÅENDE_VARSEL_TILBAKEBETALING:
             return intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_VARSEL_TILBAKEBETALING' });
         case TidslinjehendelseType.VEDTAK:
-            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
+            return getTittelSvarPåSøknad(hendelse, intl);
         case TidslinjehendelseType.VENTER_INNTEKTSMELDING:
             return intl.formatMessage({ id: 'tidslinje.tittel.VENTER_INNTEKTSMELDING' });
         case TidslinjehendelseType.VENTER_MELDEKORT:
@@ -188,13 +218,14 @@ const finnTekstForTidslinjehendelse = (
 };
 
 export const getTidslinjehendelseTittel = (
-    hendelsetype: TidslinjehendelseType,
+    hendelse: Tidslinjehendelse,
     intl: IntlShape,
     tidlistBehandlingsdato: Date | undefined,
     manglendeVedleggData: Skjemanummer[] | undefined,
     barnFraSak: BarnGruppering,
     sak: Sak,
 ): string => {
+    const hendelsetype = hendelse.tidslinjeHendelseType;
     const { familiehendelse, ytelse, gjelderAdopsjon } = sak;
     const antallBarn = familiehendelse?.antallBarn;
     if (hendelsetype === TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD && tidlistBehandlingsdato !== undefined) {
@@ -232,7 +263,7 @@ export const getTidslinjehendelseTittel = (
     ) {
         return getTidslinjeTittelForBarnTreÅr(barnFraSak, antallBarn, familiehendelse?.omsorgsovertakelse, intl);
     }
-    return finnTekstForTidslinjehendelse(intl, hendelsetype, !!familiehendelse?.omsorgsovertakelse);
+    return finnTekstForTidslinjehendelse(intl, hendelse, !!familiehendelse?.omsorgsovertakelse);
 };
 
 export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand) => {
@@ -525,10 +556,27 @@ const getSisteHendelser = (sorterteHendelser: Tidslinjehendelse[]) => {
     }
 };
 
+const getGjeldendeInnvilgelseshendelse = (sorterteHendelser: Tidslinjehendelse[]) => {
+    const sisteInnvilgelseIndex = sorterteHendelser.findLastIndex((hendelse) =>
+        hendelse.dokumenter.find((dok) => dok.tittel.includes('Innvilgelsesbrev')),
+    );
+    const hendelserEtterInvilgelse =
+        sisteInnvilgelseIndex >= 0 ? sorterteHendelser.slice(sisteInnvilgelseIndex) : undefined;
+    const finnesNyeSøknaderEtterInnvilgelse = hendelserEtterInvilgelse?.find((hendelse) =>
+        [
+            TidslinjehendelseType.ENDRINGSSØKNAD,
+            TidslinjehendelseType.FØRSTEGANGSSØKNAD,
+            TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY,
+        ].includes(hendelse.tidslinjeHendelseType),
+    );
+    return finnesNyeSøknaderEtterInnvilgelse ? undefined : sorterteHendelser[sisteInnvilgelseIndex];
+};
+
 export const getHendelserForVisning = (
     visHeleTidslinjen: boolean,
     sorterteHendelser: Tidslinjehendelse[],
     erAvslåttForeldrepengesøknad: boolean,
+    erInnvilgetForeldrepengesøknad: boolean,
 ): Tidslinjehendelse[] => {
     const hendelserForVisning = [] as Tidslinjehendelse[];
     if (visHeleTidslinjen) {
@@ -536,6 +584,17 @@ export const getHendelserForVisning = (
     } else if (erAvslåttForeldrepengesøknad) {
         const sisteHendelser = getSisteHendelser(sorterteHendelser);
         hendelserForVisning.push(...sisteHendelser);
+    } else if (erInnvilgetForeldrepengesøknad) {
+        const gjeldendeInnvilgelseHendelse = erInnvilgetForeldrepengesøknad
+            ? getGjeldendeInnvilgelseshendelse(sorterteHendelser)
+            : undefined;
+        if (gjeldendeInnvilgelseHendelse) {
+            hendelserForVisning.push(gjeldendeInnvilgelseHendelse);
+        }
+        const nesteHendelser = getNesteHendelser(sorterteHendelser);
+        if (nesteHendelser.length > 0) {
+            hendelserForVisning.push(...nesteHendelser);
+        }
     } else {
         const nesteHendelser = getNesteHendelser(sorterteHendelser);
         if (nesteHendelser.length > 0) {

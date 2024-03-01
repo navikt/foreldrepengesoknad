@@ -1,6 +1,7 @@
 import { StoryFn } from '@storybook/react';
 
 import { Attachment as AttachmentType } from '@navikt/fp-types';
+
 import Attachment, { Props } from './Attachment';
 
 export default {

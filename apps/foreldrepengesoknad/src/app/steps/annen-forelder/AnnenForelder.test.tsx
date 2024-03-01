@@ -1,10 +1,12 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
 import dayjs from 'dayjs';
-import * as stories from './AnnenForelder.stories';
-import SøknadRoutes from 'app/routes/routes';
+
 import { ContextDataType } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import * as stories from './AnnenForelder.stories';
 
 const {
     Default,

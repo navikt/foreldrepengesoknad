@@ -1,20 +1,23 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import { Næringstype } from 'app/context/types/Næring';
-import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import Oppsummering from './Oppsummering';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import SøkerData from 'app/context/types/SøkerData';
-import { Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import SøknadRoutes from 'app/routes/routes';
 import { MemoryRouter } from 'react-router-dom';
-import { initAmplitude } from '@navikt/fp-metrics';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
+import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { Næringstype } from 'app/context/types/Næring';
+import SøkerData from 'app/context/types/SøkerData';
+import SøknadRoutes from 'app/routes/routes';
+
+import Oppsummering from './Oppsummering';
 
 const promiseAction =
     () =>

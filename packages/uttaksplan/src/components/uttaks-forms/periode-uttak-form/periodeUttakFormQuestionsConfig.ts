@@ -1,26 +1,29 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import dayjs from 'dayjs';
+
 import {
-    andreAugust2022ReglerGjelder,
     AnnenForelder,
-    erFarMedmorSinWLBTidsperiodeRundtFødsel,
-    getSisteUttaksdag6UkerEtterFødsel,
-    harAnnenForelderRettIEØS,
-    hasValue,
-    isValidTidsperiode,
     Periodetype,
     Situasjon,
     StønadskontoType,
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
+    andreAugust2022ReglerGjelder,
+    erFarMedmorSinWLBTidsperiodeRundtFødsel,
+    getSisteUttaksdag6UkerEtterFødsel,
+    harAnnenForelderRettIEØS,
+    hasValue,
+    isValidTidsperiode,
 } from '@navikt/fp-common';
-import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import dayjs from 'dayjs';
-import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import getUttakSkjemaregler, {
-    UttakSkjemaregler,
-    UttakSkjemaReglerProps,
-} from '../../../utils/uttaksskjema/uttakSkjemaregler';
+
 import hvemSkalTaUttakSkalBesvares from '../../../utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
+import getUttakSkjemaregler, {
+    UttakSkjemaReglerProps,
+    UttakSkjemaregler,
+} from '../../../utils/uttaksskjema/uttakSkjemaregler';
+import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
+
 export interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;
     regelProps: UttakSkjemaReglerProps;

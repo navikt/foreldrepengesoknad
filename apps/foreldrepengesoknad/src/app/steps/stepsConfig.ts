@@ -1,7 +1,9 @@
+import { IntlShape } from 'react-intl';
+
 import { intlUtils } from '@navikt/fp-common';
 import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil';
+
 import SøknadRoutes from 'app/routes/routes';
-import { IntlShape } from 'react-intl';
 
 type SøkersituasjonStepId = 'søkersituasjon';
 type OmBarnetStepId = 'omBarnet';

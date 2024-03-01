@@ -1,8 +1,10 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './MinidialogSkjema.stories';
+
 import { Skjemanummer } from '@navikt/fp-constants';
+
+import * as stories from './MinidialogSkjema.stories';
 
 const { SkalIkkeFeileOpplasting } = composeStories(stories);
 

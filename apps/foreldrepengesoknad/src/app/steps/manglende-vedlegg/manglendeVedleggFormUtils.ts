@@ -1,16 +1,17 @@
-import { Attachment } from '@navikt/fp-types';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+
 import {
-    isMorInnleggelseVedlegg,
+    isBarnInnleggelseVedlegg,
+    isFarForSykVedlegg,
+    isFarInnleggelseVedlegg,
     isIntroduksjonsprogramVedlegg,
     isKvalifiseringsprogramVedlegg,
-    isFarInnleggelseVedlegg,
     isMorForSykVedlegg,
-    isFarForSykVedlegg,
-    isBarnInnleggelseVedlegg,
-    isMorStudererVedlegg,
-    isMorJobberVedlegg,
+    isMorInnleggelseVedlegg,
     isMorJobberOgStudererVedlegg,
+    isMorJobberVedlegg,
+    isMorStudererVedlegg,
 } from './util';
 
 export interface ManglendeVedleggFormData {

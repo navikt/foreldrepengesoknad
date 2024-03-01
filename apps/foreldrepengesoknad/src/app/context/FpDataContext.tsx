@@ -1,13 +1,16 @@
-import { createContext, useReducer, FunctionComponent, ReactNode, useContext } from 'react';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
+
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { Opphold, SenereOpphold, TidligereOpphold } from './types/InformasjonOmUtenlandsopphold';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+
 import SøknadRoutes from 'app/routes/routes';
-import SøkerData from './types/SøkerData';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
-import UttaksplanInfo from './types/UttaksplanInfo';
 import { VedleggDataType } from 'app/types/VedleggDataType';
+
+import { Opphold, SenereOpphold, TidligereOpphold } from './types/InformasjonOmUtenlandsopphold';
 import PeriodeMedForeldrepenger from './types/PeriodeMedForeldrepenger';
+import SøkerData from './types/SøkerData';
+import UttaksplanInfo from './types/UttaksplanInfo';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',

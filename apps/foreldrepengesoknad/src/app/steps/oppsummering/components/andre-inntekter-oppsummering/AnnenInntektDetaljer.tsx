@@ -1,9 +1,12 @@
-import { FunctionComponent } from 'react';
 import * as countries from 'i18n-iso-countries';
-import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/context/types/AnnenInntekt';
-import OppsummeringsPunkt from '../OppsummeringsPunkt';
+import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
 import { BodyShort } from '@navikt/ds-react';
+
+import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from 'app/context/types/AnnenInntekt';
+
+import OppsummeringsPunkt from '../OppsummeringsPunkt';
 
 interface Props {
     annenInntekt: AnnenInntekt;

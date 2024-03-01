@@ -1,9 +1,7 @@
-import { Søknad } from 'app/context/types/Søknad';
-import SøkerData from 'app/context/types/SøkerData';
-import dayjs from 'dayjs';
-import { getTermindato } from 'app/utils/barnUtils';
-import { AxiosError } from 'axios';
 import * as Sentry from '@sentry/browser';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+
 import {
     AnnenForelder,
     AnnenForelderIkkeOppgitt,
@@ -37,10 +35,15 @@ import {
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
-import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
 import { notEmpty } from '@navikt/fp-validation';
-import { VedleggDataType } from 'app/types/VedleggDataType';
+
+import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
+import SøkerData from 'app/context/types/SøkerData';
+import { Søknad } from 'app/context/types/Søknad';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
+import { VedleggDataType } from 'app/types/VedleggDataType';
+import { getTermindato } from 'app/utils/barnUtils';
+
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,

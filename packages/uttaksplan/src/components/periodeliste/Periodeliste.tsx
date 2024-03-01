@@ -1,32 +1,33 @@
+import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
+import { FormattedMessage, IntlShape } from 'react-intl';
+
+import { Alert } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
-    bemUtils,
     Block,
-    formatDate,
-    isInfoPeriode,
-    isValidTidsperiode,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
     Situasjon,
     TilgjengeligStønadskonto,
     Utsettelsesperiode,
+    bemUtils,
+    formatDate,
+    isInfoPeriode,
+    isValidTidsperiode,
 } from '@navikt/fp-common';
-import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
-
-import dayjs from 'dayjs';
-import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
-import { FormattedMessage, IntlShape } from 'react-intl';
-import { Alert } from '@navikt/ds-react';
 import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/common/utils/periodeUtils';
-import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
-
-import './periodeliste.less';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
+import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
+import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
+import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
+import './periodeliste.less';
 
 interface Props {
     uttaksplan: Periode[];

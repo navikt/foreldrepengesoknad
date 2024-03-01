@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from 'react';
 
-import './dokumentasjon-container.css';
 import { bemUtils } from '@navikt/fp-common';
+
+import './dokumentasjon-container.css';
 
 interface Props {
     children: React.ReactNode;

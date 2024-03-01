@@ -1,7 +1,6 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
-import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+
 import {
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
@@ -9,6 +8,10 @@ import {
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
+
+import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
+
+import { AndreInntekterFormData, AndreInntekterFormField } from './andreInntekterModalFormConfig';
 
 const initialAndreInntekterFormValues: AndreInntekterFormData = {
     [AndreInntekterFormField.type]: undefined,

@@ -1,3 +1,7 @@
+import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import { IntlShape } from 'react-intl';
+
 import {
     AnnenForelder,
     Barn,
@@ -10,13 +14,12 @@ import {
     isAnnenForelderOppgitt,
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import SøkerData from 'app/context/types/SøkerData';
-import { IntlShape } from 'react-intl';
-import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+
+import SøkerData from 'app/context/types/SøkerData';
+
+import { AnnenForelderFormData, AnnenForelderFormField } from './annenforelderFormConfig';
 
 export const initialAnnenForelderValues: AnnenForelderFormData = {
     [AnnenForelderFormField.kanIkkeOppgis]: false,

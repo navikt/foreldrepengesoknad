@@ -1,6 +1,7 @@
 import { ISOStringToDate } from '@navikt/fp-common';
 import { AttachmentMetadataType, LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataMap, ContextDataType } from 'app/context/SvpDataContext';
 import { erVirksomhetRegnetSomNyoppstartet } from 'app/steps/egen-næring/egenNæringFormUtils';
 import { AnnenInntektType, ArbeidIUtlandet, ArbeidIUtlandetDTO } from 'app/types/ArbeidIUtlandet';
@@ -9,14 +10,7 @@ import { AttachmentDTO } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
 import { EgenNæring, EgenNæringDTO, Næringstype } from 'app/types/EgenNæring';
 import { Frilans, FrilansDTO } from 'app/types/Frilans';
-import {
-    InformasjonOmUtenlandsoppholdDTO,
-    Utenlandsopphold,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdDTO,
-} from 'app/types/Utenlandsopphold';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { SøkerDTO, Søkerrolle } from 'app/types/Søker';
 import { SøknadDTO, Søknadstype } from 'app/types/Søknad';
 import Tilrettelegging, {
@@ -28,9 +22,17 @@ import Tilrettelegging, {
     TilretteleggingPeriode,
     Tilretteleggingstype,
 } from 'app/types/Tilrettelegging';
+import {
+    InformasjonOmUtenlandsoppholdDTO,
+    Utenlandsopphold,
+    UtenlandsoppholdDTO,
+    UtenlandsoppholdPeriode,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+} from 'app/types/Utenlandsopphold';
+
 import { getSisteDagForSvangerskapspenger } from './dateUtils';
 import { mapTilretteleggingTilPerioder } from './tilretteleggingUtils';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 
 const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegging): ArbeidsforholdDTO => {
     if (

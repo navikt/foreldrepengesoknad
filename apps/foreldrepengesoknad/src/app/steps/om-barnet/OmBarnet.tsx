@@ -1,27 +1,33 @@
+import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
+
 import {
-    andreAugust2022ReglerGjelder,
     BarnType,
     Block,
+    ISOStringToDate,
+    Step,
+    andreAugust2022ReglerGjelder,
     convertYesOrNoOrUndefinedToBoolean,
     hasValue,
     intlUtils,
     isFarEllerMedmor,
     isFødtBarn,
-    ISOStringToDate,
     isUfødtBarn,
     lagSendSenereDokumentNårIngenAndreFinnes,
-    Step,
 } from '@navikt/fp-common';
-import { SøkerBarn, Søkerinfo, AttachmentMetadataType } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentMetadataType, SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
+import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
+
 import AdopsjonAnnetBarn from './components/AdopsjonAnnetBarn';
 import AdopsjonEktefellesBarn from './components/AdopsjonEktefellesBarn';
 import BarnFødtEllerAdoptert from './components/BarnFødtEllerAdoptert';
@@ -31,9 +37,6 @@ import ValgteRegistrerteBarn from './components/ValgteRegistrerteBarn';
 import { OmBarnetFormComponents, OmBarnetFormData } from './omBarnetFormConfig';
 import omBarnetQuestionsConfig, { OmBarnetQuestionPayload } from './omBarnetQuestionsConfig';
 import { cleanupOmBarnetFormData, getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetUtils';
-import { VedleggDataType } from 'app/types/VedleggDataType';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 type Props = {
     søkerInfo: Søkerinfo;

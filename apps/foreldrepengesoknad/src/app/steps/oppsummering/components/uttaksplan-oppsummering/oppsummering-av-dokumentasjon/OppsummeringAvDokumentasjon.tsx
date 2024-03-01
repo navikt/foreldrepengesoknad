@@ -1,10 +1,12 @@
-import { isAttachmentWithError } from '@navikt/fp-common';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
-import KompleksFeltoppsummering from '../kompleks-feltoppsummering/KompleksFeltoppsummering';
+
 import { Link, Tag } from '@navikt/ds-react';
+
+import { isAttachmentWithError } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
 
+import KompleksFeltoppsummering from '../kompleks-feltoppsummering/KompleksFeltoppsummering';
 import './oppsummeringAvDokumentasjon.less';
 
 interface OppsummeringAvDokumentasjonProps {

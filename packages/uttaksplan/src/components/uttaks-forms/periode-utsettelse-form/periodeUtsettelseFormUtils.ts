@@ -1,4 +1,3 @@
-import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 import {
     Forelder,
     Periode,
@@ -7,6 +6,8 @@ import {
     isUtsettelsePgaArbeid,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
+
+import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 
 export const initialValues: PeriodeUtsettelseFormData = {
     [PeriodeUtsettelseFormField.fom]: undefined,
