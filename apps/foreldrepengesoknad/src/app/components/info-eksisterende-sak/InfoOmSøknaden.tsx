@@ -40,6 +40,7 @@ import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
+import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import './infoOmSøknaden.less';
 
 const getHvem = (

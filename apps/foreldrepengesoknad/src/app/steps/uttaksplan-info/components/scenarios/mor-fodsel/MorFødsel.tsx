@@ -115,7 +115,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         minsterett,
         søkersituasjon,
         barn,
-        søkerData.erAleneOmOmsorg,
+        oppgittAnnenForelder?.erAleneOmOmsorg || false,
         navnMor,
         navnFarMedmor,
         intl,

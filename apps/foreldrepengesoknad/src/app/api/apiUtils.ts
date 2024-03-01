@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 

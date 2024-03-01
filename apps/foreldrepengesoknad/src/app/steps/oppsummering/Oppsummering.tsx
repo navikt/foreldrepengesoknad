@@ -157,11 +157,6 @@ const Oppsummering: FunctionComponent<Props> = ({
                     <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
                 </OppsummeringIndex.Punkt>
                 <OppsummeringIndex.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
-                    <AnnenForelderOppsummering
-                        annenForelder={annenForelder}
-                        søkerData={søkerData}
-                        søkerrolle={søkersituasjon.rolle}
-                    />
                     <AnnenForelderOppsummering annenForelder={annenForelder} søkerrolle={søkersituasjon.rolle} />
                 </OppsummeringIndex.Punkt>
                 <BoIUtlandetOppsummeringspunkt

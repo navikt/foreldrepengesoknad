@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import stønadskonto80AleneomsorgFar from 'storybook/storyData/stonadskontoer/stønadskonto80AleneomsorgFar.json';
 import stønadskonto100AleneomsorgFar from 'storybook/storyData/stonadskontoer/stønadskonto100AleneomsorgFar.json';
@@ -101,7 +100,7 @@ FarMedmorFødselAleneomsorgDekningsgrad100.args = {
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     antallBarn: 1,
-    fødselsdatoer: [dayjs('2022-03-01').toDate()],
+    fødselsdatoer: ['2022-03-01'],
 };
 
 export const FarMedmorFødselAleneomsorgDekningsgrad80 = Template.bind({});
@@ -111,7 +110,7 @@ FarMedmorFødselAleneomsorgDekningsgrad80.args = {
     søkerinfo,
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
     antallBarn: 1,
-    fødselsdatoer: [dayjs('2022-03-01').toDate()],
+    fødselsdatoer: ['2022-03-01'],
 };
 
 export const FarMedmorFødselAleneomsorgFør1Okt2021 = Template.bind({});
@@ -121,7 +120,7 @@ FarMedmorFødselAleneomsorgFør1Okt2021.args = {
     søkerinfo,
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
     antallBarn: 1,
-    fødselsdatoer: [dayjs('2021-09-30').toDate()],
+    fødselsdatoer: ['2021-09-30'],
 };
 
 export const FarMedmorFødselAleneomsorgEtter1Okt2021Trillinger = Template.bind({});
@@ -131,7 +130,7 @@ FarMedmorFødselAleneomsorgEtter1Okt2021Trillinger.args = {
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     antallBarn: 3,
-    fødselsdatoer: [dayjs('2023-01-04').toDate()],
+    fødselsdatoer: ['2023-01-04'],
 };
 
 export const FarMedmorFødselAleneomsorgPrematureUker = Template.bind({});
@@ -141,6 +140,6 @@ FarMedmorFødselAleneomsorgPrematureUker.args = {
     søkerinfo,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     antallBarn: 1,
-    fødselsdatoer: [dayjs('2023-01-25').toDate()],
-    termindato: dayjs('2023-04-01').toDate(),
+    fødselsdatoer: ['2023-01-25'],
+    termindato: '2023-04-01',
 };

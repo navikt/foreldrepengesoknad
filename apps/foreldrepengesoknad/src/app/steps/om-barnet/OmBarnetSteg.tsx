@@ -124,7 +124,6 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
 
     const onSubmit = (values: BarnetFormValues) => {
         const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
-
         const oppdatertBarn = mapOmBarnetFormDataToState(
             values,
             arbeidsforhold,

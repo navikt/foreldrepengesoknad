@@ -12,7 +12,7 @@ import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/st
 import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
@@ -180,11 +180,9 @@ MorAleneomsorgPrematurFødsel.args = {
     stønadskonto80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2023-01-25').toDate()],
-        termindato: dayjs('2023-04-01').toDate(),
+        fødselsdatoer: ['2023-01-25'],
+        termindato: '2023-04-01',
         antallBarn: 1,
-        fødselsdatoer: ['2021-01-11'],
-        termindato: '2021-03-11',
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -203,6 +201,8 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
     barn: {
         type: BarnType.FØDT,
         antallBarn: 1,
+        fødselsdatoer: ['2023-01-11'],
+        termindato: '2023-03-11',
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -210,7 +210,6 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
-        datoForAleneomsorg: dayjs().format(ISO_DATE_FORMAT),
         erAleneOmOmsorg: false,
     },
     søkerData: {
@@ -227,7 +226,7 @@ MorDeltUttakDekningsgrad100EtterWLB.args = {
     stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-12-15').toDate()],
+        fødselsdatoer: ['2022-12-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -236,9 +235,9 @@ MorDeltUttakDekningsgrad100EtterWLB.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -252,7 +251,7 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
     stønadskonto80: stønadskontoFlerbarnsuker80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-07-15').toDate()],
+        fødselsdatoer: ['2022-07-15'],
         antallBarn: 2,
     },
     annenForelder: {
@@ -261,8 +260,8 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
-        datoForAleneomsorg: dayjs().format(ISO_DATE_FORMAT),
         erAleneOmOmsorg: false,
+        datoForAleneomsorg: dayjs().format(DDMMYYYY_DATE_FORMAT),
     },
     søkerData: {
         harJobbetSomFrilansSiste10Mnd: false,
@@ -278,7 +277,7 @@ MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args = {
     stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2024-01-15').toDate()],
+        fødselsdatoer: ['2024-01-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -289,9 +288,9 @@ MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
         erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -306,7 +305,7 @@ MorSøkerOgFarHarIkkeRett.args = {
     stønadskonto80: stønadskonto80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2024-01-15').toDate()],
+        fødselsdatoer: ['2024-01-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -316,9 +315,9 @@ MorSøkerOgFarHarIkkeRett.args = {
         utenlandskFnr: false,
         harRettPåForeldrepengerINorge: false,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,

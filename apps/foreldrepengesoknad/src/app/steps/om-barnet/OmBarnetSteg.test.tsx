@@ -1,10 +1,13 @@
-import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import dayjs from 'dayjs';
+
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
 import { ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import dayjs from 'dayjs';
+
 import * as stories from './OmBarnetSteg.stories';
 
 vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
@@ -20,8 +23,6 @@ const {
     RegistrertBarnFødselMor,
     RegistrertBarnTrillingerDerEnErDød,
 } = composeStories(stories);
-
-const farEllerMedMorSøker = [FarFødsel, MedmorFødsel];
 
 describe('<OmBarnetSteg>', () => {
     it('skal ha født ett barn', async () => {
@@ -332,7 +333,7 @@ describe('<OmBarnetSteg>', () => {
             data: {
                 adopsjonsdato: '2021-09-30',
                 adoptertIUtlandet: true,
-                ankomstdato: '2024-02-06',
+                ankomstdato: dayjs().format(ISO_DATE_FORMAT),
                 antallBarn: 1,
                 fødselsdatoer: ['2020-09-30'],
                 type: 'adoptertAnnetBarn',
@@ -347,67 +348,123 @@ describe('<OmBarnetSteg>', () => {
         });
     });
 
-    it.each(farEllerMedMorSøker)(
-        'Far/medmor kan ikke søke på termin hvis WLB regler ikke gjelder',
-        async (FarEllerMedMorSøker) => {
-            const mockTodayDate = new Date('2022-08-01');
-            vi.setSystemTime(mockTodayDate);
+    it('Far kan ikke søke på termin hvis WLB regler ikke gjelder', async () => {
+        const mockTodayDate = new Date('2022-08-01');
+        vi.setSystemTime(mockTodayDate);
 
-            render(<FarEllerMedMorSøker />);
+        render(<FarFødsel />);
 
-            expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Nei'));
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
 
-            expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ett barn'));
 
-            const termindatoInput = screen.getByLabelText('Når er termindatoen?');
-            await userEvent.type(termindatoInput, dayjs('2022-08-01').format(DDMMYYYY_DATE_FORMAT));
-            await userEvent.tab();
+        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        await userEvent.type(termindatoInput, dayjs('2022-08-01').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
 
-            expect(
-                screen.getByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født.', {
+        expect(
+            screen.getByText(
+                'Du kan søke om foreldrepenger tidligst i 22. svangerskapsuke. Du er dessverre for tidlig ute, og får ikke søkt før senere.',
+                {
                     exact: false,
-                }),
-            ).toBeInTheDocument();
+                },
+            ),
+        ).toBeInTheDocument();
 
-            vi.useRealTimers();
-        },
-    );
+        vi.useRealTimers();
+    });
 
-    it.each(farEllerMedMorSøker)(
-        'Far/medmor kan søke på termin hvis WLB regler gjelder',
-        async (FarEllerMedMorSøker) => {
-            const mockTodayDate = new Date('2022-08-02');
-            vi.setSystemTime(mockTodayDate);
+    it('Medmor kan ikke søke på termin hvis WLB regler ikke gjelder', async () => {
+        const mockTodayDate = new Date('2022-08-01');
+        vi.setSystemTime(mockTodayDate);
 
-            render(<FarEllerMedMorSøker />);
+        render(<MedmorFødsel />);
 
-            expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Nei'));
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
 
-            expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ett barn'));
 
-            const termindatoInput = screen.getByLabelText('Når er termindatoen?');
-            await userEvent.type(termindatoInput, dayjs('2022-08-02').format('DD.MM.YYYY'));
-            await userEvent.tab();
+        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        await userEvent.type(termindatoInput, dayjs('2022-08-01').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
 
-            expect(
-                screen.queryByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', {
+        expect(
+            screen.getByText(
+                'Du kan søke om foreldrepenger tidligst i 22. svangerskapsuke. Du er dessverre for tidlig ute, og får ikke søkt før senere.',
+                {
                     exact: false,
-                }),
-            ).not.toBeInTheDocument();
+                },
+            ),
+        ).toBeInTheDocument();
 
-            const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
-            await userEvent.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
-            await userEvent.tab();
+        vi.useRealTimers();
+    });
 
-            expect(screen.getByText('Neste steg')).toBeInTheDocument();
+    it('Far kan søke på termin hvis WLB regler gjelder', async () => {
+        const mockTodayDate = new Date('2022-08-02');
+        vi.setSystemTime(mockTodayDate);
 
-            vi.useRealTimers();
-        },
-    );
+        render(<FarFødsel />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
+
+        expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        await userEvent.type(termindatoInput, dayjs('2022-08-02').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(
+            screen.queryByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', {
+                exact: false,
+            }),
+        ).not.toBeInTheDocument();
+
+        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        await userEvent.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+
+        vi.useRealTimers();
+    });
+
+    it('Medmor kan søke på termin hvis WLB regler gjelder', async () => {
+        const mockTodayDate = new Date('2022-08-02');
+        vi.setSystemTime(mockTodayDate);
+
+        render(<MedmorFødsel />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
+
+        expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        await userEvent.type(termindatoInput, dayjs('2022-08-02').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(
+            screen.queryByText('Du kan dessverre ikke søke om foreldrepenger før barnet er født. ', {
+                exact: false,
+            }),
+        ).not.toBeInTheDocument();
+
+        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        await userEvent.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+
+        vi.useRealTimers();
+    });
 
     it('Det registrerte barnet skal vises og far/medmor må oppgi termin hvis han/hun velger registrert barn som er født innenfor de siste 12 ukene', async () => {
         const mockTodayDate = new Date('2021-03-16');

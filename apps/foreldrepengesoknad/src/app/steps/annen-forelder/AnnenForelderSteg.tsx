@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { Barn, Step, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
@@ -17,7 +18,6 @@ import RegistrertePersonalia from '../../components/registrerte-personalia/Regis
 import { AnnenForelderFormData } from './AnnenForelderFormData';
 import AnnenForelderOppgittPanel from './AnnenForelderOppgittPanel';
 import OppgiPersonalia from './OppgiPersonalia';
-import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 
 const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker: Søker) => {
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);

@@ -27,7 +27,6 @@ export interface FødtBarn extends Common {
 export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
     termindato: string;
-    terminbekreftelse?: Attachment[];
     terminbekreftelsedato?: string;
 }
 
@@ -35,7 +34,6 @@ export interface AdoptertBarn extends Common {
     type: BarnType.ADOPTERT_STEBARN | BarnType.ADOPTERT_ANNET_BARN;
     adopsjonsdato: string;
     fødselsdatoer: string[];
-    omsorgsovertakelse?: Attachment[];
     fnr?: string[];
 }
 

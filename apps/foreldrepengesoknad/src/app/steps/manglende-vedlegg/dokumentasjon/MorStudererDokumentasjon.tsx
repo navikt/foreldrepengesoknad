@@ -17,7 +17,7 @@ interface Props {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;
-    termindato: Date | undefined;
+    termindato: string | undefined;
     situasjon: Situasjon;
 }
 

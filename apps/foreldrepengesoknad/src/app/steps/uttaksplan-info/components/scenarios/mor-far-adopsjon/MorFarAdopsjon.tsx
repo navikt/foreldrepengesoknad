@@ -323,8 +323,8 @@ const MorFarAdopsjon: FunctionComponent<Props> = ({
                                             finnStartdatoAdopsjon(
                                                 formValues.startdatoAdopsjonValg,
                                                 formValues.annenStartdatoAdopsjon,
-                                                dateToISOString(barn.adopsjonsdato),
-                                                dateToISOString(ankomstdato),
+                                                barn.adopsjonsdato,
+                                                ankomstdato,
                                                 formValues.søkersFørsteDag,
                                             ),
                                         ),

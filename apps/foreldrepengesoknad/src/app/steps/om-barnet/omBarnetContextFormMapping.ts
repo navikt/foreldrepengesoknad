@@ -14,13 +14,14 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
+
 import BarnetFormValues, {
     erAdoptertAnnetBarn,
     erAdoptertStebarn,
     erFødtBarn,
     erUfødtBarn,
 } from './OmBarnetFormValues';
-import { Arbeidsforhold } from '@navikt/fp-types';
 
 const mapOmDetValgteBarnetFormDataToState = (
     valgtRegistrertBarn: FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
@@ -179,6 +180,7 @@ export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?
             adopsjonAvEktefellesBarn: true,
             adopsjonsdato: barn.adopsjonsdato,
 <<<<<<< HEAD
+<<<<<<< HEAD
             antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
             fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
@@ -186,6 +188,8 @@ export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?
             fødselsdatoer: barn.fødselsdatoer,
             omsorgsovertakelse: barn.omsorgsovertakelse,
 =======
+=======
+>>>>>>> 70de31a3a (mergefiksar)
             antallBarn: erFlereEnnToBarn ? 3 : barn.antallBarn,
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : undefined,
             fødselsdatoer: barn.fødselsdatoer.map((f) => ({
@@ -194,6 +198,5 @@ export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?
         };
     }
 
->>>>>>> 543253e53 (div)
     return { fødselsdatoer: [{ dato: undefined }] };
 };

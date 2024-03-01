@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import {
@@ -32,6 +33,7 @@ import {
 } from '@navikt/fp-common';
 import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 
 import { Søknad } from 'app/context/types/Søknad';
@@ -335,7 +337,7 @@ const getBarnFromSaksgrunnlag = (
             return {
                 type: BarnType.UFØDT,
                 antallBarn: sak.antallBarn,
-                termindato: ISOStringToDate(sak.termindato)!,
+                termindato: sak.termindato!,
             };
         case 'adopsjon':
             return {

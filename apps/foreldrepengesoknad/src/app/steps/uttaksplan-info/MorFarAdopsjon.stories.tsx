@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import stønadskonto80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskonto80Adopsjon.json';
 import stønadskonto100Adopsjon from 'storybook/storyData/stonadskontoer/stønadskonto100Adopsjon.json';
@@ -142,7 +141,7 @@ AdopsjonMorMedAleneomsorgDekningsgrad100Før1Okt2021.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    adopsjonsdato: dayjs('2021-03-15').toDate(),
+    adopsjonsdato: '2021-03-15',
     antallBarn: 1,
 };
 
@@ -153,16 +152,16 @@ AdopsjonFarMedAleneomsorgDekningsgrad80TvillingerFør1Okt2021.args = {
     søkerinfo: søkerinfoFar,
     erMor: false,
     annenForelder: {
-        kanIkkeOppgis: true,
+        kanIkkeOppgis: false,
+        erAleneOmOmsorg: true,
     },
     søkerData: {
-        erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    adopsjonsdato: dayjs('2021-03-15').toDate(),
+    adopsjonsdato: '2021-03-15',
     antallBarn: 2,
 };
 
@@ -181,7 +180,7 @@ AdopsjonMorMedAleneomsorgDekningsgrad80Etter1Okt2021.args = {
         harHattAnnenInntektSiste10Mnd: false,
     },
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-    adopsjonsdato: dayjs('2022-06-15').toDate(),
+    adopsjonsdato: '2022-06-15',
     antallBarn: 1,
 };
 
@@ -192,16 +191,16 @@ AdopsjonFarMedAleneomsorgDekningsgrad100Etter1Okt2021.args = {
     søkerinfo: søkerinfoFar,
     erMor: false,
     annenForelder: {
-        kanIkkeOppgis: true,
+        kanIkkeOppgis: false,
+        erAleneOmOmsorg: true,
     },
     søkerData: {
-        erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    adopsjonsdato: dayjs('2022-09-15').toDate(),
+    adopsjonsdato: '2022-09-15',
     antallBarn: 1,
 };
 
@@ -285,9 +284,9 @@ AdopsjonMedDeltUttakDerFarSøker80Tvillinger.args = {
         fnr: '19047815714',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,

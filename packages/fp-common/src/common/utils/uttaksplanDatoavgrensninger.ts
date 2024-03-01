@@ -1,9 +1,11 @@
-import dayjs from 'dayjs';
-import { Uttaksdagen } from './Uttaksdagen';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import dayjs from 'dayjs';
+
 import { DatepickerLimitations } from '@navikt/ds-datepicker';
+
 import uttaksConstants from '../constants/constants';
 import { Situasjon } from '../types';
+import { Uttaksdagen } from './Uttaksdagen';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 import { getFørsteUttaksdag2UkerFørFødsel } from './wlbUtils';
 

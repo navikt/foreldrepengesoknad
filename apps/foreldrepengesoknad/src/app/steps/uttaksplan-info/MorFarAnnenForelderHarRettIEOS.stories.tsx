@@ -192,7 +192,7 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
         rolle: 'far',
     },
     barn: {
-        type: BarnType.ADOPTERT_ANNET_BARN,
+        type: BarnType.FØDT,
         fødselsdatoer: ['2022-06-14', '2022-06-14'],
         antallBarn: 2,
         // @ts-ignore FIX
@@ -226,8 +226,8 @@ FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
         rolle: 'mor',
     },
     barn: {
-        fødselsdatoer: ['2022-06-14'],
-        termindato: '2022-08-14',
+        fødselsdatoer: ['2022-08-14'],
+        termindato: '2022-10-14',
         antallBarn: 1,
         // @ts-ignore FIX
         adopsjonsdato: undefined,

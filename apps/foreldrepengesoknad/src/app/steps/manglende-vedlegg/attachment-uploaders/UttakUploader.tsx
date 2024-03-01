@@ -1,5 +1,6 @@
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
+import dayjs from 'dayjs';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -25,7 +26,7 @@ interface Props {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;
-    termindato: Date | undefined;
+    termindato: string | undefined;
     situasjon: Situasjon;
     skjemanummer: GyldigeSkjemanummerUttak;
     labelText: string;
@@ -81,7 +82,7 @@ const UttakUploader: FunctionComponent<Props> = ({
                                 erFarEllerMedmor={true}
                                 navnPåForeldre={navnPåForeldre}
                                 familiehendelsesdato={familiehendelsesdato}
-                                termindato={termindato}
+                                termindato={termindato ? dayjs(termindato).toDate() : undefined}
                                 situasjon={situasjon}
                                 melding={undefined}
                             />

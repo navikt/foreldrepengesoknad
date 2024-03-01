@@ -73,9 +73,9 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
                         },
                         [ContextDataType.OM_BARNET]: {
                             type: BarnType.FØDT,
-                            fødselsdatoer: ['2021-07-01'],
+                            fødselsdatoer: args.fødselsdatoer,
                             antallBarn: 1,
-                            termindato: '2021-07-01',
+                            termindato: args.termindato,
                         },
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: {
                             dekningsgrad: args.dekningsgrad,
@@ -110,14 +110,14 @@ BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB.args = {
         fnr: '123123123',
         utenlandskFnr: false,
         erMorUfør: false,
-        erAleneOmOmsorg: false,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    fødselsdatoer: [new Date('2022-08-03')],
-    termindato: new Date('2022-08-03'),
+    fødselsdatoer: ['2022-08-03'],
+    termindato: '2022-08-03',
 };
 
 export const BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB = Template.bind({});
@@ -130,14 +130,14 @@ BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB.args = {
         fnr: '123123123',
         utenlandskFnr: false,
         erMorUfør: false,
-        erAleneOmOmsorg: false,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-    fødselsdatoer: [new Date('2022-08-03')],
-    termindato: new Date('2022-08-03'),
+    fødselsdatoer: ['2022-08-03'],
+    termindato: '2022-08-03',
 };
 
 export const BareFarHarRettOgMorErUførEtterWLB = Template.bind({});
@@ -150,15 +150,15 @@ BareFarHarRettOgMorErUførEtterWLB.args = {
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
-        erAleneOmOmsorg: false,
         erMorUfør: true,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    fødselsdatoer: [new Date('2022-08-03')],
-    termindato: new Date('2022-08-03'),
+    fødselsdatoer: ['2022-08-03'],
+    termindato: '2022-08-03',
 };
 
 export const BareFarHarRettOgMorErUførFør1Okt2021 = Template.bind({});
@@ -175,10 +175,11 @@ BareFarHarRettOgMorErUførFør1Okt2021.args = {
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    fødselsdatoer: [new Date('2021-09-29')],
-    termindato: new Date('2021-01-29'),
+    fødselsdatoer: ['2021-09-29'],
+    termindato: '2021-01-29',
 };
 
 export const BareFarHarRettOgPrematurFødsel = Template.bind({});
@@ -195,8 +196,9 @@ BareFarHarRettOgPrematurFødsel.args = {
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    fødselsdatoer: [new Date('2023-01-25')],
-    termindato: new Date('2023-04-01'),
+    fødselsdatoer: ['2023-01-25'],
+    termindato: '2023-04-01',
 };
