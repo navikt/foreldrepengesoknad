@@ -3,6 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
+import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
@@ -17,14 +18,16 @@ export default {
 
 const Template: StoryFn<{
     hvemPlanlegger: HvemPlanlegger;
+    omBarnet: OmBarnet;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }) => {
+}> = ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click') }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.PERIODE]}>
             <PlanleggerDataContext
                 initialState={{
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                    [ContextDataType.OM_BARNET]: omBarnet,
                 }}
                 onDispatch={gåTilNesteSide}
             >
@@ -40,6 +43,11 @@ FlereForsørgere.args = {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR_OG_FAR,
+    },
+    omBarnet: {
+        erBarnetFødt: false,
+        erFødsel: true,
+        termindato: '2023-01-01',
     },
 };
 
