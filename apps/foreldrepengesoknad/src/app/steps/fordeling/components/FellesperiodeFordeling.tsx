@@ -36,8 +36,14 @@ const getValgtFellesperiodeFordeling = (
             },
         ];
     }
-
-    if (valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && antallUkerFellesperiodeTilSøker) {
+    const antallUkerMedFellesperiodeTotalt = antallDagerFellesperiode / 5;
+    const antallUkerInputErHeltall = antallUkerFellesperiodeTilSøker && antallUkerFellesperiodeTilSøker % 1 === 0;
+    if (
+        valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE &&
+        antallUkerInputErHeltall &&
+        antallUkerFellesperiodeTilSøker >= 0 &&
+        antallUkerFellesperiodeTilSøker <= antallUkerMedFellesperiodeTotalt
+    ) {
         const fordeling = [];
         const dagerTilSøker = antallUkerFellesperiodeTilSøker * 5;
         if (dagerTilSøker > 0) {
