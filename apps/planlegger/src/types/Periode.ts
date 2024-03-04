@@ -3,6 +3,12 @@ export enum PeriodeEnum {
     ÅTTI = '80',
 }
 
+export type Fordeling = {
+    fordeling: string;
+    value: string;
+};
+
 export type Periode = {
     periode: PeriodeEnum;
+    fordeling: Fordeling;
 };
