@@ -385,7 +385,7 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 datoForAleneomsorg: dayjs().format(ISO_DATE_FORMAT),
@@ -399,6 +399,11 @@ describe('<AnnenForelderSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: true,
+            key: ContextDataType.MANGLER_DOKUMENTASJON,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.PERIODE_MED_FORELDREPENGER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
