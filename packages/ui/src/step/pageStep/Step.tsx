@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Loader, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
