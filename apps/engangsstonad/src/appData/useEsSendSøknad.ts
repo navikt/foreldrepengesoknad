@@ -1,10 +1,12 @@
-import { useCallback, useMemo, useState } from 'react';
 import { AxiosInstance } from 'axios';
-import { Kvittering, LocaleAll } from '@navikt/fp-types';
-import { postData, ApiAccessError, ApiGeneralError, isApiError, deleteData } from '@navikt/fp-api';
-import { notEmpty } from '@navikt/fp-validation';
-import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+import { useCallback, useMemo, useState } from 'react';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
+import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+
+import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
+import { Kvittering, LocaleAll } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
+
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
 // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
@@ -70,7 +72,13 @@ const useEsSendSøknad = (
                     utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || [],
                     utenlandsoppholdNeste12Mnd: senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd || [],
                 },
-                vedlegg: dokumentasjon?.vedlegg || [],
+                vedlegg:
+                    dokumentasjon?.vedlegg.map((vedlegg) => ({
+                        ...vedlegg,
+                        dokumenterer: {
+                            type: 'barn',
+                        },
+                    })) || [],
             };
 
             let kvittering;
