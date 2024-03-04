@@ -73,6 +73,7 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
                     : values.fnr;
             oppdaterAnnenForeldre({
                 ...values,
+                kanIkkeOppgis: false,
                 fornavn: replaceInvisibleCharsWithSpace(fornavn),
                 etternavn: replaceInvisibleCharsWithSpace(etternavn),
                 fnr: replaceInvisibleCharsWithSpace(fnr.trim()),
