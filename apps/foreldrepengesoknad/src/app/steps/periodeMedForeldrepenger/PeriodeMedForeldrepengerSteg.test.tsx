@@ -1,10 +1,13 @@
-import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { Dekningsgrad } from '@navikt/fp-common';
-import SøknadRoutes from 'app/routes/routes';
-import * as stories from './PeriodeMedForeldrepengerSteg.stories';
+
 import { ContextDataType } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import * as stories from './PeriodeMedForeldrepengerSteg.stories';
 
 const {
     FarEllerMedmorAleneomsorgFødsel,
@@ -52,7 +55,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -92,7 +95,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -138,7 +141,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -184,7 +187,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -228,7 +231,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -272,7 +275,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -316,7 +319,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -355,7 +358,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTTAKSPLAN_INFO,
+            data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

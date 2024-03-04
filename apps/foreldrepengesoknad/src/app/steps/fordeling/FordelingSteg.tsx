@@ -144,6 +144,15 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
               ).denneEllerForrige()
             : undefined;
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder ? Uttaksdagen(sisteDagAnnenForelder).neste() : undefined;
+
+    if (!valgtStønadskonto || (statusAnnenPartVedtak !== RequestStatus.FINISHED && !suspendAnnenPartVedtakApiRequest)) {
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <Loader size="2xlarge" />
+            </div>
+        );
+    }
+
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -151,11 +160,6 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
         >
-            {!valgtStønadskonto && (
-                <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                    <Loader size="2xlarge" />
-                </div>
-            )}
             <VStack gap="5">
                 <FordelingOversikt
                     kontoer={valgtStønadskonto!}

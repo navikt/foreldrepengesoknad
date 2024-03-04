@@ -111,7 +111,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
-
     const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterBarnFraNesteSak = useContextSaveData(ContextDataType.BARN_FRA_NESTE_SAK);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
@@ -240,7 +239,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
         oppdaterManglerDokumentasjon(false);
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+        oppdaterAppRoute(SøknadRoutes.FORDELING);
         mellomlagreSøknadOgNaviger();
         navigator.goToPreviousDefaultStep();
     };

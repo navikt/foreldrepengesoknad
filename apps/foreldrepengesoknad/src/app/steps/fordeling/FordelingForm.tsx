@@ -7,7 +7,7 @@ import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
+import Fordeling from 'app/context/types/Fordeling';
 
 import FellesperiodeFordeling from './components/FellesperiodeFordeling';
 import OppstartAvForeldrepenger from './components/OppstartAvForeldrepenger';
@@ -31,13 +31,13 @@ const FordelingForm: React.FunctionComponent<Props> = ({
 }) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const fordelingAvForeldrepenger = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
-    const oppdaterFordeling = useContextSaveData(ContextDataType.UTTAKSPLAN_INFO);
-    const formMethods = useForm<UttaksplanInfo>({
+    const fordelingAvForeldrepenger = useContextGetData(ContextDataType.FORDELING);
+    const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const formMethods = useForm<Fordeling>({
         defaultValues: fordelingAvForeldrepenger,
     });
 
-    const onSubmit = (values: UttaksplanInfo) => {
+    const onSubmit = (values: Fordeling) => {
         oppdaterFordeling(values);
         return goToNextDefaultStep();
     };

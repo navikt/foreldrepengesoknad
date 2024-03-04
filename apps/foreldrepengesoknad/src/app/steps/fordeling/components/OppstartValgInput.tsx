@@ -19,7 +19,7 @@ import { RadioGroup } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
-import { OppstartValg } from 'app/steps/fordeling/FordelingFormValues';
+import { OppstartValg } from 'app/context/types/Fordeling';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 const getRadioOptionFarFødsel = (

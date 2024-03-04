@@ -129,7 +129,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.UTTAKSPLAN_INFO}
+                path={SøknadRoutes.FORDELING}
                 element={
                     <FordelingSteg
                         søker={søkerInfo.søker}

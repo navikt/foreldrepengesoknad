@@ -46,6 +46,20 @@ export const getKjønnFromFnrString = (fnr: string): Kjønn | undefined => {
     return parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
 };
 
+export const getKunFarHarRett = (
+    erFarEllerMedmor: boolean,
+    annenForelder: AnnenForelder,
+    søkerErAleneOmOmsorg: boolean,
+) => {
+    return (
+        erFarEllerMedmor &&
+        isAnnenForelderOppgitt(annenForelder) &&
+        !søkerErAleneOmOmsorg &&
+        !annenForelder.harRettPåForeldrepengerINorge &&
+        !annenForelder.harRettPåForeldrepengerIEØS
+    );
+};
+
 export const getMorErAleneOmOmsorg = (
     søkerErMor: boolean,
     søkerErAleneOmOmsorg: boolean,

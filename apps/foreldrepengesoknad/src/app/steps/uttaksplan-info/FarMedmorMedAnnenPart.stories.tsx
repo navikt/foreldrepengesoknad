@@ -104,7 +104,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, args.stønadskonto100);
     };
     return (
-        <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
+        <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
             <AxiosMock mock={restMock}>
                 <FpDataContext
                     initialState={{

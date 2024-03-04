@@ -84,7 +84,7 @@ const Template: StoryFn<
     };
 
     return (
-        <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
+        <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
             <AxiosMock mock={restMock}>
                 <FpDataContext
                     initialState={{

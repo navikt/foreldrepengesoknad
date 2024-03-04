@@ -7,14 +7,39 @@ import { NavnPåForeldre, getVarighetString } from '@navikt/fp-common';
 import { RadioGroup, TextField } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import FordelingFormValues, { FellesperiodeFordelingValg } from 'app/steps/fordeling/FordelingFormValues';
+import Fordeling, { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
 import { validateNumber } from 'app/steps/inntektsinformasjon/components/egen-næring/modal/validation/egenNæringValidation';
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
 
 import { validateAntallUkerFellesperiode } from '../fordelingFormUtils';
 import FellesperiodeValgVisning from './fellesperiode-valg-visning.tsx/FellesperiodeValgVisning';
 
-const getValgtFellesperiodeFordeling = (
+const getAntallUkerFellesperiodeTilSøker = (
+    antallDagerFellesperiode: number,
+    valgtFordeling: FellesperiodeFordelingValg | undefined,
+    antallUkerFellesperiodeTilSøker: number | undefined,
+): number | undefined => {
+    if (!valgtFordeling) {
+        return undefined;
+    }
+    if (valgtFordeling === FellesperiodeFordelingValg.LIKT) {
+        return antallDagerFellesperiode / 2;
+    }
+    const antallUkerMedFellesperiodeTotalt = antallDagerFellesperiode / 5;
+    const antallUkerInputErHeltall = antallUkerFellesperiodeTilSøker && antallUkerFellesperiodeTilSøker % 1 === 0;
+
+    if (
+        valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE &&
+        antallUkerInputErHeltall &&
+        antallUkerFellesperiodeTilSøker >= 0 &&
+        antallUkerFellesperiodeTilSøker <= antallUkerMedFellesperiodeTotalt
+    ) {
+        return antallUkerFellesperiodeTilSøker * 5;
+    }
+    return undefined;
+};
+
+export const getValgtFellesperiodeFordeling = (
     erFarEllerMedmor: boolean,
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,
@@ -24,45 +49,26 @@ const getValgtFellesperiodeFordeling = (
         return undefined;
     }
     const fargekodeSøker = erFarEllerMedmor ? FordelingFargekode.SØKER_FAR : FordelingFargekode.SØKER_MOR;
-    if (valgtFordeling === FellesperiodeFordelingValg.LIKT) {
-        return [
-            {
-                antallDager: antallDagerFellesperiode / 2,
-                fargekode: fargekodeSøker,
-            },
-            {
-                antallDager: antallDagerFellesperiode / 2,
-                fargekode: FordelingFargekode.IKKE_TILDELT,
-            },
-        ];
+    const fordeling = [];
+    const dagerTilSøker = getAntallUkerFellesperiodeTilSøker(
+        antallDagerFellesperiode,
+        valgtFordeling,
+        antallUkerFellesperiodeTilSøker,
+    );
+    if (dagerTilSøker && dagerTilSøker > 0) {
+        fordeling.push({
+            antallDager: dagerTilSøker,
+            fargekode: fargekodeSøker,
+        });
     }
-    const antallUkerMedFellesperiodeTotalt = antallDagerFellesperiode / 5;
-    const antallUkerInputErHeltall = antallUkerFellesperiodeTilSøker && antallUkerFellesperiodeTilSøker % 1 === 0;
-    if (
-        valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE &&
-        antallUkerInputErHeltall &&
-        antallUkerFellesperiodeTilSøker >= 0 &&
-        antallUkerFellesperiodeTilSøker <= antallUkerMedFellesperiodeTotalt
-    ) {
-        const fordeling = [];
-        const dagerTilSøker = antallUkerFellesperiodeTilSøker * 5;
-        if (dagerTilSøker > 0) {
-            fordeling.push({
-                antallDager: dagerTilSøker,
-                fargekode: fargekodeSøker,
-            });
-        }
-        const dagerIgjen = antallDagerFellesperiode - dagerTilSøker;
-        if (dagerIgjen > 0) {
-            fordeling.push({
-                antallDager: dagerIgjen,
-                fargekode: FordelingFargekode.IKKE_TILDELT,
-            });
-        }
-        return fordeling;
+    const dagerIgjen = dagerTilSøker ? antallDagerFellesperiode - dagerTilSøker : undefined;
+    if (dagerIgjen && dagerIgjen > 0) {
+        fordeling.push({
+            antallDager: dagerIgjen,
+            fargekode: FordelingFargekode.IKKE_TILDELT,
+        });
     }
-
-    return undefined;
+    return fordeling;
 };
 
 interface Props {
@@ -76,7 +82,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
     erFarEllerMedmor,
 }) => {
     const intl = useIntl();
-    const { watch } = useFormContext<FordelingFormValues>();
+    const { watch } = useFormContext<Fordeling>();
     const valgtFordeling = watch('fordelingValg');
     const antallUkerFellesperiodeTilSøker = watch('antallUkerFellesperiodeTilSøker');
     const likFordeling = getVarighetString(dagerMedFellesperiode / 2, intl);

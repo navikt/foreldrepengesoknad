@@ -1,5 +1,3 @@
-import { UtsettelseÅrsakType } from '@navikt/fp-common';
-
 export enum ValgalternativerAdopsjonStartdato {
     'ankomst' = 'ankomst',
     'omsorgsovertakelse' = 'omsorgsovertakelse',
@@ -28,7 +26,5 @@ export interface UttaksplanSkjemadata {
     farSinFørsteUttaksdag?: string;
     antallUkerFellesperiodeFarMedmor?: number;
     antallDagerFellesperiodeFarMedmor?: number;
-    begrunnelseForUtsettelse?: UtsettelseÅrsakType;
-    ønskerIkkeFlerePerioder?: boolean;
     ønskerTomPlan?: boolean;
 }

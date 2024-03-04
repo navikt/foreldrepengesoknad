@@ -1,25 +1,27 @@
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
+import advanced from 'dayjs/plugin/advancedFormat';
 import isBetween from 'dayjs/plugin/isBetween';
 import minMax from 'dayjs/plugin/minMax';
-import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import advanced from 'dayjs/plugin/advancedFormat';
+import utc from 'dayjs/plugin/utc';
+
+import { isISODateString } from '@navikt/ds-datepicker';
+
 import {
+    ISOStringToDate,
+    Periode,
+    Perioden,
     hasValue,
     isInfoPeriode,
-    ISOStringToDate,
     isPeriodeUtenUttak,
     isUtsettelsesperiode,
     isUttaksperiode,
-    Periode,
-    Perioden,
 } from '@navikt/fp-common';
-import { Alder } from 'app/types/Alder';
-import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { isISODateString } from '@navikt/ds-datepicker';
-import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 import { SøkerBarn } from '@navikt/fp-types';
+
+import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+import { Alder } from 'app/types/Alder';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -127,13 +129,6 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
         dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
         dayjs(new Date()).isSameOrAfter(andreAugust2022, 'day')
     );
-};
-
-export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
-    farSinFørsteUttaksdag: Date,
-    morsSisteUttaksdag: Date,
-): boolean => {
-    return dayjs(farSinFørsteUttaksdag).isAfter(Uttaksdagen(morsSisteUttaksdag).neste(), 'day');
 };
 
 export const getEndringstidspunkt = (

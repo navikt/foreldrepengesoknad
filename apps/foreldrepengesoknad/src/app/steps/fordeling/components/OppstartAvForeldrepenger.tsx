@@ -7,7 +7,7 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import FordelingFormValues, { OppstartValg } from 'app/steps/fordeling/FordelingFormValues';
+import Fordeling, { OppstartValg } from 'app/context/types/Fordeling';
 
 import OppstartDatoInput from './OppstartDatoInput';
 import OppstartValgInput, { getRadioOptionsForSituasjon } from './OppstartValgInput';
@@ -28,7 +28,7 @@ const OppstartAvForeldrepenger: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-    const { watch } = useFormContext<FordelingFormValues>();
+    const { watch } = useFormContext<Fordeling>();
     const erMorFødsel = søkersituasjon.situasjon === 'fødsel' && !erFarEllerMedmor;
     const oppstartValg = watch('oppstartAvForeldrepengerValg');
     const oppstartsValgOptions = getRadioOptionsForSituasjon(
@@ -40,8 +40,7 @@ const OppstartAvForeldrepenger: React.FunctionComponent<Props> = ({
     );
     const visOppstartsDatoInput =
         oppstartsValgOptions &&
-        (oppstartsValgOptions.length === 1 ||
-            (oppstartValg && [OppstartValg.ANNEN_DATO, OppstartValg.RUNDT_FØDSEL].includes(oppstartValg)));
+        (oppstartsValgOptions.length === 1 || (oppstartValg && OppstartValg.ANNEN_DATO === oppstartValg));
     return (
         <VStack gap="5">
             <OppstartValgInput oppstartsValgOptions={oppstartsValgOptions} />

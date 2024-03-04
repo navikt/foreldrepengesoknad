@@ -32,7 +32,7 @@ const mellomlagre = (
     const barnFraNesteSak = getDataFromState(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = getDataFromState(ContextDataType.EKSISTERENDE_SAK);
     const uttaksplan = getDataFromState(ContextDataType.UTTAKSPLAN);
-    const uttaksplanInfo = getDataFromState(ContextDataType.UTTAKSPLAN_INFO);
+    const fordeling = getDataFromState(ContextDataType.FORDELING);
     const periodeMedForeldrepenger = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
     const manglerDokumentasjon = getDataFromState(ContextDataType.MANGLER_DOKUMENTASJON);
@@ -67,7 +67,7 @@ const mellomlagre = (
         },
         eksisterendeSak,
         barnFraNesteSak,
-        uttaksplanInfo,
+        fordeling,
         endringstidspunkt: uttaksplanMetadata?.endringstidspunkt,
         antallUkerIUttaksplan: uttaksplanMetadata?.antallUkerIUttaksplan,
         perioderSomSkalSendesInn: uttaksplanMetadata?.perioderSomSkalSendesInn,

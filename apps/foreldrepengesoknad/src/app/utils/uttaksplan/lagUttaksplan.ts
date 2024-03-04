@@ -1,8 +1,11 @@
+import { finnOgSettInnHull } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+
+import { ISOStringToDate, Periode, Situasjon, TilgjengeligStønadskonto } from '@navikt/fp-common';
+
 import { UttaksplanSkjemadata } from 'app/types/UttaksplanSkjemaData';
+
 import { deltUttak } from './deltUttak';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
-import { ISOStringToDate, Periode, Situasjon, TilgjengeligStønadskonto } from '@navikt/fp-common';
-import { finnOgSettInnHull } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 
 export interface LagUttaksplanParams {
     situasjon: Situasjon;
@@ -13,7 +16,7 @@ export interface LagUttaksplanParams {
     annenForelderErUfør: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksplanSkjema: UttaksplanSkjemadata;
-    erEnkelEndringssøknad: boolean;
+    erEnkelEndringssøknad: boolean; //Denne kan fjernes. Samme som erEndringssøknad
     førsteUttaksdagEtterSeksUker: Date;
     søkerHarMidlertidigOmsorg: boolean;
     bareFarMedmorHarRett: boolean;
@@ -28,7 +31,6 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         situasjon,
         familiehendelsesdato,
         erDeltUttak,
-        erEndringssøknad,
         søkerErFarEllerMedmor,
         annenForelderErUfør,
         tilgjengeligeStønadskontoer,
@@ -40,20 +42,15 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
         førsteUttaksdagNesteBarnsSak,
     } = params;
 
-    if (uttaksplanSkjema.ønskerIkkeFlerePerioder || erEndringssøknad) {
-        return [];
-    }
     const erAdopsjon = situasjon === 'adopsjon';
 
     const {
         harAnnenForelderSøktFP,
         startdatoPermisjon,
         fellesperiodeukerMor,
-        antallDagerFellesperiodeFarMedmor,
         antallUkerFellesperiodeFarMedmor,
         morSinSisteUttaksdag,
         farSinFørsteUttaksdag,
-        begrunnelseForUtsettelse,
     } = uttaksplanSkjema;
 
     const morSinSisteUttaksdagDate = ISOStringToDate(morSinSisteUttaksdag);
@@ -65,13 +62,11 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 erFarEllerMedmor: søkerErFarEllerMedmor,
                 tilgjengeligeStønadskontoer,
                 startdatoPermisjon: ISOStringToDate(startdatoPermisjon),
-                fellesperiodeukerMor,
+                fellesperiodeUkerMor: fellesperiodeukerMor,
                 harAnnenForelderSøktFP,
-                antallDagerFellesperiodeFarMedmor,
                 antallUkerFellesperiodeFarMedmor,
                 morSinSisteUttaksdag: morSinSisteUttaksdagDate,
                 farSinFørsteUttaksdag: ISOStringToDate(farSinFørsteUttaksdag),
-                begrunnelseForUtsettelse,
                 annenForelderHarRettPåForeldrepengerIEØS,
                 termindato,
                 førsteUttaksdagNesteBarnsSak,

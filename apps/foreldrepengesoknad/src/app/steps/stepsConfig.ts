@@ -8,7 +8,7 @@ import SøknadRoutes from 'app/routes/routes';
 type SøkersituasjonStepId = 'søkersituasjon';
 type OmBarnetStepId = 'omBarnet';
 type AnnenForelderId = 'annenForelder';
-type UttaksplanInfo = 'uttaksplanInfo';
+type Fordeling = 'fordeling';
 type Uttaksplan = 'uttaksplan';
 type Dokumentasjon = 'dokumentasjon';
 type UtenlandsoppholdStepId = 'utenlandsopphold';
@@ -20,7 +20,7 @@ type OppsummeringStepId = 'oppsummering';
 type StepIdWithBackHref =
     | OmBarnetStepId
     | AnnenForelderId
-    | UttaksplanInfo
+    | Fordeling
     | Uttaksplan
     | Dokumentasjon
     | UtenlandsoppholdStepId
@@ -55,8 +55,8 @@ const getStepLabel = (intl: IntlShape, id: StepId): string => {
             return intlUtils(intl, 'steps.label.dokumentasjon');
         case 'oppsummering':
             return intlUtils(intl, 'steps.label.oppsummering');
-        case 'uttaksplanInfo':
-            return intlUtils(intl, 'steps.label.uttaksplanInfo');
+        case 'fordeling':
+            return intlUtils(intl, 'steps.label.fordeling');
         case 'søkersituasjon':
             return intlUtils(intl, 'steps.label.søkersituasjon');
         case 'omBarnet':
@@ -96,7 +96,7 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, manglerDokumentasjon: bo
         'søkersituasjon',
         'omBarnet',
         'annenForelder',
-        'uttaksplanInfo',
+        'fordeling',
         'uttaksplan',
         'utenlandsopphold',
         'utenlandsoppholdTidligere',
@@ -108,7 +108,7 @@ const stepConfigFørstegangssøknad = (intl: IntlShape, manglerDokumentasjon: bo
         'søkersituasjon',
         'omBarnet',
         'annenForelder',
-        'uttaksplanInfo',
+        'fordeling',
         'uttaksplan',
         'dokumentasjon',
         'utenlandsopphold',
@@ -134,6 +134,7 @@ const stepConfig = (intl: IntlShape, erEndringssøknad: boolean, manglerDokument
     return stepConfigFørstegangssøknad(intl, manglerDokumentasjon);
 };
 
+//TODO GR: Ser ut som denne ikke brukes? Kan den slettes?
 export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndringssøknad): SøknadRoutes => {
     let href;
 
@@ -148,6 +149,7 @@ export const getPreviousStepHrefEndringssøknad = (id: StepIdWithBackHrefEndring
     return href;
 };
 
+//TODO GR: Ser ut som denne ikke brukes? Kan den slettes?
 export const getPreviousStepHref = (id: StepIdWithBackHref, manglerDokumentasjon = false): SøknadRoutes => {
     let href;
 
@@ -158,11 +160,11 @@ export const getPreviousStepHref = (id: StepIdWithBackHref, manglerDokumentasjon
         case 'annenForelder':
             href = SøknadRoutes.OM_BARNET;
             break;
-        case 'uttaksplanInfo':
+        case 'fordeling':
             href = SøknadRoutes.ANNEN_FORELDER;
             break;
         case 'uttaksplan':
-            href = SøknadRoutes.UTTAKSPLAN_INFO;
+            href = SøknadRoutes.FORDELING;
             break;
         case 'dokumentasjon':
             href = SøknadRoutes.UTTAKSPLAN;

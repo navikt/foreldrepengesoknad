@@ -7,7 +7,7 @@ import SøknadRoutes from 'app/routes/routes';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 
-import FordelingFormValues from '../steps/fordeling/FordelingFormValues';
+import Fordeling from './types/Fordeling';
 import { Opphold, SenereOpphold, TidligereOpphold } from './types/InformasjonOmUtenlandsopphold';
 import PeriodeMedForeldrepenger from './types/PeriodeMedForeldrepenger';
 import SøkerData from './types/SøkerData';
@@ -46,7 +46,7 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;
     [ContextDataType.PERIODE_MED_FORELDREPENGER]?: PeriodeMedForeldrepenger;
     [ContextDataType.UTTAKSPLAN_INFO]?: UttaksplanInfo;
-    [ContextDataType.FORDELING]?: FordelingFormValues;
+    [ContextDataType.FORDELING]?: Fordeling;
     [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
     [ContextDataType.VEDLEGG]?: VedleggDataType;

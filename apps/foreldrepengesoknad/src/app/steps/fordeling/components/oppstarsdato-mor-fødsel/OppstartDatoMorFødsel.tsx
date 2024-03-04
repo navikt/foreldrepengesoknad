@@ -18,9 +18,9 @@ import {
 import { isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import Fordeling from 'app/context/types/Fordeling';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
-import FordelingFormValues from '../../FordelingFormValues';
 import OppstartDatoInput from '../OppstartDatoInput';
 import './oppstart-dato-mor-fødsel.css';
 
@@ -82,7 +82,7 @@ const OppstartDatoMorFødsel = () => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const førsteUttaksdagMorFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
-    const { watch } = useFormContext<FordelingFormValues>();
+    const { watch } = useFormContext<Fordeling>();
     const oppstartDato = watch('oppstartDato');
     const morStarterIkkePå3UkerFørFødsel =
         oppstartDato !== undefined && !dayjs(oppstartDato).isSame(førsteUttaksdagMorFødsel, 'd');

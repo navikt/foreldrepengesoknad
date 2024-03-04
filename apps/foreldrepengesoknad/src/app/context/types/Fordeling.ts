@@ -7,13 +7,12 @@ export enum FellesperiodeFordelingValg {
 export enum OppstartValg {
     TRE_UKER_FØR_TERMIN = 'TRE_UKER_FØR_TERMIN',
     FAMILIEHENDELSESDATO = 'FAMILIEHENDELSESDATO',
-    RUNDT_FØDSEL = 'RUNDT_FØDSEL',
     DAGEN_ETTER_ANNEN_FORELDER = 'DAGEN_ETTER_ANNEN_FORELDER',
     ANNEN_DATO = 'ANNEN_DATO',
     ANKOMSTDATO_NORGE = 'ANKOMSTDATO_NORGE',
 }
 
-export type FordelingFormValues = {
+export type Fordeling = {
     fordelingValg?: FellesperiodeFordelingValg;
     antallUkerFellesperiodeTilSøker?: number;
     oppstartAvForeldrepengerValg?: OppstartValg;
@@ -23,4 +22,4 @@ export type FordelingFormValues = {
     annenForelderSisteDag?: string;
 };
 
-export default FordelingFormValues;
+export default Fordeling;

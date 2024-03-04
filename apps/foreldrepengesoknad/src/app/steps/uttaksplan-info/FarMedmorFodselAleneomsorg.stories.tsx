@@ -48,7 +48,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad }>
     };
 
     return (
-        <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN_INFO]}>
+        <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
             <AxiosMock mock={restMock}>
                 <FpDataContext
                     initialState={{
