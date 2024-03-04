@@ -10,8 +10,8 @@ import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 
-export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
+    if (type === Arbeidsforholdstype.FRILANSER && navn) {
         return capitalizeFirstLetter(navn);
     }
     if (type === Arbeidsforholdstype.SELVSTENDIG && (!navn || navn.trim().length === 0)) {

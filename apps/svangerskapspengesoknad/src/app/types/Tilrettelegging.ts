@@ -30,7 +30,7 @@ export interface Stilling {
 export interface ArbeidsforholdForTilrettelegging {
     arbeidsgiverId?: string;
     type: Arbeidsforholdstype;
-    navn: string;
+    navn?: string;
     stillinger: Stilling[];
     startdato: string;
     sluttdato?: string;

@@ -156,7 +156,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                     alleVarierendePerioder,
                                     valgtTilrettelegging.behovForTilretteleggingFom,
                                     sisteDagForSvangerskapspenger,
-                                    valgtTilrettelegging.arbeidsforhold.navn,
+                                    valgtTilrettelegging.arbeidsforhold.navn || '',
                                     sluttDatoArbeid,
                                 ),
                             ]}
@@ -174,7 +174,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                 validatePeriodeTomType(
                                     intl,
                                     sisteDagForSvangerskapspenger,
-                                    valgtTilrettelegging.arbeidsforhold.navn,
+                                    valgtTilrettelegging.arbeidsforhold.navn || '',
                                     sluttDatoArbeid,
                                 ),
                             ]}
@@ -209,7 +209,11 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                             : intl.formatMessage({ id: 'valideringsfeil.periode.tom.etterFødsel' }),
                                         sisteDagForSvangerskapspenger,
                                     ),
-                                    validatePeriodeTom(intl, valgtTilrettelegging.arbeidsforhold.navn, sluttDatoArbeid),
+                                    validatePeriodeTom(
+                                        intl,
+                                        valgtTilrettelegging.arbeidsforhold.navn || '',
+                                        sluttDatoArbeid,
+                                    ),
                                 ]}
                                 minDate={minDatoTom}
                                 maxDate={maxDato}

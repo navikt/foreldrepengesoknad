@@ -73,7 +73,7 @@ const PeriodeVisning: FunctionComponent<Props> = ({
     const stillingsprosentText = getStillingsprosentTekst(periode, intl);
     const navnArbeidsgiver =
         periode.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
-        periode.arbeidsforhold.navn.trim().length === 0
+        (!periode.arbeidsforhold.navn || periode.arbeidsforhold.navn.trim().length === 0)
             ? intl.formatMessage({ id: 'egenNæring' })
             : periode.arbeidsforhold.navn;
     return (
@@ -81,7 +81,7 @@ const PeriodeVisning: FunctionComponent<Props> = ({
             <VStack gap="4">
                 <HStack justify="space-between">
                     <BodyShort style={{ fontWeight: 'bold' }}>{labelText}</BodyShort>
-                    <BodyShort>{navnArbeidsgiver.toUpperCase()}</BodyShort>
+                    <BodyShort>{navnArbeidsgiver?.toUpperCase()}</BodyShort>
                 </HStack>
                 <BodyShort>{stillingsprosentText}</BodyShort>
             </VStack>

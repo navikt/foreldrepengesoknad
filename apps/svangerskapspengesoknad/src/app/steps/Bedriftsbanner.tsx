@@ -13,11 +13,11 @@ interface Props {
     arbeid: ArbeidsforholdForTilrettelegging;
 }
 
-const getNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
+const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
     if (type === Arbeidsforholdstype.FRILANSER) {
         return intl.formatMessage({ id: 'bedriftsbanner.tittel.frilansarbeid' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG && navn.trim().length === 0) {
+    if (type === Arbeidsforholdstype.SELVSTENDIG && navn && navn.trim().length === 0) {
         return intl.formatMessage({ id: 'egenNæring' });
     }
     return navn;
@@ -26,7 +26,7 @@ const getNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
 const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeid }) => {
     const bem = bemUtils('bedriftsbanner');
     const intl = useIntl();
-    const navn = getNavn(arbeid.type, arbeid.navn, intl);
+    const navn = getNavn(arbeid.type, intl, arbeid.navn);
 
     const detailTekst =
         arbeid.type !== Arbeidsforholdstype.FRILANSER

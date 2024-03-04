@@ -82,9 +82,9 @@ const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype)
 const getLabel = (
     erFlereTilrettelegginger: boolean,
     typeArbeid: Arbeidsforholdstype,
-    navnArbeidsgiver: string,
     intl: IntlShape,
     erFom: boolean,
+    navnArbeidsgiver?: string,
 ) => {
     if (erFlereTilrettelegginger && typeArbeid !== Arbeidsforholdstype.FRILANSER) {
         return erFom
@@ -138,6 +138,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
     const navnArbeidsgiver =
         currentTilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
+        currentTilrettelegging.arbeidsforhold.navn &&
         currentTilrettelegging.arbeidsforhold.navn.trim().length === 0
             ? intl.formatMessage({ id: 'egenNæring' }).toLowerCase()
             : currentTilrettelegging.arbeidsforhold.navn;
@@ -198,7 +199,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                     {erFlereTilrettelegginger && <Bedriftsbanner arbeid={currentTilrettelegging.arbeidsforhold} />}
                     <Datepicker
                         name="behovForTilretteleggingFom"
-                        label={getLabel(erFlereTilrettelegginger, typeArbeid, navnArbeidsgiver, intl, true)}
+                        label={getLabel(erFlereTilrettelegginger, typeArbeid, intl, true, navnArbeidsgiver)}
                         description={
                             harSkjema
                                 ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidFom.description' })
@@ -213,7 +214,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 intl,
                                 sisteDagForSvangerskapspenger,
                                 barnet.termindato,
-                                currentTilrettelegging.arbeidsforhold.navn,
+                                currentTilrettelegging.arbeidsforhold.navn || '',
                                 startDatoArbeid,
                                 sluttDatoArbeid,
                                 kanHaSVPFremTilTreUkerFørTermin,
@@ -277,7 +278,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                     <div>
                         <RadioGroup
                             name="type"
-                            label={getLabel(erFlereTilrettelegginger, typeArbeid, navnArbeidsgiver, intl, false)}
+                            label={getLabel(erFlereTilrettelegginger, typeArbeid, intl, false, navnArbeidsgiver)}
                             description={
                                 harSkjema
                                     ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.description' })

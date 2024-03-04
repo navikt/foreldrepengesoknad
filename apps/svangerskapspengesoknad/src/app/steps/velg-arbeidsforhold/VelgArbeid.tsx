@@ -87,7 +87,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
                     >
                         {tilretteleggingOptions.map((option) => (
                             <Checkbox key={option.id} value={option.id}>
-                                {getOptionNavn(option.arbeidsforhold.type, option.arbeidsforhold.navn, intl)}
+                                {getOptionNavn(option.arbeidsforhold.type, intl, option.arbeidsforhold.navn)}
                             </Checkbox>
                         ))}
                     </CheckboxGroup>
