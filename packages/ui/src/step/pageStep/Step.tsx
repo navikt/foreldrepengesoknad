@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { VStack } from '@navikt/ds-react';
+import { Loader, VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -33,7 +33,7 @@ const Step = <TYPE extends string>({
 }: StepProps<TYPE>) => {
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
     if (currentStepIndex === -1) {
-        throw new Error('No selected step in step-config');
+        return null;
     }
 
     const title = steps[currentStepIndex].label;
