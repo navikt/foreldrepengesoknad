@@ -31,6 +31,11 @@
 
 }
 
+.foreldrepengerFar.firstAndLastDay {
+    border-left: 1px solid var(--a-green-300);
+    border-right: 1px solid var(--a-green-300);
+}
+
 .helgedag {
     background-color: var(--a-gray-200);
 }
@@ -51,6 +56,38 @@
     background-repeat: no-repeat;
     padding: 0 2px 2px 2px;
     margin-left: 1px;
+}
+
+.hjerte {
+    height: 19px;
+    width: 22px;
+    background-color:var(--a-red-100);
+    position: relative;
+    margin-top: 5px;
+    padding: 2px;
+    transform: rotate(-45deg);
+}
+
+
+.hjerte::before, .hjerte::after {
+    content: '';
+    height: 19px;
+    width: 22px;
+    background-color:var(--a-red-100);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.hjerte::before {
+    top: -10px;
+    left: 0px;
+    
+}
+
+.hjerte::after {
+    top: 0;
+    left: 10px;
+
 }
 
 .firstDay {

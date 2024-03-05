@@ -15,7 +15,7 @@ import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import {
     getFellesperiodefordelingOptionValues,
     getFellesperiodefordelingSelectOptions,
-} from 'steps/periode/situasjon/FlereForsørgere';
+} from 'steps/periode/PeriodeSteg';
 import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 import { Periode } from 'types/Periode';
@@ -26,11 +26,11 @@ import {
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
-import { BodyShort, HStack, Heading, Select, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
-import { Form } from '@navikt/fp-form-hooks';
+import { Form, Select } from '@navikt/fp-form-hooks';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -119,6 +119,7 @@ const OversiktSteg = () => {
         ? fellesperiodeOptionValues[fellesperiodefordeling]
         : undefined;
     console.log('antallUkerFellesperiodeSøker1: ', antallUkerFellesperiodeSøker1);
+    console.log('antallUkerFellesperiodeSøker2: ', antallUkerFellesperiodeSøker2);
     console.log('fellesperiodefordeling: ', fellesperiodefordeling);
 
     const sluttdatoSøker1 =
@@ -128,6 +129,7 @@ const OversiktSteg = () => {
                   .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
             : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
     console.log('sluttdato: ', sluttdatoSøker1);
+
     const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1) : undefined;
     const sluttdatoSøker2 =
         antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2.antallUkerSøker2
@@ -135,9 +137,15 @@ const OversiktSteg = () => {
                   .add(antallUkerFellesperiodeSøker2.antallUkerSøker2, 'weeks')
                   .add(antallUkerFedrekvote, 'weeks')
             : undefined;
+
     const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(fellesperiodeOptionValues);
-    const antallUkerSøker1 = dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'week');
-    const antallUkerSøker2 = dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'week');
+    const antallUkerSøker1 = dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks');
+    const antallUkerSøker2 = dayjs(sluttdatoSøker2).diff(dayjs(sluttdatoSøker1), 'weeks');
+    console.log('antallUkerSøker1: ', antallUkerSøker1);
+    console.log('antallUkerSøker2: ', antallUkerSøker2);
+
+    const [currentOption, setCurrentOption] = useState('');
+    console.log('currentOption: ', currentOption);
 
     return (
         <Form formMethods={formMethods}>
@@ -164,7 +172,14 @@ const OversiktSteg = () => {
                         </ToggleGroup>
 
                         {!isAlene(hvemPlanlegger) && (
-                            <Select label="" name="fellesperiodefordeling">
+                            <Select
+                                label=""
+                                name="fellesperiodefordeling"
+                                onChange={(e) => {
+                                    setCurrentOption(e.target.value);
+                                    console.log(e.target.value);
+                                }}
+                            >
                                 {fellesperiodeSelectOptions}
                             </Select>
                         )}
@@ -189,7 +204,7 @@ const OversiktSteg = () => {
                                 </div>
                                 <Spacer />
                                 {!isAlene(hvemPlanlegger) && (
-                                    <HStack gap="3">
+                                    <HStack gap="3" wrap={false}>
                                         <div className="greenPanel">
                                             <HStack gap="2" align="center">
                                                 <GrønnSirkel />
@@ -202,7 +217,7 @@ const OversiktSteg = () => {
                                                                 .slice(-1)
                                                                 .map(capitalizeFirstLetter),
                                                             uker: antallUkerSøker2,
-                                                            dato: dayjs(startdatoSøker1)
+                                                            dato: dayjs(startdatoSøker2)
                                                                 .add(1, 'day')
                                                                 .format('dddd D MMM'),
                                                         }}
@@ -220,17 +235,16 @@ const OversiktSteg = () => {
                                 <HStack gap="2" align="center">
                                     <Hjerte />
                                     <BodyShort>
-                                        {erFødt ||
-                                            (erAdoptert && (
-                                                <FormattedMessage
-                                                    id="fødselsdatoIkontekst"
-                                                    values={{
-                                                        mnd: barnehagestartDato(barnet),
-                                                        dato: termindatoEllerFødselsdato(barnet),
-                                                    }}
-                                                />
-                                            ))}
-                                        {erIkkeFødt && (
+                                        {(erFødt || erAdoptert) && erIkkeFødt && (
+                                            <FormattedMessage
+                                                id="fødselsdatoIkontekst"
+                                                values={{
+                                                    mnd: barnehagestartDato(barnet),
+                                                    dato: termindatoEllerFødselsdato(barnet),
+                                                }}
+                                            />
+                                        )}
+                                        {!erFødt && !erAdoptert && erIkkeFødt && (
                                             <FormattedMessage
                                                 id="termindatoIkontekst"
                                                 values={{
