@@ -91,7 +91,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
+    const søker = useContextGetData(ContextDataType.SØKER_DATA);
 
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const oppdaterSøker = useContextSaveData(ContextDataType.SØKER_DATA);
@@ -100,10 +100,10 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
-        søker.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : [],
+        søker?.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : [],
     );
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
-        søker.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
+        søker?.andreInntekterSiste10Mnd ? søker.andreInntekterSiste10Mnd : [],
     );
 
     const [etterlønnVedlegg, setEtterlønnVedlegg] = useState(
