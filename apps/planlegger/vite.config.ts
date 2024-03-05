@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 
 export default defineConfig({
@@ -19,6 +19,7 @@ export default defineConfig({
             components: path.resolve(__dirname, './src/components'),
             appData: path.resolve(__dirname, './src/appData'),
             types: path.resolve(__dirname, './src/types'),
+            utils: path.resolve(__dirname, './src/utils'),
         },
     },
     test: {

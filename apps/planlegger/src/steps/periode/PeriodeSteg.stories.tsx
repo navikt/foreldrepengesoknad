@@ -47,7 +47,7 @@ FlereForsørgere.args = {
     omBarnet: {
         erBarnetFødt: false,
         erFødsel: true,
-        termindato: '2023-01-01',
+        termindato: '2024-01-01',
     },
 };
 
