@@ -77,8 +77,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     erEndringssøknad,
 }) => {
     const intl = useIntl();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
-    const stepConfig = useStepConfig(erEndringssøknad);
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
 
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));

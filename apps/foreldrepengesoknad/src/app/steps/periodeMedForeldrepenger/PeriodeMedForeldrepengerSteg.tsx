@@ -1,5 +1,7 @@
 import { useIntl } from 'react-intl';
+
 import { Loader } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Barn,
@@ -10,18 +12,21 @@ import {
     isAnnenForelderOppgitt,
     isFødtBarn,
 } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { useApiPostData, useApiGetData } from 'app/api/context/useFpApiData';
+
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
+import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { RequestStatus } from 'app/types/RequestState';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { RequestStatus } from 'app/types/RequestState';
+
 import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
-import useStepConfig from 'app/appData/useStepConfig';
-import useFpNavigator from 'app/appData/useFpNavigator';
 
 const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
     const annenPartFødselsnummer =
@@ -42,15 +47,20 @@ const shouldSuspendAnnenPartVedtakApiRequest = (annenForelder: AnnenForelder) =>
 };
 
 type Props = {
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
+    arbeidsforhold,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

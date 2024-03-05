@@ -115,7 +115,7 @@ const Template: StoryFn<
                     }}
                 >
                     <UttaksplanInfo
-                        søker={args.søkerinfo.søker}
+                        søkerInfo={args.søkerinfo}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}

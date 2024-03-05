@@ -6,7 +6,7 @@ import { VStack } from '@navikt/ds-react';
 import { Barn, Step, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Søker } from '@navikt/fp-types';
+import { Søker, Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -29,25 +29,24 @@ const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker:
 };
 
 type Props = {
-    søker: Søker;
+    søkerInfo: Søkerinfo;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const { rolle } = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
 
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
-    const oppdaterManglendeDokumentasjon = useContextSaveData(ContextDataType.MANGLER_DOKUMENTASJON);
 
-    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søker);
+    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo.søker);
 
     const oppgittFnrErUlikRegistrertBarn =
         annenForelder !== undefined &&
@@ -79,10 +78,6 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
                 fnr: replaceInvisibleCharsWithSpace(fnr.trim()),
                 harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
             });
-
-            if (values.datoForAleneomsorg) {
-                oppdaterManglendeDokumentasjon(true);
-            }
         }
 
         return navigator.goToNextDefaultStep();
@@ -115,7 +110,7 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {skalOppgiPersonalia && (
-                        <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søker.fnr} />
+                        <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.søker.fnr} />
                     )}
                     {!skalOppgiPersonalia && (
                         <RegistrertePersonalia
@@ -129,7 +124,7 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søker, mellomlagre
                             rolle={rolle}
                             barn={barn}
                             annenForelder={annenForelder}
-                            søker={søker}
+                            søker={søkerInfo.søker}
                         />
                     )}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />

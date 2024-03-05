@@ -84,7 +84,7 @@ const Template: StoryFn<Props> = ({
                 }}
             >
                 <AnnenForelderSteg
-                    søker={søker}
+                    søkerInfo={{ søker, arbeidsforhold: [] }}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     avbrytSøknad={avbrytSøknad}
                 />

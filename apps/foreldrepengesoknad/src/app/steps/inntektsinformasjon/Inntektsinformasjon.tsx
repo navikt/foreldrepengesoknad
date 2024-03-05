@@ -83,8 +83,8 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 

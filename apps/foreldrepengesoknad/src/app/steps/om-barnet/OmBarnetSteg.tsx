@@ -26,11 +26,10 @@ import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUt
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getEldsteRegistrerteBarn } from 'app/utils/dateUtils';
 
-import { BarnetFormValues, erUfødtBarn } from './OmBarnetFormValues';
+import { BarnetFormValues } from './OmBarnetFormValues';
 import ValgteRegistrerteBarn from './ValgteRegistrerteBarn';
 import AdopsjonPanel from './adopsjon/AdopsjonPanel';
 import FødselPanel from './fødsel/FødselPanel';
-import { getKanSøkePåTermin } from './fødsel/TerminPanel';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetContextFormMapping';
 
 const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
@@ -93,14 +92,13 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
-    const oppdaterManglendeDokumentasjon = useContextSaveData(ContextDataType.MANGLER_DOKUMENTASJON);
 
     const { arbeidsforhold, søker } = søkerInfo;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -135,15 +133,6 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
         );
 
         oppdaterOmBarnet(oppdatertBarn);
-
-        if (
-            søkersituasjon.situasjon === 'adopsjon' ||
-            (erUfødtBarn(values) &&
-                arbeidsforhold.length === 0 &&
-                getKanSøkePåTermin(søkersituasjon.rolle, values.termindato))
-        ) {
-            oppdaterManglendeDokumentasjon(true);
-        }
 
         return navigator.goToNextDefaultStep();
     };

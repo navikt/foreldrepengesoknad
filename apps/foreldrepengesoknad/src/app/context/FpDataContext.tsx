@@ -28,7 +28,6 @@ export enum ContextDataType {
     UTTAKSPLAN = 'UTTAKSPLAN',
     UTTAKSPLAN_METADATA = 'UTTAKSPLAN_METADATA',
     VEDLEGG = 'VEDLEGG',
-    MANGLER_DOKUMENTASJON = 'MANGLER_DOKUMENTASJON',
 }
 
 export type ContextDataMap = {
@@ -47,7 +46,6 @@ export type ContextDataMap = {
     [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
     [ContextDataType.VEDLEGG]?: VedleggDataType;
-    [ContextDataType.MANGLER_DOKUMENTASJON]?: boolean;
 };
 
 const defaultInitialState = {} as ContextDataMap;

@@ -155,7 +155,7 @@ describe('<OmBarnetSteg>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallBarn: 1,
@@ -167,11 +167,6 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: true,
-            key: ContextDataType.MANGLER_DOKUMENTASJON,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
@@ -202,7 +197,7 @@ describe('<OmBarnetSteg>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallBarn: 1,
@@ -214,11 +209,6 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: true,
-            key: ContextDataType.MANGLER_DOKUMENTASJON,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
@@ -263,7 +253,7 @@ describe('<OmBarnetSteg>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallBarn: 4,
@@ -280,11 +270,6 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: true,
-            key: ContextDataType.MANGLER_DOKUMENTASJON,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
@@ -343,7 +328,7 @@ describe('<OmBarnetSteg>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 adopsjonsdato: '2021-09-30',
@@ -357,11 +342,6 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: true,
-            key: ContextDataType.MANGLER_DOKUMENTASJON,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',

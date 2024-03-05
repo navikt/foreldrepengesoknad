@@ -1,12 +1,15 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Kjønn } from '@navikt/fp-common';
-import SøkersituasjonSteg from './SøkersituasjonSteg';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { StoryFn } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
+
+import { Kjønn } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import SøkersituasjonSteg from './SøkersituasjonSteg';
 
 const promiseAction =
     () =>
@@ -44,8 +47,8 @@ const Template: StoryFn<Props> = ({
                     [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                 }}
             >
-                o
                 <SøkersituasjonSteg
+                    arbeidsforhold={[]}
                     kjønn={kjønn}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     avbrytSøknad={avbrytSøknad}

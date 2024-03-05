@@ -102,8 +102,8 @@ const Oppsummering: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig(erEndringssøknad);
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
     const [manglerDokumentasjon, setManglerDokumentasjon] = useState(false);
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

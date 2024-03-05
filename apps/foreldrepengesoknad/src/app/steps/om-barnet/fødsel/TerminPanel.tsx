@@ -21,7 +21,7 @@ import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { UfødtBarn } from '../OmBarnetFormValues';
 
-export const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
+const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
     if (!isFarEllerMedmor(rolle)) {
         return true;
     }

@@ -1,12 +1,28 @@
+import { kreverUttaksplanVedlegg } from '@navikt/uttaksplan';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
+import {
+    Søkerrolle,
+    andreAugust2022ReglerGjelder,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    isUfødtBarn,
+} from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from 'app/context/FpDataContext';
 
 import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../routes/routes';
+
+const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
+    if (!isFarEllerMedmor(rolle)) {
+        return true;
+    }
+    return termindato ? andreAugust2022ReglerGjelder(termindato) : false;
+};
 
 // TODO Bør denne flyttast ut?
 const getPathToLabelMap = (intl: IntlShape) =>
@@ -52,15 +68,38 @@ const showUtenlandsoppholdStep = (
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    arbeidsforhold: Arbeidsforhold[],
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
-        return getData(ContextDataType.MANGLER_DOKUMENTASJON) === true;
+        const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
+        const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
+        const omBarnet = getData(ContextDataType.OM_BARNET);
+        const uttaksplan = getData(ContextDataType.UTTAKSPLAN);
+
+        const skalHaAnnenForelderDok =
+            annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : false;
+
+        const skalHaOmBarnetDok =
+            søkersituasjon?.situasjon === 'adopsjon' ||
+            (omBarnet &&
+                søkersituasjon &&
+                isUfødtBarn(omBarnet) &&
+                arbeidsforhold.length === 0 &&
+                getKanSøkePåTermin(søkersituasjon.rolle, omBarnet.termindato));
+
+        const erFarEllerMedmor = søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
+        const skalHaUttakDok =
+            erFarEllerMedmor && annenForelder && uttaksplan
+                ? kreverUttaksplanVedlegg(uttaksplan, erFarEllerMedmor, annenForelder)
+                : false;
+
+        return skalHaAnnenForelderDok || skalHaOmBarnetDok || skalHaUttakDok;
     }
 
     return false;
 };
 
-const useStepConfig = (erEndringssøknad = false) => {
+const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = false) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
 
@@ -78,11 +117,11 @@ const useStepConfig = (erEndringssøknad = false) => {
             ROUTES_ORDER.flatMap((path) =>
                 requiredSteps.includes(path) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showManglendeDokumentasjonSteg(path, getStateData)
+                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, currentPath, getStateData],
+        [requiredSteps, currentPath, getStateData, arbeidsforhold],
     );
 
     return useMemo(

@@ -118,7 +118,6 @@ const Template: StoryFn<Props> = ({
                 onDispatch={gåTilNesteSide}
                 initialState={{
                     [ContextDataType.UTTAKSPLAN]: [],
-                    [ContextDataType.MANGLER_DOKUMENTASJON]: true,
                     [ContextDataType.ANNEN_FORELDER]: annenForelder,
                     [ContextDataType.OM_BARNET]: barn,
                     [ContextDataType.SØKERSITUASJON]: {

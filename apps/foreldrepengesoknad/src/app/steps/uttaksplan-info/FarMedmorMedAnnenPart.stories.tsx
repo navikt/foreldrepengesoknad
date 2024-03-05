@@ -133,7 +133,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                     }}
                 >
                     <UttaksplanInfo
-                        søker={søkerinfo.søker}
+                        søkerInfo={søkerinfo}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}

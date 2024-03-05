@@ -134,6 +134,7 @@ const Template: StoryFn<Props> = ({
                         }}
                     >
                         <PeriodeMedForeldrepengerSteg
+                            arbeidsforhold={[]}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
                         />

@@ -1,12 +1,15 @@
+import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
 import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, SøkerBarn } from '@navikt/fp-types';
-import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+
 import { Action, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import { MemoryRouter } from 'react-router-dom';
+
 import Velkommen from './Velkommen';
 
 const promiseAction =
@@ -56,7 +59,7 @@ const Template: StoryFn<Props> = ({
                     saker={saker}
                     fnr={'123'}
                     harGodkjentVilkår={harGodkjentVilkår}
-                    søker={søker}
+                    søkerInfo={{ søker, arbeidsforhold: [] }}
                     setErEndringssøknad={action('button-click')}
                     setHarGodkjentVilkår={action('button-click')}
                     setSøknadGjelderNyttBarn={action('button-click')}

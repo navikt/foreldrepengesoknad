@@ -91,8 +91,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig(erEndringssøknad);
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
@@ -117,7 +117,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
-    const oppdaterManglerDokumentasjon = useContextSaveData(ContextDataType.MANGLER_DOKUMENTASJON);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
@@ -239,7 +238,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         });
         oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
-        oppdaterManglerDokumentasjon(false);
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
         mellomlagreSøknadOgNaviger();
         navigator.goToPreviousDefaultStep();
@@ -416,7 +414,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
         setIsSubmitting(true);
         setSubmitIsClicked(true);
-        oppdaterManglerDokumentasjon(planKreverVedlegg);
 
         oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
