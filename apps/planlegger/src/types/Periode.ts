@@ -1,14 +1,12 @@
-export enum PeriodeEnum {
-    HUNDRE = '100',
-    ÅTTI = '80',
-}
+import { Dekningsgrad } from '@navikt/fp-common';
 
-export type Fordeling = {
-    fordeling: string;
-    value: string;
+export type Fellesperiodefordeling = {
+    antallUkerSøker1: number | undefined;
+    antallUkerSøker2?: number | undefined;
+    id: number;
 };
 
 export type Periode = {
-    periode: PeriodeEnum;
-    fordeling: Fordeling;
+    dekningsgrad: Dekningsgrad;
+    fellesperiodefordeling: number;
 };

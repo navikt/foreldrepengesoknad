@@ -3,10 +3,10 @@ import GreenPanel from 'components/GreenPanel';
 import InfoboksGenerell from 'components/InfoboksGenerell';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { PeriodeEnum } from 'types/Periode';
 
 import { BodyLong, Heading, Radio, VStack } from '@navikt/ds-react';
 
+import { Dekningsgrad } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -30,7 +30,7 @@ const Aleneforsørger: FunctionComponent = () => {
                 <GreenPanel>
                     <RadioGroup
                         label={<FormattedMessage id="periode.hvorLangPeriodeDeg" />}
-                        name="periode"
+                        name="dekningsgrad"
                         validate={[
                             isRequired(
                                 intl.formatMessage({
@@ -39,10 +39,10 @@ const Aleneforsørger: FunctionComponent = () => {
                             ),
                         ]}
                     >
-                        <Radio value={PeriodeEnum.HUNDRE}>
+                        <Radio value={Dekningsgrad.HUNDRE_PROSENT}>
                             <FormattedMessage id="periode.100" />
                         </Radio>
-                        <Radio value={PeriodeEnum.ÅTTI}>
+                        <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
                             <FormattedMessage id="periode.80" />
                         </Radio>
                     </RadioGroup>

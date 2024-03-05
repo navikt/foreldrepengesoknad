@@ -5,17 +5,23 @@ import Infoboks from 'components/Infoboks';
 import InfoboksGenerell from 'components/InfoboksGenerell';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnHvemPlanlegger } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
 import { erBarnetIkkeFødt } from 'types/Barnet';
 import { HvemPlanlegger, isFarOgFar, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
-import { Periode, PeriodeEnum } from 'types/Periode';
+import { Fellesperiodefordeling, Periode } from 'types/Periode';
+import {
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerMødrekvote,
+    mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
+} from 'utils/stønadskontoer';
 
-import { BodyLong, Heading, Radio, Select, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Radio, VStack } from '@navikt/ds-react';
 
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
-import { Form, RadioGroup } from '@navikt/fp-form-hooks';
+import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
+import { RadioGroup, Select } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 export const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
@@ -31,205 +37,278 @@ export const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
     return [hvemPlanlegger.navnPåFar, hvemPlanlegger.navnPåMedfar];
 };
 
-const lagFordelingOptions = (periode: number) => {
+export const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
+    const values = [{ id: 0, antallUkerSøker1: undefined, antallUkerSøker2: undefined }] as Fellesperiodefordeling[];
+    console.log(antallUkerFellesperiode);
+
+    for (let i = 0; i <= antallUkerFellesperiode; i++) {
+        const value = { id: i + 1, antallUkerSøker2: antallUkerFellesperiode - i, antallUkerSøker1: i };
+        values.push(value);
+    }
+    return values;
+};
+
+export const getFellesperiodefordelingSelectOptions = (selectValues: Fellesperiodefordeling[]) => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const hvem = finnHvemPlanlegger(hvemPlanlegger);
-    let value = 0;
 
-    periode ? 100 : 80;
-
-    const uker = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
-
-    const options = [<option value={value++} />];
-
-    if (periode === 100) {
-        options.push(
-            <option value={value++}>
-                <FormattedMessage id="periode.fordelingOptionAlt" values={{ hvem: hvem[1], uker: uker[15] }} />
-            </option>,
-        );
-        console.log(options);
-
-        for (let i = 0; i < 16 - 1; i++) {
-            options.push(
-                <option value={value++}>
+    const options = selectValues.map((value) => {
+        if (value.antallUkerSøker1 === undefined && value.antallUkerSøker2 === undefined) {
+            return <option value={value.id}></option>;
+        }
+        if (value.antallUkerSøker1 === 0) {
+            return (
+                <option value={value.id}>
                     <FormattedMessage
-                        id="periode.fordelingOptions"
-                        values={{ hvem: hvem[0], hvem2: hvem[1], uker: uker[i], uker2: uker[14 - i] }}
+                        id="periode.fordelingOptionAlt"
+                        values={{ hvem: hvem[1], uker: value.antallUkerSøker2 }}
                     />
-                </option>,
+                </option>
             );
         }
-
-        options.push(
-            <option value={value++}>
-                <FormattedMessage id="periode.fordelingOptionAlt" values={{ hvem: hvem[0], uker: uker[15] }} />
-            </option>,
-        );
-    }
-
-    if (periode === 80) {
-        options.push(
-            <option value={value++}>
-                <FormattedMessage id="periode.fordelingOptionAlt" values={{ hvem: hvem[1], uker: uker[18] }} />
-            </option>,
-        );
-        console.log(options);
-
-        for (let i = 0; i < uker.length - 1; i++) {
-            options.push(
-                <option value={value++}>
+        if (value.antallUkerSøker2 === 0) {
+            return (
+                <option value={value.id}>
                     <FormattedMessage
-                        id="periode.fordelingOptions"
-                        values={{ hvem: hvem[0], hvem2: hvem[1], uker: uker[i], uker2: uker[17 - i] }}
+                        id="periode.fordelingOptionAlt"
+                        values={{ hvem: hvem[0], uker: value.antallUkerSøker1 }}
                     />
-                </option>,
+                </option>
             );
         }
-
-        options.push(
-            <option value={value++}>
-                <FormattedMessage id="periode.fordelingOptionAlt" values={{ hvem: hvem[0], uker: uker[18] }} />
-            </option>,
+        return (
+            <option value={value.id}>
+                <FormattedMessage
+                    id="periode.fordelingOptions"
+                    values={{
+                        hvem: hvem[0],
+                        hvem2: hvem[1],
+                        uker: value.antallUkerSøker1,
+                        uker2: value.antallUkerSøker2,
+                    }}
+                />
+            </option>
         );
-    }
+    });
 
-    return periode === 100 ? options.slice(0, 18) : options;
+    return options;
 };
 
 const FlereForsørgere: FunctionComponent = () => {
     const intl = useIntl();
-    const formMethods = useForm<Periode>();
+    const formMethods = useFormContext<Periode>();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const periode = formMethods.watch('periode');
+    const navn = finnNavn(hvemPlanlegger);
+
+    const fornavnFørste = navn[0].split(' ')[0];
+    const fornavnAndre = navn[1].split(' ')[0];
+
+    const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
+    console.log(fellesperiodefordeling);
     const [currentOption, setCurrentOption] = useState('');
 
+    // TODO: hent fra api
+    const konto100 = {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 80,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
+    const konto80 = {
+        kontoer: {
+            MØDREKVOTE: 95,
+            FEDREKVOTE: 95,
+            FELLESPERIODE: 90,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
+
+    const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
+    const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
+    const dekningsgrad = formMethods.watch('dekningsgrad');
+    const selectedKonto = dekningsgrad
+        ? dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? mappedKonto100
+            : mappedKonto80
+        : mappedKonto100;
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
-    const treUkerFørTerminDato = dayjs(termindato).subtract(3, 'weeks').startOf('day');
-    const sluttdatoMor = dayjs(treUkerFørTerminDato).add(31, 'weeks');
-    const sluttdato49 = dayjs(sluttdatoMor).add(15, 'weeks');
+
+    const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
+    const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
+
+    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate());
+
+    const fellesperiodeOptionValues = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
+    const antallUkerFellesperiodeSøker1 = fellesperiodefordeling
+        ? fellesperiodeOptionValues[fellesperiodefordeling]
+        : undefined;
+    const antallUkerFellesperiodeSøker2 = fellesperiodefordeling
+        ? fellesperiodeOptionValues[fellesperiodefordeling]
+        : undefined;
+    console.log('antallUkerFellesperiodeSøker1: ', antallUkerFellesperiodeSøker1);
+    console.log('fellesperiodefordeling: ', fellesperiodefordeling);
+
+    const sluttdatoSøker1 =
+        antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1.antallUkerSøker1
+            ? dayjs(startdatoSøker1)
+                  .add(antallUkerMødrekvote, 'weeks')
+                  .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
+            : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
+    console.log('sluttdato: ', sluttdatoSøker1);
+
+    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1) : undefined;
+    const sluttdatoSøker2 =
+        antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2.antallUkerSøker2
+            ? dayjs(startdatoSøker2)
+                  .add(antallUkerFellesperiodeSøker2.antallUkerSøker2, 'weeks')
+                  .add(antallUkerFedrekvote, 'weeks')
+            : undefined;
+
+    const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(fellesperiodeOptionValues);
+    const sluttdatoForeldrepenger = startdatoSøker1
+        ? dayjs(startdatoSøker1)
+              .add(antallUkerMødrekvote, 'weeks')
+              .add(antallUkerFedrekvote, 'weeks')
+              .add(antallUkerFellesperiode, 'weeks')
+        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
 
     return (
-        <Form formMethods={formMethods}>
-            <VStack gap="10">
-                <Heading size="large" spacing>
-                    <FormattedMessage id="periode.tittel" />
-                </Heading>
-                <InfoboksGenerell
-                    header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
-                    icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                >
-                    <BodyLong>
-                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
-                    </BodyLong>
-                </InfoboksGenerell>
-                <VStack gap="2">
-                    <GreenPanel>
-                        <RadioGroup
-                            label={<FormattedMessage id="periode.hvorLangPeriode" />}
-                            name="periode"
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({
-                                        id: 'feilmelding.periode.hvorLangPeriode.duMåOppgi',
-                                    }),
-                                ),
-                            ]}
-                        >
-                            <Radio value={PeriodeEnum.HUNDRE}>
-                                <FormattedMessage id="periode.100" />
-                            </Radio>
-                            <Radio value={PeriodeEnum.ÅTTI}>
-                                <FormattedMessage id="periode.80" />
-                            </Radio>
-                        </RadioGroup>
-                    </GreenPanel>
-                </VStack>
-
+        <VStack gap="10">
+            <Heading size="large" spacing>
+                <FormattedMessage id="periode.tittel" />
+            </Heading>
+            <InfoboksGenerell
+                header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
+                icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+            >
+                <BodyLong>
+                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
+                </BodyLong>
+            </InfoboksGenerell>
+            <VStack gap="2">
+                <GreenPanel>
+                    <RadioGroup
+                        label={<FormattedMessage id="periode.hvorLangPeriode" />}
+                        name="dekningsgrad"
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'feilmelding.periode.hvorLangPeriode.duMåOppgi',
+                                }),
+                            ),
+                        ]}
+                    >
+                        <Radio value={Dekningsgrad.HUNDRE_PROSENT}>
+                            <FormattedMessage id="periode.100" />
+                        </Radio>
+                        <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
+                            <FormattedMessage id="periode.80" />
+                        </Radio>
+                    </RadioGroup>
+                </GreenPanel>
+            </VStack>
+            {dekningsgrad && (
                 <VStack gap="10">
-                    <InfoboksGenerell
-                        header={<FormattedMessage id="periode.infoboks.hvordanFordeleTittel" />}
-                        icon={<SectorChartIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                    <Infoboks
+                        header={
+                            <FormattedMessage
+                                id="periode.infoboks.sisteDagTittel"
+                                values={{ dato: dayjs(sluttdatoForeldrepenger).format('dddd DD. MMMM YYYY') }}
+                            />
+                        }
                     >
                         <BodyLong>
-                            <FormattedMessage id="periode.infoboks.hvordanFordeleTekst" />
+                            <FormattedMessage id="periode.infoboks.sisteDagTekst" />
                         </BodyLong>
-                    </InfoboksGenerell>
-                </VStack>
-
-                <VStack gap="10">
-                    <GreenPanel>
-                        <Select
-                            label={<FormattedMessage id="periode.fordelingTittel" />}
-                            name="fordeling"
-                            onChange={(e) => {
-                                setCurrentOption(e.target.value);
-                                console.log(e.target.value);
-                            }}
+                    </Infoboks>
+                    <VStack gap="10">
+                        <InfoboksGenerell
+                            header={<FormattedMessage id="periode.infoboks.hvordanFordeleTittel" />}
+                            icon={<SectorChartIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         >
-                            {periode === PeriodeEnum.HUNDRE && lagFordelingOptions(100)}
-                            {periode === PeriodeEnum.ÅTTI && lagFordelingOptions(80)}
-                        </Select>
-                    </GreenPanel>
+                            <BodyLong>
+                                <FormattedMessage id="periode.infoboks.hvordanFordeleTekst" />
+                            </BodyLong>
+                        </InfoboksGenerell>
+                    </VStack>
 
-                    {currentOption !== undefined && currentOption > '0' && (
-                        <Infoboks header={<FormattedMessage id="periode.infoboksTittel" />}>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="periode.infoboksTekst.førsteDag"
-                                    values={{
-                                        hvem: finnHvemPlanlegger(hvemPlanlegger)
-                                            .slice(0, -1)
-                                            .map(capitalizeFirstLetter),
-                                        dag: treUkerFørTerminDato.format('DD.MM.YY'),
-                                    }}
-                                />
-                            </BodyLong>
-                            <BodyLong spacing>
-                                <FormattedMessage
-                                    id="periode.infoboksTekst.sisteDag"
-                                    values={{
-                                        hvem: finnHvemPlanlegger(hvemPlanlegger)
-                                            .slice(0, -1)
-                                            .map(capitalizeFirstLetter),
-                                        dag: sluttdatoMor.format('DD.MM.YY'),
-                                    }}
-                                />
-                            </BodyLong>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="periode.infoboksTekst.førsteDag"
-                                    values={{
-                                        hvem: finnHvemPlanlegger(hvemPlanlegger)
-                                            .slice(0, 3)
-                                            .slice(-1)
-                                            .map(capitalizeFirstLetter),
-                                        dag: dayjs(sluttdatoMor).add(1, 'day').format('DD.MM.YY'),
-                                    }}
-                                />
-                            </BodyLong>
-                            <BodyLong spacing>
-                                <FormattedMessage
-                                    id="periode.infoboksTekst.sisteDag"
-                                    values={{
-                                        hvem: finnHvemPlanlegger(hvemPlanlegger)
-                                            .slice(0, 3)
-                                            .slice(-1)
-                                            .map(capitalizeFirstLetter),
-                                        dag: sluttdato49.format('DD.MM.YY'),
-                                    }}
-                                />
-                            </BodyLong>
-                            <BodyLong size="small">
-                                <FormattedMessage id="periode.infoboksTekst.hvis" />
-                            </BodyLong>
-                        </Infoboks>
-                    )}
+                    <VStack gap="10">
+                        <GreenPanel>
+                            <Select
+                                label={<FormattedMessage id="periode.fordelingTittel" />}
+                                name="fellesperiodefordeling"
+                                onChange={(e) => {
+                                    setCurrentOption(e.target.value);
+                                    console.log(e.target.value);
+                                }}
+                            >
+                                {fellesperiodeSelectOptions}
+                            </Select>
+                        </GreenPanel>
+
+                        {currentOption !== undefined && currentOption > '0' && (
+                            <Infoboks header={<FormattedMessage id="periode.infoboksTittel" />}>
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="periode.infoboksTekst.førsteDag"
+                                        values={{
+                                            hvem: fornavnFørste,
+                                            dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
+                                        }}
+                                    />
+                                </BodyLong>
+                                <BodyLong spacing>
+                                    <FormattedMessage
+                                        id="periode.infoboksTekst.sisteDag"
+                                        values={{
+                                            hvem: fornavnFørste,
+                                            dag: sluttdatoSøker1.format('DD.MM.YY'),
+                                        }}
+                                    />
+                                </BodyLong>
+
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="periode.infoboksTekst.førsteDag"
+                                        values={{
+                                            hvem: fornavnAndre,
+                                            dag: dayjs(startdatoSøker2).add(1, 'day').format('DD.MM.YY'),
+                                        }}
+                                    />
+                                </BodyLong>
+                                <BodyLong spacing>
+                                    <FormattedMessage
+                                        id="periode.infoboksTekst.sisteDag"
+                                        values={{
+                                            hvem: fornavnAndre,
+                                            dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
+                                        }}
+                                    />
+                                </BodyLong>
+                                <BodyLong size="small">
+                                    <FormattedMessage id="periode.infoboksTekst.hvis" />
+                                </BodyLong>
+                            </Infoboks>
+                        )}
+                    </VStack>
                 </VStack>
-            </VStack>
-        </Form>
+            )}
+        </VStack>
     );
 };
 
