@@ -106,13 +106,17 @@ const Kalender = () => {
     }
 
     const treUkerFørTerminDato = dayjs(termindato).subtract(3, 'weeks').startOf('day');
-    const sluttdatoMor = dayjs(treUkerFørTerminDato).add(31, 'weeks');
-    const sluttdato49 = dayjs(sluttdatoMor).add(15, 'weeks');
+    const sluttdatoMor49 = dayjs(treUkerFørTerminDato).add(34, 'weeks');
+    const sluttdatoMor59 = dayjs(treUkerFørTerminDato).add(40, 'weeks');
+    const sluttdato49 = dayjs(sluttdatoMor49).add(15, 'weeks');
+    const sluttdato59 = dayjs(sluttdatoMor59).add(18, 'weeks');
 
     const perioder = [
         { fom: treUkerFørTerminDato, tom: dayjs(termindato).subtract(1, 'day') },
-        { fom: dayjs(termindato).add(1, 'day'), tom: dayjs(sluttdatoMor).subtract(1, 'day') },
-        { fom: dayjs(sluttdatoMor), tom: dayjs(sluttdato49).subtract(1, 'day') },
+        { fom: dayjs(termindato).add(1, 'day'), tom: dayjs(sluttdatoMor49).subtract(1, 'day') },
+        { fom: dayjs(sluttdatoMor49), tom: dayjs(sluttdato49).subtract(1, 'day') },
+        { fom: dayjs(termindato).add(1, 'day'), tom: dayjs(sluttdatoMor59).subtract(1, 'day') },
+        { fom: dayjs(sluttdatoMor59), tom: dayjs(sluttdato59).subtract(1, 'day') },
     ];
 
     const years = [...new Set([treUkerFørTerminDato.year(), sluttdato49.year()])];
@@ -133,7 +137,7 @@ const Kalender = () => {
                                             month,
                                             day,
                                             treUkerFørTerminDato,
-                                            sluttdatoMor,
+                                            sluttdatoMor49,
                                             sluttdato49,
                                             dayjs(termindato),
                                         )}

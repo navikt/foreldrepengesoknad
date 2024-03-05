@@ -5,9 +5,10 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { Periode, PeriodeEnum } from 'types/Periode';
+import { Periode } from 'types/Periode';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
+import { Dekningsgrad } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import OversiktSteg from './OversiktSteg';
@@ -48,7 +49,8 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
         type: SøkersituasjonEnum.MOR_OG_FAR,
     },
     periode: {
-        periode: PeriodeEnum.HUNDRE,
+        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        fellesperiodefordeling: { antallUkerSøker1: 1, antallUkerSøker2: 1, id: 1 },
     },
     omBarnet: {
         erFødsel: true,
@@ -64,7 +66,8 @@ PeriodeAleneforsørgerÅttiProsentFødt.args = {
         type: SøkersituasjonEnum.MOR,
     },
     periode: {
-        periode: PeriodeEnum.ÅTTI,
+        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        fellesperiodefordeling: { antallUkerSøker1: 19, id: 1 },
     },
     omBarnet: {
         erBarnetFødt: true,
@@ -82,7 +85,8 @@ PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
         type: SøkersituasjonEnum.MOR_OG_FAR,
     },
     periode: {
-        periode: PeriodeEnum.ÅTTI,
+        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        fellesperiodefordeling: { antallUkerSøker1: 5, antallUkerSøker2: 11, id: 1 },
     },
     omBarnet: {
         erBarnetFødt: true,

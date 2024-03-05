@@ -7,9 +7,10 @@
             "styles/*": ["styles/*"],
             "intl/*": ["intl/*"],
             "types/*": ["types/*"],
-            "appData/*": ["appData/*"]
+            "appData/*": ["appData/*"],
+            "utils/*": ["utils/*"],
         },
-        "types": ["@testing-library/jest-dom", "vitest/globals"]
+        "types": ["@testing-library/jest-dom", "vitest/globals"],
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
 }

@@ -1,4 +1,5 @@
 import HvemPlanlegger from 'steps/hvemPlanlegger/HvemPlanleggerSteg';
+
 import { SøkersituasjonEnum } from './Søkersituasjon';
 
 export type HvemPlanlegger = MorOgFar | MorOgMedmor | FarOgFar | Mor | Far;
