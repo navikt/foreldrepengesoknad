@@ -1,27 +1,36 @@
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import dayjs, { Dayjs } from 'dayjs';
+import { useState } from 'react';
+import { getFellesperiodefordelingOptionValues } from 'steps/periode/PeriodeSteg';
 import { erBarnetIkkeFødt } from 'types/Barnet';
+import {
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerMødrekvote,
+    mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
+} from 'utils/stønadskontoer';
 
 import { HStack, VStack } from '@navikt/ds-react';
 
+import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
 import Day, { DagIPeriode, PeriodType } from './Day';
 import Month from './Month';
 import Year from './Year';
 
-const findMonthsOfYear = (year: number, treUkerFørTerminDato: Dayjs, sluttdato49: Dayjs): number[] => {
-    if (treUkerFørTerminDato.year() === year) {
-        const endOfYear = treUkerFørTerminDato.endOf('year');
-        const lastDate = sluttdato49.isBefore(endOfYear) ? sluttdato49 : endOfYear;
+const findMonthsOfYear = (year: number, startdatoSøker1: Dayjs, sluttdatoSøker2: Dayjs): number[] => {
+    if (startdatoSøker1.year() === year) {
+        const endOfYear = startdatoSøker1.endOf('year');
+        const lastDate = sluttdatoSøker2.isBefore(endOfYear) ? sluttdatoSøker2 : endOfYear;
         return [...new Array(lastDate.month() + 1)]
             .map((_nr, index) => index)
-            .filter((nr) => nr >= treUkerFørTerminDato.month());
+            .filter((nr) => nr >= startdatoSøker1.month());
     }
-    if (sluttdato49.year() === year) {
-        const startOfYear = sluttdato49.startOf('year');
-        const firstDate = treUkerFørTerminDato.isAfter(startOfYear) ? treUkerFørTerminDato : startOfYear;
-        return [...new Array(sluttdato49.month() + 1)]
+    if (sluttdatoSøker2.year() === year) {
+        const startOfYear = sluttdatoSøker2.startOf('year');
+        const firstDate = startdatoSøker1.isAfter(startOfYear) ? startdatoSøker1 : startOfYear;
+        return [...new Array(sluttdatoSøker2.month() + 1)]
             .map((_nr, index) => index)
             .filter((nr) => nr >= firstDate.month());
     }
@@ -71,14 +80,15 @@ const finnPeriodeType = (
     year: number,
     month: number,
     day: number,
-    treUkerFørTerminDato: Dayjs,
-    sluttdatoMor: Dayjs,
-    sluttdato49: Dayjs,
+    startdatoSøker1: Dayjs,
+    sluttdatoSøker1: Dayjs,
+    startdatoSøker2: Dayjs,
+    sluttdatoSøker2: Dayjs,
     termindato: Dayjs,
 ) => {
     const date = dayjs().year(year).month(month).date(day);
 
-    if (date.isBefore(treUkerFørTerminDato) || date.isAfter(sluttdato49)) {
+    if (date.isBefore(startdatoSøker1) || date.isAfter(sluttdatoSøker2)) {
         return PeriodType.INGEN;
     }
     if (date.isoWeekday() === 5 || date.isoWeekday() === 6) {
@@ -88,11 +98,11 @@ const finnPeriodeType = (
         return PeriodType.TERMINDATO;
     }
 
-    if (date.isBetween(treUkerFørTerminDato, sluttdatoMor)) {
+    if (date.isBetween(startdatoSøker1, sluttdatoSøker1)) {
         return PeriodType.FORELDREPENGER_MOR;
     }
 
-    if (date.isBetween(sluttdatoMor, sluttdato49)) {
+    if (date.isBetween(startdatoSøker2, sluttdatoSøker2)) {
         return PeriodType.FORELDREPENGER_FAR;
     }
     return PeriodType.INGEN;
@@ -104,29 +114,108 @@ const Kalender = () => {
     if (!termindato) {
         throw Error('Det er feil i data om barnet');
     }
+    // TODO: hent fra api
+    const konto100 = {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 80,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
+    const konto80 = {
+        kontoer: {
+            MØDREKVOTE: 95,
+            FEDREKVOTE: 95,
+            FELLESPERIODE: 90,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
 
-    const treUkerFørTerminDato = dayjs(termindato).subtract(3, 'weeks').startOf('day');
-    const sluttdatoMor49 = dayjs(treUkerFørTerminDato).add(34, 'weeks');
-    const sluttdatoMor59 = dayjs(treUkerFørTerminDato).add(40, 'weeks');
-    const sluttdato49 = dayjs(sluttdatoMor49).add(15, 'weeks');
-    const sluttdato59 = dayjs(sluttdatoMor59).add(18, 'weeks');
+    const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(Dekningsgrad.HUNDRE_PROSENT);
+    console.log('dekningsgrad: ', setDekningsgrad);
+
+    const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
+    const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
+
+    const selectedKonto = dekningsgrad
+        ? dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? mappedKonto100
+            : mappedKonto80
+        : mappedKonto100;
+
+    const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
+    const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
+
+    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate());
+    console.log('startdatoSøker1: ', startdatoSøker1);
+
+    const fellesperiodefordeling = notEmpty(useContextGetData(ContextDataType.PERIODE)).fellesperiodefordeling;
+
+    const fellesperiodeOptionValues = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
+
+    const antallUkerFellesperiodeSøker1 = fellesperiodefordeling
+        ? fellesperiodeOptionValues[fellesperiodefordeling]
+        : undefined;
+    const antallUkerFellesperiodeSøker2 = fellesperiodefordeling
+        ? fellesperiodeOptionValues[fellesperiodefordeling]
+        : undefined;
+    console.log('antallUkerFellesperiodeSøker1: ', antallUkerFellesperiodeSøker1);
+    console.log('fellesperiodefordeling: ', fellesperiodefordeling);
+
+    const sluttdatoSøker1 =
+        antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1.antallUkerSøker1
+            ? dayjs(startdatoSøker1)
+                  .add(antallUkerMødrekvote, 'weeks')
+                  .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
+            : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
+    console.log('sluttdatoSøker1: ', sluttdatoSøker1);
+
+    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1) : undefined;
+
+    const sluttdatoSøker2 =
+        antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2.antallUkerSøker2
+            ? dayjs(startdatoSøker2)
+                  .add(antallUkerFellesperiodeSøker2.antallUkerSøker2, 'weeks')
+                  .add(antallUkerFedrekvote, 'weeks')
+            : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks');
+
+    console.log('startdatoSøker2: ', startdatoSøker2);
+    console.log('sluttdatoSøker2: ', sluttdatoSøker2);
+    const sluttdatoForeldrepenger = startdatoSøker1
+        ? dayjs(startdatoSøker1)
+              .add(antallUkerMødrekvote, 'weeks')
+              .add(antallUkerFedrekvote, 'weeks')
+              .add(antallUkerFellesperiode, 'weeks')
+        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
+    console.log('sluttdatoForeldrepenger: ', sluttdatoForeldrepenger);
 
     const perioder = [
-        { fom: treUkerFørTerminDato, tom: dayjs(termindato).subtract(1, 'day') },
-        { fom: dayjs(termindato).add(1, 'day'), tom: dayjs(sluttdatoMor49).subtract(1, 'day') },
-        { fom: dayjs(sluttdatoMor49), tom: dayjs(sluttdato49).subtract(1, 'day') },
-        { fom: dayjs(termindato).add(1, 'day'), tom: dayjs(sluttdatoMor59).subtract(1, 'day') },
-        { fom: dayjs(sluttdatoMor59), tom: dayjs(sluttdato59).subtract(1, 'day') },
+        { fom: dayjs(startdatoSøker1), tom: dayjs(termindato).subtract(1, 'day') },
+        { fom: dayjs(termindato).add(1, 'day'), tom: dayjs(sluttdatoSøker1).subtract(1, 'day') },
+        { fom: dayjs(startdatoSøker2), tom: dayjs(sluttdatoSøker2).subtract(1, 'day') },
     ];
+    console.log('perioder: ', perioder);
 
-    const years = [...new Set([treUkerFørTerminDato.year(), sluttdato49.year()])];
+    const years = [...new Set([dayjs(startdatoSøker1).year(), dayjs(sluttdatoSøker2).year()])];
 
     return (
         <VStack gap="5">
             {years.map((year) => (
                 <Year key={year} year={year}>
                     <HStack gap="2">
-                        {findMonthsOfYear(year, treUkerFørTerminDato, sluttdato49).map((month) => (
+                        {findMonthsOfYear(year, dayjs(startdatoSøker1), dayjs(sluttdatoSøker2)).map((month) => (
                             <Month key={month} year={year} month={month}>
                                 {[...Array(dayjs().year(year).month(month).daysInMonth()).keys()].map((day) => (
                                     <Day
@@ -136,9 +225,10 @@ const Kalender = () => {
                                             year,
                                             month,
                                             day,
-                                            treUkerFørTerminDato,
-                                            sluttdatoMor49,
-                                            sluttdato49,
+                                            dayjs(startdatoSøker1),
+                                            dayjs(sluttdatoSøker1),
+                                            dayjs(startdatoSøker2),
+                                            dayjs(sluttdatoSøker2),
                                             dayjs(termindato),
                                         )}
                                         startEllerSlutt={finnStartEllerSlutt(year, month, day, perioder)}
