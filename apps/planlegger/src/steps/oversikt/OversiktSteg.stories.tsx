@@ -50,7 +50,7 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
     },
     periode: {
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-        fellesperiodefordeling: { antallUkerSøker1: 1, antallUkerSøker2: 1, id: 1 },
+        fellesperiodefordeling: { antallUkerSøker1: 5, antallUkerSøker2: 11, id: 1 },
     },
     omBarnet: {
         erFødsel: true,
@@ -68,6 +68,25 @@ PeriodeAleneforsørgerÅttiProsentFødt.args = {
     periode: {
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         fellesperiodefordeling: { antallUkerSøker1: 19, id: 1 },
+    },
+    omBarnet: {
+        erBarnetFødt: true,
+        erFødsel: true,
+        fødselsdato: '2024-09-01',
+        termindato: '2024-09-01',
+    },
+};
+
+export const PeriodeFlereForsørgereÅttiProsentFødt = Template.bind({});
+PeriodeFlereForsørgereÅttiProsentFødt.args = {
+    hvemPlanlegger: {
+        navnPåMor: 'Klara Utvikler',
+        navnPåMedmor: 'Kari Utvikler',
+        type: SøkersituasjonEnum.MOR_OG_MEDMOR,
+    },
+    periode: {
+        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        fellesperiodefordeling: { antallUkerSøker1: 19, id: 1, antallUkerSøker2: 19 },
     },
     omBarnet: {
         erBarnetFødt: true,

@@ -57,4 +57,9 @@ Aleneforsørger.args = {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
     },
+    omBarnet: {
+        erBarnetFødt: false,
+        erFødsel: true,
+        termindato: '2024-01-01',
+    },
 };

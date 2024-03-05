@@ -8,5 +8,5 @@ export type Fellesperiodefordeling = {
 
 export type Periode = {
     dekningsgrad: Dekningsgrad;
-    fellesperiodefordeling: number;
+    fellesperiodefordeling: number | undefined;
 };
