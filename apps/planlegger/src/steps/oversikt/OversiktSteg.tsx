@@ -58,7 +58,6 @@ const OversiktSteg = () => {
     const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
-    const hvem = finnHvemPlanlegger(hvemPlanlegger);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const formMethods = useForm<Periode>();
     const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
