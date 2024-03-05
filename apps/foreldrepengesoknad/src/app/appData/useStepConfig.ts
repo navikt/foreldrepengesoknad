@@ -87,11 +87,9 @@ const showManglendeDokumentasjonSteg = (
                 arbeidsforhold.length === 0 &&
                 getKanSøkePåTermin(søkersituasjon.rolle, omBarnet.termindato));
 
-        const erFarEllerMedmor = søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
+        const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
         const skalHaUttakDok =
-            erFarEllerMedmor && annenForelder && uttaksplan
-                ? kreverUttaksplanVedlegg(uttaksplan, erFarEllerMedmor, annenForelder)
-                : false;
+            annenForelder && uttaksplan ? kreverUttaksplanVedlegg(uttaksplan, erFarEllerMedmor, annenForelder) : false;
 
         return skalHaAnnenForelderDok || skalHaOmBarnetDok || skalHaUttakDok;
     }
