@@ -1,9 +1,11 @@
-import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/fp-api';
-import { Kvittering, LocaleAll } from '@navikt/fp-types';
 import * as Sentry from '@sentry/browser';
 import { AxiosInstance } from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/fp-api';
+import { Kvittering, LocaleAll } from '@navikt/fp-types';
+
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
 export const VERSJON_MELLOMLAGRING = 1;

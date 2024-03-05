@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
+
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
 import { ContextDataType, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';
 import useStepConfig from './useStepConfig';

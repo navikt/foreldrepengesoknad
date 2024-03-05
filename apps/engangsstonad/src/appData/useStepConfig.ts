@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { notEmpty } from '@navikt/fp-validation';
-import { ContextDataType, ContextDataMap, useContextGetAnyData } from './EsDataContext';
-import { Path, REQUIRED_APP_STEPS, PATH_ORDER } from './paths';
+
 import { I18nFn, useCustomIntl } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
+import { ContextDataMap, ContextDataType, useContextGetAnyData } from './EsDataContext';
+import { PATH_ORDER, Path, REQUIRED_APP_STEPS } from './paths';
 
 // TODO Denne bør flyttast ut
 const getPathToLabelMap = (i18n: I18nFn) =>
