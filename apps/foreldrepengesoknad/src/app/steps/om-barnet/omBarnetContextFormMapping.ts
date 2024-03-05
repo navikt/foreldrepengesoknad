@@ -1,5 +1,3 @@
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-
 import {
     AdoptertBarn,
     Barn,
@@ -179,17 +177,6 @@ export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?
         return {
             adopsjonAvEktefellesBarn: true,
             adopsjonsdato: barn.adopsjonsdato,
-<<<<<<< HEAD
-<<<<<<< HEAD
-            antallBarn: erFlereEnnToBarn ? '3' : barn.antallBarn.toString(),
-            antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : '',
-            fødselsdatoer: barn.fødselsdatoer.map((fødselsdato) => dateToISOString(fødselsdato)),
-            omsorgsovertakelse: vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [],
-            fødselsdatoer: barn.fødselsdatoer,
-            omsorgsovertakelse: barn.omsorgsovertakelse,
-=======
-=======
->>>>>>> 70de31a3a (mergefiksar)
             antallBarn: erFlereEnnToBarn ? 3 : barn.antallBarn,
             antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : undefined,
             fødselsdatoer: barn.fødselsdatoer.map((f) => ({
