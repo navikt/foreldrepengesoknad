@@ -19,7 +19,7 @@ export type BarnetErAdoptert = {
     fødselsdato: string;
 };
 
-export enum AdopsjonsEnum {
+export enum BarnetEnum {
     ETT = 'ett',
     TO = 'to',
     FLERE = 'flere',

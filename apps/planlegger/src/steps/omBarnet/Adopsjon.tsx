@@ -3,7 +3,7 @@ import GreenPanel from 'components/GreenPanel';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { AdopsjonsEnum, OmBarnet } from 'types/Barnet';
+import { BarnetEnum, OmBarnet } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
 import { Radio, VStack } from '@navikt/ds-react';
@@ -36,9 +36,9 @@ const Adopsjon: React.FunctionComponent = () => {
                             name="hvorMange"
                             label={
                                 isAlene(hvemPlanlegger) ? (
-                                    <FormattedMessage id="barnet.adopsjon.hvorMangeDeg" />
+                                    <FormattedMessage id="barnet.hvorMangeDeg" />
                                 ) : (
-                                    <FormattedMessage id="barnet.adopsjon.hvorMange" />
+                                    <FormattedMessage id="barnet.hvorMange" />
                                 )
                             }
                             validate={[
@@ -49,14 +49,14 @@ const Adopsjon: React.FunctionComponent = () => {
                                 ),
                             ]}
                         >
-                            <Radio value={AdopsjonsEnum.ETT}>
-                                <FormattedMessage id="barnet.adopsjon.ett" />
+                            <Radio value={BarnetEnum.ETT}>
+                                <FormattedMessage id="barnet.ett" />
                             </Radio>
-                            <Radio value={AdopsjonsEnum.TO}>
-                                <FormattedMessage id="barnet.adopsjon.to" />
+                            <Radio value={BarnetEnum.TO}>
+                                <FormattedMessage id="barnet.to" />
                             </Radio>
-                            <Radio value={AdopsjonsEnum.FLERE}>
-                                <FormattedMessage id="barnet.adopsjon.flereEnnTo" />
+                            <Radio value={BarnetEnum.FLERE}>
+                                <FormattedMessage id="barnet.flereEnnTo" />
                             </Radio>
                         </RadioGroup>
                     </GreenPanel>
