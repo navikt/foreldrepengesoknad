@@ -293,7 +293,7 @@ describe('<AnnenForelderSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
 
@@ -326,12 +326,11 @@ describe('<AnnenForelderSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
 
-        const textInputs = screen.getAllByRole('textbox');
-        const fornavnInput = textInputs[0];
+        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = textInputs[1];
+        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
         await userEvent.type(etternavnInput, 'Utvikler');
 
         const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
@@ -476,12 +475,11 @@ describe('<AnnenForelderSteg>', () => {
     it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder er far og har rett i Norge', async () => {
         const screen = render(<MorUfødtBarn />);
 
-        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
 
-        const textInputs = screen.getAllByRole('textbox');
-        const fornavnInput = textInputs[0];
+        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = textInputs[1];
+        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
         await userEvent.type(etternavnInput, 'Utvikler');
 
         const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
@@ -499,12 +497,11 @@ describe('<AnnenForelderSteg>', () => {
     it('skal ikke vise infoboks om farskapsportal når mor søker på termin, annen forelder er en medmor og har rett i Norge', async () => {
         render(<MorUfødtBarn />);
 
-        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
 
-        const textInputs = screen.getAllByRole('textbox');
-        const fornavnInput = textInputs[0];
+        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = textInputs[1];
+        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
         await userEvent.type(etternavnInput, 'Utvikler');
 
         const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
@@ -523,12 +520,11 @@ describe('<AnnenForelderSteg>', () => {
     it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder har utenlandsk fnr og har rett i Norge', async () => {
         render(<MorUfødtBarn />);
 
-        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
 
-        const textInputs = screen.getAllByRole('textbox');
-        const fornavnInput = textInputs[0];
+        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = textInputs[1];
+        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
         await userEvent.type(etternavnInput, 'Utvikler');
 
         expect(screen.getByText('Fødselsnummer eller D-nummer til den andre forelderen')).toBeInTheDocument();
@@ -553,12 +549,11 @@ describe('<AnnenForelderSteg>', () => {
     it('skal vise infoboks om farskapsportal når far søker på termin, ikke er gift og uansett om mor har rett til foreldrepenger', async () => {
         render(<FarUfødtBarn />);
 
-        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
 
-        const textInputs = screen.getAllByRole('textbox');
-        const fornavnInput = textInputs[0];
+        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Mor');
-        const etternavnInput = textInputs[1];
+        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
         await userEvent.type(etternavnInput, 'Utvikler');
 
         expect(screen.getByText('Fødselsnummer eller D-nummer til den andre forelderen')).toBeInTheDocument();
@@ -582,12 +577,11 @@ describe('<AnnenForelderSteg>', () => {
     it('skal ikke vise infoboks om farskapsportal når medmor søker', async () => {
         render(<MedmorUfødtBarn />);
 
-        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
 
-        const textInputs = screen.getAllByRole('textbox');
-        const fornavnInput = textInputs[0];
+        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Mor');
-        const etternavnInput = textInputs[1];
+        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
         await userEvent.type(etternavnInput, 'Utvikler');
 
         const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
@@ -609,12 +603,11 @@ describe('<AnnenForelderSteg>', () => {
     it('skal ikke vise infoboks om farskapsportal når far er gift', async () => {
         render(<FarGiftUfødtBarn />);
 
-        expect(await screen.findByText('Fornavn og etternavn på den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
 
-        const textInputs = screen.getAllByRole('textbox');
-        const fornavnInput = textInputs[0];
+        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Mor');
-        const etternavnInput = textInputs[1];
+        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
         await userEvent.type(etternavnInput, 'Utvikler');
 
         const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');

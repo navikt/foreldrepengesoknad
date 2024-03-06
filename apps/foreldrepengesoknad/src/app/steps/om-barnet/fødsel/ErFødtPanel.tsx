@@ -1,11 +1,13 @@
-import { Datepicker } from '@navikt/fp-form-hooks';
-import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
-import { useFormContext } from 'react-hook-form';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { FunctionComponent } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+
+import { Datepicker } from '@navikt/fp-form-hooks';
+import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
 import { FødtBarn } from '../OmBarnetFormValues';
 
 dayjs.extend(isSameOrAfter);
@@ -15,7 +17,7 @@ const ErFødtPanel: FunctionComponent = () => {
     const intl = useIntl();
 
     const formMethods = useFormContext<FødtBarn>();
-    const { antallBarn, fødselsdatoer } = formMethods.watch();
+    const { antallBarn, erBarnetFødt, fødselsdatoer } = formMethods.watch();
 
     const intlIdFødsel = antallBarn > 1 ? 'omBarnet.fødselsdato.flereBarn' : 'omBarnet.fødselsdato';
 
@@ -23,25 +25,6 @@ const ErFødtPanel: FunctionComponent = () => {
 
     return (
         <>
-            <Datepicker
-                name="fødselsdatoer.0.dato"
-                label={intl.formatMessage({ id: intlIdFødsel })}
-                minDate={dayjs().subtract(3, 'years').toDate()}
-                maxDate={dayjs().toDate()}
-                validate={[
-                    isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.duMåOppgi' })),
-                    isValidDate(intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.ugyldigDatoFormat' })),
-                    isBeforeTodayOrToday(
-                        intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere' }),
-                    ),
-                    (fødselsdato) =>
-                        dayjs(fødselsdato).isBefore(dayjs().subtract(3, 'years').subtract(4, 'months'), 'day')
-                            ? intl.formatMessage({
-                                  id: 'valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3År3MndTilbake',
-                              })
-                            : undefined,
-                ]}
-            />
             <Datepicker
                 name="termindato"
                 minDate={fødselsdato ? dayjs(fødselsdato).subtract(1, 'months').toDate() : undefined}
@@ -66,6 +49,29 @@ const ErFødtPanel: FunctionComponent = () => {
                     },
                 ]}
             />
+            {erBarnetFødt && (
+                <Datepicker
+                    name="fødselsdatoer.0.dato"
+                    label={intl.formatMessage({ id: intlIdFødsel })}
+                    minDate={dayjs().subtract(3, 'years').toDate()}
+                    maxDate={dayjs().toDate()}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.duMåOppgi' })),
+                        isValidDate(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.ugyldigDatoFormat' }),
+                        ),
+                        isBeforeTodayOrToday(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere' }),
+                        ),
+                        (fødselsdato) =>
+                            dayjs(fødselsdato).isBefore(dayjs().subtract(3, 'years').subtract(4, 'months'), 'day')
+                                ? intl.formatMessage({
+                                      id: 'valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3År3MndTilbake',
+                                  })
+                                : undefined,
+                    ]}
+                />
+            )}
         </>
     );
 };
