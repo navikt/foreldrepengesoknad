@@ -1,12 +1,14 @@
-import { MemoryRouter } from 'react-router-dom';
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { initAmplitude } from '@navikt/fp-metrics';
-import OmBarnetSteg from './OmBarnetSteg';
+import { MemoryRouter } from 'react-router-dom';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import OmBarnetSteg from './OmBarnetSteg';
 
 export default {
     title: 'OmBarnetSteg',
@@ -34,6 +36,15 @@ const Template: StoryFn<{
 
 export const FlereForsørgere = Template.bind({});
 FlereForsørgere.args = {
+    hvemPlanlegger: {
+        navnPåFar: 'Espen Utvikler',
+        navnPåMor: 'Klara Utvikler',
+        type: SøkersituasjonEnum.MOR_OG_FAR,
+    },
+};
+
+export const FlereForsørgereToBarn = Template.bind({});
+FlereForsørgereToBarn.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',

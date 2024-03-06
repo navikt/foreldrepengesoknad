@@ -3,7 +3,7 @@ import GreenPanel from 'components/GreenPanel';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { BarnetEnum, OmBarnet } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
 import { Radio, VStack } from '@navikt/ds-react';
@@ -36,9 +36,9 @@ const Adopsjon: React.FunctionComponent = () => {
                             name="hvorMange"
                             label={
                                 isAlene(hvemPlanlegger) ? (
-                                    <FormattedMessage id="barnet.hvorMangeDeg" />
+                                    <FormattedMessage id="barnet.adopsjon.hvorMangeDeg" />
                                 ) : (
-                                    <FormattedMessage id="barnet.hvorMange" />
+                                    <FormattedMessage id="barnet.adopsjon.hvorMange" />
                                 )
                             }
                             validate={[
@@ -49,13 +49,13 @@ const Adopsjon: React.FunctionComponent = () => {
                                 ),
                             ]}
                         >
-                            <Radio value={BarnetEnum.ETT}>
+                            <Radio value={'ett'}>
                                 <FormattedMessage id="barnet.ett" />
                             </Radio>
-                            <Radio value={BarnetEnum.TO}>
+                            <Radio value={'to'}>
                                 <FormattedMessage id="barnet.to" />
                             </Radio>
-                            <Radio value={BarnetEnum.FLERE}>
+                            <Radio value={'flere'}>
                                 <FormattedMessage id="barnet.flereEnnTo" />
                             </Radio>
                         </RadioGroup>
