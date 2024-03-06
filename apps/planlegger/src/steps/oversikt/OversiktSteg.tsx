@@ -1,4 +1,4 @@
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import BlåSirkel from 'components/ikoner/BlåSirkel';
@@ -66,6 +66,9 @@ const OversiktSteg = () => {
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
 
+    const lagrePeriode = useContextSaveData(ContextDataType.PERIODE);
+    const periode = notEmpty(useContextGetData(ContextDataType.PERIODE));
+
     // TODO: hent fra api
     const konto100 = {
         kontoer: {
@@ -93,16 +96,58 @@ const OversiktSteg = () => {
             toTette: 0,
         },
     };
+    const konto100tvillinger = {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 165,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
+    const konto80tvillinger = {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 200,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
 
     const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
     const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
+    const mappedKonto100tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100tvillinger);
+    const mappedKonto80tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80tvillinger);
     const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(Dekningsgrad.HUNDRE_PROSENT);
+    const toBarn = barnet.hvorMange === 'to';
+    const ettBarn = barnet.hvorMange === 'ett';
 
-    const selectedKonto = dekningsgrad
-        ? dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? mappedKonto100
-            : mappedKonto80
-        : mappedKonto100;
+    const finnSelectedKonto = () => {
+        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && ettBarn) {
+            return mappedKonto100;
+        }
+        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && ettBarn) {
+            return mappedKonto80;
+        }
+        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && toBarn) {
+            return mappedKonto100tvillinger;
+        }
+        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && toBarn) {
+            return mappedKonto80tvillinger;
+        }
+        return mappedKonto100;
+    };
+
+    const selectedKonto = finnSelectedKonto();
 
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
 
@@ -136,13 +181,20 @@ const OversiktSteg = () => {
             ? dayjs(startdatoSøker2)
                   .add(antallUkerFellesperiodeSøker2.antallUkerSøker2, 'weeks')
                   .add(antallUkerFedrekvote, 'weeks')
-            : undefined;
+            : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks');
 
-    const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(fellesperiodeOptionValues);
+    const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(
+        fellesperiodeOptionValues,
+        hvemPlanlegger,
+    );
     const antallUkerSøker1 = dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks');
-    const antallUkerSøker2 = dayjs(sluttdatoSøker2).diff(dayjs(sluttdatoSøker1), 'weeks');
+    const antallUkerSøker2 = dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'weeks');
+
     console.log('antallUkerSøker1: ', antallUkerSøker1);
     console.log('antallUkerSøker2: ', antallUkerSøker2);
+
+    const hvem = finnHvemPlanlegger(hvemPlanlegger);
+    const hvem1 = capitalizeFirstLetter(hvem[0]);
 
     const [currentOption, setCurrentOption] = useState('');
     console.log('currentOption: ', currentOption);
@@ -178,13 +230,15 @@ const OversiktSteg = () => {
                                 onChange={(e) => {
                                     setCurrentOption(e.target.value);
                                     console.log(e.target.value);
+                                    lagrePeriode({ ...periode, fellesperiodefordeling: e.target.value });
                                 }}
+                                selectedValue={periode.fellesperiodefordeling}
                             >
                                 {fellesperiodeSelectOptions}
                             </Select>
                         )}
                         <VStack gap="2">
-                            <HStack gap="1" wrap={false}>
+                            <HStack gap="1">
                                 <div className="bluePanel">
                                     <HStack gap="2" align="center">
                                         <BlåSirkel />
@@ -192,9 +246,7 @@ const OversiktSteg = () => {
                                             <FormattedMessage
                                                 id="ukerForeldrepenger"
                                                 values={{
-                                                    hvem: finnHvemPlanlegger(hvemPlanlegger)
-                                                        .slice(0, -1)
-                                                        .map(capitalizeFirstLetter),
+                                                    hvem: hvem1,
                                                     uker: antallUkerSøker1,
                                                     dato: dayjs(startdatoSøker1).add(1, 'day').format('dddd D MMM'),
                                                 }}
@@ -212,10 +264,7 @@ const OversiktSteg = () => {
                                                     <FormattedMessage
                                                         id="ukerForeldrepenger"
                                                         values={{
-                                                            hvem: finnHvemPlanlegger(hvemPlanlegger)
-                                                                .slice(0, 3)
-                                                                .slice(-1)
-                                                                .map(capitalizeFirstLetter),
+                                                            hvem: capitalizeFirstLetter(hvem[1]),
                                                             uker: antallUkerSøker2,
                                                             dato: dayjs(startdatoSøker2)
                                                                 .add(1, 'day')
@@ -228,14 +277,11 @@ const OversiktSteg = () => {
                                     </HStack>
                                 )}
                             </HStack>
-                        </VStack>
-
-                        <VStack gap="10">
                             <div className="pinkPanel">
                                 <HStack gap="2" align="center">
                                     <Hjerte />
                                     <BodyShort>
-                                        {(erFødt || erAdoptert) && erIkkeFødt && (
+                                        {(erFødt || erAdoptert) && (
                                             <FormattedMessage
                                                 id="fødselsdatoIkontekst"
                                                 values={{
@@ -244,7 +290,7 @@ const OversiktSteg = () => {
                                                 }}
                                             />
                                         )}
-                                        {!erFødt && !erAdoptert && erIkkeFødt && (
+                                        {erIkkeFødt && (
                                             <FormattedMessage
                                                 id="termindatoIkontekst"
                                                 values={{

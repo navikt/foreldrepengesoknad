@@ -12,7 +12,7 @@ import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnHvemPlanlegger } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
-import { erBarnetIkkeFødt } from 'types/Barnet';
+import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
 import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 import { Fellesperiodefordeling, Periode } from 'types/Periode';
 import {
@@ -58,8 +58,10 @@ export const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: n
     return values;
 };
 
-export const getFellesperiodefordelingSelectOptions = (selectValues: Fellesperiodefordeling[]) => {
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+export const getFellesperiodefordelingSelectOptions = (
+    selectValues: Fellesperiodefordeling[],
+    hvemPlanlegger: HvemPlanlegger,
+) => {
     const hvem = finnHvemPlanlegger(hvemPlanlegger);
 
     const options = selectValues.map((value) => {
@@ -159,16 +161,67 @@ const PeriodeSteg: FunctionComponent = () => {
         },
     };
 
+    const konto100tvillinger = {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 165,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
+    const konto80tvillinger = {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 200,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
+
     const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
     const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
+    const mappedKonto100tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100tvillinger);
+    const mappedKonto80tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80tvillinger);
     const dekningsgrad = formMethods.watch('dekningsgrad');
-    const selectedKonto = dekningsgrad
+
+    const toBarn = barnet.hvorMange === 'to';
+    const ettBarn = barnet.hvorMange === 'ett';
+
+    const finnSelectedKonto = () => {
+        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && ettBarn) {
+            return mappedKonto100;
+        }
+        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && ettBarn) {
+            return mappedKonto80;
+        }
+        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && toBarn) {
+            return mappedKonto100tvillinger;
+        }
+        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && toBarn) {
+            return mappedKonto80tvillinger;
+        }
+        return mappedKonto100;
+    };
+    /* const selectedKonto = dekningsgrad
         ? dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? mappedKonto100
             : mappedKonto80
         : mappedKonto100;
-    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
+        */
 
+    const selectedKonto = finnSelectedKonto();
+    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
+    console.log('selectedKonto', selectedKonto);
     const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
     const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
@@ -205,7 +258,10 @@ const PeriodeSteg: FunctionComponent = () => {
     console.log('sluttdatoSøker1: ', sluttdatoSøker1);
     console.log('startdatoSøker2: ', startdatoSøker2);
     console.log('sluttdatoSøker2: ', sluttdatoSøker2);
-    const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(fellesperiodeOptionValues);
+    const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(
+        fellesperiodeOptionValues,
+        hvemPlanlegger,
+    );
     const sluttdatoForeldrepenger = startdatoSøker1
         ? dayjs(startdatoSøker1)
               .add(antallUkerMødrekvote, 'weeks')
@@ -225,13 +281,25 @@ const PeriodeSteg: FunctionComponent = () => {
                             header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
                             icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         >
-                            <BodyLong>
-                                {isAlene(hvemPlanlegger) ? (
-                                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstDeg" />
-                                ) : (
-                                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
-                                )}
-                            </BodyLong>
+                            {isAlene(hvemPlanlegger) ? (
+                                <BodyLong>
+                                    {erEttBarn(barnet) && (
+                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstDeg" />
+                                    )}
+                                    {erToBarn(barnet) && (
+                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstToBarn" />
+                                    )}
+                                </BodyLong>
+                            ) : (
+                                <BodyLong>
+                                    {erEttBarn(barnet) && (
+                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
+                                    )}
+                                    {erToBarn(barnet) && (
+                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstToBarn" />
+                                    )}
+                                </BodyLong>
+                            )}
                         </InfoboksGenerell>
                         <VStack gap="2">
                             <GreenPanel>
@@ -253,10 +321,12 @@ const PeriodeSteg: FunctionComponent = () => {
                                     ]}
                                 >
                                     <Radio value={Dekningsgrad.HUNDRE_PROSENT}>
-                                        <FormattedMessage id="periode.100" />
+                                        {erEttBarn(barnet) && <FormattedMessage id="periode.100" />}
+                                        {erToBarn(barnet) && <FormattedMessage id="periode.100.toBarn" />}
                                     </Radio>
                                     <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
-                                        <FormattedMessage id="periode.80" />
+                                        {erEttBarn(barnet) && <FormattedMessage id="periode.80" />}
+                                        {erToBarn(barnet) && <FormattedMessage id="periode.80.toBarn" />}{' '}
                                     </Radio>
                                 </RadioGroup>
                             </GreenPanel>

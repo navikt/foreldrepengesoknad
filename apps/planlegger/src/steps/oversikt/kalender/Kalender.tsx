@@ -80,11 +80,11 @@ const finnPeriodeType = (
     year: number,
     month: number,
     day: number,
-    startdatoSøker1: Dayjs,
+    startdatoSøker1: Date,
     sluttdatoSøker1: Dayjs,
-    startdatoSøker2: Dayjs,
+    startdatoSøker2: Dayjs | undefined,
     sluttdatoSøker2: Dayjs,
-    termindato: Dayjs,
+    termindatoEllerFødselsdato: Dayjs,
 ) => {
     const date = dayjs().year(year).month(month).date(day);
 
@@ -94,7 +94,7 @@ const finnPeriodeType = (
     if (date.isoWeekday() === 5 || date.isoWeekday() === 6) {
         return PeriodType.HELGEDAG;
     }
-    if (date.isSame(termindato, 'date')) {
+    if (date.isSame(termindatoEllerFødselsdato, 'date')) {
         return PeriodType.TERMINDATO;
     }
 
@@ -110,9 +110,9 @@ const finnPeriodeType = (
 
 const Kalender = () => {
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const termindato = erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined;
-    if (!termindato) {
-        throw Error('Det er feil i data om barnet');
+    const termindatoEllerFødselsdato = erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : omBarnet.fødselsdato;
+    if (!termindatoEllerFødselsdato) {
+        throw Error('Det er feil i data om barnet. Ingen termindato. (oversikt steg: kalender)');
     }
     // TODO: hent fra api
     const konto100 = {
@@ -141,24 +141,71 @@ const Kalender = () => {
             toTette: 0,
         },
     };
-
-    const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(Dekningsgrad.HUNDRE_PROSENT);
-    console.log('dekningsgrad: ', setDekningsgrad);
+    const konto100tvillinger = {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 165,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
+    const konto80tvillinger = {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 200,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
+    };
 
     const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
     const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
+    const mappedKonto100tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100tvillinger);
+    const mappedKonto80tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80tvillinger);
+    const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(Dekningsgrad.HUNDRE_PROSENT);
+    console.log(setDekningsgrad);
+    const toBarn = omBarnet.hvorMange === 'to';
+    const ettBarn = omBarnet.hvorMange === 'ett';
 
-    const selectedKonto = dekningsgrad
+    const finnSelectedKonto = () => {
+        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && ettBarn) {
+            return mappedKonto100;
+        }
+        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && ettBarn) {
+            return mappedKonto80;
+        }
+        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && toBarn) {
+            return mappedKonto100tvillinger;
+        }
+        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && toBarn) {
+            return mappedKonto80tvillinger;
+        }
+        return mappedKonto100;
+    };
+
+    const selectedKonto = finnSelectedKonto();
+
+    /*const selectedKonto = dekningsgrad
         ? dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? mappedKonto100
             : mappedKonto80
         : mappedKonto100;
-
+*/
     const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
     const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
 
-    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate());
+    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindatoEllerFødselsdato).toDate());
     console.log('startdatoSøker1: ', startdatoSøker1);
 
     const fellesperiodefordeling = notEmpty(useContextGetData(ContextDataType.PERIODE)).fellesperiodefordeling;
@@ -202,8 +249,8 @@ const Kalender = () => {
     console.log('sluttdatoForeldrepenger: ', sluttdatoForeldrepenger);
 
     const perioder = [
-        { fom: dayjs(startdatoSøker1), tom: dayjs(termindato).subtract(1, 'day') },
-        { fom: dayjs(termindato).add(1, 'day'), tom: dayjs(sluttdatoSøker1).subtract(1, 'day') },
+        { fom: dayjs(startdatoSøker1), tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day') },
+        { fom: dayjs(termindatoEllerFødselsdato).add(1, 'day'), tom: dayjs(sluttdatoSøker1).subtract(1, 'day') },
         { fom: dayjs(startdatoSøker2), tom: dayjs(sluttdatoSøker2).subtract(1, 'day') },
     ];
     console.log('perioder: ', perioder);
@@ -214,22 +261,22 @@ const Kalender = () => {
         <VStack gap="5">
             {years.map((year) => (
                 <Year key={year} year={year}>
-                    <HStack gap="2">
+                    <HStack gap="10">
                         {findMonthsOfYear(year, dayjs(startdatoSøker1), dayjs(sluttdatoSøker2)).map((month) => (
                             <Month key={month} year={year} month={month}>
                                 {[...Array(dayjs().year(year).month(month).daysInMonth()).keys()].map((day) => (
                                     <Day
                                         key="dag"
-                                        day={day}
+                                        day={day - 1}
                                         periodType={finnPeriodeType(
                                             year,
                                             month,
                                             day,
-                                            dayjs(startdatoSøker1),
-                                            dayjs(sluttdatoSøker1),
-                                            dayjs(startdatoSøker2),
-                                            dayjs(sluttdatoSøker2),
-                                            dayjs(termindato),
+                                            startdatoSøker1,
+                                            sluttdatoSøker1,
+                                            startdatoSøker2,
+                                            sluttdatoSøker2,
+                                            dayjs(termindatoEllerFødselsdato),
                                         )}
                                         startEllerSlutt={finnStartEllerSlutt(year, month, day, perioder)}
                                         isFirstDay={day === 0}

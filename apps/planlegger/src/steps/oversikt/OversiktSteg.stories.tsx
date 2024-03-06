@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
-import { OmBarnet } from 'types/Barnet';
+import { BarnetEnum, OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Periode } from 'types/Periode';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
@@ -50,12 +50,13 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
     },
     periode: {
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-        fellesperiodefordeling: { antallUkerSøker1: 5, antallUkerSøker2: 11, id: 1 },
+        fellesperiodefordeling: 6,
     },
     omBarnet: {
         erFødsel: true,
         erBarnetFødt: false,
         termindato: '2022-10-24',
+        hvorMange: 'ett',
     },
 };
 
@@ -67,18 +68,19 @@ PeriodeAleneforsørgerÅttiProsentFødt.args = {
     },
     periode: {
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-        fellesperiodefordeling: { antallUkerSøker1: 19, id: 1 },
+        fellesperiodefordeling: 7,
     },
     omBarnet: {
         erBarnetFødt: true,
         erFødsel: true,
         fødselsdato: '2024-09-01',
         termindato: '2024-09-01',
+        hvorMange: 'ett',
     },
 };
 
-export const PeriodeFlereForsørgereÅttiProsentFødt = Template.bind({});
-PeriodeFlereForsørgereÅttiProsentFødt.args = {
+export const PeriodeFlereForsørgereÅttiProsentToBarnFødt = Template.bind({});
+PeriodeFlereForsørgereÅttiProsentToBarnFødt.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         navnPåMedmor: 'Kari Utvikler',
@@ -86,13 +88,14 @@ PeriodeFlereForsørgereÅttiProsentFødt.args = {
     },
     periode: {
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-        fellesperiodefordeling: { antallUkerSøker1: 19, id: 1, antallUkerSøker2: 19 },
+        fellesperiodefordeling: 8,
     },
     omBarnet: {
         erBarnetFødt: true,
         erFødsel: true,
-        fødselsdato: '2024-09-01',
-        termindato: '2024-09-01',
+        fødselsdato: '2024-10-01',
+        termindato: '2024-10-03',
+        hvorMange: 'to',
     },
 };
 
@@ -105,7 +108,7 @@ PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
     },
     periode: {
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-        fellesperiodefordeling: { antallUkerSøker1: 5, antallUkerSøker2: 11, id: 1 },
+        fellesperiodefordeling: 9,
     },
     omBarnet: {
         erBarnetFødt: true,
@@ -115,5 +118,6 @@ PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
         termindato: '2024-09-01',
         overtakelsesdato: '2024-09-01',
         adopsjonsdato: '2024-09-01',
+        hvorMange: 'ett',
     },
 };

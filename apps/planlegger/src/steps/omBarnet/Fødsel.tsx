@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnNavn } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
-import { BarnetEnum, OmBarnet } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, Radio, VStack } from '@navikt/ds-react';
@@ -32,6 +32,7 @@ const Fødsel: React.FunctionComponent = () => {
     const erFødt = formMethods.watch('erBarnetFødt');
     const erFødselsdato = formMethods.watch('fødselsdato');
     const termindato = formMethods.watch('termindato');
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     return (
         <Form formMethods={formMethods}>
@@ -56,13 +57,13 @@ const Fødsel: React.FunctionComponent = () => {
                                     ),
                                 ]}
                             >
-                                <Radio value={BarnetEnum.ETT}>
+                                <Radio value={barnet.hvorMange === 'ett'}>
                                     <FormattedMessage id="barnet.ett" />
                                 </Radio>
-                                <Radio value={BarnetEnum.TO}>
+                                <Radio value={barnet.hvorMange === 'to'}>
                                     <FormattedMessage id="barnet.to" />
                                 </Radio>
-                                <Radio value={BarnetEnum.FLERE}>
+                                <Radio value={barnet.hvorMange === 'flere'}>
                                     <FormattedMessage id="barnet.flereEnnTo" />
                                 </Radio>
                             </RadioGroup>
