@@ -28,7 +28,7 @@ spec:
   observability:
     autoInstrumentation:
       enabled: true
-      runtime: node
+      runtime: nodejs
   ingresses:
   {{#each ingresses as |url|}}
     - {{url}}
