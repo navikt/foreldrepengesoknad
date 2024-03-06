@@ -48,6 +48,7 @@ FlereForsørgere.args = {
         erBarnetFødt: false,
         erFødsel: true,
         termindato: '2024-01-01',
+        hvorMange: 'to',
     },
 };
 
