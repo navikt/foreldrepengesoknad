@@ -81,7 +81,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     </VStack>
                     {erFødsel && <Fødsel />}
                     {erFødsel === false && <Adopsjon />}
-                    <VStack gap="20">
+                    <VStack gap="10">
                         <HvorforSpørNAVOmDette text="TODO" />
                         <VStack>
                             <StepButtonsHookForm<OmBarnet>

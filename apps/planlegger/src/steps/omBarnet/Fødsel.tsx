@@ -1,4 +1,15 @@
+import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import GreenPanel from 'components/GreenPanel';
+import Infoboks from 'components/Infoboks';
+import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { finnNavn } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
+import { BarnetEnum, OmBarnet } from 'types/Barnet';
+import { isAlene } from 'types/HvemPlanlegger';
+
 import { BodyLong, Radio, VStack } from '@navikt/ds-react';
+
 import { Datepicker, Form, RadioGroup } from '@navikt/fp-form-hooks';
 import {
     erI22SvangerskapsukeEllerSenere,
@@ -9,15 +20,6 @@ import {
     isValidDate,
     notEmpty,
 } from '@navikt/fp-validation';
-import dayjs from 'dayjs';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { useForm } from 'react-hook-form';
-import GreenPanel from 'components/GreenPanel';
-import { OmBarnet } from 'types/Barnet';
-import Infoboks from 'components/Infoboks';
-import { isAlene } from 'types/HvemPlanlegger';
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { finnNavn } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
 
 const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
 
@@ -26,6 +28,7 @@ const Fødsel: React.FunctionComponent = () => {
     const intl = useIntl();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const hvorMange = formMethods.watch('hvorMange');
     const erFødt = formMethods.watch('erBarnetFødt');
     const erFødselsdato = formMethods.watch('fødselsdato');
     const termindato = formMethods.watch('termindato');
@@ -33,29 +36,64 @@ const Fødsel: React.FunctionComponent = () => {
     return (
         <Form formMethods={formMethods}>
             <VStack gap="10">
-                <VStack gap="1">
-                    <GreenPanel>
-                        <RadioGroup
-                            label={<FormattedMessage id="barnet.erFødt" />}
-                            name="erBarnetFødt"
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({
-                                        id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
-                                    }),
-                                ),
-                            ]}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="nei" />
-                            </Radio>
-                        </RadioGroup>
-                    </GreenPanel>
+                <VStack gap="10">
+                    <VStack gap="1">
+                        <GreenPanel>
+                            <RadioGroup
+                                name="hvorMange"
+                                label={
+                                    isAlene(hvemPlanlegger) ? (
+                                        <FormattedMessage id="barnet.hvorMangeDeg" />
+                                    ) : (
+                                        <FormattedMessage id="barnet.hvorMange" />
+                                    )
+                                }
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
+                                        }),
+                                    ),
+                                ]}
+                            >
+                                <Radio value={BarnetEnum.ETT}>
+                                    <FormattedMessage id="barnet.ett" />
+                                </Radio>
+                                <Radio value={BarnetEnum.TO}>
+                                    <FormattedMessage id="barnet.to" />
+                                </Radio>
+                                <Radio value={BarnetEnum.FLERE}>
+                                    <FormattedMessage id="barnet.flereEnnTo" />
+                                </Radio>
+                            </RadioGroup>
+                        </GreenPanel>
+                    </VStack>
                 </VStack>
 
+                {hvorMange && (
+                    <VStack gap="1">
+                        <GreenPanel>
+                            <RadioGroup
+                                label={<FormattedMessage id="barnet.erFødt" />}
+                                name="erBarnetFødt"
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
+                                        }),
+                                    ),
+                                ]}
+                            >
+                                <Radio value={true}>
+                                    <FormattedMessage id="ja" />
+                                </Radio>
+                                <Radio value={false}>
+                                    <FormattedMessage id="nei" />
+                                </Radio>
+                            </RadioGroup>
+                        </GreenPanel>
+                    </VStack>
+                )}
                 {erFødt && (
                     <VStack gap="1">
                         <GreenPanel>
