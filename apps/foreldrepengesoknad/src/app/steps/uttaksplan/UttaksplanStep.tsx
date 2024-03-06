@@ -63,7 +63,6 @@ import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoU
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
-import { getUttaksplanNextStep } from '../stepsConfig';
 import { getAntallUker, getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
@@ -410,7 +409,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             erEndringssøknad,
             uttaksplanMetadata?.perioderSomSkalSendesInn,
         );
-        const nextRoute = getUttaksplanNextStep(erEndringssøknad, planKreverVedlegg);
 
         setIsSubmitting(true);
         setSubmitIsClicked(true);
@@ -422,7 +420,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             antallUkerIUttaksplan,
         });
 
-        navigator.goToNextStep(nextRoute);
+        if (planKreverVedlegg) {
+            return navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON);
+        }
+        return navigator.goToNextDefaultStep();
     };
 
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
