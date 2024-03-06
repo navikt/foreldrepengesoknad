@@ -1,3 +1,4 @@
+import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import GreenPanel from 'components/GreenPanel';
 import Infoboks from 'components/Infoboks';
@@ -22,6 +23,7 @@ import {
 } from '@navikt/fp-validation';
 
 const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
+const DATO_3_ÅR_SIDEN = dayjs().startOf('days').subtract(3, 'years').add(1, 'day');
 
 const Fødsel: React.FunctionComponent = () => {
     const formMethods = useForm<OmBarnet>();
@@ -29,10 +31,12 @@ const Fødsel: React.FunctionComponent = () => {
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const hvorMange = formMethods.watch('hvorMange');
+    const erFlereBarn = hvorMange === 'to' || hvorMange === 'flere ';
     const erFødt = formMethods.watch('erBarnetFødt');
     const erFødselsdato = formMethods.watch('fødselsdato');
     const termindato = formMethods.watch('termindato');
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const datoTreMndFraTermin = dayjs(termindato).subtract(3, 'month').toDate();
+    console.log('datoTreMd', datoTreMndFraTermin);
 
     return (
         <Form formMethods={formMethods}>
@@ -57,13 +61,13 @@ const Fødsel: React.FunctionComponent = () => {
                                     ),
                                 ]}
                             >
-                                <Radio value={barnet.hvorMange === 'ett'}>
+                                <Radio value={'ett'}>
                                     <FormattedMessage id="barnet.ett" />
                                 </Radio>
-                                <Radio value={barnet.hvorMange === 'to'}>
+                                <Radio value={'to'}>
                                     <FormattedMessage id="barnet.to" />
                                 </Radio>
-                                <Radio value={barnet.hvorMange === 'flere'}>
+                                <Radio value={'flere'}>
                                     <FormattedMessage id="barnet.flereEnnTo" />
                                 </Radio>
                             </RadioGroup>
@@ -73,34 +77,86 @@ const Fødsel: React.FunctionComponent = () => {
 
                 {hvorMange && (
                     <VStack gap="1">
-                        <GreenPanel>
-                            <RadioGroup
-                                label={<FormattedMessage id="barnet.erFødt" />}
-                                name="erBarnetFødt"
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
-                                        }),
-                                    ),
-                                ]}
-                            >
-                                <Radio value={true}>
-                                    <FormattedMessage id="ja" />
-                                </Radio>
-                                <Radio value={false}>
-                                    <FormattedMessage id="nei" />
-                                </Radio>
-                            </RadioGroup>
-                        </GreenPanel>
+                        {erFlereBarn ? (
+                            <GreenPanel>
+                                <RadioGroup
+                                    label={<FormattedMessage id="barnet.erFødtFlere" />}
+                                    name="erBarnetFødt"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
+                                    <Radio value={true}>
+                                        <FormattedMessage id="ja" />
+                                    </Radio>
+                                    <Radio value={false}>
+                                        <FormattedMessage id="nei" />
+                                    </Radio>
+                                </RadioGroup>
+                            </GreenPanel>
+                        ) : (
+                            <GreenPanel>
+                                <RadioGroup
+                                    label={<FormattedMessage id="barnet.erFødt" />}
+                                    name="erBarnetFødt"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
+                                            }),
+                                        ),
+                                    ]}
+                                >
+                                    <Radio value={true}>
+                                        <FormattedMessage id="ja" />
+                                    </Radio>
+                                    <Radio value={false}>
+                                        <FormattedMessage id="nei" />
+                                    </Radio>
+                                </RadioGroup>
+                            </GreenPanel>
+                        )}
                     </VStack>
                 )}
-                {erFødt && (
+                {erFødt ? (
                     <VStack gap="1">
                         <GreenPanel>
                             <Datepicker
                                 label={<FormattedMessage id="barnet.fødselsdato" />}
                                 name="fødselsdato"
+                                minDate={dayjs().subtract(6, 'month').toDate()}
+                                maxDate={dayjs().toDate()}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.duMåOppgi' }),
+                                    ),
+                                    isValidDate(
+                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.gyldig' }),
+                                    ),
+                                    isBeforeTodayOrToday(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.fødselPanel.fødselsdato.måVæreIdagEllerTidligere',
+                                        }),
+                                    ),
+                                    isAfterOrSameAsSixMonthsAgo(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.fødselPanel.fødselsdato.ikkeMerEnn6MånederTilbake',
+                                        }),
+                                    ),
+                                ]}
+                            />
+                        </GreenPanel>
+                    </VStack>
+                ) : (
+                    <VStack gap="1">
+                        <GreenPanel>
+                            <Datepicker
+                                label={<FormattedMessage id="barnet.fødselsdatoFlere" />}
+                                name="fødselsdato1"
                                 minDate={dayjs().subtract(6, 'month').toDate()}
                                 maxDate={dayjs().toDate()}
                                 validate={[
@@ -158,7 +214,17 @@ const Fødsel: React.FunctionComponent = () => {
                         {termindato !== undefined && dayjs(termindato).isBefore(DATO_3_MND_FRAM) && (
                             <>
                                 {isAlene(hvemPlanlegger) && (
-                                    <Infoboks header={<FormattedMessage id="barnet.underTreMndTilTerminDeg" />}>
+                                    <Infoboks
+                                        header={<FormattedMessage id="barnet.underTreMndTilTerminDeg" />}
+                                        icon={
+                                            <TasklistStartIcon
+                                                height={28}
+                                                width={28}
+                                                color="#236B7D"
+                                                fontSize="1.5rem"
+                                            />
+                                        }
+                                    >
                                         <BodyLong>
                                             <FormattedMessage id="barnet.underTreMndTilTerminDeg" />
                                         </BodyLong>
@@ -169,7 +235,17 @@ const Fødsel: React.FunctionComponent = () => {
                                     </Infoboks>
                                 )}
                                 {!isAlene(hvemPlanlegger) && (
-                                    <Infoboks header={<FormattedMessage id="barnet.underTreMndTilTerminInfo" />}>
+                                    <Infoboks
+                                        header={<FormattedMessage id="barnet.underTreMndTilTerminInfo" />}
+                                        icon={
+                                            <TasklistStartIcon
+                                                height={28}
+                                                width={28}
+                                                color="#236B7D"
+                                                fontSize="1.5rem"
+                                            />
+                                        }
+                                    >
                                         <BodyLong>
                                             <FormattedMessage
                                                 id="barnet.underTreMndTilTerminMor"
@@ -184,10 +260,25 @@ const Fødsel: React.FunctionComponent = () => {
                                 )}
                             </>
                         )}
-                        {dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
+                        {termindato !== undefined && dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
                             <>
                                 {isAlene(hvemPlanlegger) && (
-                                    <Infoboks header={<FormattedMessage id="barnet.foreldrepengerInfoDeg" />}>
+                                    <Infoboks
+                                        header={
+                                            <FormattedMessage
+                                                id="barnet.foreldrepengerInfoDeg"
+                                                values={{ dato: dayjs(datoTreMndFraTermin).format('DD.MM.YY') }}
+                                            />
+                                        }
+                                        icon={
+                                            <TasklistStartIcon
+                                                height={28}
+                                                width={28}
+                                                color="#236B7D"
+                                                fontSize="1.5rem"
+                                            />
+                                        }
+                                    >
                                         <BodyLong>
                                             <FormattedMessage id="barnet.foreldrepengerInfoTekstDeg" />
                                         </BodyLong>
@@ -202,7 +293,22 @@ const Fødsel: React.FunctionComponent = () => {
                                     </Infoboks>
                                 )}
                                 {!isAlene(hvemPlanlegger) && (
-                                    <Infoboks header={<FormattedMessage id="barnet.foreldrepengerInfo" />}>
+                                    <Infoboks
+                                        header={
+                                            <FormattedMessage
+                                                id="barnet.foreldrepengerInfo"
+                                                values={{ dato: dayjs(datoTreMndFraTermin).format('DD.MM.YY') }}
+                                            />
+                                        }
+                                        icon={
+                                            <TasklistStartIcon
+                                                height={28}
+                                                width={28}
+                                                color="#236B7D"
+                                                fontSize="1.5rem"
+                                            />
+                                        }
+                                    >
                                         <BodyLong>
                                             <FormattedMessage id="barnet.foreldrepengerInfoTekst" />
                                         </BodyLong>
@@ -249,6 +355,74 @@ const Fødsel: React.FunctionComponent = () => {
                             />
                         </GreenPanel>
                     </VStack>
+                )}
+                {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATO_3_MND_FRAM) && (
+                    <>
+                        {isAlene(hvemPlanlegger) && (
+                            <Infoboks
+                                header={<FormattedMessage id="barnet.født.infoboksTittelDeg" />}
+                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                            >
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekstDel1" />
+                                </BodyLong>
+
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekstDel2" />
+                                </BodyLong>
+                            </Infoboks>
+                        )}
+                        {!isAlene(hvemPlanlegger) && (
+                            <Infoboks
+                                header={<FormattedMessage id="barnet.født.infoboksTittel" />}
+                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                            >
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekstDel1" />
+                                </BodyLong>
+
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekstDel2" />
+                                </BodyLong>
+
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekstFar" />
+                                </BodyLong>
+                            </Infoboks>
+                        )}
+                    </>
+                )}
+                {dayjs(erFødselsdato).isBefore(DATO_3_ÅR_SIDEN) && (
+                    <>
+                        {isAlene(hvemPlanlegger) && (
+                            <Infoboks
+                                header={<FormattedMessage id="barnet.født.infoboksTittelDeg.eldreEnnTreÅr" />}
+                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                            >
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekst.eldreEnnTreÅr" />
+                                </BodyLong>
+
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekstDel1" />
+                                </BodyLong>
+                            </Infoboks>
+                        )}
+                        {!isAlene(hvemPlanlegger) && (
+                            <Infoboks
+                                header={<FormattedMessage id="barnet.født.infoboksTittel.eldreEnnTreÅr" />}
+                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                            >
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekst.eldreEnnTreÅr" />
+                                </BodyLong>
+
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.født.infoboksTekstDel1" />
+                                </BodyLong>
+                            </Infoboks>
+                        )}
+                    </>
                 )}
             </VStack>
         </Form>
