@@ -287,7 +287,7 @@ const PeriodeSteg: FunctionComponent = () => {
                                         <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstDeg" />
                                     )}
                                     {erToBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstToBarn" />
+                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
                                     )}
                                 </BodyLong>
                             ) : (
@@ -296,7 +296,7 @@ const PeriodeSteg: FunctionComponent = () => {
                                         <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
                                     )}
                                     {erToBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstToBarn" />
+                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
                                     )}
                                 </BodyLong>
                             )}

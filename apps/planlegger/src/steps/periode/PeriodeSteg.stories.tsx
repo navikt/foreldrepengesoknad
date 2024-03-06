@@ -37,8 +37,8 @@ const Template: StoryFn<{
     );
 };
 
-export const FlereForsørgere = Template.bind({});
-FlereForsørgere.args = {
+export const FlereForsørgereEttBarn = Template.bind({});
+FlereForsørgereEttBarn.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
@@ -48,12 +48,27 @@ FlereForsørgere.args = {
         erBarnetFødt: false,
         erFødsel: true,
         termindato: '2024-01-01',
+        hvorMange: 'ett',
+    },
+};
+
+export const FlereForsørgereToBarn = Template.bind({});
+FlereForsørgereToBarn.args = {
+    hvemPlanlegger: {
+        navnPåMedmor: 'Esther Utvikler',
+        navnPåMor: 'Klara Utvikler',
+        type: SøkersituasjonEnum.MOR_OG_MEDMOR,
+    },
+    omBarnet: {
+        erBarnetFødt: false,
+        erFødsel: true,
+        termindato: '2024-01-01',
         hvorMange: 'to',
     },
 };
 
-export const Aleneforsørger = Template.bind({});
-Aleneforsørger.args = {
+export const AleneforsørgerEttBarn = Template.bind({});
+AleneforsørgerEttBarn.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
@@ -62,5 +77,6 @@ Aleneforsørger.args = {
         erBarnetFødt: false,
         erFødsel: true,
         termindato: '2024-01-01',
+        hvorMange: 'ett',
     },
 };

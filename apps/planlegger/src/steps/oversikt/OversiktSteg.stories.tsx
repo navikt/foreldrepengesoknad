@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
-import { BarnetEnum, OmBarnet } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Periode } from 'types/Periode';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
