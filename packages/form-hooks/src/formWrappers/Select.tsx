@@ -1,6 +1,8 @@
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
-import { useFormContext, useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
+
 import { Select as DsSelect } from '@navikt/ds-react';
+
 import { getError, getValidationRules } from './formUtils';
 
 export interface Props {

@@ -825,6 +825,9 @@ importers:
 
   apps/planlegger:
     dependencies:
+      '@fontsource/source-sans-3':
+        specifier: ^5.0.19
+        version: 5.0.19
       '@navikt/aksel-icons':
         specifier: ^5.15.1
         version: 5.15.1
@@ -5842,6 +5845,7 @@ packages:
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /@floating-ui/utils@0.2.1:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
 
@@ -5849,6 +5853,12 @@ packages:
     resolution: {integrity: sha512-fb21oS6TWuM+AYhSeXSAZG7RCa6N4LmowkJnkD+GOrXADxJw+vzLIUmpL6+3j7Esog/Z0t6aUHuJaoy0upgUkw==}
     engines: {node: '>= 16'}
 =======
+=======
+  /@fontsource/source-sans-3@5.0.19:
+    resolution: {integrity: sha512-ubY+8u88suj6RoS4hMCzIguHWFc9ZYsrL1CvQMXx192dRuSwx/M+ezJVV2Db/qM44UlKmRJgCX4RvX2s5DDsVg==}
+    dev: false
+
+>>>>>>> e25e6a7fb (WIP)
   /@formatjs/cli-lib@6.3.5:
 <<<<<<< HEAD
     resolution:
