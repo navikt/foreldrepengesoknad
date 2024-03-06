@@ -1,4 +1,10 @@
+import dayjs from 'dayjs';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
+
 import { Alert, BodyLong, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Barn,
@@ -12,11 +18,9 @@ import {
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
 import { Søker, Søkerrolle } from '@navikt/fp-types';
 import { isBefore, isRequired, isValidDate } from '@navikt/fp-validation';
+
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import dayjs from 'dayjs';
-import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+
 import { AnnenForelderErOppgitt, AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
 
 const skalViseInfoOmFarskapsportal = (
@@ -103,12 +107,14 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søker, rol
                     </Radio>
                 </RadioGroup>
                 <ReadMore header={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.apneLabel' })}>
-                    <BodyLong>
-                        <FormattedMessage id="annenForelder.aleneOmOmsorg.del1" />
-                    </BodyLong>
-                    <BodyShort>
-                        <FormattedMessage id="annenForelder.aleneOmOmsorg.del2" />
-                    </BodyShort>
+                    <VStack gap="4">
+                        <BodyLong>
+                            <FormattedMessage id="annenForelder.aleneOmOmsorg.del1" />
+                        </BodyLong>
+                        <BodyShort>
+                            <FormattedMessage id="annenForelder.aleneOmOmsorg.del2" />
+                        </BodyShort>
+                    </VStack>
                 </ReadMore>
             </div>
             {!isFarEllerMedmor(rolle) && formValues.erAleneOmOmsorg === true && (
@@ -256,8 +262,10 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søker, rol
                             id: 'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel',
                         })}
                     >
-                        <VStack gap="2">
-                            <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"></FormattedMessage>
+                        <VStack gap="4">
+                            <div>
+                                <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"></FormattedMessage>
+                            </div>
                             <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del2"></FormattedMessage>
                             <Link to="https://www.nav.no/foreldrepenger#utland" target="_blank">
                                 <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.link" />

@@ -89,7 +89,7 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                     </VStack>
                 </>
             )}
-            {arbeidsforhold.length === 0 && kanSøkePåTermin && (
+            {søknadGjelderEtNyttBarn && arbeidsforhold.length === 0 && kanSøkePåTermin && (
                 <Datepicker
                     name="terminbekreftelsedato"
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}

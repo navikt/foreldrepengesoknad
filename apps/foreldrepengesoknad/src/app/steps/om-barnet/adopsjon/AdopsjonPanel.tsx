@@ -1,15 +1,18 @@
 import { FileIcon } from '@navikt/aksel-icons';
-import { BodyLong, Box, HStack, Radio, VStack } from '@navikt/ds-react';
-import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
-import { isRequired, isValidDate } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyLong, Box, HStack, Radio, VStack } from '@navikt/ds-react';
+
+import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
+import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
+import { isRequired, isValidDate } from '@navikt/fp-validation';
+
 import { BarnetFormValues } from '../OmBarnetFormValues';
 import FødselsdatoerFieldArray from './FødselsdatoerFieldArray';
-import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
 
 dayjs.extend(isSameOrBefore);
 
@@ -45,28 +48,32 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                 <Radio value={true}>Ja</Radio>
                 <Radio value={false}>Nei</Radio>
             </RadioGroup>
-            <Datepicker
-                name="adopsjonsdato"
-                label={
-                    adopsjonAvEktefellesBarn
-                        ? intl.formatMessage({ id: 'omBarnet.adopsjonsdato.stebarn' })
-                        : intl.formatMessage({ id: 'omBarnet.adopsjonsdato.annetBarn' })
-                }
-                validate={[
-                    isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonsdato.duMåOppgi' })),
-                    isValidDate(intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonsdato.ugyldigDatoFormat' })),
-                ]}
-            />
-            <Box padding="4" background="surface-alt-3-subtle" borderRadius="medium">
-                <HStack gap="2">
-                    <FileIcon height={24} width={24} color="#005B82" />
-                    <VStack gap="2" style={{ width: '85%' }}>
-                        <BodyLong>
-                            <FormattedMessage id="omBarnet.opplaste.bekreftelse" />
-                        </BodyLong>
-                    </VStack>
-                </HStack>
-            </Box>
+            <VStack gap="4">
+                <Datepicker
+                    name="adopsjonsdato"
+                    label={
+                        adopsjonAvEktefellesBarn
+                            ? intl.formatMessage({ id: 'omBarnet.adopsjonsdato.stebarn' })
+                            : intl.formatMessage({ id: 'omBarnet.adopsjonsdato.annetBarn' })
+                    }
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonsdato.duMåOppgi' })),
+                        isValidDate(
+                            intl.formatMessage({ id: 'valideringsfeil.omBarnet.adopsjonsdato.ugyldigDatoFormat' }),
+                        ),
+                    ]}
+                />
+                <Box padding="4" background="surface-alt-3-subtle" borderRadius="medium">
+                    <HStack gap="2">
+                        <FileIcon height={24} width={24} color="#005B82" />
+                        <VStack gap="2" style={{ width: '85%' }}>
+                            <BodyLong>
+                                <FormattedMessage id="omBarnet.opplaste.bekreftelse" />
+                            </BodyLong>
+                        </VStack>
+                    </HStack>
+                </Box>
+            </VStack>
             {søknadGjelderEtNyttBarn && (
                 <>
                     <RadioGroup

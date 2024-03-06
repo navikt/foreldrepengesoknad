@@ -1,11 +1,12 @@
-import * as React from 'react';
-
 import { BabyWrappedIcon } from '@navikt/aksel-icons';
-import { BodyShort, Box, HStack, Label, VStack } from '@navikt/ds-react';
-import { bemUtils, formaterNavn } from '@navikt/fp-common';
+import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { BodyShort, Box, HStack, Label, VStack } from '@navikt/ds-react';
+
+import { bemUtils, formaterNavn } from '@navikt/fp-common';
 import { SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
+
 import './registrertePersonalia.less';
 
 interface Props {

@@ -1,17 +1,20 @@
-import { Radio, ReadMore, VStack } from '@navikt/ds-react';
-import { Søkersituasjon, isFarEllerMedmor } from '@navikt/fp-common';
-import { RadioGroup, Select } from '@navikt/fp-form-hooks';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import ErFødtPanel from './ErFødtPanel';
-import { BarnetFormValues } from '../OmBarnetFormValues';
-import TerminPanel from './TerminPanel';
-import { isRequired } from '@navikt/fp-validation';
+
+import { Radio, ReadMore, VStack } from '@navikt/ds-react';
+
+import { Søkersituasjon, isFarEllerMedmor } from '@navikt/fp-common';
+import { RadioGroup, Select } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { isRequired } from '@navikt/fp-validation';
+
+import { BarnetFormValues } from '../OmBarnetFormValues';
+import ErFødtPanel from './ErFødtPanel';
+import TerminPanel from './TerminPanel';
 
 const finnAntallBarnLabel = (intl: IntlShape, søkerErFarMedmor: boolean, erBarnetFødt?: boolean) => {
-    if (erBarnetFødt !== false) {
+    if (erBarnetFødt === true) {
         return intl.formatMessage({ id: 'omBarnet.antallBarn.født' });
     }
     return søkerErFarMedmor
@@ -71,7 +74,9 @@ const FødselPanel: FunctionComponent<Props> = ({
                         {!erFarEllerMedmor && (
                             <ReadMore header={intl.formatMessage({ id: 'omBarnet.erBarnetFødt.readMore.header' })}>
                                 <VStack gap="4">
-                                    <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del1" />
+                                    <div>
+                                        <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del1" />
+                                    </div>
                                     <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del2" />
                                 </VStack>
                             </ReadMore>
@@ -105,14 +110,14 @@ const FødselPanel: FunctionComponent<Props> = ({
                     )}
                 </>
             )}
-            {erBarnetFødt === false && (
+            {erBarnetFødt !== true && (
                 <TerminPanel
                     søkersituasjon={søkersituasjon}
                     arbeidsforhold={arbeidsforhold}
                     søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                 />
             )}
-            {erBarnetFødt !== false && søknadGjelderEtNyttBarn && <ErFødtPanel />}
+            {erBarnetFødt === true && søknadGjelderEtNyttBarn && <ErFødtPanel />}
         </>
     );
 };
