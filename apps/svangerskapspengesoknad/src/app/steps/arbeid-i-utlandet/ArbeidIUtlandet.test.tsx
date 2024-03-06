@@ -1,10 +1,12 @@
-import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
-import * as stories from './ArbeidIUtlandet.stories';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import SøknadRoutes from 'app/routes/routes';
+
 import { ContextDataType } from 'app/context/SvpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import * as stories from './ArbeidIUtlandet.stories';
 
 const { Default } = composeStories(stories);
 
@@ -119,14 +121,14 @@ describe('<ArbeidIUtlandet>', () => {
 
         expect(await screen.findByText('Når startet du i jobben?')).toBeInTheDocument();
         const startdatoInput = screen.getByLabelText('Når startet du i jobben?');
-        await userEvent.type(startdatoInput, dayjs('2023-10-30').format('DD.MM.YYYY'));
+        await userEvent.type(startdatoInput, dayjs().subtract(4, 'month').format('DD.MM.YYYY'));
 
         expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
 
         expect(screen.getByText('Når sluttet du i jobben?')).toBeInTheDocument();
         const sluttdatoInput = screen.getByLabelText('Når sluttet du i jobben?');
-        await userEvent.type(sluttdatoInput, dayjs('2023-09-30').format('DD.MM.YYYY'));
+        await userEvent.type(sluttdatoInput, dayjs().subtract(4, 'month').subtract(1, 'day').format('DD.MM.YYYY'));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
