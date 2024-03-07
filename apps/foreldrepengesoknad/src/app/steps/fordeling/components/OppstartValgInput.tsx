@@ -186,19 +186,30 @@ export const getRadioOptionsForSituasjon = (
 
 interface Props {
     oppstartsValgOptions: React.ReactElement[];
+    erFarEllerMedmor: boolean;
+    familiehendelsesdato: Date;
 }
 
-const OppstartValgInput: React.FunctionComponent<Props> = ({ oppstartsValgOptions }) => {
+const OppstartValgInput: React.FunctionComponent<Props> = ({
+    oppstartsValgOptions,
+    erFarEllerMedmor,
+    familiehendelsesdato,
+}) => {
     const intl = useIntl();
 
     if (!oppstartsValgOptions || oppstartsValgOptions.length < 2) {
         return null;
     }
+
+    const descriptionId =
+        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
+            ? 'fordeling.oppstartValg.description.fedreWLB'
+            : 'fordeling.description.kanEndresSenere';
     return (
         <RadioGroup
             name="oppstartAvForeldrepengerValg"
             label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
-            description={<FormattedMessage id="fordeling.description.kanEndresSenere" />}
+            description={<FormattedMessage id={descriptionId} />}
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.oppstartValg.måOppgis' }))]}
         >
             {...oppstartsValgOptions}

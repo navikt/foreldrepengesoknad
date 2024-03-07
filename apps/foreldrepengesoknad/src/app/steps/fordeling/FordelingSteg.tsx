@@ -34,6 +34,7 @@ import {
     shouldSuspendAnnenPartVedtakApiRequest,
 } from '../periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
 import FordelingForm from './FordelingForm';
+import MorsSisteDag from './components/mors-siste-dag/MorsSisteDag';
 
 type Props = {
     søker: Søker;
@@ -144,7 +145,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
               ).denneEllerForrige()
             : undefined;
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder ? Uttaksdagen(sisteDagAnnenForelder).neste() : undefined;
-
+    const visMorsSisteDag = erFarEllerMedmor && sisteDagAnnenForelder;
     if (!valgtStønadskonto || (statusAnnenPartVedtak !== RequestStatus.FINISHED && !suspendAnnenPartVedtakApiRequest)) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -168,6 +169,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                     deltUttak={deltUttak}
                     fordelingScenario={fordelingScenario}
                 ></FordelingOversikt>
+                {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
                 <FordelingForm
                     deltUttak={deltUttak}
                     navnPåForeldre={navnPåForeldre}
