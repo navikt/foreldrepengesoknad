@@ -9,7 +9,6 @@ import utc from 'dayjs/plugin/utc';
 import { isISODateString } from '@navikt/ds-datepicker';
 
 import {
-    ISOStringToDate,
     Periode,
     Perioden,
     hasValue,
@@ -20,7 +19,6 @@ import {
 } from '@navikt/fp-common';
 import { SøkerBarn } from '@navikt/fp-types';
 
-import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Alder } from 'app/types/Alder';
 
 dayjs.extend(utc);
@@ -245,16 +243,4 @@ const getOldestDate = (
     return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
         ? endringstidspunktNyPlan
         : endringstidspunktOpprinneligPlan;
-};
-
-export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Date | undefined => {
-    if (!uttaksplanInfo) {
-        return undefined;
-    }
-
-    if (isFarMedmorFødselBeggeHarRettUttaksplanInfo(uttaksplanInfo)) {
-        return ISOStringToDate(uttaksplanInfo.morsSisteDag);
-    }
-
-    return undefined;
 };

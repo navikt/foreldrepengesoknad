@@ -68,7 +68,7 @@ export const getValgtFellesperiodeFordeling = (
             fargekode: FordelingFargekode.IKKE_TILDELT,
         });
     }
-    return fordeling;
+    return fordeling.length > 0 ? fordeling : undefined;
 };
 
 interface Props {
@@ -93,12 +93,13 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
         valgtFordeling,
         antallUkerFellesperiodeTilSøker,
     );
+    console.log('fordelingsdager', fordelingsdager);
     return (
         <VStack gap="5">
             <RadioGroup
                 name="fordelingValg"
                 label={<FormattedMessage id="fordeling.fordelingvalg.spørsmål" />}
-                description={<FormattedMessage id="fordeling.fordelingvalg.description" />}
+                description={<FormattedMessage id="fordeling.description.kanEndresSenere" />}
                 validate={[isRequired(intl.formatMessage({ id: 'fordeling.fordelingsvalg.måOppgis' }))]}
             >
                 <Radio

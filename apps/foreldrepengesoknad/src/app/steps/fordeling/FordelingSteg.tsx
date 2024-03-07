@@ -7,6 +7,7 @@ import {
     ISOStringToDate,
     Step,
     Uttaksdagen,
+    getAntallUkerFellesperiode,
     getNavnPåForeldre,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
@@ -32,7 +33,6 @@ import {
     getAnnenPartVedtakParam,
     shouldSuspendAnnenPartVedtakApiRequest,
 } from '../periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
-import { getAntallUkerFellesperiode } from '../uttaksplan-info/utils/stønadskontoer';
 import FordelingForm from './FordelingForm';
 
 type Props = {

@@ -198,7 +198,7 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({ oppstartsValgOption
         <RadioGroup
             name="oppstartAvForeldrepengerValg"
             label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
-            description={<FormattedMessage id="fordeling.oppstartValg.description" />}
+            description={<FormattedMessage id="fordeling.description.kanEndresSenere" />}
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.oppstartValg.måOppgis' }))]}
         >
             {...oppstartsValgOptions}

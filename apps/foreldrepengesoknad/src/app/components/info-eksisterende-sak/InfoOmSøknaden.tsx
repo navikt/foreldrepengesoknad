@@ -16,6 +16,7 @@ import {
     bemUtils,
     formatDate,
     formaterDato,
+    getAntallUker,
     getFarMedmorErAleneOmOmsorg,
     getForeldreparSituasjon,
     getKjønnFromFnr,
@@ -38,7 +39,6 @@ import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
 import { getIsDeltUttak } from '../fordeling-oversikt/fordelingOversiktUtils';

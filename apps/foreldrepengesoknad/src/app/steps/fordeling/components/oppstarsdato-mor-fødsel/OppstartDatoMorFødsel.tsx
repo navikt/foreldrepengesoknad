@@ -1,4 +1,5 @@
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
+import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
@@ -104,21 +105,21 @@ const OppstartDatoMorFødsel = () => {
                     <OppstartDatoInput />
                     {oppstartDato && (
                         <div className={bem.element('div')}>
-                            <BodyShort>
+                            <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
                                 {intlUtils(intl, 'fordeling.oppstartValg.førFødselEllerTerminInfo', {
                                     varighetString,
                                     fødselEllerTermin,
                                 })}
                             </BodyShort>
                             {visMisterDagerFørFødsel && (
-                                <BodyShort>
+                                <BodyShort size="small">
                                     {intlUtils(intl, 'fordeling.oppstartValg.misterDagerInfo', {
                                         varighetString: morInfoMistetDagerFørFødsel,
                                     })}
                                 </BodyShort>
                             )}
                             {visBrukFellesperiode && (
-                                <BodyShort>
+                                <BodyShort size="small">
                                     {intlUtils(intl, 'fordeling.oppstartValg.taFraFellesperioden', {
                                         varighetString: morVarighetFellesperiodeFørFødsel,
                                     })}

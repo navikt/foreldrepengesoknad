@@ -6,7 +6,6 @@ import { Attachment, Søkerinfo } from '@navikt/fp-types';
 import Environment from 'app/Environment';
 import Fordeling from 'app/context/types/Fordeling';
 import { Søknad } from 'app/context/types/Søknad';
-import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
 import { SakerOppslag } from 'app/types/SakerOppslag';
@@ -72,7 +71,6 @@ export interface FpMellomlagretData {
     harUttaksplanBlittSlettet?: boolean;
     søknadGjelderEtNyttBarn?: boolean;
     fordeling?: Fordeling;
-    uttaksplanInfo?: UttaksplanInfo;
     eksisterendeSak?: EksisterendeSak;
     endringstidspunkt?: Date;
     barnFraNesteSak?: BarnFraNesteSak;

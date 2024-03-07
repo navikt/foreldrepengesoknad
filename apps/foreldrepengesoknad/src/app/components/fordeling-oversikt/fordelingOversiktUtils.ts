@@ -11,6 +11,12 @@ import {
     TilgjengeligStønadskonto,
     capitalizeFirstLetter,
     førsteOktober2021ReglerGjelder,
+    getAntallUkerAktivitetsfriKvote,
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerForeldrepenger,
+    getAntallUkerForeldrepengerFørFødsel,
+    getAntallUkerMødrekvote,
     getNavnGenitivEierform,
     getVarighetString,
     intlUtils,
@@ -24,14 +30,6 @@ import {
 import { links } from '@navikt/fp-constants';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
-import {
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerFedrekvote,
-    getAntallUkerFellesperiode,
-    getAntallUkerForeldrepenger,
-    getAntallUkerForeldrepengerFørFødsel,
-    getAntallUkerMødrekvote,
-} from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
 import { TilgjengeligeMinsterettskontoer } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
