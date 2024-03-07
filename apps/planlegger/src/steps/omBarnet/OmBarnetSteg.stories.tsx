@@ -43,19 +43,18 @@ FlereForsørgere.args = {
     },
 };
 
-export const FlereForsørgereToBarn = Template.bind({});
-FlereForsørgereToBarn.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
-    },
-};
-
-export const Aleneforsørger = Template.bind({});
-Aleneforsørger.args = {
+export const AleneforsørgerMor = Template.bind({});
+AleneforsørgerMor.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
+    },
+};
+
+export const AleneforsørgerFar = Template.bind({});
+AleneforsørgerFar.args = {
+    hvemPlanlegger: {
+        navnPåFar: 'Espen Utvikler',
+        type: SøkersituasjonEnum.FAR,
     },
 };

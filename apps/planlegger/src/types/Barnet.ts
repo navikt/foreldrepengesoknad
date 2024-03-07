@@ -53,6 +53,6 @@ export const erToBarn = (omBarnet: OmBarnet): boolean => {
     return omBarnet.hvorMange === 'to';
 };
 
-export const erFlereBarn = (omBarnet: OmBarnet): boolean => {
+export const erFlereEnnToBarn = (omBarnet: OmBarnet): boolean => {
     return omBarnet.hvorMange === 'flere';
 };
