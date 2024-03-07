@@ -1,6 +1,5 @@
 .days {
     height: 19px;
-    width: 22px;
     padding: 2px 2px 2px 2px;
     display: flex;
     justify-content: center;
@@ -23,12 +22,10 @@
 
 .foreldrepengerFar.firstDay {
     border-left: 1px solid var(--a-green-300);
-
 }
 
 .foreldrepengerFar.lastDay {
     border-right: 1px solid var(--a-green-300);
-
 }
 
 .foreldrepengerFar.firstAndLastDay {
@@ -46,13 +43,14 @@
 }
 
 .termindato {
-    --c:var(--a-red-100);
+    --c: var(--a-red-100);
     width: 20px;
     height: 19px;
     aspect-ratio: 1;
-    background:radial-gradient(circle at 60% 65%,var(--c) 64%,#0000 65%) top left/50% 50%,
-     radial-gradient(circle at 40% 65%,var(--c) 64%,#0000 65%) top right/50% 50%,
-     conic-gradient(from -45deg at 50% 85.5%,var(--c) 90deg,#0000 0) bottom/100% 50%;
+    background:
+        radial-gradient(circle at 60% 65%, var(--c) 64%, #0000 65%) top left/50% 50%,
+        radial-gradient(circle at 40% 65%, var(--c) 64%, #0000 65%) top right/50% 50%,
+        conic-gradient(from -45deg at 50% 85.5%, var(--c) 90deg, #0000 0) bottom/100% 50%;
     background-repeat: no-repeat;
     padding: 0 2px 2px 2px;
     margin-left: 1px;
@@ -61,19 +59,19 @@
 .hjerte {
     height: 19px;
     width: 22px;
-    background-color:var(--a-red-100);
+    background-color: var(--a-red-100);
     position: relative;
     margin-top: 5px;
     padding: 2px;
     transform: rotate(-45deg);
 }
 
-
-.hjerte::before, .hjerte::after {
+.hjerte::before,
+.hjerte::after {
     content: '';
     height: 19px;
     width: 22px;
-    background-color:var(--a-red-100);
+    background-color: var(--a-red-100);
     border-radius: 50%;
     position: absolute;
 }
@@ -81,13 +79,11 @@
 .hjerte::before {
     top: -10px;
     left: 0px;
-    
 }
 
 .hjerte::after {
     top: 0;
     left: 10px;
-
 }
 
 .firstDay {
