@@ -1,10 +1,11 @@
-import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react';
-import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { finnNavn } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
-import { isAlene } from 'types/HvemPlanlegger';
+import { getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+
+import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react';
+
+import { notEmpty } from '@navikt/fp-validation';
 
 const Foreldrepengeinfo: FunctionComponent = () => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
@@ -37,13 +38,13 @@ const Foreldrepengeinfo: FunctionComponent = () => {
                             <BodyLong>
                                 <FormattedMessage
                                     id="barnet.foreldrepengerInfoTekst"
-                                    values={{ navn: finnNavn(hvemPlanlegger)[0] }}
+                                    values={{ navn: getNavnPåSøker(hvemPlanlegger) }}
                                 />
                             </BodyLong>
                             <BodyLong>
                                 <FormattedMessage
                                     id="barnet.foreldrepengerInfoTekstMor"
-                                    values={{ navn: finnNavn(hvemPlanlegger)[0] }}
+                                    values={{ navn: getNavnPåSøker(hvemPlanlegger) }}
                                 />
                             </BodyLong>
                             <BodyLong>

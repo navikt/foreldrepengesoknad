@@ -1,7 +1,6 @@
 export type Arbeidssituasjon = {
-    arbeidssituasjonAlene?: ArbeidssituasjonEnum;
-    arbeidssituasjonFørste?: ArbeidssituasjonEnum;
-    arbeidssituasjonAndre?: ArbeidssituasjonEnum;
+    arbeidssituasjon?: ArbeidssituasjonEnum;
+    arbeidssituasjonAnnenPart?: ArbeidssituasjonEnum;
 };
 
 export enum ArbeidssituasjonEnum {

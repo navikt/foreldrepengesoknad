@@ -191,5 +191,8 @@
     "feilmelding.periode.hvorLangPeriode.duMåOppgi": "Dere må oppgi hvor lang periode dere ønsker.",
     "detErMindreEnnTreMndTilTermin": "Det er mindre enn 3 måneder til termin",
     "LanguageToggle.Norsk": "Norwegian",
-    "LanguageToggle.Engelsk": "English"
+    "LanguageToggle.Engelsk": "English",
+    "FlereForsørgere.Mor": "mor",
+    "FlereForsørgere.Far": "far",
+    "FlereForsørgere.Medmor": "medmor"
 }
