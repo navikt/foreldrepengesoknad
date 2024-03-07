@@ -49,6 +49,7 @@ import {
     getMorJobberVedlegg,
     getMorKvalprogramVedlegg,
     getMorStudererVedlegg,
+    getRelevantePerioder,
     isPeriodeMedFarForSyk,
     isPeriodeMedFarInnleggelse,
     isPeriodeMedMorForSyk,
@@ -80,11 +81,18 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const saveNextRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const navigate = useNavigate();
+    const relevantePerioder = getRelevantePerioder(
+        uttaksplan,
+        uttaksplanMetadata?.perioderSomSkalSendesInn,
+        erEndringssøknad,
+    );
+
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const perioderSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
+    const perioderSomManglerVedlegg = perioderSomKreverVedlegg(relevantePerioder, erFarEllerMedmor, annenForelder);
     const morInnlagtVedlegg = getMorInnlagtVedlegg(vedlegg);
     const morForSykVedlegg = getMorForSykVedlegg(vedlegg);
     const farInnlagtVedlegg = getFarInnlagtVedlegg(vedlegg);

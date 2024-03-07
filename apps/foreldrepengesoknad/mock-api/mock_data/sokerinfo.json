@@ -1,18 +1,40 @@
 {
     "søker": {
-        "fnr": "06499121154",
-        "fornavn": "Tapper",
-        "etternavn": "Konvolutt",
-        "kjønn": "K",
-        "fødselsdato": "1991-09-06",
+        "fnr": "13410562981",
+        "fornavn": "Skrivefør",
+        "etternavn": "Aktør",
+        "kjønn": "M",
+        "fødselsdato": "2005-01-13",
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""
         },
+        "barn": [
+            {
+                "fnr": "05432454519",
+                "fornavn": "Akvatisk",
+                "etternavn": "Mil",
+                "kjønn": "M",
+                "fødselsdato": "2024-03-05",
+                "annenForelder": {
+                    "fnr": "03420591690",
+                    "fornavn": "Juridisk",
+                    "etternavn": "Telefonkiosk",
+                    "fødselsdato": "2005-02-03"
+                }
+            }
+        ],
         "sivilstand": {
-            "type": "UGIFT"
-        },
-        "barn": []
+            "type": "GIFT"
+        }
     },
-    "arbeidsforhold": []
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "896929119",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "SAUEFABRIKK",
+            "stillingsprosent": 100,
+            "fom": "2017-03-24"
+        }
+    ]
 }
