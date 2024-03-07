@@ -1,20 +1,5 @@
 
-.circle {
-    border-radius: 50%;
-    height: 35px;
-    width: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.circle__info {
-    background: #99C4DD;
-}
-
-.circle__general {
-    background: var(--a-gray-300);
-}
 
 .header {
     width: 90%;
