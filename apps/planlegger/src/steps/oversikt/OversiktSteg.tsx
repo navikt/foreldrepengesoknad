@@ -14,10 +14,10 @@ import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import {
     getFellesperiodefordelingOptionValues,
     getFellesperiodefordelingSelectOptions,
-} from 'steps/periode/PeriodeSteg';
+} from 'steps/fordeling/FordelingSteg';
 import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
-import { Periode } from 'types/Periode';
 import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -71,18 +71,19 @@ const OversiktSteg = () => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const formMethods = useForm<Periode>();
+    const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING));
+
+    const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
+
+    const formMethods = useForm<Fordeling>();
     const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
 
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
-
-    const lagrePeriode = useContextSaveData(ContextDataType.PERIODE);
-    const periode = notEmpty(useContextGetData(ContextDataType.PERIODE));
 
     // TODO: hent fra api
     const konto100 = {
@@ -220,122 +221,111 @@ const OversiktSteg = () => {
         <Form formMethods={formMethods}>
             <PlanleggerPage steps={stepConfig}>
                 <VStack gap="10">
-                    <VStack gap="5">
-                        <Heading size="large" spacing>
-                            {isAlene(hvemPlanlegger) && <FormattedMessage id="oversikt.tittelDeg" />}
-                            {!isAlene(hvemPlanlegger) && <FormattedMessage id="oversikt.tittel" />}
-                        </Heading>
+                    <Heading size="large" spacing>
+                        {isAlene(hvemPlanlegger) && <FormattedMessage id="oversikt.tittelDeg" />}
+                        {!isAlene(hvemPlanlegger) && <FormattedMessage id="oversikt.tittel" />}
+                    </Heading>
 
-                        <ToggleGroup
-                            defaultValue={Dekningsgrad.HUNDRE_PROSENT}
-                            size="medium"
-                            variant="neutral"
-                            onChange={(value) => setDekningsgrad(value as Dekningsgrad)}
+                    <ToggleGroup
+                        defaultValue={Dekningsgrad.HUNDRE_PROSENT}
+                        size="medium"
+                        variant="neutral"
+                        onChange={(value) => setDekningsgrad(value as Dekningsgrad)}
+                    >
+                        <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
+                            <FormattedMessage id="oversikt.100" />
+                        </ToggleGroup.Item>
+                        <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
+                            <FormattedMessage id="oversikt.80" />
+                        </ToggleGroup.Item>
+                    </ToggleGroup>
+
+                    {!isAlene(hvemPlanlegger) && (
+                        <Select
+                            label=""
+                            name="fellesperiodefordeling"
+                            onChange={(e) => {
+                                setCurrentOption(e.target.value);
+                                console.log(e.target.value);
+                                lagreFordeling({ fellesperiodefordeling: e.target.value });
+                            }}
+                            selectedValue={fordeling.fellesperiodefordeling}
                         >
-                            <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
-                                <FormattedMessage id="oversikt.100" />
-                            </ToggleGroup.Item>
-                            <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
-                                <FormattedMessage id="oversikt.80" />
-                            </ToggleGroup.Item>
-                        </ToggleGroup>
-
-                        {!isAlene(hvemPlanlegger) && (
-                            <Select
-                                label=""
-                                name="fellesperiodefordeling"
-                                onChange={(e) => {
-                                    setCurrentOption(e.target.value);
-                                    console.log(e.target.value);
-                                    lagrePeriode({ ...periode, fellesperiodefordeling: e.target.value });
-                                }}
-                                selectedValue={periode.fellesperiodefordeling}
-                            >
-                                {fellesperiodeSelectOptions}
-                            </Select>
-                        )}
-                        <VStack gap="2">
-                            <HStack gap="1">
-                                <div className="bluePanel">
-                                    <HStack gap="2" align="center">
-                                        <BlåSirkel />
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="ukerForeldrepenger"
-                                                values={{
-                                                    hvem: hvem1,
-                                                    uker: antallUkerSøker1,
-                                                    dato: dayjs(startdatoSøker1).add(1, 'day').format('dddd D MMM'),
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    </HStack>
-                                </div>
-                                <Spacer />
-                                {!isAlene(hvemPlanlegger) && annenPartTekst && (
-                                    <HStack gap="3" wrap={false}>
-                                        <div className="greenPanel">
-                                            <HStack gap="2" align="center">
-                                                <GrønnSirkel />
-                                                <BodyShort>
-                                                    <FormattedMessage
-                                                        id="ukerForeldrepenger"
-                                                        values={{
-                                                            hvem: capitalizeFirstLetter(annenPartTekst),
-                                                            uker: antallUkerSøker2,
-                                                            dato: dayjs(startdatoSøker2)
-                                                                .add(1, 'day')
-                                                                .format('dddd D MMM'),
-                                                        }}
-                                                    />
-                                                </BodyShort>
-                                            </HStack>
-                                        </div>
-                                    </HStack>
-                                )}
-                            </HStack>
-                            <div className="pinkPanel">
+                            {fellesperiodeSelectOptions}
+                        </Select>
+                    )}
+                    <VStack gap="2">
+                        <HStack gap="1">
+                            <div className="bluePanel">
                                 <HStack gap="2" align="center">
-                                    <Hjerte />
+                                    <BlåSirkel />
                                     <BodyShort>
-                                        {(erFødt || erAdoptert) && (
-                                            <FormattedMessage
-                                                id="fødselsdatoIkontekst"
-                                                values={{
-                                                    mnd: barnehagestartDato(barnet),
-                                                    dato: termindatoEllerFødselsdato(barnet),
-                                                }}
-                                            />
-                                        )}
-                                        {erIkkeFødt && (
-                                            <FormattedMessage
-                                                id="termindatoIkontekst"
-                                                values={{
-                                                    mnd: barnehagestartDato(barnet),
-                                                    dato: termindatoEllerFødselsdato(barnet),
-                                                }}
-                                            />
-                                        )}
+                                        <FormattedMessage
+                                            id="ukerForeldrepenger"
+                                            values={{
+                                                hvem: hvem1,
+                                                uker: antallUkerSøker1,
+                                                dato: dayjs(startdatoSøker1).add(1, 'day').format('dddd D MMM'),
+                                            }}
+                                        />
                                     </BodyShort>
                                 </HStack>
                             </div>
-                        </VStack>
-                    </VStack>
-
-                    <VStack gap="10">
-                        <VStack gap="2">
-                            <Kalender />
-                        </VStack>
-                    </VStack>
-
-                    <VStack gap="10">
-                        <StepButtons
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            nextButtonOnClick={navigator.goToNextDefaultStep}
-                            useSimplifiedTexts
-                        />
+                            <Spacer />
+                            {!isAlene(hvemPlanlegger) && annenPartTekst && (
+                                <HStack gap="3" wrap={false}>
+                                    <div className="greenPanel">
+                                        <HStack gap="2" align="center">
+                                            <GrønnSirkel />
+                                            <BodyShort>
+                                                <FormattedMessage
+                                                    id="ukerForeldrepenger"
+                                                    values={{
+                                                        hvem: capitalizeFirstLetter(annenPartTekst),
+                                                        uker: antallUkerSøker2,
+                                                        dato: dayjs(startdatoSøker2).add(1, 'day').format('dddd D MMM'),
+                                                    }}
+                                                />
+                                            </BodyShort>
+                                        </HStack>
+                                    </div>
+                                </HStack>
+                            )}
+                        </HStack>
+                        <div className="pinkPanel">
+                            <HStack gap="2" align="center">
+                                <Hjerte />
+                                <BodyShort>
+                                    {(erFødt || erAdoptert) && (
+                                        <FormattedMessage
+                                            id="fødselsdatoIkontekst"
+                                            values={{
+                                                mnd: barnehagestartDato(barnet),
+                                                dato: termindatoEllerFødselsdato(barnet),
+                                            }}
+                                        />
+                                    )}
+                                    {erIkkeFødt && (
+                                        <FormattedMessage
+                                            id="termindatoIkontekst"
+                                            values={{
+                                                mnd: barnehagestartDato(barnet),
+                                                dato: termindatoEllerFødselsdato(barnet),
+                                            }}
+                                        />
+                                    )}
+                                </BodyShort>
+                            </HStack>
+                        </div>
                     </VStack>
                 </VStack>
+
+                <Kalender />
+                <StepButtons
+                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                    nextButtonOnClick={navigator.goToNextDefaultStep}
+                    useSimplifiedTexts
+                />
             </PlanleggerPage>
         </Form>
     );

@@ -4,8 +4,9 @@ import { Action, ContextDataType, PlanleggerDataContext } from 'appData/Planlegg
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
+import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { Periode } from 'types/Periode';
+import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
 import { Dekningsgrad } from '@navikt/fp-common';
@@ -20,17 +21,19 @@ export default {
 
 const Template: StoryFn<{
     hvemPlanlegger: HvemPlanlegger;
-    periode: Periode;
+    hvorLangPeriode: HvorLangPeriode;
+    fordeling: Fordeling;
     omBarnet: OmBarnet;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ gåTilNesteSide = action('button-click'), hvemPlanlegger, periode, omBarnet }) => {
+}> = ({ gåTilNesteSide = action('button-click'), hvemPlanlegger, fordeling, hvorLangPeriode, omBarnet }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.OVERSIKT]}>
             <PlanleggerDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [ContextDataType.PERIODE]: periode,
+                    [ContextDataType.FORDELING]: fordeling,
+                    [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                     [ContextDataType.OM_BARNET]: omBarnet,
                 }}
@@ -48,9 +51,11 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR_OG_FAR,
     },
-    periode: {
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    fordeling: {
         fellesperiodefordeling: 6,
+    },
+    hvorLangPeriode: {
+        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     },
     omBarnet: {
         erFødsel: true,
@@ -66,9 +71,11 @@ PeriodeAleneforsørgerÅttiProsentFødt.args = {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
     },
-    periode: {
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    fordeling: {
         fellesperiodefordeling: 7,
+    },
+    hvorLangPeriode: {
+        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     },
     omBarnet: {
         erBarnetFødt: true,
@@ -86,9 +93,11 @@ PeriodeFlereForsørgereÅttiProsentToBarnFødt.args = {
         navnPåMedmor: 'Kari Utvikler',
         type: SøkersituasjonEnum.MOR_OG_MEDMOR,
     },
-    periode: {
+    fordeling: {
+        fellesperiodefordeling: 9,
+    },
+    hvorLangPeriode: {
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-        fellesperiodefordeling: 8,
     },
     omBarnet: {
         erBarnetFødt: true,
@@ -106,9 +115,11 @@ PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
         navnPåFar: 'Espen Utvikler',
         type: SøkersituasjonEnum.MOR_OG_FAR,
     },
-    periode: {
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    fordeling: {
         fellesperiodefordeling: 9,
+    },
+    hvorLangPeriode: {
+        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
     },
     omBarnet: {
         erBarnetFødt: true,
