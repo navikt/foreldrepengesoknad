@@ -263,10 +263,10 @@ const Kalender = () => {
                 <Year key={year} year={year}>
                     <HStack gap="10">
                         {findMonthsOfYear(year, dayjs(startdatoSøker1), dayjs(sluttdatoSøker2)).map((month) => (
-                            <Month key={month} year={year} month={month}>
+                            <Month key={year + month} year={year} month={month}>
                                 {[...Array(dayjs().year(year).month(month).daysInMonth()).keys()].map((day) => (
                                     <Day
-                                        key="dag"
+                                        key={year + month + day}
                                         day={day - 1}
                                         periodType={finnPeriodeType(
                                             year,

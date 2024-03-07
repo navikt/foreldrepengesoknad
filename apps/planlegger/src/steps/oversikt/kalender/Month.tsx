@@ -35,7 +35,7 @@ const Month: React.FunctionComponent<Props> = ({ year, month, children }) => {
                         if (weeknr + 1 === nrOfWeeks.length && dag >= endWeekday) {
                             return <div key={dag} />;
                         }
-                        return <div key={dag}>{children[arrayCounter++]}</div>;
+                        return children[arrayCounter++];
                     })}
                 </HGrid>
             ))}
