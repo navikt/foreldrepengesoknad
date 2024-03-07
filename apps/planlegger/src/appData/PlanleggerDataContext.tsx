@@ -1,8 +1,9 @@
-import { createContext, useReducer, FunctionComponent, ReactNode, useContext, useCallback } from 'react';
+import { FunctionComponent, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
+import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { Periode } from 'types/Periode';
+import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { Søkersituasjon } from 'types/Søkersituasjon';
 
 export enum ContextDataType {
@@ -10,7 +11,8 @@ export enum ContextDataType {
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
     ARBEIDSSITUASJON = 'ARBEIDSSITUASJON',
-    PERIODE = 'PERIODE',
+    HVOR_LANG_PERIODE = 'HVOR_LANG_PERIODE',
+    FORDELING = 'FORDELING',
 }
 
 export type ContextDataMap = {
@@ -18,7 +20,8 @@ export type ContextDataMap = {
     [ContextDataType.SØKERSITUASJON]?: Søkersituasjon;
     [ContextDataType.OM_BARNET]?: OmBarnet;
     [ContextDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
-    [ContextDataType.PERIODE]?: Periode;
+    [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
+    [ContextDataType.FORDELING]?: Fordeling;
 };
 
 const defaultInitialState = {} as ContextDataMap;

@@ -11,7 +11,8 @@ import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
+import { erBarnetIkkeFødt } from 'types/Barnet';
+import { Fellesperiodefordeling, Fordeling } from 'types/Fordeling';
 import {
     HvemPlanlegger,
     getFornavnPåAnnenPart,
@@ -23,7 +24,6 @@ import {
     isMorOgFar,
     isMorOgMedmor,
 } from 'types/HvemPlanlegger';
-import { Fellesperiodefordeling, Periode } from 'types/Periode';
 import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -31,11 +31,11 @@ import {
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
-import { BodyLong, Heading, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
-import { Form, RadioGroup, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { notEmpty } from '@navikt/fp-validation';
 
 const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
     isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)
@@ -113,23 +113,24 @@ export const getFellesperiodefordelingSelectOptions = (
     return options;
 };
 
-const PeriodeSteg: FunctionComponent = () => {
+const FordelingSteg: FunctionComponent = () => {
+    const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
-    const periode = useContextGetData(ContextDataType.PERIODE);
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
+    const { dekningsgrad } = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const lagrePeriode = useContextSaveData(ContextDataType.PERIODE);
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const lagre = (formValues: Periode) => {
-        lagrePeriode(formValues);
+    const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
+
+    const lagre = (formValues: Fordeling) => {
+        lagreFordeling(formValues);
         return navigator.goToNextDefaultStep();
     };
 
-    const intl = useIntl();
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-
-    const formMethods = useForm<Periode>({ defaultValues: periode });
+    const formMethods = useForm<Fordeling>({ defaultValues: fordeling });
 
     const fornavnSøker = getFornavnPåSøker(hvemPlanlegger);
     const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger);
@@ -197,7 +198,6 @@ const PeriodeSteg: FunctionComponent = () => {
     const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
     const mappedKonto100tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100tvillinger);
     const mappedKonto80tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80tvillinger);
-    const dekningsgrad = formMethods.watch('dekningsgrad');
 
     const toBarn = barnet.hvorMange === 'to';
     const ettBarn = barnet.hvorMange === 'ett';
@@ -268,13 +268,6 @@ const PeriodeSteg: FunctionComponent = () => {
         fellesperiodeOptionValues,
         hvemPlanlegger,
     );
-    const sluttdatoForeldrepenger = startdatoSøker1
-        ? dayjs(startdatoSøker1)
-              .add(antallUkerMødrekvote, 'weeks')
-              .add(antallUkerFedrekvote, 'weeks')
-              .add(antallUkerFellesperiode, 'weeks')
-        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
-
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
@@ -283,77 +276,8 @@ const PeriodeSteg: FunctionComponent = () => {
                         <Heading size="large" spacing>
                             <FormattedMessage id="periode.tittel" />
                         </Heading>
-                        <InfoboksGenerell
-                            header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
-                            icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                        >
-                            {isAlene(hvemPlanlegger) ? (
-                                <BodyLong>
-                                    {erEttBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstDeg" />
-                                    )}
-                                    {erToBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
-                                    )}
-                                </BodyLong>
-                            ) : (
-                                <BodyLong>
-                                    {erEttBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
-                                    )}
-                                    {erToBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
-                                    )}
-                                </BodyLong>
-                            )}
-                        </InfoboksGenerell>
-                        <VStack gap="2">
-                            <GreenPanel>
-                                <RadioGroup
-                                    label={
-                                        isAlene(hvemPlanlegger) ? (
-                                            <FormattedMessage id="periode.hvorLangPeriodeDeg" />
-                                        ) : (
-                                            <FormattedMessage id="periode.hvorLangPeriode" />
-                                        )
-                                    }
-                                    name="dekningsgrad"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.periode.hvorLangPeriode.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                >
-                                    <Radio value={Dekningsgrad.HUNDRE_PROSENT}>
-                                        {erEttBarn(barnet) && <FormattedMessage id="periode.100" />}
-                                        {erToBarn(barnet) && <FormattedMessage id="periode.100.toBarn" />}
-                                    </Radio>
-                                    <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
-                                        {erEttBarn(barnet) && <FormattedMessage id="periode.80" />}
-                                        {erToBarn(barnet) && <FormattedMessage id="periode.80.toBarn" />}{' '}
-                                    </Radio>
-                                </RadioGroup>
-                            </GreenPanel>
-                        </VStack>
                         {!isAlene(hvemPlanlegger) && dekningsgrad && (
                             <VStack gap="10">
-                                <Infoboks
-                                    header={
-                                        <FormattedMessage
-                                            id="periode.infoboks.sisteDagTittel"
-                                            values={{
-                                                dato: dayjs(sluttdatoForeldrepenger).format('dddd DD. MMMM YYYY'),
-                                            }}
-                                        />
-                                    }
-                                    icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                                >
-                                    <BodyLong>
-                                        <FormattedMessage id="periode.infoboks.sisteDagTekst" />
-                                    </BodyLong>
-                                </Infoboks>
                                 <VStack gap="10">
                                     <InfoboksGenerell
                                         header={<FormattedMessage id="periode.infoboks.hvordanFordeleTittel" />}
@@ -373,13 +297,12 @@ const PeriodeSteg: FunctionComponent = () => {
                                 </VStack>
 
                                 <VStack gap="10">
-                                    <GreenPanel>
+                                    <GreenPanel isDarkGreen={fordeling === undefined}>
                                         <Select
                                             label={<FormattedMessage id="periode.fordelingTittel" />}
                                             name="fellesperiodefordeling"
                                             onChange={(e) => {
                                                 setCurrentOption(e.target.value);
-                                                console.log(e.target.value);
                                             }}
                                         >
                                             {fellesperiodeSelectOptions}
@@ -448,8 +371,8 @@ const PeriodeSteg: FunctionComponent = () => {
                     <VStack gap="10">
                         <HvorforSpørNAVOmDette text="TODO" />
                         <VStack gap="10">
-                            <StepButtonsHookForm<Periode>
-                                saveDataOnPreviousClick={lagrePeriode}
+                            <StepButtonsHookForm<Fordeling>
+                                saveDataOnPreviousClick={lagreFordeling}
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                                 useSimplifiedTexts
                             />
@@ -461,4 +384,4 @@ const PeriodeSteg: FunctionComponent = () => {
     );
 };
 
-export default PeriodeSteg;
+export default FordelingSteg;
