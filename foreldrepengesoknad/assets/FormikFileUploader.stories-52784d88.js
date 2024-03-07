@@ -1,0 +1,9 @@
+import{j as o}from"./jsx-runtime-1caa8f64.js";import{F as u,a as f}from"./dates-c7d75be6.js";import{S as n}from"./skjemanummer-4d711b8d.js";import{F as l,A as d}from"./FormikFileUploader-6e7689e8.js";import"./index-1cdf6ce0.js";import"./index-daf33b80.js";import"./Link-d47e444a.js";import"./index-a01a9712.js";import"./index-753920cd.js";import"./v4-4a60fe23.js";import"./_baseToString-2517c4f7.js";import"./_createSet-019d3bf6.js";import"./IntlProvider-1d845c21.js";import"./amplitude.esm-2809efde.js";import"./createIntl-39c77dfb.js";import"./ExpansionCard-52dde959.js";import"./apiInterceptor-d1094a41.js";import"./AttachmentList-7e3100ee.js";import"./Attachment-f1d95fc5.js";const J={title:"components/FormikFileUploader",component:l},c=F=>o.jsx(u,{initialValues:{},onSubmit:()=>{},children:o.jsx(f,{children:o.jsx(l,{...F})})}),e=c.bind({});e.args={attachments:[],name:"field_name",label:"Last opp vedlegg",attachmentType:d.ADOPSJONSVEDTAK,skjemanummer:n.ANNET};const r=c.bind({});r.args={attachments:[{id:"1",pending:!1,filename:"Fil som er lastet opp"}],name:"field_name",label:"Last opp vedlegg",attachmentType:d.ADOPSJONSVEDTAK,skjemanummer:n.ANNET};var m,t,a;e.parameters={...e.parameters,docs:{...(m=e.parameters)==null?void 0:m.docs,source:{originalSource:`args => <Formik initialValues={{}} onSubmit={() => undefined}>
+        <Form>
+            <FormikFileUploader {...args} />
+        </Form>
+    </Formik>`,...(a=(t=e.parameters)==null?void 0:t.docs)==null?void 0:a.source}}};var i,s,p;r.parameters={...r.parameters,docs:{...(i=r.parameters)==null?void 0:i.docs,source:{originalSource:`args => <Formik initialValues={{}} onSubmit={() => undefined}>
+        <Form>
+            <FormikFileUploader {...args} />
+        </Form>
+    </Formik>`,...(p=(s=r.parameters)==null?void 0:s.docs)==null?void 0:p.source}}};const K=["Default","FilSomErLastetOpp"];export{e as Default,r as FilSomErLastetOpp,K as __namedExportsOrder,J as default};
