@@ -62,6 +62,7 @@ export const useLagUttaksplanForslag = (
         familiehendelsesdato,
         ankomstNorgeForAdoptertBarn,
         annenPartsSisteDag,
+        barn.datoForAleneomsorg,
     );
     const fellesperiodeUkerTilSøker = fordeling.antallUkerFellesperiodeTilSøker;
     const fellesperiodeUkerMor = erFarEllerMedmor ? undefined : fellesperiodeUkerTilSøker;

@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 
 import { VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, isFarEllerMedmor } from '@navikt/fp-common';
+import { NavnPåForeldre, isAnnenForelderOppgitt, isFarEllerMedmor } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -30,6 +30,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     goToNextDefaultStep,
 }) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const fordelingAvForeldrepenger = useContextGetData(ContextDataType.FORDELING);
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
@@ -41,12 +42,16 @@ const FordelingForm: React.FunctionComponent<Props> = ({
         oppdaterFordeling(values);
         return goToNextDefaultStep();
     };
-    const søkerDeltUttakFørst = deltUttak && førsteDagEtterAnnenForelder === undefined;
+    const søkerDeltUttakINorgeFørst =
+        deltUttak &&
+        førsteDagEtterAnnenForelder === undefined &&
+        isAnnenForelderOppgitt(annenForelder) &&
+        !annenForelder.harRettPåForeldrepengerIEØS;
     return (
         <Form formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
                 <ErrorSummaryHookForm />
-                {søkerDeltUttakFørst && (
+                {søkerDeltUttakINorgeFørst && (
                     <FellesperiodeFordeling
                         navnPåForeldre={navnPåForeldre}
                         dagerMedFellesperiode={dagerMedFellesperiode}

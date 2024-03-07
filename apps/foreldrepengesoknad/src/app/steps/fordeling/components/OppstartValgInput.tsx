@@ -8,6 +8,7 @@ import {
     ISOStringToDate,
     andreAugust2022ReglerGjelder,
     formatDate,
+    formatDateExtended,
     førsteOktober2021ReglerGjelder,
     getFørsteUttaksdagForeldrepengerFørFødsel,
     intlUtils,
@@ -42,6 +43,16 @@ const getRadioOptionFarFødsel = (
     return radioOptions;
 };
 
+const getRadioOptionFarAleneomsorg = (datoForAleneomsorg: Date, familiehendelsesdato: Date) => {
+    const radioOptions = [];
+    radioOptions.push(getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg));
+
+    if (førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
+        radioOptions.push(getRadioOptionAnnenDato());
+    }
+    return radioOptions;
+};
+
 const getRadioOptionMorFødsel = (
     erBarnetFødt: boolean,
     intl: IntlShape,
@@ -51,12 +62,23 @@ const getRadioOptionMorFødsel = (
     getRadioOptionAnnenDatoMorFødsel(erBarnetFødt, intl),
 ];
 
+const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date): React.ReactElement => {
+    return (
+        <Radio value={OppstartValg.OMSORGSOVERTAKELSE}>
+            <FormattedMessage
+                id="fordeling.oppstartValg.omsorgsovertakelsen"
+                values={{ dato: formatDateExtended(datoForAleneomsorg) }}
+            />
+        </Radio>
+    );
+};
+
 const getRadioOptionAdopsjonOmsorgsovertakelse = (familiehendelsesdato: Date): React.ReactElement => {
     return (
         <Radio value={OppstartValg.FAMILIEHENDELSESDATO}>
             <FormattedMessage
                 id="fordeling.oppstartValg.omsorgsovertakelsen"
-                values={{ dato: formatDate(familiehendelsesdato) }}
+                values={{ dato: formatDateExtended(familiehendelsesdato) }}
             />
         </Radio>
     );
@@ -109,7 +131,7 @@ const getRadioOptionDagenEtterAnnenForelder = (
     <Radio value={OppstartValg.DAGEN_ETTER_ANNEN_FORELDER}>
         <FormattedMessage
             id="fordeling.oppstartValg.dagenEtterAnnenForelder"
-            values={{ navnAnnenForelder, førsteDagEtterAnnenForelder: formatDate(førsteDagEtterAnnenForelder) }}
+            values={{ navnAnnenForelder, førsteDagEtterAnnenForelder: formatDateExtended(førsteDagEtterAnnenForelder) }}
         />
     </Radio>
 );
@@ -141,7 +163,7 @@ const getRadioOptionTreUkerFørTermin = (
         <Radio
             value={OppstartValg.TRE_UKER_FØR_TERMIN}
             description={intlUtils(intl, 'fordeling.oppstartValg.treUkerFør.description', {
-                dato: formatDate(førsteDagTreUkerFørFødsel),
+                dato: formatDateExtended(førsteDagTreUkerFørFødsel),
             })}
         >
             {!erBarnetFødt && <FormattedMessage id="fordeling.oppstartValg.treUkerFørTermin" />}
@@ -155,6 +177,7 @@ export const getRadioOptionsForSituasjon = (
     barn: Barn,
     navnAnnenForelder: string,
     intl: IntlShape,
+    deltUttak: boolean,
     førsteDagEtterAnnenForelder: Date | undefined,
 ): React.ReactElement[] => {
     const erBarnetFødt = isFødtBarn(barn);
@@ -165,6 +188,9 @@ export const getRadioOptionsForSituasjon = (
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     if (erMor && erFødsel) {
         return getRadioOptionMorFødsel(erBarnetFødt, intl, familiehendelsesdato);
+    }
+    if (erFarEllerMedmor && !deltUttak && barn.datoForAleneomsorg) {
+        return getRadioOptionFarAleneomsorg(barn.datoForAleneomsorg, familiehendelsesdato);
     }
     if (erFarEllerMedmor && erFødsel) {
         return getRadioOptionFarFødsel(
@@ -188,12 +214,14 @@ interface Props {
     oppstartsValgOptions: React.ReactElement[];
     erFarEllerMedmor: boolean;
     familiehendelsesdato: Date;
+    erAleneOmOmsorg: boolean;
 }
 
 const OppstartValgInput: React.FunctionComponent<Props> = ({
     oppstartsValgOptions,
     erFarEllerMedmor,
     familiehendelsesdato,
+    erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
 
@@ -202,7 +230,7 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({
     }
 
     const descriptionId =
-        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
+        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato) && !erAleneOmOmsorg
             ? 'fordeling.oppstartValg.description.fedreWLB'
             : 'fordeling.description.kanEndresSenere';
     return (

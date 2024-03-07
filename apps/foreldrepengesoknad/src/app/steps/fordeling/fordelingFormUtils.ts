@@ -46,6 +46,7 @@ export const getOppstartsdatoFromInput = (
     familiehendelsesdato: Date,
     ankomstDatoNorge: Date | undefined,
     sisteDagAnnenForelder: Date | undefined,
+    datoForAleneomsorg: Date | undefined,
 ): Date => {
     if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO) && oppstartDato) {
         return ISOStringToDate(oppstartDato)!;
@@ -70,6 +71,12 @@ export const getOppstartsdatoFromInput = (
                 return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder);
             } else {
                 throw new Error('Mangler informasjon om annen forelders siste dag.');
+            }
+        case OppstartValg.OMSORGSOVERTAKELSE:
+            if (datoForAleneomsorg) {
+                return Uttaksdagen(datoForAleneomsorg).denneEllerNeste();
+            } else {
+                throw new Error('Mangler informasjon om omsorgsovertakelsedato.');
             }
         default:
             throw new Error('Ukjent verdi på oppstartValg.');
