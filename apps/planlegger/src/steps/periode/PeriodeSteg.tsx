@@ -10,10 +10,19 @@ import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { finnHvemPlanlegger } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
-import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
+import {
+    HvemPlanlegger,
+    getFornavnPåAnnenPart,
+    getFornavnPåSøker,
+    isAlene,
+    isFar,
+    isFarOgFar,
+    isMor,
+    isMorOgFar,
+    isMorOgMedmor,
+} from 'types/HvemPlanlegger';
 import { Fellesperiodefordeling, Periode } from 'types/Periode';
 import {
     getAntallUkerFedrekvote,
@@ -28,23 +37,19 @@ import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@nav
 import { Form, RadioGroup, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-export const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
+const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
+    isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)
+        ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
+        : intl.formatMessage({ id: 'FlereForsørgere.Far' });
+
+const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (isMorOgMedmor(hvemPlanlegger)) {
-        return [hvemPlanlegger.navnPåMor, hvemPlanlegger.navnPåMedmor];
+        return intl.formatMessage({ id: 'FlereForsørgere.Medmor' });
     }
-    if (isMorOgFar(hvemPlanlegger)) {
-        return [hvemPlanlegger.navnPåMor, hvemPlanlegger.navnPåFar];
+    if (isFar(hvemPlanlegger) || isFarOgFar(hvemPlanlegger) || isMorOgFar(hvemPlanlegger)) {
+        return intl.formatMessage({ id: 'FlereForsørgere.Far' });
     }
-    if (isMor(hvemPlanlegger)) {
-        return [hvemPlanlegger.navnPåMor];
-    }
-    if (isFar(hvemPlanlegger)) {
-        return [hvemPlanlegger.navnPåFar];
-    }
-    if (!isFarOgFar(hvemPlanlegger)) {
-        throw new Error('Feil i kode: Ugyldig finnNavn');
-    }
-    return [hvemPlanlegger.navnPåFar, hvemPlanlegger.navnPåMedfar];
+    return undefined;
 };
 
 export const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
@@ -59,42 +64,44 @@ export const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: n
 };
 
 export const getFellesperiodefordelingSelectOptions = (
+    intl: IntlShape,
     selectValues: Fellesperiodefordeling[],
     hvemPlanlegger: HvemPlanlegger,
 ) => {
-    const hvem = finnHvemPlanlegger(hvemPlanlegger);
+    const søkerTekst = finnSøkerTekst(intl, hvemPlanlegger);
+    const annenPartTekst = finnAnnenPartTekst(intl, hvemPlanlegger);
 
     const options = selectValues.map((value) => {
         if (value.antallUkerSøker1 === undefined && value.antallUkerSøker2 === undefined) {
-            return <option value={value.id}></option>;
+            return <option key={value.id} value={value.id}></option>;
         }
         if (value.antallUkerSøker1 === 0) {
             return (
-                <option value={value.id}>
+                <option key={value.id} value={value.id}>
                     <FormattedMessage
                         id="periode.fordelingOptionAlt"
-                        values={{ hvem: hvem[1], uker: value.antallUkerSøker2 }}
+                        values={{ hvem: annenPartTekst, uker: value.antallUkerSøker2 }}
                     />
                 </option>
             );
         }
         if (value.antallUkerSøker2 === 0) {
             return (
-                <option value={value.id}>
+                <option key={value.id} value={value.id}>
                     <FormattedMessage
                         id="periode.fordelingOptionAlt"
-                        values={{ hvem: hvem[0], uker: value.antallUkerSøker1 }}
+                        values={{ hvem: søkerTekst, uker: value.antallUkerSøker1 }}
                     />
                 </option>
             );
         }
         return (
-            <option value={value.id}>
+            <option key={value.id} value={value.id}>
                 <FormattedMessage
                     id="periode.fordelingOptions"
                     values={{
-                        hvem: hvem[0],
-                        hvem2: hvem[1],
+                        hvem: søkerTekst,
+                        hvem2: annenPartTekst,
                         uker: value.antallUkerSøker1,
                         uker2: value.antallUkerSøker2,
                     }}
@@ -124,10 +131,8 @@ const PeriodeSteg: FunctionComponent = () => {
 
     const formMethods = useForm<Periode>({ defaultValues: periode });
 
-    const navneliste = finnNavn(hvemPlanlegger);
-
-    const fornavnFørste = navneliste[0].split(' ')[0];
-    const fornavnAndre = navneliste.length > 1 ? navneliste[1].split(' ')[0] : undefined;
+    const fornavnSøker = getFornavnPåSøker(hvemPlanlegger);
+    const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger);
 
     const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
     console.log(fellesperiodefordeling);
@@ -259,6 +264,7 @@ const PeriodeSteg: FunctionComponent = () => {
     console.log('startdatoSøker2: ', startdatoSøker2);
     console.log('sluttdatoSøker2: ', sluttdatoSøker2);
     const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(
+        intl,
         fellesperiodeOptionValues,
         hvemPlanlegger,
     );
@@ -396,7 +402,7 @@ const PeriodeSteg: FunctionComponent = () => {
                                                 <FormattedMessage
                                                     id="periode.infoboksTekst.førsteDag"
                                                     values={{
-                                                        hvem: fornavnFørste,
+                                                        hvem: fornavnSøker,
                                                         dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
                                                     }}
                                                 />
@@ -405,7 +411,7 @@ const PeriodeSteg: FunctionComponent = () => {
                                                 <FormattedMessage
                                                     id="periode.infoboksTekst.sisteDag"
                                                     values={{
-                                                        hvem: fornavnFørste,
+                                                        hvem: fornavnSøker,
                                                         dag: sluttdatoSøker1.format('DD.MM.YY'),
                                                     }}
                                                 />
@@ -415,7 +421,7 @@ const PeriodeSteg: FunctionComponent = () => {
                                                 <FormattedMessage
                                                     id="periode.infoboksTekst.førsteDag"
                                                     values={{
-                                                        hvem: fornavnAndre,
+                                                        hvem: fornavnAnnenPart,
                                                         dag: dayjs(startdatoSøker2).add(1, 'day').format('DD.MM.YY'),
                                                     }}
                                                 />
@@ -424,7 +430,7 @@ const PeriodeSteg: FunctionComponent = () => {
                                                 <FormattedMessage
                                                     id="periode.infoboksTekst.sisteDag"
                                                     values={{
-                                                        hvem: fornavnAndre,
+                                                        hvem: fornavnAnnenPart,
                                                         dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
                                                     }}
                                                 />

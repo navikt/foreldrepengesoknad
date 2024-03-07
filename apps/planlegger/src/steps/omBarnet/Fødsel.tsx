@@ -4,9 +4,8 @@ import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { finnNavn } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, Radio, VStack } from '@navikt/ds-react';
 
@@ -146,7 +145,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                     <BodyLong>
                                         <FormattedMessage
                                             id="barnet.underTreMndTilTerminMor"
-                                            values={{ navn: finnNavn(hvemPlanlegger)[0] }}
+                                            values={{ navn: getNavnPåSøker(hvemPlanlegger) }}
                                         />
                                     </BodyLong>
 

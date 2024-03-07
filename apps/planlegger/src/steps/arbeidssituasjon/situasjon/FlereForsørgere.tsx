@@ -1,185 +1,125 @@
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import GreenPanel from 'components/GreenPanel';
 import Infoboks from 'components/Infoboks';
+import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import { FunctionComponent } from 'react';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
+import {
+    HvemPlanlegger,
+    getFornavnPåAnnenPart,
+    getFornavnPåSøker,
+    isFar,
+    isFarOgFar,
+    isMorOgFar,
+    isMorOgMedmor,
+} from 'types/HvemPlanlegger';
 
-import { BodyLong, Link, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Link, Radio } from '@navikt/ds-react';
 
-import { intlUtils } from '@navikt/fp-common';
-import { Form, RadioGroup } from '@navikt/fp-form-hooks';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { isRequired } from '@navikt/fp-validation';
 
 import { HVOR_LENGE_LENKE, VEIVISER_LENKE } from '../ArbeidssituasjonSteg';
 
-export const finnNavn = (hvemPlanlegger: HvemPlanlegger) => {
+const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (isMorOgMedmor(hvemPlanlegger)) {
-        return [hvemPlanlegger.navnPåMor, hvemPlanlegger.navnPåMedmor];
+        return intl.formatMessage({ id: 'FlereForsørgere.Medmor' });
     }
-    if (isMorOgFar(hvemPlanlegger)) {
-        return [hvemPlanlegger.navnPåMor, hvemPlanlegger.navnPåFar];
+    if (isFar(hvemPlanlegger) || isFarOgFar(hvemPlanlegger) || isMorOgFar(hvemPlanlegger)) {
+        return intl.formatMessage({ id: 'FlereForsørgere.Far' });
     }
-    if (!isFarOgFar(hvemPlanlegger)) {
-        throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
-    }
-    return [hvemPlanlegger.navnPåFar, hvemPlanlegger.navnPåMedfar];
+    return undefined;
 };
 
-export const finnHvemPlanlegger = (hvemPlanlegger: HvemPlanlegger) => {
-    if (isMorOgFar(hvemPlanlegger)) {
-        return ['mor', 'far'];
-    }
-    if (isMorOgMedmor(hvemPlanlegger)) {
-        return ['mor', 'medmor'];
-    }
-    if (isMor(hvemPlanlegger)) {
-        return ['mor'];
-    }
-    if (isFar(hvemPlanlegger)) {
-        return ['far'];
-    }
-    if (!isFarOgFar(hvemPlanlegger)) {
-        throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
-    }
-    return ['far', 'far'];
+type Props = {
+    hvemPlanlegger: HvemPlanlegger;
 };
 
-const FlereForsørgere: FunctionComponent = () => {
+const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
     const intl = useIntl();
 
-    const formMethods = useForm<Arbeidssituasjon>();
-    const arbeidssituasjonFørste = formMethods.watch('arbeidssituasjonFørste');
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const formMethods = useFormContext<Arbeidssituasjon>();
 
-    const navn = finnNavn(hvemPlanlegger);
-    const hvem = finnHvemPlanlegger(hvemPlanlegger);
+    const arbeidssituasjon = formMethods.watch('arbeidssituasjon');
 
-    const fornavnFørste = navn[0].split(' ')[0];
-    const fornavnAndre = navn[1].split(' ')[0];
+    const fornavnSøker = getFornavnPåSøker(hvemPlanlegger);
+    const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger);
 
     return (
-        <Form formMethods={formMethods}>
-            <VStack gap="10">
-                <VStack gap="5">
-                    <GreenPanel>
-                        <RadioGroup
-                            name="arbeidssituasjonFørste"
-                            label={<FormattedMessage id={'arbeid.hvaGjelder'} values={{ navn: fornavnFørste }} />}
-                            validate={[
-                                isRequired(
-                                    intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[0] }),
+        <>
+            {arbeidssituasjon === ArbeidssituasjonEnum.JOBBER && (
+                <Infoboks header={<FormattedMessage id="arbeid.jobber.infoboks" values={{ navn: fornavnSøker }} />}>
+                    <BodyLong>
+                        <FormattedMessage id="arbeid.jobber.infoboks.beskrivelse" values={{ navn: fornavnSøker }} />
+                    </BodyLong>
+                </Infoboks>
+            )}
+            {arbeidssituasjon === ArbeidssituasjonEnum.UFØR && (
+                <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: fornavnSøker }} />}>
+                    <BodyLong>
+                        <FormattedMessage id="arbeid.infoboks.aktivitet" />
+                    </BodyLong>
+                    <BodyLong>
+                        <FormattedMessage
+                            id="arbeid.ufør.infoboks.beskrivelseDel3"
+                            values={{
+                                a: (msg: any) => (
+                                    <Link href={HVOR_LENGE_LENKE} className="lenke" rel="noreferrer" target="_blank">
+                                        {msg}
+                                    </Link>
                                 ),
-                            ]}
-                        >
-                            <Radio value={ArbeidssituasjonEnum.JOBBER}>
-                                <FormattedMessage id="arbeid.jobber" />
-                            </Radio>
-
-                            <Radio value={ArbeidssituasjonEnum.UFØR}>
-                                <FormattedMessage id="arbeid.ufør" />
-                            </Radio>
-
-                            <Radio value={ArbeidssituasjonEnum.INGEN}>
-                                <FormattedMessage id="arbeid.ingen" />
-                            </Radio>
-                        </RadioGroup>
-                    </GreenPanel>
-
-                    {arbeidssituasjonFørste === ArbeidssituasjonEnum.JOBBER && (
-                        <Infoboks
-                            header={<FormattedMessage id="arbeid.jobber.infoboks" values={{ navn: fornavnFørste }} />}
-                        >
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="arbeid.jobber.infoboks.beskrivelse"
-                                    values={{ navn: fornavnFørste }}
-                                />
-                            </BodyLong>
-                        </Infoboks>
-                    )}
-                    {arbeidssituasjonFørste === ArbeidssituasjonEnum.UFØR && (
-                        <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: fornavnFørste }} />}>
-                            <BodyLong>
-                                <FormattedMessage id="arbeid.infoboks.aktivitet" />
-                            </BodyLong>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="arbeid.ufør.infoboks.beskrivelseDel3"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link
-                                                href={HVOR_LENGE_LENKE}
-                                                className="lenke"
-                                                rel="noreferrer"
-                                                target="_blank"
-                                            >
-                                                {msg}
-                                            </Link>
-                                        ),
-                                        navn: fornavnFørste,
-                                    }}
-                                />
-                            </BodyLong>
-                        </Infoboks>
-                    )}
-                    {arbeidssituasjonFørste === ArbeidssituasjonEnum.INGEN && (
-                        <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: fornavnFørste }} />}>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="arbeid.ingen.infoboks.beskrivelse"
-                                    values={{ navn: fornavnFørste }}
-                                />
-                            </BodyLong>
-                            <BodyLong>
-                                <FormattedMessage id="arbeid.infoboks.aktivitet" />
-                            </BodyLong>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="arbeid.ingen.infoboks.beskrivelseDel3"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link
-                                                href={VEIVISER_LENKE}
-                                                className="lenke"
-                                                rel="noreferrer"
-                                                target="_blank"
-                                            >
-                                                {msg}
-                                            </Link>
-                                        ),
-                                        navn: fornavnFørste,
-                                    }}
-                                />
-                            </BodyLong>
-                        </Infoboks>
-                    )}
-                </VStack>
-
-                <VStack gap="1">
-                    <GreenPanel>
-                        <RadioGroup
-                            name="arbeidssituasjonAndre"
-                            label={<FormattedMessage id={'arbeid.andreForelder'} values={{ navn: fornavnAndre }} />}
-                            validate={[
-                                isRequired(
-                                    intlUtils(intl, 'feilmelding.arbeidssituasjonFlere.duMåOppgi', { hvem: hvem[1] }),
+                                navn: fornavnSøker,
+                            }}
+                        />
+                    </BodyLong>
+                </Infoboks>
+            )}
+            {arbeidssituasjon === ArbeidssituasjonEnum.INGEN && (
+                <Infoboks header={<FormattedMessage id="arbeid.infoboks" values={{ navn: fornavnSøker }} />}>
+                    <BodyLong>
+                        <FormattedMessage id="arbeid.ingen.infoboks.beskrivelse" values={{ navn: fornavnSøker }} />
+                    </BodyLong>
+                    <BodyLong>
+                        <FormattedMessage id="arbeid.infoboks.aktivitet" />
+                    </BodyLong>
+                    <BodyLong>
+                        <FormattedMessage
+                            id="arbeid.ingen.infoboks.beskrivelseDel3"
+                            values={{
+                                a: (msg: any) => (
+                                    <Link href={VEIVISER_LENKE} className="lenke" rel="noreferrer" target="_blank">
+                                        {msg}
+                                    </Link>
                                 ),
-                            ]}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="nei" />
-                            </Radio>
-                        </RadioGroup>
-                    </GreenPanel>
-                </VStack>
-            </VStack>
-        </Form>
+                                navn: fornavnSøker,
+                            }}
+                        />
+                    </BodyLong>
+                </Infoboks>
+            )}
+            {arbeidssituasjon && (
+                <GreenRadioGroup
+                    name="arbeidssituasjonAnnenPart"
+                    label={<FormattedMessage id="arbeid.andreForelder" values={{ navn: fornavnAnnenPart }} />}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage(
+                                { id: 'feilmelding.arbeidssituasjonFlere.duMåOppgi' },
+                                {
+                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                },
+                            ),
+                        ),
+                    ]}
+                >
+                    <Radio value={true} autoFocus>
+                        <FormattedMessage id="ja" />
+                    </Radio>
+                    <Radio value={false}>
+                        <FormattedMessage id="nei" />
+                    </Radio>
+                </GreenRadioGroup>
+            )}
+        </>
     );
 };
 

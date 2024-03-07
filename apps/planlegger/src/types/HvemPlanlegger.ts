@@ -58,3 +58,35 @@ export const isFlere = (hvemPlanlegger: HvemPlanlegger) => {
 export const isAlene = (hvemPlanlegger: HvemPlanlegger) => {
     return isFlere(hvemPlanlegger) === false;
 };
+
+export const getNavnPåSøker = (hvemPlanlegger: HvemPlanlegger): string => {
+    if (isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)) {
+        return hvemPlanlegger.navnPåMor;
+    }
+    if (isFarOgFar(hvemPlanlegger) || isFar(hvemPlanlegger)) {
+        return hvemPlanlegger.navnPåFar;
+    }
+    throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
+};
+
+export const getNavnPåAnnenPart = (hvemPlanlegger: HvemPlanlegger): string | undefined => {
+    if (isMorOgMedmor(hvemPlanlegger)) {
+        return hvemPlanlegger.navnPåMedmor;
+    }
+    if (isMorOgFar(hvemPlanlegger)) {
+        return hvemPlanlegger.navnPåFar;
+    }
+    if (isFarOgFar(hvemPlanlegger)) {
+        return hvemPlanlegger.navnPåMedfar;
+    }
+    return undefined;
+};
+
+export const getFornavnPåSøker = (hvemPlanlegger: HvemPlanlegger): string => {
+    return getNavnPåSøker(hvemPlanlegger).split(' ')[0];
+};
+
+export const getFornavnPåAnnenPart = (hvemPlanlegger: HvemPlanlegger): string | undefined => {
+    const navn = getNavnPåAnnenPart(hvemPlanlegger);
+    return navn ? navn.split(' ')[0] : undefined;
+};
