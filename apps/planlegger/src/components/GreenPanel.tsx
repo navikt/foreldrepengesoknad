@@ -2,11 +2,16 @@ import { Box } from '@navikt/ds-react';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];
+    isDarkGreen?: boolean;
 }
 
-const GreenPanel: React.FunctionComponent<Props> = ({ children }) => {
+const GreenPanel: React.FunctionComponent<Props> = ({ children, isDarkGreen }) => {
     return (
-        <Box background="surface-alt-2-moderate" borderRadius="large" padding="4">
+        <Box
+            background={isDarkGreen ? 'surface-alt-2-moderate' : 'surface-alt-2-subtle'}
+            borderRadius="large"
+            padding="4"
+        >
             {children}
         </Box>
     );

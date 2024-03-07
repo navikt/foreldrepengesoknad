@@ -109,11 +109,9 @@ export const getFellesperiodefordelingSelectOptions = (
 const PeriodeSteg: FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
+
     const periode = useContextGetData(ContextDataType.PERIODE);
-    const formMethods = useForm<Periode>({ defaultValues: periode });
-
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-
     const lagrePeriode = useContextSaveData(ContextDataType.PERIODE);
 
     const lagre = (formValues: Periode) => {
@@ -123,6 +121,8 @@ const PeriodeSteg: FunctionComponent = () => {
 
     const intl = useIntl();
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const formMethods = useForm<Periode>({ defaultValues: periode });
 
     const navneliste = finnNavn(hvemPlanlegger);
 
