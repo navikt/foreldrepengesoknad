@@ -60,7 +60,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="6">
+                <VStack gap="10">
                     <Heading level="2" size="medium">
                         <FormattedMessage id="barnet.tittel" />
                     </Heading>
