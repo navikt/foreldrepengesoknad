@@ -9,15 +9,14 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { finnHvemPlanlegger } from 'steps/arbeidssituasjon/situasjon/FlereForsørgere';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import {
     getFellesperiodefordelingOptionValues,
     getFellesperiodefordelingSelectOptions,
 } from 'steps/periode/PeriodeSteg';
 import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
-import { isAlene } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 import { Periode } from 'types/Periode';
 import {
     getAntallUkerFedrekvote,
@@ -53,7 +52,23 @@ const termindatoEllerFødselsdato = (barnet: OmBarnet) => {
     return undefined;
 };
 
+const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
+    if (isMorOgMedmor(hvemPlanlegger)) {
+        return intl.formatMessage({ id: 'FlereForsørgere.Medmor' });
+    }
+    if (isFar(hvemPlanlegger) || isFarOgFar(hvemPlanlegger) || isMorOgFar(hvemPlanlegger)) {
+        return intl.formatMessage({ id: 'FlereForsørgere.Far' });
+    }
+    return undefined;
+};
+
+const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
+    isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)
+        ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
+        : intl.formatMessage({ id: 'FlereForsørgere.Far' });
+
 const OversiktSteg = () => {
+    const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
@@ -184,6 +199,7 @@ const OversiktSteg = () => {
             : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks');
 
     const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(
+        intl,
         fellesperiodeOptionValues,
         hvemPlanlegger,
     );
@@ -193,8 +209,9 @@ const OversiktSteg = () => {
     console.log('antallUkerSøker1: ', antallUkerSøker1);
     console.log('antallUkerSøker2: ', antallUkerSøker2);
 
-    const hvem = finnHvemPlanlegger(hvemPlanlegger);
-    const hvem1 = capitalizeFirstLetter(hvem[0]);
+    const søkerTekst = finnSøkerTekst(intl, hvemPlanlegger);
+    const annenPartTekst = finnAnnenPartTekst(intl, hvemPlanlegger);
+    const hvem1 = capitalizeFirstLetter(søkerTekst);
 
     const [currentOption, setCurrentOption] = useState('');
     console.log('currentOption: ', currentOption);
@@ -255,7 +272,7 @@ const OversiktSteg = () => {
                                     </HStack>
                                 </div>
                                 <Spacer />
-                                {!isAlene(hvemPlanlegger) && (
+                                {!isAlene(hvemPlanlegger) && annenPartTekst && (
                                     <HStack gap="3" wrap={false}>
                                         <div className="greenPanel">
                                             <HStack gap="2" align="center">
@@ -264,7 +281,7 @@ const OversiktSteg = () => {
                                                     <FormattedMessage
                                                         id="ukerForeldrepenger"
                                                         values={{
-                                                            hvem: capitalizeFirstLetter(hvem[1]),
+                                                            hvem: capitalizeFirstLetter(annenPartTekst),
                                                             uker: antallUkerSøker2,
                                                             dato: dayjs(startdatoSøker2)
                                                                 .add(1, 'day')

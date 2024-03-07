@@ -2,25 +2,33 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
+import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { isAlene } from 'types/HvemPlanlegger';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { HvemPlanlegger, getNavnPåSøker, isAlene, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 
-import { Heading, VStack } from '@navikt/ds-react';
+import { Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { notEmpty } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
 
+const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
+    isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)
+        ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
+        : intl.formatMessage({ id: 'FlereForsørgere.Far' });
+
+// TODO Desse to bør leggast i links-fila i constants-pakka
 export const HVOR_LENGE_LENKE = 'https://www.nav.no/foreldrepenger#hvor-lenge';
 export const VEIVISER_LENKE = 'https://familie.nav.no/veiviser';
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
+    const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
@@ -38,6 +46,8 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
         return navigator.goToNextDefaultStep();
     };
 
+    const erAlenesøker = isAlene(hvemPlanlegger);
+
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
@@ -45,17 +55,52 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     <Heading level="2" size="medium">
                         <FormattedMessage id="arbeid.tittel" />
                     </Heading>
-                    {isAlene(hvemPlanlegger) && <Aleneforsørger />}
-                    {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
+                    <GreenRadioGroup
+                        label={
+                            erAlenesøker ? (
+                                <FormattedMessage id="barnet.hvaGjelderDeg" />
+                            ) : (
+                                <FormattedMessage
+                                    id={'arbeid.hvaGjelder'}
+                                    values={{ navn: getNavnPåSøker(hvemPlanlegger) }}
+                                />
+                            )
+                        }
+                        name="arbeidssituasjon"
+                        validate={[
+                            isRequired(
+                                erAlenesøker
+                                    ? intl.formatMessage({
+                                          id: 'feilmelding.arbeidssituasjonAlene.duMåOppgi',
+                                      })
+                                    : intl.formatMessage(
+                                          {
+                                              id: 'feilmelding.arbeidssituasjonFlere.duMåOppgi',
+                                          },
+                                          { hvem: finnSøkerTekst(intl, hvemPlanlegger) },
+                                      ),
+                            ),
+                        ]}
+                    >
+                        <Radio value={ArbeidssituasjonEnum.JOBBER} autoFocus>
+                            <FormattedMessage id="arbeid.jobber" />
+                        </Radio>
+                        <Radio value={ArbeidssituasjonEnum.UFØR}>
+                            <FormattedMessage id="arbeid.ufør" />
+                        </Radio>
+                        <Radio value={ArbeidssituasjonEnum.INGEN}>
+                            <FormattedMessage id="arbeid.ingen" />
+                        </Radio>
+                    </GreenRadioGroup>
+                    {erAlenesøker && <Aleneforsørger />}
+                    {!erAlenesøker && <FlereForsørgere hvemPlanlegger={hvemPlanlegger} />}
                     <VStack gap="20">
                         <HvorforSpørNAVOmDette text="TODO" />
-                        <VStack>
-                            <StepButtonsHookForm
-                                saveDataOnPreviousClick={lagreArbeidssituasjon}
-                                goToPreviousStep={navigator.goToPreviousDefaultStep}
-                                useSimplifiedTexts
-                            />
-                        </VStack>
+                        <StepButtonsHookForm
+                            saveDataOnPreviousClick={lagreArbeidssituasjon}
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            useSimplifiedTexts
+                        />
                     </VStack>
                 </VStack>
             </Form>
