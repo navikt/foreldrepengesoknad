@@ -15,6 +15,7 @@ export interface Props {
     disabled?: boolean;
     className?: string;
     style?: CSSProperties;
+    autofocusWhenEmpty?: boolean;
 }
 
 const Select: FunctionComponent<Props> = ({
@@ -27,6 +28,7 @@ const Select: FunctionComponent<Props> = ({
     className,
     children,
     style,
+    autofocusWhenEmpty,
 }) => {
     const {
         formState: { errors },
@@ -60,6 +62,7 @@ const Select: FunctionComponent<Props> = ({
             disabled={disabled}
             onChange={onChangeFn}
             style={style}
+            autoFocus={autofocusWhenEmpty && field.value === undefined}
         >
             <option style={{ display: 'none' }} />,{children}
         </DsSelect>

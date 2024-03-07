@@ -304,6 +304,7 @@ const FordelingSteg: FunctionComponent = () => {
                                             onChange={(e) => {
                                                 setCurrentOption(e.target.value);
                                             }}
+                                            autofocusWhenEmpty
                                         >
                                             {fellesperiodeSelectOptions}
                                         </Select>
