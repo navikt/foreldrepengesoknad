@@ -1,11 +1,15 @@
-import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
-import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import dayjs from 'dayjs';
-import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
 import localeData from 'dayjs/plugin/localeData';
+import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
+
+import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
+
 import { bemUtils } from '@navikt/fp-common';
+import { notEmpty } from '@navikt/fp-validation';
+
 import './kalender.css';
+
 dayjs.extend(localeData);
 dayjs.locale('nb');
 

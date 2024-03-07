@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import dayjs, { Dayjs } from 'dayjs';
 import { useState } from 'react';
-import { getFellesperiodefordelingOptionValues } from 'steps/periode/PeriodeSteg';
+import { getFellesperiodefordelingOptionValues } from 'steps/fordeling/FordelingSteg';
 import { erBarnetIkkeFødt } from 'types/Barnet';
 import {
     getAntallUkerFedrekvote,
@@ -208,7 +208,7 @@ const Kalender = () => {
     const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindatoEllerFødselsdato).toDate());
     console.log('startdatoSøker1: ', startdatoSøker1);
 
-    const fellesperiodefordeling = notEmpty(useContextGetData(ContextDataType.PERIODE)).fellesperiodefordeling;
+    const fellesperiodefordeling = notEmpty(useContextGetData(ContextDataType.FORDELING)).fellesperiodefordeling;
 
     const fellesperiodeOptionValues = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
 

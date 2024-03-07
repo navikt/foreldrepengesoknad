@@ -4,16 +4,17 @@ import { Action, ContextDataType, PlanleggerDataContext } from 'appData/Planlegg
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
+import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import PeriodeSteg from './PeriodeSteg';
+import FordelingSteg from './FordelingSteg';
 
 export default {
-    title: 'PeriodeSteg',
-    component: PeriodeSteg,
+    title: 'FordelingSteg',
+    component: FordelingSteg,
 };
 
 const Template: StoryFn<{
@@ -23,15 +24,16 @@ const Template: StoryFn<{
 }> = ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click') }) => {
     initAmplitude();
     return (
-        <MemoryRouter initialEntries={[PlanleggerRoutes.PERIODE]}>
+        <MemoryRouter initialEntries={[PlanleggerRoutes.FORDELING]}>
             <PlanleggerDataContext
                 initialState={{
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                     [ContextDataType.OM_BARNET]: omBarnet,
+                    [ContextDataType.HVOR_LANG_PERIODE]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <PeriodeSteg />
+                <FordelingSteg />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
