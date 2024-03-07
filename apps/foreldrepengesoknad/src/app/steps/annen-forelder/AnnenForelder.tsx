@@ -24,7 +24,7 @@ import {
     links,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Søker } from '@navikt/fp-types';
+import { AttachmentMetadataType, Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -123,6 +123,9 @@ const AnnenForelder: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                       values.dokumentasjonAvAleneomsorg,
                       AttachmentType.ALENEOMSORG,
                       Skjemanummer.DOK_AV_ALENEOMSORG,
+                      {
+                          type: AttachmentMetadataType.BARN,
+                      },
                   )
                 : [];
 
