@@ -2,6 +2,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import useStepData from 'appData/useStepData';
 import GreenPanel from 'components/GreenPanel';
 import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
+import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,7 +11,7 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
+import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
@@ -33,175 +34,159 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
 
     const planleggerType = formMethods.watch('type');
 
+    const erHvemPlanleggerIkkeOppgittFraFør = hvemPlanlegger === undefined;
+
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
-                    <VStack gap="10">
-                        <GreenPanel>
-                            <RadioGroup
-                                name="type"
-                                label={intl.formatMessage({
-                                    id: 'HvemPlanleggerSteg.HvemPlanlegger',
-                                })}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({
-                                            id: 'feilmelding.hvemPlanlegger.duMåOppgi',
-                                        }),
-                                    ),
-                                ]}
-                            >
-                                <Radio value={SøkersituasjonEnum.MOR_OG_FAR}>
-                                    <FormattedMessage id="hvem.morOgFar" />
-                                </Radio>
-                                <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
-                                    <FormattedMessage id="hvem.morOgMedmor" />
-                                </Radio>
-                                <Radio value={SøkersituasjonEnum.FAR_OG_FAR}>
-                                    <FormattedMessage id="hvem.farOgFar" />
-                                </Radio>
-                                <Radio value={SøkersituasjonEnum.MOR}>
-                                    <FormattedMessage id="hvem.bareMor" />
-                                </Radio>
-                                <Radio value={SøkersituasjonEnum.FAR}>
-                                    <FormattedMessage id="hvem.bareFar" />
-                                </Radio>
-                            </RadioGroup>
+                    <GreenRadioGroup
+                        name="type"
+                        label={intl.formatMessage({
+                            id: 'HvemPlanleggerSteg.HvemPlanlegger',
+                        })}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'feilmelding.hvemPlanlegger.duMåOppgi',
+                                }),
+                            ),
+                        ]}
+                    >
+                        <Radio value={SøkersituasjonEnum.MOR_OG_FAR} autoFocus>
+                            <FormattedMessage id="hvem.morOgFar" />
+                        </Radio>
+                        <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
+                            <FormattedMessage id="hvem.morOgMedmor" />
+                        </Radio>
+                        <Radio value={SøkersituasjonEnum.FAR_OG_FAR}>
+                            <FormattedMessage id="hvem.farOgFar" />
+                        </Radio>
+                        <Radio value={SøkersituasjonEnum.MOR}>
+                            <FormattedMessage id="hvem.bareMor" />
+                        </Radio>
+                        <Radio value={SøkersituasjonEnum.FAR}>
+                            <FormattedMessage id="hvem.bareFar" />
+                        </Radio>
+                    </GreenRadioGroup>
+                    {planleggerType && (
+                        <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør}>
+                            <>
+                                {planleggerType === SøkersituasjonEnum.MOR_OG_FAR && (
+                                    <VStack gap="10">
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'navn.mor' })}
+                                            name="navnPåMor"
+                                            validate={[
+                                                isRequired(
+                                                    intl.formatMessage({
+                                                        id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
+                                                    }),
+                                                ),
+                                            ]}
+                                            autofocusWhenEmpty
+                                        />
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'navn.far' })}
+                                            name="navnPåFar"
+                                            validate={[
+                                                isRequired(
+                                                    intl.formatMessage({
+                                                        id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
+                                                    }),
+                                                ),
+                                            ]}
+                                        />
+                                    </VStack>
+                                )}
+                                {planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR && (
+                                    <VStack gap="10">
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'navn.mor' })}
+                                            name="navnPåMor"
+                                            validate={[
+                                                isRequired(
+                                                    intl.formatMessage({
+                                                        id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
+                                                    }),
+                                                ),
+                                            ]}
+                                            autofocusWhenEmpty
+                                        />
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'navn.medmor' })}
+                                            name="navnPåMedmor"
+                                            validate={[
+                                                isRequired(
+                                                    intl.formatMessage({
+                                                        id: 'feilmelding.hvemPlanlegger.navnMedmor.duMåOppgi',
+                                                    }),
+                                                ),
+                                            ]}
+                                        />
+                                    </VStack>
+                                )}
+                                {planleggerType === SøkersituasjonEnum.FAR_OG_FAR && (
+                                    <VStack gap="10">
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'navn.far' })}
+                                            name="navnPåFar"
+                                            validate={[
+                                                isRequired(
+                                                    intl.formatMessage({
+                                                        id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
+                                                    }),
+                                                ),
+                                            ]}
+                                            autofocusWhenEmpty
+                                        />
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'navn.far' })}
+                                            name="navnPåMedfar"
+                                            validate={[
+                                                isRequired(
+                                                    intl.formatMessage({
+                                                        id: 'feilmelding.hvemPlanlegger.navnMedfar.duMåOppgi',
+                                                    }),
+                                                ),
+                                            ]}
+                                        />
+                                    </VStack>
+                                )}
+                                {planleggerType === SøkersituasjonEnum.MOR && (
+                                    <TextField
+                                        label={intl.formatMessage({ id: 'navn.mor' })}
+                                        name="navnPåMor"
+                                        validate={[
+                                            isRequired(
+                                                intl.formatMessage({
+                                                    id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
+                                                }),
+                                            ),
+                                        ]}
+                                        autofocusWhenEmpty
+                                    />
+                                )}
+                                {planleggerType === SøkersituasjonEnum.FAR && (
+                                    <TextField
+                                        label={intl.formatMessage({ id: 'navn.far' })}
+                                        name="navnPåFar"
+                                        validate={[
+                                            isRequired(
+                                                intl.formatMessage({
+                                                    id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
+                                                }),
+                                            ),
+                                        ]}
+                                        autofocusWhenEmpty
+                                    />
+                                )}
+                            </>
                         </GreenPanel>
-                    </VStack>
-                    {planleggerType === SøkersituasjonEnum.MOR_OG_FAR && (
-                        <VStack gap="5">
-                            <GreenPanel>
-                                <TextField
-                                    label={intl.formatMessage({ id: 'navn.mor' })}
-                                    name="navnPåMor"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                />
-                            </GreenPanel>
-                            <GreenPanel>
-                                <TextField
-                                    label={intl.formatMessage({ id: 'navn.far' })}
-                                    name="navnPåFar"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                />
-                            </GreenPanel>
-                        </VStack>
-                    )}
-                    {planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR && (
-                        <VStack gap="5">
-                            <GreenPanel>
-                                <TextField
-                                    label={intl.formatMessage({ id: 'navn.mor' })}
-                                    name="navnPåMor"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                />
-                            </GreenPanel>
-                            <GreenPanel>
-                                <TextField
-                                    label={intl.formatMessage({ id: 'navn.medmor' })}
-                                    name="navnPåMedmor"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.hvemPlanlegger.navnMedmor.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                />
-                            </GreenPanel>
-                        </VStack>
-                    )}
-                    {planleggerType === SøkersituasjonEnum.FAR_OG_FAR && (
-                        <VStack gap="5">
-                            <GreenPanel>
-                                <TextField
-                                    label={intl.formatMessage({ id: 'navn.far' })}
-                                    name="navnPåFar"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                />
-                            </GreenPanel>
-                            <GreenPanel>
-                                <TextField
-                                    label={intl.formatMessage({ id: 'navn.far' })}
-                                    name="navnPåMedfar"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.hvemPlanlegger.navnMedfar.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                />
-                            </GreenPanel>
-                        </VStack>
-                    )}
-                    {planleggerType === SøkersituasjonEnum.MOR && (
-                        <VStack gap="5">
-                            <GreenPanel>
-                                <TextField
-                                    label={intl.formatMessage({ id: 'navn.mor' })}
-                                    name="navnPåMor"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                />
-                            </GreenPanel>
-                        </VStack>
-                    )}
-                    {planleggerType === SøkersituasjonEnum.FAR && (
-                        <VStack gap="5">
-                            <GreenPanel>
-                                <TextField
-                                    label={intl.formatMessage({ id: 'navn.far' })}
-                                    name="navnPåFar"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                />
-                            </GreenPanel>
-                        </VStack>
                     )}
                     <VStack gap="20">
                         <HvorforSpørNAVOmDette text="TODO" />
-                        <VStack>
-                            <StepButtonsHookForm
-                                goToPreviousStep={navigator.goToPreviousDefaultStep}
-                                useSimplifiedTexts
-                            />
-                        </VStack>
+                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} useSimplifiedTexts />
                     </VStack>
                 </VStack>
             </Form>
