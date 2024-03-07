@@ -1,10 +1,8 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import GreenPanel from 'components/GreenPanel';
 import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
-import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
@@ -12,35 +10,52 @@ import { isAlene } from 'types/HvemPlanlegger';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
-import { Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isSameOrAfterToday } from '@navikt/fp-utils';
+import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import GreenRadioGroup from '../../components/formWrappers/GreenRadioGroup';
 import Adopsjon from './Adopsjon';
 import Fødsel from './Fødsel';
 
-export const isLessThanThreeMonthsLeft = (termindato?: string) => {
-    const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
-    if (termindato === undefined) {
-        return false;
+const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
+    if (erFødsel) {
+        return erAlenesøker ? (
+            <FormattedMessage id="barnet.hvorMangeDeg" />
+        ) : (
+            <FormattedMessage id="barnet.hvorMange" />
+        );
     }
-    return isSameOrAfterToday(termindato) && dayjs(termindato).isBefore(DATO_3_MND_FRAM);
+
+    return erAlenesøker ? (
+        <FormattedMessage id="barnet.adopsjon.hvorMangeDeg" />
+    ) : (
+        <FormattedMessage id="barnet.adopsjon.hvorMange" />
+    );
 };
 
 const OmBarnetSteg: React.FunctionComponent = () => {
+    const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
-    const formMethods = useForm<OmBarnet>();
-    const intl = useIntl();
 
-    const erFødsel = formMethods.watch('erFødsel');
-
+    const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const lagreOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+
     const lagre = (formValues: OmBarnet) => {
         lagreOmBarnet(formValues);
         return navigator.goToNextDefaultStep();
     };
+
+    const formMethods = useForm<OmBarnet>({
+        shouldUnregister: true,
+        defaultValues: omBarnet,
+    });
+
+    const erFødsel = formMethods.watch('erFødsel');
+    const hvorMange = formMethods.watch('hvorMange');
+
+    const erAlenesøker = isAlene(hvemPlanlegger);
 
     return (
         <PlanleggerPage steps={stepConfig}>
@@ -50,37 +65,60 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         <FormattedMessage id="barnet.tittel" />
                     </Heading>
                     <VStack gap="10">
-                        <VStack gap="1">
-                            <GreenPanel>
-                                <RadioGroup
-                                    name="erFødsel"
-                                    label={
-                                        isAlene(hvemPlanlegger) ? (
-                                            <FormattedMessage id="barnet.hvaGjelderDeg" />
-                                        ) : (
-                                            <FormattedMessage id="barnet.hvaGjelder" />
-                                        )
-                                    }
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'feilmelding.fødselPanel.fødselEllerAdopsjon.duMåOppgi',
-                                            }),
-                                        ),
-                                    ]}
-                                >
-                                    <Radio value={true}>
-                                        <FormattedMessage id="barnet.fødsel" />
-                                    </Radio>
-                                    <Radio value={false}>
-                                        <FormattedMessage id="barnet.adopsjon" />
-                                    </Radio>
-                                </RadioGroup>
-                            </GreenPanel>
-                        </VStack>
+                        <GreenRadioGroup
+                            name="erFødsel"
+                            label={
+                                erAlenesøker ? (
+                                    <FormattedMessage id="barnet.hvaGjelderDeg" />
+                                ) : (
+                                    <FormattedMessage id="barnet.hvaGjelder" />
+                                )
+                            }
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'feilmelding.fødselPanel.fødselEllerAdopsjon.duMåOppgi',
+                                    }),
+                                ),
+                            ]}
+                        >
+                            <Radio value={true} autoFocus>
+                                <FormattedMessage id="barnet.fødsel" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="barnet.adopsjon" />
+                            </Radio>
+                        </GreenRadioGroup>
+                        {erFødsel !== undefined && (
+                            <GreenRadioGroup
+                                name="hvorMange"
+                                label={finnHvorMangeBarnLabel(erAlenesøker, erFødsel)}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
+                                        }),
+                                    ),
+                                ]}
+                            >
+                                <Radio value="ett" autoFocus={omBarnet === undefined}>
+                                    <FormattedMessage id="barnet.ett" />
+                                </Radio>
+                                <Radio value="to">
+                                    <FormattedMessage id="barnet.to" />
+                                </Radio>
+                                <Radio value="flere">
+                                    <FormattedMessage id="barnet.flereEnnTo" />
+                                </Radio>
+                            </GreenRadioGroup>
+                        )}
                     </VStack>
-                    {erFødsel && <Fødsel />}
-                    {erFødsel === false && <Adopsjon />}
+                    {erFødsel && hvorMange && (
+                        <Fødsel hvemPlanlegger={hvemPlanlegger} erOmBarnetIkkeOppgittFraFør={omBarnet === undefined} />
+                    )}
+                    {erFødsel === false && hvorMange && (
+                        <Adopsjon erAlenesøker={erAlenesøker} erOmBarnetIkkeOppgittFraFør={omBarnet === undefined} />
+                    )}
                     <VStack gap="10">
                         <HvorforSpørNAVOmDette text="TODO" />
                         <VStack>
