@@ -5,8 +5,9 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
+import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { Periode } from 'types/Periode';
+import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -21,9 +22,10 @@ export default {
 const Template: StoryFn<{
     gåTilNesteSide: (action: Action) => void;
     hvemPlanlegger: HvemPlanlegger;
-    periode: Periode;
+    fordeling: Fordeling;
+    hvorLangPeriode: HvorLangPeriode;
     omBarnet: OmBarnet;
-}> = ({ gåTilNesteSide = action('button-click'), hvemPlanlegger, periode, omBarnet }) => {
+}> = ({ gåTilNesteSide = action('button-click'), hvemPlanlegger, fordeling, hvorLangPeriode, omBarnet }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
@@ -31,7 +33,8 @@ const Template: StoryFn<{
                 onDispatch={gåTilNesteSide}
                 initialState={{
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
-                    [ContextDataType.PERIODE]: periode,
+                    [ContextDataType.FORDELING]: fordeling,
+                    [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
                     [ContextDataType.OM_BARNET]: omBarnet,
                 }}
             >
@@ -48,9 +51,11 @@ OppsummeringFlereForsørgereHundreProsentTermin.args = {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR_OG_FAR,
     },
-    periode: {
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    fordeling: {
         fellesperiodefordeling: 6,
+    },
+    hvorLangPeriode: {
+        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     },
     omBarnet: {
         erFødsel: true,
@@ -65,9 +70,11 @@ OppsummeringAleneforsørgerÅttiProsentTermin.args = {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
     },
-    periode: {
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    fordeling: {
         fellesperiodefordeling: 6,
+    },
+    hvorLangPeriode: {
+        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
     },
     omBarnet: {
         erFødsel: true,
