@@ -1,5 +1,6 @@
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
+
 import { TextField as DsTextField } from '@navikt/ds-react';
 
 import { getError, getValidationRules, replaceInvisibleCharsWithSpace } from './formUtils';
@@ -17,6 +18,7 @@ export interface Props {
     className?: string;
     style?: CSSProperties;
     shouldReplaceInvisibleChars?: boolean;
+    autofocusWhenEmpty?: boolean;
 }
 
 const TextField: FunctionComponent<Props> = ({
@@ -32,6 +34,7 @@ const TextField: FunctionComponent<Props> = ({
     className,
     style,
     shouldReplaceInvisibleChars = false,
+    autofocusWhenEmpty,
 }) => {
     const {
         formState: { errors },
@@ -73,7 +76,7 @@ const TextField: FunctionComponent<Props> = ({
             description={description}
             type={type}
             error={getError(errors, name)}
-            autoFocus={autoFocus}
+            autoFocus={autoFocus || (autofocusWhenEmpty && field.value === undefined)}
             autoComplete="off"
             maxLength={maxLength}
             disabled={disabled}
