@@ -64,7 +64,7 @@ import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import { getUttaksplanNextStep } from '../stepsConfig';
-import { getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
+import { getAntallUker, getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
 import {
@@ -422,6 +422,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             ...uttaksplanMetadata,
             endringstidspunkt,
             perioderSomSkalSendesInn,
+            antallUkerIUttaksplan,
         });
 
         navigator.goToNextStep(nextRoute);
@@ -606,6 +607,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             setPerioderSomSkalSendesInn([]);
         }
     };
+    const antallUkerIUttaksplan = getAntallUker(valgteStønadskontoer);
 
     return (
         <UttaksplanFormComponents.FormikWrapper
