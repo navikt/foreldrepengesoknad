@@ -17,18 +17,21 @@ import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
 import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
 
 const HvemPlanleggerSteg: FunctionComponent = () => {
+    const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
-    const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
-    const formMethods = useForm<HvemPlanlegger>({ defaultValues: hvemPlanlegger });
-    const intl = useIntl();
-    const planleggerType = formMethods.watch('type');
 
+    const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
     const lagreHvemPlanlegger = useContextSaveData(ContextDataType.HVEM_PLANLEGGER);
+
     const lagre = (formValues: HvemPlanlegger) => {
         lagreHvemPlanlegger(formValues);
         return navigator.goToNextDefaultStep();
     };
+
+    const formMethods = useForm<HvemPlanlegger>({ defaultValues: hvemPlanlegger });
+
+    const planleggerType = formMethods.watch('type');
 
     return (
         <PlanleggerPage steps={stepConfig}>
