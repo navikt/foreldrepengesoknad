@@ -342,6 +342,7 @@ const PeriodeSteg: FunctionComponent = () => {
                                             }}
                                         />
                                     }
+                                    icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                                 >
                                     <BodyLong>
                                         <FormattedMessage id="periode.infoboks.sisteDagTekst" />
@@ -380,7 +381,17 @@ const PeriodeSteg: FunctionComponent = () => {
                                     </GreenPanel>
 
                                     {currentOption !== undefined && currentOption > '0' && (
-                                        <Infoboks header={<FormattedMessage id="periode.infoboksTittel" />}>
+                                        <Infoboks
+                                            header={<FormattedMessage id="periode.infoboksTittel" />}
+                                            icon={
+                                                <CalendarIcon
+                                                    height={28}
+                                                    width={28}
+                                                    color="#020C1CAD"
+                                                    fontSize="1.5rem"
+                                                />
+                                            }
+                                        >
                                             <BodyLong>
                                                 <FormattedMessage
                                                     id="periode.infoboksTekst.førsteDag"
