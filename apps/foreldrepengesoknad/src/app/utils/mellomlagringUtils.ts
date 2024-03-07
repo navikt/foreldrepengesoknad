@@ -18,5 +18,5 @@ export const shouldApplyStorage = (storedState: FpMellomlagretData): boolean => 
         }
     }
 
-    return storedState.version === 6;
+    return storedState.version === 7;
 };
