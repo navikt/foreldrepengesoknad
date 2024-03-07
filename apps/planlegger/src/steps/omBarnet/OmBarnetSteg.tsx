@@ -1,6 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
+import Infoboks from 'components/Infoboks';
 import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { useForm } from 'react-hook-form';
@@ -8,7 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
-import { Heading, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -118,6 +119,29 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     )}
                     {erFødsel === false && hvorMange && (
                         <Adopsjon erAlenesøker={erAlenesøker} erOmBarnetIkkeOppgittFraFør={omBarnet === undefined} />
+                    )}
+                    {erFødsel === false && hvorMange && (
+                        <Infoboks
+                            header={
+                                erAlenesøker ? (
+                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoDeg" />
+                                ) : (
+                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfo" />
+                                )
+                            }
+                            icon="TODO"
+                        >
+                            <BodyLong>
+                                <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekst" />
+                            </BodyLong>
+                            <BodyLong>
+                                {erAlenesøker ? (
+                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2Deg" />
+                                ) : (
+                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2" />
+                                )}
+                            </BodyLong>
+                        </Infoboks>
                     )}
                     <VStack gap="10">
                         <HvorforSpørNAVOmDette text="TODO" />
