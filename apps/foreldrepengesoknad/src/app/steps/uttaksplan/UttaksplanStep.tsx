@@ -405,7 +405,13 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     ]);
 
     const onSubmit = async () => {
-        const planKreverVedlegg = kreverUttaksplanVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
+        const planKreverVedlegg = kreverUttaksplanVedlegg(
+            uttaksplan,
+            erFarEllerMedmor,
+            annenForelder,
+            erEndringssøknad,
+            uttaksplanMetadata?.perioderSomSkalSendesInn,
+        );
         const nextRoute = getUttaksplanNextStep(erEndringssøknad, planKreverVedlegg);
 
         setIsSubmitting(true);

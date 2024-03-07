@@ -24,7 +24,13 @@ export const kreverUttaksplanVedlegg = (
     uttaksplan: Periode[],
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
+    erEndringssøknad: boolean,
+    endringssøknadPerioder: Periode[] | undefined,
 ) => {
+    if (erEndringssøknad && endringssøknadPerioder !== undefined) {
+        return perioderSomKreverVedlegg(endringssøknadPerioder, erFarEllerMedmor, annenForelder).length > 0;
+    }
+
     const periodeSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
 
     return periodeSomManglerVedlegg.length > 0;
