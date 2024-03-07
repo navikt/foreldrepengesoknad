@@ -31,7 +31,7 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Datepi
 const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | undefined): DatepickerLimitations => {
     const termindatoMinus12Uker =
         termindato !== undefined
-            ? dayjs(termindato).subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1, 'weeks')
+            ? dayjs(termindato).subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1, 'days')
             : undefined;
     const erFødselsdatoFørTermindatoMinus12Uker =
         termindato !== undefined ? dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker) : false;
