@@ -1,12 +1,14 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
+import { Path } from 'appData/paths';
+import { MemoryRouter } from 'react-router-dom';
+
 import { Kjønn } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
-import { Path } from 'appData/paths';
-import OmBarnetSteg from './OmBarnetSteg';
 import { Situasjon } from '@navikt/fp-types';
-import { MemoryRouter } from 'react-router-dom';
+
+import OmBarnetSteg from './OmBarnetSteg';
 
 const promiseAction =
     () =>

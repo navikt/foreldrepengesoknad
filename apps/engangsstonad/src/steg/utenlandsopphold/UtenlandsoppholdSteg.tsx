@@ -1,13 +1,14 @@
-import { FormattedMessage } from 'react-intl';
-import { Utenlandsopphold } from '@navikt/fp-types';
-import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
-import { Heading } from '@navikt/ds-react';
-import { ContentWrapper } from '@navikt/fp-ui';
-
-import useEsNavigator from 'appData/useEsNavigator';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import { ContextDataType, useContextSaveData, useContextGetData } from 'appData/EsDataContext';
+import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
+import { FormattedMessage } from 'react-intl';
+
+import { Heading } from '@navikt/ds-react';
+
+import { Utenlandsopphold } from '@navikt/fp-types';
+import { ContentWrapper } from '@navikt/fp-ui';
+import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 
 const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {

@@ -1,10 +1,12 @@
-import { FormattedMessage } from 'react-intl';
-import { BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
-import { AttachmentList, useCustomIntl } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
-import { formatDate } from '@navikt/fp-utils';
-import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
+import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+
+import { BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
+
+import { AttachmentList } from '@navikt/fp-ui';
+import { formatDate } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
     omBarnet: OmBarnet;
@@ -12,7 +14,7 @@ interface Props {
 }
 
 const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokumentasjon }) => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
 
     const harAdoptert = erAdopsjon(omBarnet);
     const harTermin = erBarnetIkkeFødt(omBarnet);
@@ -20,15 +22,18 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
 
     let antallBarnSummaryText;
     if (omBarnet.antallBarn === 1) {
-        antallBarnSummaryText = i18n('OmBarnetOppsummering.EttBarn');
+        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.EttBarn' });
     } else if (omBarnet.antallBarn === 2 && !harAdoptert) {
-        antallBarnSummaryText = i18n('OmBarnetOppsummering.Tvillinger');
+        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.Tvillinger' });
     } else if (omBarnet.antallBarn === 2 && harAdoptert) {
-        antallBarnSummaryText = i18n('OmBarnetOppsummering.ToBarn');
+        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.ToBarn' });
     } else {
-        antallBarnSummaryText = i18n('OmBarnetOppsummering.FlereBarn', {
-            antall: omBarnet.antallBarn,
-        });
+        antallBarnSummaryText = intl.formatMessage(
+            { id: 'OmBarnetOppsummering.FlereBarn' },
+            {
+                antall: omBarnet.antallBarn,
+            },
+        );
     }
 
     return (
@@ -50,8 +55,8 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
                     <HStack gap="2">
                         <BodyShort>
                             {omBarnet.fødselsdatoer.length > 1
-                                ? i18n('OmBarnetOppsummering.MedFødselsdatoer')
-                                : i18n('OmBarnetOppsummering.MedFødselsdato')}
+                                ? intl.formatMessage({ id: 'OmBarnetOppsummering.MedFødselsdatoer' })
+                                : intl.formatMessage({ id: 'OmBarnetOppsummering.MedFødselsdato' })}
                         </BodyShort>
                         <BodyLong>
                             {omBarnet.fødselsdatoer
