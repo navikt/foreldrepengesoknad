@@ -1,3 +1,8 @@
+import { TypedFormComponents, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import {
     Block,
     ISOStringToDate,
@@ -8,11 +13,10 @@ import {
     intlUtils,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
+
 import LenkeKnapp from 'app/components/lenke-knapp/LenkeKnapp';
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import { validateStartdatoFarMedmor } from '../far-medmor-fødsel-og-mor-har-ikke-rett/validation/farMedmorFødselOgMorHarIkkeRettValidering';
-import { TypedFormComponents, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     FormComponents: TypedFormComponents<any, any, string>;
@@ -21,7 +25,7 @@ interface Props {
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
     morsSisteDag: Date | undefined;
     navnMor: string;
-    termindato: Date | undefined;
+    termindato: string | undefined;
     situasjon: Situasjon;
     morHarRettTilForeldrepengerIEØS: boolean;
 }
@@ -38,11 +42,14 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
     morHarRettTilForeldrepengerIEØS,
 }) => {
     const intl = useIntl();
+    const termindatoDate = termindato ? dayjs(termindato).toDate() : undefined;
     const maxDate = ISOStringToDate(
-        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).maxDate,
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindatoDate, situasjon)
+            .maxDate,
     );
     const minDate = ISOStringToDate(
-        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindato, situasjon).minDate,
+        uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato, termindatoDate, situasjon)
+            .minDate,
     );
 
     return (

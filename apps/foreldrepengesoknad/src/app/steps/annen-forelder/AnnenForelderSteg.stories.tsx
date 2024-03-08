@@ -1,9 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
-import MockAdapter from 'axios-mock-adapter/types';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -12,7 +9,7 @@ import { SivilstandType, Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/f
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 
-import AnnenForelder from './AnnenForelder';
+import AnnenForelderSteg from './AnnenForelderSteg';
 
 const promiseAction =
     () =>
@@ -45,8 +42,8 @@ const søker = {
 } as Søker;
 
 export default {
-    title: 'steps/AnnenForelder',
-    component: AnnenForelder,
+    title: 'steps/AnnenForelderSteg',
+    component: AnnenForelderSteg,
 };
 
 interface Props {
@@ -67,67 +64,41 @@ const Template: StoryFn<Props> = ({
     },
     barn = {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
-        datoForAleneomsorg: undefined,
     },
-    annenForelder = {
-        kanIkkeOppgis: true,
-    },
-    gåTilNesteSide,
+    annenForelder,
+    gåTilNesteSide = action('button-click'),
     mellomlagreSøknadOgNaviger = promiseAction(),
     avbrytSøknad = action('button-click'),
 }) => {
     initAmplitude();
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
-            200,
-            { data: {} },
-            {
-                location: '',
-            },
-        );
-        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
-    };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
-            <AxiosMock mock={restMock}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.OM_BARNET]: barn,
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.SØKER_DATA]: {
-                            // @ts-ignore TODO (TOR) Fiks Søker-typen
-                            harHattAnnenInntektSiste10Mnd: undefined,
-                            // @ts-ignore TODO (TOR) Fiks Søker-typen
-                            harJobbetSomFrilansSiste10Mnd: undefined,
-                            // @ts-ignore TODO (TOR) Fiks Søker-typen
-                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: undefined,
-                            // @ts-ignore TODO (TOR) Fiks Søker-typen
-                            erAleneOmOmsorg: undefined,
-                        },
-                    }}
-                >
-                    <AnnenForelder
-                        søker={søker}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
-                </FpDataContext>
-            </AxiosMock>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    [ContextDataType.OM_BARNET]: barn,
+                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                }}
+            >
+                <AnnenForelderSteg
+                    søkerInfo={{ søker, arbeidsforhold: [] }}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={avbrytSøknad}
+                />
+            </FpDataContext>
         </MemoryRouter>
     );
 };
 
-export const Default = Template.bind({});
-Default.args = {
+export const AnnenForelderFraOppgittBarn = Template.bind({});
+AnnenForelderFraOppgittBarn.args = {
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
-        datoForAleneomsorg: dayjs('2021-03-15').toDate(),
         fnr: ['21091981146'],
     },
     søker,
@@ -184,9 +155,8 @@ export const ForFar = Template.bind({});
 ForFar.args = {
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
-        datoForAleneomsorg: dayjs('2021-03-15').toDate(),
         fnr: ['21091981146'],
     },
     søkersituasjon: {
@@ -221,7 +191,7 @@ MorUfødtBarn.args = {
     barn: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2023-05-05').toDate(),
+        termindato: '2023-05-05',
     },
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -241,7 +211,7 @@ MedmorUfødtBarn.args = {
     barn: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2023-05-05').toDate(),
+        termindato: '2023-05-05',
     },
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -262,7 +232,7 @@ FarUfødtBarn.args = {
     barn: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2023-05-05').toDate(),
+        termindato: '2023-05-05',
     },
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -285,7 +255,7 @@ FarGiftUfødtBarn.args = {
     barn: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2023-05-05').toDate(),
+        termindato: '2023-05-05',
     },
     søkersituasjon: {
         situasjon: 'fødsel',

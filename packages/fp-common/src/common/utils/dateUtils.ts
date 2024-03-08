@@ -57,7 +57,7 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date
     );
 };
 
-export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const førsteOktober2021 = new Date('2021-10-01');
 
     return (
@@ -66,7 +66,7 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
     );
 };
 
-export const tidperiodeOverlapperDato = (tidsperiode: TidsperiodeDate, dato: Date): boolean => {
+export const tidperiodeOverlapperDato = (tidsperiode: TidsperiodeDate, dato: string | Date): boolean => {
     return dayjs(tidsperiode.fom).isBefore(dato, 'day') && dayjs(tidsperiode.tom).isSameOrAfter(dato, 'day');
 };
 
@@ -202,8 +202,8 @@ export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdat
 }
 
 export const getToTetteReglerGjelder = (
-    familiehendelsesdato: Date | undefined,
-    familiehendelsesdatoNesteBarn: Date | undefined,
+    familiehendelsesdato: string | Date | undefined,
+    familiehendelsesdatoNesteBarn: string | Date | undefined,
 ): boolean => {
     if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
         return false;

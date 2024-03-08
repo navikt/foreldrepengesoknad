@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
@@ -117,12 +116,12 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                             dekningsgrad: args.dekningsgrad,
                         },
                         [ContextDataType.SØKER_DATA]: {
-                            erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                             harHattAnnenInntektSiste10Mnd: false,
                         },
                         [ContextDataType.ANNEN_FORELDER]: {
+                            erAleneOmOmsorg: false,
                             etternavn: 'Pettersen',
                             fornavn: 'Helga',
                             fnr: '02068629902',
@@ -134,7 +133,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                     }}
                 >
                     <UttaksplanInfo
-                        søker={søkerinfo.søker}
+                        søkerInfo={søkerinfo}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -151,7 +150,7 @@ FarSøkerEtterMorFør1Okt2021.args = {
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-06-14').toDate()],
+        fødselsdatoer: ['2021-06-14'],
         antallBarn: 1,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -164,7 +163,7 @@ FarSøkerEtterMorEtter1Okt2021.args = {
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-09-14').toDate()],
+        fødselsdatoer: ['2022-09-14'],
         antallBarn: 1,
     },
     søkerinfo,
@@ -178,7 +177,7 @@ FarSøkerEtterMorTrillinger.args = {
     stønadskonto80: stønadskontoDeltUttak100Tvillinger,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-09-14').toDate()],
+        fødselsdatoer: ['2022-09-14'],
         antallBarn: 3,
     },
     søkerinfo,
@@ -192,7 +191,7 @@ FarSøkerEtterMorDerMorHarTattUtFarsKvote.args = {
     stønadskonto80: stønadskontoDeltUttak100Tvillinger,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-09-14').toDate()],
+        fødselsdatoer: ['2022-09-14'],
         antallBarn: 1,
     },
     søkerinfo,

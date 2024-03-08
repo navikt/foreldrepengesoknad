@@ -47,7 +47,7 @@ import { getTermindato } from 'app/utils/barnUtils';
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
-        'erUfør' | 'harRettPåForeldrepengerINorge' | 'harOppholdtSegIEØS' | 'harRettPåForeldrepengerIEØS'
+        'erMorUfør' | 'harRettPåForeldrepengerINorge' | 'harOppholdtSegIEØS' | 'harRettPåForeldrepengerIEØS'
     > {
     harMorUføretrygd?: boolean;
     harRettPåForeldrepenger?: boolean;
@@ -76,6 +76,7 @@ interface BarnPropsForAPI {
 export type BarnForInnsending = Omit<Barn, 'datoForAleneomsorg' | 'type'> & BarnPropsForAPI;
 
 export interface SøkerForInnsending extends Omit<SøkerData, 'andreInntekterSiste10Mnd' | 'språkkode'> {
+    erAleneOmOmsorg: boolean;
     språkkode: LocaleForInnsending;
     rolle: SøkerrolleInnsending;
 }
@@ -126,7 +127,7 @@ export const UKJENT_UUID = 'ukjent uuid';
 const getUttaksperiodeForInnsending = (
     uttaksPeriode: UttaksperiodeBase,
     ønskerJustertUttakVedFødsel: boolean | undefined,
-    termindato: Date | undefined,
+    termindato: string | undefined,
 ): UttaksPeriodeForInnsending => {
     const cleanedPeriode = changeGradertUttaksPeriode(cleanUttaksperiode(uttaksPeriode));
     if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, termindato, uttaksPeriode.tidsperiode.fom)) {
@@ -168,7 +169,7 @@ const skalPeriodeSendesInn = (periode: Periode) => {
 const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = false): AnnenForelderForInnsending => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         const {
-            erUfør,
+            erMorUfør,
             erForSyk,
             harRettPåForeldrepengerINorge,
             harRettPåForeldrepengerIEØS,
@@ -176,7 +177,7 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
             ...annenForelderRest
         } = annenForelder;
         const cleanedAnnenForelder = {
-            harMorUføretrygd: erUfør,
+            harMorUføretrygd: erMorUfør,
             harRettPåForeldrepenger: harRettPåForeldrepengerINorge,
             ...annenForelderRest,
         };
@@ -200,19 +201,18 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
 
 const cleanBarn = (barn: Barn): BarnForInnsending => {
     if (isFødtBarn(barn)) {
-        const { datoForAleneomsorg, type, fnr, ...barnRest } = barn;
-
+        const { type, fnr, ...barnRest } = barn;
         return barnRest;
     }
 
     if (isAdoptertBarn(barn)) {
-        const { datoForAleneomsorg, type, fnr, ...barnRest } = barn;
+        const { type, fnr, ...barnRest } = barn;
         return {
             adopsjonAvEktefellesBarn: isAdoptertStebarn(barn),
             ...barnRest,
         };
     }
-    const { datoForAleneomsorg, type, ...barnRest } = barn;
+    const { type, ...barnRest } = barn;
     return barnRest;
 };
 
@@ -234,7 +234,7 @@ const changeClientonlyKontotype = (
     annenForelderHarRettPåForeldrepengerINorge: boolean,
     morErUfør: boolean,
     søkerErFarEllerMedmor: boolean,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
 ) => {
     if (isUttaksperiode(periode)) {
         if (periode.konto === StønadskontoType.Flerbarnsdager) {
@@ -280,10 +280,10 @@ const changeGradertUttaksPeriode = (periode: UttaksPeriodeForInnsending): Uttaks
 
 const cleanUttaksplan = (
     plan: Periode[],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     søkerErFarEllerMedmor: boolean,
     ønskerJustertUttakVedFødsel: boolean | undefined,
-    termindato: Date | undefined,
+    termindato: string | undefined,
     annenForelder?: AnnenForelder,
     endringstidspunkt?: Date,
 ): PeriodeForInnsending[] => {
@@ -298,7 +298,7 @@ const cleanUttaksplan = (
                 ? changeClientonlyKontotype(
                       periode,
                       !!annenForelder.harRettPåForeldrepengerINorge,
-                      !!annenForelder.erUfør,
+                      !!annenForelder.erMorUfør,
                       søkerErFarEllerMedmor,
                       familiehendelsesdato,
                   )
@@ -375,7 +375,7 @@ export const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefine
 
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     locale: LocaleNo,
 ): SøknadForInnsending => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
@@ -392,7 +392,7 @@ export const cleanSøknad = (
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
-    const søkerInnsending = cleanSøker(søker, søkersituasjon, locale);
+    const søkerInnsending = cleanSøker(søker, søkersituasjon, locale, annenForelder);
     const barnInnsending = cleanBarn(barn);
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const termindato = getTermindato(barn);
@@ -427,12 +427,19 @@ export const cleanSøknad = (
     return cleanedSøknad;
 };
 
-const cleanSøker = (søkerData: SøkerData, søkersituasjon: Søkersituasjon, locale: LocaleNo): SøkerForInnsending => {
+const cleanSøker = (
+    søkerData: SøkerData,
+    søkersituasjon: Søkersituasjon,
+    locale: LocaleNo,
+    annenForelder: AnnenForelder,
+): SøkerForInnsending => {
     const rolle = konverterRolle(søkersituasjon.rolle);
+    const erOppgitt = isAnnenForelderOppgitt(annenForelder);
     return {
         ...søkerData,
         rolle: rolle,
         språkkode: locale,
+        erAleneOmOmsorg: erOppgitt ? annenForelder.erAleneOmOmsorg : true,
     };
 };
 
@@ -440,7 +447,7 @@ export const getSøknadsdataForInnsending = (
     erEndringssøknad: boolean,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     locale: LocaleNo,
     endringstidspunkt?: Date,
 ): SøknadForInnsending | EndringssøknadForInnsending => {
@@ -454,7 +461,7 @@ export const getSøknadsdataForInnsending = (
 export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     locale: LocaleNo,
     endringstidspunkt?: Date,
 ): EndringssøknadForInnsending => {
@@ -482,9 +489,9 @@ export const cleanEndringssøknad = (
             annenForelder,
             endringstidspunkt,
         ),
-        søker: cleanSøker(søker, søkersituasjon, locale),
+        søker: cleanSøker(søker, søkersituasjon, locale, annenForelder),
         annenForelder: cleanAnnenForelder(annenForelder, true),
-        barn: barn,
+        barn,
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         situasjon: søkersituasjon.situasjon,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,

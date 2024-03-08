@@ -49,7 +49,10 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return ValgtBarnType.UFØDT;
 };
 
-export const getErDatoInnenEnDagFraAnnenDato = (dato1: string | undefined, dato2: Date | undefined): boolean => {
+export const getErDatoInnenEnDagFraAnnenDato = (
+    dato1: Date | string | undefined,
+    dato2: Date | string | undefined,
+): boolean => {
     if (dato1 === undefined || dato2 === undefined) {
         return false;
     }

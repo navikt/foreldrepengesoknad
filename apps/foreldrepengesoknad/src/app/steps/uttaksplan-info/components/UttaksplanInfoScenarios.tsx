@@ -9,7 +9,6 @@ import {
 } from '@navikt/fp-common';
 import { Søker, SøkersituasjonFp } from '@navikt/fp-types';
 
-import SøkerData from 'app/context/types/SøkerData';
 import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
@@ -28,7 +27,6 @@ interface Props {
     tilgjengeligeStønadskontoer80DTO: TilgjengeligeStønadskontoerDTO;
     eksisterendeSakAnnenPart: EksisterendeSak | undefined;
     søkersituasjon: SøkersituasjonFp;
-    søkerData: SøkerData;
     annenForelder: AnnenForelder;
     erEndringssøknad: boolean;
     søker: Søker;
@@ -42,7 +40,6 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer80DTO,
     eksisterendeSakAnnenPart,
     søkersituasjon,
-    søkerData,
     annenForelder,
     erEndringssøknad,
     søker,
@@ -56,6 +53,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
         ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
         : false;
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const annenForelderOppgittIkkeAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerINorge !== undefined
         : false;
@@ -64,7 +62,7 @@ const UttaksplanInfoScenarios: FunctionComponent<Props> = ({
     const scenario = getUttaksplanScenario({
         erFødsel,
         erFarEllerMedmor,
-        søkerErAleneOmOmsorg: !!søkerData.erAleneOmOmsorg,
+        søkerErAleneOmOmsorg: !!oppgittAnnenForelder?.erAleneOmOmsorg,
         annenForelderKanIkkeOppgis: annenForelder.kanIkkeOppgis,
         annenForelderHarRett: annenForelderHarRett,
         erAdopsjon,

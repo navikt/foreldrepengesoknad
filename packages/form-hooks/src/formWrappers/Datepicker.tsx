@@ -37,7 +37,7 @@ export interface Props {
     onChange?: (value: any) => void;
     minDate?: Date;
     maxDate?: Date;
-    defaultMonth?: Date;
+    defaultMonth?: Date | string;
     showMonthAndYearDropdowns?: boolean;
 }
 
@@ -81,7 +81,7 @@ const Datepicker: FunctionComponent<Props> = ({
             field.value && isValidDateString(defaultDate)
                 ? dayjs(field.value, ISO_DATE_FORMAT, true).toDate()
                 : undefined,
-        defaultMonth: defaultMonth,
+        defaultMonth: defaultMonth ? dayjs(defaultMonth).toDate() : undefined,
         openOnFocus: false,
     });
 

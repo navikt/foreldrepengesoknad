@@ -1,5 +1,6 @@
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
+import dayjs from 'dayjs';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -14,9 +15,9 @@ import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata'
 import { FileUploader } from '@navikt/fp-ui';
 
 import Environment from 'app/Environment';
-import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
-import { ManglendeVedleggFormData } from '../manglendeVedleggFormUtils';
+import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 import './periode-attachment-uploader.css';
 
 interface Props {
@@ -24,10 +25,10 @@ interface Props {
     updateAttachments: (attachments: Attachment[]) => void;
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: Date;
-    termindato: Date | undefined;
+    familiehendelsesdato: string;
+    termindato: string | undefined;
     situasjon: Situasjon;
-    skjemanummer: GyldigeSkjemanummerUttak;
+    skjemanummer: GyldigeSkjemanummer;
     labelText: string;
     description: string | React.ReactNode;
     attachmentType: AttachmentType;
@@ -80,8 +81,8 @@ const UttakUploader: FunctionComponent<Props> = ({
                                 erAleneOmOmsorg={false}
                                 erFarEllerMedmor={true}
                                 navnPåForeldre={navnPåForeldre}
-                                familiehendelsesdato={familiehendelsesdato}
-                                termindato={termindato}
+                                familiehendelsesdato={dayjs(familiehendelsesdato).toDate()}
+                                termindato={termindato ? dayjs(termindato).toDate() : undefined}
                                 situasjon={situasjon}
                                 melding={undefined}
                             />

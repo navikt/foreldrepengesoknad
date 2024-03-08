@@ -63,7 +63,6 @@ import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoU
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
-import { getUttaksplanNextStep } from '../stepsConfig';
 import { getAntallUker, getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
@@ -91,8 +90,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig(erEndringssøknad);
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
@@ -103,7 +102,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
@@ -118,7 +116,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
-    const oppdaterManglerDokumentasjon = useContextSaveData(ContextDataType.MANGLER_DOKUMENTASJON);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
@@ -126,7 +123,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         uttaksplanMetadata.perioderSomSkalSendesInn || [],
     );
 
-    const { erAleneOmOmsorg } = søker;
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const erAleneOmOmsorg = oppgittAnnenForelder?.erAleneOmOmsorg || false;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
@@ -239,7 +237,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         });
         oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
-        oppdaterManglerDokumentasjon(false);
         oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
         mellomlagreSøknadOgNaviger();
         navigator.goToPreviousDefaultStep();
@@ -412,11 +409,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             erEndringssøknad,
             uttaksplanMetadata?.perioderSomSkalSendesInn,
         );
-        const nextRoute = getUttaksplanNextStep(erEndringssøknad, planKreverVedlegg);
 
         setIsSubmitting(true);
         setSubmitIsClicked(true);
-        oppdaterManglerDokumentasjon(planKreverVedlegg);
 
         oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
@@ -425,13 +420,16 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             antallUkerIUttaksplan,
         });
 
-        navigator.goToNextStep(nextRoute);
+        if (planKreverVedlegg) {
+            return navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON);
+        }
+        return navigator.goToNextDefaultStep();
     };
 
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
         uttaksplan,
         familiehendelsesdatoDate!,
-        termindato,
+        termindato ? dayjs(termindato).toDate() : undefined,
     );
 
     const visAutomatiskJusteringForm = getKanSøkersituasjonAutomatiskJustereRundtFødsel(
@@ -498,7 +496,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         barn,
         annenForelder,
         søkersituasjon,
-        søker,
         barnFraNesteSak,
         eksisterendeSakAnnenPartData,
         eksisterendeSak,
@@ -674,7 +671,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             opprinneligPlan={uttaksplanMetadata.harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
                             handleSlettUttaksplan={handleSlettUttaksplan}
                             handleResetUttaksplan={handleResetUttaksplan}
-                            termindato={termindato}
+                            termindato={termindato ? dayjs(termindato).toDate() : undefined}
                             barn={barn}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                             perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
@@ -686,7 +683,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                         {visAutomatiskJusteringForm && (
                             <Block padBottom="l">
                                 <AutomatiskJusteringForm
-                                    termindato={termindato!}
+                                    termindato={termindato ? dayjs(termindato).toDate() : undefined!}
                                     perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                                     antallBarn={barn.antallBarn}
                                     visibility={visibility}

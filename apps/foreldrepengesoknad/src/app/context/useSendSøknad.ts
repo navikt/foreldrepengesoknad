@@ -1,4 +1,3 @@
-import { ISOStringToDate } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 import Api from 'app/api/api';
@@ -42,7 +41,7 @@ const useSendSøknad = (
             erEndringssøknad,
             hentData,
             uttaksplanMetadata.perioderSomSkalSendesInn!,
-            ISOStringToDate(getFamiliehendelsedato(barn))!,
+            getFamiliehendelsedato(barn),
             locale,
             uttaksplanMetadata.endringstidspunkt,
         );

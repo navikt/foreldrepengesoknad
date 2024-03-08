@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import getIntlMock from 'utils-test/intl-test-helper';
+
 import { validateErStartdatoFørTermindato } from './morFodselValidering';
 
 describe('morFodselValidering', () => {
@@ -67,7 +68,7 @@ describe('morFodselValidering', () => {
 
     it('skal tillate permisjonsstartdato 12 uker før termin selv om termin er før fødsel, når termin er oppgitt', () => {
         const familiehendelsedato = dayjs('2023-06-15').toDate();
-        const termindato = dayjs('2023-06-13').toDate();
+        const termindato = '2023-06-13';
         const skalIkkeHaUttakFørTermin = false;
         const permisjonStartdato = '2023-03-21';
 
@@ -83,7 +84,7 @@ describe('morFodselValidering', () => {
 
     it('skal ikke tillate permisjonsstartdato mer enn 12 uker før termin når termin er oppgitt', () => {
         const familiehendelsedato = dayjs('2023-06-15').toDate();
-        const termindato = dayjs('2023-06-13').toDate();
+        const termindato = '2023-06-13';
         const skalIkkeHaUttakFørTermin = false;
         const permisjonStartdato = '2023-03-20';
 

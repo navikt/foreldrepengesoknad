@@ -14,7 +14,7 @@ interface Props {
     antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;
     familiehendelsesdato: Date;
-    termindato: Date | undefined;
+    termindato: string | undefined;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
     antallBarn: number;

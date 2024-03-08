@@ -1,3 +1,8 @@
+import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
+import { isISODateString } from '@navikt/ds-datepicker';
+
 import {
     ISOStringToDate,
     Uttaksdagen,
@@ -5,12 +10,9 @@ import {
     uttaksConstants,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
-import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
-import { isISODateString } from '@navikt/ds-datepicker';
 
 export const validateErStartdatoFørTermindato =
-    (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean, termindato: Date | undefined) =>
+    (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean, termindato: string | undefined) =>
     (permisjonStartdato: string) => {
         if (!(permisjonStartdato === undefined && skalIkkeHaUttakFørTermin)) {
             if (!isISODateString(permisjonStartdato)) {
@@ -23,7 +25,10 @@ export const validateErStartdatoFørTermindato =
         }
 
         if (!skalIkkeHaUttakFørTermin) {
-            const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsedato, termindato);
+            const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(
+                familiehendelsedato,
+                termindato ? dayjs(termindato).toDate() : undefined,
+            );
             if (
                 (avgrensninger.minDate &&
                     avgrensninger.maxDate &&

@@ -13,12 +13,15 @@ import dayjs from 'dayjs';
 
 export const getKanPeriodenRundtFødselJusteres = (
     periodeRundtFødsel: Periode,
-    termindato: Date | undefined,
+    termindato: Date | string | undefined,
 ): boolean => {
     return (
         termindato !== undefined &&
         isUttaksperiode(periodeRundtFødsel) &&
-        dayjs(periodeRundtFødsel.tidsperiode.fom).isSame(Uttaksdagen(termindato).denneEllerNeste(), 'day') &&
+        dayjs(periodeRundtFødsel.tidsperiode.fom).isSame(
+            Uttaksdagen(dayjs(termindato).toDate()).denneEllerNeste(),
+            'day',
+        ) &&
         periodeRundtFødsel.forelder === Forelder.farMedmor &&
         periodeRundtFødsel.konto === StønadskontoType.Fedrekvote &&
         periodeRundtFødsel.ønskerSamtidigUttak === true &&
@@ -29,7 +32,7 @@ export const getKanPeriodenRundtFødselJusteres = (
 export const getKanPerioderRundtFødselAutomatiskJusteres = (
     kanSøkersituasjonAutomatiskJustereRundtFødsel: boolean,
     perioderMedUttakRundtFødsel: Periode[],
-    termindato: Date | undefined,
+    termindato: Date | string | undefined,
 ): boolean => {
     return (
         kanSøkersituasjonAutomatiskJustereRundtFødsel &&
@@ -44,7 +47,7 @@ export const getKanSøkersituasjonAutomatiskJustereRundtFødsel = (
     situasjon: Situasjon,
     perioderMedUttakRundtFødsel: Periode[],
     barn: Barn,
-    termindato: Date | undefined,
+    termindato: Date | string | undefined,
     bareFarHarRett: boolean,
 ): boolean => {
     return (

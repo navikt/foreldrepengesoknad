@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak80Adopsjon from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80Adopsjon.json';
@@ -83,7 +82,7 @@ const Template: StoryFn<
                     }}
                 >
                     <UttaksplanInfo
-                        søker={args.søkerinfo.søker}
+                        søkerInfo={args.søkerinfo}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -105,7 +104,7 @@ AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021.args = {
     barn: {
         antallBarn: 1,
         type: BarnType.ADOPTERT_ANNET_BARN,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -116,9 +115,9 @@ AdopsjonMorSøkerFarHarRettIEOSFør1Okt2021.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -162,7 +161,7 @@ AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021.args = {
     barn: {
         antallBarn: 1,
         type: BarnType.ADOPTERT_ANNET_BARN,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -173,9 +172,9 @@ AdopsjonFarSøkerMorHarRettIEOSFør1Okt2021.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -194,7 +193,7 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
     },
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-06-14').toDate(), dayjs('2022-06-14').toDate()],
+        fødselsdatoer: ['2022-06-14', '2022-06-14'],
         antallBarn: 2,
         // @ts-ignore FIX
         adopsjonsdato: undefined,
@@ -207,9 +206,9 @@ FødselFarSøkerMorHarRettIEOSTvillingerEtter1Okt2021.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -227,8 +226,8 @@ FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
         rolle: 'mor',
     },
     barn: {
-        fødselsdatoer: [dayjs('2022-08-14').toDate()],
-        termindato: dayjs('2022-10-14').toDate(),
+        fødselsdatoer: ['2022-08-14'],
+        termindato: '2022-10-14',
         antallBarn: 1,
         // @ts-ignore FIX
         adopsjonsdato: undefined,
@@ -242,9 +241,9 @@ FødselMorSøkerFarHarRettIEOSPrematurEtterWLB.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,

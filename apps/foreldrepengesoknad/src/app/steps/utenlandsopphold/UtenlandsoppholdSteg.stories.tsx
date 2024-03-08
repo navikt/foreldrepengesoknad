@@ -1,12 +1,15 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
-import { Action, FpDataContext, ContextDataType } from 'app/context/FpDataContext';
 import { MemoryRouter } from 'react-router-dom';
-import SøknadRoutes from 'app/routes/routes';
+import AxiosMock from 'storybook/utils/AxiosMock';
+
 import { initAmplitude } from '@navikt/fp-metrics';
+
+import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 
 const promiseAction =
     () =>
@@ -43,6 +46,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
                     }}
                 >
                     <UtenlandsoppholdSteg
+                        arbeidsforhold={[]}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={action('button-click')}
                     />

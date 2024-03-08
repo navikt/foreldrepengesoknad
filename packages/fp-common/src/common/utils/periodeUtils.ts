@@ -1,10 +1,7 @@
-import { IntlShape } from 'react-intl';
-import { PeriodeInfoType } from '../types/PeriodeInfoType';
-import dayjs from 'dayjs';
 import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { getFloatFromString } from './numberUtils';
-import { capitalizeFirstLetter } from './stringUtils';
-import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
+import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
 import {
     EksisterendeSak,
     Forelder,
@@ -34,6 +31,9 @@ import {
     isUttakAvFellesperiode,
     isUttaksperiode,
 } from '../types';
+import { PeriodeInfoType } from '../types/PeriodeInfoType';
+import { Perioden } from './Perioden';
+import { Tidsperioden, erTidsperioderLike } from './Tidsperioden';
 import {
     ISOStringToDate,
     convertTidsperiodeToTidsperiodeDate,
@@ -41,9 +41,10 @@ import {
     isDateTodayOrInTheFuture,
 } from './dateUtils';
 import intlUtils from './intlUtils';
+import { getFloatFromString } from './numberUtils';
+import { capitalizeFirstLetter } from './stringUtils';
+import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
-import { Tidsperioden, erTidsperioderLike } from './Tidsperioden';
-import { Perioden } from './Perioden';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {

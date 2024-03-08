@@ -10,7 +10,9 @@ export {
     isValidDate,
     isDateWithinRange,
     isBeforeOrSame,
+    isBefore,
     isAfterOrSame,
     isPeriodNotOverlappingOthers,
     isLessThanOneAndHalfYearsAgo,
+    isBeforeToday,
 } from './src/form/dateFormValidation';

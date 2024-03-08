@@ -4,6 +4,7 @@ export { AttachmentType } from './src/attachmentType';
 export {
     ISO_DATE_FORMAT,
     DDMMYYYY_DATE_FORMAT,
+    DDMMMMYYY_DATE_FORMAT,
     TIDENES_ENDE,
     TIDENES_MORGEN,
     DATE_TODAY,

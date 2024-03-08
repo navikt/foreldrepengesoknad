@@ -5,10 +5,8 @@ import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import MockAdapter from 'axios-mock-adapter/types';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
-import OmBarnet from './OmBarnet';
+import OmBarnetSteg from './OmBarnetSteg';
 
 const promiseAction =
     () =>
@@ -70,8 +68,8 @@ const søkerinfo = {
 } as Søkerinfo;
 
 export default {
-    title: 'steps/OmBarnet',
-    component: OmBarnet,
+    title: 'steps/OmBarnetSteg',
+    component: OmBarnetSteg,
 };
 
 interface Props {
@@ -90,45 +88,33 @@ const Template: StoryFn<Props> = ({
         rolle: 'mor',
     },
     barn,
-    søknadGjelderEtNyttBarn = false,
-    gåTilNesteSide,
+    søknadGjelderEtNyttBarn = true,
+    gåTilNesteSide = action('button-click'),
     mellomlagreSøknadOgNaviger = promiseAction(),
 }) => {
     initAmplitude();
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(
-            200,
-            { data: {} },
-            {
-                location: '',
-            },
-        );
-        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
-    };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.OM_BARNET]}>
-            <AxiosMock mock={restMock}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.OM_BARNET]: barn,
-                    }}
-                >
-                    <OmBarnet
-                        søkerInfo={søkerinfo}
-                        søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={action('button-click')}
-                    />
-                </FpDataContext>
-            </AxiosMock>
+            <FpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    [ContextDataType.OM_BARNET]: barn,
+                }}
+            >
+                <OmBarnetSteg
+                    søkerInfo={søkerinfo}
+                    søknadGjelderNyttBarn={søknadGjelderEtNyttBarn}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={action('button-click')}
+                />
+            </FpDataContext>
         </MemoryRouter>
     );
 };
 
-export const Default = Template.bind({});
-Default.args = {
+export const MorFødsel = Template.bind({});
+MorFødsel.args = {
     barn: undefined,
     søkerinfo,
 };
@@ -172,7 +158,7 @@ RegistrertBarnFødselFar.args = {
     barn: {
         antallBarn: 1,
         fnr: ['21091981146'],
-        fødselsdatoer: [new Date('2021-03-15')],
+        fødselsdatoer: ['2021-03-15'],
         type: BarnType.FØDT,
     },
     søkerinfo,
@@ -187,7 +173,7 @@ RegistrertBarnFødselMor.args = {
     barn: {
         antallBarn: 2,
         fnr: ['31091981146', '31091981147'],
-        fødselsdatoer: [new Date('2022-08-02'), new Date('2022-08-02')],
+        fødselsdatoer: ['2022-08-02', '2022-08-02'],
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
@@ -203,7 +189,7 @@ RegistrertBarnAdopsjonMor.args = {
     barn: {
         antallBarn: 1,
         fnr: ['21091981146'],
-        fødselsdatoer: [new Date('2021-03-15')],
+        fødselsdatoer: ['2021-03-15'],
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
@@ -219,7 +205,7 @@ RegistrertBarnTrillingerDerEnErDød.args = {
     barn: {
         antallBarn: 3,
         fnr: ['21091981146', '31091981147', '31091981148'],
-        fødselsdatoer: [new Date('2023-01-02')],
+        fødselsdatoer: ['2023-01-02'],
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
@@ -302,7 +288,7 @@ SøknadPåUregistrertBarnSomErFødt.args = {
     barn: {
         antallBarn: 1,
         fnr: undefined,
-        fødselsdatoer: [new Date('2023-01-02')],
+        fødselsdatoer: ['2023-01-02'],
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,

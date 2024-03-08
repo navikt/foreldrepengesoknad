@@ -1,26 +1,28 @@
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import dayjs from 'dayjs';
+
 import {
+    Barn,
     Block,
-    intlUtils,
-    bemUtils,
-    getVarighetString,
-    isFødtBarn,
-    Uttaksdagen,
-    getValidTidsperiode,
     ISOStringToDate,
     Tidsperioden,
+    Uttaksdagen,
+    bemUtils,
+    getValidTidsperiode,
+    getVarighetString,
+    intlUtils,
+    isFødtBarn,
     uttaksConstants,
     uttaksplanDatoavgrensninger,
-    Barn,
 } from '@navikt/fp-common';
-import { MorFødselFormComponents, MorFødselFormField } from './morFødselFormConfig';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { validateErStartdatoFørTermindato } from './validation/morFodselValidering';
-import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
 
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+
+import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
+import { MorFødselFormComponents, MorFødselFormField } from './morFødselFormConfig';
 import './startdatoPermisjonMor.less';
+import { validateErStartdatoFørTermindato } from './validation/morFodselValidering';
 
 const getVarighetForStartdato = (antallDager: number, barnetErFødt: boolean, intl: IntlShape): string | undefined =>
     antallDager > 0
@@ -36,7 +38,7 @@ const getVarighetForStartdato = (antallDager: number, barnetErFødt: boolean, in
 interface Props {
     permisjonStartdato: string;
     skalIkkeHaUttakFørTermin: boolean;
-    termindato: Date | undefined;
+    termindato: string | undefined;
     barn: Barn;
 }
 
@@ -70,7 +72,10 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({
     const antallDagerFørFødselIhtRegler = uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5;
     const visVeileder = antallDager !== antallDagerFørFødselIhtRegler;
 
-    const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdatoDate, termindato);
+    const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(
+        familiehendelsesdatoDate,
+        termindato ? dayjs(termindato).toDate() : undefined,
+    );
     const maksDato = Uttaksdagen(familiehendelsesdatoDate).forrige();
 
     return (

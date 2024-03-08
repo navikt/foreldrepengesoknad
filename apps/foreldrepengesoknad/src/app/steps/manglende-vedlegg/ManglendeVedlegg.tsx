@@ -1,13 +1,11 @@
 import { perioderSomKreverVedlegg } from '@navikt/uttaksplan';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 
 import { Alert, BodyLong, Heading } from '@navikt/ds-react';
 
 import {
     Block,
-    ISOStringToDate,
     Step,
     getErSøkerFarEllerMedmor,
     getNavnPåForeldre,
@@ -16,17 +14,19 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Attachment, Søker } from '@navikt/fp-types';
+import { Attachment, Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import { GyldigeSkjemanummerUttak } from 'app/types/GyldigeSkjemanummer';
+import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
+import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
+import AleneomsorgDokumentasjon from './dokumentasjon/AleneomsorgDokumentasjon';
 import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
 import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
 import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
@@ -37,7 +37,8 @@ import MorJobberDokumentasjon from './dokumentasjon/MorJobberDokumentasjon';
 import MorJobberOgStudererDokumentasjon from './dokumentasjon/MorJobberOgStudererDokumentasjon';
 import MorKvalifiseringsprogrammetDokumentasjon from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
 import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
-import { ManglendeVedleggFormData } from './manglendeVedleggFormUtils';
+import OmsorgsovertakelseDokumentasjon from './dokumentasjon/OmsorgsovertakelseDokumentasjon';
+import TerminbekreftelseDokumentasjon from './dokumentasjon/TerminbekreftelseDokumentasjon';
 import {
     getBarnInnlagtVedlegg,
     getFarForSykVedlegg,
@@ -63,7 +64,7 @@ import {
 } from './util';
 
 type Props = {
-    søker: Søker;
+    søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -72,10 +73,13 @@ type Props = {
 const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
-    søker,
+    søkerInfo,
     erEndringssøknad,
 }) => {
     const intl = useIntl();
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
+
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -84,7 +88,6 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const saveNextRoute = useContextSaveData(ContextDataType.APP_ROUTE);
-    const navigate = useNavigate();
     const relevantePerioder = getRelevantePerioder(
         uttaksplan,
         uttaksplanMetadata?.perioderSomSkalSendesInn,
@@ -103,9 +106,9 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const morJobberOgStudererVedlegg = getMorJobberOgStudererVedlegg(vedlegg);
     const morIntroprogramVedlegg = getMorIntroprogramVedlegg(vedlegg);
     const morKvalprogramVedlegg = getMorKvalprogramVedlegg(vedlegg);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
-    const stepConfig = useStepConfig(erEndringssøknad);
+    const aleneomsorgVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [];
+    const terminbekreftelseVedlegg = vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [];
+    const adopsjonVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [];
 
     const morInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelse);
     const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagt);
@@ -118,7 +121,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
 
-    const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
 
@@ -143,6 +146,9 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]:
                 morJobberOgStudererPerioder.length > 0 ? formValues[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR] : [],
             [Skjemanummer.DOK_ARBEID_MOR]: morJobberPerioder.length > 0 ? formValues[Skjemanummer.DOK_ARBEID_MOR] : [],
+            [Skjemanummer.DOK_AV_ALENEOMSORG]: formValues[Skjemanummer.DOK_AV_ALENEOMSORG] || [],
+            [Skjemanummer.TERMINBEKREFTELSE]: formValues[Skjemanummer.TERMINBEKREFTELSE] || [],
+            [Skjemanummer.OMSORGSOVERTAKELSE]: formValues[Skjemanummer.OMSORGSOVERTAKELSE] || [],
         };
 
         saveVedlegg(alleVedlegg);
@@ -165,10 +171,13 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_UTDANNING_MOR]: vedlegg[Skjemanummer.DOK_UTDANNING_MOR] || [],
             [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR] || [],
             [Skjemanummer.DOK_ARBEID_MOR]: vedlegg[Skjemanummer.DOK_ARBEID_MOR] || [],
+            [Skjemanummer.DOK_AV_ALENEOMSORG]: vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [],
+            [Skjemanummer.TERMINBEKREFTELSE]: vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [],
+            [Skjemanummer.OMSORGSOVERTAKELSE]: vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [],
         },
     });
 
-    const updateAttachments = (skjemanummer: GyldigeSkjemanummerUttak) => (attachments: Attachment[]) => {
+    const updateAttachments = (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => {
         formMethods.setValue(skjemanummer, attachments, { shouldDirty: true, shouldTouch: true });
         formMethods.clearErrors(skjemanummer);
     };
@@ -183,7 +192,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <MorInnlagtDokumentasjon
                     attachments={morInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={morInnlagtPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -192,7 +201,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorForSykDokumentasjon
                     attachments={morForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={morForSykPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -201,7 +210,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <FarInnlagtDokumentasjon
                     attachments={farInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={farInnlagtPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -210,7 +219,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <FarForSykDokumentasjon
                     attachments={farForSykvedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={farForSykPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -219,7 +228,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <BarnInnlagtDokumentasjon
                     attachments={barnInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={barnInnlagtPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -228,7 +237,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorStudererDokumentasjon
                     attachments={morStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={morStudererPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -237,7 +246,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorJobberDokumentasjon
                     attachments={morJobberVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={morJobberPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -246,7 +255,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorJobberOgStudererDokumentasjon
                     attachments={morJobberOgStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={morJobberOgStudererPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -255,7 +264,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorIntroduksjonsprogrammetDokumentasjon
                     attachments={morIntroprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={morIntroPerioder}
                     situasjon={søkersituasjon.situasjon}
@@ -264,12 +273,29 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                 />
                 <MorKvalifiseringsprogrammetDokumentasjon
                     attachments={morKvalprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={ISOStringToDate(familiehendelsesdato)!}
+                    familiehendelsesdato={familiehendelsesdato}
                     navnPåForeldre={navnPåForeldre}
                     perioder={morKvalPerioder}
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
+                />
+                <AleneomsorgDokumentasjon
+                    attachments={aleneomsorgVedlegg}
+                    updateAttachments={updateAttachments}
+                    annenForelder={annenForelder}
+                />
+                <TerminbekreftelseDokumentasjon
+                    attachments={terminbekreftelseVedlegg}
+                    updateAttachments={updateAttachments}
+                    barn={barn}
+                    arbeidsforhold={søkerInfo.arbeidsforhold}
+                    rolle={søkersituasjon.rolle}
+                />
+                <OmsorgsovertakelseDokumentasjon
+                    attachments={adopsjonVedlegg}
+                    updateAttachments={updateAttachments}
+                    søkersituasjon={søkersituasjon}
                 />
                 <Block padBottom="xl">
                     <Alert size="small" variant="info">
@@ -281,12 +307,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         </BodyLong>
                     </Alert>
                 </Block>
-                <StepButtonsHookForm<ManglendeVedleggFormData>
-                    goToPreviousStep={() => {
-                        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN);
-                        navigate(SøknadRoutes.UTTAKSPLAN);
-                    }}
-                />
+                <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
             </Form>
         </Step>
     );

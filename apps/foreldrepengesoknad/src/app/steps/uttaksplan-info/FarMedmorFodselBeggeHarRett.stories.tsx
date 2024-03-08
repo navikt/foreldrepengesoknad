@@ -1,6 +1,5 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
 import stønadskontoDeltUttak80WLB from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80WLB.json';
@@ -74,14 +73,14 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                             dekningsgrad: args.dekningsgrad,
                         },
                         [ContextDataType.SØKER_DATA]: {
-                            erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                             harHattAnnenInntektSiste10Mnd: false,
                         },
                         [ContextDataType.ANNEN_FORELDER]: {
-                            etternavn: 'Hanson',
-                            fornavn: 'Hanne',
+                            erAleneOmOmsorg: false,
+                            etternavn: 'dfg',
+                            fornavn: 'dfg',
                             fnr: '02068629902',
                             utenlandskFnr: false,
                             kanIkkeOppgis: false,
@@ -91,7 +90,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { barn: Barn; dekningsgrad: Dek
                     }}
                 >
                     <UttaksplanInfo
-                        søker={søkerinfo.søker}
+                        søkerInfo={søkerinfo}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -108,7 +107,7 @@ FarMedmorFødselBeggeHarRettDekningsgrad100FørWLB.args = {
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-08-01').toDate()],
+        fødselsdatoer: ['2021-06-14'],
         antallBarn: 1,
     },
     søkerinfo,
@@ -121,11 +120,11 @@ FarMedmorFødselBeggeHarRettDekningsgrad100EtterWLB.args = {
     stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-08-03').toDate()],
+        fødselsdatoer: ['2021-06-14'],
         antallBarn: 1,
     },
     søkerinfo,
-    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
 export const FarMedmorFødselBeggeHarRettDekningsgrad80EtterWLBTermin = Template.bind({});
@@ -134,7 +133,7 @@ FarMedmorFødselBeggeHarRettDekningsgrad80EtterWLBTermin.args = {
     stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.UFØDT,
-        termindato: new Date('2022-08-31'),
+        termindato: '2022-08-31',
         antallBarn: 1,
     },
     søkerinfo,
@@ -147,7 +146,7 @@ FarMedmorFødselBeggeHarRettFødselFør1Okt2021.args = {
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-09-02').toDate()],
+        fødselsdatoer: ['2022-08-02'],
         antallBarn: 1,
     },
     søkerinfo,
@@ -160,7 +159,7 @@ FarMedmorFødselBeggeHarRettTvillinger.args = {
     stønadskonto80: stønadskontoDeltUttak80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-09-02').toDate()],
+        fødselsdatoer: ['2022-09-02'],
         antallBarn: 2,
     },
     søkerinfo,
@@ -173,8 +172,8 @@ FarMedmorPrematurFødselBeggeHarRettPrematur.args = {
     stønadskonto80: stønadskontoDeltUttak100PrematurWLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2023-01-25').toDate()],
-        termindato: dayjs('2023-04-01').toDate(),
+        fødselsdatoer: ['2023-01-25'],
+        termindato: '2023-04-01',
         antallBarn: 1,
     },
     søkerinfo,

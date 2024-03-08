@@ -145,7 +145,7 @@ const FarMedmorFødselFørsteganggsøknadBeggeHarRett: FunctionComponent<Props> 
                 antallUkerFellesperiodeFarMedmor: parseInt(values.antallUkerFellesperiode || '0', 10),
             },
             bareFarMedmorHarRett: false,
-            termindato,
+            termindato: ISOStringToDate(termindato),
             harAktivitetskravIPeriodeUtenUttak: false,
             førsteUttaksdagNesteBarnsSak,
         });

@@ -65,7 +65,6 @@ const MorFødsel: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -80,7 +79,7 @@ const MorFødsel: FunctionComponent<Props> = ({
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const erMorUfør = !!oppgittAnnenForelder?.erUfør;
+    const erMorUfør = !!oppgittAnnenForelder?.erMorUfør;
     const harRettPåForeldrepengerINorge = !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge;
     const annenForeldrerHarRettiNorgeEllerEØS =
         !!oppgittAnnenForelder?.harRettPåForeldrepengerINorge || !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
@@ -116,7 +115,7 @@ const MorFødsel: FunctionComponent<Props> = ({
         minsterett,
         søkersituasjon,
         barn,
-        søkerData.erAleneOmOmsorg,
+        oppgittAnnenForelder?.erAleneOmOmsorg || false,
         navnMor,
         navnFarMedmor,
         intl,
@@ -150,7 +149,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                 skalIkkeHaUttakFørTermin: submissionValues.skalIkkeHaUttakFørTermin,
             },
             bareFarMedmorHarRett: false,
-            termindato,
+            termindato: ISOStringToDate(termindato),
             harAktivitetskravIPeriodeUtenUttak: false,
             førsteUttaksdagNesteBarnsSak,
         });
@@ -207,7 +206,7 @@ const MorFødsel: FunctionComponent<Props> = ({
                     const visibility = morFødselQuestionsConfig.getVisbility({
                         ...formValues,
                         harRettPåForeldrepengerINorge,
-                        erAleneOmOmsorg: søkerData.erAleneOmOmsorg,
+                        erAleneOmOmsorg: oppgittAnnenForelder?.erAleneOmOmsorg,
                     } as MorFødselQuestionsPayload);
 
                     return (
@@ -220,7 +219,11 @@ const MorFødsel: FunctionComponent<Props> = ({
                                     barn={barn}
                                 />
                             </Block>
-                            <Block visible={søkerData.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge}>
+                            <Block
+                                visible={
+                                    oppgittAnnenForelder?.erAleneOmOmsorg === false && harRettPåForeldrepengerINorge
+                                }
+                            >
                                 <Block
                                     padBottom="xl"
                                     visible={visibility.isVisible(MorFødselFormField.fellesperiodeukerMor)}

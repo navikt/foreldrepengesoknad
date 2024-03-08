@@ -1,5 +1,6 @@
 import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -134,7 +135,7 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                 startdatoPermisjon: startDatoUttaksplan,
             },
             bareFarMedmorHarRett: true,
-            termindato,
+            termindato: ISOStringToDate(termindato),
             harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
                 erDeltUttak: false,
                 morHarRett: false,
@@ -158,14 +159,14 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
         return null;
     }
 
-    const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erUfør : false;
+    const erMorUfør = isAnnenForelderOppgitt(annenForelder) ? !!annenForelder.erMorUfør : false;
     const navnMor = isAnnenForelderOppgitt(annenForelder)
         ? formaterNavn(annenForelder.fornavn, annenForelder.etternavn, false)
         : '';
     const navnFarMedmor = formaterNavn(fornavn, etternavn, false, mellomnavn);
     const datoAvgrensinger = uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(
         familiehendelsesdatoDate!,
-        termindato,
+        termindato ? dayjs(termindato).toDate() : undefined,
         søkersituasjon.situasjon,
     );
 

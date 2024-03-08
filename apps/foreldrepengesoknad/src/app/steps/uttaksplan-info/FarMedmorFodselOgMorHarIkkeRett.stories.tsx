@@ -81,7 +81,6 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
                             dekningsgrad: args.dekningsgrad,
                         },
                         [ContextDataType.SØKER_DATA]: {
-                            erAleneOmOmsorg: false,
                             harJobbetSomFrilansSiste10Mnd: false,
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                             harHattAnnenInntektSiste10Mnd: false,
@@ -90,7 +89,7 @@ const Template: StoryFn<UttaksplanInfoTestData & { dekningsgrad: Dekningsgrad; a
                     }}
                 >
                     <UttaksplanInfo
-                        søker={søkerinfoFarSøker.søker}
+                        søkerInfo={søkerinfoFarSøker}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
                         avbrytSøknad={() => undefined}
@@ -110,14 +109,15 @@ BareFarHarRettMorIkkeUførDekningsgrad100EtterWLB.args = {
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
-        erUfør: false,
+        erMorUfør: false,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    fødselsdatoer: [new Date('2022-08-03')],
-    termindato: new Date('2022-08-03'),
+    fødselsdatoer: ['2022-08-03'],
+    termindato: '2022-08-03',
 };
 
 export const BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB = Template.bind({});
@@ -129,14 +129,15 @@ BareFarHarRettMorIkkeUførDekningsgrad80EtterWLB.args = {
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
-        erUfør: false,
+        erMorUfør: false,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-    fødselsdatoer: [new Date('2022-08-03')],
-    termindato: new Date('2022-08-03'),
+    fødselsdatoer: ['2022-08-03'],
+    termindato: '2022-08-03',
 };
 
 export const BareFarHarRettOgMorErUførEtterWLB = Template.bind({});
@@ -149,14 +150,15 @@ BareFarHarRettOgMorErUførEtterWLB.args = {
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
-        erUfør: true,
+        erMorUfør: true,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    fødselsdatoer: [new Date('2022-08-03')],
-    termindato: new Date('2022-08-03'),
+    fødselsdatoer: ['2022-08-03'],
+    termindato: '2022-08-03',
 };
 
 export const BareFarHarRettOgMorErUførFør1Okt2021 = Template.bind({});
@@ -169,14 +171,15 @@ BareFarHarRettOgMorErUførFør1Okt2021.args = {
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
-        erUfør: true,
+        erMorUfør: true,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    fødselsdatoer: [new Date('2021-09-29')],
-    termindato: new Date('2021-01-29'),
+    fødselsdatoer: ['2021-09-29'],
+    termindato: '2021-01-29',
 };
 
 export const BareFarHarRettOgPrematurFødsel = Template.bind({});
@@ -189,12 +192,13 @@ BareFarHarRettOgPrematurFødsel.args = {
         fornavn: 'dsgdfg',
         fnr: '123123123',
         utenlandskFnr: false,
-        erUfør: true,
+        erMorUfør: true,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
+        erAleneOmOmsorg: false,
     },
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    fødselsdatoer: [new Date('2023-01-25')],
-    termindato: new Date('2023-04-01'),
+    fødselsdatoer: ['2023-01-25'],
+    termindato: '2023-04-01',
 };

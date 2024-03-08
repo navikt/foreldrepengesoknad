@@ -201,15 +201,16 @@ export const validateEgenNæringLand = (intl: IntlShape) => (value: string | und
     return undefined;
 };
 
-export const validateRegistrertINorge = (intl: IntlShape) => (registrertINorge: string | number | undefined) => {
-    if (registrertINorge === undefined) {
-        return intlUtils(intl, 'valideringsfeil.egenNæringRegistrertINorge.påkrevd');
-    }
+export const validateRegistrertINorge =
+    (intl: IntlShape) => (registrertINorge: string | number | boolean | undefined) => {
+        if (registrertINorge === undefined) {
+            return intlUtils(intl, 'valideringsfeil.egenNæringRegistrertINorge.påkrevd');
+        }
 
-    return null;
-};
+        return null;
+    };
 
-export const validateNæringPågående = (intl: IntlShape) => (næringPågående: string | number | undefined) => {
+export const validateNæringPågående = (intl: IntlShape) => (næringPågående: string | number | boolean | undefined) => {
     if (næringPågående === undefined) {
         return intlUtils(intl, 'valideringsfeil.egenNæringPågående.påkrevd');
     }
@@ -218,7 +219,7 @@ export const validateNæringPågående = (intl: IntlShape) => (næringPågående
 };
 
 export const validateBlittYrkesaktivDe3SisteÅrene =
-    (intl: IntlShape) => (blittYrkesaktivDe3SisteÅrene: string | number | undefined) => {
+    (intl: IntlShape) => (blittYrkesaktivDe3SisteÅrene: string | number | boolean | undefined) => {
         if (blittYrkesaktivDe3SisteÅrene === undefined) {
             return intlUtils(intl, 'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd');
         }
@@ -226,7 +227,7 @@ export const validateBlittYrkesaktivDe3SisteÅrene =
         return null;
     };
 
-export const validateNæringstype = (intl: IntlShape) => (næringstype: string | number | undefined) => {
+export const validateNæringstype = (intl: IntlShape) => (næringstype: string | number | boolean | undefined) => {
     if (!hasValue(næringstype)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringType.påkrevd');
     }
@@ -234,7 +235,7 @@ export const validateNæringstype = (intl: IntlShape) => (næringstype: string |
     return null;
 };
 
-export const validateVarigEndring = (intl: IntlShape) => (varigEndring: string | number | undefined) => {
+export const validateVarigEndring = (intl: IntlShape) => (varigEndring: string | number | boolean | undefined) => {
     if (!hasValue(varigEndring)) {
         return intlUtils(intl, 'valideringsfeil.egenNæringHattVarigEndringDeSiste4Årene.påkrevd');
     }

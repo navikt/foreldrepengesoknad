@@ -73,7 +73,6 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const intl = useIntl();
-    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -112,8 +111,8 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         const startdato = finnStartdatoAdopsjon(
             values.startdatoAdopsjonValg!,
             values.annenStartdatoAdopsjon,
-            dateToISOString(barnAdopsjonsdato),
-            dateToISOString(ankomstdato),
+            barnAdopsjonsdato,
+            ankomstdato,
         );
 
         const uttaksplan = lagUttaksplan({
@@ -182,7 +181,7 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
         minsterett,
         søkersituasjon,
         barn,
-        søkerData.erAleneOmOmsorg,
+        oppgittAnnenForelder?.erAleneOmOmsorg || false,
         navnMor,
         navnFarMedmor,
         intl,
@@ -233,8 +232,8 @@ const MorFarAdopsjonAnnenForelderHarRettIEØS: FunctionComponent<Props> = ({
                                             finnStartdatoAdopsjon(
                                                 formValues.startdatoAdopsjonValg!,
                                                 undefined,
-                                                dateToISOString(barn.adopsjonsdato),
-                                                dateToISOString(ankomstdato),
+                                                barn.adopsjonsdato,
+                                                ankomstdato,
                                             ),
                                         ),
                                         'day',

@@ -1,25 +1,30 @@
+import { FormattedMessage } from 'react-intl';
+
 import { Heading } from '@navikt/ds-react';
-import { UtenlandsoppholdTidligere } from '@navikt/fp-types';
+
+import { Arbeidsforhold, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import { FormattedMessage } from 'react-intl';
 
 type Props = {
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
 const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
+    arbeidsforhold,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }) => {
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);

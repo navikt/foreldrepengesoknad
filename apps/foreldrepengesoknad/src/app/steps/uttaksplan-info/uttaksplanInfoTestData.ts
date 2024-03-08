@@ -9,9 +9,9 @@ interface UttaksplanInfoTestData {
     søkerinfo: Søkerinfo;
     dekningsgrad: Dekningsgrad;
     antallBarn: number;
-    fødselsdatoer: Date[];
-    termindato: Date;
-    adopsjonsdato: Date;
+    fødselsdatoer: string[];
+    termindato: string;
+    adopsjonsdato: string;
     uttaksplanAnnenPart: SaksperiodeDTO[];
 }
 

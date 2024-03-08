@@ -5,7 +5,7 @@ import { RettighetType } from '../types/RettighetType';
 
 export const getErMorUfør = (annenForelder: AnnenForelder, erFarEllerMedmor: boolean) => {
     if (isAnnenForelderOppgitt(annenForelder) && erFarEllerMedmor) {
-        return !!annenForelder.erUfør;
+        return !!annenForelder.erMorUfør;
     }
 
     return false;
@@ -23,7 +23,8 @@ export const getMockAnnenForelder = (sak: Sak, intl: IntlShape): AnnenForelderOp
         harRettPåForeldrepengerINorge:
             sak.rettighetType === RettighetType.BEGGE_RETT && !sak.harAnnenForelderTilsvarendeRettEØS,
         harRettPåForeldrepengerIEØS: sak.harAnnenForelderTilsvarendeRettEØS,
-        erUfør: (!sak.sakTilhørerMor && sak.morUføretrygd) || undefined,
+        erMorUfør: (!sak.sakTilhørerMor && sak.morUføretrygd) || undefined,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     };
 };

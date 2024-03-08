@@ -12,6 +12,7 @@ import stønadskontoFlerbarnsuker100 from 'storybook/storyData/stonadskontoer/st
 import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
@@ -101,27 +102,30 @@ const Template: StoryFn<
                     }}
                 >
                     <UttaksplanInfo
-                        søker={{
-                            fnr: '19047815714',
-                            fornavn: 'TALENTFULL',
-                            etternavn: 'MYGG',
-                            kjønn: 'K',
-                            fødselsdato: '1978-04-19',
-                            barn: [
-                                {
-                                    fnr: '21091981146',
-                                    fødselsdato: '2021-03-15',
-                                    annenForelder: {
-                                        fnr: '12038517080',
-                                        fødselsdato: '1985-03-12',
-                                        fornavn: 'LEALAUS',
-                                        etternavn: 'BÆREPOSE',
+                        søkerInfo={{
+                            søker: {
+                                fnr: '19047815714',
+                                fornavn: 'TALENTFULL',
+                                etternavn: 'MYGG',
+                                kjønn: 'K',
+                                fødselsdato: '1978-04-19',
+                                barn: [
+                                    {
+                                        fnr: '21091981146',
+                                        fødselsdato: '2021-03-15',
+                                        annenForelder: {
+                                            fnr: '12038517080',
+                                            fødselsdato: '1985-03-12',
+                                            fornavn: 'LEALAUS',
+                                            etternavn: 'BÆREPOSE',
+                                        },
+                                        fornavn: 'KLØKTIG',
+                                        etternavn: 'MIDTPUNKT',
+                                        kjønn: 'M',
                                     },
-                                    fornavn: 'KLØKTIG',
-                                    etternavn: 'MIDTPUNKT',
-                                    kjønn: 'M',
-                                },
-                            ],
+                                ],
+                            },
+                            arbeidsforhold: [],
                         }}
                         erEndringssøknad={false}
                         mellomlagreSøknadOgNaviger={() => Promise.resolve()}
@@ -139,15 +143,13 @@ MorAleneomsorgDekningsgrad100Før1Okt2021.args = {
     stønadskonto80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         kanIkkeOppgis: true,
     },
     søkerData: {
-        erAleneOmOmsorg: true,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -161,15 +163,13 @@ MorAleneomsorgDekningsgrad80Før1Okt2021.args = {
     stønadskonto80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         kanIkkeOppgis: true,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -183,16 +183,14 @@ MorAleneomsorgPrematurFødsel.args = {
     stønadskonto80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2023-01-25').toDate()],
-        termindato: dayjs('2023-04-01').toDate(),
+        fødselsdatoer: ['2023-01-25'],
+        termindato: '2023-04-01',
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         kanIkkeOppgis: true,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -206,9 +204,8 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
     barn: {
         type: BarnType.FØDT,
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
-        fødselsdatoer: [dayjs('2023-01-11').toDate()],
-        termindato: dayjs('2023-03-11').toDate(),
+        fødselsdatoer: ['2023-01-11'],
+        termindato: '2023-03-11',
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -216,9 +213,9 @@ MorDeltUttakPrematurFødselDekningsgrad100.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -232,7 +229,7 @@ MorDeltUttakDekningsgrad100EtterWLB.args = {
     stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-12-15').toDate()],
+        fødselsdatoer: ['2022-12-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -241,9 +238,9 @@ MorDeltUttakDekningsgrad100EtterWLB.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -257,9 +254,8 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
     stønadskonto80: stønadskontoFlerbarnsuker80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-07-15').toDate()],
+        fødselsdatoer: ['2022-07-15'],
         antallBarn: 2,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -267,9 +263,10 @@ MorDeltUttakTvillingerDekningsgrad100FørWLB.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
+        datoForAleneomsorg: dayjs().format(DDMMYYYY_DATE_FORMAT),
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -283,7 +280,7 @@ MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args = {
     stønadskonto80: stønadskontoDeltUttak80WLB,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2024-01-15').toDate()],
+        fødselsdatoer: ['2024-01-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -294,9 +291,9 @@ MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
         erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,
@@ -311,7 +308,7 @@ MorSøkerOgFarHarIkkeRett.args = {
     stønadskonto80: stønadskonto80,
     barn: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2024-01-15').toDate()],
+        fødselsdatoer: ['2024-01-15'],
         antallBarn: 1,
     },
     annenForelder: {
@@ -321,9 +318,9 @@ MorSøkerOgFarHarIkkeRett.args = {
         utenlandskFnr: false,
         harRettPåForeldrepengerINorge: false,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
         harHattAnnenInntektSiste10Mnd: false,

@@ -70,7 +70,6 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     // TODO (TOR) fjern as
@@ -84,7 +83,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
-    const datoForAleneomsorg = annenForelder.kanIkkeOppgis ? familiehendelsesdatoDate : barn.datoForAleneomsorg;
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const datoForAleneomsorg = oppgittAnnenForelder?.datoForAleneomsorg || dateToISOString(familiehendelsesdatoDate);
 
     const { dekningsgrad } = periodeMedForeldrepenger;
 
@@ -104,7 +104,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
 
         const uttaksplanInfo: FarMedmorAleneomsorgFødselUttaksplanInfo = mapFarMedmorAleneomsorgFødselFormToState(
             values,
-            dateToISOString(datoForAleneomsorg),
+            datoForAleneomsorg!,
         );
         oppdaterUttaksplanInfo(uttaksplanInfo);
 
@@ -125,7 +125,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
                 startdatoPermisjon: uttaksplanInfo.startdatoUttak,
             },
             bareFarMedmorHarRett: false,
-            termindato,
+            termindato: ISOStringToDate(termindato),
             harAktivitetskravIPeriodeUtenUttak: getHarAktivitetskravIPeriodeUtenUttak({
                 erDeltUttak: false,
                 morHarRett: false,
@@ -146,7 +146,8 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
         return goToNextDefaultStep();
     };
 
-    const shouldRender = erFødsel && erFarEllerMedmor && (!!søkerData.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
+    const shouldRender =
+        erFødsel && erFarEllerMedmor && (!!oppgittAnnenForelder?.erAleneOmOmsorg || annenForelder.kanIkkeOppgis);
 
     if (!shouldRender) {
         return null;
@@ -185,7 +186,7 @@ const FarMedmorAleneomsorgFødsel: FunctionComponent<Props> = ({
             <FarMedmorAleneomsorgFødselFormComponents.FormikWrapper
                 initialValues={getInitialFarMedmorAleneomsorgFødselValues(
                     uttaksplanInfo,
-                    dateToISOString(datoForAleneomsorg),
+                    datoForAleneomsorg!,
                     dekningsgrad,
                 )}
                 onSubmit={onSubmit}

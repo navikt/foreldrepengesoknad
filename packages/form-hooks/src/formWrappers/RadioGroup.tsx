@@ -7,7 +7,7 @@ interface Props {
     name: string;
     description?: string | ReactNode;
     label?: string | ReactNode;
-    validate?: Array<(value: string | number) => any>;
+    validate?: Array<(value: string | number | boolean) => any>;
     onChange?: (value: string | boolean | number) => void;
     children: ReactElement[];
 }
