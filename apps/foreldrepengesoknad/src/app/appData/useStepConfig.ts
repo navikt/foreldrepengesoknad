@@ -69,12 +69,14 @@ const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     arbeidsforhold: Arbeidsforhold[],
+    erEndringssøknad: boolean,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
         const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
         const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
         const omBarnet = getData(ContextDataType.OM_BARNET);
         const uttaksplan = getData(ContextDataType.UTTAKSPLAN);
+        const uttaksplanMetadata = getData(ContextDataType.UTTAKSPLAN_METADATA);
 
         const skalHaAnnenForelderDok =
             annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : false;
@@ -89,7 +91,15 @@ const showManglendeDokumentasjonSteg = (
 
         const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
         const skalHaUttakDok =
-            annenForelder && uttaksplan ? kreverUttaksplanVedlegg(uttaksplan, erFarEllerMedmor, annenForelder) : false;
+            annenForelder && uttaksplan
+                ? kreverUttaksplanVedlegg(
+                      uttaksplan,
+                      erFarEllerMedmor,
+                      annenForelder,
+                      erEndringssøknad,
+                      uttaksplanMetadata?.perioderSomSkalSendesInn,
+                  )
+                : false;
 
         return skalHaAnnenForelderDok || skalHaOmBarnetDok || skalHaUttakDok;
     }
@@ -115,11 +125,11 @@ const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = fal
             ROUTES_ORDER.flatMap((path) =>
                 requiredSteps.includes(path) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold)
+                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, erEndringssøknad)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, currentPath, getStateData, arbeidsforhold],
+        [requiredSteps, currentPath, getStateData, arbeidsforhold, erEndringssøknad],
     );
 
     return useMemo(
