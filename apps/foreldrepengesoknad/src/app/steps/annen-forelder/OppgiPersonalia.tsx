@@ -10,7 +10,7 @@ import { isRequired } from '@navikt/fp-validation';
 import { validateFødselsnummer } from 'app/utils/validationUtil';
 
 import { AnnenForelderFormData } from './AnnenForelderFormData';
-import './oppgiPersonalia.less';
+import './oppgiPersonalia.css';
 
 const isValidText = (intl: IntlShape, label: string) => (fornavn: string) => {
     return validateTextInputField(fornavn, label, intl);
@@ -43,26 +43,28 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
             {isAnnenForelderKanIkkeOppgisIncluded(rolle, isAdoptertStebarn(barn)) && (
                 <Checkbox name="kanIkkeOppgis" label={intl.formatMessage({ id: 'annenForelder.spørsmål.kanOppgis' })} />
             )}
-            <TextField
-                name="fornavn"
-                label={<FormattedMessage id="annenForelder.spørsmål.fornavn" />}
-                validate={[
-                    isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fornavnPåkrevd' })),
-                    isValidText(intl, 'annenForelder.spørsmål.fornavn'),
-                ]}
-                disabled={kanIkkeOppgis}
-                className={bem.block}
-            />
-            <TextField
-                name="etternavn"
-                label={<FormattedMessage id="annenForelder.spørsmål.etternavn" />}
-                disabled={kanIkkeOppgis}
-                validate={[
-                    isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.etternavnPåkrevd' })),
-                    isValidText(intl, 'annenForelder.spørsmål.etternavn'),
-                ]}
-                className={bem.block}
-            />
+            {!kanIkkeOppgis && (
+                <>
+                    <TextField
+                        name="fornavn"
+                        label={<FormattedMessage id="annenForelder.spørsmål.fornavn" />}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fornavnPåkrevd' })),
+                            isValidText(intl, 'annenForelder.spørsmål.fornavn'),
+                        ]}
+                        className={bem.block}
+                    />
+                    <TextField
+                        name="etternavn"
+                        label={<FormattedMessage id="annenForelder.spørsmål.etternavn" />}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.etternavnPåkrevd' })),
+                            isValidText(intl, 'annenForelder.spørsmål.etternavn'),
+                        ]}
+                        className={bem.block}
+                    />
+                </>
+            )}
             {!kanIkkeOppgis && (
                 <>
                     <div>
@@ -78,6 +80,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                                     utenlandskFnr,
                                 ),
                             ]}
+                            className={bem.block}
                         />
                         <Checkbox
                             name="utenlandskFnr"

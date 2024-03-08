@@ -123,44 +123,29 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søker, rol
                 </Alert>
             )}
             {formValues.erAleneOmOmsorg === true && isFarEllerMedmor(rolle) && (
-                <div>
-                    <Datepicker
-                        name="datoForAleneomsorg"
-                        label={intl.formatMessage({ id: 'annenForelder.datoForAleneomsorg' })}
-                        minDate={dayjs(familiehendelsedato).toDate()}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({
-                                    id: 'valideringsfeil.annenForelder.datoForAleneomsorg.duMåOppgi',
-                                }),
-                            ),
-                            isValidDate(
-                                intl.formatMessage({
-                                    id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
-                                }),
-                            ),
-                            isBefore(
-                                intl.formatMessage({
-                                    id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
-                                }),
-                                familiehendelsedato,
-                            ),
-                        ]}
-                    />
-                    {/*<BodyShort>
-                        <FormattedMessage id="annenForelder.farMedmor.dokumentasjonAvAleneomsorg.veileder" />
-                    </BodyShort>
-                     <Block padBottom="xl">
-                            <FormikFileUploader
-                                legend="Dokumentasjon for aleneomsorg"
-                                label={intl.formatMessage({id: 'annenForelder.farMedmor.dokumentasjonAvAleneomsorg.lastOpp')}
-                                name={AnnenForelderFormField.dokumentasjonAvAleneomsorg}
-                                attachments={dokumentasjonAvAleneomsorg || []}
-                                attachmentType={AttachmentType.ALENEOMSORG}
-                                skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
-                            />{' '}
-                        </Block> */}
-                </div>
+                <Datepicker
+                    name="datoForAleneomsorg"
+                    label={intl.formatMessage({ id: 'annenForelder.datoForAleneomsorg' })}
+                    minDate={dayjs(familiehendelsedato).toDate()}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.annenForelder.datoForAleneomsorg.duMåOppgi',
+                            }),
+                        ),
+                        isValidDate(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
+                            }),
+                        ),
+                        isBefore(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
+                            }),
+                            familiehendelsedato,
+                        ),
+                    ]}
+                />
             )}
             {formValues.erAleneOmOmsorg !== true && (
                 <div>
