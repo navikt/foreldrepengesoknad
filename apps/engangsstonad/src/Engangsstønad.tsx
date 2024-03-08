@@ -1,13 +1,15 @@
-import { LocaleAll, Søker } from '@navikt/fp-types';
+import { EsDataContext } from 'appData/EsDataContext';
+import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
+import { useIntl } from 'react-intl';
+
 import { useRequest } from '@navikt/fp-api';
+import { useDocumentTitle } from '@navikt/fp-common';
+import { LocaleAll, Søker } from '@navikt/fp-types';
+import { Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
-import { Umyndig, useCustomIntl } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { EsDataContext } from 'appData/EsDataContext';
 import EngangsstønadRoutes, { ApiErrorHandler, Spinner, esApi } from './EngangsstønadRoutes';
-import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
-import { useDocumentTitle } from '@navikt/fp-common';
 
 interface Props {
     locale: LocaleAll;
@@ -15,8 +17,8 @@ interface Props {
 }
 
 const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
-    const { i18n } = useCustomIntl();
-    useDocumentTitle(i18n('Søknad.Pagetitle'));
+    const intl = useIntl();
+    useDocumentTitle(intl.formatMessage({ id: 'Søknad.Pagetitle' }));
 
     const { data: søker, error: errorHentSøker } = useRequest<Søker>(esApi, '/personinfo');
 

@@ -9,5 +9,3 @@ export { default as StepButtons } from './src/step/StepButtons';
 export { default as ScanDocumentInfo } from './src/scanDocumentInfo/ScanDocumentInfo';
 export { default as Umyndig } from './src/umyndig/Umyndig';
 export { default as IntlProvider } from './src/i18n/IntlProvider';
-export { useCustomIntl } from './src/i18n/useCustomI18n';
-export type { CustomIntlShape, I18nFn } from './src/i18n/useCustomI18n';

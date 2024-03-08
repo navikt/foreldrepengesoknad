@@ -1,14 +1,15 @@
-import { FormattedMessage } from 'react-intl';
-import { Heading } from '@navikt/ds-react';
-import { notEmpty } from '@navikt/fp-validation';
-import { ContentWrapper } from '@navikt/fp-ui';
-import { UtenlandsoppholdTidligere } from '@navikt/fp-types';
-import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
-
-import useEsNavigator from 'appData/useEsNavigator';
-import { Path } from 'appData/paths';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
+import { Path } from 'appData/paths';
+import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
+import { FormattedMessage } from 'react-intl';
+
+import { Heading } from '@navikt/ds-react';
+
+import { UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { ContentWrapper } from '@navikt/fp-ui';
+import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
+import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;

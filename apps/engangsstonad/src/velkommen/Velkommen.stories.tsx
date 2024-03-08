@@ -1,11 +1,12 @@
-import { StoryFn } from '@storybook/react';
-import { MemoryRouter } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { Action, EsDataContext } from 'appData/EsDataContext';
+import { Path } from 'appData/paths';
+import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Path } from 'appData/paths';
+
 import Velkommen from './Velkommen';
-import { Action, EsDataContext } from 'appData/EsDataContext';
 
 const promiseAction =
     () =>

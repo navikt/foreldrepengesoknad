@@ -1,9 +1,11 @@
-import { useFormContext } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Fødsel } from 'types/OmBarnet';
+
 import { Radio } from '@navikt/ds-react';
-import { RadioGroup, Select, Datepicker } from '@navikt/fp-form-hooks';
-import { useCustomIntl } from '@navikt/fp-ui';
+
+import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
 import {
     erI22SvangerskapsukeEllerSenere,
     isAfterOrSameAsSixMonthsAgo,
@@ -13,14 +15,12 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
-import { Fødsel } from 'types/OmBarnet';
-
 export type FormValues = {
     antallBarnDropDown?: string;
 } & Fødsel;
 
 const FødselPanel: React.FunctionComponent = () => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
 
     const { watch } = useFormContext<FormValues>();
 
@@ -32,7 +32,7 @@ const FødselPanel: React.FunctionComponent = () => {
             <RadioGroup
                 name="erBarnetFødt"
                 label={<FormattedMessage id="FødselPanel.Spørsmål.ErBarnetFødt" />}
-                validate={[isRequired(i18n('FødselPanel.Spørsmål.ErBarnetFødt.Required'))]}
+                validate={[isRequired(intl.formatMessage({ id: 'FødselPanel.Spørsmål.ErBarnetFødt.Required' }))]}
             >
                 <Radio value={true}>
                     <FormattedMessage id="FødselPanel.Radiobutton.Ja" />
@@ -45,14 +45,18 @@ const FødselPanel: React.FunctionComponent = () => {
                 <Datepicker
                     name="fødselsdato"
                     label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
-                    description={i18n('FødselPanel.TermindatoFodselsdato.beskrivelse')}
+                    description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     maxDate={dayjs().toDate()}
                     validate={[
-                        isRequired(i18n('FødselPanel.Fødselsdato.DuMåOppgi')),
-                        isValidDate(i18n('FødselPanel.Fødselsdato.Gyldig')),
-                        isBeforeTodayOrToday(i18n('FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere')),
-                        isAfterOrSameAsSixMonthsAgo(i18n('FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake')),
+                        isRequired(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.DuMåOppgi' })),
+                        isValidDate(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.Gyldig' })),
+                        isBeforeTodayOrToday(
+                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere' }),
+                        ),
+                        isAfterOrSameAsSixMonthsAgo(
+                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake' }),
+                        ),
                     ]}
                 />
             )}
@@ -60,27 +64,35 @@ const FødselPanel: React.FunctionComponent = () => {
                 <Datepicker
                     name="termindato"
                     label={<FormattedMessage id="FødselPanel.Termindato" />}
-                    description={i18n('FødselPanel.TermindatoFodselsdato.beskrivelse')}
+                    description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                     validate={[
-                        isRequired(i18n('FødselPanel.Termindato.DuMåOppgi')),
-                        isValidDate(i18n('FødselPanel.Termindato.Gyldig')),
-                        isLessThanThreeWeeksAgo(i18n('FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag')),
-                        erI22SvangerskapsukeEllerSenere(i18n('FødselPanel.Termindato.DuMåVæreIUke22')),
+                        isRequired(intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåOppgi' })),
+                        isValidDate(intl.formatMessage({ id: 'FødselPanel.Termindato.Gyldig' })),
+                        isLessThanThreeWeeksAgo(
+                            intl.formatMessage({ id: 'FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag' }),
+                        ),
+                        erI22SvangerskapsukeEllerSenere(
+                            intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåVæreIUke22' }),
+                        ),
                     ]}
                 />
             )}
 
             <RadioGroup
                 name="antallBarn"
-                label={erBarnetFødt ? i18n('FødselPanel.AntallBarn.Født') : i18n('FødselPanel.AntallBarn.Termin')}
-                description={i18n('FødselPanel.AntallBarn.TerminBeskrivelse')}
+                label={
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født' })
+                        : intl.formatMessage({ id: 'FødselPanel.AntallBarn.Termin' })
+                }
+                description={intl.formatMessage({ id: 'FødselPanel.AntallBarn.TerminBeskrivelse' })}
                 validate={[
                     isRequired(
                         erBarnetFødt
-                            ? i18n('FødselPanel.AntallBarn.Født.Required')
-                            : i18n('FødselPanel.AntallBarn.Venter.Required'),
+                            ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født.Required' })
+                            : intl.formatMessage({ id: 'FødselPanel.AntallBarn.Venter.Required' }),
                     ),
                 ]}
             >
@@ -97,12 +109,16 @@ const FødselPanel: React.FunctionComponent = () => {
             {antallBarn >= 3 && (
                 <Select
                     name="antallBarnDropDown"
-                    label={erBarnetFødt ? i18n('FødselPanel.AntallBarn.Født') : i18n('FødselPanel.AntallBarn.Termin')}
+                    label={
+                        erBarnetFødt
+                            ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født' })
+                            : intl.formatMessage({ id: 'FødselPanel.AntallBarn.Termin' })
+                    }
                     validate={[
                         isRequired(
                             erBarnetFødt
-                                ? i18n('FødselPanel.AntallBarn.Født.Required')
-                                : i18n('FødselPanel.AntallBarn.Venter.Required'),
+                                ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født.Required' })
+                                : intl.formatMessage({ id: 'FødselPanel.AntallBarn.Venter.Required' }),
                         ),
                     ]}
                 >

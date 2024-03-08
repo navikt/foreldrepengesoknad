@@ -1,9 +1,11 @@
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import dayjs from 'dayjs';
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { useIntl } from 'react-intl';
+
 import { VStack } from '@navikt/ds-react';
-import { useCustomIntl } from '@navikt/fp-ui';
+
+import { Datepicker } from '@navikt/fp-form-hooks';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 export type FormValues = {
@@ -23,7 +25,7 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
     antallBarn,
     antallBarnDropDown,
 }) => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
     const { control } = useFormContext<FormValues>();
     const { fields, remove, append } = useFieldArray({
         control,
@@ -58,17 +60,19 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                     maxDate={dayjs().toDate()}
                     label={
                         fields.length === 1
-                            ? i18n('AdopsjonFodselFieldArray.Fødselsdato')
-                            : i18n(`AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}`)
+                            ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
+                            : intl.formatMessage({ id: `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}` })
                     }
                     validate={[
-                        isRequired(i18n('AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi')),
-                        isValidDate(i18n('AdopsjonFodselFieldArray.Fødselsdato.Gyldig')),
+                        isRequired(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi' })),
+                        isValidDate(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato.Gyldig' })),
                         (fødselsdato) => {
                             return !fødselsdato || !adopsjonsdato
                                 ? undefined
                                 : isBeforeTodayOrToday(
-                                      i18n('AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere'),
+                                      intl.formatMessage({
+                                          id: 'AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere',
+                                      }),
                                   )(fødselsdato);
                         },
                     ]}

@@ -1,12 +1,13 @@
-import { attachmentApi } from '@navikt/fp-api';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { StoryFn } from '@storybook/react';
-import MockAdapter from 'axios-mock-adapter';
-
-import { Søker } from '@navikt/fp-types';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
+import MockAdapter from 'axios-mock-adapter';
+
+import { attachmentApi } from '@navikt/fp-api';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { Søker } from '@navikt/fp-types';
+
 import AppContainer from './AppContainer';
 import { esApi } from './EngangsstønadRoutes';
 

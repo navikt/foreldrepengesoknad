@@ -1,19 +1,21 @@
-import { useForm } from 'react-hook-form';
-import { Kjønn, Step } from '@navikt/fp-common';
-import { VStack } from '@navikt/ds-react';
-import { useCustomIntl } from '@navikt/fp-ui';
-import { StepButtonsHookForm, Form, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
-import { notEmpty } from '@navikt/fp-validation';
-import { omitOne } from '@navikt/fp-utils';
-
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
+import { Path } from 'appData/paths';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import { Path } from 'appData/paths';
+import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/OmBarnet';
-import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
-import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
+
+import { VStack } from '@navikt/ds-react';
+
+import { Kjønn, Step } from '@navikt/fp-common';
+import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søkersituasjon } from '@navikt/fp-types';
+import { omitOne } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
+
+import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
+import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
 
 type FormValues = FødtFormValues & AdopsjonFormValues;
 
@@ -47,7 +49,7 @@ export interface Props {
 }
 
 const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNaviger }) => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
 
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
@@ -73,7 +75,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNav
 
     return (
         <Step
-            bannerTitle={i18n('Søknad.Pageheading')}
+            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             onCancel={navigator.avbrytSøknad}
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}

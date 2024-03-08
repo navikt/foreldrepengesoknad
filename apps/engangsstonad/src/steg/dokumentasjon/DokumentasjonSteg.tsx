@@ -1,26 +1,29 @@
-import { VStack } from '@navikt/ds-react';
-import { useForm } from 'react-hook-form';
-import { Step } from '@navikt/fp-common';
-import { Attachment } from '@navikt/fp-types';
-import { notEmpty } from '@navikt/fp-validation';
-import { ScanDocumentInfo, useCustomIntl } from '@navikt/fp-ui';
-import { Form, StepButtonsHookForm, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
-
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
+
+import { VStack } from '@navikt/ds-react';
+
+import { Step } from '@navikt/fp-common';
+import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Attachment } from '@navikt/fp-types';
+import { ScanDocumentInfo } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
 import AdopsjonDokPanel from './AdopsjonDokPanel';
 import TerminDokPanel from './TerminDokPanel';
-import { useState } from 'react';
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;
 };
 
 const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
 
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
@@ -41,8 +44,8 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
         if (formValues.vedlegg.length === 0) {
             formMethods.setError('vedlegg', {
                 message: erBarnetAdoptert
-                    ? i18n('DokumentasjonSteg.MinstEttDokumentAdopsjon')
-                    : i18n('DokumentasjonSteg.MinstEttDokumentTermin'),
+                    ? intl.formatMessage({ id: 'DokumentasjonSteg.MinstEttDokumentAdopsjon' })
+                    : intl.formatMessage({ id: 'DokumentasjonSteg.MinstEttDokumentTermin' }),
             });
             return Promise.resolve();
         } else {
@@ -59,7 +62,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
 
     return (
         <Step
-            bannerTitle={i18n('Søknad.Pageheading')}
+            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             onCancel={navigator.avbrytSøknad}
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}

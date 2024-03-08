@@ -1,14 +1,15 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import MockAdapter from 'axios-mock-adapter';
-import { initAmplitude } from '@navikt/fp-metrics';
-import { attachmentApi } from '@navikt/fp-api';
-
+import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
-import { OmBarnet } from 'types/OmBarnet';
-import DokumentasjonSteg from './DokumentasjonSteg';
+import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
+import { OmBarnet } from 'types/OmBarnet';
+
+import { attachmentApi } from '@navikt/fp-api';
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import DokumentasjonSteg from './DokumentasjonSteg';
 
 const promiseAction =
     () =>

@@ -1,19 +1,22 @@
-import { Heading } from '@navikt/ds-react';
-import {
-    BoIUtlandetOppsummeringspunkt,
-    SøkerOppsummeringspunkt,
-    HendelseType,
-    OppsummeringIndex,
-} from '@navikt/fp-oppsummering';
-import { Søker } from '@navikt/fp-types';
-import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+
+import { Heading } from '@navikt/ds-react';
+
+import {
+    BoIUtlandetOppsummeringspunkt,
+    HendelseType,
+    OppsummeringIndex,
+    SøkerOppsummeringspunkt,
+} from '@navikt/fp-oppsummering';
+import { Søker } from '@navikt/fp-types';
+import { ContentWrapper } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 
 const getDatoOgHendelsetype = (barn: OmBarnet): [string, HendelseType] => {
@@ -36,7 +39,7 @@ export interface Props {
 }
 
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad, mellomlagreOgNaviger }) => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
 
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
@@ -63,7 +66,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søker} />
-                <OppsummeringIndex.Punkt tittel={i18n('OppsummeringSteg.OmBarnet')}>
+                <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.OmBarnet' })}>
                     <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                 </OppsummeringIndex.Punkt>
                 <BoIUtlandetOppsummeringspunkt

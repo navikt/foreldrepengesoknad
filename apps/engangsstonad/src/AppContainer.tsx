@@ -1,16 +1,17 @@
+import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import dayjs from 'dayjs';
-import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
-import { LocaleAll } from '@navikt/fp-types';
+
 import { deleteData } from '@navikt/fp-api';
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
-import { esApi } from './EngangsstønadRoutes';
-import Engangsstønad from './Engangsstønad';
+import { LocaleAll } from '@navikt/fp-types';
+import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 
-import nnMessages from './intl/messages/nn_NO.json';
-import nbMessages from './intl/messages/nb_NO.json';
+import Engangsstønad from './Engangsstønad';
+import { esApi } from './EngangsstønadRoutes';
 import enMessages from './intl/messages/en_US.json';
+import nbMessages from './intl/messages/nb_NO.json';
+import nnMessages from './intl/messages/nn_NO.json';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
