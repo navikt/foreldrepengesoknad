@@ -111,8 +111,7 @@ const useStepConfig = () => {
 
     return useMemo(
         () =>
-            appPathList.map((p, index) => ({
-                index,
+            appPathList.map((p) => ({
                 id: p,
                 label: pathToLabelMap[p],
                 isSelected: p === currentPath,

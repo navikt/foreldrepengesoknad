@@ -4,9 +4,8 @@ import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { MemoryRouter } from 'react-router-dom';
 
-import { Kjønn } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Situasjon } from '@navikt/fp-types';
+import { Kjønn, Situasjon } from '@navikt/fp-types';
 
 import OmBarnetSteg from './OmBarnetSteg';
 

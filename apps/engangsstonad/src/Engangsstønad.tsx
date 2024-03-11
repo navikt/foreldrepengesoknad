@@ -3,10 +3,9 @@ import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellom
 import { useIntl } from 'react-intl';
 
 import { useRequest } from '@navikt/fp-api';
-import { useDocumentTitle } from '@navikt/fp-common';
 import { LocaleAll, Søker } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
-import { erMyndig } from '@navikt/fp-utils';
+import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import EngangsstønadRoutes, { ApiErrorHandler, Spinner, esApi } from './EngangsstønadRoutes';

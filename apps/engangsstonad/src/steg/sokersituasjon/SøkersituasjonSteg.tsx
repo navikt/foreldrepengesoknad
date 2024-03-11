@@ -6,9 +6,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søkersituasjon } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
