@@ -5,9 +5,10 @@ import useStepData from 'appData/useStepData';
 import IconCircle from 'components/ikoner/IconCircle';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FormattedMessage } from 'react-intl';
+import Kalender from 'steps/oversikt/kalender/Kalender';
 import { isAlene } from 'types/HvemPlanlegger';
 
-import { Alert, Button, ExpansionCard, HStack, Link, VStack } from '@navikt/ds-react';
+import { Alert, ExpansionCard, HStack, Link, VStack } from '@navikt/ds-react';
 
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -17,6 +18,8 @@ const Oppsummering = () => {
     const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
+    //TODO: dra ut expansioncards til egne komponenter
+    //TODO: bruk input data til å vise riktig i kalenderen
     return (
         <PlanleggerPage steps={stepConfig}>
             <VStack gap="10">
@@ -30,8 +33,28 @@ const Oppsummering = () => {
                 <ExpansionCard aria-label="">
                     <ExpansionCard.Header>
                         <HStack gap="5" align="center">
-                            <IconCircle size="medium" color="green">
+                            <IconCircle size="large" color="green">
                                 <CalendarIcon height={22} width={22} fontSize="1.5rem" />
+                            </IconCircle>
+                            <ExpansionCard.Title size="medium">
+                                {isAlene(hvemPlanlegger) ? (
+                                    <FormattedMessage id="oppsummering.planenDin" />
+                                ) : (
+                                    <FormattedMessage id="oppsummering.planenDeres" />
+                                )}
+                            </ExpansionCard.Title>
+                        </HStack>
+                    </ExpansionCard.Header>
+                    <ExpansionCard.Content>
+                        <Kalender />
+                    </ExpansionCard.Content>
+                </ExpansionCard>
+
+                <ExpansionCard aria-label="">
+                    <ExpansionCard.Header>
+                        <HStack gap="5" align="center">
+                            <IconCircle size="large" color="green">
+                                <ChatElipsisIcon height={22} width={22} fontSize="1.5rem" />
                             </IconCircle>
                             <ExpansionCard.Title size="medium">
                                 {isAlene(hvemPlanlegger) ? (
@@ -47,26 +70,6 @@ const Oppsummering = () => {
                     </ExpansionCard.Content>
                 </ExpansionCard>
 
-                <ExpansionCard aria-label="">
-                    <ExpansionCard.Header>
-                        <HStack gap="5" align="center">
-                            <IconCircle size="medium" color="green">
-                                <ChatElipsisIcon height={22} width={22} fontSize="1.5rem" />
-                            </IconCircle>
-                            <ExpansionCard.Title size="medium">
-                                {isAlene(hvemPlanlegger) ? (
-                                    <FormattedMessage id="oppsummering.planenDin" />
-                                ) : (
-                                    <FormattedMessage id="oppsummering.planenDeres" />
-                                )}
-                            </ExpansionCard.Title>
-                        </HStack>
-                    </ExpansionCard.Header>
-                    <ExpansionCard.Content>
-                        <FormattedMessage id="oppsummering.planenTekst" />
-                    </ExpansionCard.Content>
-                </ExpansionCard>
-
                 <VStack gap="10">
                     <VStack gap="10">
                         <StepButtons
@@ -74,12 +77,6 @@ const Oppsummering = () => {
                             nextButtonOnClick={() => undefined}
                             useSimplifiedTexts
                         ></StepButtons>
-
-                        <VStack align="center">
-                            <Button variant="tertiary" onClick={() => undefined}>
-                                Avbryt
-                            </Button>
-                        </VStack>
                     </VStack>
                 </VStack>
             </VStack>
