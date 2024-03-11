@@ -1,7 +1,8 @@
-import { HeartFillIcon } from '@navikt/aksel-icons';
+import { HeartFillIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
+import InfoboksGenerell from 'components/InfoboksGenerell';
 import OmÅTilpassePlanen from 'components/expansionCard/OmÅTilpassePlanen';
 import UforutsetteEndringer from 'components/expansionCard/UforutsetteEndringer';
 import BlåSirkel from 'components/ikoner/BlåSirkel';
@@ -27,7 +28,7 @@ import {
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
-import { BodyShort, HStack, Heading, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, HStack, Heading, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
@@ -181,9 +182,6 @@ const OversiktSteg = () => {
     const antallUkerFellesperiodeSøker2 = fellesperiodefordeling
         ? fellesperiodeOptionValues[fellesperiodefordeling]
         : undefined;
-    console.log('antallUkerFellesperiodeSøker1: ', antallUkerFellesperiodeSøker1);
-    console.log('antallUkerFellesperiodeSøker2: ', antallUkerFellesperiodeSøker2);
-    console.log('fellesperiodefordeling: ', fellesperiodefordeling);
 
     const sluttdatoSøker1 =
         antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1.antallUkerSøker1
@@ -191,7 +189,6 @@ const OversiktSteg = () => {
                   .add(antallUkerMødrekvote, 'weeks')
                   .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
             : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
-    console.log('sluttdato: ', sluttdatoSøker1);
 
     const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1) : undefined;
     const sluttdatoSøker2 =
@@ -209,12 +206,11 @@ const OversiktSteg = () => {
     const antallUkerSøker1 = dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks');
     const antallUkerSøker2 = dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'weeks');
 
-    console.log('antallUkerSøker1: ', antallUkerSøker1);
-    console.log('antallUkerSøker2: ', antallUkerSøker2);
-
     const søkerTekst = finnSøkerTekst(intl, hvemPlanlegger);
     const annenPartTekst = finnAnnenPartTekst(intl, hvemPlanlegger);
     const hvem1 = capitalizeFirstLetter(søkerTekst);
+
+    const erAleneforsørger = isAlene(hvemPlanlegger);
 
     const [currentOption, setCurrentOption] = useState('');
     console.log('currentOption: ', currentOption);
@@ -224,9 +220,21 @@ const OversiktSteg = () => {
             <PlanleggerPage steps={stepConfig}>
                 <VStack gap="10">
                     <Heading size="large" spacing>
-                        {isAlene(hvemPlanlegger) && <FormattedMessage id="oversikt.tittelDeg" />}
-                        {!isAlene(hvemPlanlegger) && <FormattedMessage id="oversikt.tittel" />}
+                        {erAleneforsørger && <FormattedMessage id="oversikt.tittelDeg" />}
+                        {!erAleneforsørger && <FormattedMessage id="oversikt.tittel" />}
                     </Heading>
+                    <InfoboksGenerell
+                        header={<FormattedMessage id="oversikt.infoboks.utkast" />}
+                        icon={<InformationIcon height={24} width={24} fontSize="1-5rem" />}
+                    >
+                        <BodyLong>
+                            {erAleneforsørger ? (
+                                <FormattedMessage id="oversikt.infoboks.utkast.tekstDeg" />
+                            ) : (
+                                <FormattedMessage id="oversikt.infoboks.utkast.tekst" />
+                            )}
+                        </BodyLong>
+                    </InfoboksGenerell>
 
                     <ToggleGroup
                         defaultValue={Dekningsgrad.HUNDRE_PROSENT}
@@ -242,7 +250,7 @@ const OversiktSteg = () => {
                         </ToggleGroup.Item>
                     </ToggleGroup>
 
-                    {!isAlene(hvemPlanlegger) && (
+                    {!erAleneforsørger && (
                         <Select
                             label=""
                             name="fellesperiodefordeling"
@@ -274,7 +282,7 @@ const OversiktSteg = () => {
                                 </HStack>
                             </div>
                             <Spacer />
-                            {!isAlene(hvemPlanlegger) && annenPartTekst && (
+                            {!erAleneforsørger && annenPartTekst && (
                                 <HStack gap="3" wrap={false}>
                                     <div className="greenPanel">
                                         <HStack gap="2" align="center">
