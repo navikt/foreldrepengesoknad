@@ -20,14 +20,14 @@
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@sentry/browser": "^7.95.0",
+        "@sentry/browser": "^7.106.0",
         "bytes": "^3.1.2",
         "classnames": "^2.5.1",
-        "intl-messageformat": "^10.5.10",
+        "intl-messageformat": "^10.5.11",
         "react": "^18.2.0",
         "react-aria-menubutton": "^7.0.3",
         "react-dom": "^18.2.0",
-        "react-intl": "^6.6.1"
+        "react-intl": "^6.6.2"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.3.5",
@@ -42,13 +42,13 @@
         "@testing-library/react": "^14.1.2",
         "@testing-library/user-event": "^14.5.2",
         "@types/bytes": "^3.1.4",
-        "@types/react": "^18.2.48",
+        "@types/react": "^18.2.64",
         "@types/react-aria-menubutton": "^6.2.14",
         "@vitejs/plugin-react": "^4.2.1",
         "fast-glob": "^3.3.2",
         "storybook": "7.6.10",
         "tsconfig": "workspace:*",
-        "typescript": "^5.3.3",
+        "typescript": "^5.4.2",
         "vite": "^4.4.9",
         "vite-plugin-checker": "^0.6.1",
         "vitest": "^0.34.2"
