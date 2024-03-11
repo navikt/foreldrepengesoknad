@@ -2,7 +2,7 @@ import { CalendarIcon, ChatElipsisIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import classnames from 'classnames';
+import IconCircle from 'components/ikoner/IconCircle';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FormattedMessage } from 'react-intl';
 import { isAlene } from 'types/HvemPlanlegger';
@@ -11,8 +11,6 @@ import { Alert, Button, ExpansionCard, HStack, Link, VStack } from '@navikt/ds-r
 
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-
-import styles from '../../components/ikoner/Ikon.module.css';
 
 const Oppsummering = () => {
     const navigator = usePlanleggerNavigator();
@@ -32,9 +30,9 @@ const Oppsummering = () => {
                 <ExpansionCard aria-label="">
                     <ExpansionCard.Header>
                         <HStack gap="5" align="center">
-                            <div className={classnames(styles.circle, styles.circle__green)}>
-                                {<CalendarIcon height={22} width={22} fontSize="1.5rem" />}
-                            </div>
+                            <IconCircle size="medium" color="green">
+                                <CalendarIcon height={22} width={22} fontSize="1.5rem" />
+                            </IconCircle>
                             <ExpansionCard.Title size="medium">
                                 {isAlene(hvemPlanlegger) ? (
                                     <FormattedMessage id="oppsummering.oppgittInformasjonDeg" />
@@ -52,9 +50,9 @@ const Oppsummering = () => {
                 <ExpansionCard aria-label="">
                     <ExpansionCard.Header>
                         <HStack gap="5" align="center">
-                            <div className={classnames(styles.circle, styles.circle__green)}>
-                                {<ChatElipsisIcon height={22} width={22} fontSize="1.5rem" />}
-                            </div>
+                            <IconCircle size="medium" color="green">
+                                <ChatElipsisIcon height={22} width={22} fontSize="1.5rem" />
+                            </IconCircle>
                             <ExpansionCard.Title size="medium">
                                 {isAlene(hvemPlanlegger) ? (
                                     <FormattedMessage id="oppsummering.planenDin" />

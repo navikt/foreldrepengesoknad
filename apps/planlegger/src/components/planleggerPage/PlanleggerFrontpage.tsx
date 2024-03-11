@@ -1,6 +1,7 @@
-import { BabyWrappedIcon, ClockIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, ClockIcon } from '@navikt/aksel-icons';
 import GreenHeading from 'components/GreenHeading';
 import LanguageToggle from 'components/LanguageToggle';
+import IconCircle from 'components/ikoner/IconCircle';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Show, VStack } from '@navikt/ds-react';
@@ -25,7 +26,9 @@ const PlanleggerFrontpage: React.FunctionComponent<Props> = ({ locale, changeLoc
                             <div className={styles.languageToggle}>
                                 <LanguageToggle locale={locale} changeLocale={changeLocale} />
                             </div>
-                            <BabyWrappedIcon height={45} width={45} />
+                            <IconCircle color="darkGreen" size="xl">
+                                <CalendarIcon height={45} width={45} />
+                            </IconCircle>
                             <VStack gap="1" align="center">
                                 <Heading size="large">
                                     <FormattedMessage id="om.tittel" />
@@ -43,7 +46,9 @@ const PlanleggerFrontpage: React.FunctionComponent<Props> = ({ locale, changeLoc
                 <Show above="md">
                     <GreenHeading>
                         <VStack gap="4">
-                            <BabyWrappedIcon height={45} width={45} />
+                            <IconCircle color="darkGreen" size="xl">
+                                <CalendarIcon height={45} width={45} />
+                            </IconCircle>
                             <VStack gap="1">
                                 <Heading size="large">
                                     <FormattedMessage id="om.tittel" />

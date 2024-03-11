@@ -1,11 +1,11 @@
+import { CalendarIcon, CheckmarkCircleIcon, PencilIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Check from 'components/ikoner/Check';
-import Kalender from 'components/ikoner/Kalender';
-import Penn from 'components/ikoner/Penn';
+import IconCircle from 'components/ikoner/IconCircle';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FormattedMessage } from 'react-intl';
+import Kalender from 'steps/oversikt/kalender/Kalender';
 import { isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -41,21 +41,27 @@ const PlanInfoSteg = () => {
                             </Heading>
 
                             <HStack gap="4" wrap={false}>
-                                <Kalender />
+                                <IconCircle color="green" size="medium">
+                                    <CalendarIcon width="24" height="25" />
+                                </IconCircle>
                                 <BodyShort>
                                     <FormattedMessage id="planInfo.trinn1" />
                                 </BodyShort>
                             </HStack>
 
                             <HStack gap="4" wrap={false}>
-                                <Penn />
+                                <IconCircle color="green" size="medium">
+                                    <PencilIcon width="24" height="25" />
+                                </IconCircle>
                                 <BodyShort>
                                     <FormattedMessage id="planInfo.trinn2" />
                                 </BodyShort>
                             </HStack>
 
                             <HStack gap="4" align="center">
-                                <Check />
+                                <IconCircle color="green" size="medium">
+                                    <CheckmarkCircleIcon width="24" height="25" />
+                                </IconCircle>
                                 <BodyShort>
                                     <FormattedMessage id="planInfo.trinn3" />
                                 </BodyShort>
@@ -103,14 +109,18 @@ const PlanInfoSteg = () => {
                             </HStack>
 
                             <HStack gap="4" wrap={false}>
-                                <Penn />
+                                <IconCircle color="green" size="medium">
+                                    <PencilIcon width="24" height="25" />
+                                </IconCircle>
                                 <BodyShort>
                                     <FormattedMessage id="planInfo.trinn2Deg" />
                                 </BodyShort>
                             </HStack>
 
                             <HStack gap="4" align="center">
-                                <Check />
+                                <IconCircle color="green" size="medium">
+                                    <CheckmarkCircleIcon width="24" height="25" />
+                                </IconCircle>
                                 <BodyShort>
                                     <FormattedMessage id="planInfo.trinn3Deg" />
                                 </BodyShort>
