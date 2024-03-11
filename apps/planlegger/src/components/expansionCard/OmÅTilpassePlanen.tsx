@@ -42,6 +42,7 @@ const OmÅTilpassePlanen: React.FunctionComponent = () => {
 const Innhold = () => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erFar = isFar(hvemPlanlegger);
+    // TODO: endre fra erFar til kun far har rett
     return (
         <>
             <VStack gap="5">
