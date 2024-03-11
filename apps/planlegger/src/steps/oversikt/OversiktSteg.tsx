@@ -2,6 +2,8 @@ import { HeartFillIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
+import OmÅTilpassePlanen from 'components/expansionCard/OmÅTilpassePlanen';
+import UforutsetteEndringer from 'components/expansionCard/UforutsetteEndringer';
 import BlåSirkel from 'components/ikoner/BlåSirkel';
 import GrønnSirkel from 'components/ikoner/GrønnSirkel';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
@@ -318,14 +320,19 @@ const OversiktSteg = () => {
                             </HStack>
                         </div>
                     </VStack>
-                </VStack>
 
-                <Kalender />
-                <StepButtons
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonOnClick={navigator.goToNextDefaultStep}
-                    useSimplifiedTexts
-                />
+                    <Kalender />
+                    <VStack gap="5">
+                        <OmÅTilpassePlanen />
+                        <UforutsetteEndringer />
+                    </VStack>
+
+                    <StepButtons
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        nextButtonOnClick={navigator.goToNextDefaultStep}
+                        useSimplifiedTexts
+                    />
+                </VStack>
             </PlanleggerPage>
         </Form>
     );

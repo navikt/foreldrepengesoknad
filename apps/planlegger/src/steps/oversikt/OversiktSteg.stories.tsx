@@ -65,6 +65,26 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
     },
 };
 
+export const PeriodeAleneForsørgerFarHundreProsentTermin = Template.bind({});
+PeriodeAleneForsørgerFarHundreProsentTermin.args = {
+    hvemPlanlegger: {
+        navnPåFar: 'Espen Utvikler',
+        type: SøkersituasjonEnum.FAR,
+    },
+    fordeling: {
+        fellesperiodefordeling: 6,
+    },
+    hvorLangPeriode: {
+        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    },
+    omBarnet: {
+        erFødsel: true,
+        erBarnetFødt: false,
+        termindato: '2022-10-24',
+        hvorMange: 'ett',
+    },
+};
+
 export const PeriodeAleneforsørgerÅttiProsentFødt = Template.bind({});
 PeriodeAleneforsørgerÅttiProsentFødt.args = {
     hvemPlanlegger: {
