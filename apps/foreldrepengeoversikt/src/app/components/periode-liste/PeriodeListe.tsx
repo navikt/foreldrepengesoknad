@@ -1,12 +1,15 @@
+import { Heading } from '@navikt/ds-react';
+
+import { guid } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
+
 import { Periode } from 'app/types/Periode';
+import { isUttaksperiode } from 'app/utils/periodeUtils';
+import { NavnPåForeldre } from 'app/utils/personUtils';
+import { Tidsperioden, getTidsperiode } from 'app/utils/tidsperiodeUtils';
 
 import PeriodeListeItem from '../periode-liste-item/PeriodeListeItem';
-import { Heading } from '@navikt/ds-react';
 import './periode-liste.css';
-import { bemUtils, guid } from '@navikt/fp-common';
-import { NavnPåForeldre } from 'app/utils/personUtils';
-import { getTidsperiode, Tidsperioden } from 'app/utils/tidsperiodeUtils';
-import { isUttaksperiode } from 'app/utils/periodeUtils';
 
 interface Props {
     erAleneOmOmsorg: boolean;

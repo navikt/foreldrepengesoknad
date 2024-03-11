@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom';
+
 import { Heading, LinkPanel } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 
-import { Link } from 'react-router-dom';
 import StatusTag from '../status-tag/StatusTag';
-
 import './sak-link.css';
 
 interface Props {

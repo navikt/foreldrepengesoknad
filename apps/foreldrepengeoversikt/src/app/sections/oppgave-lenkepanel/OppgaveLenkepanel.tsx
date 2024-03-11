@@ -1,11 +1,15 @@
+import { Link } from 'react-router-dom';
+
+import { DialogReport } from '@navikt/ds-icons';
+import { LinkPanel } from '@navikt/ds-react';
+
+import { Block } from '@navikt/fp-common';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
+
+import OversiktRoutes from 'app/routes/routes';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 
-import { Link } from 'react-router-dom';
 import './oppgaveLenkepanel.css';
-import { bemUtils, Block, formatDate } from '@navikt/fp-common';
-import { LinkPanel } from '@navikt/ds-react';
-import { DialogReport } from '@navikt/ds-icons';
-import OversiktRoutes from 'app/routes/routes';
 
 interface Props {
     minidialogInnslag: MinidialogInnslag;

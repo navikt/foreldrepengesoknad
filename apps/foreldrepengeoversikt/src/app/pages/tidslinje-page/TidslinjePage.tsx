@@ -1,16 +1,20 @@
-import OversiktRoutes from 'app/routes/routes';
+import { useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
+
+import { Loader } from '@navikt/ds-react';
+
+import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
+
+import Api from 'app/api/api';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
-
+import OversiktRoutes from 'app/routes/routes';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
-import './tidslinje-page.css';
-import { bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
-import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { SakOppslag } from 'app/types/SakOppslag';
-import Api from 'app/api/api';
-import { useParams } from 'react-router-dom';
-import { Loader } from '@navikt/ds-react';
-import { useIntl } from 'react-intl';
+import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
+
+import './tidslinje-page.css';
+
 interface Props {
     søkersBarn: SøkerinfoDTOBarn[] | undefined;
     saker: SakOppslag;
@@ -19,7 +23,9 @@ interface Props {
 const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) => {
     const bem = bemUtils('tidslinje-page');
     const intl = useIntl();
-    useDocumentTitle(`${intlUtils(intl, 'heleProsessen')} -${intlUtils(intl, 'dineForeldrepenger')}`);
+    useDocumentTitle(
+        `${intl.formatMessage({ id: 'heleProsessen' })} -${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
+    );
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.TIDSLINJEN);
     const params = useParams();

@@ -1,12 +1,16 @@
-import { bemUtils, intlUtils, links } from '@navikt/fp-common';
-
-import './snarveier.css';
 import { useIntl } from 'react-intl';
+
 import { Heading, LinkPanel } from '@navikt/ds-react';
+
+import { links } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
+
 import { NavRoutes } from 'app/routes/routes';
 import { SakOppslag } from 'app/types/SakOppslag';
-import { getAlleYtelser } from 'app/utils/sakerUtils';
 import { Ytelse } from 'app/types/Ytelse';
+import { getAlleYtelser } from 'app/utils/sakerUtils';
+
+import './snarveier.css';
 
 const getLesMerLink = (stønadstype: Ytelse | undefined) => {
     if (stønadstype === Ytelse.FORELDREPENGER) {
@@ -64,18 +68,19 @@ const Snarveier: React.FunctionComponent<Props> = ({ saker }) => {
     const alleSaker = getAlleYtelser(saker);
     const currentSak = alleSaker.find((sak) => path.includes(sak.saksnummer));
     const ytelse = currentSak ? currentSak.ytelse : undefined;
-    const ytelseTekst = currentSak !== undefined ? currentSak.ytelse : intlUtils(intl, 'snarveier.pengestøtter');
+    const ytelseTekst =
+        currentSak !== undefined ? currentSak.ytelse : intl.formatMessage({ id: 'snarveier.pengestøtter' });
     const lesMerLink = getLesMerLink(ytelse);
     return (
         <div className={bem.block}>
             <div className={bem.element('wrapper')}>
                 <div className={bem.element('title')}>
-                    <Heading size="medium">{intlUtils(intl, 'saksoversikt.snarveier')}</Heading>
+                    <Heading size="medium">{intl.formatMessage({ id: 'saksoversikt.snarveier' })}</Heading>
                 </div>
                 <div className={bem.element('content')}>
                     <LinkPanel href={lesMerLink} border={false} className={bem.element('linkPanel')}>
                         <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intlUtils(intl, 'snarveier.lesMerOm', { ytelse: ytelseTekst })}</div>
+                            <div>{intl.formatMessage({ id: 'snarveier.lesMerOm' }, { ytelse: ytelseTekst })}</div>
                         </LinkPanel.Title>
                     </LinkPanel>
                     <LinkPanel
@@ -84,7 +89,7 @@ const Snarveier: React.FunctionComponent<Props> = ({ saker }) => {
                         className={bem.element('linkPanel')}
                     >
                         <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intlUtils(intl, 'snarveier.saksbehandlingstider')}</div>
+                            <div>{intl.formatMessage({ id: 'snarveier.saksbehandlingstider' })}</div>
                         </LinkPanel.Title>
                     </LinkPanel>
                     <LinkPanel
@@ -93,17 +98,17 @@ const Snarveier: React.FunctionComponent<Props> = ({ saker }) => {
                         className={bem.element('linkPanel')}
                     >
                         <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intlUtils(intl, 'snarveier.endringerIDinSituasjon')}</div>
+                            <div>{intl.formatMessage({ id: 'snarveier.endringerIDinSituasjon' })}</div>
                         </LinkPanel.Title>
                     </LinkPanel>
                     <LinkPanel href={getKlageLink(ytelse)} border={false} className={bem.element('linkPanel')}>
                         <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intlUtils(intl, 'snarveier.slikKlagerDu')}</div>
+                            <div>{intl.formatMessage({ id: 'snarveier.slikKlagerDu' })}</div>
                         </LinkPanel.Title>
                     </LinkPanel>
                     <LinkPanel href={links.brukerprofil} border={false} className={bem.element('linkPanel')}>
                         <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intlUtils(intl, 'snarveier.kontonummer')}</div>
+                            <div>{intl.formatMessage({ id: 'snarveier.kontonummer' })}</div>
                         </LinkPanel.Title>
                     </LinkPanel>
                 </div>

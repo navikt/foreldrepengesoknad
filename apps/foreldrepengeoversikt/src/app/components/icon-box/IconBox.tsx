@@ -1,7 +1,10 @@
-import './iconBox.css';
-import { bemUtils } from '@navikt/fp-common';
-import { UttaksplanColor } from 'app/types/UttaksplanColor';
 import classNames from 'classnames';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import { UttaksplanColor } from 'app/types/UttaksplanColor';
+
+import './iconBox.css';
 
 export interface Props {
     children?: React.ReactNode;

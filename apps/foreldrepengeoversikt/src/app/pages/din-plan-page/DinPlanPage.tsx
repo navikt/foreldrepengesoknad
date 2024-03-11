@@ -1,5 +1,9 @@
+import { useIntl } from 'react-intl';
+
 import { Loader } from '@navikt/ds-react';
-import { intlUtils, useDocumentTitle } from '@navikt/fp-common';
+
+import { useDocumentTitle } from '@navikt/fp-utils';
+
 import Api from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
@@ -10,7 +14,6 @@ import { RequestStatus } from 'app/types/RequestStatus';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
-import { useIntl } from 'react-intl';
 
 interface Props {
     navnPåSøker: string;
@@ -21,7 +24,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
     useSetSelectedRoute(OversiktRoutes.DIN_PLAN);
     const sak = useGetSelectedSak();
     const intl = useIntl();
-    useDocumentTitle(`${intlUtils(intl, 'dinPlan')} - ${intlUtils(intl, 'dineForeldrepenger')}`);
+    useDocumentTitle(`${intl.formatMessage({ id: 'dinPlan' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`);
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, sak);
     const planErVedtatt = sak?.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;

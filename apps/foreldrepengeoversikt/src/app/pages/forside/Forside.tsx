@@ -1,24 +1,28 @@
-import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
-import HarSaker from 'app/components/har-saker/HarSaker';
-import { Block, bemUtils } from '@navikt/fp-common';
-import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
-import OversiktRoutes from 'app/routes/routes';
-import { GruppertSak } from 'app/types/GruppertSak';
-import { Sak } from 'app/types/Sak';
-import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
-import SakLink from 'app/components/sak-link/SakLink';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { Alert, Heading } from '@navikt/ds-react';
 
-import './forside.css';
+import { Block } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
+
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
+import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
+import HarSaker from 'app/components/har-saker/HarSaker';
+import SakLink from 'app/components/sak-link/SakLink';
 import {
     useGetRedirectedFromSøknadsnummer,
     useSetRedirectedFromSøknadsnummer,
 } from 'app/hooks/useRedirectedFromSøknadsnummer';
-import { useNavigate, useParams } from 'react-router-dom';
-import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
+import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import OversiktRoutes from 'app/routes/routes';
 import Bankkonto from 'app/types/Bankkonto';
+import { GruppertSak } from 'app/types/GruppertSak';
 import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
+import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
+import { Sak } from 'app/types/Sak';
+import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
+
+import './forside.css';
 
 interface Props {
     alleYtelser: Sak[];

@@ -1,7 +1,5 @@
 import { useIntl } from 'react-intl';
 
-import { intlUtils } from '@navikt/fp-common';
-
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 import { UttaksplanColor } from 'app/types/UttaksplanColor';
 import { finnTekstForUtsettelseÅrsak } from 'app/utils/periodeUtils';
@@ -43,7 +41,7 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak }) => {
                 title={
                     årsak
                         ? finnTekstForUtsettelseÅrsak(intl, årsak)
-                        : intlUtils(intl, 'uttaksplan.utsettelsesårsak.ukjent')
+                        : intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ukjent' })
                 }
             />
         </IconBox>

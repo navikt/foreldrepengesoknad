@@ -1,15 +1,19 @@
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
-import { Block, bemUtils } from '@navikt/fp-common';
-import { formatDate, formatTime } from '@navikt/fp-utils';
-import './bekreftelse-sendt-søknad.css';
+import { CheckmarkIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
+
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+
+import { Block } from '@navikt/fp-common';
+import { bemUtils, formatDate, formatTime } from '@navikt/fp-utils';
+
 import DokumentHendelse from 'app/sections/tidslinje/DokumentHendelse';
-import { CheckmarkIcon } from '@navikt/aksel-icons';
 import Bankkonto from 'app/types/Bankkonto';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import { Ytelse } from 'app/types/Ytelse';
+
 import KontonummerInfo from '../kontonummer-info/KontonummerInfo';
+import './bekreftelse-sendt-søknad.css';
 
 interface Props {
     oppdatertData: boolean;

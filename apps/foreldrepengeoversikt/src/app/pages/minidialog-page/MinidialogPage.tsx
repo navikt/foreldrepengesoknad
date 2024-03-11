@@ -1,18 +1,22 @@
 import { useState } from 'react';
-import { Block, intlUtils, useDocumentTitle } from '@navikt/fp-common';
-import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
-import MinidialogSkjema from 'app/components/minidialog-skjema/MinidialogSkjema';
-import { SakOppslag } from 'app/types/SakOppslag';
-import { useNavigate, useParams } from 'react-router-dom';
-import OversiktRoutes from 'app/routes/routes';
-import { getAlleYtelser } from 'app/utils/sakerUtils';
-import EttersendingDto from 'app/types/EttersendingDTO';
 import { useIntl } from 'react-intl';
-import ContentSection from 'app/components/content-section/ContentSection';
-import Api from 'app/api/api';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { Heading } from '@navikt/ds-react';
+
+import { Block } from '@navikt/fp-common';
+import { useDocumentTitle } from '@navikt/fp-utils';
+
+import Api from 'app/api/api';
+import ContentSection from 'app/components/content-section/ContentSection';
+import MinidialogSkjema from 'app/components/minidialog-skjema/MinidialogSkjema';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import OversiktRoutes from 'app/routes/routes';
+import EttersendingDto from 'app/types/EttersendingDTO';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
+import { SakOppslag } from 'app/types/SakOppslag';
+import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 interface Props {
     fnr: string;
@@ -25,7 +29,7 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
     const navigate = useNavigate();
     const intl = useIntl();
     useDocumentTitle(
-        `${intlUtils(intl, 'oppgaver.tittel.tilbakebetaling')} - ${intlUtils(intl, 'dineForeldrepenger')}`,
+        `${intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
     useSetSelectedRoute(OversiktRoutes.OPPGAVER);
     const alleSaker = getAlleYtelser(saker);
@@ -62,7 +66,7 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
         <ContentSection>
             <Block padBottom="xl">
                 <Heading size="medium" level="2">
-                    {intlUtils(intl, 'miniDialog.tilbakekreving.undertittel')}
+                    {intl.formatMessage({ id: 'miniDialog.tilbakekreving.undertittel' })}
                 </Heading>
             </Block>
             <MinidialogSkjema

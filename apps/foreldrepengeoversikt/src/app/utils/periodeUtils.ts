@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
 import { IntlShape } from 'react-intl';
 
-import { Forelder, ISOStringToDate, TidsperiodeDate, guid, intlUtils } from '@navikt/fp-common';
+import { Forelder, TidsperiodeDate, guid } from '@navikt/fp-common';
 import { formatDateIso } from '@navikt/fp-utils';
 
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
@@ -14,6 +14,7 @@ import { StønadskontoType } from 'app/types/StønadskontoType';
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 
 import { Uttaksdagen } from './Uttaksdagen';
+import { ISOStringToDate } from './dateUtils';
 import { NavnPåForeldre, getNavnGenitivEierform } from './personUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
@@ -299,8 +300,8 @@ export const getOppholdskontoNavn = (
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     return erMor
-        ? intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn: navn })
-        : intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn: navn });
+        ? intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn: navn })
+        : intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
 export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsakType) => {
@@ -333,10 +334,10 @@ export const getPeriodeTittel = (
 ): string => {
     if (isAvslåttPeriode(periode)) {
         if (periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
-            return intlUtils(intl, 'uttaksplan.avslåttPeriode.utsettelse');
+            return intl.formatMessage({ id: 'uttaksplan.avslåttPeriode.utsettelse' });
         }
 
-        return intlUtils(intl, 'uttaksplan.avslåttPeriode');
+        return intl.formatMessage({ id: 'uttaksplan.avslåttPeriode' });
     }
     if (isUttaksperiode(periode)) {
         const tittelMedNavn = getStønadskontoForelderNavn(
@@ -366,9 +367,12 @@ export const getPeriodeTittel = (
                 ? prettifyProsent(periode.gradering.arbeidstidprosent)
                 : undefined;
             const samtidigUttaksProsent = periode.samtidigUttak ? prettifyProsent(periode.samtidigUttak) : undefined;
-            return `${tittel} ${intlUtils(intl, 'gradering.prosent', {
-                stillingsprosent: getUttaksprosentFromStillingsprosent(graderingsProsent, samtidigUttaksProsent),
-            })}`;
+            return `${tittel} ${intl.formatMessage(
+                { id: 'gradering.prosent' },
+                {
+                    stillingsprosent: getUttaksprosentFromStillingsprosent(graderingsProsent, samtidigUttaksProsent),
+                },
+            )}`;
         }
 
         return tittel;
@@ -387,7 +391,7 @@ export const getPeriodeTittel = (
         if (periode.utsettelseÅrsak) {
             return finnTekstForUtsettelseÅrsak(intl, periode.utsettelseÅrsak);
         }
-        return intlUtils(intl, 'uttaksplan.utsettelsesårsak.ukjent');
+        return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ukjent' });
     }
     //TODO getOppholdskontoNavn
     return '';

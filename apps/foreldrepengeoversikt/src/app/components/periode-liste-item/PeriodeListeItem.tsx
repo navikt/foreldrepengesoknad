@@ -4,7 +4,8 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, Heading } from '@navikt/ds-react';
 
-import { AdvarselIkon, Block, bemUtils } from '@navikt/fp-common';
+import { AdvarselIkon, Block } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import StønadskontoIkon from 'app/components/stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from 'app/components/utsettelse-ikon/UtsettelseIkon';

@@ -6,8 +6,9 @@ import { Link as LinkInternal, useParams } from 'react-router-dom';
 import { ExternalLink } from '@navikt/ds-icons';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
-import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
+import { guid } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { bemUtils } from '@navikt/fp-utils';
 
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import OversiktRoutes from 'app/routes/routes';
@@ -139,11 +140,17 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                                 manglendeVedleggData &&
                                 manglendeVedleggData.length > 1 && (
                                     <div className={bem.element('manglende_vedlegg')}>
-                                        <div>{intlUtils(intl, 'tidslinje.VENT_DOKUMENTASJON.flereVedlegg.tittel')}</div>
+                                        <div>
+                                            {intl.formatMessage({
+                                                id: 'tidslinje.VENT_DOKUMENTASJON.flereVedlegg.tittel',
+                                            })}
+                                        </div>
                                         <ul>
                                             {manglendeVedleggData.map((skjemaId) => {
                                                 return (
-                                                    <li key={guid()}>{intlUtils(intl, `ettersendelse.${skjemaId}`)}</li>
+                                                    <li key={guid()}>
+                                                        {intl.formatMessage({ id: `ettersendelse.${skjemaId}` })}
+                                                    </li>
                                                 );
                                             })}
                                         </ul>

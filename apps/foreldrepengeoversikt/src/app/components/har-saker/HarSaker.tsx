@@ -1,16 +1,19 @@
+import EtBarn from 'assets/EtBarn';
+import ToBarn from 'assets/ToBarn';
+import TreBarn from 'assets/TreBarn';
+import { useIntl } from 'react-intl';
+
 import { Heading } from '@navikt/ds-react';
-import { bemUtils, guid } from '@navikt/fp-common';
+
+import { guid } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
+
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { GruppertSak } from 'app/types/GruppertSak';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getSakTittel } from 'app/utils/sakerUtils';
-import EtBarn from 'assets/EtBarn';
-import ToBarn from 'assets/ToBarn';
-import TreBarn from 'assets/TreBarn';
 
-import { useIntl } from 'react-intl';
 import SakLink from '../sak-link/SakLink';
-
 import './har-saker.css';
 
 interface Props {

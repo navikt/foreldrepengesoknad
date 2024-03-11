@@ -1,19 +1,22 @@
+import { useIntl } from 'react-intl';
+import { Link, useParams } from 'react-router-dom';
+
 import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
-import { bemUtils, guid, intlUtils, useDocumentTitle } from '@navikt/fp-common';
+
+import { guid } from '@navikt/fp-common';
+import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
+
 import Api from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
-
-import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import GrupperteDokumenter from 'app/components/grupperte-dokumenter/GrupperteDokumenter';
-import { useParams, Link } from 'react-router-dom';
-import OversiktRoutes from 'app/routes/routes';
+import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
-import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
+import OversiktRoutes from 'app/routes/routes';
 import { RequestStatus } from 'app/types/RequestStatus';
+import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 
 import './dokumenter-page.css';
-import { useIntl } from 'react-intl';
 
 const DokumenterPage: React.FunctionComponent = () => {
     const bem = bemUtils('dokumenter-page');
@@ -22,9 +25,9 @@ const DokumenterPage: React.FunctionComponent = () => {
     const params = useParams();
 
     const intl = useIntl();
-    const title = intlUtils(intl, 'dokumenter');
-    const lastOppDokTittel = intlUtils(intl, 'lastOppDokumenter');
-    useDocumentTitle(`${title} - ${intlUtils(intl, 'dineForeldrepenger')}`);
+    const title = intl.formatMessage({ id: 'dokumenter' });
+    const lastOppDokTittel = intl.formatMessage({ id: 'lastOppDokumenter' });
+    useDocumentTitle(`${title} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`);
     const { dokumenterData, dokumenterError, dokumenterStatus } = Api.useGetDokumenter(params.saksnummer!);
 
     if (!dokumenterData && dokumenterStatus !== RequestStatus.FINISHED) {

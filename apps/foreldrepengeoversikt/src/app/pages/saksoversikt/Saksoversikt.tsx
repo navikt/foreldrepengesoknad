@@ -5,8 +5,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { Alert } from '@navikt/ds-react';
 
-import { Block, bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
 import Api from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
@@ -69,7 +70,9 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
     useSetSelectedSak(gjeldendeSak);
 
-    useDocumentTitle(`${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intlUtils(intl, 'dineForeldrepenger')}`);
+    useDocumentTitle(
+        `${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
+    );
 
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
@@ -129,7 +132,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                     </Alert>
                 </Block>
                 <Block padBottom="l">
-                    <Link to={`${OversiktRoutes.HOVEDSIDE}`}>{intlUtils(intl, 'saksoversikt')}</Link>
+                    <Link to={`${OversiktRoutes.HOVEDSIDE}`}>{intl.formatMessage({ id: 'saksoversikt' })}</Link>
                 </Block>
             </div>
         );
@@ -157,7 +160,10 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                 />
             )}
             {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
-                <ContentSection heading={intlUtils(intl, 'saksoversikt.oppgaver')} backgroundColor={'yellow'}>
+                <ContentSection
+                    heading={intl.formatMessage({ id: 'saksoversikt.oppgaver' })}
+                    backgroundColor={'yellow'}
+                >
                     <Oppgaver
                         minidialogerData={aktiveMinidialogerForSaken}
                         minidialogerError={minidialogerError}
@@ -166,7 +172,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                 </ContentSection>
             )}
             <ContentSection
-                heading={intlUtils(intl, 'saksoversikt.tidslinje')}
+                heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
                 showSkeleton={!tidslinjeHendelserData || !manglendeVedleggData}
                 skeletonProps={{ height: '250px', variant: 'rounded' }}
                 marginBottom="small"
@@ -192,7 +198,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
             </ContentSection>
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                 <ContentSection
-                    heading={intlUtils(intl, 'saksoversikt.dinPlan')}
+                    heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
                     showSkeleton={
                         !annenPartVedtakIsSuspended &&
                         annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&

@@ -1,16 +1,20 @@
+import { useIntl } from 'react-intl';
+import { Link as RouterLink } from 'react-router-dom';
+
+import { Next } from '@navikt/ds-icons';
 import { Alert, Link } from '@navikt/ds-react';
-import { bemUtils, intlUtils } from '@navikt/fp-common';
-import { Periode } from 'app/types/Periode';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import OversiktRoutes from 'app/routes/routes';
 import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
+import { Periode } from 'app/types/Periode';
+import { RettighetType } from 'app/types/RettighetType';
 import { getNavnPåForeldre } from 'app/utils/personUtils';
 
-import { useIntl } from 'react-intl';
-import { RettighetType } from 'app/types/RettighetType';
 import PeriodeListe from '../periode-liste/PeriodeListe';
-import { Next } from '@navikt/ds-icons';
-import { Link as RouterLink } from 'react-router-dom';
-import OversiktRoutes from 'app/routes/routes';
 import './periodeOversikt.css';
+
 interface Props {
     fremtidigePerioder?: Periode[];
     navnAnnenForelder: string;
@@ -41,13 +45,13 @@ const PeriodeOversikt: React.FunctionComponent<Props> = ({
         <div className={bem.block}>
             {[...nåværendePerioder, ...fremtidigePerioder].length === 0 && !visHelePlanen && (
                 <Alert className={bem.element('alert')} variant="info">
-                    {intlUtils(intl, 'periodeOversikt.ingenPerioder.visKunNåværendeOgNeste')}
+                    {intl.formatMessage({ id: 'periodeOversikt.ingenPerioder.visKunNåværendeOgNeste' })}
                 </Alert>
             )}
 
             {[...tidligerePerioder, ...nåværendePerioder, ...fremtidigePerioder].length === 0 && visHelePlanen && (
                 <Alert className={bem.element('alert')} variant="info">
-                    {intlUtils(intl, 'periodeOversikt.ingenPerioder.visHelePlanen')}
+                    {intl.formatMessage({ id: 'periodeOversikt.ingenPerioder.visHelePlanen' })}
                 </Alert>
             )}
 
