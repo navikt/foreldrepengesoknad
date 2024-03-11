@@ -5,7 +5,6 @@ import useStepData from 'appData/useStepData';
 import GreenPanel from 'components/GreenPanel';
 import Infoboks from 'components/Infoboks';
 import InfoboksGenerell from 'components/InfoboksGenerell';
-import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
@@ -79,7 +78,7 @@ export const getFellesperiodefordelingSelectOptions = (
             return (
                 <option key={value.id} value={value.id}>
                     <FormattedMessage
-                        id="periode.fordelingOptionAlt"
+                        id="fordeling.fordelingOptionAlt"
                         values={{ hvem: annenPartTekst, uker: value.antallUkerSøker2 }}
                     />
                 </option>
@@ -89,7 +88,7 @@ export const getFellesperiodefordelingSelectOptions = (
             return (
                 <option key={value.id} value={value.id}>
                     <FormattedMessage
-                        id="periode.fordelingOptionAlt"
+                        id="fordeling.fordelingOptionAlt"
                         values={{ hvem: søkerTekst, uker: value.antallUkerSøker1 }}
                     />
                 </option>
@@ -98,7 +97,7 @@ export const getFellesperiodefordelingSelectOptions = (
         return (
             <option key={value.id} value={value.id}>
                 <FormattedMessage
-                    id="periode.fordelingOptions"
+                    id="fordeling.fordelingOptions"
                     values={{
                         hvem: søkerTekst,
                         hvem2: annenPartTekst,
@@ -274,13 +273,13 @@ const FordelingSteg: FunctionComponent = () => {
                 <VStack gap="20">
                     <VStack gap="10">
                         <Heading size="large" spacing>
-                            <FormattedMessage id="periode.tittel" />
+                            <FormattedMessage id="fordeling.tittel" />
                         </Heading>
                         {!isAlene(hvemPlanlegger) && dekningsgrad && (
                             <VStack gap="10">
                                 <VStack gap="10">
                                     <InfoboksGenerell
-                                        header={<FormattedMessage id="periode.infoboks.hvordanFordeleTittel" />}
+                                        header={<FormattedMessage id="fordeling.infoboks.hvordanFordeleTittel" />}
                                         icon={
                                             <SectorChartIcon
                                                 height={28}
@@ -291,7 +290,7 @@ const FordelingSteg: FunctionComponent = () => {
                                         }
                                     >
                                         <BodyLong>
-                                            <FormattedMessage id="periode.infoboks.hvordanFordeleTekst" />
+                                            <FormattedMessage id="fordeling.infoboks.hvordanFordeleTekst" />
                                         </BodyLong>
                                     </InfoboksGenerell>
                                 </VStack>
@@ -299,7 +298,7 @@ const FordelingSteg: FunctionComponent = () => {
                                 <VStack gap="10">
                                     <GreenPanel isDarkGreen={fordeling === undefined}>
                                         <Select
-                                            label={<FormattedMessage id="periode.fordelingTittel" />}
+                                            label={<FormattedMessage id="fordeling.fordelingTittel" />}
                                             name="fellesperiodefordeling"
                                             onChange={(e) => {
                                                 setCurrentOption(e.target.value);
@@ -312,7 +311,7 @@ const FordelingSteg: FunctionComponent = () => {
 
                                     {currentOption !== undefined && currentOption > '0' && (
                                         <Infoboks
-                                            header={<FormattedMessage id="periode.infoboksTittel" />}
+                                            header={<FormattedMessage id="fordeling.infoboksTittel" />}
                                             icon={
                                                 <CalendarIcon
                                                     height={28}
@@ -324,7 +323,7 @@ const FordelingSteg: FunctionComponent = () => {
                                         >
                                             <BodyLong>
                                                 <FormattedMessage
-                                                    id="periode.infoboksTekst.førsteDag"
+                                                    id="fordeling.infoboksTekst.førsteDag"
                                                     values={{
                                                         hvem: fornavnSøker,
                                                         dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
@@ -333,7 +332,7 @@ const FordelingSteg: FunctionComponent = () => {
                                             </BodyLong>
                                             <BodyLong spacing>
                                                 <FormattedMessage
-                                                    id="periode.infoboksTekst.sisteDag"
+                                                    id="fordeling.infoboksTekst.sisteDag"
                                                     values={{
                                                         hvem: fornavnSøker,
                                                         dag: sluttdatoSøker1.format('DD.MM.YY'),
@@ -343,7 +342,7 @@ const FordelingSteg: FunctionComponent = () => {
 
                                             <BodyLong>
                                                 <FormattedMessage
-                                                    id="periode.infoboksTekst.førsteDag"
+                                                    id="fordeling.infoboksTekst.førsteDag"
                                                     values={{
                                                         hvem: fornavnAnnenPart,
                                                         dag: dayjs(startdatoSøker2).add(1, 'day').format('DD.MM.YY'),
@@ -352,7 +351,7 @@ const FordelingSteg: FunctionComponent = () => {
                                             </BodyLong>
                                             <BodyLong spacing>
                                                 <FormattedMessage
-                                                    id="periode.infoboksTekst.sisteDag"
+                                                    id="fordeling.infoboksTekst.sisteDag"
                                                     values={{
                                                         hvem: fornavnAnnenPart,
                                                         dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
@@ -360,7 +359,7 @@ const FordelingSteg: FunctionComponent = () => {
                                                 />
                                             </BodyLong>
                                             <BodyLong size="small">
-                                                <FormattedMessage id="periode.infoboksTekst.hvis" />
+                                                <FormattedMessage id="fordeling.infoboksTekst.hvis" />
                                             </BodyLong>
                                         </Infoboks>
                                     )}
@@ -370,7 +369,6 @@ const FordelingSteg: FunctionComponent = () => {
                     </VStack>
 
                     <VStack gap="10">
-                        <HvorforSpørNAVOmDette text="TODO" />
                         <VStack gap="10">
                             <StepButtonsHookForm<Fordeling>
                                 saveDataOnPreviousClick={lagreFordeling}

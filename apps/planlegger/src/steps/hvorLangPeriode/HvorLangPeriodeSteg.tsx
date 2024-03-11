@@ -4,7 +4,6 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Infoboks from 'components/Infoboks';
 import InfoboksGenerell from 'components/InfoboksGenerell';
-import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
@@ -322,7 +321,6 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
                         )}
                     </VStack>
                     <VStack gap="10">
-                        <HvorforSpørNAVOmDette text="TODO" />
                         <StepButtonsHookForm<HvorLangPeriode>
                             saveDataOnPreviousClick={lagrePeriode}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}

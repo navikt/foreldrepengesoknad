@@ -1,7 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
@@ -55,7 +54,6 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                     {isAlene(hvemPlanlegger) && <Aleneforsørger />}
                 </VStack>
                 <VStack gap="20">
-                    <HvorforSpørNAVOmDette text="TODO" />
                     <VStack>
                         <StepButtons
                             nextButtonOnClick={navigator.goToNextDefaultStep}

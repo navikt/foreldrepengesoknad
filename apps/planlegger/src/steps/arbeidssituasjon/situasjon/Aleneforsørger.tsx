@@ -16,20 +16,20 @@ const Aleneforsørger: FunctionComponent = () => {
     return (
         <>
             {arbeidssituasjon === ArbeidssituasjonEnum.JOBBER && (
-                <Infoboks header={<FormattedMessage id="arbeid.jobber.infoboksDeg" />}>
+                <Infoboks header={<FormattedMessage id="arbeid.jobber.infoboks.harRettTilForeldrepengerDeg" />}>
                     <BodyLong>
-                        <FormattedMessage id="arbeid.jobber.infoboks.beskrivelseDeg" />
+                        <FormattedMessage id="arbeid.jobber.infoboks.harJobbetSeksAvTiMnd" />
                     </BodyLong>
                 </Infoboks>
             )}
             {arbeidssituasjon === ArbeidssituasjonEnum.UFØR && (
-                <Infoboks header={<FormattedMessage id="arbeid.infoboksDeg" />}>
+                <Infoboks header={<FormattedMessage id="arbeid.infoboks.harIkkeRettTilForeldrepengerDeg" />}>
                     <BodyLong>
-                        <FormattedMessage id="arbeid.infoboks.aktivitet" />
+                        <FormattedMessage id="arbeid.ufør.infoboks.erUførDeg" />
                     </BodyLong>
                     <BodyLong>
                         <FormattedMessage
-                            id="arbeid.ufør.infoboks.beskrivelseDel3Deg"
+                            id="arbeid.ufør.infoboks.lesMerDeg"
                             values={{
                                 a: (msg: any) => (
                                     <Link href={HVOR_LENGE_LENKE} className="lenke" rel="noreferrer" target="_blank">
@@ -42,16 +42,13 @@ const Aleneforsørger: FunctionComponent = () => {
                 </Infoboks>
             )}
             {arbeidssituasjon === ArbeidssituasjonEnum.INGEN && (
-                <Infoboks header={<FormattedMessage id="arbeid.infoboksDeg" />}>
+                <Infoboks header={<FormattedMessage id="arbeid.infoboks.harIkkeRettTilForeldrepengerDeg" />}>
                     <BodyLong>
-                        <FormattedMessage id="arbeid.ingen.infoboks.beskrivelseDeg" />
-                    </BodyLong>
-                    <BodyLong>
-                        <FormattedMessage id="arbeid.infoboks.aktivitet" />
+                        <FormattedMessage id="arbeid.ingen.infoboks.manHarIkkeRett" />
                     </BodyLong>
                     <BodyLong>
                         <FormattedMessage
-                            id="arbeid.ingen.infoboks.beskrivelseDel3Deg"
+                            id="arbeid.ingen.infoboks.engangsstønadDeg"
                             values={{
                                 a: (msg: any) => (
                                     <Link href={VEIVISER_LENKE} className="lenke" rel="noreferrer" target="_blank">
