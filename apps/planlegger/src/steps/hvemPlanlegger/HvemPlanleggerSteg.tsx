@@ -1,7 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import useStepData from 'appData/useStepData';
 import GreenPanel from 'components/GreenPanel';
-import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
@@ -185,7 +184,6 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         </GreenPanel>
                     )}
                     <VStack gap="20">
-                        <HvorforSpørNAVOmDette text="TODO" />
                         <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} useSimplifiedTexts />
                     </VStack>
                 </VStack>
