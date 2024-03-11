@@ -1,6 +1,8 @@
-import { ExpansionCard, HStack } from '@navikt/ds-react';
+import { InformationIcon } from '@navikt/aksel-icons';
+import IconCircle from 'components/ikoner/IconCircle';
 import { FormattedMessage } from 'react-intl';
-import Info from 'components/ikoner/Info';
+
+import { ExpansionCard, HStack } from '@navikt/ds-react';
 
 interface Props {
     text: string;
@@ -10,7 +12,9 @@ const HvorforSpørNAVOmDette: React.FunctionComponent<Props> = ({ text }) => {
         <ExpansionCard aria-label="">
             <ExpansionCard.Header>
                 <HStack gap="10" align="center">
-                    <Info />
+                    <IconCircle size="xl" color="green">
+                        <InformationIcon height={25} width={25} />
+                    </IconCircle>
                     <ExpansionCard.Title size="medium">
                         <FormattedMessage id="hvem.info.tittel" />
                     </ExpansionCard.Title>

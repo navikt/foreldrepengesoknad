@@ -1,9 +1,9 @@
+import { HeartFillIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import BlåSirkel from 'components/ikoner/BlåSirkel';
-import Hjerte from 'components/ikoner/Hjerte';
-import GrønnSirkel from 'components/ikoner/RosaSirkel';
+import GrønnSirkel from 'components/ikoner/GrønnSirkel';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
@@ -294,7 +294,7 @@ const OversiktSteg = () => {
                         </HStack>
                         <div className="pinkPanel">
                             <HStack gap="2" align="center">
-                                <Hjerte />
+                                <HeartFillIcon color="#F68282" />
                                 <BodyShort>
                                     {(erFødt || erAdoptert) && (
                                         <FormattedMessage
