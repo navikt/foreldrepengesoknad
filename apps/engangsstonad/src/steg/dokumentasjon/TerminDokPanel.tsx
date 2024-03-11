@@ -1,5 +1,6 @@
 import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
+import minMax from 'dayjs/plugin/minMax';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
@@ -11,6 +12,8 @@ import { Datepicker } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+dayjs.extend(minMax);
 
 const ukerAaTrekkeFraTerminDato = 18;
 const ekstraDagerAaTrekkeFraTerminDato = 3;

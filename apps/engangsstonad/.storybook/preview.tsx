@@ -1,13 +1,13 @@
-import { getIntlDecorator } from '@navikt/fp-utils-test';
 import { Preview } from '@storybook/react';
-import { allCommonMessages } from '@navikt/fp-common';
-
-import nnMessages from '../src/intl/messages/nn_NO.json';
-import nbMessages from '../src/intl/messages/nb_NO.json';
-import enMessages from '../src/intl/messages/en_US.json';
+import 'styles/globals.css';
 
 import '@navikt/ds-css';
-import 'styles/globals.css';
+
+import { getIntlDecorator } from '@navikt/fp-utils-test';
+
+import enMessages from '../src/intl/messages/en_US.json';
+import nbMessages from '../src/intl/messages/nb_NO.json';
+import nnMessages from '../src/intl/messages/nn_NO.json';
 
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
@@ -18,9 +18,9 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...allCommonMessages.nb },
-    nn: { ...nnMessages, ...allCommonMessages.nn },
-    en: { ...enMessages, ...allCommonMessages.en },
+    nb: nbMessages,
+    nn: nnMessages,
+    en: enMessages,
 });
 
 export const globalTypes = {

@@ -5,8 +5,8 @@ import { Adopsjon } from 'types/OmBarnet';
 
 import { Radio } from '@navikt/ds-react';
 
-import { Kjønn } from '@navikt/fp-common';
 import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
+import { Kjønn } from '@navikt/fp-types';
 import { isMaxOneYearIntoTheFuture, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
