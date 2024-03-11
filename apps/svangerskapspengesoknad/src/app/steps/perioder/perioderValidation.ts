@@ -155,7 +155,7 @@ export const validatePeriodeTom =
 
 export const validatePeriodeTomType =
     (intl: IntlShape, sisteDagForSvangerskapspenger: string, arbeidNavn: string, sluttDatoArbeid: string | undefined) =>
-    (value: string | number) => {
+    (value: string | number | boolean) => {
         if (
             sluttDatoArbeid &&
             value === TilOgMedDatoType.SISTE_DAG_MED_SVP &&

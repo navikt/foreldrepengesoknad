@@ -17,7 +17,7 @@ import {
 } from '@navikt/fp-common';
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
 import { Søker, Søkerrolle } from '@navikt/fp-types';
-import { isBefore, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeDate, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
@@ -138,7 +138,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søker, rol
                                 id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
                             }),
                         ),
-                        isBefore(
+                        isBeforeDate(
                             intl.formatMessage({
                                 id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
                             }),

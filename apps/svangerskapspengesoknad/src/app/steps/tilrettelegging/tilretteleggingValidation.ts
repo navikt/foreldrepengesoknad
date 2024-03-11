@@ -262,7 +262,7 @@ export const validerTilretteleggingTomType =
         sluttDatoArbeid: string | undefined,
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
-    (value: string | number): string | undefined => {
+    (value: string | number | boolean): string | undefined => {
         const erDelvis = tilretteleggingType === TilretteleggingstypeOptions.DELVIS;
         if (!hasValue(value)) {
             if (erDelvis) {
