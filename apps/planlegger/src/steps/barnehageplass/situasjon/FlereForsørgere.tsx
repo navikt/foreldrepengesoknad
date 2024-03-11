@@ -12,8 +12,7 @@ import { BodyLong, Link, VStack } from '@navikt/ds-react';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { BARNEHAGELOVEN_TEKST } from '../BarnehageplassSteg';
-import { barnehagestartDato } from '../BarnehageplassSteg';
+import { BARNEHAGELOVEN_TEKST, barnehagestartDato } from '../BarnehageplassSteg';
 
 const FlereForsørgere: FunctionComponent = () => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

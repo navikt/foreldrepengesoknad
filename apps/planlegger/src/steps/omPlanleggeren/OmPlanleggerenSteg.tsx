@@ -1,8 +1,7 @@
-import { ArrowRightIcon } from '@navikt/aksel-icons';
+import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import LanguageToggle from 'components/LanguageToggle';
-import Kalender from 'components/ikoner/Kalender';
-import Spørsmålstegn from 'components/ikoner/Spørsmålstegn';
+import IconCircle from 'components/ikoner/IconCircle';
 import PlanleggerFrontpage from 'components/planleggerPage/PlanleggerFrontpage';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -32,14 +31,18 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                         <Heading level="2" size="xsmall">
                             <FormattedMessage id="om.underoverskrift" />
                         </Heading>
-                        <HStack gap="4" align="center">
-                            <Spørsmålstegn />
+                        <HStack gap="4" align="center" wrap={false}>
+                            <IconCircle color="green" size="medium">
+                                <QuestionmarkIcon width="24" height="25" />
+                            </IconCircle>
                             <BodyShort>
                                 <FormattedMessage id="om.trinn1" />
                             </BodyShort>
                         </HStack>
-                        <HStack gap="4" align="center">
-                            <Kalender />
+                        <HStack gap="4" align="center" wrap={false}>
+                            <IconCircle color="green" size="medium">
+                                <CalendarIcon width="24" height="25" />
+                            </IconCircle>
                             <BodyShort>
                                 <FormattedMessage id="om.trinn2" />
                             </BodyShort>

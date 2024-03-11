@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import styles from './Infoboks.module.css';
-import ikonStyles from './ikoner/ikon.module.css';
+import IconCircle from './ikoner/IconCircle';
 
 interface Props {
     header: string | React.ReactNode;
@@ -18,7 +18,9 @@ const InfoboksGenerell: React.FC<Props> = ({ header, children, icon }) => {
                     <Heading size="small" className={styles.header}>
                         {header}
                     </Heading>
-                    <div className={`${ikonStyles.circle} ${ikonStyles.circle__general}`}>{icon}</div>
+                    <IconCircle color="gray" size="medium">
+                        <>{icon}</>
+                    </IconCircle>
                 </HStack>
 
                 {children}
