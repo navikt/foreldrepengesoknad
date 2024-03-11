@@ -2,7 +2,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Infoboks from 'components/Infoboks';
-import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -144,7 +143,6 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         </Infoboks>
                     )}
                     <VStack gap="10">
-                        <HvorforSpørNAVOmDette text="TODO" />
                         <VStack>
                             <StepButtonsHookForm<OmBarnet>
                                 saveDataOnPreviousClick={lagreOmBarnet}

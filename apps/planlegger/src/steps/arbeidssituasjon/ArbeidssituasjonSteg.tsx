@@ -1,7 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import HvorforSpørNAVOmDette from 'components/expansionCard/HvorforSpørNAVOmDette';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
@@ -95,7 +94,6 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     {erAlenesøker && <Aleneforsørger />}
                     {!erAlenesøker && <FlereForsørgere hvemPlanlegger={hvemPlanlegger} />}
                     <VStack gap="20">
-                        <HvorforSpørNAVOmDette text="TODO" />
                         <StepButtonsHookForm
                             saveDataOnPreviousClick={lagreArbeidssituasjon}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
