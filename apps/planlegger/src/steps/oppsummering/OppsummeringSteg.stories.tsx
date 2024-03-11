@@ -79,7 +79,7 @@ OppsummeringAleneforsørgerÅttiProsentTermin.args = {
     omBarnet: {
         erFødsel: true,
         erBarnetFødt: false,
-        termindato: '2022-10-24',
+        termindato: '2022-07-10',
         hvorMange: 'ett',
     },
 };
