@@ -1,4 +1,4 @@
-import { CalendarIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
@@ -12,16 +12,19 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
-import { isAlene } from 'types/HvemPlanlegger';
+import { isAlene, isFar, isMor } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
+    getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
+    getAntallUkerForeldrepenger,
+    getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
-import { BodyLong, Heading, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Link, Radio, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -100,16 +103,36 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
         },
     };
 
+    const konto80aleneomsorgFar = {
+        kontoer: {
+            FORELDREPENGER: 280,
+        },
+        minsteretter: {
+            generellMinsterett: 0,
+            farRundtFødsel: 10,
+            toTette: 0,
+        },
+    };
+
     const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
     const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
     const mappedKonto100tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100tvillinger);
     const mappedKonto80tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80tvillinger);
+    const mappedKonto80aleneomsorgFar = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80aleneomsorgFar);
+
     const dekningsgrad = formMethods.watch('dekningsgrad');
 
     const toBarn = barnet.hvorMange === 'to';
     const ettBarn = barnet.hvorMange === 'ett';
 
+    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erMor = isMor(hvemPlanlegger);
+    const erFar = isFar(hvemPlanlegger);
+
     const finnSelectedKonto = () => {
+        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && erFar) {
+            return mappedKonto80aleneomsorgFar;
+        }
         if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && ettBarn) {
             return mappedKonto100;
         }
@@ -122,6 +145,7 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
         if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && toBarn) {
             return mappedKonto80tvillinger;
         }
+
         return mappedKonto100;
     };
 
@@ -130,6 +154,8 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
     const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
     const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
+    const antallUkerFørFødsel = getAntallUkerForeldrepengerFørFødsel(selectedKonto);
+    const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(selectedKonto);
 
     const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate());
 
@@ -140,14 +166,21 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
               .add(antallUkerFellesperiode, 'weeks')
         : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
 
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const antallUkerTotalt =
+        antallUkerMødrekvote + antallUkerFedrekvote + antallUkerFellesperiode + antallUkerFørFødsel;
+    const antallUkerAktivitetskravKvote = antallUkerTotalt - antallUkerAktivitetsfriKvote;
 
+    console.log('selected', selectedKonto);
+    const totalt = getAntallUkerForeldrepenger(selectedKonto);
+    console.log('totalt', totalt);
+    console.log('aktivitetsfri', antallUkerAktivitetsfriKvote);
+    console.log('aktivitetskrav', antallUkerAktivitetskravKvote);
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="20">
-                    <VStack gap="10">
-                        <Heading size="large" spacing>
+                <VStack gap="10">
+                    <VStack gap="5">
+                        <Heading size="medium" spacing>
                             <FormattedMessage id="periode.tittel" />
                         </Heading>
                         <InfoboksGenerell
@@ -174,6 +207,47 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
                                 </BodyLong>
                             )}
                         </InfoboksGenerell>
+                        {
+                            // TODO: endre fra erMor og erFar til at man er flere men bare mor eller far har rett
+                            erAlenesøker && (
+                                <InfoboksGenerell
+                                    header={
+                                        <>
+                                            {erMor && <FormattedMessage id="periode.infoboks.nårBareMorHarRett" />}
+                                            {erFar && <FormattedMessage id="periode.infoboks.nårBareFarHarRett" />}
+                                        </>
+                                    }
+                                    icon={
+                                        <PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />
+                                    }
+                                >
+                                    {erMor && (
+                                        <VStack gap="2">
+                                            <BodyLong>
+                                                <FormattedMessage id="periode.infoboks.nårBareMorHarRett.fårHelePerioden" />
+                                            </BodyLong>
+                                            <BodyLong>
+                                                <FormattedMessage id="periode.infoboks.nårBareMorHarRett.ingenKravTilFar" />
+                                            </BodyLong>
+                                        </VStack>
+                                    )}
+                                    {erFar && (
+                                        <VStack gap="2">
+                                            <BodyLong>
+                                                <FormattedMessage id="periode.infoboks.nårBareFarHarRett.kanFåhelePerioden" />
+                                            </BodyLong>
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="periode.infoboks.nårBareFarHarRett.ingenKravTilMor"
+                                                    values={{ a: (msg: any) => <Link>{msg}</Link> }}
+                                                />
+                                            </BodyLong>
+                                        </VStack>
+                                    )}
+                                </InfoboksGenerell>
+                            )
+                        }
+
                         <GreenRadioGroup
                             label={
                                 erAlenesøker ? (
@@ -200,7 +274,7 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
                                 {erToBarn(barnet) && <FormattedMessage id="periode.80.toBarn" />}{' '}
                             </Radio>
                         </GreenRadioGroup>
-                        {!erAlenesøker && dekningsgrad && (
+                        {dekningsgrad && (
                             <Infoboks
                                 header={
                                     <FormattedMessage
@@ -215,6 +289,35 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
                                 <BodyLong>
                                     <FormattedMessage id="periode.infoboks.sisteDagTekst" />
                                 </BodyLong>
+                                {
+                                    // TODO: endre fra erFar til at man er flere men bare far har rett
+                                    erFar && (
+                                        <VStack gap="2">
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="periode.infoboks.sisteDagTekstFar.førsteUker"
+                                                    values={{
+                                                        uker: antallUkerAktivitetsfriKvote,
+                                                        uker2: antallUkerTotalt,
+                                                        a: (msg: any) => <Link>{msg}</Link>,
+                                                        b: (msg: any) => <b>{msg}</b>,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="periode.infoboks.sisteDagTekstFar.andreUker"
+                                                    values={{
+                                                        uker: antallUkerAktivitetskravKvote,
+                                                        uker2: antallUkerTotalt,
+                                                        a: (msg: any) => <Link>{msg}</Link>,
+                                                        b: (msg: any) => <b>{msg}</b>,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        </VStack>
+                                    )
+                                }
                             </Infoboks>
                         )}
                     </VStack>
