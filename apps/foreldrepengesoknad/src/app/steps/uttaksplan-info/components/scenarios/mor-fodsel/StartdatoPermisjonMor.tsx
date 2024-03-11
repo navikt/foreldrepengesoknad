@@ -85,19 +85,16 @@ const StartdatoPermisjonMor: FunctionComponent<Props> = ({
                     <MorFødselFormComponents.DatePicker
                         name={MorFødselFormField.permisjonStartdato}
                         label={spørsmålNår}
-                        disabled={skalIkkeHaUttakFørTermin}
+                        inputDisabled={skalIkkeHaUttakFørTermin}
                         maxDate={maksDato}
-                        dayPickerProps={{
-                            defaultMonth: ISOStringToDate(permisjonStartdato) || familiehendelsesdatoDate,
-                        }}
+                        defaultMonth={ISOStringToDate(permisjonStartdato) || familiehendelsesdatoDate}
                         validate={validateErStartdatoFørTermindato(
                             intl,
                             familiehendelsesdatoDate,
                             skalIkkeHaUttakFørTermin,
                             termindato,
                         )}
-                        disableWeekend
-                        placeholder={'dd.mm.åååå'}
+                        disableWeekends
                     />
                     <div className={bem.element('postfix')}>
                         {getVarighetForStartdato(antallDager, erBarnFødt, intl)}

@@ -1,5 +1,3 @@
-import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-
 import {
     Arbeidsform,
     Forelder,
@@ -8,6 +6,7 @@ import {
     StønadskontoType,
     UttakRundtFødselÅrsak,
 } from '@navikt/fp-common';
+import { YesOrNo, getTypedFormComponents } from '@navikt/fp-formik';
 
 export enum PeriodeUttakFormField {
     fom = 'fom',

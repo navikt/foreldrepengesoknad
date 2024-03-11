@@ -15,6 +15,7 @@ const FortsettSøknadSenereDialog: React.FunctionComponent<Props> = (props) => {
     const { synlig, onFortsettSøknad, onFortsettSøknadSenere } = props;
     return (
         <BekreftDialog
+            tittel="Fortsett søknad senere"
             open={synlig}
             bekreftLabel={intlHelper(intl, 'fortsettSøknadSenereDialog.avbrytSøknadLabel')}
             avbrytLabel={intlHelper(intl, 'fortsettSøknadSenereDialog.fortsettSøknadLabel')}

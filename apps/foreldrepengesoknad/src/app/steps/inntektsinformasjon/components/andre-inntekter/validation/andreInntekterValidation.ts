@@ -1,7 +1,9 @@
-import { isISODateString } from '@navikt/ds-datepicker';
-import { hasValue, intlUtils, isDateInTheFuture } from '@navikt/fp-common';
-import { isDateABeforeDateB } from 'app/utils/dateUtils';
 import { IntlShape } from 'react-intl';
+
+import { hasValue, intlUtils, isDateInTheFuture } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
+
+import { isDateABeforeDateB } from 'app/utils/dateUtils';
 
 export const validateAnnenInntektFom = (intl: IntlShape, tom: string) => (fom: string) => {
     if (!hasValue(fom)) {

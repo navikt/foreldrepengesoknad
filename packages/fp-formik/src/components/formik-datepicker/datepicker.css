@@ -1,0 +1,12 @@
+@media screen and (max-width: 400px) {
+    .DayPicker-Month {
+        margin-right: 0.5rem;
+        margin-left: 0.5rem;
+    }
+}
+.DayPicker-Day {
+    padding: 0.4rem !important;
+}
+.DayPicker-Weekday {
+    padding: 0.4rem !important;
+}

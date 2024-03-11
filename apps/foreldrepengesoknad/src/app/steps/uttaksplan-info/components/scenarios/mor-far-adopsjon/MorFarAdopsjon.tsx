@@ -1,4 +1,3 @@
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
@@ -20,6 +19,7 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
+import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';

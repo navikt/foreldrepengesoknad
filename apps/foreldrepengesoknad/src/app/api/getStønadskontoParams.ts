@@ -18,8 +18,9 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
+import { dateToISOString } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';

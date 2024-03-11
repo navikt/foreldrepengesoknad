@@ -1,5 +1,9 @@
-import { isISODateString } from '@navikt/ds-datepicker';
+import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
 import { SkjemaelementFeil, formatDate, intlUtils, validateTextInputField } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
+
 import {
     Arbeidsforholdstype,
     PeriodeMedVariasjon,
@@ -11,8 +15,6 @@ import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'app/utils/arbe
 import { dagenFør, tiMånederSidenDato } from 'app/utils/dateUtils';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'app/utils/validationUtils';
-import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
 
 export const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     if (!hasValue(value) || value.trim() === '') {

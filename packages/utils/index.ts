@@ -27,4 +27,5 @@ export {
     etÅrSiden,
     enMånedSiden,
     niMånederFremITid,
+    isISODateString,
 } from './src/dateUtils';

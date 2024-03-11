@@ -1,4 +1,3 @@
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import dayjs from 'dayjs';
 import React, { FunctionComponent, useEffect } from 'react';
@@ -10,6 +9,7 @@ import { BodyLong, Label, VStack } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
+import { dateToISOString } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { FileUploader } from '@navikt/fp-ui';

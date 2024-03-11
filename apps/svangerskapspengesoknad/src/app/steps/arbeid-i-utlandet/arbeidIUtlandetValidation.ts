@@ -1,11 +1,12 @@
-import { isISODateString } from '@navikt/ds-datepicker';
-import { intlUtils, isDateABeforeDateB, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
-import { isDateAAfterDateB } from '@navikt/fp-utils';
-import { femMånederSiden } from 'app/utils/dateUtils';
-import { hasValue } from 'app/utils/validationUtils';
-import { IntlShape } from 'react-intl';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
+import { intlUtils, isDateABeforeDateB, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
+import { isDateAAfterDateB, isISODateString } from '@navikt/fp-utils';
+
+import { femMånederSiden } from 'app/utils/dateUtils';
+import { hasValue } from 'app/utils/validationUtils';
 
 export const validateArbeidIUtlandetFom = (intl: IntlShape, tom: string | undefined) => (fom: string) => {
     if (!hasValue(fom)) {

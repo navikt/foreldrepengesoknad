@@ -1,7 +1,8 @@
-import { isISODateString } from '@navikt/ds-datepicker';
-import { hasValue, intlUtils } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
+
+import { hasValue, intlUtils } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
 
 export const validateFrilansoppstartsDato = (intl: IntlShape) => (oppstartsdato: string) => {
     if (!hasValue(oppstartsdato)) {

@@ -1,5 +1,10 @@
-import { isISODateString } from '@navikt/ds-datepicker';
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import dayjs from 'dayjs';
+
 import { getFloatFromString } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
+
+import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
 import Tilrettelegging, {
     PeriodeMedVariasjon,
     Stilling,
@@ -8,9 +13,7 @@ import Tilrettelegging, {
     Tilretteleggingstype,
     TilretteleggingstypeOptions,
 } from 'app/types/Tilrettelegging';
-import dayjs from 'dayjs';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
+
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from './arbeidsforholdUtils';
 
 const mapTilretteleggingTilPeriode = (

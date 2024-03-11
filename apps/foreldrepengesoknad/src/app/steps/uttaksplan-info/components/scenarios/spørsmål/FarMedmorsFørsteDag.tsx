@@ -1,4 +1,3 @@
-import { TypedFormComponents, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -13,6 +12,7 @@ import {
     intlUtils,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
+import { TypedFormComponents, dateToISOString } from '@navikt/fp-formik';
 
 import LenkeKnapp from 'app/components/lenke-knapp/LenkeKnapp';
 
@@ -60,9 +60,8 @@ const FarMedmorsFørsteDag: FunctionComponent<Props> = ({
                     label={intlUtils(intl, 'uttaksplaninfo.farSinFørsteUttaksdagSpørsmål.label')}
                     maxDate={maxDate}
                     minDate={minDate}
-                    showYearSelector={true}
-                    disableWeekend={true}
-                    placeholder={'dd.mm.åååå'}
+                    disableWeekends={true}
+                    dropdownCaption={true}
                     validate={validateStartdatoFarMedmor(intl, minDate!, maxDate!)}
                 />
             </Block>

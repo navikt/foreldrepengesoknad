@@ -16,6 +16,7 @@ const AvbrytSøknadDialog: React.FunctionComponent<AvbrytSøknadDialogProps> = (
     const { synlig, onFortsettSøknad, onAvbrytSøknad } = props;
     return (
         <BekreftDialog
+            tittel="Avbryt søknad"
             open={synlig}
             bekreftLabel={intlHelper(intl, 'avbrytSøknadDialog.avbrytSøknadLabel')}
             avbrytLabel={intlHelper(intl, 'avbrytSøknadDialog.fortsettSøknadLabel')}

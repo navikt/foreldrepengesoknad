@@ -1,9 +1,11 @@
-import { isISODateString } from '@navikt/ds-datepicker';
-import { intlUtils, isDateABeforeDateB, isDateInTheFuture } from '@navikt/fp-common';
 import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { IntlShape } from 'react-intl';
+
+import { intlUtils, isDateABeforeDateB, isDateInTheFuture } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
+
 import { fireUkerSiden } from 'app/utils/dateUtils';
 import { hasValue } from 'app/utils/validationUtils';
-import { IntlShape } from 'react-intl';
 
 export const validateFrilansStart = (intl: IntlShape) => (fom: string) => {
     if (!hasValue(fom)) {

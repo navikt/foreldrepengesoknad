@@ -1,21 +1,23 @@
 import React from 'react';
-import { Button, Heading, Modal, ModalProps } from '@navikt/ds-react';
+import { Button, Heading, Modal } from '@navikt/ds-react';
 import Block from '../../block/Block';
 
-export interface BekreftDialogProps extends ModalProps {
-    tittel?: string;
+export interface BekreftDialogProps {
+    tittel: string;
     onBekreft: () => void;
     onAvbryt?: () => void;
     onClose: () => void;
     bekreftLabel: string;
     avbrytLabel: string;
+    children: React.ReactNode;
+    open: boolean;
 }
 
 const BekreftDialog: React.FunctionComponent<BekreftDialogProps> = (props) => {
-    const { tittel, onAvbryt, onBekreft, onClose, avbrytLabel, bekreftLabel, children, ...modalProps } = props;
+    const { tittel, onAvbryt, onBekreft, onClose, avbrytLabel, bekreftLabel, children, open } = props;
 
     return (
-        <Modal {...modalProps}>
+        <Modal open={open} onClose={onClose} aria-label={tittel}>
             <Modal.Body>
                 {tittel && (
                     <Heading level="2" size="medium">

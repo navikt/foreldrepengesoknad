@@ -1,6 +1,8 @@
+import { dateToISOString } from '@navikt/fp-formik';
+
 import { MorFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+
 import { MorFødselFormData, MorFødselFormField } from './morFødselFormConfig';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 const initialMorFødselValues: MorFødselFormData = {
     [MorFødselFormField.permisjonStartdato]: '',

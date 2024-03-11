@@ -1,16 +1,19 @@
+import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
+
 import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { isISODateString } from '@navikt/ds-datepicker';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
-import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
-import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
-import Tilrettelegging, { Stilling } from 'app/types/Tilrettelegging';
-import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
-import { hasValue } from './validationUtils';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { isISODateString } from '@navikt/fp-utils';
+
+import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
+import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
+import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import Tilrettelegging, { Stilling } from 'app/types/Tilrettelegging';
+
+import { hasValue } from './validationUtils';
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {

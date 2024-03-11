@@ -1,4 +1,3 @@
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -20,6 +19,7 @@ import {
     isFarEllerMedmor,
     isInfoPeriode,
 } from '@navikt/fp-common';
+import { dateToISOString } from '@navikt/fp-formik';
 import { Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';

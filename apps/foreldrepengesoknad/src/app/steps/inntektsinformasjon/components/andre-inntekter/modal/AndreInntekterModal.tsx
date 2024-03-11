@@ -126,9 +126,6 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     <AndreInntekterModalFormComponents.DatePicker
                                         name={AndreInntekterFormField.fom}
                                         label={intlUtils(intl, 'fom')}
-                                        placeholder="dd.mm.åååå"
-                                        fullscreenOverlay={true}
-                                        showYearSelector={true}
                                         validate={validateAnnenInntektFom(intl, formValues.tom!)}
                                         maxDate={dayjs().toDate()}
                                     />
@@ -143,9 +140,6 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                     <AndreInntekterModalFormComponents.DatePicker
                                         name={AndreInntekterFormField.tom}
                                         label={intlUtils(intl, 'tom')}
-                                        placeholder="dd.mm.åååå"
-                                        fullscreenOverlay={true}
-                                        showYearSelector={true}
                                         validate={validateAnnenInntektTom(intl, formValues.fom!)}
                                         maxDate={dayjs().toDate()}
                                     />

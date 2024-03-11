@@ -1,7 +1,9 @@
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+
+import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
 
 export const cleanUttaksplanFormData = (
     values: UttaksplanFormData,

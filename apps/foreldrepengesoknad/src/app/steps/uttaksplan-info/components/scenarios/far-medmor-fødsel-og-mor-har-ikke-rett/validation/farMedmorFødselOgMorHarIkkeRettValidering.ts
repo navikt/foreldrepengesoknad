@@ -1,7 +1,8 @@
-import { ISOStringToDate, Uttaksdagen, formatDateExtended, intlUtils } from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { isISODateString } from '@navikt/ds-datepicker';
+
+import { ISOStringToDate, Uttaksdagen, formatDateExtended, intlUtils } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
 
 export const validateStartdatoFarMedmor =
     (intl: IntlShape, minDato: Date, maxDato: Date) => (permisjonStartdato: string) => {

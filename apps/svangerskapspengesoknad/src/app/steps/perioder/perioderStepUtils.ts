@@ -1,12 +1,15 @@
-import { PeriodeMedVariasjon, Tilrettelegging, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-import { PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
-import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
-import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
-import { ISOStringToDate, intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
-import { isISODateString } from '@navikt/ds-datepicker';
+
+import { ISOStringToDate, intlUtils } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
+
+import { PeriodeMedVariasjon, Tilrettelegging, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
+import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
+import { hasValue } from 'app/utils/validationUtils';
+
+import { PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,

@@ -1,22 +1,24 @@
-import {
-    intlUtils,
-    Block,
-    hasValue,
-    TidsperiodeDate,
-    Arbeidsforhold,
-    Arbeidsform,
-    dateIsBetween,
-} from '@navikt/fp-common';
-
-import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import { BodyShort, ReadMore } from '@navikt/ds-react';
-import { FormikRadioProp } from '@navikt/sif-common-formik-ds/lib/components/formik-radio-group/FormikRadioGroup';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { prosentValideringGradering } from '../../../../utils/prosentValidering';
 import dayjs from 'dayjs';
 import { uniqBy } from 'lodash';
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, ReadMore } from '@navikt/ds-react';
+
+import {
+    Arbeidsforhold,
+    Arbeidsform,
+    Block,
+    TidsperiodeDate,
+    dateIsBetween,
+    hasValue,
+    intlUtils,
+} from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+import { FormikRadioProp } from '@navikt/fp-formik/src/components/formik-radio-group/FormikRadioGroup';
+
+import { prosentValideringGradering } from '../../../../utils/prosentValidering';
+import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 const containsDuplicates = (arbeidsforhold: Arbeidsforhold[]): boolean => {
     if (arbeidsforhold.length > 1) {

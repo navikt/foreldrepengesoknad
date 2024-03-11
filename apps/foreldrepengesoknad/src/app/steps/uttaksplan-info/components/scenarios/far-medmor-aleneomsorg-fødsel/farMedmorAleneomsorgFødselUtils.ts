@@ -1,11 +1,14 @@
-import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import dayjs from 'dayjs';
+
+import { Dekningsgrad } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+
+import { FarMedmorAleneomsorgFødselUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+
 import {
     FarMedmorAleneomsorgFødselFormData,
     FarMedmorAleneomsorgFødselFormField,
 } from './farMedmorAleneomsorgFødselFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
-import { Dekningsgrad } from '@navikt/fp-common';
 
 const initialFarMedmorAleneomsorgFødselValues: FarMedmorAleneomsorgFødselFormData = {
     [FarMedmorAleneomsorgFødselFormField.startPåOmsorgsovertakelse]: YesOrNo.UNANSWERED,

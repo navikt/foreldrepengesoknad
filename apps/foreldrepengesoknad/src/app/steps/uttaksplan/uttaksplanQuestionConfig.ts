@@ -1,6 +1,8 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+
+import { YesOrNo } from '@navikt/fp-formik';
+
 import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 export interface UttaksplanQuestionPayload extends UttaksplanFormData {
     periodeRundtFødselKanAutomatiskJusteres: boolean;

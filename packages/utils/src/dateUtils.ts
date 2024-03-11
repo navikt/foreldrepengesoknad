@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
-import { DATE_TODAY, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import utc from 'dayjs/plugin/utc';
+
+import { DATE_TODAY, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { TIME_FORMAT } from '@navikt/fp-constants/src/dates';
 
 dayjs.extend(isBetween);
@@ -57,4 +58,14 @@ export const isDateRangesOverlapping = (ranges: Period[]) => {
         return hasOverlap !== undefined;
     }
     return false;
+};
+
+export const isISODateString = (value: any): value is string => {
+    if (value && typeof value === 'string') {
+        const reg = /^\d{4}-\d{2}-\d{2}$/;
+        const match: RegExpMatchArray | null = value.match(reg);
+        return match !== null;
+    } else {
+        return false;
+    }
 };

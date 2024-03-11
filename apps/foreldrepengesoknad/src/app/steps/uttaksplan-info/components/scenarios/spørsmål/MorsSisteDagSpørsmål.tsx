@@ -1,7 +1,8 @@
-import { ISOStringToDate, intlUtils, uttaksplanDatoavgrensninger } from '@navikt/fp-common';
-import { TypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { ISOStringToDate, intlUtils, uttaksplanDatoavgrensninger } from '@navikt/fp-common';
+import { TypedFormComponents } from '@navikt/fp-formik';
 
 interface Props {
     FormComponents: TypedFormComponents<any, any, string>;
@@ -27,9 +28,8 @@ const MorsSisteDagSpørsmål: FunctionComponent<Props> = ({
             label={intlUtils(intl, 'uttaksplaninfo.morSinSisteUttaksdag.label', { navnMor })}
             maxDate={maxDate}
             minDate={minDate}
-            showYearSelector={true}
-            disableWeekend={true}
-            placeholder={'dd.mm.åååå'}
+            disableWeekends={true}
+            dropdownCaption={true}
         />
     );
 };

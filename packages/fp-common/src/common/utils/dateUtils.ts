@@ -1,5 +1,5 @@
 import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
-import { isISODateString } from '@navikt/ds-datepicker';
+import { isISODateString } from '@navikt/fp-utils';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';

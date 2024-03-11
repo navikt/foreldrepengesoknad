@@ -1,4 +1,3 @@
-import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
 import { ArrayHelpers, useFormikContext } from 'formik';
 import { useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
@@ -7,6 +6,7 @@ import { BodyShort } from '@navikt/ds-react';
 
 import { Block, deleteAttachment, intlUtils, isAttachmentWithError, mapFilTilVedlegg } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { FormikFileInput } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 import { ScanDocumentInfo } from '@navikt/fp-ui';
 

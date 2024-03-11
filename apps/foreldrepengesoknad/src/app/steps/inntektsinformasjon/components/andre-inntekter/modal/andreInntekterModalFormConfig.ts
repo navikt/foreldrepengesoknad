@@ -1,5 +1,4 @@
-import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-
+import { YesOrNo, getTypedFormComponents } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';

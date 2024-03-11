@@ -1,11 +1,13 @@
-import { TidsperiodeDate } from '@navikt/fp-common';
 import dayjs, { Dayjs } from 'dayjs';
-import { IntlShape } from 'react-intl';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
-import { isISODateString } from '@navikt/ds-datepicker';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isoWeek from 'dayjs/plugin/isoWeek';
+import { IntlShape } from 'react-intl';
+
+import { TidsperiodeDate } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
+
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isoWeek);
 dayjs.extend(isSameOrAfter);

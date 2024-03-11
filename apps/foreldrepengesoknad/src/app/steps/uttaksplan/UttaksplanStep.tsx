@@ -1,4 +1,3 @@
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { Uttaksplan, getHarAktivitetskravIPeriodeUtenUttak, kreverUttaksplanVedlegg } from '@navikt/uttaksplan';
 import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import dayjs from 'dayjs';
@@ -35,6 +34,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 import { Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 

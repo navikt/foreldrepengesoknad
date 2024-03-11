@@ -1,8 +1,10 @@
-import { isISODateString } from '@navikt/ds-datepicker';
+import { IntlShape } from 'react-intl';
+
 import { ISOStringToDate, formatDate } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
+
 import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
 import { TilOgMedDatoType } from 'app/types/Tilrettelegging';
-import { IntlShape } from 'react-intl';
 
 export const getPeriodeInfoTekst = (
     formValues: Partial<PerioderFormData>,

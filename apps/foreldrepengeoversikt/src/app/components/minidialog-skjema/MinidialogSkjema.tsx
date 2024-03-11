@@ -1,7 +1,8 @@
-import { FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useIntl, FormattedMessage } from 'react-intl';
 import { useQuery } from '@tanstack/react-query';
+import { FormEvent, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
+
 import {
     Alert,
     Button,
@@ -14,20 +15,23 @@ import {
     Textarea,
     VStack,
 } from '@navikt/ds-react';
-import { formatDate, intlUtils } from '@navikt/fp-common';
-import { FileUploader } from '@navikt/fp-ui';
+
 import { getSaveAttachment } from '@navikt/fp-api';
+import { formatDate, intlUtils } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
-import { Skjemanummer, AttachmentType } from '@navikt/fp-constants';
-import { Ytelse } from 'app/types/Ytelse';
-import EttersendingDto from 'app/types/EttersendingDTO';
-import { validateFritekstFelt } from 'app/utils/validationUtils';
+import { FileUploader } from '@navikt/fp-ui';
+
 import Environment from 'app/Environment';
+import EttersendingDto from 'app/types/EttersendingDTO';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
-import HvaLeggerNAVVektPå from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
+import { Ytelse } from 'app/types/Ytelse';
+import { validateFritekstFelt } from 'app/utils/validationUtils';
+
 import ScrollToTop from '../scroll-to-top/ScrollToTop';
-import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
+import HvaLeggerNAVVektPå from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
 import MinidialogVenterPåSvar from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
+import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
     if (sakstype === Ytelse.ENGANGSSTØNAD) {
@@ -145,13 +149,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         <form onSubmit={handleSubmit}>
             <VStack gap="8">
                 <VStack gap="5">
-                    <Chat
-                        avatar="NAV"
-                        name="NAV"
-                        avatarBgColor="rgba(255, 236, 204, 1)"
-                        backgroundColor="rgba(255, 249, 240, 1)"
-                        timestamp={formatDate(minidialog.opprettet)}
-                    >
+                    <Chat avatar="NAV" name="NAV" timestamp={formatDate(minidialog.opprettet)}>
                         <Chat.Bubble>
                             <FormattedMessage id="miniDialog.tilbakekreving.tittel" values={{ sakstype }} />
                         </Chat.Bubble>

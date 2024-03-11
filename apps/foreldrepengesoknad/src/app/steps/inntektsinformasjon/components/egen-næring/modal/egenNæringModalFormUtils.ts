@@ -1,15 +1,18 @@
+import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
+import dayjs from 'dayjs';
+
 import {
     ISOStringToDate,
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
     hasValue,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { Næring, EndringAvNæringsinntektInformasjon } from 'app/context/types/Næring';
+import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
+
+import { EndringAvNæringsinntektInformasjon, Næring } from 'app/context/types/Næring';
 import { date4YearsAgo } from 'app/utils/dateUtils';
-import dayjs from 'dayjs';
+
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export const initialEgenNæringModalValues: EgenNæringModalFormData = {
     [EgenNæringModalFormField.type]: undefined,

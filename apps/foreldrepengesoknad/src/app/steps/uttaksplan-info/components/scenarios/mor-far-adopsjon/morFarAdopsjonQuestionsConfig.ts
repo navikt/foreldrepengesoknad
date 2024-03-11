@@ -1,8 +1,10 @@
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config';
+
 import { hasValue } from '@navikt/fp-common';
-import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
+import { YesOrNo } from '@navikt/fp-formik';
+
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { MorFarAdopsjonFormData, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
 
 export interface MorFarAdopsjonQuestionsPayload extends MorFarAdopsjonFormData {
     harAnnenForelderRettPåForeldrepengerINorge: boolean | undefined;

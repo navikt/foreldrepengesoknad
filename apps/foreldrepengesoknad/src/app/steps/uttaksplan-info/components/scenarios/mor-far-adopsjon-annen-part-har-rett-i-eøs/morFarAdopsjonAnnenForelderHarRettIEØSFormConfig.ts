@@ -1,4 +1,5 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { getTypedFormComponents } from '@navikt/fp-formik';
+
 import AdopsjonStartdatoValg from '../mor-far-adopsjon/adopsjonStartdatoValg';
 
 export enum MorFarAdopsjonAnnenForelderHarRettIEØSFormField {
