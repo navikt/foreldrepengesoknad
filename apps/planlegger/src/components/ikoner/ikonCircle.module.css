@@ -7,6 +7,15 @@
     width: 35px;
 }
 
+.largeCircle {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+    width: 44px;
+}
+
 .xlCircle {
     border-radius: 50%;
     display: flex;
@@ -33,4 +42,7 @@
 
 .blue {
     background: var(--a-deepblue-200);
+}
+.lightBlue {
+    background: var(--a-deepblue-50);
 }
