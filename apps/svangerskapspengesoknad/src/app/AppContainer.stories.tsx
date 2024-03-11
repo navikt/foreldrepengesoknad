@@ -1,11 +1,15 @@
-import '@navikt/ds-css';
-import MockAdapter from 'axios-mock-adapter';
-import AppContainer from 'app/AppContainer';
 import { StoryFn } from '@storybook/react';
-import { svpApi } from './routes/SvangerskapspengesøknadRoutes';
-import { SvpDataMapAndMetaData } from './context/useMellomlagreSøknad';
+import MockAdapter from 'axios-mock-adapter';
+
+import '@navikt/ds-css';
+
 import { attachmentApi } from '@navikt/fp-api';
+import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
+
+import AppContainer from './AppContainer';
+import { svpApi } from './SvangerskapspengesøknadRoutes';
+import { SvpDataMapAndMetaData } from './appData/useMellomlagreSøknad';
 
 const søkerinfo = {
     søker: {
@@ -80,6 +84,7 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
     mellomlagretData,
     doLogging = true,
 }) => {
+    initAmplitude();
     const apiMock = new MockAdapter(svpApi);
     apiMock.onGet('/sokerinfo').reply(() => {
         if (doLogging) {

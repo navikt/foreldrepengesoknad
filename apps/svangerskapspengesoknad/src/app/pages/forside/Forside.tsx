@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
-import { LanguageToggle, bemUtils } from '@navikt/fp-common';
-import { ContentWrapper } from '@navikt/fp-ui';
-import { LocaleNo } from '@navikt/fp-types';
+
 import { links } from '@navikt/fp-constants';
+import { LocaleNo } from '@navikt/fp-types';
+import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
+import { bemUtils } from '@navikt/fp-utils';
+
+import { ContextDataType, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import './forside.css';
-import { ContextDataType, useContextSaveData } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 
 export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -51,8 +54,7 @@ const Forside: React.FunctionComponent<Props> = ({
                 <LanguageToggle
                     locale={locale}
                     availableLocales={['nb', 'nn']}
-                    toggle={(l: LocaleNo) => onChangeLocale(l)}
-                    isCleanVersion
+                    toggleLanguage={(l: LocaleNo) => onChangeLocale(l)}
                 />
                 <VStack gap="8">
                     <Heading size="xlarge" className={`${bem.element('tittel')}`}>

@@ -1,7 +1,9 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import UtenlandsoppholdPanel from './UtenlandsoppholdPanel';
+import { StoryFn } from '@storybook/react';
+
 import { Situasjon } from '@navikt/fp-types';
+
+import UtenlandsoppholdPanel from './UtenlandsoppholdPanel';
 
 export default {
     title: 'UtenlandsoppholdPanel',
@@ -24,7 +26,6 @@ const Template: StoryFn<{
             stepConfig={[
                 {
                     id: '1',
-                    index: 1,
                     label: 'Bo i utlandet',
                     isSelected: true,
                 },

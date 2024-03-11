@@ -1,6 +1,8 @@
 import { ReactNode, useState } from 'react';
+
 import { Accordion, Heading } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+
+import { bemUtils } from '@navikt/fp-utils';
 
 import './oppsummeringspunkt.css';
 

@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { Component } from 'react';
+
 import ErrorPage from './ErrorPage';
 
 interface Props {

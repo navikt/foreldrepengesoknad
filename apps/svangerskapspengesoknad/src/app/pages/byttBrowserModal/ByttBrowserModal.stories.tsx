@@ -1,4 +1,5 @@
 import { StoryFn } from '@storybook/react';
+
 import ByttBrowserModal from './ByttBrowserModal';
 
 export default {

@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { ContextDataType } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import * as stories from './ArbeidIUtlandet.stories';
 
@@ -63,18 +63,17 @@ describe('<ArbeidIUtlandet>', () => {
         expect(screen.queryByText('Du må svare på om du fortsatt jobber i utlandet.')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: [
-                {
-                    arbeidsgiverNavn: 'Arbeidsgiver',
-                    land: 'UA',
-                    pågående: false,
-                    tidsperiode: {
+            data: {
+                arbeidIUtlandet: [
+                    {
+                        arbeidsgiverNavn: 'Arbeidsgiver',
+                        land: 'UA',
+                        pågående: false,
                         fom: '2022-12-30',
                         tom: '2023-12-30',
                     },
-                    type: 'JOBB_I_UTLANDET',
-                },
-            ],
+                ],
+            },
             key: ContextDataType.ARBEID_I_UTLANDET,
             type: 'update',
         });
@@ -121,14 +120,14 @@ describe('<ArbeidIUtlandet>', () => {
 
         expect(await screen.findByText('Når startet du i jobben?')).toBeInTheDocument();
         const startdatoInput = screen.getByLabelText('Når startet du i jobben?');
-        await userEvent.type(startdatoInput, dayjs().subtract(4, 'month').format('DD.MM.YYYY'));
+        await userEvent.type(startdatoInput, dayjs().subtract(3, 'month').format('DD.MM.YYYY'));
 
         expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
 
         expect(screen.getByText('Når sluttet du i jobben?')).toBeInTheDocument();
         const sluttdatoInput = screen.getByLabelText('Når sluttet du i jobben?');
-        await userEvent.type(sluttdatoInput, dayjs().subtract(4, 'month').subtract(1, 'day').format('DD.MM.YYYY'));
+        await userEvent.type(sluttdatoInput, dayjs().subtract(4, 'month').format('DD.MM.YYYY'));
 
         await userEvent.click(screen.getByText('Neste steg'));
 

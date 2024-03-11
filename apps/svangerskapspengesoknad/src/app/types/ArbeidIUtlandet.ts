@@ -1,5 +1,3 @@
-import { TidsperiodeMedValgfriSluttdato } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { TidsperiodeDTOMedValgfriSluttdato } from './TidsperiodeDTO';
 
 export enum AnnenInntektType {
@@ -9,19 +7,18 @@ export enum AnnenInntektType {
 export interface ArbeidIUtlandetInput {
     fom: string;
     tom: string | undefined;
-    pågående: YesOrNo;
-    arbeidsgiverNavn: string;
-    land: string;
-}
-
-export interface ArbeidIUtlandet {
-    type: AnnenInntektType.JOBB_I_UTLANDET;
-    tidsperiode: TidsperiodeMedValgfriSluttdato;
     pågående: boolean;
     arbeidsgiverNavn: string;
     land: string;
 }
 
-export interface ArbeidIUtlandetDTO extends Omit<ArbeidIUtlandet, 'tidsperiode' | 'pågående'> {
+export interface ArbeidIUtlandet {
+    arbeidIUtlandet: ArbeidIUtlandetInput[];
+}
+
+export interface ArbeidIUtlandetDTO {
+    type: AnnenInntektType.JOBB_I_UTLANDET;
     tidsperiode: TidsperiodeDTOMedValgfriSluttdato;
+    arbeidsgiverNavn: string;
+    land: string;
 }

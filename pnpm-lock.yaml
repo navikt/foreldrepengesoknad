@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -835,21 +839,12 @@ importers:
       '@navikt/ds-css':
         specifier: 5.15.1
         version: 5.15.1
-      '@navikt/ds-datepicker':
-        specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.15.1)(@navikt/ds-react@5.15.1)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-react':
         specifier: 5.15.1
         version: 5.15.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/fnrvalidator':
-        specifier: ^1.3.0
-        version: 1.3.0
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@navikt/fp-common':
-        specifier: workspace:*
-        version: link:../../packages/fp-common
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -874,12 +869,6 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@navikt/sif-common-formik-ds':
-        specifier: ^0.25.0
-        version: 0.25.0(@navikt/ds-css@5.15.1)(@navikt/ds-datepicker@4.2.0)(@navikt/ds-react@5.15.1)(@types/react@18.2.48)(formik@2.4.5)(react-intl@6.6.1)(react@18.2.0)
-      '@navikt/sif-common-question-config':
-        specifier: ^0.0.7
-        version: 0.0.7
       '@sentry/browser':
         specifier: ^7.95.0
         version: 7.95.0
@@ -889,33 +878,18 @@ importers:
       axios:
         specifier: ^1.6.5
         version: 1.6.5
-      babel-polyfill:
-        specifier: ^6.26.0
-        version: 6.26.0
-      babel-runtime:
-        specifier: ^6.26.0
-        version: 6.26.0
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
-      classnames:
-        specifier: ^2.5.1
-        version: 2.5.1
       compression:
         specifier: ^1.7.4
         version: 1.7.4
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
-      detect-browser:
-        specifier: ^5.3.0
-        version: 5.3.0
       express:
         specifier: ^4.18.2
         version: 4.18.2
-      formik:
-        specifier: ^2.4.5
-        version: 2.4.5(react@18.2.0)
       history:
         specifier: ^5.3.0
         version: 5.3.0
@@ -934,9 +908,6 @@ importers:
       lodash.throttle:
         specifier: ^4.1.1
         version: 4.1.1
-      moment:
-        specifier: ^2.30.1
-        version: 2.30.1
       mustache-express:
         specifier: ^1.3.2
         version: 1.3.2
@@ -952,9 +923,6 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.2.0
-      react-aria-menubutton:
-        specifier: ^7.0.3
-        version: 7.0.3(react@18.2.0)
       react-collapse:
         specifier: ^5.1.1
         version: 5.1.1(react@18.2.0)
@@ -1058,9 +1026,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.18
         version: 18.2.18
-      '@types/react-redux':
-        specifier: ^7.1.33
-        version: 7.1.33
       '@types/react-router-dom':
         specifier: ^5.3.3
         version: 5.3.3
@@ -1222,18 +1187,9 @@ importers:
       '@navikt/ds-css':
         specifier: 5.15.1
         version: 5.15.1
-      '@navikt/ds-datepicker':
-        specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@5.15.1)(@navikt/ds-react@5.15.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1)
-      '@navikt/ds-icons':
-        specifier: 3.4.3
-        version: 3.4.3(@types/react@18.2.48)(react@18.2.0)
       '@navikt/ds-react':
         specifier: 5.15.1
         version: 5.15.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/fp-common':
-        specifier: workspace:*
-        version: link:../fp-common
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1516,9 +1472,6 @@ importers:
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../api
-      '@navikt/fp-common':
-        specifier: workspace:*
-        version: link:../fp-common
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -1631,9 +1584,6 @@ importers:
       '@navikt/ds-react':
         specifier: 5.15.1
         version: 5.15.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/fp-common':
-        specifier: workspace:*
-        version: link:../fp-common
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1643,18 +1593,27 @@ importers:
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
       '@sentry/browser':
         specifier: ^7.95.0
         version: 7.95.0
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       intl-messageformat:
         specifier: ^10.5.10
         version: 10.5.10
       react:
         specifier: ^18.2.0
         version: 18.2.0
+      react-aria-menubutton:
+        specifier: ^7.0.3
+        version: 7.0.3(react@18.2.0)
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
@@ -1701,6 +1660,9 @@ importers:
       '@types/react':
         specifier: ^18.2.48
         version: 18.2.48
+      '@types/react-aria-menubutton':
+        specifier: ^6.2.14
+        version: 6.2.14
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.2.1(vite@4.4.9)
@@ -1737,9 +1699,6 @@ importers:
       '@navikt/ds-react':
         specifier: 5.15.1
         version: 5.15.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
-      '@navikt/fp-common':
-        specifier: workspace:*
-        version: link:../fp-common
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1749,6 +1708,9 @@ importers:
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../utils
@@ -1840,6 +1802,12 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -4036,32 +4004,6 @@ packages:
 
   /@navikt/ds-css@5.15.1:
     resolution: {integrity: sha512-LhcFuI4YGuxPHRe0KgMniMCI5j3cLph5Wl+sr3t10+KM7fGPBTqJFV2zeLyr6ccMl5iXJiIUL850J80VK7G3gg==}
-    dev: false
-
-  /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.15.1)(@navikt/ds-react@5.15.1)(classnames@2.3.2)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
-    resolution: {integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A==}
-    peerDependencies:
-      '@navikt/ds-css': '>=2'
-      '@navikt/ds-react': '>=2'
-      classnames: 2.3.x
-      date-fns: 2.x
-      dayjs: 1.x
-      react: 18.x
-      react-day-picker: 8.x
-      uuid: '9'
-    dependencies:
-      '@navikt/ds-css': 5.15.1
-      '@navikt/ds-react': 5.15.1(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
-      classnames: 2.3.2
-      date-fns: 2.30.0
-      dayjs: 1.11.10
-      focus-trap-react: 10.1.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-day-picker: 8.10.0(date-fns@2.30.0)(react@18.2.0)
-      uuid: 9.0.1
-    transitivePeerDependencies:
-      - react-dom
     dev: false
 
   /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@5.15.1)(@navikt/ds-react@5.15.1)(classnames@2.5.1)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
@@ -6408,15 +6350,6 @@ packages:
       '@types/react': 18.2.48
     dev: true
 
-  /@types/react-redux@7.1.33:
-    resolution: {integrity: sha512-NF8m5AjWCkert+fosDsN3hAlHzpjSiXlVy9EgQEmLoBhaNXbmyeGs/aj5dQzKuF+/q+S7JQagorGDW8pJ28Hmg==}
-    dependencies:
-      '@types/hoist-non-react-statics': 3.3.5
-      '@types/react': 18.2.48
-      hoist-non-react-statics: 3.3.2
-      redux: 4.2.1
-    dev: true
-
   /@types/react-responsive@8.0.8:
     resolution: {integrity: sha512-HDUZtoeFRHrShCGaND23HmXAB9evOOTjkghd2wAasLkuorYYitm5A1XLeKkhXKZppcMBxqB/8V4Snl6hRUTA8g==}
     dependencies:
@@ -7413,14 +7346,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /babel-polyfill@6.26.0:
-    resolution: {integrity: sha512-F2rZGQnAdaHWQ8YAoeRbukc7HS9QgdgeyJ0rQDd485v9opwuPvjpPFcOOT/WmkKTdgy9ESgSPXDcTNpzrGr6iQ==}
-    dependencies:
-      babel-runtime: 6.26.0
-      core-js: 2.6.12
-      regenerator-runtime: 0.10.5
-    dev: false
 
   /babel-runtime@6.26.0:
     resolution: {integrity: sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==}
@@ -10430,7 +10355,7 @@ packages:
       define-properties: 1.2.1
       get-intrinsic: 1.2.4
       has-symbols: 1.0.3
-      reflect.getprototypeof: 1.0.5
+      reflect.getprototypeof: 1.0.4
       set-function-name: 2.0.1
     dev: false
 
@@ -12057,6 +11982,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     optional: true
 
   /psl@1.9.0:
@@ -12614,14 +12540,8 @@ packages:
       strip-indent: 3.0.0
     dev: true
 
-  /redux@4.2.1:
-    resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
-    dependencies:
-      '@babel/runtime': 7.23.8
-    dev: true
-
-  /reflect.getprototypeof@1.0.5:
-    resolution: {integrity: sha512-62wgfC8dJWrmxv44CA36pLDnP6KKl3Vhxb7PL+8+qrrFMMoJij4vgiMP8zV4O8+CBMXY1mHxI5fITGHXFHVmQQ==}
+  /reflect.getprototypeof@1.0.4:
+    resolution: {integrity: sha512-ECkTw8TmJwW60lOTR+ZkODISW6RQ8+2CL3COqtiJKLd6MmB45hN51HprHFziKLGkAuTGQhBb91V8cy+KHlaCjw==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.7
@@ -12643,10 +12563,6 @@ packages:
   /regenerate@1.4.2:
     resolution: {integrity: sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==}
     dev: true
-
-  /regenerator-runtime@0.10.5:
-    resolution: {integrity: sha512-02YopEIhAgiBHWeoTiA8aitHDt8z6w+rQqNuIftlM+ZtvSl/brTouaU7DW6GO/cHtvxJvS4Hwv2ibKdxIRi24w==}
-    dev: false
 
   /regenerator-runtime@0.11.1:
     resolution: {integrity: sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==}
@@ -12901,6 +12817,7 @@ packages:
 
   /sax@1.3.0:
     resolution: {integrity: sha512-0s+oAmw9zLl1V1cS9BtZN7JAd0cW5e0QH4W3LWEK6a4LaLEA2OTpGYWDY+6XasBLtz6wkm3u1xRw95mRuJ59WA==}
+    requiresBuild: true
     optional: true
 
   /saxes@6.0.0:

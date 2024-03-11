@@ -1,9 +1,15 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+
 import PerioderStep from './PerioderStep';
-import { DelivisTilretteleggingPeriodeType } from '../tilrettelegging/tilretteleggingStepFormConfig';
 
 const defaultExport = {
     title: 'steps/PerioderStep',
@@ -81,28 +87,31 @@ interface Props {
 
 const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     tilrettelegging,
 }) => {
+    initAmplitude();
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
-                [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
-                [ContextDataType.OM_BARNET]: {
-                    erBarnetFødt: false,
-                    termindato: '2024-02-18',
-                    fødselsdato: '2024-02-18',
-                },
-            }}
-        >
-            <PerioderStep
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={promiseAction()}
-                arbeidsforhold={arbeidsforhold}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.PERIODER]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
+                    [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
+                    [ContextDataType.OM_BARNET]: {
+                        erBarnetFødt: false,
+                        termindato: '2024-02-18',
+                        fødselsdato: '2024-02-18',
+                    },
+                }}
+            >
+                <PerioderStep
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={promiseAction()}
+                    arbeidsforhold={arbeidsforhold}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 

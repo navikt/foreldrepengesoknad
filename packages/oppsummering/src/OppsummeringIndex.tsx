@@ -1,25 +1,23 @@
-import { StepConfig } from '@navikt/fp-types';
-import OppsummeringPanel from './OppsummeringPanel';
 import { ReactElement } from 'react';
+
+import { ProgressStep } from '@navikt/fp-ui';
+
+import OppsummeringPanel from './OppsummeringPanel';
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 import OppsummeringIntlProvider from './intl/OppsummeringIntlProvider';
 
-export interface Props {
+export interface Props<TYPE> {
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     cancelApplication: () => void;
     onContinueLater: () => void;
     goToPreviousStep: () => void;
-    stepConfig: StepConfig[];
+    stepConfig: Array<ProgressStep<TYPE>>;
     children: ReactElement[] | ReactElement;
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     ekstraSamtykketekst?: string;
 }
 
-interface StaticFunctions {
-    Punkt: typeof Oppsummeringspunkt;
-}
-
-const OppsummeringIndex: React.FunctionComponent<Props> & StaticFunctions = ({
+const OppsummeringIndex = <TYPE extends string>({
     sendSøknad,
     cancelApplication,
     onContinueLater,
@@ -28,10 +26,10 @@ const OppsummeringIndex: React.FunctionComponent<Props> & StaticFunctions = ({
     children,
     appName,
     ekstraSamtykketekst,
-}) => {
+}: Props<TYPE>) => {
     return (
         <OppsummeringIntlProvider>
-            <OppsummeringPanel
+            <OppsummeringPanel<TYPE>
                 sendSøknad={sendSøknad}
                 cancelApplication={cancelApplication}
                 onContinueLater={onContinueLater}

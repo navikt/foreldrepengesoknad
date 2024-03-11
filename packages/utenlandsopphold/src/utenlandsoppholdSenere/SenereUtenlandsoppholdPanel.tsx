@@ -1,14 +1,16 @@
-import { Fragment, useCallback, useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useFieldArray, useForm } from 'react-hook-form';
 import { PlusIcon } from '@navikt/aksel-icons';
-import { Button, VStack } from '@navikt/ds-react';
-import { Step } from '@navikt/fp-common';
-import { Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { StepConfig, UtenlandsoppholdPeriode, UtenlandsoppholdSenere } from '@navikt/fp-types';
+import { Fragment, useCallback, useMemo } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
-import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
+import { Button, VStack } from '@navikt/ds-react';
+
+import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { UtenlandsoppholdPeriode, UtenlandsoppholdSenere } from '@navikt/fp-types';
+import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
+
 import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
+import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
 
 const DEFAULT_PERIODE = {
     fom: '',
@@ -20,17 +22,17 @@ const DEFAULT_FORM_VALUES = {
     utenlandsoppholdNeste12Mnd: [DEFAULT_PERIODE],
 } as UtenlandsoppholdSenere;
 
-export interface Props {
+export interface Props<TYPE> {
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
     saveOnNext: (formValues: UtenlandsoppholdSenere) => void;
     saveOnPrevious: (formValues: UtenlandsoppholdSenere | undefined) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
     goToPreviousStep: () => void;
-    stepConfig: StepConfig[];
+    stepConfig: Array<ProgressStep<TYPE>>;
 }
 
-const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
+const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     saveOnNext,
     saveOnPrevious,
     cancelApplication,
@@ -38,7 +40,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     goToPreviousStep,
     senereUtenlandsopphold,
     stepConfig,
-}) => {
+}: Props<TYPE>) => {
     const defaultValues = useMemo(() => senereUtenlandsopphold || DEFAULT_FORM_VALUES, [senereUtenlandsopphold]);
     const formMethods = useForm<UtenlandsoppholdSenere>({
         defaultValues,
@@ -52,13 +54,6 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
         append(DEFAULT_PERIODE);
     }, [append]);
 
-    const fjernOpphold = useCallback(
-        (index: number) => {
-            remove(index);
-        },
-        [remove],
-    );
-
     return (
         <UtenlandsoppholdIntlProvider>
             <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
@@ -68,8 +63,8 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
                         <VStack gap="10" align="start">
                             {fields.map((field, index) => (
                                 <Fragment key={field.id}>
-                                    <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={fjernOpphold} />
-                                    {fields.length > 1 && <hr style={{ width: '100%' }} color="#99C4DD" />}
+                                    <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={remove} />
+                                    {fields.length > 1 && <HorizontalLine />}
                                 </Fragment>
                             ))}
                             <Button

@@ -1,4 +1,8 @@
+import dayjs from 'dayjs';
+import { FormattedMessage, IntlShape, PrimitiveType } from 'react-intl';
+
 import { BodyShort, VStack } from '@navikt/ds-react';
+
 import {
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
@@ -6,9 +10,10 @@ import {
     UtenlandsoppholdTidligere,
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
-import dayjs from 'dayjs';
-import { FormattedMessage, IntlShape, PrimitiveType, useIntl } from 'react-intl';
+
 import Oppsummeringspunkt from '../Oppsummeringspunkt';
+import OppsummeringIntlProvider from '../intl/OppsummeringIntlProvider';
+import useOppsummeringIntl from '../intl/useOppsummeringIntl';
 import LandOppsummering from './LandOppsummering';
 
 const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
@@ -70,56 +75,58 @@ const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
     senereUtenlandsopphold,
     hide = false,
 }) => {
-    const intl = useIntl();
+    const intl = useOppsummeringIntl();
 
     if (hide) {
         return null;
     }
 
     return (
-        <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utenlandsopphold' })}>
-            <VStack gap="5">
-                <VStack gap="2">
-                    {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd && (
-                        <LandOppsummering
-                            utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold).utenlandsoppholdSiste12Mnd}
-                        />
+        <OppsummeringIntlProvider>
+            <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utenlandsopphold' })}>
+                <VStack gap="5">
+                    <VStack gap="2">
+                        {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd && (
+                            <LandOppsummering
+                                utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold).utenlandsoppholdSiste12Mnd}
+                            />
+                        )}
+                        {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd && (
+                            <LandOppsummering
+                                utenlandsoppholdListe={notEmpty(senereUtenlandsopphold).utenlandsoppholdNeste12Mnd}
+                            />
+                        )}
+                    </VStack>
+                    {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false && (
+                        <BodyShort>
+                            <FormattedMessage
+                                id={'BoIUtlandetOppsummeringspunkt.BoddSisteTolv'}
+                                values={{ country: intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }) }}
+                            />
+                        </BodyShort>
                     )}
-                    {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd && (
-                        <LandOppsummering
-                            utenlandsoppholdListe={notEmpty(senereUtenlandsopphold).utenlandsoppholdNeste12Mnd}
-                        />
+                    {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false && (
+                        <BodyShort>
+                            <FormattedMessage
+                                id="BoIUtlandetOppsummeringspunkt.BoNesteTolv"
+                                values={{ country: intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }) }}
+                            />
+                        </BodyShort>
                     )}
+                    <BodyShort>
+                        {finnDatotekst(intl, hendelseType, {
+                            country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
+                                familiehendelseDato,
+                                tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
+                                senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
+                            )
+                                ? intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utlandet' })
+                                : intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }),
+                        })}
+                    </BodyShort>
                 </VStack>
-                {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false && (
-                    <BodyShort>
-                        <FormattedMessage
-                            id={'BoIUtlandetOppsummeringspunkt.BoddSisteTolv'}
-                            values={{ country: intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }) }}
-                        />
-                    </BodyShort>
-                )}
-                {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false && (
-                    <BodyShort>
-                        <FormattedMessage
-                            id="BoIUtlandetOppsummeringspunkt.BoNesteTolv"
-                            values={{ country: intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }) }}
-                        />
-                    </BodyShort>
-                )}
-                <BodyShort>
-                    {finnDatotekst(intl, hendelseType, {
-                        country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                            familiehendelseDato,
-                            tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                            senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
-                        )
-                            ? intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utlandet' })
-                            : intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }),
-                    })}
-                </BodyShort>
-            </VStack>
-        </Oppsummeringspunkt>
+            </Oppsummeringspunkt>
+        </OppsummeringIntlProvider>
     );
 };
 

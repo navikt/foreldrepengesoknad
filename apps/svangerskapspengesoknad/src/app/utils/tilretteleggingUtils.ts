@@ -1,5 +1,8 @@
-import { isISODateString } from '@navikt/ds-datepicker';
-import { getFloatFromString } from '@navikt/fp-common';
+import dayjs from 'dayjs';
+
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { getFloatFromString } from '@navikt/fp-utils';
+
 import Tilrettelegging, {
     PeriodeMedVariasjon,
     Stilling,
@@ -8,9 +11,7 @@ import Tilrettelegging, {
     Tilretteleggingstype,
     TilretteleggingstypeOptions,
 } from 'app/types/Tilrettelegging';
-import dayjs from 'dayjs';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { PerioderFormData } from 'app/steps/perioder/perioderStepFormConfig';
+
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from './arbeidsforholdUtils';
 
 const mapTilretteleggingTilPeriode = (
@@ -34,14 +35,14 @@ const mapTilretteleggingTilPeriode = (
 
 const getPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
     sistePeriode: TilretteleggingPeriode,
-    sisteDagForSvangerskapspenger: Date,
+    sisteDagForSvangerskapspenger: string,
     opprinneligStillingsprosent: number,
 ): TilretteleggingPeriode => {
     return {
         type: Tilretteleggingstype.HEL,
         behovForTilretteleggingFom: sistePeriode.behovForTilretteleggingFom,
-        fom: dateToISOString(dayjs(sistePeriode.tom).add(1, 'd').toDate()),
-        tom: dateToISOString(sisteDagForSvangerskapspenger),
+        fom: dayjs(sistePeriode.tom).add(1, 'd').format(ISO_DATE_FORMAT),
+        tom: sisteDagForSvangerskapspenger,
         arbeidsforhold: sistePeriode.arbeidsforhold,
         risikofaktorer: sistePeriode.risikofaktorer,
         tilretteleggingstiltak: sistePeriode.tilretteleggingstiltak,
@@ -51,7 +52,7 @@ const getPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
 
 const mappedTilretteleggingMedEnPeriode = (
     tilrettelegging: Tilrettelegging,
-    sisteDagForSvangerskapspenger: Date,
+    sisteDagForSvangerskapspenger: string,
     opprinneligstillingsprosent: number,
 ): TilretteleggingPeriode[] => {
     const perioder = [] as TilretteleggingPeriode[];
@@ -63,7 +64,7 @@ const mappedTilretteleggingMedEnPeriode = (
     const tom =
         tilrettelegging.enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO
             ? dayjs(tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato).subtract(1, 'day').toString()!
-            : dateToISOString(sisteDagForSvangerskapspenger);
+            : sisteDagForSvangerskapspenger;
     const type =
         tilrettelegging.type === TilretteleggingstypeOptions.DELVIS && stillingsprosent && stillingsprosent > 0
             ? Tilretteleggingstype.DELVIS
@@ -84,7 +85,7 @@ const mappedTilretteleggingMedEnPeriode = (
 
 const mappedTilretteleggingMedVarierendePerioder = (
     tilrettelegging: Tilrettelegging,
-    sisteDagForSvangerskapspenger: Date,
+    sisteDagForSvangerskapspenger: string,
     opprinneligStillingsprosent: number,
 ): TilretteleggingPeriode[] => {
     const allePerioder = tilrettelegging.varierendePerioder!.map((periode) => {
@@ -101,9 +102,7 @@ const mappedTilretteleggingMedVarierendePerioder = (
             type = Tilretteleggingstype.HEL;
         }
         const tom =
-            periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
-                ? dateToISOString(sisteDagForSvangerskapspenger)
-                : periode.tom!;
+            periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP ? sisteDagForSvangerskapspenger : periode.tom!;
         return mapTilretteleggingTilPeriode(tilrettelegging, type, stillingsprosent!, periode.fom, tom);
     });
     const sistePeriode = allePerioder[allePerioder.length - 1];
@@ -119,7 +118,7 @@ const mappedTilretteleggingMedVarierendePerioder = (
     return allePerioder;
 };
 
-export const sorterTilretteleggingsperioder = (
+const sorterTilretteleggingsperioder = (
     p1: TilretteleggingPeriode | PeriodeMedVariasjon,
     p2: TilretteleggingPeriode | PeriodeMedVariasjon,
 ) => {
@@ -134,7 +133,7 @@ export const sorterTilretteleggingsperioder = (
 
 export const mapTilretteleggingTilPerioder = (
     tilrettelegging: Tilrettelegging[],
-    sisteDagForSvangerskapspenger: Date,
+    sisteDagForSvangerskapspenger: string,
 ): TilretteleggingPeriode[] => {
     const tilretteleggingMedEnPeriode = tilrettelegging.filter(
         (t) => !t.varierendePerioder || t.varierendePerioder.length === 0,
@@ -165,27 +164,6 @@ export const mapTilretteleggingTilPerioder = (
         ...mappedTilretteleggingAvFlerePerioder.flat(1),
     ];
     return [...allePerioder].sort(sorterTilretteleggingsperioder);
-};
-
-export const getNesteDagEtterSistePeriode = (
-    formvalues: Partial<PerioderFormData>,
-    sisteDagForSvangerskapspenger: Date,
-): string => {
-    if (!formvalues.varierendePerioder || formvalues.varierendePerioder.length === 0) {
-        return '';
-    }
-    const alleTomDatoer = formvalues.varierendePerioder
-        .filter((p) => isISODateString(p.tom) || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
-        .map((periode) => {
-            if (periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
-                return dayjs(sisteDagForSvangerskapspenger).add(1, 'd');
-            } else {
-                return dayjs(periode.tom);
-            }
-        });
-
-    const maxTomDato = alleTomDatoer.length > 0 ? dayjs.max(alleTomDatoer) : undefined;
-    return maxTomDato ? dateToISOString(maxTomDato.add(1, 'd').toDate()) : '';
 };
 
 export const getOpprinneligStillingsprosent = (

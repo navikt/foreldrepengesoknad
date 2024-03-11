@@ -1,45 +1,35 @@
-import dayjs from 'dayjs';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { dagenFør, treUkerSiden } from '@navikt/fp-utils/src/dateUtils';
+
 import { Barn } from 'app/types/Barn';
 
 dayjs.extend(isBetween);
-dayjs.extend(isSameOrAfter);
 
-export const niMånederFremITid = (dato: Date) => dayjs(dato).startOf('day').add(9, 'months').toDate();
-export const etÅrSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(1, 'year').add(1, 'day').toDate();
-export const enMånedSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(1, 'month').toDate();
-export const tiMånederSidenDato = (dato: Date) => dayjs(dato).startOf('day').subtract(10, 'month').toDate();
-export const halvannetÅrSiden = (dato: Date) =>
-    dayjs(dato).startOf('day').subtract(1, 'year').subtract(6, 'months').toDate();
-export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
-export const treUkerSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(3, 'weeks').toDate();
-export const fireUkerSiden = (dato: Date) => dayjs(dato).startOf('day').subtract(4, 'weeks').toDate();
-export const femMånederSiden = () => dayjs().startOf('day').subtract(5, 'month').toDate();
-export const dagenFør = (dato: Date) => dayjs(dato).startOf('day').toDate();
-
-export const getDagenFørTreUkerFørTermin = (termindato: string) => {
-    return dayjs(treUkerSiden(new Date(termindato))).subtract(1, 'd');
+export const getDagenFørTreUkerFørTermin = (termindato: string): Dayjs => {
+    return dayjs(treUkerSiden(termindato)).subtract(1, 'd');
 };
 
 export const getKanHaSvpFremTilTreUkerFørTermin = (barn: Barn): boolean => {
     if (barn.erBarnetFødt && barn.fødselsdato) {
         const dagenFørTreUkerFørTermin = getDagenFørTreUkerFørTermin(barn.termindato);
-        const dagenFørFødsel = dagenFør(new Date(barn.fødselsdato));
+        const dagenFørFødsel = dagenFør(barn.fødselsdato);
         return dayjs(dagenFørTreUkerFørTermin).isSameOrBefore(dagenFørFødsel);
     }
     return true;
 };
 
-export const getSisteDagForSvangerskapspenger = (barn: Barn): Date => {
+export const getSisteDagForSvangerskapspenger = (barn: Barn): string => {
     const dagenFørTreUkerFørTermin = getDagenFørTreUkerFørTermin(barn.termindato);
     if (getKanHaSvpFremTilTreUkerFørTermin(barn) || !barn.fødselsdato) {
-        return dagenFørTreUkerFørTermin.toDate();
+        return dagenFørTreUkerFørTermin.format(ISO_DATE_FORMAT);
     }
-    const dagenFørFødsel = dagenFør(new Date(barn.fødselsdato));
-    return dagenFørFødsel;
+    const dagenFørFødsel = dagenFør(barn.fødselsdato);
+    return dagenFørFødsel.format(ISO_DATE_FORMAT);
 };
 
-export const getDefaultMonth = (minDato: Date, maxDato: Date): Date => {
-    return dayjs().isBetween(dayjs(minDato), dayjs(maxDato), 'd') ? dayjs().toDate() : maxDato;
+export const getDefaultMonth = (minDato: Date | string | Dayjs, maxDato: Date | string | Dayjs): Dayjs => {
+    return dayjs().isBetween(dayjs(minDato), dayjs(maxDato), 'd') ? dayjs() : dayjs(maxDato);
 };

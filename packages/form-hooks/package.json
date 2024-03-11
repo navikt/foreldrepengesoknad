@@ -17,10 +17,7 @@
     "dependencies": {
         "@hookform/error-message": "^2.0.1",
         "@navikt/ds-css": "5.15.1",
-        "@navikt/ds-datepicker": "^4.2.0",
-        "@navikt/ds-icons": "3.4.3",
         "@navikt/ds-react": "5.15.1",
-        "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@types/react": "^18.2.48",

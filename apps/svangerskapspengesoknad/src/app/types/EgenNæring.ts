@@ -1,6 +1,3 @@
-import { Tidsperiode } from '@navikt/fp-common';
-import { TidsperiodeDTOMedValgfriSluttdato } from './TidsperiodeDTO';
-
 export const egenNæringId = 'næring';
 
 export enum Næringstype {
@@ -11,17 +8,18 @@ export enum Næringstype {
 }
 
 export interface EndringAvNæringsinntektInformasjonDTO {
-    dato: Date;
+    dato: string;
     næringsinntektEtterEndring: number;
     forklaring: string;
 }
 
 export interface EgenNæring {
     næringstype: Næringstype;
-    tidsperiode: Tidsperiode;
+    fomDato: string;
+    tomDato: string;
     næringsinntekt?: string;
     pågående: boolean;
-    navnPåNæringen: string;
+    navnPåNæringen?: string;
     organisasjonsnummer?: string;
     registrertINorge: boolean;
     registrertILand?: string;
@@ -36,19 +34,21 @@ export interface EgenNæring {
 export interface EgenNæringDTO
     extends Omit<
         EgenNæring,
-        | 'tidsperiode'
         | 'pågående'
+        | 'fomDato'
+        | 'tomDato'
+        | 'næringsinntekt'
         | 'endringAvNæringsinntektInformasjon'
         | 'varigEndringDato'
         | 'varigEndringInntektEtterEndring'
         | 'varigEndringBeskrivelse'
-        | 'næringsinntekt'
         | 'næringstype'
-        | 'navnPåNæringen'
     > {
-    tidsperiode: Partial<TidsperiodeDTOMedValgfriSluttdato>;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjonDTO;
     næringsinntekt?: number;
+    tidsperiode: {
+        fom: string;
+        tom: string;
+    };
     næringstyper: Næringstype[];
-    navnPåNæringen: string | undefined;
 }

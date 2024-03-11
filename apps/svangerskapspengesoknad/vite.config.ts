@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 
 export default defineConfig({
@@ -14,9 +14,6 @@ export default defineConfig({
     resolve: {
         alias: {
             app: path.resolve(__dirname, './src/app'),
-            common: path.resolve(__dirname, './src/common/'),
-            stories: path.resolve(__dirname, './src/storybook/stories'),
-            storybook: path.resolve(__dirname, './src/storybook'),
         },
     },
     build: {
@@ -30,5 +27,6 @@ export default defineConfig({
             include: ['src/**/*'],
             exclude: [],
         },
+        testTimeout: 10000,
     },
 });

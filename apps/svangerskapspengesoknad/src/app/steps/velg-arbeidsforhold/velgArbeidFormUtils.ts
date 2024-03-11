@@ -1,18 +1,20 @@
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { IntlShape } from 'react-intl';
+
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
+
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { EgenNæring, egenNæringId } from 'app/types/EgenNæring';
 import { Frilans, frilansId } from 'app/types/Frilans';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
-import { IntlShape } from 'react-intl';
 
-export const getOptionNavn = (type: Arbeidsforholdstype, navn: string, intl: IntlShape) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
+    if (type === Arbeidsforholdstype.FRILANSER && navn) {
         return capitalizeFirstLetter(navn);
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG && navn.trim().length === 0) {
+    if (type === Arbeidsforholdstype.SELVSTENDIG && (!navn || navn.trim().length === 0)) {
         return intl.formatMessage({ id: 'egenNæring' });
     }
     return navn;
@@ -28,10 +30,10 @@ export const getNæringTilretteleggingOption = (
         arbeidsforhold: {
             arbeidsgiverId: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
             type: Arbeidsforholdstype.SELVSTENDIG,
-            navn: næring.navnPåNæringen,
-            startdato: næring.tidsperiode.fom,
-            sluttdato: næring.tidsperiode.tom,
-            stillinger: [{ fom: næring.tidsperiode.fom, tom: næring.tidsperiode.tom, stillingsprosent: 100 }],
+            navn: næring.navnPåNæringen!,
+            startdato: næring.fomDato,
+            sluttdato: næring.tomDato,
+            stillinger: [{ fom: næring.fomDato, tom: næring.tomDato, stillingsprosent: 100 }],
         },
         vedlegg: næringTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined!,

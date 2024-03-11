@@ -32,5 +32,17 @@
     "ScanDocumentInfo.Liste.Punkt4": "Ønsker du å bruke PC eller Mac, kan du sende bildene til din private e-postkonto og lagre bildene på enheten din.",
     "ScanDocumentInfo.Liste.Punkt5": "Last opp og legg bildene ved den elektroniske søknaden din.",
     "ScanDocumentInfo.Del2": "Har du skanner, kan du skanne dokumenter.",
-    "ScanDocumentInfo.Link": "Mer informasjon om å sende vedlegg på nav.no."
+    "ScanDocumentInfo.Link": "Mer informasjon om å sende vedlegg på nav.no.",
+    "LanguageToggle.nb": "Bokmål - norsk",
+    "LanguageToggle.nn": "Nynorsk - norsk",
+    "LanguageToggle.en": "English",
+    "ProgressStepper.AllStepsSectionAriaLabel": "Alle steg",
+    "ProgressStepper.NavigasjonAriaLabel": "Navigasjon i søknaden",
+    "ProgressStepper.StepProgressLabel": "Steg {currentStep} av {totalSteps}",
+    "Page.DefaultMainRoleLabel": "Hovedinnhold",
+    "StepFooter.Avslutt": "Avslutt",
+    "AvsluttModal.ContinueLater": "Fortsett senere",
+    "AvsluttModal.CompleteLater": "Søknaden er lagret, og du kan fullføre den senere, eller velge å slette den. Søknaden blir lagret i 24 timer.",
+    "AvsluttModal.Ok": "OK",
+    "AvsluttModal.Delete": "Slett søknaden"
 }

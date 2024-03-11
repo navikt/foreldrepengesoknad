@@ -1,6 +1,6 @@
 const numberRegExp = RegExp(/^[-]?[0-9,.\s]*$/);
 
-export const trimNumberValue = (value: string): string => {
+const trimNumberValue = (value: string): string => {
     return value.replace(/,/g, '.').replace(/\s/g, '').replace(/%/g, '');
 };
 
