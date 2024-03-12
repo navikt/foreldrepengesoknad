@@ -31,11 +31,10 @@ import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 interface Props {
-    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
-    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
 }
 
-const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer80, stønadskontoer100 }) => {
+const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -55,7 +54,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer80, stø
 
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
-    if (!stønadskontoer80 || !stønadskontoer100) {
+    if (!stønadskontoer) {
         return <Loader />;
     }
 
@@ -65,9 +64,9 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer80, stø
     const erMor = isMor(hvemPlanlegger);
     const erFar = isFar(hvemPlanlegger);
 
-    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        periode?.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer100 : stønadskontoer80,
-    );
+    const selectedKonto = periode
+        ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[periode.dekningsgrad])
+        : [];
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
     const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);

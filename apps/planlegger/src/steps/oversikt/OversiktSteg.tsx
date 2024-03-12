@@ -71,11 +71,10 @@ const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): strin
         : intl.formatMessage({ id: 'FlereForsørgere.Far' });
 
 interface Props {
-    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
-    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
 }
 
-const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer80, stønadskontoer100 }) => {
+const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -97,12 +96,12 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer80, stønadskon
     const [currentOption, setCurrentOption] = useState('');
     console.log(currentOption);
 
-    if (!stønadskontoer80 || !stønadskontoer100) {
+    if (!stønadskontoer) {
         return <Loader />;
     }
 
     const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        (dekningsgrad || periode?.dekningsgrad) === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer100 : stønadskontoer80,
+        stønadskontoer[dekningsgrad || periode?.dekningsgrad],
     );
 
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
