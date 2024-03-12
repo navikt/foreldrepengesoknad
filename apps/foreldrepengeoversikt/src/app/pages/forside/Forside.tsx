@@ -1,24 +1,25 @@
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { Alert, Heading, VStack } from '@navikt/ds-react';
+
+import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
-import { Block, bemUtils } from '@navikt/fp-common';
-import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
-import OversiktRoutes from 'app/routes/routes';
-import { GruppertSak } from 'app/types/GruppertSak';
-import { Sak } from 'app/types/Sak';
-import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
 import SakLink from 'app/components/sak-link/SakLink';
-import { Alert, Heading } from '@navikt/ds-react';
-
-import './forside.css';
-import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import {
     useGetRedirectedFromSøknadsnummer,
     useSetRedirectedFromSøknadsnummer,
 } from 'app/hooks/useRedirectedFromSøknadsnummer';
-import { useNavigate, useParams } from 'react-router-dom';
-import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
+import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import OversiktRoutes from 'app/routes/routes';
 import Bankkonto from 'app/types/Bankkonto';
+import { GruppertSak } from 'app/types/GruppertSak';
 import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
+import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
+import { Sak } from 'app/types/Sak';
+import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
+
+import './forside.css';
 
 interface Props {
     alleYtelser: Sak[];
@@ -39,7 +40,6 @@ const Forside: React.FunctionComponent<Props> = ({
     isFirstRender,
     bankkonto,
 }) => {
-    const bem = bemUtils('forside');
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
 
     const params = useParams();
@@ -50,11 +50,10 @@ const Forside: React.FunctionComponent<Props> = ({
     }
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
     return (
-        <div className={bem.block}>
-            <Block padBottom="xl">
+        <VStack gap="10">
+            <div>
                 {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
                     <BekreftelseSendtSøknad
-                        oppdatertData={oppdatertData}
                         relevantNyTidslinjehendelse={undefined}
                         bankkonto={bankkonto}
                         ytelse={undefined}
@@ -66,8 +65,8 @@ const Forside: React.FunctionComponent<Props> = ({
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
                     </Alert>
                 )}
-            </Block>
-            <Block>
+            </div>
+            <div>
                 {storageData?.engangsstonad && (
                     <Heading level="1" size="large">
                         Dette er en mellomlagret søknad av type: Engangsstønad
@@ -78,14 +77,14 @@ const Forside: React.FunctionComponent<Props> = ({
                         Dette er en mellomlagret søknad av type: Foreldrepenger
                     </Heading>
                 )}
-            </Block>
+            </div>
             {alleYtelser.length > 0 ? (
                 <HarSaker grupperteSaker={grupperteSaker} />
             ) : (
                 <HarIkkeSaker oppdatertData={oppdatertData} />
             )}
             {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
-        </div>
+        </VStack>
     );
 };
 

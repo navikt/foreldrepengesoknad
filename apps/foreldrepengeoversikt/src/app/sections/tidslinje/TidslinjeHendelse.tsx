@@ -1,12 +1,16 @@
-import { bemUtils } from '@navikt/fp-common';
-import { BodyShort, Detail } from '@navikt/ds-react';
 import { RecordFillIcon, RecordIcon } from '@navikt/aksel-icons';
-import { formaterDato, formaterTid } from 'app/utils/dateUtils';
-import './tidslinje-hendelse.css';
-import dayjs from 'dayjs';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
+
+import { BodyShort, Detail } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
+import { formaterDato, formaterTid } from 'app/utils/dateUtils';
 import { getTidligstDatoForInntektsmelding } from 'app/utils/tidslinjeUtils';
+
+import './tidslinje-hendelse.css';
 
 interface Props {
     children: React.ReactNode;

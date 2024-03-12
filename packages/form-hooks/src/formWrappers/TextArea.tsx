@@ -1,8 +1,7 @@
-import { FunctionComponent, ReactNode, useMemo } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
 import { Textarea } from '@navikt/ds-react';
-
-import { getError, getValidationRules } from './formUtils';
+import { ChangeEvent, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
+import { replaceInvisibleCharsWithSpace, getError, getValidationRules } from './formUtils';
 
 export interface Props {
     name: string;
@@ -34,6 +33,15 @@ const TextArea: FunctionComponent<Props> = ({
         },
     });
 
+    const onChange = useCallback(
+        (event: ChangeEvent<HTMLTextAreaElement>) => {
+            field.onChange(
+                event.currentTarget.value !== '' ? replaceInvisibleCharsWithSpace(event.currentTarget.value) : null,
+            );
+        },
+        [field],
+    );
+
     return (
         <Textarea
             label={label}
@@ -42,6 +50,7 @@ const TextArea: FunctionComponent<Props> = ({
             autoComplete="off"
             {...field}
             value={field.value || ''}
+            onChange={onChange}
             error={getError(errors, name)}
             maxLength={maxLength}
             minLength={minLength}

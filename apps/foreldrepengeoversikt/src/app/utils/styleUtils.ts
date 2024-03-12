@@ -1,5 +1,4 @@
-import { Forelder } from '@navikt/fp-common';
-
+import { Forelder } from 'app/types/Forelder';
 import { StønadskontoType } from 'app/types/StønadskontoType';
 import { UttaksplanColor } from 'app/types/UttaksplanColor';
 

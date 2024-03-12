@@ -1,6 +1,12 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
 import ArbeidIUtlandetStep from '../arbeid-i-utlandet/ArbeidIUtlandetStep';
 import ArbeidIUtlandet from './ArbeidIUtlandetStep';
 
@@ -77,29 +83,35 @@ interface Props {
     gåTilNesteSide?: (action: Action) => void;
 }
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({
+    mellomlagreSøknadOgNaviger = promiseAction(),
+    gåTilNesteSide = action('button-click'),
+}) => {
+    initAmplitude();
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.INNTEKTSINFORMASJON]: {
-                    harHattAnnenInntekt: true,
-                    harJobbetSomFrilans: false,
-                    harJobbetSomSelvstendigNæringsdrivende: false,
-                },
-                [ContextDataType.OM_BARNET]: {
-                    erBarnetFødt: false,
-                    termindato: '2024-02-18',
-                    fødselsdato: '2024-02-18',
-                },
-            }}
-        >
-            <ArbeidIUtlandetStep
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={promiseAction()}
-                arbeidsforhold={arbeidsforhold}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_I_UTLANDET]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.INNTEKTSINFORMASJON]: {
+                        harHattArbeidIUtlandet: true,
+                        harJobbetSomFrilans: false,
+                        harJobbetSomSelvstendigNæringsdrivende: false,
+                    },
+                    [ContextDataType.OM_BARNET]: {
+                        erBarnetFødt: false,
+                        termindato: '2024-02-18',
+                        fødselsdato: '2024-02-18',
+                    },
+                }}
+            >
+                <ArbeidIUtlandetStep
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={promiseAction()}
+                    arbeidsforhold={arbeidsforhold}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 

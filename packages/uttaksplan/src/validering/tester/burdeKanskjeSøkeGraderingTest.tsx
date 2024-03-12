@@ -1,5 +1,5 @@
-import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { IntlShape } from 'react-intl';
+
 import {
     Periode,
     Søknadsinfo,
@@ -7,8 +7,10 @@ import {
     isPeriodeUtenUttak,
     isUtsettelsePgaArbeid,
     isUttaksperiode,
-    links,
 } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
+
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const vekslendeArbeidOgUttakTest = (kunSøkersPerioder: Periode[]): boolean => {
     const firstArbeidsperiodeIndex = kunSøkersPerioder.findIndex((p) => isUtsettelsePgaArbeid(p));

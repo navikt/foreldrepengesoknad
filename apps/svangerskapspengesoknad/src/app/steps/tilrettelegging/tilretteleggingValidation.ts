@@ -1,92 +1,30 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { SkjemaelementFeil, formatDate, intlUtils, validateTextInputField } from '@navikt/fp-common';
-import { isISODateString } from '@navikt/fp-utils';
+import { dagenFør, formatDate, tiMånederSidenDato } from '@navikt/fp-utils';
 
 import {
     Arbeidsforholdstype,
-    PeriodeMedVariasjon,
     Stilling,
     TilOgMedDatoType,
     TilretteleggingstypeOptions,
 } from 'app/types/Tilrettelegging';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'app/utils/arbeidsforholdUtils';
-import { dagenFør, tiMånederSidenDato } from 'app/utils/dateUtils';
 import { getFloatFromString } from 'app/utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'app/utils/validationUtils';
 
-export const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
+const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     if (!hasValue(value) || value.trim() === '') {
-        return intlUtils(intl, 'valideringsfeil.stillingsprosent.required');
+        return intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.required' });
     }
     const stillingsprosent = getFloatFromString(value);
 
     if (stillingsprosent === undefined) {
-        return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreEtTall');
+        return intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.måVæreEtTall' });
     }
 
     return undefined;
 };
-
-export const validateStillingsprosentPåPerioder =
-    (
-        intl: IntlShape,
-        måSøkeSendeNySøknad: boolean,
-        periodeDerTilbakeIFullJobb: PeriodeMedVariasjon | undefined,
-        allePerioder: PeriodeMedVariasjon[] | undefined,
-        opprinneligStillingsProsent: number,
-    ) =>
-    (value: string) => {
-        const valideringsFeil = validerStillingsprosentInput(intl, value);
-        if (valideringsFeil) {
-            return valideringsFeil;
-        }
-        const stillingsprosent = getFloatFromString(value);
-        if (stillingsprosent && opprinneligStillingsProsent > 0 && stillingsprosent > opprinneligStillingsProsent) {
-            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent', {
-                prosent: opprinneligStillingsProsent,
-            });
-        }
-
-        if (stillingsprosent && opprinneligStillingsProsent === 0 && stillingsprosent > 100) {
-            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEllerLik100Prosent', {
-                prosent: opprinneligStillingsProsent,
-            });
-        }
-
-        if (
-            opprinneligStillingsProsent > 0 &&
-            allePerioder &&
-            allePerioder?.every(
-                (periode) =>
-                    hasValue(periode.stillingsprosent) &&
-                    getFloatFromString(periode.stillingsprosent) === opprinneligStillingsProsent,
-            )
-        ) {
-            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kunFullTilrettelegging', {
-                prosent: opprinneligStillingsProsent,
-            });
-        }
-        if (
-            opprinneligStillingsProsent === 0 &&
-            allePerioder &&
-            allePerioder?.every(
-                (periode) => hasValue(periode.stillingsprosent) && getFloatFromString(periode.stillingsprosent) === 100,
-            )
-        ) {
-            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.kun100Prosent', {
-                prosent: opprinneligStillingsProsent,
-            });
-        }
-
-        if (måSøkeSendeNySøknad && periodeDerTilbakeIFullJobb) {
-            return intlUtils(intl, 'valideringsfeil.periode.stillingsprosent.nySøknad', {
-                fom: formatDate(periodeDerTilbakeIFullJobb.fom),
-            });
-        }
-        return undefined;
-    };
 
 export const validateStillingsprosentEnDelvisPeriode =
     (intl: IntlShape, fom: string | undefined, stillinger: Stilling[]) => (value: string) => {
@@ -97,42 +35,48 @@ export const validateStillingsprosentEnDelvisPeriode =
 
         const stillingsprosent = getFloatFromString(value)!;
         if (stillingsprosent <= 0) {
-            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreStørreEnn0');
+            return intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.måVæreStørreEnn0' });
         }
         const opprinneligStillingsProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, fom);
         if (opprinneligStillingsProsent === 0 && stillingsprosent >= 100) {
-            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEnn100Prosent', {
-                prosent: opprinneligStillingsProsent,
-            });
+            return intl.formatMessage(
+                { id: 'valideringsfeil.stillingsprosent.måVæreMindreEnn100Prosent' },
+                {
+                    prosent: opprinneligStillingsProsent,
+                },
+            );
         }
         if (opprinneligStillingsProsent > 0 && stillingsprosent >= opprinneligStillingsProsent) {
-            return intlUtils(intl, 'valideringsfeil.stillingsprosent.måVæreMindreEnnOpprinneligStillingsprosent', {
-                prosent: opprinneligStillingsProsent,
-            });
+            return intl.formatMessage(
+                { id: 'valideringsfeil.stillingsprosent.måVæreMindreEnnOpprinneligStillingsprosent' },
+                {
+                    prosent: opprinneligStillingsProsent,
+                },
+            );
         }
         return undefined;
     };
-export const validateTilretteleggingstiltak = (intl: IntlShape, label: string) => (value: string) => {
+export const validateTilretteleggingstiltak = (intl: IntlShape) => (value: string) => {
     if (!hasValue(value) || value.trim() === '') {
-        return intlUtils(intl, 'valideringsfeil.tilretteleggingstiltak.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.tilretteleggingstiltak.påkrevd' });
     }
 
     if (value.length > TEXT_INPUT_MAX_LENGTH) {
-        return intlUtils(intl, 'valideringsfeil.tilretteleggingstiltak.forLang');
+        return intl.formatMessage({ id: 'valideringsfeil.tilretteleggingstiltak.forLang' });
     }
 
     if (value.length < TEXT_INPUT_MIN_LENGTH) {
-        return intlUtils(intl, 'valideringsfeil.tilretteleggingstiltak.forKort');
+        return intl.formatMessage({ id: 'valideringsfeil.tilretteleggingstiltak.forKort' });
     }
 
-    return validateTextInputField(value, label, intl);
+    return null;
 };
 
 export const validateSammePeriodeFremTilTerminFom =
     (
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
-        sisteDagForSvangerskapspenger: Date,
+        sisteDagForSvangerskapspenger: string,
         tilretteleggingstype: TilretteleggingstypeOptions,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
@@ -140,36 +84,33 @@ export const validateSammePeriodeFremTilTerminFom =
     ) =>
     (value: string) => {
         const erDelvis = tilretteleggingstype === TilretteleggingstypeOptions.DELVIS;
-        if (!hasValue(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.ingen');
-        }
-        if (hasValue(value) && !isISODateString(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.ingen');
-        }
-
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
             dayjs(value).isBefore(dayjs(behovForTilretteleggingFom), 'd')
         ) {
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.førBehovForTilretteleggingFom.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.førBehovForTilretteleggingFom.ingen');
+                ? intl.formatMessage({
+                      id: 'valideringsfeil.sammePeriodeFremTilTerminFom.førBehovForTilretteleggingFom.delvis',
+                  })
+                : intl.formatMessage({
+                      id: 'valideringsfeil.sammePeriodeFremTilTerminFom.førBehovForTilretteleggingFom.ingen',
+                  });
         }
 
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
             if (kanHaSVPFremTilTreUkerFørTermin) {
                 return erDelvis
-                    ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.delvis')
-                    : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.ingen');
+                    ? intl.formatMessage({
+                          id: 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.delvis',
+                      })
+                    : intl.formatMessage({
+                          id: 'valideringsfeil.sammePeriodeFremTilTerminFom.etterTreUkerFørTermin.ingen',
+                      });
             }
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterFødsel.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterFødsel.ingen');
+                ? intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminFom.etterFødsel.delvis' })
+                : intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminFom.etterFødsel.ingen' });
         }
         if (
             sluttDatoArbeid &&
@@ -179,16 +120,22 @@ export const validateSammePeriodeFremTilTerminFom =
         ) {
             const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterSluttDatoArbeid.delvis', {
-                      dato: formatDate(sluttDatoArbeid),
-                      navn: arbeidNavn,
-                      slutteTekst,
-                  })
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminFom.etterSluttDatoArbeid.ingen', {
-                      dato: formatDate(sluttDatoArbeid),
-                      navn: arbeidNavn,
-                      slutteTekst,
-                  });
+                ? intl.formatMessage(
+                      { id: 'valideringsfeil.sammePeriodeFremTilTerminFom.etterSluttDatoArbeid.delvis' },
+                      {
+                          dato: formatDate(sluttDatoArbeid),
+                          navn: arbeidNavn,
+                          slutteTekst,
+                      },
+                  )
+                : intl.formatMessage(
+                      { id: 'valideringsfeil.sammePeriodeFremTilTerminFom.etterSluttDatoArbeid.ingen' },
+                      {
+                          dato: formatDate(sluttDatoArbeid),
+                          navn: arbeidNavn,
+                          slutteTekst,
+                      },
+                  );
         }
         return undefined;
     };
@@ -197,7 +144,7 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
     (
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
-        sisteDagForSvangerskapspenger: Date,
+        sisteDagForSvangerskapspenger: string,
         fom: string | undefined,
         type: TilretteleggingstypeOptions,
         arbeidNavn: string,
@@ -206,44 +153,39 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
     ) =>
     (value: string) => {
         const erDelvis = type === TilretteleggingstypeOptions.DELVIS;
-        if (!hasValue(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.ingen');
-        }
-        if (hasValue(value) && !isISODateString(value)) {
-            return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.ingen');
-        }
-
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
             dayjs(value).isBefore(dayjs(behovForTilretteleggingFom), 'd')
         ) {
-            return intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.førBehovForTilretteleggingFom');
+            return intl.formatMessage({
+                id: 'valideringsfeil.sammePeriodeFremTilTerminTom.førBehovForTilretteleggingFom',
+            });
         }
         if (hasValue(fom) && dayjs(value).isBefore(dayjs(fom), 'd')) {
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.ingen');
+                ? intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.delvis' })
+                : intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.ingen' });
         }
         if (hasValue(fom) && dayjs(value).isSame(dayjs(fom), 'd')) {
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.sammeSomFomDato.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.sammeSomFomDato.ingen');
+                ? intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminTom.sammeSomFomDato.delvis' })
+                : intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminTom.sammeSomFomDato.ingen' });
         }
 
         if (hasValue(value) && dayjs(value).isAfter(dayjs(sisteDagForSvangerskapspenger), 'd')) {
             if (kanHaSVPFremTilTreUkerFørTermin) {
                 return erDelvis
-                    ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.delvis')
-                    : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.ingen');
+                    ? intl.formatMessage({
+                          id: 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.delvis',
+                      })
+                    : intl.formatMessage({
+                          id: 'valideringsfeil.sammePeriodeFremTilTerminTom.etterTreUkerFørTermin.ingen',
+                      });
             }
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterFødsel.delvis')
-                : intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterFødsel.ingen');
+                ? intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminTom.etterFødsel.delvis' })
+                : intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminTom.etterFødsel.ingen' });
         }
         if (
             sluttDatoArbeid &&
@@ -252,11 +194,14 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
             dayjs(value).isAfter(dayjs(sluttDatoArbeid), 'd')
         ) {
             const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
-            return intlUtils(intl, 'valideringsfeil.sammePeriodeFremTilTerminTom.etterSluttDatoArbeid', {
-                dato: formatDate(sluttDatoArbeid),
-                navn: arbeidNavn,
-                slutteTekst,
-            });
+            return intl.formatMessage(
+                { id: 'valideringsfeil.sammePeriodeFremTilTerminTom.etterSluttDatoArbeid' },
+                {
+                    dato: formatDate(sluttDatoArbeid),
+                    navn: arbeidNavn,
+                    slutteTekst,
+                },
+            );
         }
         return undefined;
     };
@@ -264,55 +209,45 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
 export const validateBehovForTilretteleggingFom =
     (
         intl: IntlShape,
-        sisteDagForSvangerskapspenger: Date,
-        termindato: Date,
+        sisteDagForSvangerskapspenger: string,
+        termindato: string,
         arbeidNavn: string,
         startDatoArbeid: string,
         sluttDatoArbeid: string | undefined,
         kanHaSvpFremTilTreUkerFørTermin: boolean,
         erFrilansTilrettelegging: boolean,
     ) =>
-    (fom: string): SkjemaelementFeil => {
-        if (!hasValue(fom)) {
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.mangler');
-        }
-        if (!isISODateString(fom)) {
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.gyldigDato');
-        }
-
+    (fom: string): string | undefined => {
         if (dayjs(fom).isBefore(tiMånederSidenDato(termindato), 'd')) {
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.tiMndSidenTermin');
+            return intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.tiMndSidenTermin' });
         }
         if (dayjs(fom).isAfter(dagenFør(sisteDagForSvangerskapspenger), 'd')) {
             return kanHaSvpFremTilTreUkerFørTermin
-                ? intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørTermin')
-                : intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.måVæreFørFødsel');
+                ? intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørTermin' })
+                : intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.måVæreFørFødsel' });
         }
 
         if (dayjs(fom).isBefore(dayjs(startDatoArbeid), 'd')) {
-            const navnTekst = erFrilansTilrettelegging ? intlUtils(intl, 'somFrilanser') : `i ${arbeidNavn}`;
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.førStartDatoArbeid', {
-                dato: formatDate(startDatoArbeid),
-                navnTekst,
-            });
+            const navnTekst = erFrilansTilrettelegging ? intl.formatMessage({ id: 'somFrilanser' }) : `i ${arbeidNavn}`;
+            return intl.formatMessage(
+                { id: 'valideringsfeil.tilrettelagtArbeidFom.førStartDatoArbeid' },
+                {
+                    dato: formatDate(startDatoArbeid),
+                    navnTekst,
+                },
+            );
         }
 
         if (sluttDatoArbeid && dayjs(fom).isAfter(dayjs(sluttDatoArbeid), 'd')) {
             const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidFom.etterSluttDatoArbeid', {
-                dato: formatDate(sluttDatoArbeid),
-                navn: arbeidNavn,
-                slutteTekst,
-            });
-        }
-        return undefined;
-    };
-
-export const validateTilrettelagtArbeidType =
-    (intl: IntlShape) =>
-    (type: TilretteleggingstypeOptions): SkjemaelementFeil => {
-        if (!hasValue(type)) {
-            return intlUtils(intl, 'valideringsfeil.tilrettelagtArbeidType.mangler');
+            return intl.formatMessage(
+                { id: 'valideringsfeil.tilrettelagtArbeidFom.etterSluttDatoArbeid' },
+                {
+                    dato: formatDate(sluttDatoArbeid),
+                    navn: arbeidNavn,
+                    slutteTekst,
+                },
+            );
         }
         return undefined;
     };
@@ -322,22 +257,22 @@ export const validerTilretteleggingTomType =
         intl: IntlShape,
         tilretteleggingType: TilretteleggingstypeOptions,
         behovForTilretteleggingFom: string | undefined,
-        sisteDagForSvangerskapspenger: Date,
+        sisteDagForSvangerskapspenger: string,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
-    (value: TilOgMedDatoType): SkjemaelementFeil => {
+    (value: string | number | boolean): string | undefined => {
         const erDelvis = tilretteleggingType === TilretteleggingstypeOptions.DELVIS;
         if (!hasValue(value)) {
             if (erDelvis) {
                 return kanHaSVPFremTilTreUkerFørTermin
-                    ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis.tilTermin')
-                    : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.delvis.tilFødsel');
+                    ? intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.delvis.tilTermin' })
+                    : intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.delvis.tilFødsel' });
             } else {
                 return kanHaSVPFremTilTreUkerFørTermin
-                    ? intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen.tilTermin')
-                    : intlUtils(intl, 'valideringsfeil.tomType.påkrevd.ingen.tilFødsel');
+                    ? intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.ingen.tilTermin' })
+                    : intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.ingen.tilFødsel' });
             }
         }
         if (
@@ -349,73 +284,69 @@ export const validerTilretteleggingTomType =
         ) {
             const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
             return erDelvis
-                ? intlUtils(intl, 'valideringsfeil.tomType.etterSluttDatoArbeid.delvis', {
-                      slutteTekst,
-                      navn: arbeidNavn,
-                  })
-                : intlUtils(intl, 'valideringsfeil.tomType.etterSluttDatoArbeid.ingen', {
-                      slutteTekst,
-                      navn: arbeidNavn,
-                  });
-        }
-        return undefined;
-    };
-
-export const validateTilretteleggingPeriodetype =
-    (intl: IntlShape) =>
-    (type: TilretteleggingstypeOptions): SkjemaelementFeil => {
-        if (!hasValue(type)) {
-            return intlUtils(intl, 'valideringsfeil.tilretteleggingPeriodeType.mangler');
+                ? intl.formatMessage(
+                      { id: 'valideringsfeil.tomType.etterSluttDatoArbeid.delvis' },
+                      {
+                          slutteTekst,
+                          navn: arbeidNavn,
+                      },
+                  )
+                : intl.formatMessage(
+                      { id: 'valideringsfeil.tomType.etterSluttDatoArbeid.ingen' },
+                      {
+                          slutteTekst,
+                          navn: arbeidNavn,
+                      },
+                  );
         }
         return undefined;
     };
 
 const finnFeilmeldingForPåkrevd = (intl: IntlShape, type: Arbeidsforholdstype) => {
     if (type === Arbeidsforholdstype.FRILANSER) {
-        return intlUtils(intl, 'valideringsfeil.risikofaktorer.frilanser.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.påkrevd' });
     }
     if (type === Arbeidsforholdstype.SELVSTENDIG) {
-        return intlUtils(intl, 'valideringsfeil.risikofaktorer.selvstendig.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.påkrevd' });
     }
     if (type === Arbeidsforholdstype.VIRKSOMHET) {
-        return intlUtils(intl, 'valideringsfeil.risikofaktorer.virksomhet.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.virksomhet.påkrevd' });
     }
     throw Error('Ingen påkrevd-tekst for type: ' + type);
 };
 
 const finnFeilmeldingForOverMakslengde = (intl: IntlShape, type: Arbeidsforholdstype) => {
     if (type === Arbeidsforholdstype.FRILANSER) {
-        return intlUtils(intl, 'valideringsfeil.risikofaktorer.frilanser.forLang');
+        return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.forLang' });
     }
     if (type === Arbeidsforholdstype.SELVSTENDIG) {
-        return intlUtils(intl, 'valideringsfeil.risikofaktorer.selvstendig.forLang');
+        return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.forLang' });
     }
     throw Error('Ingen makslengde-tekst for type: ' + type);
 };
 
 const finnFeilmeldingForUnderMinLengde = (intl: IntlShape, type: Arbeidsforholdstype) => {
     if (type === Arbeidsforholdstype.FRILANSER) {
-        return intlUtils(intl, 'valideringsfeil.risikofaktorer.frilanser.forKort');
+        return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.forKort' });
     }
     if (type === Arbeidsforholdstype.SELVSTENDIG) {
-        return intlUtils(intl, 'valideringsfeil.risikofaktorer.selvstendig.forKort');
+        return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.forKort' });
     }
     throw Error('Ingen tekst for type: ' + type);
 };
 
-export const validateRisikofaktorer =
-    (intl: IntlShape, label: string, type: Arbeidsforholdstype) => (value: string) => {
-        if (!hasValue(value) || value.trim() === '') {
-            return finnFeilmeldingForPåkrevd(intl, type);
-        }
+export const validateRisikofaktorer = (intl: IntlShape, type: Arbeidsforholdstype) => (value: string) => {
+    if (!hasValue(value) || value.trim() === '') {
+        return finnFeilmeldingForPåkrevd(intl, type);
+    }
 
-        if (value.length > TEXT_INPUT_MAX_LENGTH) {
-            return finnFeilmeldingForOverMakslengde(intl, type);
-        }
+    if (value.length > TEXT_INPUT_MAX_LENGTH) {
+        return finnFeilmeldingForOverMakslengde(intl, type);
+    }
 
-        if (value.length < TEXT_INPUT_MIN_LENGTH) {
-            return finnFeilmeldingForUnderMinLengde(intl, type);
-        }
+    if (value.length < TEXT_INPUT_MIN_LENGTH) {
+        return finnFeilmeldingForUnderMinLengde(intl, type);
+    }
 
-        return validateTextInputField(value, label, intl);
-    };
+    return null;
+};

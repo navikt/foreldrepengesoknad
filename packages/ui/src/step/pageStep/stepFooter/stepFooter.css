@@ -1,0 +1,28 @@
+.stepFooter {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+}
+.stepFooter__divider {
+    width: 100%;
+    padding: 0.5rem;
+    margin-left: 0;
+    margin-right: 0;
+}
+.stepFooter__avbrytSoknadLenke {
+    color: #cf3333;
+}
+.stepFooter__avbrytSoknadLenke:focus {
+    color: white;
+}
+.stepFooter__links {
+    display: flex;
+    align-items: center;
+}
+.stepFooter__links > * {
+    margin: 0.2rem 0.5rem;
+}
+.stepFooter__links > *:first-child {
+    margin-left: 0;
+}

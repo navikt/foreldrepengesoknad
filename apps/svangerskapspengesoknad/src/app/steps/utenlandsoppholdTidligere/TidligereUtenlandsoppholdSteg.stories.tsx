@@ -1,8 +1,14 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+import { Utenlandsopphold } from '@navikt/fp-types';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
-import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
-import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 
 const promiseAction =
     () =>
@@ -78,25 +84,28 @@ interface Props {
 
 const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     utenlandsopphold = {
-        iNorgeNeste12Mnd: true,
-        iNorgeSiste12Mnd: false,
+        harBoddUtenforNorgeSiste12Mnd: true,
+        skalBoUtenforNorgeNeste12Mnd: false,
     },
 }) => {
+    initAmplitude();
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-            }}
-        >
-            <TidligereUtenlandsoppholdSteg
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={() => undefined}
-                arbeidsforhold={arbeidsforhold}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.HAR_BODD_I_UTLANDET]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                }}
+            >
+                <TidligereUtenlandsoppholdSteg
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={() => undefined}
+                    arbeidsforhold={arbeidsforhold}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 

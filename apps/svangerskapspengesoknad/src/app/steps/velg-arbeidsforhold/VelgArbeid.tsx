@@ -1,14 +1,17 @@
-import { Checkbox, VStack } from '@navikt/ds-react';
-import { Step } from '@navikt/fp-common';
-import { CheckboxGroup, ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
-import { getBackLinkForVelgArbeidSteg, useStepConfig } from 'app/steps/stepsConfig';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+
+import { Checkbox, VStack } from '@navikt/ds-react';
+
+import { CheckboxGroup, ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
+
 import FlereArbeidsforholdGuidePanel from './FlereArbeidsforholdGuidePanel';
 import { getOptionNavn, mapArbeidsforholdToVelgArbeidOptions } from './velgArbeidFormUtils';
 
@@ -24,8 +27,8 @@ type Props = {
 
 const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const frilans = useContextGetData(ContextDataType.FRILANS);
@@ -35,7 +38,6 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const { termindato } = barnet;
 
@@ -56,9 +58,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
         oppdaterTilrettelegginger(valgteTilrettelegginger);
 
         oppdaterValgtTilretteleggingId(valgteTilrettelegginger[0].id);
-        oppdaterAppRoute(SøknadRoutes.SKJEMA);
-
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<VelgArbeidFormData>({
@@ -73,11 +73,9 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="velgArbeid"
-            pageTitle={intl.formatMessage({ id: 'steps.label.velgArbeid' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -89,17 +87,12 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
                     >
                         {tilretteleggingOptions.map((option) => (
                             <Checkbox key={option.id} value={option.id}>
-                                {getOptionNavn(option.arbeidsforhold.type, option.arbeidsforhold.navn, intl)}
+                                {getOptionNavn(option.arbeidsforhold.type, intl, option.arbeidsforhold.navn)}
                             </Checkbox>
                         ))}
                     </CheckboxGroup>
                     {visInfo && <FlereArbeidsforholdGuidePanel />}
-                    <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            oppdaterAppRoute(getBackLinkForVelgArbeidSteg(inntektsinformasjon));
-                            mellomlagreSøknadOgNaviger();
-                        }}
-                    />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

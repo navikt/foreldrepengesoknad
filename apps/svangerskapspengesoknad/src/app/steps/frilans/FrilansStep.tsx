@@ -1,19 +1,59 @@
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Radio, VStack } from '@navikt/ds-react';
-import { notEmpty } from '@navikt/fp-validation';
-import { Step, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
-import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import { getNextRouteForFrilans, useStepConfig } from 'app/steps/stepsConfig';
-import { FrilansFormData, FrilansFormField } from './frilansFormConfig';
-import { validateFrilansStart, validateJobberFortsattSomFrilanser } from './frilansValidation';
-import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Radio, VStack } from '@navikt/ds-react';
+
+import { DATE_20_YEARS_AGO, DATE_TODAY } from '@navikt/fp-constants';
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import SøknadRoutes from 'app/routes/routes';
-import { useNavigate } from 'react-router-dom';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
+import { isBeforeTodayOrToday, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
+
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
+import { egenNæringId } from 'app/types/EgenNæring';
+import { Frilans, frilansId } from 'app/types/Frilans';
+import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
+
+import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
+
+const getNextRouteValgAvArbeidEllerSkjema = (
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+    inntektsinformasjon: Inntektsinformasjon,
+): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
+        termindato,
+        aktiveArbeidsforhold,
+        inntektsinformasjon.harJobbetSomFrilans,
+        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
+    );
+    if (harKunEtArbeid) {
+        if (aktiveArbeidsforhold.length === 0) {
+            const frilansEllerNæringId = inntektsinformasjon.harJobbetSomFrilans ? frilansId : egenNæringId;
+            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: frilansEllerNæringId };
+        } else {
+            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: aktiveArbeidsforhold[0].arbeidsgiverId };
+        }
+    }
+    return { nextRoute: SøknadRoutes.VELG_ARBEID };
+};
+
+const getNextRoute = (
+    inntektsinformasjon: Inntektsinformasjon,
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+    const route = inntektsinformasjon.harHattArbeidIUtlandet ? SøknadRoutes.ARBEID_I_UTLANDET : undefined;
+    const nextRoute = inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ? SøknadRoutes.NÆRING : route;
+    return nextRoute
+        ? { nextRoute }
+        : getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, inntektsinformasjon);
+};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -23,9 +63,8 @@ type Props = {
 
 const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
-    const navigate = useNavigate();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
@@ -35,16 +74,14 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
-    const formMethods = useForm<FrilansFormData>({
-        defaultValues: {
-            frilansFom: frilans ? frilans.oppstart : undefined,
-            jobberFremdelesSomFrilanser: frilans ? frilans.jobberFremdelesSomFrilans : undefined,
-        },
+    const formMethods = useForm<Frilans>({
+        defaultValues: frilans,
     });
 
-    const onSubmit = (values: Partial<FrilansFormData>) => {
+    const onSubmit = (values: Frilans) => {
+        oppdaterFrilans(values);
+
         const harKunEtAktivtArbeid = søkerHarKunEtAktivtArbeid(
             barnet.termindato,
             arbeidsforhold,
@@ -52,51 +89,49 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
             inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
         );
         if (harKunEtAktivtArbeid) {
-            const tilretteleggingOptions = [
-                getFrilansTilretteleggingOption(tilrettelegginger || [], values.frilansFom!),
-            ];
+            const tilretteleggingOptions = [getFrilansTilretteleggingOption(tilrettelegginger || [], values.oppstart)];
             oppdaterTilrettelegginger(tilretteleggingOptions);
         }
 
-        oppdaterFrilans({
-            jobberFremdelesSomFrilans: values.jobberFremdelesSomFrilanser!,
-            oppstart: values.frilansFom!,
-        });
-
-        const { nextRoute, nextTilretteleggingId } = getNextRouteForFrilans(
+        const { nextRoute, nextTilretteleggingId } = getNextRoute(
             inntektsinformasjon,
             barnet.termindato,
             arbeidsforhold,
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
-        oppdaterAppRoute(nextRoute);
 
-        mellomlagreSøknadOgNaviger();
+        return navigator.goToNextStep(nextRoute);
     };
 
     return (
         <Step
-            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
-            activeStepId="frilans"
-            pageTitle={intlUtils(intl, 'steps.label.frilans')}
+            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <Datepicker
-                        name={FrilansFormField.frilansFom}
-                        label={intlUtils(intl, 'frilans.oppstart')}
-                        validate={[validateFrilansStart(intl)]}
-                        maxDate={dateToday}
-                        minDate={date20YearsAgo}
+                        name="oppstart"
+                        label={intl.formatMessage({ id: 'frilans.oppstart' })}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' })),
+                            isValidDate(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' })),
+                            isBeforeTodayOrToday(
+                                intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' }),
+                            ),
+                        ]}
+                        maxDate={DATE_TODAY}
+                        minDate={DATE_20_YEARS_AGO}
                     />
                     <RadioGroup
-                        name={FrilansFormField.jobberFremdelesSomFrilanser}
-                        label={intlUtils(intl, 'frilans.jobberFremdelesSomFrilans')}
-                        validate={[validateJobberFortsattSomFrilanser(intl)]}
+                        name="jobberFremdelesSomFrilans"
+                        label={intl.formatMessage({ id: 'frilans.jobberFremdelesSomFrilans' })}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'valideringsfeil.jobberFremdelesSomFrilans.påkrevd' })),
+                        ]}
                     >
                         <Radio value={true}>
                             <FormattedMessage id="frilans.jobberFremdelesSomFrilans.ja" />
@@ -105,12 +140,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                             <FormattedMessage id="frilans.jobberFremdelesSomFrilans.nei" />
                         </Radio>
                     </RadioGroup>
-                    <StepButtonsHookForm<FrilansFormData>
-                        goToPreviousStep={() => {
-                            oppdaterAppRoute(SøknadRoutes.ARBEID);
-                            navigate(SøknadRoutes.ARBEID);
-                        }}
-                    />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

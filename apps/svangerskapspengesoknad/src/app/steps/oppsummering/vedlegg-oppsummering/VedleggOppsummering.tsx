@@ -1,10 +1,14 @@
-import { BodyShort, HStack, Link } from '@navikt/ds-react';
-import { bemUtils, guid, intlUtils } from '@navikt/fp-common';
-import Tilrettelegging, { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+import { FileIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+
+import { BodyShort, HStack, Link } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import Tilrettelegging, { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+
 import './vedlegg-oppsummering.css';
-import { FileIcon } from '@navikt/aksel-icons';
 
 interface Props {
     tilrettelegging: Tilrettelegging[];
@@ -13,11 +17,11 @@ interface Props {
 const getVedleggTittel = (arbeidsforhold: ArbeidsforholdForTilrettelegging, intl: IntlShape) => {
     switch (arbeidsforhold.type) {
         case Arbeidsforholdstype.FRILANSER:
-            return intlUtils(intl, 'oppsummering.skjema.frilanser');
+            return intl.formatMessage({ id: 'oppsummering.skjema.frilanser' });
         case Arbeidsforholdstype.SELVSTENDIG:
-            return intlUtils(intl, 'oppsummering.skjema.selvstendig');
+            return intl.formatMessage({ id: 'oppsummering.skjema.selvstendig' });
         default:
-            return `${intlUtils(intl, 'oppsummering.skjema.virksomhet')} for ${arbeidsforhold.navn}`;
+            return `${intl.formatMessage({ id: 'oppsummering.skjema.virksomhet' })} for ${arbeidsforhold.navn}`;
     }
 };
 
@@ -30,7 +34,7 @@ const VedleggOppsummering: FunctionComponent<Props> = ({ tilrettelegging }) => {
             <div className={bem.element('tilrettelegging')} key={t.id}>
                 <BodyShort className={bem.element('tittel')}>{tittel}</BodyShort>
                 {t.vedlegg.map((v) => (
-                    <div key={guid()}>
+                    <div key={v.id}>
                         <HStack>
                             <Link className={bem.element('link')} href={v.url} target="_blank">
                                 <FileIcon className={bem.element('icon')} title="Opplastet fil" />

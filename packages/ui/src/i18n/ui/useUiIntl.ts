@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import { useIntl, createIntl as createReactIntl, createIntlCache, IntlShape } from 'react-intl';
+import { IntlShape, createIntlCache, createIntl as createReactIntl, useIntl } from 'react-intl';
+
+import enMessages from './messages/en_US.json';
 import nbMessages from './messages/nb_NO.json';
 import nnMessages from './messages/nn_NO.json';
-import enMessages from './messages/en_US.json';
 
 const getLanguageMessages = (locale: string) => {
     if (locale === 'nb') {

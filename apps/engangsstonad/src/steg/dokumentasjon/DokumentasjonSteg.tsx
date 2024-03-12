@@ -9,10 +9,9 @@ import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
-import { ScanDocumentInfo } from '@navikt/fp-ui';
+import { ScanDocumentInfo, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import AdopsjonDokPanel from './AdopsjonDokPanel';

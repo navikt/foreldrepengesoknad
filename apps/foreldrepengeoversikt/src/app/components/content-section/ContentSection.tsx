@@ -1,7 +1,9 @@
-import { Heading, Skeleton, SkeletonProps } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
 import classNames from 'classnames';
 import { FunctionComponent } from 'react';
+
+import { Heading, Skeleton, SkeletonProps } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
 
 import './content-section.css';
 

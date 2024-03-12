@@ -1,10 +1,12 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import OppsummeringIndex from './OppsummeringIndex';
-import BoIUtlandetOppsummeringspunkt, { HendelseType } from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
-import { Utenlandsopphold, UtenlandsoppholdTidligere, UtenlandsoppholdSenere } from '@navikt/fp-types';
-import SøkerOppsummeringspunkt from './søker/SøkerOppsummeringspunkt';
+import { StoryFn } from '@storybook/react';
+
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
+
+import OppsummeringIndex from './OppsummeringIndex';
+import SøkerOppsummeringspunkt from './søker/SøkerOppsummeringspunkt';
+import BoIUtlandetOppsummeringspunkt, { HendelseType } from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
 
 const promiseAction =
     () =>
@@ -48,7 +50,6 @@ const Template: StoryFn<{
             stepConfig={[
                 {
                     id: '1',
-                    index: 1,
                     label: 'Oppsummering',
                     isSelected: true,
                 },

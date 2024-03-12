@@ -1,6 +1,8 @@
-import { BodyShort, VStack } from '@navikt/ds-react';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import { BodyShort, VStack } from '@navikt/ds-react';
+
+import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
 const finnLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
     if (typeArbeid === Arbeidsforholdstype.FRILANSER) {

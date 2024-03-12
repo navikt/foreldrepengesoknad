@@ -1,19 +1,20 @@
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import minMax from 'dayjs/plugin/minMax';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
 
-import { convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common/src/common/utils/formUtils';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { isISODateString } from '@navikt/fp-utils';
 
-import { InntektsinformasjonFormData } from 'app/steps/inntektsinformasjon/inntektsinformasjonFormConfig';
-import { getArbeidsforholdTilretteleggingOptions } from 'app/steps/velg-arbeidsforhold/velgArbeidFormUtils';
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
-import Tilrettelegging, { Stilling } from 'app/types/Tilrettelegging';
+import { Stilling } from 'app/types/Tilrettelegging';
 
-import { hasValue } from './validationUtils';
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isBetween);
+dayjs.extend(minMax);
 
 export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
     if (termindato === undefined) {
@@ -33,7 +34,7 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
     stillinger: Stilling[],
     skjæringstidspunkt: string | undefined,
 ): number => {
-    if (hasValue(skjæringstidspunkt) && isISODateString(skjæringstidspunkt)) {
+    if (skjæringstidspunkt) {
         const perioderISkjæringstidspunktet = stillinger.filter((p) => {
             if (!p.tom) {
                 return dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
@@ -56,7 +57,7 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
     return 100;
 };
 
-export const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]): Stilling[] => {
+const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]): Stilling[] => {
     const perioderMedStillingsprosent = likeArbeidsforhold.map((p) => {
         return {
             fom: p.fom,
@@ -91,10 +92,10 @@ export const getUnikeArbeidsforhold = (
                 const alleTom = likeArbeidsforhold.map((a) => a.tom);
                 return {
                     ...arbeid,
-                    fom: dateToISOString(dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.toDate()),
+                    fom: dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.format(ISO_DATE_FORMAT),
                     tom: alleTom.includes(undefined)
                         ? undefined
-                        : dateToISOString(dayjs.max(alleTom.map((tom) => dayjs(tom)))!.toDate()),
+                        : dayjs.max(alleTom.map((tom) => dayjs(tom)))!.format(ISO_DATE_FORMAT),
                     stillinger: getStillingerForLikeArbeidsforhold(likeArbeidsforhold),
                 };
             } else {
@@ -121,55 +122,13 @@ export const søkerHarKunEtAktivtArbeid = (
     );
 };
 
-export const søkerHarKunEttARegArbeidsforholdForTilrettelegging = (
-    formValues: Partial<InntektsinformasjonFormData>,
-    aktiveArbeidsforhold: Arbeidsforhold[],
-    termindato: string,
-) => {
-    return (
-        hasValue(formValues.hattInntektSomFrilans) &&
-        hasValue(formValues.hattInntektSomNæringsdrivende) &&
-        søkerHarKunEtAktivtArbeid(
-            termindato,
-            aktiveArbeidsforhold,
-            !!convertYesOrNoOrUndefinedToBoolean(formValues.hattInntektSomFrilans),
-            !!convertYesOrNoOrUndefinedToBoolean(formValues.hattInntektSomNæringsdrivende),
-        ) &&
-        aktiveArbeidsforhold.length > 0
-    );
-};
-
-export const getAutomatiskValgtTilretteleggingHvisKunEtArbeid = (
-    formValues: Partial<InntektsinformasjonFormData>,
-    aktiveArbeidsforhold: Arbeidsforhold[],
-    termindato: string,
-    tilrettelegging: Tilrettelegging[],
-    intl: IntlShape,
-) => {
-    let automatiskValgtTilrettelegging = undefined;
-    const kunEtAregArbeidsforholdForTilrettelegging = søkerHarKunEttARegArbeidsforholdForTilrettelegging(
-        formValues,
-        aktiveArbeidsforhold,
-        termindato,
-    );
-    if (kunEtAregArbeidsforholdForTilrettelegging) {
-        automatiskValgtTilrettelegging = getArbeidsforholdTilretteleggingOptions(
-            aktiveArbeidsforhold,
-            tilrettelegging,
-            termindato,
-            intl,
-        )[0];
-    }
-    return automatiskValgtTilrettelegging;
-};
-
 export const getTekstOmManglendeArbeidsforhold = (
     inntektsinformasjon: Inntektsinformasjon,
     intl: IntlShape,
 ): string => {
     const erFrilanser = inntektsinformasjon.harJobbetSomFrilans;
     const harNæring = inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende;
-    const harJobbetIUtlandet = inntektsinformasjon.harHattAnnenInntekt;
+    const harJobbetIUtlandet = inntektsinformasjon.harHattArbeidIUtlandet;
     if (erFrilanser && !harNæring && !harJobbetIUtlandet) {
         return intl.formatMessage({ id: 'oppsummering.harIkkeNæringEllerJobbIUtlandet' });
     }

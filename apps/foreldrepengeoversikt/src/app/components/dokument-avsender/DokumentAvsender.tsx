@@ -1,5 +1,7 @@
 import { BodyShort } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import { DokumentType } from 'app/types/DokumentType';
 
 import './dokument-avsender.css';

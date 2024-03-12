@@ -8,9 +8,9 @@ import { OmBarnet } from 'types/OmBarnet';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Kjønn, Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Søkersituasjon } from '@navikt/fp-types';
+import { Kjønn, Søkersituasjon } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { omitOne } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

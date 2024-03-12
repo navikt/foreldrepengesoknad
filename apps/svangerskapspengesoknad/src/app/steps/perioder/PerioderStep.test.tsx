@@ -1,10 +1,12 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './PerioderStep.stories';
 import dayjs from 'dayjs';
-import { ContextDataType } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
+import * as stories from './PerioderStep.stories';
 
 const { Default, FlereStillinger } = composeStories(stories);
 
@@ -76,7 +78,6 @@ describe('<Perioder>', () => {
                         {
                             fom: '2023-10-30',
                             stillingsprosent: '20',
-                            tom: '',
                             tomType: 'SISTE_DAG_MED_SVP',
                             type: 'delvis',
                         },

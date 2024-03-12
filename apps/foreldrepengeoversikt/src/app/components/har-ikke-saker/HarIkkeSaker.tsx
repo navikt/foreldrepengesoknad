@@ -1,12 +1,14 @@
+import { FunctionComponent } from 'react';
+
 import { ExternalLink } from '@navikt/ds-icons';
 import { Alert, BodyShort, Button, Heading, Link } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 
 import ContentSection from '../content-section/ContentSection';
-
 import './har-ikke-saker.css';
-import { FunctionComponent } from 'react';
 
 interface Props {
     oppdatertData: boolean;

@@ -5,13 +5,17 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { IntlShape } from 'react-intl';
 
-import { TidsperiodeDate } from '@navikt/fp-common';
 import { isISODateString } from '@navikt/fp-utils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isoWeek);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
+
+interface TidsperiodeDate {
+    fom: Date;
+    tom: Date;
+}
 
 type VarighetFormat = 'full' | 'normal';
 

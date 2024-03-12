@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { shouldChangeBrowser } from 'app/utils/browserUtils';
-import { intlUtils } from '@navikt/fp-common';
+
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
+
+import { shouldChangeBrowser } from 'app/utils/browserUtils';
 
 const ByttBrowserModal: React.FunctionComponent = () => {
     const [isOpen, toggleIsOpen] = useState(shouldChangeBrowser());
     const intl = useIntl();
 
     return (
-        <Modal aria-label={intlUtils(intl, 'byttBrowser.tittel')} open={isOpen} onClose={() => undefined}>
+        <Modal aria-label={intl.formatMessage({ id: 'byttBrowser.tittel' })} open={isOpen} onClose={() => undefined}>
             <Modal.Header>
                 <Heading size="medium">
                     <FormattedMessage id="byttBrowser.tittel" />

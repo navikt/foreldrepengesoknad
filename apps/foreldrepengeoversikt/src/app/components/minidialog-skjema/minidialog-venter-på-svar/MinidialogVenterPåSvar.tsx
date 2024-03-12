@@ -1,9 +1,10 @@
-import { Alert, Loader } from '@navikt/ds-react';
-import { Block, intlUtils } from '@navikt/fp-common';
-import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+
+import { Alert, Loader, VStack } from '@navikt/ds-react';
+
+import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 
 interface Props {
     fetchCounter: number;
@@ -12,20 +13,16 @@ interface Props {
 }
 
 const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allowedToFetch, saksnummer }) => {
-    const intl = useIntl();
-
     if (fetchCounter < 30 && allowedToFetch) {
         return (
             <>
                 <ScrollToTop />
-                <Block padBottom="l">
-                    <Alert variant="info">
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                            <Loader />
-                            Svaret ditt registreres i våre systemer.
-                        </div>
-                    </Alert>
-                </Block>
+                <Alert variant="info">
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+                        <Loader />
+                        Svaret ditt registreres i våre systemer.
+                    </div>
+                </Alert>
             </>
         );
     }
@@ -34,12 +31,12 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
         return (
             <>
                 <ScrollToTop />
-                <Block padBottom="l">
+                <VStack gap="2">
                     <Alert variant="success">Svaret ditt er registrert</Alert>
-                </Block>
-                <Block padBottom="l">
-                    <Link to={`/sak/${saksnummer}`}>{intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}</Link>
-                </Block>
+                    <Link to={`/sak/${saksnummer}`}>
+                        <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
+                    </Link>
+                </VStack>
             </>
         );
     }
@@ -47,15 +44,15 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
     return (
         <>
             <ScrollToTop />
-            <Block padBottom="l">
+            <VStack gap="2">
                 <Alert variant="info">
                     Vi har fått svaret ditt, men det tar litt lenger tid enn vanlig å oppdatere saken. Du trenger ikke å
                     sende igjen.
                 </Alert>
-            </Block>
-            <Block padBottom="l">
-                <Link to={`/sak/${saksnummer}`}>{intlUtils(intl, 'miniDialog.kvittering.gåTilbakeTilSaken')}</Link>
-            </Block>
+                <Link to={`/sak/${saksnummer}`}>
+                    <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
+                </Link>
+            </VStack>
         </>
     );
 };

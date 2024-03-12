@@ -1,7 +1,8 @@
-import { ArbeidIUtlandetDTO } from './ArbeidIUtlandet';
-import { FrilansDTO } from './Frilans';
-import { EgenNæringDTO } from './EgenNæring';
 import { LocaleNo } from '@navikt/fp-types';
+
+import { ArbeidIUtlandetDTO } from './ArbeidIUtlandet';
+import { EgenNæringDTO } from './EgenNæring';
+import { Frilans } from './Frilans';
 
 export enum Søkerrolle {
     'MOR' = 'mor',
@@ -10,7 +11,7 @@ export enum Søkerrolle {
 export interface SøkerDTO {
     rolle: Søkerrolle.MOR;
     språkkode: LocaleNo;
-    frilansInformasjon?: FrilansDTO;
+    frilansInformasjon?: Frilans;
     selvstendigNæringsdrivendeInformasjon?: EgenNæringDTO[];
     andreInntekterSiste10Mnd?: ArbeidIUtlandetDTO[];
 }

@@ -1,5 +1,7 @@
 import { FormattedMessage } from 'react-intl';
+
 import { BodyShort, VStack } from '@navikt/ds-react';
+
 import { links } from '@navikt/fp-constants';
 
 const SkjemaopplastningTekstArbeidsgiver: React.FunctionComponent = () => {

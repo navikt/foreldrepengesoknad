@@ -1,10 +1,15 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import FrilansStep from './FrilansStep';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { StoryFn } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
+
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+
+import FrilansStep from './FrilansStep';
 
 const defaultExport = {
     title: 'steps/FrilansStep',
@@ -79,15 +84,19 @@ interface Props {
     gåTilNesteSide?: (action: Action) => void;
 }
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({
+    mellomlagreSøknadOgNaviger = promiseAction(),
+    gåTilNesteSide = action('button-click'),
+}) => {
+    initAmplitude();
     return (
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
             <SvpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
                     [ContextDataType.INNTEKTSINFORMASJON]: {
                         harJobbetSomFrilans: true,
-                        harHattAnnenInntekt: false,
+                        harHattArbeidIUtlandet: false,
                         harJobbetSomSelvstendigNæringsdrivende: false,
                     },
                     [ContextDataType.TILRETTELEGGINGER]: [

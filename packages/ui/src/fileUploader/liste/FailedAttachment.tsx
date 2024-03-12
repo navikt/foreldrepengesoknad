@@ -1,7 +1,9 @@
-import { Alert } from '@navikt/ds-react';
 import { FormattedMessage } from 'react-intl';
 
+import { Alert } from '@navikt/ds-react';
+
 import { Attachment } from '@navikt/fp-types';
+
 import { FileUploadError } from '../typer/FileUploadError';
 
 const MAX_FIL_STØRRELSE_KB = 16777;

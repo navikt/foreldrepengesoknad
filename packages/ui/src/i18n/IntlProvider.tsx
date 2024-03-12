@@ -1,4 +1,5 @@
 import { IntlProvider as Provider } from 'react-intl';
+
 import { LocaleAll } from '@navikt/fp-types';
 
 interface Props<T extends LocaleAll> {

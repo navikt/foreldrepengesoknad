@@ -1,15 +1,13 @@
-import { BodyShort } from '@navikt/ds-react';
-import { intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     harArbeidsforhold: boolean;
 }
 
 const HarIkkeArbeidsforhold: FunctionComponent<Props> = ({ harArbeidsforhold }) => {
-    const intl = useIntl();
-
     if (harArbeidsforhold) {
         return null;
     }
@@ -17,7 +15,7 @@ const HarIkkeArbeidsforhold: FunctionComponent<Props> = ({ harArbeidsforhold }) 
     return (
         <div className="arbeidsforholdInfoBox" style={{ marginBottom: '1rem' }}>
             <BodyShort>
-                {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold')}
+                <FormattedMessage id="inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold" />
             </BodyShort>
         </div>
     );

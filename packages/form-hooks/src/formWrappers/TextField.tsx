@@ -1,8 +1,8 @@
-import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { TextField as DsTextField } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { getError, getValidationRules, replaceInvisibleCharsWithSpace } from './formUtils';
 
 export interface Props {
     name: string;
@@ -15,6 +15,8 @@ export interface Props {
     disabled?: boolean;
     type?: 'email' | 'password' | 'tel' | 'text' | 'url';
     className?: string;
+    style?: CSSProperties;
+    shouldReplaceInvisibleChars?: boolean;
 }
 
 const TextField: FunctionComponent<Props> = ({
@@ -28,6 +30,8 @@ const TextField: FunctionComponent<Props> = ({
     maxLength,
     disabled,
     className,
+    style,
+    shouldReplaceInvisibleChars = false,
 }) => {
     const {
         formState: { errors },
@@ -43,12 +47,22 @@ const TextField: FunctionComponent<Props> = ({
 
     const onChangeFn = useCallback(
         (evt: React.ChangeEvent<HTMLInputElement>) => {
-            field.onChange(evt);
-            if (onChange) {
-                onChange(evt.currentTarget.value);
+            // TODO (TOR) Skriv dette penare etterkvart som shouldReplaceInvisibleChars blir verifisert OK
+            if (shouldReplaceInvisibleChars) {
+                const parsedValues =
+                    evt.currentTarget.value !== '' ? replaceInvisibleCharsWithSpace(evt.currentTarget.value) : null;
+                field.onChange(parsedValues);
+                if (onChange) {
+                    onChange(parsedValues);
+                }
+            } else {
+                field.onChange(evt);
+                if (onChange) {
+                    onChange(evt.currentTarget.value);
+                }
             }
         },
-        [field, onChange],
+        [field, onChange, shouldReplaceInvisibleChars],
     );
 
     return (
@@ -64,6 +78,7 @@ const TextField: FunctionComponent<Props> = ({
             maxLength={maxLength}
             disabled={disabled}
             className={className}
+            style={style}
             onChange={onChangeFn}
         />
     );

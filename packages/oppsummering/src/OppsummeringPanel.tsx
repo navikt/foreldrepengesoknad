@@ -1,10 +1,11 @@
-import { Accordion, ConfirmationPanel, VStack } from '@navikt/ds-react';
-import { useAbortSignal } from '@navikt/fp-api';
-import { Step } from '@navikt/fp-common';
-import { StepConfig } from '@navikt/fp-types';
-import { StepButtons } from '@navikt/fp-ui';
 import { ReactElement, useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+
+import { Accordion, ConfirmationPanel, VStack } from '@navikt/ds-react';
+
+import { useAbortSignal } from '@navikt/fp-api';
+import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
+
 import Oppsummeringspunkt from './Oppsummeringspunkt';
 
 const getSamtykkeTekst = (
@@ -24,22 +25,18 @@ const getSamtykkeTekst = (
     throw new Error(`appName ${appName} not supported`);
 };
 
-export interface Props {
+export interface Props<TYPE> {
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     cancelApplication: () => void;
     onContinueLater: () => void;
     goToPreviousStep: () => void;
-    stepConfig: StepConfig[];
+    stepConfig: Array<ProgressStep<TYPE>>;
     children: ReactElement[] | ReactElement;
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     ekstraSamtykketekst?: string;
 }
 
-interface StaticFunctions {
-    Punkt: typeof Oppsummeringspunkt;
-}
-
-const OppsummeringPanel: React.FunctionComponent<Props> & StaticFunctions = ({
+const OppsummeringPanel = <TYPE extends string>({
     sendSøknad,
     cancelApplication,
     onContinueLater,
@@ -48,7 +45,7 @@ const OppsummeringPanel: React.FunctionComponent<Props> & StaticFunctions = ({
     children,
     appName,
     ekstraSamtykketekst,
-}) => {
+}: Props<TYPE>) => {
     const intl = useIntl();
     const abortSignal = useAbortSignal();
 

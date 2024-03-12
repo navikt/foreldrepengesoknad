@@ -7,10 +7,8 @@
     "ok": "OK",
     "ja": "Ja",
     "nei": "Nei",
-    "backlink.label": "Forrige steg",
     "pågående": "pågående",
     "privat.arbeidsgiver": "Privat arbeidsgiver",
-    "søknad.gåVidere": "Neste steg",
     "slutter": "slutter",
     "sluttet": "sluttet",
     "somFrilanser": "som frilanser",
@@ -89,7 +87,7 @@
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del1": "Når du er å regne som næringsdrivende er ikke klart definert i loven. Hobby er skattefritt, mens næring er skattepliktig virksomhet.",
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2": "Du kan finne ut om du er selvstendig næringsdrivende i veiviseren til <a>skatteetaten</a>. Der kan du og finne mer informasjon om hva det betyr å være selvstendig næringsdrivende.",
     "inntektsinformasjon.annenInntekt": "Har du jobbet i utlandet de siste 4 ukene?",
-    "inntektsinformasjon.alert.ingenArbeidsforhold.tittel": "<b>Du kan dessverre ikke gå videre i søknaden</b>.",
+    "inntektsinformasjon.alert.ingenArbeidsforhold.tittel": "<b>Du kan dessverre ikke gå videre i søknaden.</b>",
     "inntektsinformasjon.alert.ingenArbeidsforhold": "Det ser dessverre ikke ut som om du kan søke om svangerskapspenger. Det er ingen arbeidsforhold registrert på deg. Du jobber heller ikke som frilans eller selvstendig næringsdrivende. For oss virker det derfor ikke som at du har noen jobb som kan skade det ufødte barnet. Hvis du mener at noe av informasjonen over ikke stemmer må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret. Når dette har blitt gjort vil det bli mulig for deg å søke. Dersom du er usikker på om du har rett til å søke om svangerskapspenger kan du lese mer <a>om svangerskapspenger</a> eller ",
     "inntektsinformasjon.alert.ingenArbeidsforhold.forsettelse": "<a>ta kontakt med oss.</a>",
     "frilans.oppstart": "Når startet du som frilanser?",
@@ -167,7 +165,6 @@
     "valideringsfeil.tilOgMedDato.påkrevd": "Du må oppgi en sluttdato.",
     "valideringsfeil.tilOgMedDato.erIFremtiden": "Sluttdatoen kan ikke være mer enn ni måneder frem i tid.",
     "valideringsfeil.tilOgMedDato.etterFraDato": "Sluttdatoen må være lik eller etter startdatoen.",
-    "valideringsfeil.tilOgMedDato.frilans.merEnn4UkerSiden": "Datoen er før 4 uker siden. Det er ikke relevant for svangerskapspenger dersom du ikke har jobbet de siste 4 ukene som frilanser.",
     "valideringsfeil.tilOgMedDato.egenNæring.merEnn5MånederSiden": "Datoen er før 5 måneder siden. Hvis du avsluttet virksomheten for mer enn 5 måneder siden, trenger du ikke å oppgi virksomheten til NAV.",
     "valideringsfeil.tilOgMedDato.arbeidIUtlandet.merEnn5MånederSiden": "Datoen er før 5 måneder siden. Hvis du sluttet i jobben for mer enn 5 måneder siden, trenger du ikke å oppgi arbeidsforholdet til NAV.",
     "valideringsfeil.tilrettelegging.påkrevd": "Du må velge hvilket arbeidsforhold du ønsker å søke svangerskapspenger for.",
@@ -366,5 +363,6 @@
     "bedriftsbanner.tittel.frilansarbeid": "Frilanser",
     "ny.periode": "Ny periode",
     "sesjonUtløpt.tittel": "Du er nå logget ut.",
-    "SkjemaSteg.MinstEttDokument": "Du må laste opp minst ett dokument"
+    "SkjemaSteg.MinstEttDokument": "Du må laste opp minst ett dokument",
+    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\"."
 }

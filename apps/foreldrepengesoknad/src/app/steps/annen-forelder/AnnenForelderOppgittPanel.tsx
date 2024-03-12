@@ -13,11 +13,11 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
-    links,
 } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
 import { Søker, Søkerrolle } from '@navikt/fp-types';
-import { isBefore, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
@@ -138,10 +138,13 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søker, rol
                                 id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
                             }),
                         ),
-                        isBefore(
-                            intl.formatMessage({
-                                id: 'valideringsfeil.annenForelder.datoForAleneomsorg.ugyldigDatoFormat',
-                            }),
+                        isAfterOrSame(
+                            intl.formatMessage(
+                                {
+                                    id: 'valideringsfeil.annenForelder.datoForAleneomsorg.førFamiliehendelsedato',
+                                },
+                                { dato: familiehendelsedato },
+                            ),
                             familiehendelsedato,
                         ),
                     ]}

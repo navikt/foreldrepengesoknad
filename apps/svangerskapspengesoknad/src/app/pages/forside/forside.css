@@ -1,32 +1,29 @@
-@import './../../styles/variables.css';
-
 .forside {
     max-width: var(--app-max-width);
-    margin:  var(--app-margin);
-    padding:  var(--app-padding);
+    margin: var(--app-margin);
+    padding: var(--app-padding);
 }
 
 .forside__personopplysningerLink {
-        text-align: center;
-    }
+    text-align: center;
+}
 
 .forside__liste {
-        padding: 0 2rem;
+    padding: 0 2rem;
 }
 
 .forside__tittel {
-        padding-top: 32px;
-        padding-bottom: 32px;
-    }
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
 
 @media (max-width: 768px) {
     .forside {
         max-width: 100%;
         padding: 1rem;
-    
     }
     .forside____tittel {
         padding-top: 20px;
-            padding-bottom: 20px;
+        padding-bottom: 20px;
     }
 }

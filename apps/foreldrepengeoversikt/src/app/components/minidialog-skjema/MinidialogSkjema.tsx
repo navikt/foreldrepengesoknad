@@ -17,10 +17,10 @@ import {
 } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
-import { formatDate, intlUtils } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
+import { formatDate } from '@navikt/fp-utils';
 
 import Environment from 'app/Environment';
 import EttersendingDto from 'app/types/EttersendingDTO';
@@ -103,7 +103,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         const feilmelding = brukerØnskerÅUttaleSeg
             ? validateFritekstFelt(
                   intl,
-                  intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label').replace(':', ''),
+                  intl.formatMessage({ id: 'minidialog.tilbakekreving.tilbakekreving.label' }).replace(':', ''),
                   tilbakemelding,
               )
             : undefined;
@@ -157,7 +157,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                     <HvaLeggerNAVVektPå />
                 </VStack>
                 <RadioGroup
-                    legend={intlUtils(intl, 'miniDialog.tilbakekreving.radioPanelGruppe.legend')}
+                    legend={intl.formatMessage({ id: 'miniDialog.tilbakekreving.radioPanelGruppe.legend' })}
                     onChange={settBrukerØnskerÅUttaleSeg}
                 >
                     <Radio value={true}>Ja</Radio>
@@ -167,7 +167,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                     <>
                         <div>
                             <Textarea
-                                label={intlUtils(intl, 'minidialog.tilbakekreving.tilbakekreving.label')}
+                                label={intl.formatMessage({ id: 'minidialog.tilbakekreving.tilbakekreving.label' })}
                                 onChange={(e) => settTilbakemelding(e.target.value)}
                                 error={tilbakemeldingValideringsfeil}
                             />

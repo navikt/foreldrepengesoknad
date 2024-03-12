@@ -1,52 +1,49 @@
-import { BodyShort, Button, Radio, ReadMore, VStack } from '@navikt/ds-react';
-import { Step, StepButtonWrapper } from '@navikt/fp-common';
-import { Datepicker, Form, RadioGroup } from '@navikt/fp-form-hooks';
-import { isBeforeTodayOrToday, isLessThanOneAndHalfYearsAgo, isRequired, isValidDate } from '@navikt/fp-validation';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
-import { Barn } from 'app/types/Barn';
-import dayjs from 'dayjs';
-import { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { useStepConfig } from '../stepsConfig';
-import { halvannetÅrSiden, enMånedSiden, etÅrSiden, niMånederFremITid } from '@navikt/fp-utils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
-import { Arbeidsforhold } from '@navikt/fp-types';
 
-const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Date =>
-    erBarnetFødt && fødselsdato && isValidDate(fødselsdato)
-        ? enMånedSiden(new Date(fødselsdato))
-        : enMånedSiden(new Date());
+import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+
+import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
+import {
+    enMånedSiden,
+    etÅrSiden,
+    halvannetÅrSiden,
+    isValidDate as isStringADate,
+    niMånederFremITid,
+} from '@navikt/fp-utils';
+import {
+    isAfterOrSame,
+    isBeforeDate,
+    isBeforeTodayOrToday,
+    isLessThanOneAndHalfYearsAgo,
+    isRequired,
+    isValidDate,
+} from '@navikt/fp-validation';
+
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
+import { Barn } from 'app/types/Barn';
+
+const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
+    erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(new Date());
 
 const validerTermindato = (intl: IntlShape, fødselsdato?: string) => (termindato: string) => {
-    if (dayjs(termindato).isSameOrAfter(niMånederFremITid(new Date()), 'day')) {
-        return intl.formatMessage({
-            id: 'valideringsfeil.barnet.termindato.forLangtFremITid',
-        });
-    }
-    if (dayjs(termindato).isBefore(enMånedSiden(new Date()), 'day') && !fødselsdato) {
-        return intl.formatMessage({
-            id: 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato',
-        });
-    }
-    if (dayjs(termindato).isBefore(etÅrSiden(new Date()), 'day')) {
-        return intl.formatMessage({
-            id: 'valideringsfeil.barnet.termindato.forLangtTilbakeITid',
-        });
-    }
     if (fødselsdato && !dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
         return intl.formatMessage({
             id: 'valideringsfeil.barnet.termindato.6mndEtterFødsel',
         });
     }
+
     if (fødselsdato && !dayjs(termindato).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
         return intl.formatMessage({
             id: 'valideringsfeil.barnet.termindato.1mndFørFødsel',
         });
     }
-
-    return undefined;
+    return null;
 };
 
 type Props = {
@@ -57,25 +54,19 @@ type Props = {
 
 const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, arbeidsforhold);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const barnet = useContextGetData(ContextDataType.OM_BARNET);
-
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const onSubmit = (values: Barn) => {
-        setIsSubmitting(true);
-
         oppdaterOmBarnet(values);
-        oppdaterAppRoute(SøknadRoutes.UTENLANDSOPPHOLD);
-
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<Barn>({
+        shouldUnregister: true,
         defaultValues: barnet,
     });
 
@@ -87,14 +78,13 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            activeStepId="barnet"
-            pageTitle={intl.formatMessage({ id: 'steps.label.barnet' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
-            onContinueLater={onFortsettSøknadSenere}
+            onContinueLater={navigator.fortsettSøknadSenere}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
+                    <ErrorSummaryHookForm />
                     <div>
                         <RadioGroup
                             name="erBarnetFødt"
@@ -155,6 +145,23 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                 isValidDate(
                                     intl.formatMessage({ id: 'valideringsfeil.barnet.termindato.ugyldigDatoFormat' }),
                                 ),
+                                isBeforeDate(
+                                    intl.formatMessage({ id: 'valideringsfeil.barnet.termindato.forLangtFremITid' }),
+                                    niMånederFremITid(new Date()),
+                                ),
+                                (termindato) =>
+                                    !fødselsdato
+                                        ? isAfterOrSame(
+                                              intl.formatMessage({
+                                                  id: 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato',
+                                              }),
+                                              enMånedSiden(new Date()),
+                                          )(termindato)
+                                        : null,
+                                isAfterOrSame(
+                                    intl.formatMessage({ id: 'valideringsfeil.barnet.termindato.forLangtTilbakeITid' }),
+                                    etÅrSiden(new Date()),
+                                ),
                                 validerTermindato(intl, fødselsdato),
                             ]}
                         />
@@ -164,11 +171,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             </BodyShort>
                         </ReadMore>
                     </div>
-                    <StepButtonWrapper>
-                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                            <FormattedMessage id="søknad.gåVidere" />
-                        </Button>
-                    </StepButtonWrapper>
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

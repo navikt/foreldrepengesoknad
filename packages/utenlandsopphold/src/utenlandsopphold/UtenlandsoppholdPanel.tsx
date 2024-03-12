@@ -1,26 +1,29 @@
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Link, VStack, Radio, ExpansionCard, BodyLong, Heading, HStack, BodyShort } from '@navikt/ds-react';
-import { Form, ErrorSummaryHookForm, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Step } from '@navikt/fp-common';
-import { links } from '@navikt/fp-constants';
-import { isRequired } from '@navikt/fp-validation';
-import { StepConfig, Utenlandsopphold } from '@navikt/fp-types';
-import useUtenlandsoppholdIntl from '../intl/useUtenlandsoppholdIntl';
-import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
 
-export interface Props {
+import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, Link, Radio, VStack } from '@navikt/ds-react';
+
+import { links } from '@navikt/fp-constants';
+import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Utenlandsopphold } from '@navikt/fp-types';
+import { ProgressStep, Step } from '@navikt/fp-ui';
+import { isRequired } from '@navikt/fp-validation';
+
+import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
+import useUtenlandsoppholdIntl from '../intl/useUtenlandsoppholdIntl';
+
+export interface Props<TYPE> {
     utenlandsopphold?: Utenlandsopphold;
     saveOnNext: (formValues: Utenlandsopphold) => void;
     saveOnPrevious: (formValues: Utenlandsopphold | undefined) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
     goToPreviousStep: () => void;
-    stepConfig: StepConfig[];
+    stepConfig: Array<ProgressStep<TYPE>>;
     stønadstype: 'Engangsstønad' | 'Foreldrepenger' | 'Svangerskapspenger';
 }
 
-const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
+const UtenlandsoppholdPanel = <TYPE extends string>({
     utenlandsopphold,
     saveOnNext,
     saveOnPrevious,
@@ -29,7 +32,7 @@ const UtenlandsoppholdPanel: React.FunctionComponent<Props> = ({
     goToPreviousStep,
     stepConfig,
     stønadstype,
-}) => {
+}: Props<TYPE>) => {
     const { i18n } = useUtenlandsoppholdIntl();
 
     const formMethods = useForm<Utenlandsopphold>({

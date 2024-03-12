@@ -1,11 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
-import dayjs from 'dayjs';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './TidligereUtenlandsoppholdSteg.stories';
-import SøknadRoutes from 'app/routes/routes';
-import { ContextDataType } from 'app/context/SvpDataContext';
+import dayjs from 'dayjs';
+
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
+import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 
@@ -35,13 +38,11 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                tidligereOpphold: [
+                utenlandsoppholdSiste12Mnd: [
                     {
-                        land: 'CA',
-                        tidsperiode: {
-                            fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
-                            tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
-                        },
+                        landkode: 'CA',
+                        fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },
@@ -49,7 +50,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ARBEID,
+            data: SøknadRoutes.INNTEKTSINFORMASJON,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -63,7 +64,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
             <Default
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                utenlandsopphold={{ iNorgeSiste12Mnd: false, iNorgeNeste12Mnd: false }}
+                utenlandsopphold={{ skalBoUtenforNorgeNeste12Mnd: true, harBoddUtenforNorgeSiste12Mnd: true }}
             />,
         );
 
@@ -86,13 +87,11 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                tidligereOpphold: [
+                utenlandsoppholdSiste12Mnd: [
                     {
-                        land: 'CA',
-                        tidsperiode: {
-                            fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
-                            tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
-                        },
+                        landkode: 'CA',
+                        fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },

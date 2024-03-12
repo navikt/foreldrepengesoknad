@@ -1,11 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
-import dayjs from 'dayjs';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './SenereUtenlandsoppholdSteg.stories';
-import SøknadRoutes from 'app/routes/routes';
-import { ContextDataType } from 'app/context/SvpDataContext';
+import dayjs from 'dayjs';
+
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
+import * as stories from './SenereUtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 
@@ -35,13 +38,11 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                senereOpphold: [
+                utenlandsoppholdNeste12Mnd: [
                     {
-                        land: 'CA',
-                        tidsperiode: {
-                            fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
-                            tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
-                        },
+                        landkode: 'CA',
+                        fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
             },
@@ -49,7 +50,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ARBEID,
+            data: SøknadRoutes.INNTEKTSINFORMASJON,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -83,8 +84,8 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 utenlandsforhold={{
-                    iNorgeNeste12Mnd: false,
-                    iNorgeSiste12Mnd: false,
+                    harBoddUtenforNorgeSiste12Mnd: true,
+                    skalBoUtenforNorgeNeste12Mnd: true,
                 }}
             />,
         );

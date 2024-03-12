@@ -5,3 +5,11 @@ export const notEmpty = <T>(data: T): NonNullable<T> => {
     }
     return data;
 };
+
+export const assertUnreachable = (message?: string): never => {
+    throw new Error(message === undefined ? 'This should never happen.' : message);
+};
+
+export const containsWhiteSpace = (s: string): boolean => {
+    return /\s/.test(s);
+};
