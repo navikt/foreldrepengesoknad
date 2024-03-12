@@ -1,8 +1,14 @@
-import { Block, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-import { Næring } from 'app/context/types/Næring';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Button } from '@navikt/ds-react';
+
+import { Block, intlUtils } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+
+import { Næring } from 'app/context/types/Næring';
+
 import {
     InntektsinformasjonFormComponents,
     InntektsinformasjonFormData,
@@ -11,8 +17,6 @@ import {
 import EgenNæringListe from './EgenNæringListe';
 import HvemKanDriveMedEgenNæring from './HvemKanDriveMedEgenNæring';
 import EgenNæringModal from './modal/EgenNæringModal';
-import { Button } from '@navikt/ds-react';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     egenNæringInformasjon: Næring[];

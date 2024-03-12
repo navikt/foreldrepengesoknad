@@ -4,7 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { LanguageToggle, Sak, links } from '@navikt/fp-common';
+import { LanguageToggle, Sak } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import { ConfirmationPanel, Form } from '@navikt/fp-form-hooks';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';

@@ -1,0 +1,102 @@
+.timeInput {
+    &__contentWrapper {
+        display: flex;
+    }
+    &__hours,
+    &__minutes {
+        width: 100%;
+        margin-bottom: 0.5rem;
+        &:focus {
+            z-index: 2;
+        }
+    }
+    &__inputWrapper {
+        display: flex;
+        align-items: baseline;
+        margin-right: 0.5rem;
+        padding: 0;
+        position: relative;
+        max-width: 3.5rem;
+    }
+    &__input {
+        order: 1;
+    }
+    input {
+        text-align: center;
+        width: 100%;
+        padding: 0.5rem;
+    }
+    &__label {
+        display: block;
+        position: absolute;
+        top: calc(100% + 0.25rem);
+        font-size: 0.9rem;
+        padding: 0;
+        text-align: left;
+        line-height: 1rem;
+        overflow: hidden;
+        width: 100%;
+        text-overflow: ellipsis;
+    }
+    &__hours,
+    &__minutes {
+        margin: 0 !important;
+    }
+    &__contentWrapper {
+        white-space: nowrap;
+        padding-bottom: 1.25rem;
+        display: flex;
+        > * {
+            flex: 1;
+        }
+    }
+    &--compact {
+        *:focus {
+            z-index: 10;
+            position: relative;
+        }
+        .timeInput__hours > input,
+        .timeInput__hours > .fakeDisabledInput {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .timeInput__minutes > input,
+        .timeInput__minutes > .fakeDisabledInput {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .timeInput__inputWrapper:first-child {
+            margin-right: 0;
+        }
+    }
+    .fakeDisabledInput {
+        opacity: 0.3;
+        border-color: var(--a-gray-400);
+        background-color: var(--a-gray-200);
+    }
+}
+
+.formikTimeInput {
+    &--horizontal {
+        flex-direction: row;
+        display: flex;
+        flex-wrap: wrap;
+        .divLegend {
+            padding-right: 1rem;
+            align-items: flex-start;
+            padding-top: 0.5rem;
+            white-space: nowrap;
+            flex: 1 1 12rem;
+        }
+        .timeInput {
+            flex: 2 1 10rem;
+        }
+        .timeInput__contentWrapper {
+            justify-content: left;
+        }
+        .timeInput + div {
+            width: 100%;
+        }
+    }
+}

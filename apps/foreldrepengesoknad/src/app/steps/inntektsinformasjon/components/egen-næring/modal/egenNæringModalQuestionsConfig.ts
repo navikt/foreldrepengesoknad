@@ -1,8 +1,10 @@
-import { ISOStringToDate, hasValue } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+
+import { ISOStringToDate, hasValue } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+
 import { EgenNæringModalFormData, EgenNæringModalFormField } from './egenNæringModalFormConfig';
 import { erVirksomhetRegnetSomNyoppstartet } from './egenNæringModalFormUtils';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 const EgenNæringModalFormConfig: QuestionConfig<EgenNæringModalFormData, EgenNæringModalFormField> = {
     [EgenNæringModalFormField.type]: {

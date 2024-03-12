@@ -1,9 +1,11 @@
+import { dateToISOString } from '@navikt/fp-formik';
+
 import { MorFarFødselAnnenForelderHarRettIEØSUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
+
 import {
-    MorFarFødselAnnenForelderHarRettIEØSFormField,
     MorFarFødselAnnenForelderHarRettIEØSFormData,
+    MorFarFødselAnnenForelderHarRettIEØSFormField,
 } from './morFarFødselAnnenForelderHarRettIEØSFormConfig';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 const initialMorFarFødselAnnenForelderHarRettIEØSValues: MorFarFødselAnnenForelderHarRettIEØSFormData = {
     [MorFarFødselAnnenForelderHarRettIEØSFormField.permisjonStartdato]: '',

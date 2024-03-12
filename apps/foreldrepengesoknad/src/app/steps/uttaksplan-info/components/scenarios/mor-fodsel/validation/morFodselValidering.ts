@@ -1,8 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { isISODateString } from '@navikt/ds-datepicker';
-
 import {
     ISOStringToDate,
     Uttaksdagen,
@@ -10,6 +8,7 @@ import {
     uttaksConstants,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
+import { isISODateString } from '@navikt/fp-utils';
 
 export const validateErStartdatoFørTermindato =
     (intl: IntlShape, familiehendelsedato: Date, skalIkkeHaUttakFørTermin: boolean, termindato: string | undefined) =>

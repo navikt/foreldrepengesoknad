@@ -1,11 +1,10 @@
-import { YesOrNo, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-
 import {
     ISOStringToDate,
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { Frilans, FrilansOppdrag } from 'app/context/types/Frilans';

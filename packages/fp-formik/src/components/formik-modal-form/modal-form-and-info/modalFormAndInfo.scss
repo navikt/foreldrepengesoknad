@@ -1,0 +1,13 @@
+.modalFormAndInfo__buttons {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+.navds-panel.modalFormAndInfo__infoWrapper__panel {
+    padding: 1rem;
+    @media screen and (max-width: 20rem) {
+        padding: 0.5rem;
+    }
+}

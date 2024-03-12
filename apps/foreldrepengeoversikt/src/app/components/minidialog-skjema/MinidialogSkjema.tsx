@@ -149,13 +149,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         <form onSubmit={handleSubmit}>
             <VStack gap="8">
                 <VStack gap="5">
-                    <Chat
-                        avatar="NAV"
-                        name="NAV"
-                        avatarBgColor="rgba(255, 236, 204, 1)"
-                        backgroundColor="rgba(255, 249, 240, 1)"
-                        timestamp={formatDate(minidialog.opprettet)}
-                    >
+                    <Chat avatar="NAV" name="NAV" timestamp={formatDate(minidialog.opprettet)}>
                         <Chat.Bubble>
                             <FormattedMessage id="miniDialog.tilbakekreving.tittel" values={{ sakstype }} />
                         </Chat.Bubble>

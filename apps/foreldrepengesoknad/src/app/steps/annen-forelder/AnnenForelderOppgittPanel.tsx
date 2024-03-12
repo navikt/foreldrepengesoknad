@@ -13,8 +13,8 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
-    links,
 } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
 import { Søker, Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';

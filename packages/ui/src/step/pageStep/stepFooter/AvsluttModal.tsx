@@ -14,7 +14,11 @@ interface Props {
 const AvsluttModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFortsettSenere }) => {
     const intl = useUiIntl();
     return (
-        <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+        <Modal
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+            aria-label={intl.formatMessage({ id: 'AvsluttModal.ContinueLater' })}
+        >
             <Modal.Header>
                 <Heading size="medium">{intl.formatMessage({ id: 'AvsluttModal.ContinueLater' })}</Heading>
             </Modal.Header>

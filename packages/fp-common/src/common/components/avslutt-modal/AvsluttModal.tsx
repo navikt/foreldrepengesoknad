@@ -10,7 +10,7 @@ interface Props {
 
 const AvsluttModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFortsettSenere }) => {
     return (
-        <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+        <Modal open={isOpen} onClose={() => setIsOpen(false)} aria-label="Avslutt søknad">
             <Modal.Header>
                 <Heading size="medium">Fortsett senere</Heading>
             </Modal.Header>

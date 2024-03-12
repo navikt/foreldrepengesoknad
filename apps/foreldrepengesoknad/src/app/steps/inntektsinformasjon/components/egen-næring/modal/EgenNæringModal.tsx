@@ -1,6 +1,16 @@
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
-import { Block, intlUtils } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, Button, Heading, Modal, ReadMore } from '@navikt/ds-react';
+
+import { Block, intlUtils } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+
+import { Næring, Næringstype } from 'app/context/types/Næring';
+import { validateRequiredTextInputField } from 'app/utils/validationUtil';
+
+import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import {
     EgenNæringModalFormComponents,
     EgenNæringModalFormData,
@@ -11,22 +21,15 @@ import {
     getInitialEgenNæringModalValues,
     mapEgenNæringModalFormValuesToState,
 } from './egenNæringModalFormUtils';
-import { Næring, Næringstype } from 'app/context/types/Næring';
 import egenNæringModalQuestionsConfig from './egenNæringModalQuestionsConfig';
-import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import {
-    validateEgenNæringFom,
-    validateEgenNæringTom,
-    validateEgenNæringForklaringTilEndring,
     validateEgenNæringEndringAvInntektsDato,
+    validateEgenNæringFom,
+    validateEgenNæringForklaringTilEndring,
+    validateEgenNæringTom,
     validateEgenNæringYrkesAktivDatoDato,
     validateNumber,
 } from './validation/egenNæringValidation';
-import dayjs from 'dayjs';
-import { validateRequiredTextInputField } from 'app/utils/validationUtil';
-import { BodyShort, Button, Heading, Modal, ReadMore } from '@navikt/ds-react';
-
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     isOpen: boolean;
@@ -167,9 +170,6 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                                 navnPåNæringen: formValues.navnPåNæringen,
                                             },
                                         )}
-                                        placeholder="dd.mm.åååå"
-                                        fullscreenOverlay={true}
-                                        showYearSelector={true}
                                         validate={validateEgenNæringFom(intl, formValues.tom!)}
                                         maxDate={dayjs().toDate()}
                                     />
@@ -196,9 +196,6 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                                 navnPåNæringen: formValues.navnPåNæringen,
                                             },
                                         )}
-                                        placeholder="dd.mm.åååå"
-                                        fullscreenOverlay={true}
-                                        showYearSelector={true}
                                         validate={validateEgenNæringTom(intl, formValues.fom!)}
                                         maxDate={dayjs().toDate()}
                                         minDate={dayjs(formValues.fom).toDate()}
@@ -260,9 +257,6 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                     <EgenNæringModalFormComponents.DatePicker
                                         name={EgenNæringModalFormField.yrkesAktivDato}
                                         label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.yrkesaktivDato')}
-                                        placeholder="dd.mm.åååå"
-                                        fullscreenOverlay={true}
-                                        showYearSelector={true}
                                         validate={validateEgenNæringYrkesAktivDatoDato(intl)}
                                         maxDate={dayjs().toDate()}
                                     />
@@ -301,9 +295,6 @@ const EgenNæringModal: FunctionComponent<Props> = ({
                                             intl,
                                             'inntektsinformasjon.egenNæringModal.varigEndringAvNæringsinntektDato',
                                         )}
-                                        placeholder="dd.mm.åååå"
-                                        fullscreenOverlay={true}
-                                        showYearSelector={true}
                                         validate={validateEgenNæringEndringAvInntektsDato(intl)}
                                         maxDate={dayjs().toDate()}
                                     />

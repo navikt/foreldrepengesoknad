@@ -1,16 +1,5 @@
 import MockDate from 'mockdate';
-import {
-    dateIsSameOrAfter,
-    dateIsSameOrBefore,
-    findEldsteDato,
-    getAlderFraDato,
-    getEldsteDato,
-    getEldsteRegistrerteBarn,
-    getEndringstidspunkt,
-    getRelevantFamiliehendelseDato,
-    isDateABeforeDateB,
-    sorterDatoEtterEldst,
-} from './dateUtils';
+import getIntlMock from 'utils-test/intl-test-helper';
 
 import {
     ISOStringToDate,
@@ -34,9 +23,21 @@ import {
     isDateToday,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import getIntlMock from 'utils-test/intl-test-helper';
+import { dateToISOString } from '@navikt/fp-formik';
 import { SøkerBarn } from '@navikt/fp-types';
+
+import {
+    dateIsSameOrAfter,
+    dateIsSameOrBefore,
+    findEldsteDato,
+    getAlderFraDato,
+    getEldsteDato,
+    getEldsteRegistrerteBarn,
+    getEndringstidspunkt,
+    getRelevantFamiliehendelseDato,
+    isDateABeforeDateB,
+    sorterDatoEtterEldst,
+} from './dateUtils';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();

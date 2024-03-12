@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
 import {
     Barn,
     Block,
@@ -11,13 +12,15 @@ import {
     isAdoptertBarn,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
-import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { validateErAnnenStartdatoAdopsjonGyldig } from './validation/morFarAdopsjonValidering';
-import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
-import { DatepickerDateRange } from '@navikt/ds-datepicker';
-import { DateRange } from '@navikt/sif-common-formik-ds/lib';
 import { assertUnreachable } from '@navikt/fp-common/src/common/utils/globalUtil';
+import { DateRange } from '@navikt/fp-formik';
+import { DatepickerDateRange } from '@navikt/fp-types';
+
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+
+import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
+import { MorFarAdopsjonFormComponents, MorFarAdopsjonFormField } from './morFarAdopsjonFormConfig';
+import { validateErAnnenStartdatoAdopsjonGyldig } from './validation/morFarAdopsjonValidering';
 
 export const finnStartdatoAdopsjon = (
     startdatoAdopsjonValg: AdopsjonStartdatoValg,
@@ -104,9 +107,9 @@ const StartdatoAdopsjon: FunctionComponent<Props> = ({ valgtStartdatoAdopsjon, b
                     minDate={datoAvgrensninger.minDate ? ISOStringToDate(datoAvgrensninger.minDate) : undefined}
                     maxDate={datoAvgrensninger.maxDate ? ISOStringToDate(datoAvgrensninger.maxDate) : undefined}
                     disabledDateRanges={konverterStringTilDate(datoAvgrensninger.invalidDateRanges)}
-                    disableWeekend={datoAvgrensninger.weekendsNotSelectable}
+                    disableWeekends={datoAvgrensninger.weekendsNotSelectable}
                     validate={validateErAnnenStartdatoAdopsjonGyldig(intl)}
-                    placeholder={'dd.mm.åååå'}
+                    dropdownCaption={true}
                 />
             </Block>
         </>

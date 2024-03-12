@@ -84,7 +84,6 @@ const Datepicker: FunctionComponent<Props> = ({
                 ? dayjs(field.value, ISO_DATE_FORMAT, true).toDate()
                 : undefined,
         defaultMonth: defaultMonth ? dayjs(defaultMonth).toDate() : undefined,
-        openOnFocus: false,
     });
 
     const onChangeInput = useCallback(

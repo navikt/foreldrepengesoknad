@@ -1,11 +1,13 @@
-import { bemUtils, Block, intlUtils } from '@navikt/fp-common';
-import { Label, ReadMore } from '@navikt/ds-react';
-import { getNumberFromNumberInputValue, TypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Label, ReadMore } from '@navikt/ds-react';
+
+import { Block, bemUtils, intlUtils } from '@navikt/fp-common';
+import { TypedFormComponents, getNumberFromNumberInputValue } from '@navikt/fp-formik';
+
 import RangeIcon from '../../fordelingFellesperiode/range-input/RangeIcon';
 import Sirkelknapp from '../../fordelingFellesperiode/range-input/sirkelknapp/Sirkelknapp';
-
 import './antallUkerOgDagerFellesperiodeFarMedmorSpørsmål.less';
 
 interface Props {

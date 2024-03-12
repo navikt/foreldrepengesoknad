@@ -28,11 +28,11 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isInfoPeriode,
-    links,
 } from '@navikt/fp-common';
 import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
 import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
+import { links } from '@navikt/fp-constants';
 import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 

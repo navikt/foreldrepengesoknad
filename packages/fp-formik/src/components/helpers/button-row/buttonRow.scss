@@ -1,0 +1,47 @@
+$mobile-breakpoint: 576px;
+
+.buttonRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    flex-direction: row;
+    justify-content: center;
+    button {
+        min-width: 5rem;
+    }
+    &--left {
+        justify-content: left;
+    }
+    &--stretch {
+        display: flex;
+        justify-items: stretch;
+        .buttonRow__button {
+            flex: 1 1 0;
+            button {
+                width: 100%;
+            }
+        }
+        @media (max-width: $mobile-breakpoint) {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+    &--mobile-50-50 {
+        @media (max-width: $mobile-breakpoint) {
+            .buttonRow__button + .buttonRow__button {
+                padding: 0;
+            }
+            .buttonRow__button {
+                padding: 0;
+                width: 50%;
+                > .knapp {
+                    height: 100%;
+                    white-space: normal;
+                    width: 100%;
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                }
+            }
+        }
+    }
+}

@@ -1,4 +1,3 @@
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
@@ -45,6 +44,7 @@ import { getFloatFromString } from './numberUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
+import { dateToISOString } from '@navikt/fp-formik';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {

@@ -1,4 +1,5 @@
-import { YesOrNo, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+import { YesOrNo, getTypedFormComponents } from '@navikt/fp-formik';
+
 import AdopsjonStartdatoValg from './adopsjonStartdatoValg';
 
 export enum MorFarAdopsjonFormField {

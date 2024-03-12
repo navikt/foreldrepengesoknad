@@ -71,6 +71,16 @@ export const isDateRangesOverlapping = (ranges: Period[]): boolean => {
     return false;
 };
 
+export const isISODateString = (value: any): value is string => {
+    if (value && typeof value === 'string') {
+        const reg = /^\d{4}-\d{2}-\d{2}$/;
+        const match: RegExpMatchArray | null = value.match(reg);
+        return match !== null;
+    } else {
+        return false;
+    }
+};
+
 export const erMyndig = (fødselsdato: DateTypes): boolean => {
     const now = dayjs.utc();
     const momentDate = dayjs.utc(fødselsdato);

@@ -1,10 +1,8 @@
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { DatepickerDateRange } from '@navikt/ds-datepicker';
 import { VStack } from '@navikt/ds-react';
 
 import {
@@ -20,7 +18,8 @@ import {
     isFarEllerMedmor,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
-import { Søker } from '@navikt/fp-types';
+import { DateRange, dateToISOString } from '@navikt/fp-formik';
+import { DatepickerDateRange, Søker } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -227,13 +226,13 @@ const FarMedmorFødselOgMorHarIkkeRett: FunctionComponent<Props> = ({
                                     minDate={ISOStringToDate(datoAvgrensinger.minDate)}
                                     maxDate={ISOStringToDate(datoAvgrensinger.maxDate)}
                                     disabledDateRanges={konverterStringTilDate(datoAvgrensinger.invalidDateRanges)}
-                                    disableWeekend={datoAvgrensinger.weekendsNotSelectable}
+                                    disableWeekends={datoAvgrensinger.weekendsNotSelectable}
                                     validate={validateStartdatoFarMedmor(
                                         intl,
                                         ISOStringToDate(datoAvgrensinger.minDate)!,
                                         ISOStringToDate(datoAvgrensinger.maxDate)!,
                                     )}
-                                    placeholder={'dd.mm.åååå'}
+                                    dropdownCaption={true}
                                 />
                             </Block>
                             <Block>

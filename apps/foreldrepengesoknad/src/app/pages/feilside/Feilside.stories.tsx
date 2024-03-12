@@ -1,6 +1,8 @@
-import { links } from '@navikt/fp-common';
-import { Søker } from '@navikt/fp-types';
 import { StoryFn } from '@storybook/react';
+
+import { links } from '@navikt/fp-constants';
+import { Søker } from '@navikt/fp-types';
+
 import Feilside, { FeilsideProps } from './Feilside';
 
 const defaultExport = {
