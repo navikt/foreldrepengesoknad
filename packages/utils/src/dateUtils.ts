@@ -4,7 +4,14 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import utc from 'dayjs/plugin/utc';
 
-import { DATE_TODAY, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, ISO_DATE_REGEX, TIME_FORMAT } from '@navikt/fp-constants';
+import {
+    DATE_TODAY,
+    DDMMMMYYY_DATE_FORMAT,
+    DDMMYYYY_DATE_FORMAT,
+    ISO_DATE_FORMAT,
+    ISO_DATE_REGEX,
+    TIME_FORMAT,
+} from '@navikt/fp-constants';
 
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
@@ -17,6 +24,7 @@ type Period = { from: DateTypes; to: DateTypes };
 /** --- Formater til string --- */
 export const formatDate = (date: DateTypes): string => dayjs(date).format(DDMMYYYY_DATE_FORMAT);
 export const formatDateIso = (date: DateTypes): string => dayjs(date).format(ISO_DATE_FORMAT);
+export const formatDateExtended = (date: DateTypes): string => dayjs(date).format(DDMMMMYYY_DATE_FORMAT);
 export const formatTime = (date: DateTypes): string => dayjs(date).format(TIME_FORMAT);
 
 /** --- Finn dato relativt til gitt dato --- */

@@ -6,7 +6,6 @@ import { Link as LinkInternal, useParams } from 'react-router-dom';
 import { ExternalLink } from '@navikt/ds-icons';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -17,6 +16,7 @@ import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import { Ytelse } from 'app/types/Ytelse';
+import { guid } from 'app/utils/guid';
 import { getAlleYtelser, getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
 import {
     VENTEÅRSAKER,

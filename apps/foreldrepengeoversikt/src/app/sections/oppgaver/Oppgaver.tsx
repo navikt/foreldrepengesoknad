@@ -1,15 +1,12 @@
 import { AxiosError } from 'axios';
 import { useIntl } from 'react-intl';
 
-import { BodyShort, Loader } from '@navikt/ds-react';
-
-import { guid } from '@navikt/fp-common';
-import { bemUtils } from '@navikt/fp-utils';
+import { BodyShort, Loader, VStack } from '@navikt/ds-react';
 
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
+import { guid } from 'app/utils/guid';
 
 import OppgaveLenkepanel from '../oppgave-lenkepanel/OppgaveLenkepanel';
-import './oppgaver.css';
 
 interface Props {
     minidialogerData: MinidialogInnslag[] | undefined;
@@ -17,7 +14,6 @@ interface Props {
     saksnummer: string;
 }
 const Oppgaver: React.FunctionComponent<Props> = ({ minidialogerData, minidialogerError }) => {
-    const bem = bemUtils('oppgaver');
     const intl = useIntl();
     if (minidialogerError) {
         return <BodyShort>{intl.formatMessage({ id: 'oppgaver.feilVedHentingAvOppgaver' })}</BodyShort>;
@@ -28,7 +24,7 @@ const Oppgaver: React.FunctionComponent<Props> = ({ minidialogerData, minidialog
     }
 
     return (
-        <div className={bem.block}>
+        <VStack gap="2">
             {minidialogerData.map((minidialog) => (
                 <OppgaveLenkepanel
                     key={guid()}
@@ -36,7 +32,7 @@ const Oppgaver: React.FunctionComponent<Props> = ({ minidialogerData, minidialog
                     minidialogInnslag={minidialog}
                 />
             ))}
-        </div>
+        </VStack>
     );
 };
 

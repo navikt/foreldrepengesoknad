@@ -3,9 +3,8 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { Alert } from '@navikt/ds-react';
+import { Alert, VStack } from '@navikt/ds-react';
 
-import { Block } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
@@ -116,25 +115,20 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
     if (!oppdatertData) {
         return (
-            <div className={bem.block}>
+            <VStack gap="2">
                 {nettoppSendtInnSøknad && (
                     <BekreftelseSendtSøknad
-                        oppdatertData={oppdatertData}
                         relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
                         bankkonto={søkerinfo.søker.bankkonto}
                         ytelse={undefined}
                     />
                 )}
-                <Block padBottom="l">
-                    <Alert variant="warning">
-                        Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du
-                        kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
-                    </Alert>
-                </Block>
-                <Block padBottom="l">
-                    <Link to={`${OversiktRoutes.HOVEDSIDE}`}>{intl.formatMessage({ id: 'saksoversikt' })}</Link>
-                </Block>
-            </div>
+                <Alert variant="warning">
+                    Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du kan
+                    vente litt og komme tilbake senere for å se alle detaljene i saken din.
+                </Alert>
+                <Link to={`${OversiktRoutes.HOVEDSIDE}`}>{intl.formatMessage({ id: 'saksoversikt' })}</Link>
+            </VStack>
         );
     }
 
@@ -153,7 +147,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
         <div className={bem.block}>
             {visBekreftelsePåSendtSøknad && (
                 <BekreftelseSendtSøknad
-                    oppdatertData={oppdatertData}
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
                     bankkonto={søkerinfo.søker.bankkonto}
                     ytelse={gjeldendeSak.ytelse}

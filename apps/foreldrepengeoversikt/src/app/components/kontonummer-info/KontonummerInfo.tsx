@@ -1,6 +1,6 @@
 import { Accordion, BodyShort, Detail, Link, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import { bemUtils } from '@navikt/fp-utils';
 
 import Bankkonto from 'app/types/Bankkonto';

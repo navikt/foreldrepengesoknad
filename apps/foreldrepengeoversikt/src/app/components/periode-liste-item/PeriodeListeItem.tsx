@@ -1,10 +1,10 @@
+import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 
-import { BodyShort, Heading } from '@navikt/ds-react';
+import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
-import { AdvarselIkon, Block } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
 import StønadskontoIkon from 'app/components/stønadskonto-ikon/StønadskontoIkon';
@@ -84,7 +84,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                 }`,
             )}
         >
-            <div>
+            <VStack gap="2">
                 <div className={bem.element('innhold')}>
                     {visStønadskontoIkon && !visAvslåttIkon && (
                         <StønadskontoIkon
@@ -99,7 +99,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                         />
                     )}
                     {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
-                    {visAvslåttIkon && <AdvarselIkon />}
+                    {visAvslåttIkon && <ExclamationmarkTriangleIcon />}
                     <div className={bem.element('innhold-tekst-periodetittel')}>
                         <Heading size="small" level="4">
                             {tittel}
@@ -128,14 +128,12 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                         </BodyShort>
                     </div>
                 </div>
-                <Block margin="l">
-                    {visGraderingTilbakeITidAvslagTekst && (
-                        <div>
-                            Du søkte om å kombinere foreldrepenger med delvis arbeid, men fikk dette avslått. I stedet
-                            fikk du delvis utbetaling og brukte fulle dager.
-                        </div>
-                    )}
-                </Block>
+                {visGraderingTilbakeITidAvslagTekst && (
+                    <div>
+                        Du søkte om å kombinere foreldrepenger med delvis arbeid, men fikk dette avslått. I stedet fikk
+                        du delvis utbetaling og brukte fulle dager.
+                    </div>
+                )}
                 {overlappendePeriodeAnnenPart && (
                     <div
                         className={classNames(
@@ -162,7 +160,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                         </div>
                     </div>
                 )}
-            </div>
+            </VStack>
         </div>
     );
 };

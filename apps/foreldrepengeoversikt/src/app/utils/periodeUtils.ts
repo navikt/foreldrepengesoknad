@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
 import { IntlShape } from 'react-intl';
 
-import { Forelder, TidsperiodeDate, guid } from '@navikt/fp-common';
 import { formatDateIso } from '@navikt/fp-utils';
 
+import { Forelder } from 'app/types/Forelder';
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
 import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
 import { Periode } from 'app/types/Periode';
@@ -15,9 +15,15 @@ import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 
 import { Uttaksdagen } from './Uttaksdagen';
 import { ISOStringToDate } from './dateUtils';
+import { guid } from './guid';
 import { NavnPåForeldre, getNavnGenitivEierform } from './personUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
+
+export interface TidsperiodeDate {
+    fom: Date;
+    tom: Date;
+}
 
 export const Periodene = (perioder: Periode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),

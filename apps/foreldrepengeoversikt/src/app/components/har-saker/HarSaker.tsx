@@ -5,12 +5,12 @@ import { useIntl } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { GruppertSak } from 'app/types/GruppertSak';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import { guid } from 'app/utils/guid';
 import { getSakTittel } from 'app/utils/sakerUtils';
 
 import SakLink from '../sak-link/SakLink';

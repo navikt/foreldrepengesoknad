@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Heading } from '@navikt/ds-react';
+import { Heading, VStack } from '@navikt/ds-react';
 
-import { Block } from '@navikt/fp-common';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
 import Api from 'app/api/api';
@@ -64,19 +63,19 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
 
     return (
         <ContentSection>
-            <Block padBottom="xl">
+            <VStack gap="2">
                 <Heading size="medium" level="2">
-                    {intl.formatMessage({ id: 'miniDialog.tilbakekreving.undertittel' })}
+                    <FormattedMessage id="miniDialog.tilbakekreving.undertittel" />
                 </Heading>
-            </Block>
-            <MinidialogSkjema
-                sakstype={sakstype!}
-                minidialog={minidialog}
-                onSubmit={sendEttersendelse}
-                isSendingEttersendelse={isSendingEttersendelse}
-                ettersendelseErSendt={ettersendelseErSendt}
-                ettersendelseError={ettersendelseError}
-            />
+                <MinidialogSkjema
+                    sakstype={sakstype!}
+                    minidialog={minidialog}
+                    onSubmit={sendEttersendelse}
+                    isSendingEttersendelse={isSendingEttersendelse}
+                    ettersendelseErSendt={ettersendelseErSendt}
+                    ettersendelseError={ettersendelseError}
+                />
+            </VStack>
         </ContentSection>
     );
 };

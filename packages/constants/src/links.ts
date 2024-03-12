@@ -37,4 +37,13 @@ export const links = {
     hvordanSendeInntektsmelding:
         'https://www.nav.no/no/bedrift/tjenester-og-skjemaer/nav-og-altinn-tjenester/foreldrepenger-og-svangerskapspenger2',
     omLottOgHyre: 'https://www.skatteetaten.no/en/rettskilder/type/handboker/skatte-abc/2021/fiske/F-13.014/F-13.048/',
+    adoptere: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#adoptere',
+    fleksibeltuttak: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#samtidig',
+    viktigeFrister: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#soknadsfrister',
+    nav_aktivitetskrav: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#hvor-lenge',
+    morsAktivitetskrav: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#hvor-lenge',
+    familie: 'https://familie.nav.no/',
+    graderingInfo: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#arbeid',
+    aktivitetsfriUttakInfo: 'https://www.nav.no/foreldrepenger#hvor-lenge',
+    farskapsportal: 'https://farskapsportal.nav.no/',
 };

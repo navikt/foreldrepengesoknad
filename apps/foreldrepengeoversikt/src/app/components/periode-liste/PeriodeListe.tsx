@@ -1,9 +1,9 @@
 import { Heading } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { Periode } from 'app/types/Periode';
+import { guid } from 'app/utils/guid';
 import { isUttaksperiode } from 'app/utils/periodeUtils';
 import { NavnPåForeldre } from 'app/utils/personUtils';
 import { Tidsperioden, getTidsperiode } from 'app/utils/tidsperiodeUtils';

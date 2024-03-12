@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 
 import { Heading, LinkPanel } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { NavRoutes } from 'app/routes/routes';

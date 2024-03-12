@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { Block } from '@navikt/fp-common';
 import { bemUtils, formatDate, formatTime } from '@navikt/fp-utils';
 
 import DokumentHendelse from 'app/sections/tidslinje/DokumentHendelse';
@@ -16,7 +15,6 @@ import KontonummerInfo from '../kontonummer-info/KontonummerInfo';
 import './bekreftelse-sendt-søknad.css';
 
 interface Props {
-    oppdatertData: boolean;
     relevantNyTidslinjehendelse: Tidslinjehendelse | undefined;
     bankkonto: Bankkonto | undefined;
     ytelse: Ytelse | undefined;
@@ -34,12 +32,7 @@ const getTidspunktTekst = (mottattDato: Date | undefined): string | undefined =>
     return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
 };
 
-const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
-    oppdatertData,
-    relevantNyTidslinjehendelse,
-    bankkonto,
-    ytelse,
-}) => {
+const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTidslinjehendelse, bankkonto, ytelse }) => {
     const bem = bemUtils('bekreftelse-sendt-søknad');
 
     const relevantDokument = relevantNyTidslinjehendelse?.dokumenter
@@ -49,42 +42,32 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
-        <Block
-            className={classNames(
-                `${bem.block} ${oppdatertData ? bem.modifier('bigMargin') : bem.modifier('smallMargin')}`,
+        <VStack gap="4">
+            <HStack>
+                <div className={bem.element('ikon-box')}>
+                    <CheckmarkIcon className={bem.element('ikon')} aria-hidden={true}></CheckmarkIcon>
+                </div>
+                <VStack>
+                    <BodyShort
+                        size="medium"
+                        className={classNames(
+                            `${bem.element('tittel')} ${
+                                sendtInfoTekst ? bem.modifier('titleAndInfo') : bem.modifier('justTitle')
+                            }`,
+                        )}
+                    >
+                        Søknaden din er sendt!
+                    </BodyShort>
+                    {sendtInfoTekst && <p className={bem.element('tidspunkt')}>{sendtInfoTekst}</p>}
+                </VStack>
+            </HStack>
+            {relevantDokument && (
+                <ul className={bem.element('dokument')}>
+                    <DokumentHendelse dokument={relevantDokument} key={relevantDokument.url} visesITidslinjen={false} />
+                </ul>
             )}
-        >
-            <VStack gap={'4'}>
-                <HStack>
-                    <div className={bem.element('ikon-box')}>
-                        <CheckmarkIcon className={bem.element('ikon')} aria-hidden={true}></CheckmarkIcon>
-                    </div>
-                    <VStack>
-                        <BodyShort
-                            size="medium"
-                            className={classNames(
-                                `${bem.element('tittel')} ${
-                                    sendtInfoTekst ? bem.modifier('titleAndInfo') : bem.modifier('justTitle')
-                                }`,
-                            )}
-                        >
-                            Søknaden din er sendt!
-                        </BodyShort>
-                        {sendtInfoTekst && <p className={bem.element('tidspunkt')}>{sendtInfoTekst}</p>}
-                    </VStack>
-                </HStack>
-                {relevantDokument && (
-                    <ul className={bem.element('dokument')}>
-                        <DokumentHendelse
-                            dokument={relevantDokument}
-                            key={relevantDokument.url}
-                            visesITidslinjen={false}
-                        />
-                    </ul>
-                )}
-                <KontonummerInfo ytelse={ytelse} bankkonto={bankkonto} />
-            </VStack>
-        </Block>
+            <KontonummerInfo ytelse={ytelse} bankkonto={bankkonto} />
+        </VStack>
     );
 };
 

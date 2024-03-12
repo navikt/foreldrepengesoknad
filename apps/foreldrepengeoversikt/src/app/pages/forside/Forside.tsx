@@ -1,9 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, Heading } from '@navikt/ds-react';
-
-import { Block } from '@navikt/fp-common';
-import { bemUtils } from '@navikt/fp-utils';
+import { Alert, Heading, VStack } from '@navikt/ds-react';
 
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
@@ -43,7 +40,6 @@ const Forside: React.FunctionComponent<Props> = ({
     isFirstRender,
     bankkonto,
 }) => {
-    const bem = bemUtils('forside');
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
 
     const params = useParams();
@@ -54,11 +50,10 @@ const Forside: React.FunctionComponent<Props> = ({
     }
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
     return (
-        <div className={bem.block}>
-            <Block padBottom="xl">
+        <VStack gap="10">
+            <div>
                 {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
                     <BekreftelseSendtSøknad
-                        oppdatertData={oppdatertData}
                         relevantNyTidslinjehendelse={undefined}
                         bankkonto={bankkonto}
                         ytelse={undefined}
@@ -70,8 +65,8 @@ const Forside: React.FunctionComponent<Props> = ({
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
                     </Alert>
                 )}
-            </Block>
-            <Block>
+            </div>
+            <div>
                 {storageData?.engangsstonad && (
                     <Heading level="1" size="large">
                         Dette er en mellomlagret søknad av type: Engangsstønad
@@ -82,14 +77,14 @@ const Forside: React.FunctionComponent<Props> = ({
                         Dette er en mellomlagret søknad av type: Foreldrepenger
                     </Heading>
                 )}
-            </Block>
+            </div>
             {alleYtelser.length > 0 ? (
                 <HarSaker grupperteSaker={grupperteSaker} />
             ) : (
                 <HarIkkeSaker oppdatertData={oppdatertData} />
             )}
             {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
-        </div>
+        </VStack>
     );
 };
 

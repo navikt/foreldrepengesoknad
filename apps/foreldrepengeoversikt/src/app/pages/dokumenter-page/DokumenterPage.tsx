@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom';
 
 import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
 import Api from 'app/api/api';
@@ -15,6 +14,7 @@ import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
 import { RequestStatus } from 'app/types/RequestStatus';
 import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
+import { guid } from 'app/utils/guid';
 
 import './dokumenter-page.css';
 
