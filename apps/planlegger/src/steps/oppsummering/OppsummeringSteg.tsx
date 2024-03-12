@@ -65,7 +65,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     <FormattedMessage id="oppsummering.infoboks.ingenHarRett" />
                                 )
                             }
-                            icon={<TasklistStartIcon height="24" width="24" color="#236B7D" />}
+                            icon={<TasklistStartIcon height={28} width={28} color="#236B7D" />}
                         >
                             <BodyLong>
                                 {erAleneforsørger ? (
@@ -111,7 +111,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <ExpansionCard.Header>
                                 <HStack gap="5" align="center">
                                     <IconCircle size="large" color="green">
-                                        <CalendarIcon height={22} width={22} fontSize="1.5rem" />
+                                        <CalendarIcon height={28} width={28} fontSize="1.5rem" />
                                     </IconCircle>
                                     <ExpansionCard.Title size="medium">
                                         {isAlene(hvemPlanlegger) ? (
