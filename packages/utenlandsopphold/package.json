@@ -47,7 +47,7 @@
         "storybook": "7.6.10",
         "tsconfig": "workspace:*",
         "typescript": "^5.3.3",
-        "vite": "^4.4.9",
+        "vite": "^5.1.6",
         "vite-plugin-checker": "^0.6.1",
         "vitest": "^0.34.2"
     }
