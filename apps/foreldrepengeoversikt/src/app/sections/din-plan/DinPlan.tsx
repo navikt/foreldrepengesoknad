@@ -1,8 +1,14 @@
-import { BodyLong, Button, Link } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
-
 import { Edit } from '@navikt/ds-icons';
+import { BodyLong, Button, Link } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import PeriodeOversikt from 'app/components/periode-oversikt/PeriodeOversikt';
+import { NavRoutes } from 'app/routes/routes';
+import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
+import { Periode } from 'app/types/Periode';
 import {
+    Periodene,
     filtrerAnnenPartsUttakNårIkkeSamtidigUttak,
     finnFremtidigePerioder,
     finnNåværendePerioder,
@@ -11,15 +17,11 @@ import {
     getPerioderForVisning,
     leggTilVisningsInfo,
     normaliserPerioder,
-    Periodene,
     skalAnnenPartsPeriodeVises,
 } from 'app/utils/periodeUtils';
-import { NavRoutes } from 'app/routes/routes';
-import './din-plan.css';
-import PeriodeOversikt from 'app/components/periode-oversikt/PeriodeOversikt';
-import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
 import { slåSammenLikePerioder } from 'app/utils/planUtils';
-import { Periode } from 'app/types/Periode';
+
+import './din-plan.css';
 
 interface Props {
     annenPartsPerioder: Periode[] | undefined;

@@ -1,11 +1,13 @@
-import { HStack, LinkPanel } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
-import OversiktRoutes from 'app/routes/routes';
-
+import { FolderFileIcon } from '@navikt/aksel-icons';
 import { Link } from 'react-router-dom';
 
+import { HStack, LinkPanel } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import OversiktRoutes from 'app/routes/routes';
+
 import './se-dokumenter.css';
-import { FolderFileIcon } from '@navikt/aksel-icons';
 
 const SeDokumenter = () => {
     const bem = bemUtils('se-dokumenter');

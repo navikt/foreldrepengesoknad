@@ -1,11 +1,14 @@
+import { Link } from 'react-router-dom';
+
+import { DialogReport } from '@navikt/ds-icons';
+import { LinkPanel } from '@navikt/ds-react';
+
+import { bemUtils, formatDate } from '@navikt/fp-utils';
+
+import OversiktRoutes from 'app/routes/routes';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 
-import { Link } from 'react-router-dom';
 import './oppgaveLenkepanel.css';
-import { bemUtils, Block, formatDate } from '@navikt/fp-common';
-import { LinkPanel } from '@navikt/ds-react';
-import { DialogReport } from '@navikt/ds-icons';
-import OversiktRoutes from 'app/routes/routes';
 
 interface Props {
     minidialogInnslag: MinidialogInnslag;
@@ -15,26 +18,24 @@ interface Props {
 const OppgaveLenkepanel: React.FunctionComponent<Props> = ({ tittel, minidialogInnslag }) => {
     const bem = bemUtils('oppgave-lenkepanel');
     return (
-        <Block padBottom="l">
-            <LinkPanel
-                as={Link}
-                to={`${OversiktRoutes.OPPGAVER}/${minidialogInnslag.dialogId}`}
-                border={false}
-                className={bem.element('linkPanel')}
-            >
-                <div className={bem.element('content')}>
-                    <DialogReport className={bem.element('icon')} aria-hidden={true}></DialogReport>
-                    <div>
-                        <LinkPanel.Title as="h3" className={bem.element('title')}>
-                            {tittel}
-                        </LinkPanel.Title>
-                        <LinkPanel.Description>
-                            <div className={bem.block}>{formatDate(minidialogInnslag.opprettet)}</div>
-                        </LinkPanel.Description>
-                    </div>
+        <LinkPanel
+            as={Link}
+            to={`${OversiktRoutes.OPPGAVER}/${minidialogInnslag.dialogId}`}
+            border={false}
+            className={bem.element('linkPanel')}
+        >
+            <div className={bem.element('content')}>
+                <DialogReport className={bem.element('icon')} aria-hidden={true}></DialogReport>
+                <div>
+                    <LinkPanel.Title as="h3" className={bem.element('title')}>
+                        {tittel}
+                    </LinkPanel.Title>
+                    <LinkPanel.Description>
+                        <div className={bem.block}>{formatDate(minidialogInnslag.opprettet)}</div>
+                    </LinkPanel.Description>
                 </div>
-            </LinkPanel>
-        </Block>
+            </div>
+        </LinkPanel>
     );
 };
 

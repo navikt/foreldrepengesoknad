@@ -1,12 +1,14 @@
-import { Home } from '@navikt/ds-icons';
-import { BodyShort, Link as DSLink } from '@navikt/ds-react';
-import { bemUtils, hasValue } from '@navikt/fp-common';
 import { ChevronRightIcon } from '@navikt/aksel-icons';
 import { Link } from 'react-router-dom';
 
+import { Home } from '@navikt/ds-icons';
+import { BodyShort, Link as DSLink } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
 import { getBreadcrumbs } from 'app/types/Breadcrumb';
-import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 
 import './breadcrumb.css';
 
@@ -18,11 +20,11 @@ interface Props {
 const getRoute = (route: string, saksnummer: string | undefined, oppgaveId: string | undefined): string => {
     const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
 
-    if (route === OversiktRoutes.SAKSOVERSIKT && hasValue(saksnummer)) {
+    if (route === OversiktRoutes.SAKSOVERSIKT && saksnummer) {
         return sakRoute;
     }
 
-    if (route === OversiktRoutes.OPPGAVER && hasValue(oppgaveId)) {
+    if (route === OversiktRoutes.OPPGAVER && oppgaveId) {
         return `${OversiktRoutes.OPPGAVER}/${oppgaveId}`;
     }
 

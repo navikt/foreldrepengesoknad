@@ -1,17 +1,18 @@
-import { FunctionComponent } from 'react';
-import dayjs from 'dayjs';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { allCommonMessages } from '@navikt/fp-common';
+import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
+
 import { IntlProvider } from '@navikt/fp-ui';
+
+import Foreldrepengeoversikt from './Foreldrepengeoversikt';
 import ByttBrowserModal from './components/bytt-browser-modal/ByttBrowserModal';
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
-import Foreldrepengeoversikt from './Foreldrepengeoversikt';
 import nbMessages from './intl/nb_NO.json';
 
 const queryClient = new QueryClient();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: { ...nbMessages, ...allCommonMessages.nb },
+    nb: nbMessages,
 };
 
 dayjs.locale('nb');

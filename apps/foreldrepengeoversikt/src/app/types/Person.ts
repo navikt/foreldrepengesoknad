@@ -1,4 +1,4 @@
-import { Kjønn } from '@navikt/fp-common';
+import { Kjønn } from '@navikt/fp-types';
 
 export interface Person {
     etternavn: string;

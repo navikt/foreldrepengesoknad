@@ -26,6 +26,7 @@ export {
     isValidDate,
     formatDate,
     formatDateIso,
+    formatDateExtended,
     formatTime,
     dagenFør,
     treUkerSiden,

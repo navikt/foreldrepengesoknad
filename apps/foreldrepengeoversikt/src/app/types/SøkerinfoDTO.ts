@@ -1,4 +1,5 @@
-import { Kjønn } from '@navikt/fp-common';
+import { Kjønn } from '@navikt/fp-types';
+
 import Bankkonto from './Bankkonto';
 
 export interface SøkerinfoDTOPerson {
