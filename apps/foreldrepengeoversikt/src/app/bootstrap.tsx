@@ -1,13 +1,16 @@
-import { createRoot } from 'react-dom/client';
-import * as Sentry from '@sentry/browser';
-import '@navikt/ds-css';
-import AppContainer from './AppContainer';
-import { initAmplitude } from './amplitude/amplitude';
-import '@formatjs/intl-pluralrules/polyfill';
 import '@formatjs/intl-pluralrules/locale-data/nb';
+import '@formatjs/intl-pluralrules/polyfill';
+import * as Sentry from '@sentry/browser';
+import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
-import dayjs from 'dayjs';
+import { createRoot } from 'react-dom/client';
+
+import '@navikt/ds-css';
+
+import AppContainer from './AppContainer';
+import { initAmplitude } from './amplitude/amplitude';
+
 dayjs.locale('nb');
 
 Sentry.init({
@@ -20,6 +23,7 @@ Sentry.init({
 initAmplitude();
 
 const container = document.getElementById('app');
-const root = createRoot(container!);
-
-root.render(<AppContainer />);
+if (container) {
+    const root = createRoot(container);
+    root.render(<AppContainer />);
+}
