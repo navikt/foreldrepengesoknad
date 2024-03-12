@@ -103,7 +103,7 @@ OppsummeringFlereForsørgereHundreProsentTermin.args = {
     },
     arbeidssituasjon: {
         arbeidssituasjon: ArbeidssituasjonEnum.INGEN,
-        arbeidssituasjonAnnenPart: true,
+        arbeidssituasjonAnnenPart: false,
     },
 };
 export const OppsummeringAleneforsørgerÅttiProsentFødselToBarn = Template.bind({});

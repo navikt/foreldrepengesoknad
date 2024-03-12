@@ -4,7 +4,7 @@ export type Arbeidssituasjon = {
 };
 
 export enum ArbeidssituasjonEnum {
-    JOBBER = 'jobber',
-    UFØR = 'ufør',
-    INGEN = 'ingen',
+    JOBBER = 'Jobber',
+    UFØR = 'Ufør',
+    INGEN = 'Jobber ikke',
 }
