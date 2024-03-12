@@ -3,7 +3,7 @@ export type BarnetErFødt = {
     hvorMange: string;
     erBarnetFødt: boolean;
     fødselsdato: string;
-    termindato: string;
+    termindato?: string;
 };
 
 export type BarnetErIkkeFødt = {
