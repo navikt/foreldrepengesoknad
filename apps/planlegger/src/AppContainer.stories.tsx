@@ -1,8 +1,39 @@
-import { initAmplitude } from '@navikt/fp-metrics';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import { Action, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import MockAdapter from 'axios-mock-adapter';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
 import AppContainer from './AppContainer';
+import { planleggerApi } from './Planlegger';
+
+const konto100 = {
+    kontoer: {
+        MØDREKVOTE: 75,
+        FEDREKVOTE: 75,
+        FELLESPERIODE: 80,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+const konto80 = {
+    kontoer: {
+        MØDREKVOTE: 95,
+        FEDREKVOTE: 95,
+        FELLESPERIODE: 90,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
 
 export default {
     title: 'AppContainer',
@@ -11,8 +42,22 @@ export default {
 
 const Template: StoryFn<{
     gåTilNesteSide: (action: Action) => void;
-}> = ({ gåTilNesteSide = action('button-click') }) => {
+    doLogging?: boolean;
+}> = ({ gåTilNesteSide = action('button-click'), doLogging = true }) => {
     initAmplitude();
+    const apiMock = new MockAdapter(planleggerApi);
+    apiMock.onGet('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
+        if (doLogging) {
+            console.log('network request: get https://foreldrepengesoknad-api.nav.no/rest/konto');
+        }
+        return [200, konto100];
+    });
+    apiMock.onGet('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
+        if (doLogging) {
+            console.log('network request: get https://foreldrepengesoknad-api.nav.no/rest/konto');
+        }
+        return [200, konto80];
+    });
     return (
         <PlanleggerDataContext onDispatch={gåTilNesteSide}>
             <AppContainer />

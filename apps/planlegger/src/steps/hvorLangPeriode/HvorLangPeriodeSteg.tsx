@@ -1,5 +1,6 @@
 import { CalendarIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Infoboks from 'components/Infoboks';
@@ -13,23 +14,28 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
 import { isAlene, isFar, isMor } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
-    getAntallUkerForeldrepenger,
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
-import { BodyLong, Heading, Link, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Link, Loader, Radio, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-const HvorLangPeriodeSteg: FunctionComponent = () => {
+interface Props {
+    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+}
+
+const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer80, stønadskontoer100 }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -42,113 +48,26 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
 
     const lagre = (formValues: HvorLangPeriode) => {
         lagrePeriode(formValues);
-        return navigator.goToNextDefaultStep();
+
+        const erAlenesøker = isAlene(hvemPlanlegger);
+        return navigator.goToNextStep(erAlenesøker ? PlanleggerRoutes.OVERSIKT : PlanleggerRoutes.FORDELING);
     };
 
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
-    // TODO: hent fra api
-    const konto100 = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 80,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-    const konto80 = {
-        kontoer: {
-            MØDREKVOTE: 95,
-            FEDREKVOTE: 95,
-            FELLESPERIODE: 90,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-
-    const konto100tvillinger = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 165,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-    const konto80tvillinger = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 200,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-
-    const konto80aleneomsorgFar = {
-        kontoer: {
-            FORELDREPENGER: 280,
-        },
-        minsteretter: {
-            generellMinsterett: 0,
-            farRundtFødsel: 10,
-            toTette: 0,
-        },
-    };
-
-    const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
-    const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
-    const mappedKonto100tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100tvillinger);
-    const mappedKonto80tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80tvillinger);
-    const mappedKonto80aleneomsorgFar = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80aleneomsorgFar);
+    if (!stønadskontoer80 || !stønadskontoer100) {
+        return <Loader />;
+    }
 
     const dekningsgrad = formMethods.watch('dekningsgrad');
-
-    const toBarn = barnet.hvorMange === 'to';
-    const ettBarn = barnet.hvorMange === 'ett';
 
     const erAlenesøker = isAlene(hvemPlanlegger);
     const erMor = isMor(hvemPlanlegger);
     const erFar = isFar(hvemPlanlegger);
 
-    const finnSelectedKonto = () => {
-        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && erFar) {
-            return mappedKonto80aleneomsorgFar;
-        }
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && ettBarn) {
-            return mappedKonto100;
-        }
-        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && ettBarn) {
-            return mappedKonto80;
-        }
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && toBarn) {
-            return mappedKonto100tvillinger;
-        }
-        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && toBarn) {
-            return mappedKonto80tvillinger;
-        }
-
-        return mappedKonto100;
-    };
-
-    const selectedKonto = finnSelectedKonto();
+    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        periode?.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer100 : stønadskontoer80,
+    );
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
     const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
@@ -169,11 +88,6 @@ const HvorLangPeriodeSteg: FunctionComponent = () => {
         antallUkerMødrekvote + antallUkerFedrekvote + antallUkerFellesperiode + antallUkerFørFødsel;
     const antallUkerAktivitetskravKvote = antallUkerTotalt - antallUkerAktivitetsfriKvote;
 
-    console.log('selected', selectedKonto);
-    const totalt = getAntallUkerForeldrepenger(selectedKonto);
-    console.log('totalt', totalt);
-    console.log('aktivitetsfri', antallUkerAktivitetsfriKvote);
-    console.log('aktivitetskrav', antallUkerAktivitetskravKvote);
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>

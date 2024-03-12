@@ -23,6 +23,7 @@ import {
     isMorOgFar,
     isMorOgMedmor,
 } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -30,7 +31,7 @@ import {
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
-import { BodyLong, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -112,7 +113,12 @@ export const getFellesperiodefordelingSelectOptions = (
     return options;
 };
 
-const FordelingSteg: FunctionComponent = () => {
+interface Props {
+    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+}
+
+const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer80, stønadskontoer100 }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -135,97 +141,17 @@ const FordelingSteg: FunctionComponent = () => {
     const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger);
 
     const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
-    console.log(fellesperiodefordeling);
     const [currentOption, setCurrentOption] = useState('');
 
-    // TODO: hent fra api
-    const konto100 = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 80,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-    const konto80 = {
-        kontoer: {
-            MØDREKVOTE: 95,
-            FEDREKVOTE: 95,
-            FELLESPERIODE: 90,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
+    if (!stønadskontoer80 || !stønadskontoer100) {
+        return <Loader />;
+    }
 
-    const konto100tvillinger = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 165,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-    const konto80tvillinger = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 200,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
+    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer100 : stønadskontoer80,
+    );
 
-    const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
-    const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
-    const mappedKonto100tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100tvillinger);
-    const mappedKonto80tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80tvillinger);
-
-    const toBarn = barnet.hvorMange === 'to';
-    const ettBarn = barnet.hvorMange === 'ett';
-
-    const finnSelectedKonto = () => {
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && ettBarn) {
-            return mappedKonto100;
-        }
-        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && ettBarn) {
-            return mappedKonto80;
-        }
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && toBarn) {
-            return mappedKonto100tvillinger;
-        }
-        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && toBarn) {
-            return mappedKonto80tvillinger;
-        }
-        return mappedKonto100;
-    };
-    /* const selectedKonto = dekningsgrad
-        ? dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? mappedKonto100
-            : mappedKonto80
-        : mappedKonto100;
-        */
-
-    const selectedKonto = finnSelectedKonto();
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
-    console.log('selectedKonto', selectedKonto);
     const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
     const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
@@ -239,8 +165,6 @@ const FordelingSteg: FunctionComponent = () => {
     const antallUkerFellesperiodeSøker2 = fellesperiodefordeling
         ? fellesperiodeOptionValues[fellesperiodefordeling]
         : undefined;
-    console.log('antallUkerFellesperiodeSøker1: ', antallUkerFellesperiodeSøker1);
-    console.log('fellesperiodefordeling: ', fellesperiodefordeling);
 
     const sluttdatoSøker1 =
         antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1.antallUkerSøker1
@@ -248,9 +172,6 @@ const FordelingSteg: FunctionComponent = () => {
                   .add(antallUkerMødrekvote, 'weeks')
                   .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
             : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
-    console.log('sluttdato: ', sluttdatoSøker1);
-    console.log('antallUkerFellesperiodeSøker1: ', antallUkerFellesperiodeSøker1);
-    console.log('antallUkerFellesperiodeSøker2: ', antallUkerFellesperiodeSøker2);
     const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1) : undefined;
     const sluttdatoSøker2 =
         antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2.antallUkerSøker2
@@ -258,15 +179,12 @@ const FordelingSteg: FunctionComponent = () => {
                   .add(antallUkerFellesperiodeSøker2.antallUkerSøker2, 'weeks')
                   .add(antallUkerFedrekvote, 'weeks')
             : undefined;
-    console.log('startdatoSøker1: ', startdatoSøker1);
-    console.log('sluttdatoSøker1: ', sluttdatoSøker1);
-    console.log('startdatoSøker2: ', startdatoSøker2);
-    console.log('sluttdatoSøker2: ', sluttdatoSøker2);
     const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(
         intl,
         fellesperiodeOptionValues,
         hvemPlanlegger,
     );
+
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>

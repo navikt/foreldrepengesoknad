@@ -14,6 +14,33 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import OversiktSteg from './OversiktSteg';
 
+const konto100 = {
+    kontoer: {
+        MØDREKVOTE: 75,
+        FEDREKVOTE: 75,
+        FELLESPERIODE: 80,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+const konto80 = {
+    kontoer: {
+        MØDREKVOTE: 95,
+        FEDREKVOTE: 95,
+        FELLESPERIODE: 90,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
 export default {
     title: 'OversiktSteg',
     component: OversiktSteg,
@@ -38,7 +65,7 @@ const Template: StoryFn<{
                     [ContextDataType.OM_BARNET]: omBarnet,
                 }}
             >
-                <OversiktSteg />
+                <OversiktSteg stønadskontoer100={konto100} stønadskontoer80={konto80} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
@@ -61,7 +88,7 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
         erFødsel: true,
         erBarnetFødt: false,
         termindato: '2022-10-24',
-        hvorMange: 'ett',
+        antallBarn: '1',
     },
 };
 
@@ -81,7 +108,7 @@ PeriodeAleneForsørgerFarHundreProsentTermin.args = {
         erFødsel: true,
         erBarnetFødt: false,
         termindato: '2022-10-24',
-        hvorMange: 'ett',
+        antallBarn: '1',
     },
 };
 
@@ -102,7 +129,7 @@ PeriodeAleneforsørgerÅttiProsentFødt.args = {
         erFødsel: true,
         fødselsdato: '2024-09-01',
         termindato: '2024-09-01',
-        hvorMange: 'ett',
+        antallBarn: '1',
     },
 };
 
@@ -124,7 +151,7 @@ PeriodeFlereForsørgereÅttiProsentToBarnFødt.args = {
         erFødsel: true,
         fødselsdato: '2024-10-01',
         termindato: '2024-10-03',
-        hvorMange: 'to',
+        antallBarn: '2',
     },
 };
 
@@ -149,6 +176,6 @@ PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
         termindato: '2024-09-01',
         overtakelsesdato: '2024-09-01',
         adopsjonsdato: '2024-09-01',
-        hvorMange: 'ett',
+        antallBarn: '1',
     },
 };
