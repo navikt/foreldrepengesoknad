@@ -1,1 +1,0 @@
-import{r as a,R as e}from"./index-76fb7be0.js";import{S as o}from"./Stack-730f96a9.js";const f=a.forwardRef((r,t)=>e.createElement(o,Object.assign({},r,{ref:t,direction:"column",wrap:!1})));export{f as V};
