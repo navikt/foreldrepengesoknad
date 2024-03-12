@@ -8,30 +8,32 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import AppContainer from './AppContainer';
 import { planleggerApi } from './Planlegger';
 
-const konto100 = {
-    kontoer: {
-        MØDREKVOTE: 75,
-        FEDREKVOTE: 75,
-        FELLESPERIODE: 80,
-        FORELDREPENGER_FØR_FØDSEL: 15,
+const kontoer = {
+    '100': {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 80,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
     },
-    minsteretter: {
-        farRundtFødsel: 0,
-        generellMinsterett: 0,
-        toTette: 0,
-    },
-};
-const konto80 = {
-    kontoer: {
-        MØDREKVOTE: 95,
-        FEDREKVOTE: 95,
-        FELLESPERIODE: 90,
-        FORELDREPENGER_FØR_FØDSEL: 15,
-    },
-    minsteretter: {
-        farRundtFødsel: 0,
-        generellMinsterett: 0,
-        toTette: 0,
+    '80': {
+        kontoer: {
+            MØDREKVOTE: 95,
+            FEDREKVOTE: 95,
+            FELLESPERIODE: 90,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
     },
 };
 
@@ -46,17 +48,11 @@ const Template: StoryFn<{
 }> = ({ gåTilNesteSide = action('button-click'), doLogging = true }) => {
     initAmplitude();
     const apiMock = new MockAdapter(planleggerApi);
-    apiMock.onGet('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
+    apiMock.onPost('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
         if (doLogging) {
             console.log('network request: get https://foreldrepengesoknad-api.nav.no/rest/konto');
         }
-        return [200, konto100];
-    });
-    apiMock.onGet('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
-        if (doLogging) {
-            console.log('network request: get https://foreldrepengesoknad-api.nav.no/rest/konto');
-        }
-        return [200, konto80];
+        return [200, kontoer];
     });
     return (
         <PlanleggerDataContext onDispatch={gåTilNesteSide}>

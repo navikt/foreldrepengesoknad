@@ -33,7 +33,7 @@ import {
 
 import { BodyLong, Heading, Loader, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -114,11 +114,10 @@ export const getFellesperiodefordelingSelectOptions = (
 };
 
 interface Props {
-    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
-    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
 }
 
-const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer80, stønadskontoer100 }) => {
+const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -143,13 +142,11 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer80, stønadsko
     const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
     const [currentOption, setCurrentOption] = useState('');
 
-    if (!stønadskontoer80 || !stønadskontoer100) {
+    if (!stønadskontoer) {
         return <Loader />;
     }
 
-    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer100 : stønadskontoer80,
-    );
+    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
 
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
     const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);

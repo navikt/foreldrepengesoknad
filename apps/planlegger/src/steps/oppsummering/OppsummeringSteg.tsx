@@ -21,7 +21,6 @@ import {
 
 import { Alert, BodyLong, Box, ExpansionCard, HStack, Heading, Link, Loader, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad } from '@navikt/fp-common';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -38,11 +37,10 @@ const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: number):
 };
 
 interface Props {
-    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
-    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
 }
 
-const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer80, stønadskontoer100 }) => {
+const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
@@ -62,13 +60,11 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer80, stønadskon
     };
     const ingenHarRett = !harRett();
 
-    if (!stønadskontoer80 || !stønadskontoer100) {
+    if (!stønadskontoer) {
         return <Loader />;
     }
 
-    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer100 : stønadskontoer80,
-    );
+    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
 
