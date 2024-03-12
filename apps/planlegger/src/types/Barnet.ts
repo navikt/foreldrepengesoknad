@@ -1,6 +1,6 @@
 export type BarnetErFødt = {
     erFødsel: boolean;
-    hvorMange: string;
+    antallBarn: string;
     erBarnetFødt: boolean;
     fødselsdato: string;
     termindato?: string;
@@ -8,14 +8,14 @@ export type BarnetErFødt = {
 
 export type BarnetErIkkeFødt = {
     erFødsel: boolean;
-    hvorMange: string;
+    antallBarn: string;
     erBarnetFødt: boolean;
     termindato: string;
 };
 
 export type BarnetErAdoptert = {
     erAdoptert: boolean;
-    hvorMange: string;
+    antallBarn: string;
     adopsjonsdato: string;
     overtakelsesdato: string;
     fødselsdato: string;
@@ -46,13 +46,13 @@ export const erBarnetAdoptert = (omBarnet: OmBarnet): omBarnet is BarnetErAdopte
 };
 
 export const erEttBarn = (omBarnet: OmBarnet): boolean => {
-    return omBarnet.hvorMange === 'ett';
+    return omBarnet.antallBarn === '1';
 };
 
 export const erToBarn = (omBarnet: OmBarnet): boolean => {
-    return omBarnet.hvorMange === 'to';
+    return omBarnet.antallBarn === '2';
 };
 
 export const erFlereEnnToBarn = (omBarnet: OmBarnet): boolean => {
-    return omBarnet.hvorMange === 'flere';
+    return omBarnet.antallBarn === '3';
 };

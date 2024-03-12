@@ -970,6 +970,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.17(postcss@8.4.33)
+      axios-mock-adapter:
+        specifier: 1.22.0
+        version: 1.22.0(axios@1.6.5)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -9687,10 +9690,14 @@ packages:
       lodash: 4.17.21
       redent: 3.0.0
 <<<<<<< HEAD
+<<<<<<< HEAD
       vitest: 1.4.0(jsdom@24.0.0)(less@4.2.0)
 =======
       vitest: 0.34.6(jsdom@22.1.0)
 >>>>>>> 72fef02ae (lagt til infobokser)
+=======
+      vitest: 0.34.6(jsdom@22.1.0)(less@4.2.0)
+>>>>>>> 9b0eefec3 (div)
     dev: true
 
 <<<<<<< HEAD

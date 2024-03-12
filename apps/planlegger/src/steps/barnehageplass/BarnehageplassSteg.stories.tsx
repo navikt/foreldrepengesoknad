@@ -48,7 +48,7 @@ FlereForsørgereBarnTerminDesemberStartAugustOmToÅr.args = {
         erBarnetFødt: false,
         erFødsel: true,
         termindato: '2024-12-01',
-        hvorMange: '1',
+        antallBarn: '1',
     },
 };
 
@@ -64,7 +64,7 @@ FlereForsørgereBarnFødtSeptemberStartSeptember.args = {
         erFødsel: true,
         fødselsdato: '2024-09-01',
         termindato: '2024-09-01',
-        hvorMange: '1',
+        antallBarn: '1',
     },
 };
 
@@ -79,7 +79,7 @@ AleneforsørgerBarnFødtJanuarStartAugust.args = {
         erFødsel: true,
         fødselsdato: '2024-01-01',
         termindato: '2023-08-01',
-        hvorMange: '1',
+        antallBarn: '1',
     },
 };
 
@@ -91,7 +91,7 @@ FlereForsørgereAdoptertBarnFødtJanuarStartAugust.args = {
         type: SøkersituasjonEnum.MOR_OG_FAR,
     },
     omBarnet: {
-        hvorMange: 'ett',
+        antallBarn: '1',
         erAdoptert: true,
         erBarnetFødt: true,
         fødselsdato: '2024-02-11',
