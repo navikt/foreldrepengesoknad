@@ -17,8 +17,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
-import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
@@ -30,14 +29,6 @@ import FrilansVisning from './frilans-visning/FrilansVisning';
 import './oppsummering.css';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
-
-const getForrigeTilretteleggingId = (tilrettelegging: Tilrettelegging[]): string => {
-    const sisteTilrettelegging = tilrettelegging[tilrettelegging?.length - 1];
-    return sisteTilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
-        sisteTilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
-        ? sisteTilrettelegging.id
-        : sisteTilrettelegging.id;
-};
 
 type Props = {
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
@@ -93,7 +84,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 sendSøknad={sendSøknad}
                 cancelApplication={avbrytSøknad}
                 goToPreviousStep={() => {
-                    oppdaterValgtTilretteleggingId(getForrigeTilretteleggingId(tilrettelegginger));
+                    oppdaterValgtTilretteleggingId(tilrettelegginger[tilrettelegginger?.length - 1].id);
                     navigator.goToPreviousDefaultStep();
                 }}
                 onContinueLater={navigator.fortsettSøknadSenere}
