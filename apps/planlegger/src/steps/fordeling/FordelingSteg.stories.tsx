@@ -12,33 +12,34 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import FordelingSteg from './FordelingSteg';
 
-const konto100 = {
-    kontoer: {
-        MØDREKVOTE: 75,
-        FEDREKVOTE: 75,
-        FELLESPERIODE: 80,
-        FORELDREPENGER_FØR_FØDSEL: 15,
+const kontoer = {
+    '100': {
+        kontoer: {
+            MØDREKVOTE: 75,
+            FEDREKVOTE: 75,
+            FELLESPERIODE: 80,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
     },
-    minsteretter: {
-        farRundtFødsel: 0,
-        generellMinsterett: 0,
-        toTette: 0,
+    '80': {
+        kontoer: {
+            MØDREKVOTE: 95,
+            FEDREKVOTE: 95,
+            FELLESPERIODE: 90,
+            FORELDREPENGER_FØR_FØDSEL: 15,
+        },
+        minsteretter: {
+            farRundtFødsel: 0,
+            generellMinsterett: 0,
+            toTette: 0,
+        },
     },
 };
-const konto80 = {
-    kontoer: {
-        MØDREKVOTE: 95,
-        FEDREKVOTE: 95,
-        FELLESPERIODE: 90,
-        FORELDREPENGER_FØR_FØDSEL: 15,
-    },
-    minsteretter: {
-        farRundtFødsel: 0,
-        generellMinsterett: 0,
-        toTette: 0,
-    },
-};
-
 export default {
     title: 'FordelingSteg',
     component: FordelingSteg,
@@ -60,7 +61,7 @@ const Template: StoryFn<{
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <FordelingSteg stønadskontoer100={konto100} stønadskontoer80={konto80} />
+                <FordelingSteg stønadskontoer={kontoer} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

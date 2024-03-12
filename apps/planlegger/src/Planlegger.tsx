@@ -5,7 +5,7 @@ import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
-import { createApi, useRequest } from '@navikt/fp-api';
+import { createApi, usePostRequest } from '@navikt/fp-api';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 
@@ -24,9 +24,7 @@ const Planlegger: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
 
-    // TODO Bruk ny tjeneste som hentar alt i eitt kall
-
-    const params80 = useMemo(
+    const params = useMemo(
         () => ({
             antallBarn: omBarnet?.antallBarn,
             morHarRett: arbeidssituasjon?.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER,
@@ -36,74 +34,40 @@ const Planlegger: FunctionComponent<Props> = ({ locale, changeLocale }) => {
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
             termindato: omBarnet && erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined,
             omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.adopsjonsdato : undefined,
-            dekningsgrad: 80,
             morHarUføretrygd: arbeidssituasjon?.arbeidssituasjon === ArbeidssituasjonEnum.UFØR,
+            erMor: søkersituasjon?.situasjon !== SøkersituasjonEnum.FAR,
+            minsterett: true,
+            harAnnenForelderTilsvarendeRettEØS: false,
         }),
         [omBarnet, arbeidssituasjon, søkersituasjon],
     );
 
-    const options80 = useMemo(
+    const options = useMemo(
         () => ({
             isSuspended: arbeidssituasjon === undefined,
-            params: params80,
             withCredentials: false,
         }),
-        [params80, arbeidssituasjon],
-    );
-    const params100 = useMemo(
-        () => ({
-            antallBarn: omBarnet?.antallBarn,
-            morHarRett: arbeidssituasjon?.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER,
-            farHarRett: arbeidssituasjon?.arbeidssituasjonAnnenPart,
-            morHarAleneomsorg: søkersituasjon?.situasjon === SøkersituasjonEnum.MOR,
-            farHarAleneomsorg: søkersituasjon?.situasjon === SøkersituasjonEnum.FAR,
-            fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
-            termindato: omBarnet && erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined,
-            omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.adopsjonsdato : undefined,
-            dekningsgrad: 100,
-            morHarUføretrygd: arbeidssituasjon?.arbeidssituasjon === ArbeidssituasjonEnum.UFØR,
-        }),
-        [omBarnet, arbeidssituasjon, søkersituasjon],
+        [arbeidssituasjon],
     );
 
-    const options100 = useMemo(
-        () => ({
-            isSuspended: arbeidssituasjon === undefined,
-            params: params100,
-            withCredentials: false,
-        }),
-        [params100, arbeidssituasjon],
-    );
-
-    const requestData100 = useRequest<TilgjengeligeStønadskontoerDTO>(
+    const requestData = usePostRequest<TilgjengeligeStønadskontoerDTO>(
         planleggerApi,
         'https://foreldrepengesoknad-api.nav.no/rest/konto',
-        options100,
-    );
-    const requestData80 = useRequest<TilgjengeligeStønadskontoerDTO>(
-        planleggerApi,
-        'https://foreldrepengesoknad-api.nav.no/rest/konto',
-        options80,
+        params,
+        options,
     );
 
-    if (requestData80.error || requestData100.error) {
+    if (requestData.error) {
         return (
             <ErrorPage
                 appName="Foreldrepengeplanlegger"
-                errorMessage={requestData80?.error?.message || requestData100?.error?.message || ''}
+                errorMessage={requestData.error.message}
                 retryCallback={() => location.reload()}
             />
         );
     }
 
-    return (
-        <PlanleggerRouter
-            locale={locale}
-            changeLocale={changeLocale}
-            stønadskontoer80={requestData80.data}
-            stønadskontoer100={requestData100.data}
-        />
-    );
+    return <PlanleggerRouter locale={locale} changeLocale={changeLocale} stønadskontoer={requestData.data} />;
 };
 
 export default Planlegger;

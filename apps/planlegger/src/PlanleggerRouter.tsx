@@ -17,11 +17,10 @@ import { LocaleAll } from '@navikt/fp-types';
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
-    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
-    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
 }
 
-const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer100, stønadskontoer80 }) => {
+const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer }) => {
     return (
         <Routes>
             <Route
@@ -34,21 +33,13 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
             <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={
-                    <HvorLangPeriodeSteg stønadskontoer80={stønadskontoer80} stønadskontoer100={stønadskontoer100} />
-                }
+                element={<HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />}
             />
-            <Route
-                path={PlanleggerRoutes.FORDELING}
-                element={<FordelingSteg stønadskontoer80={stønadskontoer80} stønadskontoer100={stønadskontoer100} />}
-            />
-            <Route
-                path={PlanleggerRoutes.OVERSIKT}
-                element={<OversiktSteg stønadskontoer80={stønadskontoer80} stønadskontoer100={stønadskontoer100} />}
-            />
+            <Route path={PlanleggerRoutes.FORDELING} element={<FordelingSteg stønadskontoer={stønadskontoer} />} />
+            <Route path={PlanleggerRoutes.OVERSIKT} element={<OversiktSteg stønadskontoer={stønadskontoer} />} />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg stønadskontoer80={stønadskontoer80} stønadskontoer100={stønadskontoer100} />}
+                element={<OppsummeringSteg stønadskontoer={stønadskontoer} />}
             />
             <Route path="*" element={<Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} />} />
         </Routes>
