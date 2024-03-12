@@ -1,5 +1,7 @@
-import { ChatElipsisIcon } from '@navikt/aksel-icons';
+import { BabyWrappedFillIcon, ChatElipsisIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import GreenPanel from 'components/GreenPanel';
+import Infoboks from 'components/Infoboks';
 import IconCircle from 'components/ikoner/IconCircle';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -16,13 +18,16 @@ import {
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
     getAntallUker,
+    getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepengerFørFødsel,
+    getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
 import { BodyLong, Box, ExpansionCard, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
 
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -81,14 +86,28 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const list = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
     const antallUkerFellesperiodeSøker1 = fordeling ? list[fordeling.fellesperiodefordeling].antallUkerSøker1 : '';
     const antallUkerFellesperiodeSøker2 = fordeling ? list[fordeling.fellesperiodefordeling].antallUkerSøker2 : '';
+    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
+    const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
+    const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
 
+    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate());
+
+    const sluttdatoSøker1 =
+        antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1
+            ? dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').add(antallUkerFellesperiodeSøker1, 'weeks')
+            : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
+    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1) : undefined;
+    const sluttdatoSøker2 =
+        antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2
+            ? dayjs(startdatoSøker2).add(antallUkerFellesperiodeSøker2, 'weeks').add(antallUkerFedrekvote, 'weeks')
+            : undefined;
     return (
         <VStack gap="10">
             <ExpansionCard aria-label="">
                 <ExpansionCard.Header>
                     <HStack gap="5" align="center">
                         <IconCircle size="large" color="green">
-                            <ChatElipsisIcon height={22} width={22} fontSize="1.5rem" />
+                            <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" />
                         </IconCircle>
                         <ExpansionCard.Title size="medium">
                             {isAlene(hvemPlanlegger) ? (
@@ -101,14 +120,16 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <VStack gap="5">
-                        <Box padding="4" borderWidth="2" borderColor="border-default" borderRadius="large">
-                            <Heading size="small">
-                                {erAleneforsørger ? (
+                        <Infoboks
+                            header={
+                                erAleneforsørger ? (
                                     <FormattedMessage id="oppsummering.forelder" />
                                 ) : (
                                     <FormattedMessage id="oppsummering.foreldre" />
-                                )}
-                            </Heading>
+                                )
+                            }
+                            icon={<PersonPregnantIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                        >
                             <BodyLong>
                                 {erAleneforsørger ? (
                                     <FormattedMessage id="navn" values={{ navn: navn1 }} />
@@ -116,11 +137,11 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     <FormattedMessage id="navnBegge" values={{ navn1: navn1, navn2: navn2 }} />
                                 )}
                             </BodyLong>
-                        </Box>
-                        <Box padding="4" borderWidth="2" borderColor="border-default" borderRadius="large">
-                            <Heading size="small">
-                                <FormattedMessage id="barnet.tittel" />
-                            </Heading>
+                        </Infoboks>
+                        <Infoboks
+                            header={<FormattedMessage id="barnet.tittel" />}
+                            icon={<BabyWrappedFillIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                        >
                             {erAdoptert && (
                                 <BodyLong>
                                     <FormattedMessage id="barnet.adopsjon" />
@@ -133,7 +154,9 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <BodyLong>
                                     <FormattedMessage
                                         id="oppsummering.fødselsdato"
-                                        values={{ dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT) }}
+                                        values={{
+                                            dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
+                                        }}
                                     />
                                 </BodyLong>
                             )}
@@ -149,12 +172,14 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <BodyLong>
                                     <FormattedMessage
                                         id="oppsummering.overtakelsesdato"
-                                        values={{ dato: dayjs(barnet.overtakelsesdato).format(DDMMYYYY_DATE_FORMAT) }}
+                                        values={{
+                                            dato: dayjs(barnet.overtakelsesdato).format(DDMMYYYY_DATE_FORMAT),
+                                        }}
                                     />
                                 </BodyLong>
                             )}
-                        </Box>
-                        <Box padding="4" borderWidth="2" borderColor="border-default" borderRadius="large">
+                        </Infoboks>
+                        <Box padding="4" background="surface-success-subtle" borderRadius="large">
                             <Heading size="small">
                                 <FormattedMessage id="arbeid.tittel" />
                             </Heading>
@@ -164,21 +189,26 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     values={{ navn: fornavn1, arbeidssituasjon: arbeidssituasjonSøker1 }}
                                 />
                             </BodyLong>
+
                             {!erAleneforsørger && (
                                 <BodyLong>
                                     <FormattedMessage
                                         id="arbeidssituasjon"
-                                        values={{ navn: fornavn2, arbeidssituasjon: arbeidssituasjonAnnenPart() }}
+                                        values={{
+                                            navn: fornavn2,
+                                            arbeidssituasjon: arbeidssituasjonAnnenPart(),
+                                        }}
                                     />
                                 </BodyLong>
                             )}
                         </Box>
-                        <Box padding="4" borderWidth="2" borderColor="border-default" borderRadius="large">
-                            <VStack gap="5">
+                        <Box padding="4" borderRadius="large">
+                            <GreenPanel isDarkGreen={true}>
                                 <div>
                                     <Heading size="small">
                                         <FormattedMessage id="periode" />
                                     </Heading>
+
                                     <BodyLong>
                                         {erAdoptert ? (
                                             <FormattedMessage
@@ -192,28 +222,66 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             />
                                         )}
                                     </BodyLong>
+                                    {!erAleneforsørger && (
+                                        <VStack gap="5">
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="fordeling.fordelingOptionsMedUker"
+                                                    values={{
+                                                        uker: antallUkerFellesperiodeSøker1,
+                                                        uker2: antallUkerFellesperiodeSøker2,
+                                                        hvem: fornavn1,
+                                                        hvem2: fornavn2,
+                                                    }}
+                                                />
+                                            </BodyLong>
+
+                                            <div>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="fordeling.infoboksTekst.førsteDag"
+                                                        values={{
+                                                            hvem: fornavn1,
+                                                            dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="fordeling.infoboksTekst.sisteDag"
+                                                        values={{
+                                                            hvem: fornavn1,
+                                                            dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="fordeling.infoboksTekst.førsteDag"
+                                                        values={{
+                                                            hvem: fornavn2,
+                                                            dag: dayjs(startdatoSøker2)
+                                                                .add(1, 'day')
+                                                                .format('DD.MM.YY'),
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="fordeling.infoboksTekst.sisteDag"
+                                                        values={{
+                                                            hvem: fornavn2,
+                                                            dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                            </div>
+                                        </VStack>
+                                    )}
                                 </div>
-                                {!erAleneforsørger && (
-                                    <div>
-                                        <Heading size="small">
-                                            <FormattedMessage id="oppsummering.fordeling" />
-                                        </Heading>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="fordeling.fordelingOptionsMedUker"
-                                                values={{
-                                                    uker: antallUkerFellesperiodeSøker1,
-                                                    uker2: antallUkerFellesperiodeSøker2,
-                                                    hvem: fornavn1,
-                                                    hvem2: fornavn2,
-                                                }}
-                                            />
-                                        </BodyLong>
-                                    </div>
-                                )}
-                            </VStack>
+                            </GreenPanel>
                         </Box>
-                    </VStack>{' '}
+                    </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>
         </VStack>
