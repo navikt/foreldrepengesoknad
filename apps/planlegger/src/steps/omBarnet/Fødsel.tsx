@@ -31,8 +31,8 @@ type Props = {
 const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør }) => {
     const formMethods = useFormContext<OmBarnet>();
     const intl = useIntl();
-    const erFlereBarn = formMethods.watch('hvorMange');
-    const flereBarn = erFlereBarn === 'flere' || erFlereBarn === 'to';
+    const antallBarn = formMethods.watch('antallBarn');
+    const flereBarn = antallBarn === '3' || antallBarn === '2';
 
     const erBarnetFødt = formMethods.watch('erBarnetFødt');
     const erFødselsdato = formMethods.watch('fødselsdato');

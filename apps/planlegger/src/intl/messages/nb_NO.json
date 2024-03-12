@@ -249,5 +249,6 @@
     "LanguageToggle.Engelsk": "English",
     "FlereForsørgere.Mor": "mor",
     "FlereForsørgere.Far": "far",
-    "FlereForsørgere.Medmor": "medmor"
+    "FlereForsørgere.Medmor": "medmor",
+    "ProgressStepper.NavigasjonAriaLabel": "Navigasjon"
 }

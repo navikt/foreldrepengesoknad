@@ -1,42 +1,57 @@
-import { useState, useEffect } from 'react';
 import { AxiosInstance, isAxiosError } from 'axios';
+import { useEffect, useState } from 'react';
+
 import { ApiAccessError, ApiGeneralError } from './error';
 
-export const useRequest = <T>(instance: AxiosInstance, url: string) => {
+type Options = {
+    params?: any;
+    withCredentials: boolean;
+    isSuspended: boolean;
+};
+
+const DEFAULT_OPTIONS = { isSuspended: false, withCredentials: true } as Options;
+
+export const useRequest = <T>(instance: AxiosInstance, url: string, options = DEFAULT_OPTIONS) => {
     const [data, setData] = useState<T>();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<ApiAccessError | ApiGeneralError | undefined>();
 
     useEffect(() => {
         let ignore = false;
-        const fetch = async () => {
-            try {
-                setLoading(true);
-                const response = await instance.get<T>(url, { withCredentials: true, timeout: 60 * 1000 });
-                if (!ignore) {
-                    setData(response.data);
-                }
-            } catch (err: unknown) {
-                if (isAxiosError(err)) {
-                    if (err.response?.status === 401 || err.response?.status === 403) {
-                        setError(new ApiAccessError());
-                    } else {
-                        setError(new ApiGeneralError(err.message));
+        if (!options.isSuspended) {
+            const fetch = async () => {
+                try {
+                    setLoading(true);
+                    const response = await instance.get<T>(url, {
+                        withCredentials: options.withCredentials,
+                        params: options.params,
+                        timeout: 60 * 1000,
+                    });
+                    if (!ignore) {
+                        setData(response.data);
                     }
-                } else if (err instanceof Error) {
-                    setError(new ApiGeneralError(err.message));
-                } else {
-                    setError(new ApiGeneralError(String(err)));
+                } catch (err: unknown) {
+                    if (isAxiosError(err)) {
+                        if (err.response?.status === 401 || err.response?.status === 403) {
+                            setError(new ApiAccessError());
+                        } else {
+                            setError(new ApiGeneralError(err.message));
+                        }
+                    } else if (err instanceof Error) {
+                        setError(new ApiGeneralError(err.message));
+                    } else {
+                        setError(new ApiGeneralError(String(err)));
+                    }
+                } finally {
+                    setLoading(false);
                 }
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetch();
+            };
+            fetch();
+        }
         return () => {
             ignore = true;
         };
-    }, [instance, url]);
+    }, [instance, url, options]);
 
     return { data, loading, error };
 };

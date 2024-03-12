@@ -4,24 +4,51 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Infoboks from 'components/Infoboks';
 import IconCircle from 'components/ikoner/IconCircle';
+import OversiktKalender from 'components/kalender/OversiktKalender';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Kalender from 'steps/oversikt/kalender/Kalender';
 import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { Fellesperiodefordeling } from 'types/Fordeling';
 import { getNavnPåAnnenPart, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import {
+    getAntallUkerFellesperiode,
+    mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
+} from 'utils/stønadskontoer';
 
-import { Alert, BodyLong, Box, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Box, ExpansionCard, HStack, Heading, Link, Loader, VStack } from '@navikt/ds-react';
 
+import { Dekningsgrad } from '@navikt/fp-common';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-const Oppsummering = () => {
+const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
+    const values = [{ id: 0, antallUkerSøker1: undefined, antallUkerSøker2: undefined }] as Fellesperiodefordeling[];
+    console.log(antallUkerFellesperiode);
+
+    for (let i = 0; i <= antallUkerFellesperiode; i++) {
+        const value = { id: i + 1, antallUkerSøker2: antallUkerFellesperiode - i, antallUkerSøker1: i };
+        values.push(value);
+    }
+    return values;
+};
+
+interface Props {
+    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+}
+
+const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer80, stønadskontoer100 }) => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
+    const { dekningsgrad } = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const erAleneforsørger = isAlene(hvemPlanlegger);
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const harRett = () => {
@@ -34,6 +61,19 @@ const Oppsummering = () => {
         return false;
     };
     const ingenHarRett = !harRett();
+
+    if (!stønadskontoer80 || !stønadskontoer100) {
+        return <Loader />;
+    }
+
+    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer100 : stønadskontoer80,
+    );
+
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
+
+    const list = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
+    console.log('test', fordeling ? list[fordeling.fellesperiodefordeling].antallUkerSøker1 : '');
 
     //TODO: dra ut expansioncards til egne komponenter
     //TODO: bruk input data til å vise riktig i kalenderen
@@ -93,7 +133,11 @@ const Oppsummering = () => {
                         </HStack>
                     </ExpansionCard.Header>
                     <ExpansionCard.Content>
-                        <Kalender />
+                        <OversiktKalender
+                            valgtStønadskonto={selectedKonto}
+                            omBarnet={barnet}
+                            fellesperiodefordeling={fordeling?.fellesperiodefordeling}
+                        />
                     </ExpansionCard.Content>
                 </ExpansionCard>
 
@@ -136,7 +180,7 @@ const InnholdOppgittInfo = () => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
-    const antallBarn = barnet.hvorMange;
+    const antallBarn = barnet.antallBarn;
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erAleneforsørger = isAlene(hvemPlanlegger);
@@ -144,9 +188,9 @@ const InnholdOppgittInfo = () => {
     const navn2 = getNavnPåAnnenPart(hvemPlanlegger);
 
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE)?.dekningsgrad);
-    const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING)?.fordeling);
-    const antallUkerFellesperiodeSøker1 = fordeling.antallUkerSøker1;
-    const antallUkerFellesperiodeSøker2 = fordeling.antallUkerSøker2;
+    // const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING));
+    // const antallUkerFellesperiodeSøker1 = fordeling.antallUkerSøker1;
+    // const antallUkerFellesperiodeSøker2 = fordeling.antallUkerSøker2;
     //TODO: hent ut riktige tall
 
     return (
@@ -216,8 +260,10 @@ const InnholdOppgittInfo = () => {
                                 <FormattedMessage
                                     id="fordeling.fordelingOptions"
                                     values={{
-                                        uker: antallUkerFellesperiodeSøker1,
-                                        uker2: antallUkerFellesperiodeSøker2,
+                                        // uker: antallUkerFellesperiodeSøker1,
+                                        // uker2: antallUkerFellesperiodeSøker2,
+                                        uker: 1,
+                                        uker2: 2,
                                         hvem: navn1,
                                         hvem2: navn2,
                                     }}

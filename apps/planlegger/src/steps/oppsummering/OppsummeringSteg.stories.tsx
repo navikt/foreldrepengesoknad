@@ -15,6 +15,33 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import OppsummeringSteg from './OppsummeringSteg';
 
+const konto100 = {
+    kontoer: {
+        MØDREKVOTE: 75,
+        FEDREKVOTE: 75,
+        FELLESPERIODE: 80,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+const konto80 = {
+    kontoer: {
+        MØDREKVOTE: 95,
+        FEDREKVOTE: 95,
+        FELLESPERIODE: 90,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
 export default {
     title: 'OppsummeringSteg',
     component: OppsummeringSteg,
@@ -48,7 +75,7 @@ const Template: StoryFn<{
                     [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                 }}
             >
-                <OppsummeringSteg />
+                <OppsummeringSteg stønadskontoer100={konto100} stønadskontoer80={konto80} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
@@ -63,7 +90,6 @@ OppsummeringFlereForsørgereHundreProsentTermin.args = {
     },
     fordeling: {
         fellesperiodefordeling: 6,
-        fordeling: { antallUkerSøker1: 8, antallUkerSøker2: 8, id: 9 },
     },
     hvorLangPeriode: {
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -72,7 +98,7 @@ OppsummeringFlereForsørgereHundreProsentTermin.args = {
         erFødsel: true,
         erBarnetFødt: false,
         termindato: '2022-10-24',
-        hvorMange: 'ett',
+        antallBarn: '1',
     },
     arbeidssituasjon: {
         arbeidssituasjon: ArbeidssituasjonEnum.INGEN,
@@ -87,7 +113,6 @@ OppsummeringAleneforsørgerÅttiProsentFødselToBarn.args = {
     },
     fordeling: {
         fellesperiodefordeling: 6,
-        fordeling: { antallUkerSøker1: 33, id: 0 },
     },
     hvorLangPeriode: {
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
@@ -96,7 +121,7 @@ OppsummeringAleneforsørgerÅttiProsentFødselToBarn.args = {
         erFødsel: true,
         erBarnetFødt: true,
         termindato: '2022-07-10',
-        hvorMange: 'to',
+        antallBarn: '2',
         fødselsdato: '2022-08-10',
     },
     arbeidssituasjon: {
@@ -112,7 +137,6 @@ OppsummeringFlereForsørgereHundreProsentAdopsjon.args = {
     },
     fordeling: {
         fellesperiodefordeling: 6,
-        fordeling: { antallUkerSøker1: 18, antallUkerSøker2: 0, id: 19 },
     },
     hvorLangPeriode: {
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -122,7 +146,7 @@ OppsummeringFlereForsørgereHundreProsentAdopsjon.args = {
         erBarnetFødt: true,
         erAdoptert: true,
         fødselsdato: '2022-07-10',
-        hvorMange: 'ett',
+        antallBarn: '1',
         overtakelsesdato: '2022-010-10',
     },
     arbeidssituasjon: {

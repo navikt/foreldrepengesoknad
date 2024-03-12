@@ -7,10 +7,11 @@ import OmÅTilpassePlanen from 'components/expansionCard/OmÅTilpassePlanen';
 import UforutsetteEndringer from 'components/expansionCard/UforutsetteEndringer';
 import BlåSirkel from 'components/ikoner/BlåSirkel';
 import GrønnSirkel from 'components/ikoner/GrønnSirkel';
+import OversiktKalender from 'components/kalender/OversiktKalender';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
@@ -21,6 +22,7 @@ import {
 import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -28,15 +30,13 @@ import {
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
-import { BodyLong, BodyShort, HStack, Heading, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, HStack, Heading, Loader, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Form, Select } from '@navikt/fp-form-hooks';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-
-import Kalender from './kalender/Kalender';
 
 dayjs.locale('nb');
 
@@ -70,15 +70,20 @@ const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): strin
         ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
         : intl.formatMessage({ id: 'FlereForsørgere.Far' });
 
-const OversiktSteg = () => {
+interface Props {
+    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
+}
+
+const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer80, stønadskontoer100 }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING));
-
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
+    const periode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
 
     const formMethods = useForm<Fordeling>();
@@ -88,85 +93,17 @@ const OversiktSteg = () => {
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
 
-    // TODO: hent fra api
-    const konto100 = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 80,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-    const konto80 = {
-        kontoer: {
-            MØDREKVOTE: 95,
-            FEDREKVOTE: 95,
-            FELLESPERIODE: 90,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-    const konto100tvillinger = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 165,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-    const konto80tvillinger = {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 200,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
-    };
-
-    const mappedKonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100);
-    const mappedKonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80);
-    const mappedKonto100tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto100tvillinger);
-    const mappedKonto80tvillinger = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(konto80tvillinger);
     const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(Dekningsgrad.HUNDRE_PROSENT);
-    const toBarn = barnet.hvorMange === 'to';
-    const ettBarn = barnet.hvorMange === 'ett';
+    const [currentOption, setCurrentOption] = useState('');
+    console.log(currentOption);
 
-    const finnSelectedKonto = () => {
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && ettBarn) {
-            return mappedKonto100;
-        }
-        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && ettBarn) {
-            return mappedKonto80;
-        }
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT && toBarn) {
-            return mappedKonto100tvillinger;
-        }
-        if (dekningsgrad === Dekningsgrad.ÅTTI_PROSENT && toBarn) {
-            return mappedKonto80tvillinger;
-        }
-        return mappedKonto100;
-    };
+    if (!stønadskontoer80 || !stønadskontoer100) {
+        return <Loader />;
+    }
 
-    const selectedKonto = finnSelectedKonto();
+    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        (dekningsgrad || periode?.dekningsgrad) === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer100 : stønadskontoer80,
+    );
 
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
 
@@ -212,9 +149,6 @@ const OversiktSteg = () => {
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
 
-    const [currentOption, setCurrentOption] = useState('');
-    console.log('currentOption: ', currentOption);
-
     return (
         <Form formMethods={formMethods}>
             <PlanleggerPage steps={stepConfig}>
@@ -250,7 +184,7 @@ const OversiktSteg = () => {
                         </ToggleGroup.Item>
                     </ToggleGroup>
 
-                    {!erAleneforsørger && (
+                    {!erAleneforsørger && fordeling?.fellesperiodefordeling && (
                         <Select
                             label=""
                             name="fellesperiodefordeling"
@@ -329,7 +263,11 @@ const OversiktSteg = () => {
                         </div>
                     </VStack>
 
-                    <Kalender />
+                    <OversiktKalender
+                        valgtStønadskonto={selectedKonto}
+                        omBarnet={barnet}
+                        fellesperiodefordeling={fellesperiodefordeling}
+                    />
                     <VStack gap="5">
                         <OmÅTilpassePlanen />
                         <UforutsetteEndringer />

@@ -12,6 +12,33 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import FordelingSteg from './FordelingSteg';
 
+const konto100 = {
+    kontoer: {
+        MØDREKVOTE: 75,
+        FEDREKVOTE: 75,
+        FELLESPERIODE: 80,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+const konto80 = {
+    kontoer: {
+        MØDREKVOTE: 95,
+        FEDREKVOTE: 95,
+        FELLESPERIODE: 90,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
 export default {
     title: 'FordelingSteg',
     component: FordelingSteg,
@@ -33,7 +60,7 @@ const Template: StoryFn<{
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <FordelingSteg />
+                <FordelingSteg stønadskontoer100={konto100} stønadskontoer80={konto80} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
@@ -50,7 +77,7 @@ FlereForsørgereEttBarn.args = {
         erBarnetFødt: false,
         erFødsel: true,
         termindato: '2024-01-01',
-        hvorMange: 'ett',
+        antallBarn: '1',
     },
 };
 
@@ -65,20 +92,6 @@ FlereForsørgereToBarn.args = {
         erBarnetFødt: false,
         erFødsel: true,
         termindato: '2024-01-01',
-        hvorMange: 'to',
-    },
-};
-
-export const AleneforsørgerEttBarn = Template.bind({});
-AleneforsørgerEttBarn.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR,
-    },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2024-01-01',
-        hvorMange: 'ett',
+        antallBarn: '2',
     },
 };

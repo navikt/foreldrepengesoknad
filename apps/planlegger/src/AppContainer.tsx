@@ -1,3 +1,4 @@
+import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -31,7 +32,9 @@ const AppContainer = () => {
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
                 <BrowserRouter>
-                    <Planlegger locale={locale} changeLocale={changeLocale} />
+                    <PlanleggerDataContext>
+                        <Planlegger locale={locale} changeLocale={changeLocale} />
+                    </PlanleggerDataContext>
                 </BrowserRouter>
             </ErrorBoundary>
         </IntlProvider>

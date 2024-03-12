@@ -53,7 +53,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     });
 
     const erFødsel = formMethods.watch('erFødsel');
-    const hvorMange = formMethods.watch('hvorMange');
+    const antallBarn = formMethods.watch('antallBarn');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
 
@@ -91,7 +91,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         </GreenRadioGroup>
                         {erFødsel !== undefined && (
                             <GreenRadioGroup
-                                name="hvorMange"
+                                name="antallBarn"
                                 label={finnHvorMangeBarnLabel(erAlenesøker, erFødsel)}
                                 validate={[
                                     isRequired(
@@ -101,25 +101,25 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     ),
                                 ]}
                             >
-                                <Radio value="ett" autoFocus={omBarnet === undefined}>
+                                <Radio value="1" autoFocus={omBarnet === undefined}>
                                     <FormattedMessage id="barnet.ett" />
                                 </Radio>
-                                <Radio value="to">
+                                <Radio value="2">
                                     <FormattedMessage id="barnet.to" />
                                 </Radio>
-                                <Radio value="flere">
+                                <Radio value="3">
                                     <FormattedMessage id="barnet.flereEnnTo" />
                                 </Radio>
                             </GreenRadioGroup>
                         )}
                     </VStack>
-                    {erFødsel && hvorMange && (
+                    {erFødsel && antallBarn && (
                         <Fødsel hvemPlanlegger={hvemPlanlegger} erOmBarnetIkkeOppgittFraFør={omBarnet === undefined} />
                     )}
-                    {erFødsel === false && hvorMange && (
+                    {erFødsel === false && antallBarn && (
                         <Adopsjon erAlenesøker={erAlenesøker} erOmBarnetIkkeOppgittFraFør={omBarnet === undefined} />
                     )}
-                    {erFødsel === false && hvorMange && (
+                    {erFødsel === false && antallBarn && (
                         <Infoboks
                             header={
                                 erAlenesøker ? (

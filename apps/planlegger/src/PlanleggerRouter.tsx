@@ -10,16 +10,18 @@ import OmBarnetSteg from 'steps/omBarnet/OmBarnetSteg';
 import OmPlanleggerenSteg from 'steps/omPlanleggeren/OmPlanleggerenSteg';
 import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
 import OversiktSteg from 'steps/oversikt/OversiktSteg';
-import PlanInfoSteg from 'steps/planenDeres/PlanInfoSteg';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { LocaleAll } from '@navikt/fp-types';
 
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
+    stønadskontoer80?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer100?: TilgjengeligeStønadskontoerDTO;
 }
 
-const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer100, stønadskontoer80 }) => {
     return (
         <Routes>
             <Route
@@ -30,11 +32,24 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale }) =>
             <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
             <Route path={PlanleggerRoutes.BARNEHAGEPLASS} element={<BarnehageplassSteg />} />
             <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg />} />
-            <Route path={PlanleggerRoutes.HVOR_LANG_PERIODE} element={<HvorLangPeriodeSteg />} />
-            <Route path={PlanleggerRoutes.FORDELING} element={<FordelingSteg />} />
-            <Route path={PlanleggerRoutes.PLAN_INFO} element={<PlanInfoSteg />} />
-            <Route path={PlanleggerRoutes.OVERSIKT} element={<OversiktSteg />} />
-            <Route path={PlanleggerRoutes.OPPSUMMERING} element={<OppsummeringSteg />} />
+            <Route
+                path={PlanleggerRoutes.HVOR_LANG_PERIODE}
+                element={
+                    <HvorLangPeriodeSteg stønadskontoer80={stønadskontoer80} stønadskontoer100={stønadskontoer100} />
+                }
+            />
+            <Route
+                path={PlanleggerRoutes.FORDELING}
+                element={<FordelingSteg stønadskontoer80={stønadskontoer80} stønadskontoer100={stønadskontoer100} />}
+            />
+            <Route
+                path={PlanleggerRoutes.OVERSIKT}
+                element={<OversiktSteg stønadskontoer80={stønadskontoer80} stønadskontoer100={stønadskontoer100} />}
+            />
+            <Route
+                path={PlanleggerRoutes.OPPSUMMERING}
+                element={<OppsummeringSteg stønadskontoer80={stønadskontoer80} stønadskontoer100={stønadskontoer100} />}
+            />
             <Route path="*" element={<Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} />} />
         </Routes>
     );
