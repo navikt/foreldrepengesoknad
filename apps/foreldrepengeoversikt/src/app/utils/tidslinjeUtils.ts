@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
 import { Skjemanummer } from '@navikt/fp-constants';
@@ -19,6 +20,8 @@ import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from 'app/utils/Uttaksdagen';
 
 import { formaterDato } from './dateUtils';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
+
+dayjs.extend(minMax);
 
 enum Vedtaksbrev {
     AVSLAGSBREV = 'Avslagsbrev',
