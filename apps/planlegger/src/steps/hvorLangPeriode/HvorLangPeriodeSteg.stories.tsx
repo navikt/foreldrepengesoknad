@@ -3,6 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
+import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
@@ -48,8 +49,9 @@ export default {
 const Template: StoryFn<{
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
+    arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click') }) => {
+}> = ({ hvemPlanlegger, omBarnet, arbeidssituasjon, gåTilNesteSide = action('button-click') }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.HVOR_LANG_PERIODE]}>
@@ -57,6 +59,7 @@ const Template: StoryFn<{
                 initialState={{
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                     [ContextDataType.OM_BARNET]: omBarnet,
+                    [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                 }}
                 onDispatch={gåTilNesteSide}
             >
@@ -66,8 +69,8 @@ const Template: StoryFn<{
     );
 };
 
-export const FlereForsørgereEttBarn = Template.bind({});
-FlereForsørgereEttBarn.args = {
+export const FlereForsørgereEttBarnKunMorHarRett = Template.bind({});
+FlereForsørgereEttBarnKunMorHarRett.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
@@ -78,6 +81,10 @@ FlereForsørgereEttBarn.args = {
         erFødsel: true,
         termindato: '2024-01-01',
         antallBarn: '1',
+    },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        arbeidssituasjonAnnenPart: false,
     },
 };
 
@@ -94,6 +101,10 @@ FlereForsørgereToBarn.args = {
         termindato: '2024-01-01',
         antallBarn: '2',
     },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        arbeidssituasjonAnnenPart: true,
+    },
 };
 
 export const AleneforsørgerMorEttBarn = Template.bind({});
@@ -107,6 +118,9 @@ AleneforsørgerMorEttBarn.args = {
         erFødsel: true,
         termindato: '2024-01-01',
         antallBarn: '1',
+    },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
     },
 };
 export const FlereForsørgereKunFarHarRett = Template.bind({});
@@ -122,6 +136,10 @@ FlereForsørgereKunFarHarRett.args = {
         termindato: '2024-01-01',
         antallBarn: '1',
     },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.INGEN,
+        arbeidssituasjonAnnenPart: true,
+    },
 };
 export const AleneforsørgerFarToBarn = Template.bind({});
 AleneforsørgerFarToBarn.args = {
@@ -134,5 +152,8 @@ AleneforsørgerFarToBarn.args = {
         erFødsel: true,
         termindato: '2024-01-01',
         antallBarn: '2',
+    },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
     },
 };

@@ -11,11 +11,13 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
-import { isAlene, isFar, isMor } from 'types/HvemPlanlegger';
+import { isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
+    getAntallUker,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -42,6 +44,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const periode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
 
     const lagrePeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
 
@@ -61,8 +64,42 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const dekningsgrad = formMethods.watch('dekningsgrad');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
-    const erMor = isMor(hvemPlanlegger);
-    const erFar = isFar(hvemPlanlegger);
+    const harBeggeRett = () => {
+        if (
+            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.INGEN ||
+            (arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.UFØR &&
+                arbeidssituasjon.arbeidssituasjonAnnenPart === false)
+        ) {
+            return false;
+        }
+        if (
+            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.UFØR &&
+            arbeidssituasjon.arbeidssituasjonAnnenPart === true
+        ) {
+            return true;
+        }
+        return true;
+    };
+    const ingenHarRett = harBeggeRett();
+    console.log(ingenHarRett);
+
+    const harMorRett = () => {
+        if (
+            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.INGEN ||
+            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.UFØR
+        ) {
+            return true;
+        }
+        return false;
+    };
+    const morHarIkkeRett = harMorRett();
+    const harFarRett = () => {
+        if (arbeidssituasjon.arbeidssituasjonAnnenPart === false) {
+            return true;
+        }
+        return false;
+    };
+    const farHarIkkeRett = harFarRett();
 
     const selectedKonto = periode
         ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[periode.dekningsgrad])
@@ -83,6 +120,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
               .add(antallUkerFellesperiode, 'weeks')
         : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
 
+    const antallUker = getAntallUker(selectedKonto);
+    console.log('konto: ', selectedKonto);
     const antallUkerTotalt =
         antallUkerMødrekvote + antallUkerFedrekvote + antallUkerFellesperiode + antallUkerFørFødsel;
     const antallUkerAktivitetskravKvote = antallUkerTotalt - antallUkerAktivitetsfriKvote;
@@ -119,46 +158,41 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 </BodyLong>
                             )}
                         </InfoboksGenerell>
-                        {
-                            // TODO: endre fra erMor og erFar til at man er flere men bare mor eller far har rett
-                            erAlenesøker && (
-                                <InfoboksGenerell
-                                    header={
-                                        <>
-                                            {erMor && <FormattedMessage id="periode.infoboks.nårBareMorHarRett" />}
-                                            {erFar && <FormattedMessage id="periode.infoboks.nårBareFarHarRett" />}
-                                        </>
-                                    }
-                                    icon={
-                                        <PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />
-                                    }
-                                >
-                                    {erMor && (
-                                        <VStack gap="2">
-                                            <BodyLong>
-                                                <FormattedMessage id="periode.infoboks.nårBareMorHarRett.fårHelePerioden" />
-                                            </BodyLong>
-                                            <BodyLong>
-                                                <FormattedMessage id="periode.infoboks.nårBareMorHarRett.ingenKravTilFar" />
-                                            </BodyLong>
-                                        </VStack>
-                                    )}
-                                    {erFar && (
-                                        <VStack gap="2">
-                                            <BodyLong>
-                                                <FormattedMessage id="periode.infoboks.nårBareFarHarRett.kanFåhelePerioden" />
-                                            </BodyLong>
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="periode.infoboks.nårBareFarHarRett.ingenKravTilMor"
-                                                    values={{ a: (msg: any) => <Link>{msg}</Link> }}
-                                                />
-                                            </BodyLong>
-                                        </VStack>
-                                    )}
-                                </InfoboksGenerell>
-                            )
-                        }
+                        {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
+                            <InfoboksGenerell
+                                header={
+                                    <>
+                                        {farHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareMorHarRett" />}
+                                        {morHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareFarHarRett" />}
+                                    </>
+                                }
+                                icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                            >
+                                {farHarIkkeRett && (
+                                    <VStack gap="2">
+                                        <BodyLong>
+                                            <FormattedMessage id="periode.infoboks.nårBareMorHarRett.fårHelePerioden" />
+                                        </BodyLong>
+                                        <BodyLong>
+                                            <FormattedMessage id="periode.infoboks.nårBareMorHarRett.ingenKravTilFar" />
+                                        </BodyLong>
+                                    </VStack>
+                                )}
+                                {morHarIkkeRett && (
+                                    <VStack gap="2">
+                                        <BodyLong>
+                                            <FormattedMessage id="periode.infoboks.nårBareFarHarRett.kanFåhelePerioden" />
+                                        </BodyLong>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="periode.infoboks.nårBareFarHarRett.ingenKravTilMor"
+                                                values={{ a: (msg: any) => <Link>{msg}</Link> }}
+                                            />
+                                        </BodyLong>
+                                    </VStack>
+                                )}
+                            </InfoboksGenerell>
+                        )}
 
                         <GreenRadioGroup
                             label={
@@ -201,35 +235,32 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <BodyLong>
                                     <FormattedMessage id="periode.infoboks.sisteDagTekst" />
                                 </BodyLong>
-                                {
-                                    // TODO: endre fra erFar til at man er flere men bare far har rett
-                                    erFar && (
-                                        <VStack gap="2">
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="periode.infoboks.sisteDagTekstFar.førsteUker"
-                                                    values={{
-                                                        uker: antallUkerAktivitetsfriKvote,
-                                                        uker2: antallUkerTotalt,
-                                                        a: (msg: any) => <Link>{msg}</Link>,
-                                                        b: (msg: any) => <b>{msg}</b>,
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="periode.infoboks.sisteDagTekstFar.andreUker"
-                                                    values={{
-                                                        uker: antallUkerAktivitetskravKvote,
-                                                        uker2: antallUkerTotalt,
-                                                        a: (msg: any) => <Link>{msg}</Link>,
-                                                        b: (msg: any) => <b>{msg}</b>,
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                        </VStack>
-                                    )
-                                }
+                                {morHarIkkeRett && (
+                                    <VStack gap="2">
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="periode.infoboks.sisteDagTekstFar.førsteUker"
+                                                values={{
+                                                    uker: antallUkerAktivitetsfriKvote,
+                                                    uker2: antallUker,
+                                                    a: (msg: any) => <Link>{msg}</Link>,
+                                                    b: (msg: any) => <b>{msg}</b>,
+                                                }}
+                                            />
+                                        </BodyLong>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="periode.infoboks.sisteDagTekstFar.andreUker"
+                                                values={{
+                                                    uker: antallUkerAktivitetskravKvote,
+                                                    uker2: antallUkerTotalt,
+                                                    a: (msg: any) => <Link>{msg}</Link>,
+                                                    b: (msg: any) => <b>{msg}</b>,
+                                                }}
+                                            />
+                                        </BodyLong>
+                                    </VStack>
+                                )}
                             </Infoboks>
                         )}
                     </VStack>
