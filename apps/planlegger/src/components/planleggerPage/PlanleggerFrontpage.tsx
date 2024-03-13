@@ -27,7 +27,7 @@ const PlanleggerFrontpage: React.FunctionComponent<Props> = ({ locale, changeLoc
                                 <LanguageToggle locale={locale} changeLocale={changeLocale} />
                             </div>
                             <IconCircle color="darkGreen" size="xl">
-                                <CalendarIcon height={45} width={45} />
+                                <CalendarIcon height={28} width={28} fontSize="1.5rem" />
                             </IconCircle>
                             <VStack gap="1" align="center">
                                 <Heading size="large">
@@ -47,7 +47,7 @@ const PlanleggerFrontpage: React.FunctionComponent<Props> = ({ locale, changeLoc
                     <GreenHeading>
                         <VStack gap="4">
                             <IconCircle color="darkGreen" size="xl">
-                                <CalendarIcon height={45} width={45} />
+                                <CalendarIcon height={35} width={35} fontSize="1.5rem" />
                             </IconCircle>
                             <VStack gap="1">
                                 <Heading size="large">
