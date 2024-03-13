@@ -87,8 +87,8 @@ FlereForsørgereEttBarnKunMorHarRett.args = {
         arbeidssituasjonAnnenPart: false,
     },
     stønadskontoer: {
-        80: defaultKonto80,
-        100: defaultKonto100,
+        '80': defaultKonto80,
+        '100': defaultKonto100,
     },
 };
 
@@ -110,8 +110,8 @@ FlereForsørgereToBarn.args = {
         arbeidssituasjonAnnenPart: true,
     },
     stønadskontoer: {
-        80: defaultKonto80,
-        100: defaultKonto100,
+        '80': defaultKonto80,
+        '100': defaultKonto100,
     },
 };
 
@@ -131,8 +131,8 @@ AleneforsørgerMorEttBarn.args = {
         arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
     },
     stønadskontoer: {
-        80: defaultKonto80,
-        100: defaultKonto100,
+        '80': defaultKonto80,
+        '100': defaultKonto100,
     },
 };
 export const FlereForsørgereKunFarHarRett = Template.bind({});
@@ -153,8 +153,26 @@ FlereForsørgereKunFarHarRett.args = {
         arbeidssituasjonAnnenPart: true,
     },
     stønadskontoer: {
-        80: defaultKonto80,
-        100: defaultKonto100,
+        '80': {
+            kontoer: {
+                FORELDREPENGER: 250,
+            },
+            minsteretter: {
+                farRundtFødsel: 0,
+                generellMinsterett: 40,
+                toTette: 0,
+            },
+        },
+        '100': {
+            kontoer: {
+                FORELDREPENGER: 200,
+            },
+            minsteretter: {
+                farRundtFødsel: 0,
+                generellMinsterett: 40,
+                toTette: 0,
+            },
+        },
     },
 };
 export const AleneforsørgerFarToBarn = Template.bind({});
@@ -173,15 +191,7 @@ AleneforsørgerFarToBarn.args = {
         arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
     },
     stønadskontoer: {
-        80: {
-            ...defaultKonto80,
-            kontoer: {
-                MØDREKVOTE: 95,
-                FEDREKVOTE: 95,
-                FELLESPERIODE: 90,
-                FORELDREPENGER_FØR_FØDSEL: 0,
-            },
-        },
-        100: defaultKonto100,
+        '80': defaultKonto80,
+        '100': defaultKonto100,
     },
 };
