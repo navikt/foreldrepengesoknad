@@ -42,7 +42,7 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
-        <VStack gap="4">
+        <VStack gap="4" className={bem.block}>
             <HStack>
                 <div className={bem.element('ikon-box')}>
                     <CheckmarkIcon className={bem.element('ikon')} aria-hidden={true}></CheckmarkIcon>
