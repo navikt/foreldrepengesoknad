@@ -21,7 +21,6 @@ import {
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
-    getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
@@ -101,15 +100,19 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     };
     const farHarIkkeRett = harFarRett();
 
-    const selectedKonto = periode
-        ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[periode.dekningsgrad])
-        : [];
+    const selectedKonto =
+        periode || dekningsgrad
+            ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+                  stønadskontoer[dekningsgrad || periode?.dekningsgrad],
+              )
+            : [];
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
+    const antallUker = getAntallUker(selectedKonto);
     const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
     const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
-    const antallUkerFørFødsel = getAntallUkerForeldrepengerFørFødsel(selectedKonto);
     const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(selectedKonto);
+    const antallUkerAktivitetskravKvote = antallUker - antallUkerAktivitetsfriKvote;
 
     const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate());
 
@@ -119,12 +122,6 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
               .add(antallUkerFedrekvote, 'weeks')
               .add(antallUkerFellesperiode, 'weeks')
         : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
-
-    const antallUker = getAntallUker(selectedKonto);
-    console.log('konto: ', selectedKonto);
-    const antallUkerTotalt =
-        antallUkerMødrekvote + antallUkerFedrekvote + antallUkerFellesperiode + antallUkerFørFødsel;
-    const antallUkerAktivitetskravKvote = antallUkerTotalt - antallUkerAktivitetsfriKvote;
 
     return (
         <PlanleggerPage steps={stepConfig}>
@@ -253,7 +250,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 id="periode.infoboks.sisteDagTekstFar.andreUker"
                                                 values={{
                                                     uker: antallUkerAktivitetskravKvote,
-                                                    uker2: antallUkerTotalt,
+                                                    uker2: antallUker,
                                                     a: (msg: any) => <Link>{msg}</Link>,
                                                     b: (msg: any) => <b>{msg}</b>,
                                                 }}
