@@ -94,7 +94,11 @@ export const slåSammenLikePerioder = (
                 tom: periode.tidsperiode.tom,
             };
 
-            forrigePeriode.tidsperiode = { ...nyTidsperiode };
+            forrigePeriode = {
+                ...forrigePeriode,
+                tidsperiode: nyTidsperiode,
+            };
+
             return;
         } else {
             nyePerioder.push(forrigePeriode);

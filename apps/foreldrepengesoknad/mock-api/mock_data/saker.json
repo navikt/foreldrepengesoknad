@@ -1,7 +1,7 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352014581",
+            "saksnummer": "352014672",
             "sakAvsluttet": false,
             "kanSøkeOmEndring": true,
             "sakTilhørerMor": false,
@@ -11,50 +11,50 @@
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "03420591690"
+                "fnr": "04420556212"
             },
             "familiehendelse": {
-                "fødselsdato": "2024-03-05",
-                "termindato": "2024-03-07",
+                "fødselsdato": "2024-03-11",
+                "termindato": "2024-03-13",
                 "antallBarn": 1
             },
             "gjeldendeVedtak": {
                 "perioder": [
                     {
-                        "fom": "2024-03-07",
-                        "tom": "2024-03-20",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2024-03-25",
+                        "tom": "2024-04-21",
+                        "kontoType": "MØDREKVOTE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
-                        "samtidigUttak": 100,
+                        "overføringÅrsak": "SYKDOM_ANNEN_FORELDER",
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-06-03",
-                        "tom": "2024-06-14",
-                        "kontoType": "FELLESPERIODE",
+                        "fom": "2024-04-22",
+                        "tom": "2024-04-26",
+                        "kontoType": "MØDREKVOTE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
-                        "morsAktivitet": "ARBEID",
+                        "overføringÅrsak": "SYKDOM_ANNEN_FORELDER",
                         "flerbarnsdager": false
                     }
                 ]
             },
             "barn": [
                 {
-                    "fnr": "05432454519"
+                    "fnr": "11432450874"
                 }
             ],
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2024-03-07T12:57:01.876"
+            "oppdatertTidspunkt": "2024-03-13T13:48:07.569"
         }
     ],
     "engangsstønad": [],
