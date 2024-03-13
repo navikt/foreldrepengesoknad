@@ -7,37 +7,36 @@ import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import HvorLangPeriodeSteg from './HvorLangPeriodeSteg';
 
-const kontoer = {
-    '100': {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 80,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
+const defaultKonto80 = {
+    kontoer: {
+        MØDREKVOTE: 95,
+        FEDREKVOTE: 95,
+        FELLESPERIODE: 90,
+        FORELDREPENGER_FØR_FØDSEL: 15,
     },
-    '80': {
-        kontoer: {
-            MØDREKVOTE: 95,
-            FEDREKVOTE: 95,
-            FELLESPERIODE: 90,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+const defaultKonto100 = {
+    kontoer: {
+        MØDREKVOTE: 75,
+        FEDREKVOTE: 75,
+        FELLESPERIODE: 80,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
     },
 };
 
@@ -50,8 +49,9 @@ const Template: StoryFn<{
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ hvemPlanlegger, omBarnet, arbeidssituasjon, gåTilNesteSide = action('button-click') }) => {
+}> = ({ hvemPlanlegger, omBarnet, arbeidssituasjon, stønadskontoer, gåTilNesteSide = action('button-click') }) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.HVOR_LANG_PERIODE]}>
@@ -63,7 +63,7 @@ const Template: StoryFn<{
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <HvorLangPeriodeSteg stønadskontoer={kontoer} />
+                <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
@@ -86,6 +86,10 @@ FlereForsørgereEttBarnKunMorHarRett.args = {
         arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
         arbeidssituasjonAnnenPart: false,
     },
+    stønadskontoer: {
+        80: defaultKonto80,
+        100: defaultKonto100,
+    },
 };
 
 export const FlereForsørgereToBarn = Template.bind({});
@@ -105,6 +109,10 @@ FlereForsørgereToBarn.args = {
         arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
         arbeidssituasjonAnnenPart: true,
     },
+    stønadskontoer: {
+        80: defaultKonto80,
+        100: defaultKonto100,
+    },
 };
 
 export const AleneforsørgerMorEttBarn = Template.bind({});
@@ -121,6 +129,10 @@ AleneforsørgerMorEttBarn.args = {
     },
     arbeidssituasjon: {
         arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+    },
+    stønadskontoer: {
+        80: defaultKonto80,
+        100: defaultKonto100,
     },
 };
 export const FlereForsørgereKunFarHarRett = Template.bind({});
@@ -140,6 +152,10 @@ FlereForsørgereKunFarHarRett.args = {
         arbeidssituasjon: ArbeidssituasjonEnum.INGEN,
         arbeidssituasjonAnnenPart: true,
     },
+    stønadskontoer: {
+        80: defaultKonto80,
+        100: defaultKonto100,
+    },
 };
 export const AleneforsørgerFarToBarn = Template.bind({});
 AleneforsørgerFarToBarn.args = {
@@ -155,5 +171,17 @@ AleneforsørgerFarToBarn.args = {
     },
     arbeidssituasjon: {
         arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+    },
+    stønadskontoer: {
+        80: {
+            ...defaultKonto80,
+            kontoer: {
+                MØDREKVOTE: 95,
+                FEDREKVOTE: 95,
+                FELLESPERIODE: 90,
+                FORELDREPENGER_FØR_FØDSEL: 0,
+            },
+        },
+        100: defaultKonto100,
     },
 };
