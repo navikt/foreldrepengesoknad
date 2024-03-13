@@ -114,11 +114,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                     isValidDate(
                                         intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' }),
                                     ),
-                                    isLessThanThreeWeeksAgo(
-                                        intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.termindato.termindatoKanIkkeVære3UkerFraIdag',
-                                        }),
-                                    ),
+
                                     erI22SvangerskapsukeEllerSenere(
                                         intl.formatMessage({
                                             id: 'feilmelding.fødselPanel.termindato.duMåVæreIUke22',
