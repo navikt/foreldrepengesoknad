@@ -106,7 +106,11 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     <FormattedMessage id="barnet.ett" />
                                 </Radio>
                                 <Radio value="2">
-                                    <FormattedMessage id="barnet.to" />
+                                    {erFødsel ? (
+                                        <FormattedMessage id="barnet.tvillinger" />
+                                    ) : (
+                                        <FormattedMessage id="barnet.to" />
+                                    )}
                                 </Radio>
                                 <Radio value="3">
                                     <FormattedMessage id="barnet.flereEnnTo" />
