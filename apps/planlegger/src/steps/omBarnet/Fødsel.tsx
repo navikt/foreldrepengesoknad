@@ -137,7 +137,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                             icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                         >
                             <BodyLong>
-                                <FormattedMessage id="barnet.født.infoboksTekstDel1" />
+                                <FormattedMessage id="barnet.født.infoboks.manKanSøkeTilbakeITid" />
                             </BodyLong>
 
                             <BodyLong>
@@ -166,7 +166,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                             </BodyLong>
 
                             <BodyLong>
-                                <FormattedMessage id="barnet.født.infoboksTekstDel1" />
+                                <FormattedMessage id="barnet.født.infoboks.manKanSøkeTilbakeITid" />
                             </BodyLong>
                         </Infoboks>
                     )}
