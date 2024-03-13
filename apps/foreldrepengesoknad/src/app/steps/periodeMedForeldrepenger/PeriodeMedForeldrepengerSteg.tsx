@@ -30,7 +30,7 @@ import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPan
 
 const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
     const annenPartFødselsnummer =
-        isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr === false ? annenForelder.fnr : undefined;
+        isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
     const barnFødselsnummer =
         isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
     return {
