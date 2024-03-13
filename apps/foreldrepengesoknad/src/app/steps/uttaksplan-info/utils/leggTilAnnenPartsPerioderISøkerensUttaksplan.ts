@@ -1,9 +1,11 @@
-import { Periode, Periodene, isUttakAnnenPart, isUttaksperiode } from '@navikt/fp-common';
 import {
     finnOgSettInnHull,
     normaliserPerioder,
     settInnAnnenPartsUttak,
 } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+
+import { Periode, Periodene, isUttakAnnenPart, isUttaksperiode } from '@navikt/fp-common';
+
 import { getSamtidigUttaksprosent } from 'app/utils/uttaksplanInfoUtils';
 
 export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (

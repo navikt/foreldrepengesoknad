@@ -163,11 +163,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
-    const bareFarMedmorHarRett = !getMorHarRettPåForeldrepengerINorgeEllerEØS(
-        søkersituasjon.rolle,
-        erFarEllerMedmor,
-        annenForelder,
-    );
+    const bareFarMedmorHarRett =
+        !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
+        !søkerErAleneOmOmsorg;
 
     const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
     const eksisterendeSakAnnenPartRequestIsSuspended =

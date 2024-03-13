@@ -1,8 +1,11 @@
+import { finnOgSettInnHull } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+
+import { ISOStringToDate, Periode, Situasjon, TilgjengeligStønadskonto } from '@navikt/fp-common';
+
 import { UttaksplanSkjemadata } from 'app/types/UttaksplanSkjemaData';
+
 import { deltUttak } from './deltUttak';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
-import { ISOStringToDate, Periode, Situasjon, TilgjengeligStønadskonto } from '@navikt/fp-common';
-import { finnOgSettInnHull } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 
 export interface LagUttaksplanParams {
     situasjon: Situasjon;
@@ -104,7 +107,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
-                søkerErFarEllerMedmor,
+                bareFarMedmorHarRett,
                 søkerErFarEllerMedmor,
                 førsteUttaksdagNesteBarnsSak,
             );

@@ -1,3 +1,11 @@
+import {
+    Periode,
+    isForeldrepengerFørFødselUttaksperiode,
+    isInfoPeriodeAnnenPart,
+    isUtsettelsesperiode,
+    starterUttaksperiodeFørFødsel,
+} from '@navikt/fp-common';
+
 import { leggTilPeriode } from './leggTilPeriode';
 import { oppdaterPeriode } from './oppdaterPeriode';
 import { slettPeriode } from './slettPeriode';
@@ -7,13 +15,6 @@ import {
     settInnAnnenPartsUttak,
     slåSammenLikePerioder,
 } from './uttaksplanbuilderUtils';
-import {
-    Periode,
-    isForeldrepengerFørFødselUttaksperiode,
-    isInfoPeriodeAnnenPart,
-    isUtsettelsesperiode,
-    starterUttaksperiodeFørFødsel,
-} from '@navikt/fp-common';
 
 const leggTilPeriodeOgBuild = (
     bevegeligePerioder: Periode[],
