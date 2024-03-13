@@ -81,29 +81,19 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 />
                             </BodyLong>
                         </Infoboks>
-
-                        <Alert variant="info">
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="oppsummering.informasjonPlanleggerErUnderUtvikling"
-                                    values={{ a: (msg: any) => <Link>{msg}</Link> }}
-                                />
-                            </BodyLong>
-                        </Alert>
                     </VStack>
                 )}
-                {harRett && (
-                    <Alert variant="info">
-                        {!harRett ? (
-                            <FormattedMessage id="oppsummering.informasjonPlanleggerErUnderUtviklingDeg" />
-                        ) : (
-                            <FormattedMessage
-                                id="oppsummering.informasjonPlanleggerErUnderUtvikling"
-                                values={{ a: (msg: any) => <Link>{msg}</Link> }}
-                            />
-                        )}
-                    </Alert>
-                )}
+
+                <Alert variant="info">
+                    {!harRett ? (
+                        <FormattedMessage id="oppsummering.informasjonPlanleggerErUnderUtviklingIkkeRett" />
+                    ) : (
+                        <FormattedMessage
+                            id="oppsummering.informasjonPlanleggerErUnderUtvikling"
+                            values={{ a: (msg: any) => <Link>{msg}</Link> }}
+                        />
+                    )}
+                </Alert>
 
                 <VStack gap="5">
                     {harRett && (

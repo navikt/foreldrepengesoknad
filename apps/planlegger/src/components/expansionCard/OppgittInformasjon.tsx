@@ -1,7 +1,6 @@
-import { BabyWrappedFillIcon, ChatElipsisIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
+import { ChatElipsisIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import GreenPanel from 'components/GreenPanel';
-import Infoboks from 'components/Infoboks';
 import IconCircle from 'components/ikoner/IconCircle';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -25,7 +24,7 @@ import {
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 
-import { BodyLong, Box, ExpansionCard, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
+import { BodyLong, ExpansionCard, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
@@ -119,168 +118,173 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <VStack gap="5">
-                        <Infoboks
-                            header={
-                                erAleneforsørger ? (
-                                    <FormattedMessage id="oppsummering.forelder" />
-                                ) : (
-                                    <FormattedMessage id="oppsummering.foreldre" />
-                                )
-                            }
-                            icon={<PersonPregnantIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
-                        >
-                            <BodyLong>
-                                {erAleneforsørger ? (
-                                    <FormattedMessage id="navn" values={{ navn: navn1 }} />
-                                ) : (
-                                    <FormattedMessage id="navnBegge" values={{ navn1: navn1, navn2: navn2 }} />
-                                )}
-                            </BodyLong>
-                        </Infoboks>
-                        <Infoboks
-                            header={<FormattedMessage id="barnet.tittel" />}
-                            icon={<BabyWrappedFillIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
-                        >
-                            {erAdoptert && (
-                                <BodyLong>
-                                    <FormattedMessage id="barnet.adopsjon" />
-                                </BodyLong>
-                            )}
-                            <BodyLong>
-                                <FormattedMessage id="oppsummering.antallBarn" values={{ antall: antallBarn }} />
-                            </BodyLong>
-                            {erFødt && (
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="oppsummering.fødselsdato"
-                                        values={{
-                                            dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
-                                        }}
-                                    />
-                                </BodyLong>
-                            )}
-                            {(erIkkeFødt || (erFødt && !erAdoptert)) && (
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="oppsummering.termindato"
-                                        values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
-                                    />
-                                </BodyLong>
-                            )}
-                            {erAdoptert && (
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="oppsummering.overtakelsesdato"
-                                        values={{
-                                            dato: dayjs(barnet.overtakelsesdato).format(DDMMYYYY_DATE_FORMAT),
-                                        }}
-                                    />
-                                </BodyLong>
-                            )}
-                        </Infoboks>
-                        <Box padding="4" background="surface-success-subtle" borderRadius="large">
-                            <Heading size="small">
-                                <FormattedMessage id="arbeid.tittel" />
-                            </Heading>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="arbeidssituasjon"
-                                    values={{ navn: fornavn1, arbeidssituasjon: arbeidssituasjonSøker1 }}
-                                />
-                            </BodyLong>
+                    <VStack gap="10">
+                        <GreenPanel>
+                            <div>
+                                <Heading size="small">
+                                    {erAleneforsørger ? (
+                                        <FormattedMessage id="oppsummering.forelder" />
+                                    ) : (
+                                        <FormattedMessage id="oppsummering.foreldre" />
+                                    )}
+                                </Heading>
 
-                            {!erAleneforsørger && (
+                                <BodyLong>
+                                    {erAleneforsørger ? (
+                                        <FormattedMessage id="navn" values={{ navn: navn1 }} />
+                                    ) : (
+                                        <FormattedMessage id="navnBegge" values={{ navn1: navn1, navn2: navn2 }} />
+                                    )}
+                                </BodyLong>
+                            </div>
+                        </GreenPanel>
+
+                        <GreenPanel>
+                            <div>
+                                <Heading size="small">
+                                    <FormattedMessage id="barnet.tittel" />
+                                </Heading>
+
+                                {erAdoptert && (
+                                    <BodyLong>
+                                        <FormattedMessage id="barnet.adopsjon" />
+                                    </BodyLong>
+                                )}
+                                <BodyLong>
+                                    <FormattedMessage id="oppsummering.antallBarn" values={{ antall: antallBarn }} />
+                                </BodyLong>
+                                {erFødt && (
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="oppsummering.fødselsdato"
+                                            values={{
+                                                dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
+                                            }}
+                                        />
+                                    </BodyLong>
+                                )}
+                                {(erIkkeFødt || (erFødt && !erAdoptert)) && (
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="oppsummering.termindato"
+                                            values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
+                                        />
+                                    </BodyLong>
+                                )}
+                                {erAdoptert && (
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="oppsummering.overtakelsesdato"
+                                            values={{
+                                                dato: dayjs(barnet.overtakelsesdato).format(DDMMYYYY_DATE_FORMAT),
+                                            }}
+                                        />
+                                    </BodyLong>
+                                )}
+                            </div>
+                        </GreenPanel>
+
+                        <GreenPanel>
+                            <div>
+                                <Heading size="small">
+                                    <FormattedMessage id="arbeid.tittel" />
+                                </Heading>
                                 <BodyLong>
                                     <FormattedMessage
                                         id="arbeidssituasjon"
-                                        values={{
-                                            navn: fornavn2,
-                                            arbeidssituasjon: arbeidssituasjonAnnenPart(),
-                                        }}
+                                        values={{ navn: fornavn1, arbeidssituasjon: arbeidssituasjonSøker1 }}
                                     />
                                 </BodyLong>
-                            )}
-                        </Box>
-                        <Box padding="4" borderRadius="large">
-                            <GreenPanel isDarkGreen={true}>
-                                <div>
-                                    <Heading size="small">
-                                        <FormattedMessage id="periode" />
-                                    </Heading>
 
+                                {!erAleneforsørger && (
                                     <BodyLong>
-                                        {erAdoptert ? (
-                                            <FormattedMessage
-                                                id="periode.perioder"
-                                                values={{ prosent: dekningsgrad, uker: antallUkerAdopsjon }}
-                                            />
-                                        ) : (
-                                            <FormattedMessage
-                                                id="periode.perioder"
-                                                values={{ prosent: dekningsgrad, uker: antallUker }}
-                                            />
-                                        )}
+                                        <FormattedMessage
+                                            id="arbeidssituasjon"
+                                            values={{
+                                                navn: fornavn2,
+                                                arbeidssituasjon: arbeidssituasjonAnnenPart(),
+                                            }}
+                                        />
                                     </BodyLong>
-                                    {!erAleneforsørger && (
-                                        <VStack gap="5">
+                                )}
+                            </div>
+                        </GreenPanel>
+
+                        <GreenPanel>
+                            <div>
+                                <Heading size="small">
+                                    <FormattedMessage id="periode" />
+                                </Heading>
+
+                                <BodyLong>
+                                    {erAdoptert ? (
+                                        <FormattedMessage
+                                            id="periode.perioder"
+                                            values={{ prosent: dekningsgrad, uker: antallUkerAdopsjon }}
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            id="periode.perioder"
+                                            values={{ prosent: dekningsgrad, uker: antallUker }}
+                                        />
+                                    )}
+                                </BodyLong>
+                                {!erAleneforsørger && (
+                                    <VStack gap="5">
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="fordeling.fordelingOptionsMedUker"
+                                                values={{
+                                                    uker: antallUkerFellesperiodeSøker1,
+                                                    uker2: antallUkerFellesperiodeSøker2,
+                                                    hvem: fornavn1,
+                                                    hvem2: fornavn2,
+                                                }}
+                                            />
+                                        </BodyLong>
+
+                                        <div>
                                             <BodyLong>
                                                 <FormattedMessage
-                                                    id="fordeling.fordelingOptionsMedUker"
+                                                    id="fordeling.infoboksTekst.førsteDag"
                                                     values={{
-                                                        uker: antallUkerFellesperiodeSøker1,
-                                                        uker2: antallUkerFellesperiodeSøker2,
                                                         hvem: fornavn1,
-                                                        hvem2: fornavn2,
+                                                        dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
                                                     }}
                                                 />
                                             </BodyLong>
-
-                                            <div>
-                                                <BodyLong>
-                                                    <FormattedMessage
-                                                        id="fordeling.infoboksTekst.førsteDag"
-                                                        values={{
-                                                            hvem: fornavn1,
-                                                            dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
-                                                        }}
-                                                    />
-                                                </BodyLong>
-                                                <BodyLong>
-                                                    <FormattedMessage
-                                                        id="fordeling.infoboksTekst.sisteDag"
-                                                        values={{
-                                                            hvem: fornavn1,
-                                                            dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
-                                                        }}
-                                                    />
-                                                </BodyLong>
-                                                <BodyLong>
-                                                    <FormattedMessage
-                                                        id="fordeling.infoboksTekst.førsteDag"
-                                                        values={{
-                                                            hvem: fornavn2,
-                                                            dag: dayjs(startdatoSøker2)
-                                                                .add(1, 'day')
-                                                                .format('DD.MM.YY'),
-                                                        }}
-                                                    />
-                                                </BodyLong>
-                                                <BodyLong>
-                                                    <FormattedMessage
-                                                        id="fordeling.infoboksTekst.sisteDag"
-                                                        values={{
-                                                            hvem: fornavn2,
-                                                            dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
-                                                        }}
-                                                    />
-                                                </BodyLong>
-                                            </div>
-                                        </VStack>
-                                    )}
-                                </div>
-                            </GreenPanel>
-                        </Box>
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="fordeling.infoboksTekst.sisteDag"
+                                                    values={{
+                                                        hvem: fornavn1,
+                                                        dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="fordeling.infoboksTekst.førsteDag"
+                                                    values={{
+                                                        hvem: fornavn2,
+                                                        dag: dayjs(startdatoSøker2).add(1, 'day').format('DD.MM.YY'),
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="fordeling.infoboksTekst.sisteDag"
+                                                    values={{
+                                                        hvem: fornavn2,
+                                                        dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        </div>
+                                    </VStack>
+                                )}
+                            </div>
+                        </GreenPanel>
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>
