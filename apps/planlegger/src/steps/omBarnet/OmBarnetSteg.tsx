@@ -114,35 +114,43 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             </GreenRadioGroup>
                         )}
                     </VStack>
-                    {erFødsel && antallBarn && (
-                        <Fødsel hvemPlanlegger={hvemPlanlegger} erOmBarnetIkkeOppgittFraFør={omBarnet === undefined} />
-                    )}
-                    {erFødsel === false && antallBarn && (
-                        <Adopsjon erAlenesøker={erAlenesøker} erOmBarnetIkkeOppgittFraFør={omBarnet === undefined} />
-                    )}
-                    {erFødsel === false && antallBarn && (
-                        <Infoboks
-                            header={
-                                erAlenesøker ? (
-                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoDeg" />
-                                ) : (
-                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfo" />
-                                )
-                            }
-                            icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
-                        >
-                            <BodyLong>
-                                <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekst" />
-                            </BodyLong>
-                            <BodyLong>
-                                {erAlenesøker ? (
-                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2Deg" />
-                                ) : (
-                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2" />
-                                )}
-                            </BodyLong>
-                        </Infoboks>
-                    )}
+                    <VStack gap="5">
+                        {erFødsel && antallBarn && (
+                            <Fødsel
+                                hvemPlanlegger={hvemPlanlegger}
+                                erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
+                            />
+                        )}
+                        {erFødsel === false && antallBarn && (
+                            <Adopsjon
+                                erAlenesøker={erAlenesøker}
+                                erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
+                            />
+                        )}
+                        {erFødsel === false && antallBarn && (
+                            <Infoboks
+                                header={
+                                    erAlenesøker ? (
+                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoDeg" />
+                                    ) : (
+                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfo" />
+                                    )
+                                }
+                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                            >
+                                <BodyLong>
+                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekst" />
+                                </BodyLong>
+                                <BodyLong>
+                                    {erAlenesøker ? (
+                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2Deg" />
+                                    ) : (
+                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2" />
+                                    )}
+                                </BodyLong>
+                            </Infoboks>
+                        )}
+                    </VStack>
                     <VStack gap="10">
                         <VStack>
                             <StepButtonsHookForm<OmBarnet>
