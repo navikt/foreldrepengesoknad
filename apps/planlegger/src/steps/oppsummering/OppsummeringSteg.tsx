@@ -1,12 +1,11 @@
 import { CalendarIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
 import Infoboks from 'components/Infoboks';
+import OppsummeringHeader from 'components/OppsummeringHeader';
 import OppgittInformasjon from 'components/expansionCard/OppgittInformasjon';
 import IconCircle from 'components/ikoner/IconCircle';
 import OversiktKalender from 'components/kalender/OversiktKalender';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
@@ -25,7 +24,6 @@ interface Props {
 
 const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const navigator = usePlanleggerNavigator();
-    const stepConfig = useStepData();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
@@ -53,7 +51,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     //TODO: dra ut expansioncards til egne komponenter
     //TODO: bruk input data til å vise riktig i kalenderen
     return (
-        <PlanleggerPage steps={stepConfig}>
+        <OppsummeringHeader>
             <VStack gap="10">
                 {!harRett && (
                     <VStack gap="5">
@@ -134,7 +132,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </VStack>
                 </VStack>
             </VStack>
-        </PlanleggerPage>
+        </OppsummeringHeader>
     );
 };
 export default Oppsummering;
