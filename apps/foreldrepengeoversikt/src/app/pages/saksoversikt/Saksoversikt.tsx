@@ -6,7 +6,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Alert, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
+import { useDocumentTitle } from '@navikt/fp-utils';
 
 import Api from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
@@ -35,8 +35,6 @@ import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 
-import './saksoversikt.css';
-
 const EMPTY_ARRAY = [] as Skjemanummer[];
 
 interface Props {
@@ -57,7 +55,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
     isFirstRender,
 }) => {
     const intl = useIntl();
-    const bem = bemUtils('saksoversikt');
     const params = useParams();
     const navigate = useNavigate();
 
@@ -144,7 +141,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
             : undefined;
 
     return (
-        <div className={bem.block}>
+        <VStack gap="4">
             {visBekreftelsePåSendtSøknad && (
                 <BekreftelseSendtSøknad
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
@@ -164,25 +161,27 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                     />
                 </ContentSection>
             )}
-            <ContentSection
-                heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
-                showSkeleton={!tidslinjeHendelserData || !manglendeVedleggData}
-                skeletonProps={{ height: '250px', variant: 'rounded' }}
-                marginBottom="small"
-            >
-                <Tidslinje
-                    saker={saker}
-                    visHeleTidslinjen={false}
-                    tidslinjeHendelserError={tidslinjeHendelserError}
-                    tidslinjeHendelserData={tidslinjeHendelserData!}
-                    manglendeVedleggData={manglendeVedleggData || EMPTY_ARRAY}
-                    manglendeVedleggError={manglendeVedleggError}
-                    søkersBarn={søkerinfo.søker.barn}
-                />
-            </ContentSection>
-            <ContentSection padding="none" marginBottom="large">
-                <SeHeleProsessen />
-            </ContentSection>
+            <VStack gap="1">
+                <ContentSection
+                    heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
+                    showSkeleton={!tidslinjeHendelserData || !manglendeVedleggData}
+                    skeletonProps={{ height: '250px', variant: 'rounded' }}
+                    marginBottom="small"
+                >
+                    <Tidslinje
+                        saker={saker}
+                        visHeleTidslinjen={false}
+                        tidslinjeHendelserError={tidslinjeHendelserError}
+                        tidslinjeHendelserData={tidslinjeHendelserData!}
+                        manglendeVedleggData={manglendeVedleggData || EMPTY_ARRAY}
+                        manglendeVedleggError={manglendeVedleggError}
+                        søkersBarn={søkerinfo.søker.barn}
+                    />
+                </ContentSection>
+                <ContentSection padding="none" marginBottom="large">
+                    <SeHeleProsessen />
+                </ContentSection>
+            </VStack>
             <ContentSection padding="none" marginBottom="medium">
                 <SeDokumenter />
             </ContentSection>
@@ -209,7 +208,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                     />
                 </ContentSection>
             )}
-        </div>
+        </VStack>
     );
 };
 

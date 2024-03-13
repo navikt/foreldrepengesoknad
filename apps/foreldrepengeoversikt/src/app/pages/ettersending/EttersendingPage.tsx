@@ -185,6 +185,17 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                         skjemanummer={type}
                         existingAttachments={vedlegg}
                         saveAttachment={getSaveAttachment(Environment.REST_API_URL, mapYtelse(sak!.ytelse))}
+                        skjemanummerTextMap={
+                            sak
+                                ? getRelevanteSkjemanummer(sak).reduce(
+                                      (prev, skjemanr) => ({
+                                          ...prev,
+                                          [skjemanr]: intl.formatMessage({ id: `ettersendelse.${skjemanr}` }),
+                                      }),
+                                      {} as Record<Skjemanummer, string>,
+                                  )
+                                : undefined
+                        }
                     />
                 )}
                 {vedlegg && vedlegg.length > 0 && vedlegg.length <= 40 && (

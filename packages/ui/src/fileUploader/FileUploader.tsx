@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { VStack } from '@navikt/ds-react';
+import { Heading, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
@@ -18,6 +18,10 @@ const KILOBYTES_IN_BYTE = 0.0009765625;
 
 // TODO Fjern any her utan å måtte dra inn axios i denne pakka
 type SaveAttachment = (attachment: Attachment) => Promise<any>;
+
+const findUniqueAndSortSkjemanummer = (attachments: Attachment[]) => {
+    return [...new Set(attachments.map((a) => a.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
+};
 
 const getPendingAttachmentFromFile = (
     file: File,
@@ -79,6 +83,7 @@ export interface Props {
     existingAttachments?: Attachment[];
     saveAttachment: SaveAttachment;
     multiple?: boolean;
+    skjemanummerTextMap?: Record<Skjemanummer, string>;
 }
 
 const FileUploader: React.FunctionComponent<Props> = ({
@@ -88,6 +93,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
     skjemanummer,
     saveAttachment,
     multiple = true,
+    skjemanummerTextMap,
 }) => {
     const [attachments, setAttachments] = useState(existingAttachments);
 
@@ -135,7 +141,25 @@ const FileUploader: React.FunctionComponent<Props> = ({
     return (
         <UiIntlProvider>
             <VStack gap="6">
-                <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
+                {skjemanummerTextMap && attachments.length > 0 && (
+                    <>
+                        {findUniqueAndSortSkjemanummer(attachments).map((skjemanr) => (
+                            <>
+                                <Heading key={skjemanr} size="small" level="2">
+                                    {skjemanummerTextMap[skjemanr]}
+                                </Heading>
+                                <AttachmentList
+                                    attachments={uploadedAttachments.filter((a) => a.skjemanummer === skjemanr)}
+                                    showFileSize={true}
+                                    onDelete={deleteAttachment}
+                                />
+                            </>
+                        ))}
+                    </>
+                )}
+                {!skjemanummerTextMap && (
+                    <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
+                )}
                 <FileInput
                     accept={VALID_EXTENSIONS.join(', ')}
                     onFilesSelect={saveFiles}
