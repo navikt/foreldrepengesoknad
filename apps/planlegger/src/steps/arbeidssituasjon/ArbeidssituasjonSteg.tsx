@@ -50,7 +50,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
     return (
         <PlanleggerPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
+                <VStack gap="5">
                     <Heading level="2" size="medium">
                         <FormattedMessage id="arbeid.tittel" />
                     </Heading>

@@ -47,7 +47,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
     const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger);
 
     return (
-        <VStack gap="5">
+        <VStack gap="10">
             {arbeidssituasjon === ArbeidssituasjonEnum.JOBBER && (
                 <Infoboks
                     header={

@@ -1,3 +1,4 @@
+import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
@@ -128,7 +129,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     <FormattedMessage id="barnet.adopsjon.foreldrepengerInfo" />
                                 )
                             }
-                            icon="TODO"
+                            icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                         >
                             <BodyLong>
                                 <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekst" />
