@@ -1,16 +1,19 @@
-import dayjs from 'dayjs';
-import { getIntlDecorator } from '@navikt/fp-utils-test';
 import { Preview } from '@storybook/react';
-import { allCommonMessages } from '@navikt/fp-common';
-
+import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 
 import '@navikt/ds-css';
-import '../src/app/styles/app.less';
 
-import nnMessages from '../src/app/intl/nn_NO.json';
+import { allCommonMessages } from '@navikt/fp-common';
+import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
+import { getIntlDecorator } from '@navikt/fp-utils-test';
+
 import nbMessages from '../src/app/intl/nb_NO.json';
+import nnMessages from '../src/app/intl/nn_NO.json';
+import '../src/app/styles/app.less';
 
 dayjs.locale('nb');
 
@@ -27,8 +30,20 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...allCommonMessages.nb },
-    nn: { ...nnMessages, ...allCommonMessages.nn },
+    nb: {
+        ...nbMessages,
+        ...allCommonMessages.nb,
+        ...uiMessages.nb,
+        ...utenlandsoppholdMessages.nb,
+        ...oppsummeringMessages.nb,
+    },
+    nn: {
+        ...nnMessages,
+        ...allCommonMessages.nn,
+        ...uiMessages.nn,
+        ...utenlandsoppholdMessages.nn,
+        ...oppsummeringMessages.nn,
+    },
 });
 
 export const globalTypes = {

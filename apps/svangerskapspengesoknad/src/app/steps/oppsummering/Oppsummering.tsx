@@ -6,7 +6,7 @@ import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 import {
     BoIUtlandetOppsummeringspunkt,
     HendelseType,
-    OppsummeringIndex,
+    OppsummeringPanel,
     SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
 import { Søkerinfo } from '@navikt/fp-types';
@@ -78,7 +78,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
             <Heading size="large">
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
-            <OppsummeringIndex
+            <OppsummeringPanel
                 appName="Svangerskapspenger"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
@@ -90,7 +90,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
-                <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omBarnet' })}>
+                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omBarnet' })}>
                     <VStack gap="2">
                         <BodyShort>{`Termindato: ${formatDate(barn.termindato)}`}</BodyShort>
                         {barn.erBarnetFødt && barn.fødselsdato && (
@@ -99,7 +99,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                             }`}</BodyShort>
                         )}
                     </VStack>
-                </OppsummeringIndex.Punkt>
+                </OppsummeringPanel.Punkt>
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={barn.erBarnetFødt && barn.fødselsdato ? barn.fødselsdato : barn.termindato}
                     hendelseType={barn.erBarnetFødt ? HendelseType.FØDSEL : HendelseType.TERMIN}
@@ -107,7 +107,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     tidligereUtenlandsopphold={utenlandsoppholdTidligere}
                     senereUtenlandsopphold={utenlandsoppholdSenere}
                 />
-                <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
+                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
                     <VStack gap="2">
                         {aktiveArbeidsforhold.length > 0 && (
                             <ArbeidsforholdInformasjon visManglerInfo={false} arbeidsforhold={aktiveArbeidsforhold} />
@@ -132,11 +132,11 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                             <BodyShort>{getTekstOmManglendeArbeidsforhold(inntektsinformasjon, intl)}</BodyShort>
                         )}
                     </VStack>
-                </OppsummeringIndex.Punkt>
-                <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.skjema' })}>
+                </OppsummeringPanel.Punkt>
+                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.skjema' })}>
                     <VedleggOppsummering tilrettelegging={tilrettelegginger} />
-                </OppsummeringIndex.Punkt>
-                <OppsummeringIndex.Punkt
+                </OppsummeringPanel.Punkt>
+                <OppsummeringPanel.Punkt
                     tittel={intl.formatMessage({ id: 'oppsummering.periodeMedSvangerskapspenger' })}
                 >
                     <VStack gap="2">
@@ -178,8 +178,8 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                             barn={barn}
                         />
                     </VStack>
-                </OppsummeringIndex.Punkt>
-            </OppsummeringIndex>
+                </OppsummeringPanel.Punkt>
+            </OppsummeringPanel>
         </ContentWrapper>
     );
 };

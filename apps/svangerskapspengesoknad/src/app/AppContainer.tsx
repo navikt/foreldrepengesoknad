@@ -2,8 +2,10 @@ import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 
 import { deleteData } from '@navikt/fp-api';
+import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { LocaleNo } from '@navikt/fp-types';
-import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
+import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage, shouldChangeBrowser } from '@navikt/fp-utils';
 
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
@@ -12,11 +14,22 @@ import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
 
+const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb };
+
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace FormatjsIntl {
+        interface Message {
+            ids: keyof typeof allNbMessages;
+        }
+    }
+}
+
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: nbMessages,
-    nn: nnMessages,
+    nb: allNbMessages,
+    nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },
 };
 
 dayjs.locale(localeFromSessionStorage);

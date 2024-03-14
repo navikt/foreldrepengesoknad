@@ -5,7 +5,6 @@ import { Heading, VStack } from '@navikt/ds-react';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
-import UiIntlProvider from '../i18n/ui/UiIntlProvider';
 import { mapFileToAttachment } from './fileUtils';
 import FileInput from './input/FileInput';
 import AttachmentList from './liste/AttachmentList';
@@ -139,36 +138,34 @@ const FileUploader: React.FunctionComponent<Props> = ({
     const failedAttachments = useMemo(() => attachments.filter((a) => !!a.error), [attachments]);
 
     return (
-        <UiIntlProvider>
-            <VStack gap="6">
-                {skjemanummerTextMap && attachments.length > 0 && (
-                    <>
-                        {findUniqueAndSortSkjemanummer(attachments).map((skjemanr) => (
-                            <>
-                                <Heading key={skjemanr} size="small" level="2">
-                                    {skjemanummerTextMap[skjemanr]}
-                                </Heading>
-                                <AttachmentList
-                                    attachments={uploadedAttachments.filter((a) => a.skjemanummer === skjemanr)}
-                                    showFileSize={true}
-                                    onDelete={deleteAttachment}
-                                />
-                            </>
-                        ))}
-                    </>
-                )}
-                {!skjemanummerTextMap && (
-                    <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
-                )}
-                <FileInput
-                    accept={VALID_EXTENSIONS.join(', ')}
-                    onFilesSelect={saveFiles}
-                    hasUplodedAttachements={uploadedAttachments.length > 0}
-                    multiple={multiple}
-                />
-                <FailedAttachmentList failedAttachments={failedAttachments} onDelete={deleteAttachment} />
-            </VStack>
-        </UiIntlProvider>
+        <VStack gap="6">
+            {skjemanummerTextMap && attachments.length > 0 && (
+                <>
+                    {findUniqueAndSortSkjemanummer(attachments).map((skjemanr) => (
+                        <>
+                            <Heading key={skjemanr} size="small" level="2">
+                                {skjemanummerTextMap[skjemanr]}
+                            </Heading>
+                            <AttachmentList
+                                attachments={uploadedAttachments.filter((a) => a.skjemanummer === skjemanr)}
+                                showFileSize={true}
+                                onDelete={deleteAttachment}
+                            />
+                        </>
+                    ))}
+                </>
+            )}
+            {!skjemanummerTextMap && (
+                <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
+            )}
+            <FileInput
+                accept={VALID_EXTENSIONS.join(', ')}
+                onFilesSelect={saveFiles}
+                hasUplodedAttachements={uploadedAttachments.length > 0}
+                multiple={multiple}
+            />
+            <FailedAttachmentList failedAttachments={failedAttachments} onDelete={deleteAttachment} />
+        </VStack>
     );
 };
 

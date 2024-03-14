@@ -4,7 +4,7 @@ import { StoryFn } from '@storybook/react';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import OppsummeringIndex from './OppsummeringIndex';
+import OppsummeringPanel from './OppsummeringPanel';
 import SøkerOppsummeringspunkt from './søker/SøkerOppsummeringspunkt';
 import BoIUtlandetOppsummeringspunkt, { HendelseType } from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
 
@@ -16,8 +16,8 @@ const promiseAction =
     };
 
 export default {
-    title: 'OppsummeringIndex',
-    component: OppsummeringIndex,
+    title: 'OppsummeringPanel',
+    component: OppsummeringPanel,
 };
 
 const Template: StoryFn<{
@@ -42,7 +42,7 @@ const Template: StoryFn<{
     termindato,
 }) => {
     return (
-        <OppsummeringIndex
+        <OppsummeringPanel
             sendSøknad={sendSøknad}
             cancelApplication={cancelApplication}
             onContinueLater={onContinueLater}
@@ -73,7 +73,7 @@ const Template: StoryFn<{
                 senereUtenlandsopphold={senereUtenlandsopphold}
                 tidligereUtenlandsopphold={tidligereUtenlandsopphold}
             />
-        </OppsummeringIndex>
+        </OppsummeringPanel>
     );
 };
 
