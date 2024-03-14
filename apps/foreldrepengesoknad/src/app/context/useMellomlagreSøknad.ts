@@ -9,7 +9,8 @@ import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
-import SøkerData from './types/SøkerData';
+
+export const MELLOMLAGRET_VERSJON = 7;
 
 const mellomlagre = (
     locale: LocaleNo,
@@ -38,7 +39,8 @@ const mellomlagre = (
 
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
-        version: 6,
+        version: MELLOMLAGRET_VERSJON,
+        locale,
         currentRoute,
         søknadGjelderEtNyttBarn,
         søknad: {
@@ -46,10 +48,7 @@ const mellomlagre = (
             søkersituasjon,
             barn,
             annenForelder,
-            søker: {
-                ...søker,
-                språkkode: locale,
-            } as SøkerData,
+            søker,
             informasjonOmUtenlandsopphold: utenlandsopphold
                 ? {
                       ...utenlandsopphold,

@@ -1,4 +1,5 @@
 import { FpMellomlagretData } from 'app/api/api';
+import { MELLOMLAGRET_VERSJON } from 'app/context/useMellomlagreSøknad';
 import SøknadRoutes from 'app/routes/routes';
 
 const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
@@ -18,5 +19,5 @@ export const shouldApplyStorage = (storedState: FpMellomlagretData): boolean => 
         }
     }
 
-    return storedState.version === 6;
+    return storedState.version === MELLOMLAGRET_VERSJON;
 };
