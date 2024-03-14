@@ -125,7 +125,6 @@ const Template: StoryFn<Props> = ({
                             [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                             [ContextDataType.OM_BARNET]: barnet,
                             [ContextDataType.SØKER_DATA]: {
-                                språkkode: 'nb',
                                 harJobbetSomFrilansSiste10Mnd: false,
                                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
                                 harHattAnnenInntektSiste10Mnd: false,

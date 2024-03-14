@@ -1,4 +1,3 @@
-import { LocaleNo } from '@navikt/fp-types';
 import { AnnenInntekt } from './AnnenInntekt';
 import { Frilans } from './Frilans';
 import { Næring } from './Næring';
@@ -11,7 +10,6 @@ interface SøkerData {
     frilansInformasjon?: Frilans;
     harHattAnnenInntektSiste10Mnd: boolean;
     andreInntekterSiste10Mnd?: AnnenInntekt[];
-    språkkode?: LocaleNo;
 }
 
 export default SøkerData;

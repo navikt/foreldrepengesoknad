@@ -1,6 +1,8 @@
 import { FpMellomlagretData } from 'app/api/api';
 import SøknadRoutes from 'app/routes/routes';
 
+export const MELLOMLAGRET_VERSJON = 7;
+
 const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     switch (route) {
         case SøknadRoutes.UTTAKSPLAN:
@@ -18,5 +20,5 @@ export const shouldApplyStorage = (storedState: FpMellomlagretData): boolean => 
         }
     }
 
-    return storedState.version === 6;
+    return storedState.version === MELLOMLAGRET_VERSJON;
 };
