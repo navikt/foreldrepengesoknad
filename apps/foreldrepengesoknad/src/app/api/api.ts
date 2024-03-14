@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 
 import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode, formaterDato, hasValue } from '@navikt/fp-common';
-import { Attachment, Søkerinfo } from '@navikt/fp-types';
+import { Attachment, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
 import Environment from 'app/Environment';
 import Fordeling from 'app/context/types/Fordeling';
@@ -64,6 +64,7 @@ const useGetSaker = () => {
 
 export interface FpMellomlagretData {
     version: number;
+    locale: LocaleNo;
     currentRoute: SøknadRoutes;
     søknad?: Partial<Søknad>;
     antallUkerIUttaksplan?: number;

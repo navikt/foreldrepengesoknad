@@ -125,7 +125,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     );
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const erAleneOmOmsorg = oppgittAnnenForelder?.erAleneOmOmsorg || false;
+    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
     const { situasjon } = søkersituasjon;
     const { rolle } = søkersituasjon;
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);

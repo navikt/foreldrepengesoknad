@@ -61,7 +61,6 @@ const Template: StoryFn<Props> = ({
                         antallBarn: 1,
                     },
                     [ContextDataType.SØKER_DATA]: {
-                        erAleneOmOmsorg: false,
                         // @ts-ignore FIX
                         harJobbetSomFrilansSiste10Mnd: undefined,
                         // @ts-ignore FIX

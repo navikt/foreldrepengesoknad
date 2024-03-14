@@ -6,10 +6,10 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import Api from 'app/api/api';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import { MELLOMLAGRET_VERSJON } from 'app/utils/mellomlagringUtils';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
-import SøkerData from './types/SøkerData';
 
 const mellomlagre = (
     locale: LocaleNo,
@@ -38,7 +38,8 @@ const mellomlagre = (
 
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
-        version: 8,
+        version: MELLOMLAGRET_VERSJON,
+        locale,
         currentRoute,
         søknadGjelderEtNyttBarn,
         søknad: {
@@ -46,10 +47,7 @@ const mellomlagre = (
             søkersituasjon,
             barn,
             annenForelder,
-            søker: {
-                ...søker,
-                språkkode: locale,
-            } as SøkerData,
+            søker,
             informasjonOmUtenlandsopphold: utenlandsopphold
                 ? {
                       ...utenlandsopphold,

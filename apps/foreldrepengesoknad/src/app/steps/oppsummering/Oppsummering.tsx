@@ -108,7 +108,7 @@ const Oppsummering: FunctionComponent<Props> = ({
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
+    const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));

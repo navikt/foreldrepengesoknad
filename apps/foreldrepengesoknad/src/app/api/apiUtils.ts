@@ -38,6 +38,9 @@ import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
+import { AnnenInntekt } from 'app/context/types/AnnenInntekt';
+import { Frilans } from 'app/context/types/Frilans';
+import { Næring } from 'app/context/types/Næring';
 import SøkerData from 'app/context/types/SøkerData';
 import { Søknad } from 'app/context/types/Søknad';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
@@ -75,10 +78,13 @@ interface BarnPropsForAPI {
 
 export type BarnForInnsending = Omit<Barn, 'datoForAleneomsorg' | 'type'> & BarnPropsForAPI;
 
-export interface SøkerForInnsending extends Omit<SøkerData, 'andreInntekterSiste10Mnd' | 'språkkode'> {
+export interface SøkerForInnsending {
     erAleneOmOmsorg: boolean;
     språkkode: LocaleForInnsending;
     rolle: SøkerrolleInnsending;
+    selvstendigNæringsdrivendeInformasjon?: Næring[];
+    frilansInformasjon?: Frilans;
+    andreInntekterSiste10Mnd?: AnnenInntekt[];
 }
 
 export interface SøknadForInnsending
@@ -392,7 +398,7 @@ export const cleanSøknad = (
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
-    const søkerInnsending = cleanSøker(søker, søkersituasjon, locale, annenForelder);
+    const søkerInnsending = cleanSøker(søkersituasjon, locale, annenForelder, søker);
     const barnInnsending = cleanBarn(barn);
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const termindato = getTermindato(barn);
@@ -428,19 +434,29 @@ export const cleanSøknad = (
 };
 
 const cleanSøker = (
-    søkerData: SøkerData,
     søkersituasjon: Søkersituasjon,
     locale: LocaleNo,
     annenForelder: AnnenForelder,
+    søkerData?: SøkerData,
 ): SøkerForInnsending => {
     const rolle = konverterRolle(søkersituasjon.rolle);
     const erOppgitt = isAnnenForelderOppgitt(annenForelder);
-    return {
-        ...søkerData,
+
+    const common = {
         rolle: rolle,
         språkkode: locale,
         erAleneOmOmsorg: erOppgitt ? annenForelder.erAleneOmOmsorg : true,
     };
+
+    if (søkerData) {
+        return {
+            ...common,
+            andreInntekterSiste10Mnd: søkerData.andreInntekterSiste10Mnd,
+            frilansInformasjon: søkerData.frilansInformasjon,
+            selvstendigNæringsdrivendeInformasjon: søkerData.selvstendigNæringsdrivendeInformasjon,
+        };
+    }
+    return { ...common, andreInntekterSiste10Mnd: [], selvstendigNæringsdrivendeInformasjon: [] };
 };
 
 export const getSøknadsdataForInnsending = (
@@ -468,7 +484,7 @@ export const cleanEndringssøknad = (
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const søker = notEmpty(hentData(ContextDataType.SØKER_DATA));
+    const søker = hentData(ContextDataType.SØKER_DATA);
     const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
@@ -489,7 +505,7 @@ export const cleanEndringssøknad = (
             annenForelder,
             endringstidspunkt,
         ),
-        søker: cleanSøker(søker, søkersituasjon, locale, annenForelder),
+        søker: cleanSøker(søkersituasjon, locale, annenForelder, søker),
         annenForelder: cleanAnnenForelder(annenForelder, true),
         barn,
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,

@@ -64,8 +64,8 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     const applyStorage = storageData !== undefined && shouldApplyStorage(storageData);
 
     useEffect(() => {
-        if (storageData?.søknad?.søker?.språkkode && storageData.søknad.søker.språkkode !== locale) {
-            onChangeLocale(storageData.søknad?.søker?.språkkode);
+        if (storageData?.locale && storageData.locale !== locale) {
+            onChangeLocale(storageData.locale);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [storageData]);

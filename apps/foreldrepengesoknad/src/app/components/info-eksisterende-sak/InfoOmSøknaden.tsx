@@ -92,7 +92,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const erDeltUttak = getIsDeltUttak(annenForelder);
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerINorge;
-    const erAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erAleneOmOmsorg : false;
+    const erAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erAleneOmOmsorg : true;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const { rolle } = søkersituasjon;

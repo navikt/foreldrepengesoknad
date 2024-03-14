@@ -51,6 +51,7 @@ const IngenTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTilr
     const type = formMethods.watch('type');
     const behovForTilretteleggingFom = formMethods.watch('behovForTilretteleggingFom');
     const enPeriodeMedTilretteleggingFom = formMethods.watch('enPeriodeMedTilretteleggingFom');
+    const enPeriodeMedTilretteleggingTomType = formMethods.watch('enPeriodeMedTilretteleggingTomType');
 
     const minDatoPeriodeFom = behovForTilretteleggingFom ? behovForTilretteleggingFom : minDatoBehovFom;
     const minDatoTilbakeIJobb = enPeriodeMedTilretteleggingFom
@@ -120,37 +121,39 @@ const IngenTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTilr
                     )}
                 </Radio>
             </RadioGroup>
-            <Datepicker
-                name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
-                label={intl.formatMessage({
-                    id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen',
-                })}
-                minDate={minDatoTilbakeIJobb}
-                maxDate={maxDatoBehovFom}
-                validate={[
-                    isRequired(
-                        intl.formatMessage({
-                            id: 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.ingen',
-                        }),
-                    ),
-                    isValidDate(
-                        intl.formatMessage({
-                            id: 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.ingen',
-                        }),
-                    ),
-                    validateSammePeriodeFremTilTerminTilbakeIJobbDato(
-                        intl,
-                        behovForTilretteleggingFom,
-                        sisteDagForSvangerskapspenger,
-                        enPeriodeMedTilretteleggingFom,
-                        type,
-                        valgtTilrettelegging.arbeidsforhold.navn || '',
-                        sluttDatoArbeid,
-                        kanHaSVPFremTilTreUkerFørTermin,
-                    ),
-                ]}
-                defaultMonth={getDefaultMonth(minDatoTilbakeIJobb, maxDatoBehovFom)}
-            />
+            {enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
+                <Datepicker
+                    name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
+                    label={intl.formatMessage({
+                        id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen',
+                    })}
+                    minDate={minDatoTilbakeIJobb}
+                    maxDate={maxDatoBehovFom}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.ingen',
+                            }),
+                        ),
+                        isValidDate(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.ingen',
+                            }),
+                        ),
+                        validateSammePeriodeFremTilTerminTilbakeIJobbDato(
+                            intl,
+                            behovForTilretteleggingFom,
+                            sisteDagForSvangerskapspenger,
+                            enPeriodeMedTilretteleggingFom,
+                            type,
+                            valgtTilrettelegging.arbeidsforhold.navn || '',
+                            sluttDatoArbeid,
+                            kanHaSVPFremTilTreUkerFørTermin,
+                        ),
+                    ]}
+                    defaultMonth={getDefaultMonth(minDatoTilbakeIJobb, maxDatoBehovFom)}
+                />
+            )}
         </>
     );
 };
