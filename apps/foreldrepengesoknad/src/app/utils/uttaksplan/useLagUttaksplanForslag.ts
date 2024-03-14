@@ -1,4 +1,7 @@
-import { getHarAktivitetskravIPeriodeUtenUttak } from '@navikt/uttaksplan';
+import {
+    getHarAktivitetskravIPeriodeUtenUttak,
+    leggTilAnnenPartsPerioderISøkerenesUttaksplan,
+} from '@navikt/uttaksplan';
 import { finnOgSettInnHull } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import dayjs from 'dayjs';
 
@@ -73,10 +76,11 @@ export const useLagUttaksplanForslag = (
     const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeUkerTilSøker : undefined;
     const farSinFørsteUttaksdag = erFarEllerMedmor ? startdatoPermisjon : undefined;
     const erAdopsjon = situasjon === 'adopsjon';
+    let forslag = [] as Periode[];
 
     if (familiehendelsesdato) {
         if (erDeltUttak) {
-            const forslag = deltUttak({
+            const forslagDeltUttak = deltUttak({
                 situasjon,
                 famDato: familiehendelsesdato,
                 erFarEllerMedmor,
@@ -92,8 +96,8 @@ export const useLagUttaksplanForslag = (
                 førsteUttaksdagNesteBarnsSak,
             });
 
-            return finnOgSettInnHull(
-                forslag,
+            forslag = finnOgSettInnHull(
+                forslagDeltUttak,
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
@@ -102,7 +106,7 @@ export const useLagUttaksplanForslag = (
                 førsteUttaksdagNesteBarnsSak,
             );
         } else {
-            const forslag = ikkeDeltUttak(
+            const forslagIkkeDeltUttak = ikkeDeltUttak(
                 situasjon,
                 familiehendelsesdato,
                 erFarEllerMedmor,
@@ -114,8 +118,8 @@ export const useLagUttaksplanForslag = (
                 førsteUttaksdagNesteBarnsSak,
             );
 
-            return finnOgSettInnHull(
-                forslag,
+            forslag = finnOgSettInnHull(
+                forslagIkkeDeltUttak,
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
@@ -126,5 +130,18 @@ export const useLagUttaksplanForslag = (
         }
     }
 
-    return [];
+    if (annenPartsPerioder && annenPartsPerioder.length > 0) {
+        return leggTilAnnenPartsPerioderISøkerenesUttaksplan(
+            annenPartsPerioder,
+            forslag,
+            familiehendelsesdato,
+            harAktivitetskravIPeriodeUtenUttak,
+            erAdopsjon,
+            bareFarMedmorHarRett,
+            erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak,
+        );
+    }
+
+    return forslag;
 };
