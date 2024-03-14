@@ -1,9 +1,11 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
+
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
 import * as stories from './Forside.stories';
-import { ContextDataType } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 
 const { Default } = composeStories(stories);
 

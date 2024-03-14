@@ -1,12 +1,13 @@
-import { FormattedMessage } from 'react-intl';
-import { Heading } from '@navikt/ds-react';
-import { ContentWrapper } from '@navikt/fp-ui';
-import { UtenlandsoppholdSenere } from '@navikt/fp-types';
-import { SenereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
-
-import useEsNavigator from 'appData/useEsNavigator';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
+import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
+import { FormattedMessage } from 'react-intl';
+
+import { Heading } from '@navikt/ds-react';
+
+import { UtenlandsoppholdSenere } from '@navikt/fp-types';
+import { ContentWrapper } from '@navikt/fp-ui';
+import { SenereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;

@@ -1,16 +1,18 @@
-import { Loader } from '@navikt/ds-react';
-import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
-import { Kvittering, LocaleAll, Søker } from '@navikt/fp-types';
-import { ErrorPage } from '@navikt/fp-ui';
-import { redirect, redirectToLogin } from '@navikt/fp-utils';
-import { useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-
 import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import useEsMellomlagring, { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 import useEsSendSøknad from 'appData/useEsSendSøknad';
+import { useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+
+import { Loader } from '@navikt/ds-react';
+
+import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
+import { Kvittering, LocaleAll, Søker } from '@navikt/fp-types';
+import { ErrorPage } from '@navikt/fp-ui';
+import { redirect, redirectToLogin } from '@navikt/fp-utils';
+
 import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import OmBarnetSteg from './steg/omBarnet/OmBarnetSteg';
 import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';

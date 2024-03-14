@@ -54,9 +54,9 @@ const defaultSøkerinfo = {
 
 const defaultBarn = {
     type: BarnType.FØDT,
-    fødselsdatoer: [ISOStringToDate('2021-03-15')],
+    fødselsdatoer: ['2021-03-15'],
     antallBarn: 1,
-    datoForAleneomsorg: ISOStringToDate('2021-03-15'),
+    datoForAleneomsorg: '2021-03-15',
     dokumentasjonAvAleneomsorg: [],
 } as Barn;
 
@@ -217,12 +217,12 @@ export const Default = Template.bind({});
 export const MedAnnenForelder = Template.bind({});
 MedAnnenForelder.args = {
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
     annenForelder: {
+        erAleneOmOmsorg: false,
         fornavn: 'Espen',
         etternavn: 'Utvikler',
         fnr: '1212121313',
@@ -234,7 +234,6 @@ MedAnnenForelder.args = {
 export const MedAleneOmsorg = Template.bind({});
 MedAleneOmsorg.args = {
     søkerData: {
-        erAleneOmOmsorg: true,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -244,6 +243,7 @@ MedAleneOmsorg.args = {
         rolle: 'mor',
     },
     annenForelder: {
+        erAleneOmOmsorg: true,
         fornavn: 'Ingen',
         etternavn: 'Omsorg',
         fnr: '1212121313',
@@ -255,19 +255,19 @@ export const FarMedUførMor = Template.bind({});
 FarMedUførMor.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
     annenForelder: {
+        erAleneOmOmsorg: false,
         fornavn: 'Eline',
         etternavn: 'Utvikler',
         fnr: '1515151616',
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
         kanIkkeOppgis: false,
-        erUfør: true,
+        erMorUfør: true,
     },
 };
 
@@ -275,12 +275,12 @@ export const FarMedMorSomHarRettIEØS = Template.bind({});
 FarMedMorSomHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
     annenForelder: {
+        erAleneOmOmsorg: false,
         fornavn: 'Anne',
         etternavn: 'Forelder',
         fnr: '1515151616',
@@ -295,12 +295,12 @@ export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind(
 FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
     annenForelder: {
+        erAleneOmOmsorg: false,
         fornavn: 'Anne',
         etternavn: 'Forelder',
         fnr: '1515151616',
@@ -315,12 +315,12 @@ export const FarMedMorSomHarRettINorge = Template.bind({});
 FarMedMorSomHarRettINorge.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
     annenForelder: {
+        erAleneOmOmsorg: false,
         fornavn: 'Frida',
         etternavn: 'Norsk',
         fnr: '01010012345',
@@ -338,8 +338,8 @@ MedAdoptertBarn.args = {
     barn: {
         type: BarnType.ADOPTERT_STEBARN,
         antallBarn: 1,
-        adopsjonsdato: ISOStringToDate('2021-10-01'),
-        fødselsdatoer: [ISOStringToDate('2021-01-01')],
+        adopsjonsdato: '2021-10-01',
+        fødselsdatoer: ['2021-01-01'],
         adoptertIUtlandet: false,
         omsorgsovertakelse: [],
     } as Barn,
@@ -378,7 +378,6 @@ MedUtenlandsopphold.args = {
 export const MedArbeidsforholdOgAndreInntekter = Template.bind({});
 MedArbeidsforholdOgAndreInntekter.args = {
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomFrilansSiste10Mnd: true,
         frilansInformasjon: {
             jobberFremdelesSomFrilans: true,
@@ -386,6 +385,10 @@ MedArbeidsforholdOgAndreInntekter.args = {
         },
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+    },
+    annenForelder: {
+        ...defaultAnnenForelder,
+        erAleneOmOmsorg: false,
     },
     søkerinfo: {
         søker: defaultSøkerinfo.søker,
@@ -412,7 +415,6 @@ MedArbeidsforholdOgAndreInntekter.args = {
 export const MedSelvstendigNæringsdrivende = Template.bind({});
 MedSelvstendigNæringsdrivende.args = {
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
         selvstendigNæringsdrivendeInformasjon: [
             {
@@ -438,12 +440,16 @@ MedSelvstendigNæringsdrivende.args = {
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
     },
+    annenForelder: {
+        ...defaultAnnenForelder,
+        erAleneOmOmsorg: false,
+    },
+    søkerinfo: defaultSøkerinfo,
 };
 
 export const MedSelvstendigNæringsdrivendeUtenDiverse = Template.bind({});
 MedSelvstendigNæringsdrivendeUtenDiverse.args = {
     søkerData: {
-        erAleneOmOmsorg: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
         selvstendigNæringsdrivendeInformasjon: [
             {
@@ -463,12 +469,16 @@ MedSelvstendigNæringsdrivendeUtenDiverse.args = {
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
     },
+    annenForelder: {
+        ...defaultAnnenForelder,
+        erAleneOmOmsorg: false,
+    },
+    søkerinfo: defaultSøkerinfo,
 };
 
 export const MedAndreInntekterJobbIUtlandet = Template.bind({});
 MedAndreInntekterJobbIUtlandet.args = {
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: true,
         andreInntekterSiste10Mnd: [
             {
@@ -485,12 +495,16 @@ MedAndreInntekterJobbIUtlandet.args = {
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
+    annenForelder: {
+        ...defaultAnnenForelder,
+        erAleneOmOmsorg: false,
+    },
+    søkerinfo: defaultSøkerinfo,
 };
 
 export const MedAndreInntekterMilitærtjeneste = Template.bind({});
 MedAndreInntekterMilitærtjeneste.args = {
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: true,
         andreInntekterSiste10Mnd: [
             {
@@ -505,13 +519,17 @@ MedAndreInntekterMilitærtjeneste.args = {
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
     },
+    annenForelder: {
+        ...defaultAnnenForelder,
+        erAleneOmOmsorg: false,
+    },
+    søkerinfo: defaultSøkerinfo,
 };
 
 export const ErEndringssøknad = Template.bind({});
 ErEndringssøknad.args = {
     erEndringssøknad: true,
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -522,5 +540,6 @@ ErEndringssøknad.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
 };

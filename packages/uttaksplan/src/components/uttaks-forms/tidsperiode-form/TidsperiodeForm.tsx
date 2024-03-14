@@ -1,32 +1,35 @@
-import {
-    intlUtils,
-    Tidsperiode,
-    Block,
-    TidsperiodeDate,
-    Situasjon,
-    Periode,
-    Utsettelsesperiode,
-    isUtsettelsesperiode,
-    isUttaksperiodeFarMedmorPgaFødsel,
-    andreAugust2022ReglerGjelder,
-    isUttaksperiodeBareFarMedmorHarRett,
-    isUttaksperiode,
-    mapTidsperiodeStringToTidsperiode,
-    ISOStringToDate,
-    dateRangeValidation,
-    getFørsteUttaksdagPåEllerEtterFødsel,
-} from '@navikt/fp-common';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { dateToISOString, getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
+
 import { Button } from '@navikt/ds-react';
-import { getFørsteMuligeUttaksdag } from '../../../utils/uttaksdatoerUtils';
+
+import {
+    Block,
+    ISOStringToDate,
+    Periode,
+    Situasjon,
+    Tidsperiode,
+    TidsperiodeDate,
+    Utsettelsesperiode,
+    andreAugust2022ReglerGjelder,
+    dateRangeValidation,
+    getFørsteUttaksdagPåEllerEtterFødsel,
+    intlUtils,
+    isUtsettelsesperiode,
+    isUttaksperiode,
+    isUttaksperiodeBareFarMedmorHarRett,
+    isUttaksperiodeFarMedmorPgaFødsel,
+    mapTidsperiodeStringToTidsperiode,
+} from '@navikt/fp-common';
+import { dateToISOString, getTypedFormComponents } from '@navikt/fp-formik';
+
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,
     getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB,
     getDatoavgrensningerForStønadskonto,
 } from '../../../utils/datoAvgrensningerUtils';
+import { getFørsteMuligeUttaksdag } from '../../../utils/uttaksdatoerUtils';
 
 interface Props {
     periode?: Periode;
@@ -161,16 +164,12 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                 return (
                     <Form.Form onCancel={onCancel} includeButtons={false}>
                         <Block>
-                            <Form.DateIntervalPicker
+                            <Form.DateRangePicker
                                 legend={intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tidsrom')}
-                                fromDatepickerProps={{
+                                fromInputProps={{
                                     name: TidsperiodeFormFields.fom,
-                                    disableWeekend: true,
                                     label: intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.fraogmed'),
-                                    fullscreenOverlay: true,
-                                    placeholder: 'dd.mm.åååå',
-                                    minDate: datoAvgrensninger.fra.minDato,
-                                    maxDate: datoAvgrensninger.fra.maksDato,
+
                                     validate: (value) =>
                                         dateRangeValidation.validateFromDateInRange({
                                             intl,
@@ -183,18 +182,12 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             utsettelserIPlan: utsettelserIPlan,
                                             periodeId: periode !== undefined ? periode.id : undefined,
                                         }),
-                                    dayPickerProps: {
-                                        defaultMonth: initialMonth || familiehendelsesdato,
-                                    },
+                                    defaultMonth: initialMonth || familiehendelsesdato,
                                 }}
-                                toDatepickerProps={{
+                                toInputProps={{
                                     name: TidsperiodeFormFields.tom,
-                                    disableWeekend: true,
                                     label: intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tilogmed'),
-                                    fullscreenOverlay: true,
-                                    placeholder: 'dd.mm.åååå',
-                                    minDate: ISOStringToDate(values.fom) || familiehendelsesdato,
-                                    maxDate: datoAvgrensninger.til.maksDato,
+
                                     validate: (value) =>
                                         dateRangeValidation.validateToDateInRange({
                                             intl,
@@ -207,10 +200,11 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                             utsettelserIPlan: utsettelserIPlan,
                                             periodeId: periode !== undefined ? periode.id : undefined,
                                         }),
-                                    dayPickerProps: {
-                                        defaultMonth: ISOStringToDate(values.fom),
-                                    },
+                                    defaultMonth: ISOStringToDate(values.fom),
                                 }}
+                                disableWeekends={true}
+                                minDate={datoAvgrensninger.fra.minDato}
+                                maxDate={datoAvgrensninger.til.maksDato}
                             />
                         </Block>
                         <Button type="submit">

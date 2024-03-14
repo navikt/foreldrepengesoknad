@@ -1,9 +1,15 @@
-import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import dayjs from 'dayjs';
+import { MemoryRouter } from 'react-router-dom';
+
+import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+
 import TilretteleggingStep from './TilretteleggingStep';
 
 const defaultExport = {
@@ -73,54 +79,60 @@ interface Props {
     gåTilNesteSide?: (action: Action) => void;
 }
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
+const Template: StoryFn<Props> = ({
+    mellomlagreSøknadOgNaviger = promiseAction(),
+    gåTilNesteSide = action('button-click'),
+}) => {
+    initAmplitude();
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.TILRETTELEGGINGER]: [
-                    {
-                        id: '990322244',
-                        arbeidsforhold: {
-                            arbeidsgiverId: '990322244',
-                            type: Arbeidsforholdstype.VIRKSOMHET,
-                            navn: 'Omsorgspartner Vestfold AS',
-                            stillinger: [],
-                            startdato: '2023-01-01',
-                        },
-                        varierendePerioder: [],
-                        behovForTilretteleggingFom: undefined!,
-                        type: undefined!,
-                        vedlegg: [
-                            {
-                                id: 'V134300149934973076055420920289127108',
-                                file: {} as any,
-                                filename: 'vedlegg – Kopi (7).png',
-                                filesize: 7477,
-                                uploaded: true,
-                                pending: false,
-                                type: AttachmentType.TILRETTELEGGING,
-                                skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                                url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                                uuid: 'Created',
+        <MemoryRouter initialEntries={[SøknadRoutes.TILRETTELEGGING]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.TILRETTELEGGINGER]: [
+                        {
+                            id: '990322244',
+                            arbeidsforhold: {
+                                arbeidsgiverId: '990322244',
+                                type: Arbeidsforholdstype.VIRKSOMHET,
+                                navn: 'Omsorgspartner Vestfold AS',
+                                stillinger: [],
+                                startdato: '2023-01-01',
                             },
-                        ],
+                            varierendePerioder: [],
+                            behovForTilretteleggingFom: undefined!,
+                            type: undefined!,
+                            vedlegg: [
+                                {
+                                    id: 'V134300149934973076055420920289127108',
+                                    file: {} as any,
+                                    filename: 'vedlegg – Kopi (7).png',
+                                    filesize: 7477,
+                                    uploaded: true,
+                                    pending: false,
+                                    type: AttachmentType.TILRETTELEGGING,
+                                    skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+                                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
+                                    uuid: 'Created',
+                                },
+                            ],
+                        },
+                    ],
+                    [ContextDataType.VALGT_TILRETTELEGGING_ID]: '990322244',
+                    [ContextDataType.OM_BARNET]: {
+                        erBarnetFødt: false,
+                        termindato: dayjs().add(45, 'days').format(ISO_DATE_FORMAT),
+                        fødselsdato: dayjs().add(45, 'days').format(ISO_DATE_FORMAT),
                     },
-                ],
-                [ContextDataType.VALGT_TILRETTELEGGING_ID]: '990322244',
-                [ContextDataType.OM_BARNET]: {
-                    erBarnetFødt: false,
-                    termindato: dayjs().add(45, 'days').format(ISO_DATE_FORMAT),
-                    fødselsdato: dayjs().add(45, 'days').format(ISO_DATE_FORMAT),
-                },
-            }}
-        >
-            <TilretteleggingStep
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={promiseAction()}
-                arbeidsforhold={arbeidsforhold}
-            />
-        </SvpDataContext>
+                }}
+            >
+                <TilretteleggingStep
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={promiseAction()}
+                    arbeidsforhold={arbeidsforhold}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 export const Default = Template.bind({});

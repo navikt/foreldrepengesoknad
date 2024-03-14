@@ -1,8 +1,10 @@
-import { intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { intlUtils } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     fieldName: PeriodeUttakFormField;

@@ -1,20 +1,23 @@
+import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
+import { formatDate } from '@navikt/fp-utils';
+
+import { BarnGruppering } from 'app/types/BarnGruppering';
 import { EngangsstønadSak, EngangsstønadSakDTO } from 'app/types/EngangsstønadSak';
 import { Familiehendelse } from 'app/types/Familiehendelse';
-import { GruppertSak } from 'app/types/GruppertSak';
-import { BarnGruppering } from 'app/types/BarnGruppering';
 import { Foreldrepengesak, ForeldrepengesakDTO } from 'app/types/Foreldrepengesak';
-import { SakOppslag, SakOppslagDTO } from 'app/types/SakOppslag';
-import { SvangerskapspengeSak, SvangerskapspengeSakDTO } from 'app/types/SvangerskapspengeSak';
-import { Ytelse } from 'app/types/Ytelse';
-import dayjs from 'dayjs';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { Sak } from 'app/types/Sak';
+import { GruppertSak } from 'app/types/GruppertSak';
 import { Person } from 'app/types/Person';
-import { getErDatoInnenEnDagFraAnnenDato, ISOStringToDate } from './dateUtils';
-import { getLeverPerson } from './personUtils';
-import { IntlShape } from 'react-intl';
-import { formatDate, intlUtils } from '@navikt/fp-common';
+import { Sak } from 'app/types/Sak';
+import { SakOppslag, SakOppslagDTO } from 'app/types/SakOppslag';
 import { Situasjon } from 'app/types/Situasjon';
+import { SvangerskapspengeSak, SvangerskapspengeSakDTO } from 'app/types/SvangerskapspengeSak';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { Ytelse } from 'app/types/Ytelse';
+
+import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato } from './dateUtils';
+import { getLeverPerson } from './personUtils';
 
 export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
@@ -216,13 +219,13 @@ export const getNavnAnnenForelder = (
 
 export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
     if (antallBarn === 1 || antallBarn === 0) {
-        return intlUtils(intl, 'barn');
+        return intl.formatMessage({ id: 'barn' });
     } else if (antallBarn === 2) {
-        return intlUtils(intl, 'tvillinger');
+        return intl.formatMessage({ id: 'tvillinger' });
     } else if (antallBarn === 3) {
-        return intlUtils(intl, 'trillinger');
+        return intl.formatMessage({ id: 'trillinger' });
     }
-    return intlUtils(intl, 'flerlinger');
+    return intl.formatMessage({ id: 'flerlinger' });
 };
 
 export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
@@ -255,23 +258,32 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
 ): string => {
     const barnTekst = getTekstForAntallBarn(antallBarn, intl);
     if ((antallBarn === 0 && fødselsdatoer === undefined) || type === 'termin') {
-        return intlUtils(intl, 'barnHeader.terminBarn', {
-            barnTekst,
-            termindato: formatDate(familiehendelsedato),
-        });
+        return intl.formatMessage(
+            { id: 'barnHeader.terminBarn' },
+            {
+                barnTekst,
+                termindato: formatDate(familiehendelsedato),
+            },
+        );
     }
 
     if (type === 'adopsjon') {
-        return intlUtils(intl, 'barnHeader.adoptertBarn', {
-            adopsjonsdato: formatDate(familiehendelsedato),
-        });
+        return intl.formatMessage(
+            { id: 'barnHeader.adoptertBarn' },
+            {
+                adopsjonsdato: formatDate(familiehendelsedato),
+            },
+        );
     } else {
         const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
         return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-            ? intlUtils(intl, 'barnHeader.fødtBarn', {
-                  barnTekst,
-                  fødselsdatoTekst,
-              })
+            ? intl.formatMessage(
+                  { id: 'barnHeader.fødtBarn' },
+                  {
+                      barnTekst,
+                      fødselsdatoTekst,
+                  },
+              )
             : '';
     }
 };

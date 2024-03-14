@@ -1,9 +1,11 @@
-import React, { useState, FunctionComponent, ReactNode, useMemo, useCallback } from 'react';
-import { useFormContext, useController } from 'react-hook-form';
+import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import dayjs from 'dayjs';
+import React, { FunctionComponent, ReactNode, useCallback, useMemo, useState } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
+
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
-import { TIDENES_MORGEN, TIDENES_ENDE, ISO_DATE_FORMAT, DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
 import { getError, getValidationRules } from './formUtils';
 
@@ -35,9 +37,9 @@ export interface Props {
     description?: string;
     validate?: Array<(value: string) => any>;
     onChange?: (value: any) => void;
-    minDate?: Date;
-    maxDate?: Date;
-    defaultMonth?: Date;
+    minDate?: Date | Dayjs | string;
+    maxDate?: Date | Dayjs | string;
+    defaultMonth?: Date | Dayjs | string;
     showMonthAndYearDropdowns?: boolean;
     disableWeekends?: boolean;
 }
@@ -83,8 +85,7 @@ const Datepicker: FunctionComponent<Props> = ({
             field.value && isValidDateString(defaultDate)
                 ? dayjs(field.value, ISO_DATE_FORMAT, true).toDate()
                 : undefined,
-        defaultMonth: defaultMonth,
-        openOnFocus: false,
+        defaultMonth: defaultMonth ? dayjs(defaultMonth).toDate() : undefined,
     });
 
     const onChangeInput = useCallback(
@@ -101,9 +102,11 @@ const Datepicker: FunctionComponent<Props> = ({
         [setFieldValue, onChange, field],
     );
 
+    const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
+    const toDate = maxDate ? dayjs(maxDate).toDate() : undefined;
     const disabledDays = useMemo(
-        () => (minDate || maxDate ? findDisabledDays(minDate, maxDate) : undefined),
-        [minDate, maxDate],
+        () => (fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined),
+        [fromDate, toDate],
     );
 
     return (
@@ -112,8 +115,8 @@ const Datepicker: FunctionComponent<Props> = ({
             disabled={disabledDays}
             strategy="fixed"
             dropdownCaption={showMonthAndYearDropdowns}
-            fromDate={minDate}
-            toDate={maxDate}
+            fromDate={fromDate}
+            toDate={toDate}
             disableWeekends={disableWeekends}
         >
             <DatePicker.Input

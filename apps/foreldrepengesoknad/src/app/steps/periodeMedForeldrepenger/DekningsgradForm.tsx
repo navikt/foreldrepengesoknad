@@ -9,6 +9,7 @@ import {
     Barn,
     Dekningsgrad,
     StønadskontoType,
+    Tidsperioden,
     TilgjengeligStønadskonto,
     Uttaksdagen,
     bemUtils,
@@ -26,7 +27,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
-import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
+import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import './dekningsgradForm.less';
 
@@ -44,7 +45,7 @@ const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskont
     const dagerSomSkalLeggesTil =
         getAntallUker(stønadskontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel)) * 5;
 
-    const førsteDag = Uttaksdagen(dato).denneEllerNeste();
+    const førsteDag = Uttaksdagen(dayjs(dato).toDate()).denneEllerNeste();
     const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil - 1);
     return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
 };
@@ -114,7 +115,10 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
     const ekstraDagerGrunnetPrematurFødsel =
         visInfoOmPrematuruker && fødselsdato && termindato
-            ? getAntallPrematurdager(fødselsdato, termindato)
+            ? Tidsperioden({
+                  fom: dayjs(fødselsdato).toDate(),
+                  tom: dayjs(termindato).toDate(),
+              }).getAntallUttaksdager() - 1
             : undefined;
 
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(stønadskonto100, barn);
@@ -204,7 +208,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     </ReadMore>
                 </VStack>
                 {visInfoOmPrematuruker && !!ekstraDagerGrunnetPrematurFødsel && (
-                    <Box padding="4" background="surface-action-subtle">
+                    <Box padding="4" background="surface-alt-3-subtle">
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
                                 <Heading size="xsmall">
@@ -229,13 +233,13 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 </BodyShort>
                             </VStack>
                             <div className={bem.block}>
-                                <FeedingBottleIcon height={24} width={24} color="#3386E0" />
+                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
                             </div>
                         </HStack>
                     </Box>
                 )}
                 {barn.antallBarn > 1 && (
-                    <Box padding="4" background="surface-action-subtle">
+                    <Box padding="4" background="surface-alt-3-subtle">
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
                                 <Heading size="xsmall">
@@ -270,7 +274,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 </BodyShort>
                             </VStack>
                             <div className={bem.block}>
-                                <FeedingBottleIcon height={24} width={24} color="#3386E0" />
+                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
                             </div>
                         </HStack>
                     </Box>

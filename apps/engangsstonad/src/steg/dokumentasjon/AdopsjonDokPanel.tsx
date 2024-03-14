@@ -1,11 +1,12 @@
-import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
-import { FormattedMessage } from 'react-intl';
-import { FileUploader } from '@navikt/fp-ui';
-import { Attachment } from '@navikt/fp-types';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { getSaveAttachment } from '@navikt/fp-api';
-
 import Environment from 'appData/Environment';
+import { FormattedMessage } from 'react-intl';
+
+import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
+
+import { getSaveAttachment } from '@navikt/fp-api';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+import { FileUploader } from '@navikt/fp-ui';
 
 interface Props {
     attachments?: Attachment[];

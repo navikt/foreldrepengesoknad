@@ -6,7 +6,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {
         const reglerFørFørsteOkt2021 = dayjs(new Date()).isBefore(new Date('2021-10-01'), 'day');
-        const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erUfør : undefined;
+        const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erMorUfør : undefined;
         const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
             ? annenForelder.harRettPåForeldrepengerINorge || annenForelder.harRettPåForeldrepengerIEØS
             : undefined;

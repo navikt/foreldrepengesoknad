@@ -1,5 +1,3 @@
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 import {
     AnnenForelder,
     Barn,
@@ -20,9 +18,11 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
+import { dateToISOString } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import SøkerData from 'app/context/types/SøkerData';
+
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
@@ -57,9 +57,9 @@ const getAnnenForelderHarRettIEØS = (annenForelder: AnnenForelder): boolean => 
     return false;
 };
 
-const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string) => {
+const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string): string | undefined => {
     if (isFødtBarn(barn) || isUfødtBarn(barn)) {
-        return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : dateToISOString(barn.termindato);
+        return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : barn.termindato;
     }
 
     return undefined;
@@ -96,19 +96,23 @@ const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
-    søkerData: SøkerData,
     barnFraNesteSak?: BarnFraNesteSak,
     annenPartsVedtak?: AnnenPartVedtakDTO,
     eksisterendeSak?: EksisterendeSak,
 ) => {
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
         erFarEllerMedmor,
-        søkerData.erAleneOmOmsorg,
+        oppgittAnnenForelder?.erAleneOmOmsorg || false,
         annenForelder,
     );
 
-    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, søkerData.erAleneOmOmsorg, annenForelder);
+    const morErAleneOmOmsorg = getMorErAleneOmOmsorg(
+        !erFarEllerMedmor,
+        oppgittAnnenForelder?.erAleneOmOmsorg || false,
+        annenForelder,
+    );
 
     const familieHendelseDatoNesteSak = barnFraNesteSak?.familiehendelsesdato;
 
@@ -148,7 +152,7 @@ const getStønadskontoParams = (
         farHarAleneomsorg: farMedmorErAleneOmOmsorg || false,
         antallBarn: saksgrunnlagsAntallBarn,
         fødselsdato: formaterStønadskontoParamsDatoer(
-            isFødtBarn(barn) ? dateToISOString(barn.fødselsdatoer[0]) : undefined,
+            isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
             fpUttakServiceDateFormat,
         ),
         termindato: formaterStønadskontoParamsDatoer(
@@ -156,7 +160,7 @@ const getStønadskontoParams = (
             fpUttakServiceDateFormat,
         ),
         omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(
-            isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? dateToISOString(barn.adopsjonsdato) : undefined,
+            isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
             fpUttakServiceDateFormat,
         ),
         startdatoUttak: formaterStønadskontoParamsDatoer(getFamiliehendelsedato(barn), fpUttakServiceDateFormat),

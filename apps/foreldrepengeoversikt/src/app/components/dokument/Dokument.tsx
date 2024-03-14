@@ -1,9 +1,10 @@
+import { FileContent } from '@navikt/ds-icons';
 import { BodyShort, Link } from '@navikt/ds-react';
 
-import { FileContent } from '@navikt/ds-icons';
-import { bemUtils, formatDateExtended } from '@navikt/fp-common';
-import { Dokument as DokumentType } from 'app/types/Dokument';
+import { bemUtils, formatDateExtended } from '@navikt/fp-utils';
+
 import DokumentAvsender from 'app/components/dokument-avsender/DokumentAvsender';
+import { Dokument as DokumentType } from 'app/types/Dokument';
 import { lagUrl } from 'app/utils/dokumenterUtils';
 
 import './dokument.css';

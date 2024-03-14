@@ -102,8 +102,8 @@ const Oppsummering: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig(erEndringssøknad);
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
     const [manglerDokumentasjon, setManglerDokumentasjon] = useState(false);
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -120,9 +120,9 @@ const Oppsummering: FunctionComponent<Props> = ({
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const inneholderIkkeVedlegg = søknadInneholderIngenVedlegg(vedlegg);
 
+    const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, søkerErFarEllerMedmor, intl);
-
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -157,11 +157,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                     <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
                 </OppsummeringIndex.Punkt>
                 <OppsummeringIndex.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
-                    <AnnenForelderOppsummering
-                        annenForelder={annenForelder}
-                        søkerData={søkerData}
-                        søkerrolle={søkersituasjon.rolle}
-                    />
+                    <AnnenForelderOppsummering annenForelder={annenForelder} søkerrolle={søkersituasjon.rolle} />
                 </OppsummeringIndex.Punkt>
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={datoOgHendelsetype[0]}
@@ -192,7 +188,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                         familiehendelsesdato={familiehendelsesdato!}
                         termindato={termindato}
                         situasjon={søkersituasjon.situasjon}
-                        erAleneOmOmsorg={søkerData.erAleneOmOmsorg}
+                        erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
                         antallBarn={barn.antallBarn}
                         ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
                     />

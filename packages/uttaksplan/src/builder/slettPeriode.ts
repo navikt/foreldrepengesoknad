@@ -1,4 +1,5 @@
 import { Periode } from '@navikt/fp-common';
+
 import { getPeriodeHullEllerPeriodeUtenUttak } from './uttaksplanbuilderUtils';
 
 interface SlettPeriodeParams {

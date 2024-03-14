@@ -1,5 +1,6 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+
 import ErrorPage from './ErrorPage';
 
 export default {

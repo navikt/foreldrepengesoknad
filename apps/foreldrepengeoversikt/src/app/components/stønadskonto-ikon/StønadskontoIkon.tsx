@@ -1,8 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Forelder } from '@navikt/fp-common';
-
+import { Forelder } from 'app/types/Forelder';
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
 import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { StønadskontoType } from 'app/types/StønadskontoType';

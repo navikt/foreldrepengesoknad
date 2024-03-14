@@ -1,22 +1,22 @@
-import { Radio, VStack } from '@navikt/ds-react';
-import { useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { Step } from '@navikt/fp-common';
-import { useCustomIntl } from '@navikt/fp-ui';
-import { RadioGroup, Form, ErrorSummaryHookForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { isRequired } from '@navikt/fp-validation';
-
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
+import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Radio, VStack } from '@navikt/ds-react';
+
+import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søkersituasjon } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
+import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;
 };
 
 const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
 
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
@@ -39,7 +39,7 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
 
     return (
         <Step
-            bannerTitle={i18n('Søknad.Pageheading')}
+            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             onCancel={navigator.avbrytSøknad}
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
@@ -50,7 +50,11 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
                     <RadioGroup
                         name="situasjon"
                         label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
-                        validate={[isRequired(i18n('SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon'))]}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({ id: 'SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon' }),
+                            ),
+                        ]}
                     >
                         <Radio value="fødsel">
                             <FormattedMessage id="SøkersituasjonSteg.Fødsel" />

@@ -11,11 +11,11 @@ import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
 import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
 import useSendSøknad from 'app/context/useSendSøknad';
 import Velkommen from 'app/pages/velkommen/Velkommen';
-import AnnenForelder from 'app/steps/annen-forelder/AnnenForelder';
+import AnnenForelderSteg from 'app/steps/annen-forelder/AnnenForelderSteg';
 import FordelingSteg from 'app/steps/fordeling/FordelingSteg';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 import ManglendeVedlegg from 'app/steps/manglende-vedlegg/ManglendeVedlegg';
-import OmBarnet from 'app/steps/om-barnet/OmBarnet';
+import OmBarnetSteg from 'app/steps/om-barnet/OmBarnetSteg';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
 import PeriodeMedForeldrepengerSteg from 'app/steps/periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
 import SøkersituasjonSteg from 'app/steps/søkersituasjon/SøkersituasjonSteg';
@@ -63,7 +63,7 @@ const renderSøknadRoutes = (
                     path={SøknadRoutes.DOKUMENTASJON}
                     element={
                         <ManglendeVedlegg
-                            søker={søkerInfo.søker}
+                            søkerInfo={søkerInfo}
                             erEndringssøknad={erEndringssøknad}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
@@ -92,6 +92,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.SØKERSITUASJON}
                 element={
                     <SøkersituasjonSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         kjønn={søkerInfo.søker.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -101,7 +102,7 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.OM_BARNET}
                 element={
-                    <OmBarnet
+                    <OmBarnetSteg
                         søkerInfo={søkerInfo}
                         søknadGjelderNyttBarn={søknadGjelderNyttBarn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
@@ -112,8 +113,8 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.ANNEN_FORELDER}
                 element={
-                    <AnnenForelder
-                        søker={søkerInfo.søker}
+                    <AnnenForelderSteg
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -123,6 +124,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.PERIODE_MED_FORELDREPENGER}
                 element={
                     <PeriodeMedForeldrepengerSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -133,6 +135,7 @@ const renderSøknadRoutes = (
                 element={
                     <FordelingSteg
                         søker={søkerInfo.søker}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -153,7 +156,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.DOKUMENTASJON}
                 element={
                     <ManglendeVedlegg
-                        søker={søkerInfo.søker}
+                        søkerInfo={søkerInfo}
                         erEndringssøknad={erEndringssøknad}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -164,6 +167,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.UTENLANDSOPPHOLD}
                 element={
                     <UtenlandsoppholdSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -173,6 +177,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD}
                 element={
                     <TidligereUtenlandsoppholdSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -182,6 +187,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.SENERE_UTENLANDSOPPHOLD}
                 element={
                     <SenereUtenlandsoppholdSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -306,7 +312,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                         onChangeLocale={onChangeLocale}
                         fnr={søkerInfo.søker.fnr}
                         harGodkjentVilkår={harGodkjentVilkår}
-                        søker={søkerInfo.søker}
+                        søkerInfo={søkerInfo}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
                         setErEndringssøknad={setErEndringssøknad}
                         setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}

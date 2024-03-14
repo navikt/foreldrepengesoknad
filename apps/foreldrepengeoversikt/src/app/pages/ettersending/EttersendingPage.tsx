@@ -1,23 +1,27 @@
 import { FormEvent, useState } from 'react';
-import { IntlShape, useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
+
 import { Add } from '@navikt/ds-icons';
-import { Attachment } from '@navikt/fp-types';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import {
     Alert,
     BodyLong,
     BodyShort,
     Button,
+    GuidePanel,
+    HStack,
     Link as NAVLink,
     Select,
     VStack,
-    HStack,
-    GuidePanel,
 } from '@navikt/ds-react';
-import { bemUtils, intlUtils, useDocumentTitle } from '@navikt/fp-common';
+
 import { getSaveAttachment } from '@navikt/fp-api';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
+import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
+
+import Environment from 'app/Environment';
 import Api from 'app/api/api';
 import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
@@ -25,12 +29,11 @@ import OversiktRoutes from 'app/routes/routes';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { Sak } from 'app/types/Sak';
 import { SakOppslag } from 'app/types/SakOppslag';
+import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser } from 'app/utils/sakerUtils';
 import { getRelevanteSkjemanummer } from 'app/utils/skjemanummerUtils';
-import Environment from 'app/Environment';
 
 import './ettersending-page.css';
-import { Ytelse } from 'app/types/Ytelse';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
     if (sakstype === Ytelse.ENGANGSSTØNAD) {
@@ -94,7 +97,9 @@ export interface Props {
 
 const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
     const intl = useIntl();
-    useDocumentTitle(`${intlUtils(intl, 'lastOppDokumenter')} - ${intlUtils(intl, 'dineForeldrepenger')}`);
+    useDocumentTitle(
+        `${intl.formatMessage({ id: 'lastOppDokumenter' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
+    );
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
 
@@ -180,6 +185,17 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                         skjemanummer={type}
                         existingAttachments={vedlegg}
                         saveAttachment={getSaveAttachment(Environment.REST_API_URL, mapYtelse(sak!.ytelse))}
+                        skjemanummerTextMap={
+                            sak
+                                ? getRelevanteSkjemanummer(sak).reduce(
+                                      (prev, skjemanr) => ({
+                                          ...prev,
+                                          [skjemanr]: intl.formatMessage({ id: `ettersendelse.${skjemanr}` }),
+                                      }),
+                                      {} as Record<Skjemanummer, string>,
+                                  )
+                                : undefined
+                        }
                     />
                 )}
                 {vedlegg && vedlegg.length > 0 && vedlegg.length <= 40 && (

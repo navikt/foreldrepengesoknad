@@ -1,8 +1,10 @@
-import { LinkPanel } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
-import OversiktRoutes from 'app/routes/routes';
-
 import { Link } from 'react-router-dom';
+
+import { LinkPanel } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import OversiktRoutes from 'app/routes/routes';
 
 import './se-hele-prosessen.css';
 

@@ -1,10 +1,12 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { initAmplitude } from '@navikt/fp-metrics';
+import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import { Action, EsDataContext, ContextDataType } from 'appData/EsDataContext';
-import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 import { MemoryRouter } from 'react-router-dom';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 
 const promiseAction =
     () =>

@@ -1,21 +1,23 @@
 import { useMemo } from 'react';
+import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
+
 import { notEmpty } from '@navikt/fp-validation';
-import { ContextDataType, ContextDataMap, useContextGetAnyData } from './EsDataContext';
-import { Path, REQUIRED_APP_STEPS, PATH_ORDER } from './paths';
-import { I18nFn, useCustomIntl } from '@navikt/fp-ui';
+
+import { ContextDataMap, ContextDataType, useContextGetAnyData } from './EsDataContext';
+import { PATH_ORDER, Path, REQUIRED_APP_STEPS } from './paths';
 
 // TODO Denne bør flyttast ut
-const getPathToLabelMap = (i18n: I18nFn) =>
+const getPathToLabelMap = (intl: IntlShape) =>
     ({
-        [Path.SØKERSITUASJON]: i18n('UseStepConfig.Søkersituasjon'),
-        [Path.OM_BARNET]: i18n('UseStepConfig.OmBarnet'),
-        [Path.TERMINBEKREFTELSE]: i18n('UseStepConfig.Termin'),
-        [Path.ADOPSJONSBEKREFTELSE]: i18n('UseStepConfig.Adopsjon'),
-        [Path.UTENLANDSOPPHOLD]: i18n('UseStepConfig.Utenlandsopphold'),
-        [Path.TIDLIGERE_UTENLANDSOPPHOLD]: i18n('UseStepConfig.TidligereUtenlandsopphold'),
-        [Path.SENERE_UTENLANDSOPPHOLD]: i18n('UseStepConfig.FremtidigUtenlandsopphold'),
-        [Path.OPPSUMMERING]: i18n('UseStepConfig.Oppsummering'),
+        [Path.SØKERSITUASJON]: intl.formatMessage({ id: 'UseStepConfig.Søkersituasjon' }),
+        [Path.OM_BARNET]: intl.formatMessage({ id: 'UseStepConfig.OmBarnet' }),
+        [Path.TERMINBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Termin' }),
+        [Path.ADOPSJONSBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Adopsjon' }),
+        [Path.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.Utenlandsopphold' }),
+        [Path.TIDLIGERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.TidligereUtenlandsopphold' }),
+        [Path.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.FremtidigUtenlandsopphold' }),
+        [Path.OPPSUMMERING]: intl.formatMessage({ id: 'UseStepConfig.Oppsummering' }),
     }) as Record<string, string>;
 
 const isAfterStep = (previousStepPath: Path, currentStepPath: Path): boolean => {
@@ -84,8 +86,8 @@ const showDokumentasjonStep = (
 };
 
 const useStepConfig = () => {
-    const { i18n } = useCustomIntl();
-    const pathToLabelMap = getPathToLabelMap(i18n);
+    const intl = useIntl();
+    const pathToLabelMap = getPathToLabelMap(intl);
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
@@ -109,8 +111,7 @@ const useStepConfig = () => {
 
     return useMemo(
         () =>
-            appPathList.map((p, index) => ({
-                index,
+            appPathList.map((p) => ({
                 id: p,
                 label: pathToLabelMap[p],
                 isSelected: p === currentPath,

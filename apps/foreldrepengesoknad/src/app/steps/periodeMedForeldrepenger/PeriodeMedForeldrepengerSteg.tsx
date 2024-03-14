@@ -1,5 +1,7 @@
 import { useIntl } from 'react-intl';
+
 import { Loader } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Barn,
@@ -10,23 +12,26 @@ import {
     isAnnenForelderOppgitt,
     isFødtBarn,
 } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { useApiPostData, useApiGetData } from 'app/api/context/useFpApiData';
+
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
+import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { RequestStatus } from 'app/types/RequestState';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
-import { RequestStatus } from 'app/types/RequestState';
+
 import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
-import useStepConfig from 'app/appData/useStepConfig';
-import useFpNavigator from 'app/appData/useFpNavigator';
 
 //TODO GR: Move if reused in next step
 export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
     const annenPartFødselsnummer =
-        isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr === false ? annenForelder.fnr : undefined;
+        isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
     const barnFødselsnummer =
         isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
     return {
@@ -44,19 +49,23 @@ export const shouldSuspendAnnenPartVedtakApiRequest = (annenForelder: AnnenForel
 };
 
 type Props = {
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
+    arbeidsforhold,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const søker = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
@@ -73,7 +82,6 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({ mellomla
         barn,
         annenForelder,
         søkersituasjon,
-        søker,
         barnFraNesteSak,
         annenPartsVedtak,
         eksisterendeSak,

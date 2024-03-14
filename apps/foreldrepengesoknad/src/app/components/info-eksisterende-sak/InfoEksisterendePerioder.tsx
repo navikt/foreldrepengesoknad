@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -20,8 +21,8 @@ interface Props {
     oppgittePerioder: Periode[];
     navnForOverskrift?: string;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: Date;
-    termindato: Date | undefined;
+    familiehendelsesdato: string;
+    termindato: string | undefined;
     situasjon: Situasjon;
     erFarEllerMedmor: boolean;
 }
@@ -65,8 +66,8 @@ const InfoEksisterendePerioder: FunctionComponent<Props> = ({
                                         intl,
                                         periode,
                                         navnPåForeldre,
-                                        familiehendelsesdato,
-                                        termindato,
+                                        dayjs(familiehendelsesdato).toDate(),
+                                        termindato ? dayjs(termindato).toDate() : undefined,
                                         situasjon,
                                         erFarEllerMedmor,
                                     )}

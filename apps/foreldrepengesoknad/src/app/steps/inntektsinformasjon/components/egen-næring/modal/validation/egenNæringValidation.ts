@@ -1,4 +1,5 @@
-import { isISODateString } from '@navikt/ds-datepicker';
+import { IntlShape } from 'react-intl';
+
 import {
     erGyldigNorskOrgnummer,
     hasValue,
@@ -6,10 +7,11 @@ import {
     isDateInTheFuture,
     validateTextInputField,
 } from '@navikt/fp-common';
-import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
+import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
+import { isISODateString } from '@navikt/fp-utils';
+
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { isDateABeforeDateB } from 'app/utils/dateUtils';
-import { IntlShape } from 'react-intl';
 
 export const validateEgenNæringFom =
     (intl: IntlShape, tom: string) =>

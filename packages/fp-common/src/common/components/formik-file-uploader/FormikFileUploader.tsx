@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ArrayHelpers, useFormikContext } from 'formik';
-import { FormikFileInput } from '@navikt/sif-common-formik-ds/lib';
 import AttachmentList from '../attachment/AttachmentList';
 import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort, ReadMore } from '@navikt/ds-react';
@@ -11,6 +10,7 @@ import { deleteAttachment } from '../../utils/globalUtil';
 import PictureScanningGuide from '../picture-scanning-guide/PictureScanningGuide';
 import { Attachment } from '@navikt/fp-types';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { FormikFileInput } from '@navikt/fp-formik';
 
 export type FieldArrayReplaceFn = (index: number, value: any) => void;
 export type FieldArrayPushFn = (obj: any) => void;

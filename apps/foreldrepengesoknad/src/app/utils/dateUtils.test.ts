@@ -1,18 +1,6 @@
 import MockDate from 'mockdate';
-import {
-    isDateABeforeDateB,
-    getEldsteRegistrerteBarn,
-    dateIsSameOrBefore,
-    dateIsSameOrAfter,
-    findEldsteDato,
-    getAlderFraDato,
-    getRelevantFamiliehendelseDato,
-    getEndringstidspunkt,
-    getEldsteDato,
-    sorterDatoEtterEldst,
-} from './dateUtils';
-
 import getIntlMock from 'utils-test/intl-test-helper';
+
 import {
     ISOStringToDate,
     Periode,
@@ -35,8 +23,21 @@ import {
     isDateToday,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
+import { dateToISOString } from '@navikt/fp-formik';
 import { SøkerBarn } from '@navikt/fp-types';
+
+import {
+    dateIsSameOrAfter,
+    dateIsSameOrBefore,
+    findEldsteDato,
+    getAlderFraDato,
+    getEldsteDato,
+    getEldsteRegistrerteBarn,
+    getEndringstidspunkt,
+    getRelevantFamiliehendelseDato,
+    isDateABeforeDateB,
+    sorterDatoEtterEldst,
+} from './dateUtils';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -984,32 +985,32 @@ describe('dateUtils - WLB regler for dagens dato fom 2. august 2022', () => {
 
 describe('To tette - WLB i prod', () => {
     it('Skal returnere at to tette regler ikke gjelder hvis første barnet sin familihendelse dato er undefined', () => {
-        const result = getToTetteReglerGjelder(undefined, new Date('2023-01-01'));
+        const result = getToTetteReglerGjelder(undefined, '2023-01-01');
         expect(result).toEqual(false);
     });
     it('Skal returnere at to tette regler ikke gjelder hvis det andre barnet sin familihendelse dato er undefined', () => {
-        const result = getToTetteReglerGjelder(new Date('2022-08-02'), undefined);
+        const result = getToTetteReglerGjelder('2022-08-02', undefined);
         expect(result).toEqual(false);
     });
     it('Skal returnere at to tette regler ikke gjelder hvis første barnet er født før 2 august 2022', () => {
-        const result = getToTetteReglerGjelder(new Date('2022-08-01'), new Date('2022-08-02'));
+        const result = getToTetteReglerGjelder('2022-08-01', '2022-08-02');
         expect(result).toEqual(false);
     });
     it('Skal returnere at to tette regler ikke gjelder hvis andre barnet er født før 2 august 2022', () => {
-        const result = getToTetteReglerGjelder(new Date('2022-08-02'), new Date('2022-08-01'));
+        const result = getToTetteReglerGjelder('2022-08-02', '2022-08-01');
         expect(result).toEqual(false);
     });
 
     it('Skal returnere at to tette regler gjelder hvis begge barna er født etter 2 august 2022 og det er mindre enn 48 uker mellom barna', () => {
-        const result = getToTetteReglerGjelder(new Date('2023-01-02'), new Date('2023-12-03'));
+        const result = getToTetteReglerGjelder('2023-01-02', '2023-12-03');
         expect(result).toEqual(true);
     });
     it('Skal returnere at to tette regler ikke gjelder hvis det er mer enn 48 uker mellom barna', () => {
-        const result = getToTetteReglerGjelder(new Date('2023-01-02'), new Date('2023-12-04'));
+        const result = getToTetteReglerGjelder('2023-01-02', '2023-12-04');
         expect(result).toEqual(false);
     });
     it('Skal returnere at to tette regler ikke gjelder hvis det er akkurat 48 uker mellom barna', () => {
-        const result = getToTetteReglerGjelder(new Date('2023-01-02'), new Date('2023-12-05'));
+        const result = getToTetteReglerGjelder('2023-01-02', '2023-12-05');
         expect(result).toEqual(false);
     });
 });
@@ -1047,7 +1048,7 @@ describe('getEldsteDato', () => {
             new Date('2021-12-20'),
         ];
         const result = getEldsteDato(datoListe);
-        expect(result).toEqual(new Date('2021-11-20'));
+        expect(result).toEqual('2021-11-20');
     });
 });
 
@@ -1060,8 +1061,8 @@ describe('sorterDatoEtterEldst', () => {
         ];
         const result = sorterDatoEtterEldst(datoListe);
         expect(result.length).toBe(3);
-        expect(result[0]).toEqual(new Date('2021-11-19'));
-        expect(result[1]).toEqual(new Date('2021-11-20'));
-        expect(result[2]).toEqual(new Date('2021-11-21'));
+        expect(result[0]).toEqual('2021-11-19');
+        expect(result[1]).toEqual('2021-11-20');
+        expect(result[2]).toEqual('2021-11-21');
     });
 });

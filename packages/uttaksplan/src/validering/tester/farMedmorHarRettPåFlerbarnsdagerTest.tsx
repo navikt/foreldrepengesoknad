@@ -1,13 +1,15 @@
+import { IntlShape } from 'react-intl';
+
 import {
     Søknadsinfo,
     andreAugust2022ReglerGjelder,
     getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
     getBareFarHarRettFlerbarnsdagerUker,
-    links,
 } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
+
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
-import { IntlShape } from 'react-intl';
 
 export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const tattUtForMangeDagerIPlanen = erUttaksmengdeForFarMedmorForHøyTest(grunnlag).passerer === false;

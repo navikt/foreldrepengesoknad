@@ -1,7 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
-import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
 
@@ -108,7 +107,6 @@ const Template: StoryFn<Props> = ({
     barnet,
     stønadskonto100,
     stønadskonto80,
-    erAleneOmOmsorg = false,
     annenPartVedtak,
 }) => {
     initAmplitude();
@@ -127,7 +125,6 @@ const Template: StoryFn<Props> = ({
                             [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                             [ContextDataType.OM_BARNET]: barnet,
                             [ContextDataType.SØKER_DATA]: {
-                                erAleneOmOmsorg,
                                 språkkode: 'nb',
                                 harJobbetSomFrilansSiste10Mnd: false,
                                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -137,6 +134,7 @@ const Template: StoryFn<Props> = ({
                         }}
                     >
                         <PeriodeMedForeldrepengerSteg
+                            arbeidsforhold={[]}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
                         />
@@ -156,9 +154,9 @@ FarEllerMedmorAleneomsorgFødsel.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-03-01').toDate()],
+        fødselsdatoer: ['2022-03-01'],
         antallBarn: 1,
-        termindato: dayjs('2022-03-24').toDate(),
+        termindato: '2022-03-24',
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -176,7 +174,7 @@ FarEllerMedmorFødselBeggeHarRett.args = {
     barnet: {
         type: BarnType.UFØDT,
         antallBarn: 1,
-        termindato: dayjs('2022-03-24').toDate(),
+        termindato: '2022-03-24',
     },
     annenForelder: {
         etternavn: 'Pettersen',
@@ -186,6 +184,7 @@ FarEllerMedmorFødselBeggeHarRett.args = {
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: true,
         erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: STØNADSKONTO_100,
     stønadskonto80: STØNADSKONTO_80,
@@ -199,9 +198,9 @@ FarEllerMedmorFødselOgMorHarIkkeRett.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2022-03-01').toDate()],
+        fødselsdatoer: ['2022-03-01'],
         antallBarn: 1,
-        termindato: dayjs('2022-03-24').toDate(),
+        termindato: '2022-03-24',
     },
     annenForelder: {
         etternavn: 'dfg',
@@ -211,6 +210,7 @@ FarEllerMedmorFødselOgMorHarIkkeRett.args = {
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: false,
         erInformertOmSøknaden: false,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: {
         ...STØNADSKONTO_100,
@@ -236,7 +236,7 @@ MorSøkerAdopsjonMedAleneomsorg.args = {
     barnet: {
         type: BarnType.ADOPTERT_ANNET_BARN,
         antallBarn: 1,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -268,7 +268,7 @@ MorSøkerAdopsjonMedDeltUttak.args = {
     barnet: {
         type: BarnType.ADOPTERT_ANNET_BARN,
         antallBarn: 1,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -278,6 +278,7 @@ MorSøkerAdopsjonMedDeltUttak.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: {
         ...STØNADSKONTO_100,
@@ -304,7 +305,7 @@ FarSøkerAdopsjonMedDeltUttak.args = {
     barnet: {
         type: BarnType.ADOPTERT_ANNET_BARN,
         antallBarn: 1,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -314,6 +315,7 @@ FarSøkerAdopsjonMedDeltUttak.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: {
         ...STØNADSKONTO_100,
@@ -340,7 +342,7 @@ MorSøkerAdopsjonDerFarHarRettIEOS.args = {
     barnet: {
         type: BarnType.ADOPTERT_ANNET_BARN,
         antallBarn: 1,
-        adopsjonsdato: dayjs('2021-03-15').toDate(),
+        adopsjonsdato: '2021-03-15',
         adoptertIUtlandet: false,
         fødselsdatoer: [],
     },
@@ -351,6 +353,7 @@ MorSøkerAdopsjonDerFarHarRettIEOS.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: {
         ...STØNADSKONTO_100,
@@ -375,8 +378,8 @@ MorSøkerFodselDerFarHarRettIEOS.args = {
         rolle: 'mor',
     },
     barnet: {
-        fødselsdatoer: [dayjs('2022-06-14').toDate()],
-        termindato: dayjs('2022-08-14').toDate(),
+        fødselsdatoer: ['2022-06-14'],
+        termindato: '2022-08-14',
         antallBarn: 1,
         // @ts-ignore FIX
         adopsjonsdato: undefined,
@@ -390,6 +393,7 @@ MorSøkerFodselDerFarHarRettIEOS.args = {
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: {
         ...STØNADSKONTO_100,
@@ -416,9 +420,8 @@ MorAleneomsorgFødsel.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -448,9 +451,8 @@ MorFødselDeltUttakPrematurFødsel.args = {
     barnet: {
         type: BarnType.FØDT,
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
-        fødselsdatoer: [dayjs('2021-01-11').toDate()],
-        termindato: dayjs('2021-03-11').toDate(),
+        fødselsdatoer: ['2021-01-11'],
+        termindato: '2021-03-11',
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -458,6 +460,7 @@ MorFødselDeltUttakPrematurFødsel.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: STØNADSKONTO_100,
     stønadskonto80: STØNADSKONTO_80,
@@ -473,9 +476,8 @@ MorAleneomsorgPrematurFødsel.args = {
     barnet: {
         type: BarnType.FØDT,
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
-        fødselsdatoer: [dayjs('2021-01-11').toDate()],
-        termindato: dayjs('2021-03-11').toDate(),
+        fødselsdatoer: ['2021-01-11'],
+        termindato: '2021-03-11',
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -504,9 +506,8 @@ MorFødselDeltUttak.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 1,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -514,6 +515,7 @@ MorFødselDeltUttak.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: STØNADSKONTO_100,
     stønadskonto80: STØNADSKONTO_80,
@@ -527,9 +529,8 @@ MorFødselMedTvillingFlerbarnsuker.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 2,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         fornavn: 'Espen',
@@ -537,6 +538,7 @@ MorFødselMedTvillingFlerbarnsuker.args = {
         fnr: '1212121313',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     stønadskonto100: {
         ...STØNADSKONTO_100,
@@ -569,9 +571,8 @@ MorFødselAleneomsorgMedTrillingFlerbarnsuker.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 3,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         kanIkkeOppgis: true,
@@ -606,9 +607,8 @@ FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        fødselsdatoer: [dayjs('2021-03-15').toDate()],
+        fødselsdatoer: ['2021-03-15'],
         antallBarn: 2,
-        datoForAleneomsorg: new Date(),
     },
     annenForelder: {
         fornavn: 'Helga',
@@ -616,6 +616,7 @@ FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args = {
         fnr: '12117212090',
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
     },
     annenPartVedtak: {
         perioder: [uttaksperiode],

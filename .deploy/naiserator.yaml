@@ -25,6 +25,10 @@ spec:
   prometheus:
       enabled: false
       path: /internal/actuator/prometheus
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
   ingresses:
   {{#each ingresses as |url|}}
     - {{url}}

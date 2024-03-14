@@ -1,10 +1,14 @@
 import { FunctionComponent } from 'react';
-import { Block, NavnPåForeldre, Situasjon, andreAugust2022ReglerGjelder, intlUtils, links } from '@navikt/fp-common';
-import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+
 import { GuidePanel, Link } from '@navikt/ds-react';
+
+import { Block, NavnPåForeldre, Situasjon, andreAugust2022ReglerGjelder, intlUtils } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
+import { YesOrNo } from '@navikt/fp-formik';
+
 import { prosentValideringSamtidigUttak } from '../../../../utils/prosentValidering';
+import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 interface Props {
     erFlerbarnssøknad: boolean;

@@ -1,5 +1,5 @@
-import { PrimitiveType, useIntl } from 'react-intl';
 import { FormatXMLElementFn } from 'intl-messageformat';
+import { PrimitiveType, useIntl } from 'react-intl';
 
 export type I18nFn = (
     i18nId: string,

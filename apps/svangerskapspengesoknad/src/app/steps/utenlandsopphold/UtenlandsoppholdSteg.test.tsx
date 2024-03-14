@@ -1,9 +1,11 @@
-import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
-import * as stories from './UtenlandsoppholdSteg.stories';
 import { render, screen } from '@testing-library/react';
-import { ContextDataType } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import userEvent from '@testing-library/user-event';
+
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
+import * as stories from './UtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 
@@ -27,8 +29,8 @@ describe('<Utlandsopphold>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(4);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                iNorgeNeste12Mnd: true,
-                iNorgeSiste12Mnd: true,
+                harBoddUtenforNorgeSiste12Mnd: false,
+                skalBoUtenforNorgeNeste12Mnd: false,
             },
             key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
@@ -44,7 +46,7 @@ describe('<Utlandsopphold>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
-            data: SøknadRoutes.ARBEID,
+            data: SøknadRoutes.INNTEKTSINFORMASJON,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -69,8 +71,8 @@ describe('<Utlandsopphold>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                iNorgeNeste12Mnd: true,
-                iNorgeSiste12Mnd: false,
+                harBoddUtenforNorgeSiste12Mnd: true,
+                skalBoUtenforNorgeNeste12Mnd: false,
             },
             key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
@@ -106,8 +108,8 @@ describe('<Utlandsopphold>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                iNorgeNeste12Mnd: false,
-                iNorgeSiste12Mnd: true,
+                harBoddUtenforNorgeSiste12Mnd: false,
+                skalBoUtenforNorgeNeste12Mnd: true,
             },
             key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',
@@ -143,8 +145,8 @@ describe('<Utlandsopphold>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                iNorgeNeste12Mnd: false,
-                iNorgeSiste12Mnd: false,
+                harBoddUtenforNorgeSiste12Mnd: true,
+                skalBoUtenforNorgeNeste12Mnd: true,
             },
             key: ContextDataType.UTENLANDSOPPHOLD,
             type: 'update',

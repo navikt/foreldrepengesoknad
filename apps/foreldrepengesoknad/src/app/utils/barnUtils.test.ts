@@ -1,13 +1,14 @@
 import { Barn, BarnType } from '@navikt/fp-common';
-import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
 import { SøkerBarn } from '@navikt/fp-types';
+
+import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
 
 describe('barnUtils', () => {
     it('skal returnere fødselsdato når barn er født', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: [new Date('2021-10-05'), new Date('2021-10-06')],
-            termindato: new Date('2021-09-05'),
+            fødselsdatoer: ['2021-10-05', '2021-10-06'],
+            termindato: '2021-09-05',
         } as Barn;
 
         const dato = getFamiliehendelsedato(barn);
@@ -18,7 +19,7 @@ describe('barnUtils', () => {
     it('skal returnere termindato når barn ikke er født', () => {
         const barn = {
             type: BarnType.UFØDT,
-            termindato: new Date('2021-09-05'),
+            termindato: '2021-09-05',
         } as Barn;
 
         const dato = getFamiliehendelsedato(barn);
@@ -39,7 +40,7 @@ describe('barnUtils', () => {
     it('skal finne registrert barn når barn er født og er registrert fra før med samme fnr', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: [new Date('2021-01-01')],
+            fødselsdatoer: ['2021-01-01'],
             fnr: ['123'],
         } as Barn;
         const registrerteBarn = [
@@ -73,7 +74,7 @@ describe('barnUtils', () => {
     it('skal ikke finne registrert barn når barn har forskjellig fødselsdato', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: [new Date('2021-01-01')],
+            fødselsdatoer: ['2021-01-01'],
         } as Barn;
         const registrerteBarn = [
             {
@@ -90,7 +91,7 @@ describe('barnUtils', () => {
     it('skal ikke finne registrert barn når ingen barn er registrert fra før', () => {
         const barn = {
             type: BarnType.FØDT,
-            fødselsdatoer: [new Date('2021-01-01')],
+            fødselsdatoer: ['2021-01-01'],
         } as Barn;
         const registrerteBarn = [] as SøkerBarn[];
 

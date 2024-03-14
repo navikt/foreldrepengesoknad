@@ -1,11 +1,18 @@
 import { useEffect } from 'react';
+
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { Arbeidsforhold } from '@navikt/fp-types';
+
 import { ContextDataType, useContextSaveData } from '../context/FpDataContext';
 import SøknadRoutes from '../routes/routes';
 import useStepConfig from './useStepConfig';
 
-const useFpNavigator = (mellomlagreOgNaviger: () => Promise<void>, erEndringssøknad = false) => {
-    const stepConfig = useStepConfig(erEndringssøknad);
+const useFpNavigator = (
+    arbeidsforhold: Arbeidsforhold[],
+    mellomlagreOgNaviger: () => Promise<void>,
+    erEndringssøknad = false,
+) => {
+    const stepConfig = useStepConfig(arbeidsforhold, erEndringssøknad);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const activeStepId = stepConfig.find((sc) => sc.isSelected);

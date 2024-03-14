@@ -1,7 +1,8 @@
-import dayjs from 'dayjs';
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
+import dayjs from 'dayjs';
+
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OppsummeringSteg.stories';

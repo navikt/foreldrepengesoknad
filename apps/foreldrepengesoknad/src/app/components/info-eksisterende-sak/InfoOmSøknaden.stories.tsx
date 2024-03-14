@@ -67,9 +67,8 @@ const Template: StoryFn<Props> = ({
             initialState={{
                 [ContextDataType.OM_BARNET]: {
                     type: BarnType.FØDT,
-                    fødselsdatoer: [new Date('2021-03-15')],
+                    fødselsdatoer: ['2021-03-15'],
                     antallBarn: 1,
-                    datoForAleneomsorg: undefined,
                 },
                 [ContextDataType.ANNEN_FORELDER]: annenForelder,
                 [ContextDataType.SØKER_DATA]: søkerData,
@@ -107,7 +106,6 @@ Default.args = {
 export const AnnenForelder = Template.bind({});
 AnnenForelder.args = {
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -117,6 +115,7 @@ AnnenForelder.args = {
         rolle: 'mor',
     },
     annenForelder: {
+        erAleneOmOmsorg: false,
         fornavn: 'Espen',
         etternavn: 'Utvikler',
         fnr: '1212121313',
@@ -128,7 +127,6 @@ AnnenForelder.args = {
 export const InfoOmMorsSak = Template.bind({});
 InfoOmMorsSak.args = {
     søkerData: {
-        erAleneOmOmsorg: false,
         harHattAnnenInntektSiste10Mnd: false,
         harJobbetSomFrilansSiste10Mnd: false,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
@@ -138,6 +136,7 @@ InfoOmMorsSak.args = {
         rolle: 'far',
     },
     annenForelder: {
+        erAleneOmOmsorg: false,
         fornavn: 'Olga',
         etternavn: 'Utvikler',
         fnr: '1212121313',

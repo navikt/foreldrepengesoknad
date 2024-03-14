@@ -1,11 +1,11 @@
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort, ReadMore } from '@navikt/ds-react';
+
+import { Arbeidsforhold } from '@navikt/fp-types';
+
 import HarArbeidsforhold from './HarArbeidsforhold';
 import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
-
-import { intlUtils } from '@navikt/fp-common';
-import { FormattedMessage, useIntl } from 'react-intl';
-import './arbeidsforholdInformasjon.css';
-import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -20,7 +20,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
-                <ReadMore header={intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.info')}>
+                <ReadMore header={intl.formatMessage({ id: 'inntektsinformasjon.arbeidsforhold.info' })}>
                     <BodyShort>
                         <FormattedMessage id="inntektsinformasjon.arbeidsforhold.tekst" />
                     </BodyShort>

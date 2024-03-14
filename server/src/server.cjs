@@ -33,7 +33,6 @@ const renderApp = async (decoratorFragments) => {
         .replaceAll('{{{NAV_STYLES}}}', decoratorFragments.NAV_STYLES)
         .replaceAll('{{{NAV_HEADING}}}', decoratorFragments.NAV_HEADING)
         .replaceAll('{{{NAV_FOOTER}}}', decoratorFragments.NAV_FOOTER)
-        .replaceAll('{{{NAV_MEGAMENU_RESOURCES}}}', decoratorFragments.NAV_MEGAMENU_RESOURCES)
         .replaceAll('{{{APP_SETTINGS}}}', decoratorFragments.APP_SETTINGS);
 
     return rendered;

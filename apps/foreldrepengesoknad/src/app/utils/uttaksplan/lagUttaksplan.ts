@@ -99,7 +99,7 @@ export const lagUttaksplan = (params: LagUttaksplanParams): Periode[] => {
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
-                søkerErFarEllerMedmor,
+                bareFarMedmorHarRett,
                 søkerErFarEllerMedmor,
                 førsteUttaksdagNesteBarnsSak,
             );

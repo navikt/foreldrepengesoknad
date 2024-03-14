@@ -9,32 +9,31 @@ export enum BarnType {
 interface Common {
     type: BarnType;
     antallBarn: number;
-    datoForAleneomsorg?: Date;
 }
 
 export interface IkkeUtfyltTypeBarn extends Common {
     type: BarnType.IKKE_UTFYLT;
-    fødselsdatoer: Date[];
+    fødselsdatoer: string[];
     fnr?: string[];
 }
 
 export interface FødtBarn extends Common {
     type: BarnType.FØDT;
-    fødselsdatoer: Date[];
-    termindato?: Date;
+    fødselsdatoer: string[];
+    termindato?: string;
     fnr?: string[];
 }
 
 export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
-    termindato: Date;
-    terminbekreftelsedato?: Date;
+    termindato: string;
+    terminbekreftelsedato?: string;
 }
 
 export interface AdoptertBarn extends Common {
     type: BarnType.ADOPTERT_STEBARN | BarnType.ADOPTERT_ANNET_BARN;
-    adopsjonsdato: Date;
-    fødselsdatoer: Date[];
+    adopsjonsdato: string;
+    fødselsdatoer: string[];
     fnr?: string[];
 }
 
@@ -45,7 +44,7 @@ export interface AdoptertStebarn extends AdoptertBarn {
 export interface AdoptertAnnetBarn extends AdoptertBarn {
     type: BarnType.ADOPTERT_ANNET_BARN;
     adoptertIUtlandet: boolean;
-    ankomstdato?: Date;
+    ankomstdato?: string;
 }
 
 export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
@@ -79,6 +78,15 @@ export const isAdoptertStebarn = (barn: Barn): barn is AdoptertStebarn => {
 
 export const isAdoptertAnnetBarn = (barn: Barn): barn is AdoptertAnnetBarn => {
     return barn.type === BarnType.ADOPTERT_ANNET_BARN;
+};
+
+export const harFødselsdato = (barn: Barn): barn is IkkeUtfyltTypeBarn | FødtBarn | AdoptertBarn => {
+    return (
+        barn.type === BarnType.IKKE_UTFYLT ||
+        barn.type === BarnType.FØDT ||
+        barn.type === BarnType.ADOPTERT_STEBARN ||
+        barn.type === BarnType.ADOPTERT_ANNET_BARN
+    );
 };
 
 export default Barn;

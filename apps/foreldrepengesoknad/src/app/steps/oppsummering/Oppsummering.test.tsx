@@ -1,12 +1,14 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { composeStories } from '@storybook/react';
-import * as stories from './Oppsummering.stories';
-import SøknadRoutes from 'app/routes/routes';
-import { ContextDataType } from 'app/context/FpDataContext';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+
+import { ContextDataType } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import * as stories from './Oppsummering.stories';
 
 const {
     Default,
@@ -262,7 +264,7 @@ describe('<Oppsummering>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.UTTAKSPLAN,
+            data: SøknadRoutes.DOKUMENTASJON,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

@@ -35,7 +35,6 @@ const mellomlagre = (
     const fordeling = getDataFromState(ContextDataType.FORDELING);
     const periodeMedForeldrepenger = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
-    const manglerDokumentasjon = getDataFromState(ContextDataType.MANGLER_DOKUMENTASJON);
 
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
@@ -63,7 +62,6 @@ const mellomlagre = (
             uttaksplan,
             vedlegg,
             ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
-            manglerDokumentasjon,
         },
         eksisterendeSak,
         barnFraNesteSak,

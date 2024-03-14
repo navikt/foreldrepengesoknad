@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import {
     Periode,
     PeriodeHull,
@@ -20,9 +22,9 @@ import {
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import dayjs from 'dayjs';
-import { splittPeriodePåDato } from './leggTilPeriode';
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
+
+import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (
     perioder: Periode[],
@@ -92,7 +94,11 @@ export const slåSammenLikePerioder = (
                 tom: periode.tidsperiode.tom,
             };
 
-            forrigePeriode.tidsperiode = { ...nyTidsperiode };
+            forrigePeriode = {
+                ...forrigePeriode,
+                tidsperiode: nyTidsperiode,
+            };
+
             return;
         } else {
             nyePerioder.push(forrigePeriode);

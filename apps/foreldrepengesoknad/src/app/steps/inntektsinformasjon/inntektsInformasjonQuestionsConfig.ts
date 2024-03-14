@@ -1,7 +1,9 @@
-import { hasValue } from '@navikt/fp-common';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+
+import { hasValue } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 const InntektsinformasjonFormConfig: QuestionConfig<InntektsinformasjonFormData, InntektsinformasjonFormField> = {
     [InntektsinformasjonFormField.hattInntektSomFrilans]: {

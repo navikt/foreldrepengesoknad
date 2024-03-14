@@ -1,10 +1,15 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import EgenNæringStep from './EgenNæringStep';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
+import { StoryFn } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
-import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+
+import EgenNæringStep from './EgenNæringStep';
 
 const defaultExport = {
     title: 'steps/EgenNæringStep',
@@ -80,14 +85,15 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
+    initAmplitude();
     return (
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[SøknadRoutes.NÆRING]}>
             <SvpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
                     [ContextDataType.INNTEKTSINFORMASJON]: {
                         harJobbetSomSelvstendigNæringsdrivende: true,
-                        harHattAnnenInntekt: false,
+                        harHattArbeidIUtlandet: false,
                         harJobbetSomFrilans: false,
                     },
                     [ContextDataType.TILRETTELEGGINGER]: [

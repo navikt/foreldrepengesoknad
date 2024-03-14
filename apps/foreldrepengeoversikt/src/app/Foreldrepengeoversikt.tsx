@@ -1,19 +1,21 @@
-import { Loader } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { useEffect, useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+
+import { Loader } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import Environment from './Environment';
 import Api from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
-import { mapSakerDTOToSaker } from './utils/sakerUtils';
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
-import Environment from './Environment';
+import './styles/app.css';
 import { MinidialogInnslag } from './types/MinidialogInnslag';
 import { SakOppslag } from './types/SakOppslag';
-
-import './styles/app.css';
+import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
 const getSakerSuspended = (oppdatertQuery: UseQueryResult<boolean, unknown>) => {
     if (oppdatertQuery.isLoading) {

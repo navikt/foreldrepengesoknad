@@ -1,9 +1,11 @@
-import { fireEvent, render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
-import * as stories from './AppContainer.stories';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
+
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+
+import * as stories from './AppContainer.stories';
 
 const { VisAppKvinneMedArbeid } = composeStories(stories);
 

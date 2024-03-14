@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
 import { IntlShape } from 'react-intl';
+
 import {
     Forelder,
     Periode,
@@ -12,10 +12,11 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from './../types';
-import { Uttaksdagen } from './Uttaksdagen';
 import { isValidTidsperiode } from './Tidsperioden';
-import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
+import { Uttaksdagen } from './Uttaksdagen';
+import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
 import intlUtils from './intlUtils';
+import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;
 const ANTALL_DAGER_TO_UKER = 2 * 7;
@@ -190,7 +191,7 @@ export const getPerioderMedUttakRundtFødsel = (
 
 export const uttaksperiodeKanJusteresVedFødsel = (
     ønskerJustertUttakVedFødsel: boolean | undefined,
-    termindato: Date | undefined,
+    termindato: string | undefined,
     uttaksperiodeFom: Date,
 ) => {
     return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato, 'd');

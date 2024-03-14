@@ -1,7 +1,10 @@
-import { Block, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { Block, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
+
 import {
     InntektsinformasjonFormComponents,
     InntektsinformasjonFormData,
@@ -9,7 +12,6 @@ import {
 } from '../../inntektsinformasjonFormConfig';
 import { validateFrilansoppstartsDato } from '../../validation/inntektsinformasjonValidering';
 import HvemKanVæreFrilanser from './HvemKanVæreFrilanser';
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 
 interface Props {
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
@@ -41,8 +43,7 @@ const Frilans: FunctionComponent<Props> = ({ visibility, formValues }) => {
                             validate={validateFrilansoppstartsDato(intl)}
                             maxDate={dateToday}
                             minDate={date20YearsAgo}
-                            showYearSelector={true}
-                            placeholder={'dd.mm.åååå'}
+                            dropdownCaption={true}
                         />
                     </Block>
                     <Block

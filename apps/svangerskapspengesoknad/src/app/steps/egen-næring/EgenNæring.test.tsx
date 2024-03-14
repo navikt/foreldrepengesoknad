@@ -1,10 +1,12 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './EgenNæring.stories';
 import dayjs from 'dayjs';
-import { ContextDataType } from 'app/context/SvpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+
+import { ContextDataType } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
+import * as stories from './EgenNæring.stories';
 
 const { Default } = composeStories(stories);
 
@@ -71,22 +73,13 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-                hattVarigEndringAvNæringsinntektSiste4Kalenderår: undefined,
                 navnPåNæringen: 'Virksomhetsnavn AS',
                 næringsinntekt: '1000',
                 næringstype: 'JORDBRUK_SKOGBRUK',
-                oppstartsdato: undefined,
                 organisasjonsnummer: '997519485',
                 pågående: true,
-                registrertILand: undefined,
                 registrertINorge: true,
-                tidsperiode: {
-                    fom: '2023-04-30',
-                    tom: undefined,
-                },
-                varigEndringBeskrivelse: undefined,
-                varigEndringDato: undefined,
-                varigEndringInntektEtterEndring: undefined,
+                fomDato: '2023-04-30',
             },
             key: ContextDataType.EGEN_NÆRING,
             type: 'update',

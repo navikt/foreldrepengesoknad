@@ -1,18 +1,32 @@
 {
     "søker": {
-        "fnr": "06499121154",
-        "fornavn": "Tapper",
-        "etternavn": "Konvolutt",
-        "kjønn": "K",
-        "fødselsdato": "1991-09-06",
+        "fnr": "13410550312",
+        "fornavn": "Ullen",
+        "etternavn": "Brosme",
+        "kjønn": "M",
+        "fødselsdato": "2005-01-13",
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""
         },
+        "barn": [
+            {
+                "fnr": "11432450874",
+                "fornavn": "Utakknemlig",
+                "etternavn": "Servise",
+                "kjønn": "K",
+                "fødselsdato": "2024-03-11",
+                "annenForelder": {
+                    "fnr": "04420556212",
+                    "fornavn": "Tørr",
+                    "etternavn": "Mandag",
+                    "fødselsdato": "2005-02-04"
+                }
+            }
+        ],
         "sivilstand": {
-            "type": "UGIFT"
-        },
-        "barn": []
+            "type": "GIFT"
+        }
     },
     "arbeidsforhold": []
 }

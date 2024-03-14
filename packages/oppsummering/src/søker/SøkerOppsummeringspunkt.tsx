@@ -1,7 +1,9 @@
 import { BodyShort, VStack } from '@navikt/ds-react';
-import { useIntl } from 'react-intl';
-import Oppsummeringspunkt from '../Oppsummeringspunkt';
+
 import { Søker } from '@navikt/fp-types';
+
+import Oppsummeringspunkt from '../Oppsummeringspunkt';
+import useOppsummeringIntl from '../intl/useOppsummeringIntl';
 
 const fullNameFormat = (fornavn: string, etternavn: string, mellomnavn?: string) => {
     return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
@@ -12,7 +14,7 @@ interface Props {
 }
 
 const SøkerOppsummeringspunkt: React.FunctionComponent<Props> = ({ søker }) => {
-    const intl = useIntl();
+    const intl = useOppsummeringIntl();
 
     return (
         <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'DegOppsummeringspunkt.OmDeg' })}>

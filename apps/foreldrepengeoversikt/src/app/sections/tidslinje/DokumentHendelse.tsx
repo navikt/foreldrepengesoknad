@@ -1,12 +1,14 @@
-import { Link } from '@navikt/ds-react';
+import classNames from 'classnames';
 
 import { FileContent } from '@navikt/ds-icons';
-import { bemUtils } from '@navikt/fp-common';
+import { Link } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import { Dokument } from 'app/types/Dokument';
 import { lagUrl } from 'app/utils/dokumenterUtils';
 
 import './dokument-hendelse.css';
-import classNames from 'classnames';
 
 interface Props {
     dokument: Dokument;

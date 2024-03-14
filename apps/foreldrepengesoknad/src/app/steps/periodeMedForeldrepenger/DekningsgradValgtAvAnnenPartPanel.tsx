@@ -50,7 +50,7 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
 
     return (
         <VStack gap="10">
-            <Box padding="4" background="surface-action-subtle">
+            <Box padding="4" background="surface-alt-3-subtle">
                 <HStack justify="space-between" align="start">
                     <VStack gap="2" style={{ width: '85%' }}>
                         <Heading size="xsmall">
@@ -81,7 +81,7 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
                         </BodyShort>
                     </VStack>
                     <div className={bem.block}>
-                        <CalendarIcon height={24} width={24} color="#3386E0" />
+                        <CalendarIcon height={24} width={24} color="#005B82" />
                     </div>
                 </HStack>
             </Box>

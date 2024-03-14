@@ -1,9 +1,9 @@
-import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik-ds/lib';
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { ISOStringToDate, Uttaksdagen, formatDate, intlUtils } from '@navikt/fp-common';
+import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
 
 import { OppstartValg } from 'app/context/types/Fordeling';
 

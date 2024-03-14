@@ -1,4 +1,3 @@
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import dayjs from 'dayjs';
 
@@ -27,6 +26,7 @@ import {
     isUttaksperiode,
     trimNumberValue,
 } from '@navikt/fp-common';
+import { YesOrNo } from '@navikt/fp-formik';
 
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {

@@ -1,12 +1,13 @@
-import dayjs from 'dayjs';
+import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
+import { ContextDataType } from 'appData/EsDataContext';
+import { Path } from 'appData/paths';
+import dayjs from 'dayjs';
+
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
-import { Path } from 'appData/paths';
-import { ContextDataType } from 'appData/EsDataContext';
 
 const { Default } = composeStories(stories);
 

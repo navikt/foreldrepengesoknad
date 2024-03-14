@@ -1,0 +1,15 @@
+.content {
+    max-width: 704px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+@media (max-width: 68px) {
+    .content {
+        max-width: 100%;
+    }
+}
+@media (max-width: 576px) {
+    .content {
+        padding: 1rem;
+    }
+}

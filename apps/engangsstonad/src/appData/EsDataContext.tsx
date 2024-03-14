@@ -1,7 +1,9 @@
-import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
-import { createContext, useReducer, FunctionComponent, ReactNode, useContext, useCallback } from 'react';
+import { FunctionComponent, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
+
+import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+
 import { Path } from './paths';
 
 export enum ContextDataType {

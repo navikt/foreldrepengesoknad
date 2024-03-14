@@ -1,5 +1,6 @@
-import { Attachment } from '@navikt/fp-types';
 import Bytes from 'bytes';
+
+import { Attachment } from '@navikt/fp-types';
 
 export const assertUnreachable = (_x: never, message?: string): never => {
     throw new Error(message === undefined ? 'This should never happen.' : message);

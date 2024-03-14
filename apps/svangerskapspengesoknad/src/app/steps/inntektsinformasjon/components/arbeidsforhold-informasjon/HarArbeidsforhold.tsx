@@ -1,8 +1,12 @@
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
-import { Block, bemUtils, formatDate, intlUtils } from '@navikt/fp-common';
-import { BodyShort } from '@navikt/ds-react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
+
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
+
+import './harArbeidsforhold.css';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -19,41 +23,57 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
     const bem = bemUtils('arbeidsforholdInfoBox');
 
     return (
-        <ul className={bem.element('arbeidsforholdList')}>
+        <VStack gap="2">
             {arbeidsforhold.map((arbforhold) => (
-                <li key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.tom}>
-                    <div className={bem.block}>
-                        <div className={bem.element('topRow')}>
+                <Box
+                    key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.tom}
+                    padding="4"
+                    background="surface-action-subtle"
+                    borderRadius="medium"
+                >
+                    <VStack gap="4">
+                        <HStack justify="space-between">
                             <BodyShort className={bem.element('name')}>
-                                {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn
-                                    ? arbforhold.arbeidsgiverNavn
-                                    : intlUtils(intl, 'privat.arbeidsgiver')}
+                                {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (
+                                    arbforhold.arbeidsgiverNavn
+                                ) : (
+                                    <FormattedMessage id="privat.arbeidsgiver" />
+                                )}
                             </BodyShort>
-                            <BodyShort className={bem.element('stillingsprosent')}>
-                                {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.stillingsprosent', {
-                                    stillingsprosent: arbforhold.stillingsprosent,
-                                })}
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="inntektsinformasjon.arbeidsforhold.stillingsprosent"
+                                    values={{
+                                        stillingsprosent: arbforhold.stillingsprosent,
+                                    }}
+                                />
                             </BodyShort>
-                        </div>
-                        <Block padBottom="m">
-                            {arbforhold.arbeidsgiverIdType === 'orgnr' && (
-                                <BodyShort>
-                                    {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.organisasjonsnummer', {
+                        </HStack>
+                        {arbforhold.arbeidsgiverIdType === 'orgnr' && (
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="inntektsinformasjon.arbeidsforhold.organisasjonsnummer"
+                                    values={{
                                         organisasjonsnummer: arbforhold.arbeidsgiverId,
-                                    })}
-                                </BodyShort>
-                            )}
-                        </Block>
+                                    }}
+                                />
+                            </BodyShort>
+                        )}
                         <BodyShort>
-                            {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.periode', {
-                                fom: formatDate(arbforhold.fom),
-                                tom: arbforhold.tom ? formatDate(arbforhold.tom) : intlUtils(intl, 'pågående'),
-                            })}
+                            <FormattedMessage
+                                id="inntektsinformasjon.arbeidsforhold.periode"
+                                values={{
+                                    fom: formatDate(arbforhold.fom),
+                                    tom: arbforhold.tom
+                                        ? formatDate(arbforhold.tom)
+                                        : intl.formatMessage({ id: 'pågående' }),
+                                }}
+                            />
                         </BodyShort>
-                    </div>
-                </li>
+                    </VStack>
+                </Box>
             ))}
-        </ul>
+        </VStack>
     );
 };
 export default HarArbeidsforhold;

@@ -1,11 +1,15 @@
-import { formatDate } from '@navikt/fp-common';
+import dayjs from 'dayjs';
 import { FunctionComponent, ReactElement } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
 import { Radio } from '@navikt/ds-react';
-import { isRequired } from '@navikt/fp-validation';
+
+import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { RadioGroup } from '@navikt/fp-form-hooks';
-import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
+import { isRequired } from '@navikt/fp-validation';
+
 import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
+import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
 
 export enum SelectableBarnOptions {
     SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',
@@ -30,7 +34,7 @@ const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
                     id="velkommen.barnVelger.ufødtBarn"
                     values={{
                         antallBarnTekst: getTekstForAntallBarn(barn.antallBarn, intl),
-                        termin: formatDate(barn.termindato!),
+                        termin: dayjs(barn.termindato!).format(DDMMMMYYY_DATE_FORMAT),
                         b: (chunks: any) => <b>{chunks}</b>,
                     }}
                 />
@@ -59,7 +63,7 @@ const getRadioForFødtEllerAdoptertBarn = (barna: ValgtBarn[], intl: IntlShape) 
         const fødtAdoptertDatoTekst =
             barn.type === ValgtBarnType.FØDT || barn.type === ValgtBarnType.IKKE_UTFYLT
                 ? fødselsdatoerTekst
-                : formatDate(barn.omsorgsovertagelse!);
+                : dayjs(barn.omsorgsovertagelse!).format(DDMMMMYYY_DATE_FORMAT);
         const situasjonTekst =
             barn.type === ValgtBarnType.FØDT || barn.type === ValgtBarnType.IKKE_UTFYLT
                 ? intl.formatMessage({ id: 'velkommen.barnVelger.født' })

@@ -7,7 +7,6 @@ import {
     Block,
     EksisterendeSak,
     Forelder,
-    ISOStringToDate,
     InfoPeriode,
     Periodene,
     Periodetype,
@@ -30,11 +29,11 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isInfoPeriode,
-    links,
 } from '@navikt/fp-common';
 import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
 import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
+import { links } from '@navikt/fp-constants';
 import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -82,7 +81,6 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
@@ -94,7 +92,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const erDeltUttak = getIsDeltUttak(annenForelder);
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerINorge;
-    const erAleneOmOmsorg = søkerData.erAleneOmOmsorg;
+    const erAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erAleneOmOmsorg : false;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const { rolle } = søkersituasjon;
@@ -119,7 +117,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsedatoNesteBarn =
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erToTette = getToTetteReglerGjelder(familiehendelsesdato, familiehendelsedatoNesteBarn);
     const minsterettToTetteAntallUkerTekst = [minsterettUkerToTette, intlUtils(intl, 'uker')].join(' ');
     const startStønadsperiodeNyttBarn =

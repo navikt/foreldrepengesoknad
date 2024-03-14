@@ -1,9 +1,10 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './UtenlandsoppholdSteg.stories';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+
+import * as stories from './UtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 

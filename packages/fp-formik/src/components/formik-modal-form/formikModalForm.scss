@@ -1,0 +1,21 @@
+.formikModalForm {
+    &__modal {
+        min-width: 32rem;
+        max-width: 40rem;
+        @media (max-width: 576px) {
+            min-width: 0;
+            width: 100%;
+        }
+        @media (max-width: 799px) {
+            min-width: 0;
+            width: 32rem;
+        }
+        h1 {
+            margin-right: 2rem;
+        }
+        &--wide {
+            width: 100%;
+            max-width: 90%;
+        }
+    }
+}

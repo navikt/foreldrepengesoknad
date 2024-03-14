@@ -1,70 +1,34 @@
+import { useMemo } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
-import { bemUtils, formatDate, guid } from '@navikt/fp-common';
+
 import {
     BoIUtlandetOppsummeringspunkt,
     HendelseType,
     OppsummeringIndex,
     SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
+import { Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
-import ArbeidIUtlandetVisning from 'app/components/arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
-import EgenNæringVisning from 'app/components/egen-næring-visning/EgenNæringVisning';
-import FrilansVisning from 'app/components/frilans-visning/FrilansVisning';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/SvpDataContext';
+
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
-import useFortsettSøknadSenere from 'app/utils/hooks/useFortsettSøknadSenere';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
-import {
-    Utenlandsopphold as Opphold,
-    UtenlandsoppholdSenere as SenereOpphold,
-    UtenlandsoppholdTidligere as TidligereOpphold,
-} from 'app/types/Utenlandsopphold';
-import { useMemo } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+
 import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
-import { getBackLinkAndIdForOppsummeringSteg, useStepConfig } from '../stepsConfig';
+import ArbeidIUtlandetVisning from './arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
+import EgenNæringVisning from './egen-næring-visning/EgenNæringVisning';
+import FrilansVisning from './frilans-visning/FrilansVisning';
+import './oppsummering.css';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
 import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
-
-import './oppsummering.css';
-import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
-
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({
-    harBoddUtenforNorgeSiste12Mnd: !utenlandsopphold.iNorgeSiste12Mnd,
-    skalBoUtenforNorgeNeste12Mnd: !utenlandsopphold.iNorgeNeste12Mnd,
-});
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingSenere = (utenlandsopphold?: SenereOpphold): UtenlandsoppholdSenere | undefined => {
-    if (!utenlandsopphold) {
-        return undefined;
-    }
-
-    return {
-        utenlandsoppholdNeste12Mnd: utenlandsopphold.senereOpphold.map((o) => ({
-            fom: o.tidsperiode.fom,
-            tom: o.tidsperiode.tom,
-            landkode: o.land,
-        })),
-    };
-};
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingTidligere = (utenlandsopphold?: TidligereOpphold): UtenlandsoppholdTidligere | undefined => {
-    if (!utenlandsopphold) {
-        return undefined;
-    }
-
-    return {
-        utenlandsoppholdSiste12Mnd: utenlandsopphold.tidligereOpphold.map((o) => ({
-            fom: o.tidsperiode.fom,
-            tom: o.tidsperiode.tom,
-            landkode: o.land,
-        })),
-    };
-};
 
 type Props = {
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
@@ -80,9 +44,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     søkerInfo,
 }) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(intl, søkerInfo.arbeidsforhold);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, søkerInfo.arbeidsforhold);
     const bem = bemUtils('oppsummering');
-    const onFortsettSøknadSenere = useFortsettSøknadSenere();
 
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
     const frilans = useContextGetData(ContextDataType.FRILANS);
@@ -95,7 +59,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const allePerioderMedFomOgTom = useMemo(
@@ -110,14 +73,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
         (t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG,
     );
 
-    const { previousRoute, previousTilretteleggingId } = getBackLinkAndIdForOppsummeringSteg(tilrettelegginger);
-
-    const gåTilForrigeSteg = () => {
-        oppdaterValgtTilretteleggingId(previousTilretteleggingId);
-        oppdaterAppRoute(previousRoute);
-        return mellomlagreSøknadOgNaviger();
-    };
-
     return (
         <ContentWrapper>
             <Heading size="large">
@@ -125,14 +80,14 @@ const Oppsummering: React.FunctionComponent<Props> = ({
             </Heading>
             <OppsummeringIndex
                 appName="Svangerskapspenger"
-                stepConfig={stepConfig.map((sc) => ({
-                    ...sc,
-                    isSelected: sc.id === 'oppsummering',
-                }))}
+                stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
                 cancelApplication={avbrytSøknad}
-                goToPreviousStep={gåTilForrigeSteg}
-                onContinueLater={onFortsettSøknadSenere}
+                goToPreviousStep={() => {
+                    oppdaterValgtTilretteleggingId(tilrettelegginger[tilrettelegginger?.length - 1].id);
+                    navigator.goToPreviousDefaultStep();
+                }}
+                onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
                 <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omBarnet' })}>
@@ -148,9 +103,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={barn.erBarnetFødt && barn.fødselsdato ? barn.fødselsdato : barn.termindato}
                     hendelseType={barn.erBarnetFødt ? HendelseType.FØDSEL : HendelseType.TERMIN}
-                    utenlandsopphold={tempMappingOpphold(utenlandsopphold)}
-                    tidligereUtenlandsopphold={tempMappingTidligere(utenlandsoppholdTidligere)}
-                    senereUtenlandsopphold={tempMappingSenere(utenlandsoppholdSenere)}
+                    utenlandsopphold={utenlandsopphold}
+                    tidligereUtenlandsopphold={utenlandsoppholdTidligere}
+                    senereUtenlandsopphold={utenlandsoppholdSenere}
                 />
                 <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
                     <VStack gap="2">
@@ -163,14 +118,17 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                         {inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende && egenNæring && (
                             <EgenNæringVisning næring={egenNæring}></EgenNæringVisning>
                         )}
-                        {inntektsinformasjon.harHattAnnenInntekt &&
+                        {inntektsinformasjon.harHattArbeidIUtlandet &&
                             arbeidIUtlandet &&
-                            arbeidIUtlandet.map((arbeid) => (
-                                <ArbeidIUtlandetVisning key={guid()} arbeidIUtlandet={arbeid}></ArbeidIUtlandetVisning>
+                            arbeidIUtlandet.arbeidIUtlandet.map((arbeid) => (
+                                <ArbeidIUtlandetVisning
+                                    key={`${arbeid.fom}${arbeid.tom}${arbeid.arbeidsgiverNavn}`}
+                                    arbeidIUtlandet={arbeid}
+                                ></ArbeidIUtlandetVisning>
                             ))}
                         {(!inntektsinformasjon.harJobbetSomFrilans ||
                             !inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ||
-                            !inntektsinformasjon.harHattAnnenInntekt) && (
+                            !inntektsinformasjon.harHattArbeidIUtlandet) && (
                             <BodyShort>{getTekstOmManglendeArbeidsforhold(inntektsinformasjon, intl)}</BodyShort>
                         )}
                     </VStack>

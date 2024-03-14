@@ -10,9 +10,9 @@ import {
     isValidTidsperiode,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
+
+import { DatepickerLimitationsString, dateToISOString } from '../../../fp-formik/src';
 import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
-import { DatepickerLimitations } from '@navikt/ds-datepicker';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
 
 export interface DatoAvgrensninger {
     fra: Avgrensninger;
@@ -119,7 +119,7 @@ const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): 
 };
 
 const getDatoavgrensningerForForeldrepengerFørFødsel = (familiehendelsesdato: Date): DatoAvgrensninger => {
-    const avgrensninger: DatepickerLimitations = {
+    const avgrensninger: DatepickerLimitationsString = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.startdatoFørTerminForeldrepengerFørFødselKonto(
             dateToISOString(familiehendelsesdato),
@@ -145,7 +145,7 @@ const getDatoavgrensningerForEkstrauttakFørTermin = (
     termindato: Date | undefined,
 ): DatoAvgrensninger => {
     const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
-    const avgrensninger: DatepickerLimitations = {
+    const avgrensninger: DatepickerLimitationsString = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(dateToISOString(datoÅRegneFra)),
     };

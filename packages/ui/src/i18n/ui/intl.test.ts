@@ -2,9 +2,9 @@ import { extract } from '@formatjs/cli-lib';
 import glob from 'fast-glob';
 import fs from 'fs';
 
+import en from './messages/en_US.json';
 import nb from './messages/nb_NO.json';
 import nn from './messages/nn_NO.json';
-import en from './messages/en_US.json';
 
 describe('fp-ui intl messages', () => {
     it('Check that bokmål og nynorsk language files contain the same keys', () => {

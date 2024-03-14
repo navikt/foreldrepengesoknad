@@ -12,7 +12,7 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { Søker } from '@navikt/fp-types';
+import { Arbeidsforhold, Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
@@ -24,6 +24,7 @@ import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversi
 import { getFordelingFraKontoer, getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
+import { getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
@@ -38,18 +39,23 @@ import MorsSisteDag from './components/mors-siste-dag/MorsSisteDag';
 
 type Props = {
     søker: Søker;
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const FordelingSteg: React.FunctionComponent<Props> = ({
+    søker,
+    arbeidsforhold,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const søkerData = notEmpty(useContextGetData(ContextDataType.SØKER_DATA));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
@@ -65,6 +71,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const annenForeldrerHarKunRettiEØS = !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
     const deltUttak = getIsDeltUttak(annenForelder);
+    const erAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
 
     const { data: annenPartsVedtak, requestStatus: statusAnnenPartVedtak } = useApiPostData(
         FpApiDataType.ANNEN_PART_VEDTAK,
@@ -76,7 +83,6 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
         barn,
         annenForelder,
         søkersituasjon,
-        søkerData,
         barnFraNesteSak,
         annenPartsVedtak,
         eksisterendeSak,
@@ -128,7 +134,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({ søker, mellomlagreSøk
                   minsterett,
                   søkersituasjon,
                   barn,
-                  søkerData.erAleneOmOmsorg,
+                  erAleneOmOmsorg,
                   navnMor,
                   navnFarMedmor,
                   intl,

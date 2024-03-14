@@ -1,23 +1,24 @@
+import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import dayjs from 'dayjs';
-import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
-import { LocaleAll } from '@navikt/fp-types';
-import { deleteData } from '@navikt/fp-api';
-import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
-import { esApi } from './EngangsstønadRoutes';
-import Engangsstønad from './Engangsstønad';
 
-import nnMessages from './intl/messages/nn_NO.json';
-import nbMessages from './intl/messages/nb_NO.json';
+import { deleteData } from '@navikt/fp-api';
+import { LocaleAll } from '@navikt/fp-types';
+import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-utils';
+
+import Engangsstønad from './Engangsstønad';
+import { esApi } from './EngangsstønadRoutes';
 import enMessages from './intl/messages/en_US.json';
+import nbMessages from './intl/messages/nb_NO.json';
+import nnMessages from './intl/messages/nn_NO.json';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: { ...nbMessages, ...allCommonMessages.nb },
-    nn: { ...nnMessages, ...allCommonMessages.nn },
-    en: { ...enMessages, ...allCommonMessages.en },
+    nb: nbMessages,
+    nn: nnMessages,
+    en: enMessages,
 };
 
 dayjs.locale(localeFromSessionStorage);

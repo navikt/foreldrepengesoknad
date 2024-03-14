@@ -1,9 +1,7 @@
 import dayjs from 'dayjs';
-import {
-    getAndreBarnFødtSammenMedBarnet,
-    getDødeBarnetForMerEnn3MånederSiden,
-    getLeverBarnet,
-} from 'app/utils/barnUtils';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
 import {
     BarnFraNesteSak,
     ISOStringToDate,
@@ -14,11 +12,16 @@ import {
     guid,
 } from '@navikt/fp-common';
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
-import { getRelevantFamiliehendelseDato } from '../../utils/dateUtils';
-import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
 import { SøkerBarn } from '@navikt/fp-types';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+
+import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
+import {
+    getAndreBarnFødtSammenMedBarnet,
+    getDødeBarnetForMerEnn3MånederSiden,
+    getLeverBarnet,
+} from 'app/utils/barnUtils';
+
+import { getRelevantFamiliehendelseDato } from '../../utils/dateUtils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -49,7 +52,10 @@ const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Famili
     return ValgtBarnType.UFØDT;
 };
 
-export const getErDatoInnenEnDagFraAnnenDato = (dato1: string | undefined, dato2: Date | undefined): boolean => {
+export const getErDatoInnenEnDagFraAnnenDato = (
+    dato1: Date | string | undefined,
+    dato2: Date | string | undefined,
+): boolean => {
     if (dato1 === undefined || dato2 === undefined) {
         return false;
     }

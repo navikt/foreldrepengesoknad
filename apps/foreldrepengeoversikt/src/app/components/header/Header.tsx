@@ -1,5 +1,11 @@
+import TåteflaskeBaby from 'assets/TåteflaskeBaby';
+import classNames from 'classnames';
+import { IntlShape, useIntl } from 'react-intl';
+
 import { BodyShort, Heading } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
@@ -9,13 +15,9 @@ import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelseDato, getSakTittel, utledFamiliesituasjon } from 'app/utils/sakerUtils';
-import TåteflaskeBaby from 'assets/TåteflaskeBaby';
-import classNames from 'classnames';
 
-import { IntlShape, useIntl } from 'react-intl';
 import Breadcrumb from '../breadcrumb/Breadcrumb';
 import StatusTag from '../status-tag/StatusTag';
-
 import './header.css';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {

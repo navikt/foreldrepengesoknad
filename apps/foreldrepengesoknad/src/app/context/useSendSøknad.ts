@@ -1,6 +1,9 @@
-import { ISOStringToDate } from '@navikt/fp-common';
+import { AxiosError } from 'axios';
+import { useState } from 'react';
+
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
+
 import Api from 'app/api/api';
 import {
     FEIL_VED_INNSENDING,
@@ -13,8 +16,7 @@ import {
 import { Kvittering } from 'app/types/Kvittering';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
-import { AxiosError } from 'axios';
-import { useState } from 'react';
+
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 export const isAxiosError = (candidate: unknown): candidate is AxiosError<any> => {
@@ -42,7 +44,7 @@ const useSendSøknad = (
             erEndringssøknad,
             hentData,
             uttaksplanMetadata.perioderSomSkalSendesInn!,
-            ISOStringToDate(getFamiliehendelsedato(barn))!,
+            getFamiliehendelsedato(barn),
             locale,
             uttaksplanMetadata.endringstidspunkt,
         );

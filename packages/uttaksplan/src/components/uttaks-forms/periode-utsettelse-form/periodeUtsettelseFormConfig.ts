@@ -1,6 +1,5 @@
-import { getTypedFormComponents } from '@navikt/sif-common-formik-ds/lib';
-
 import { Arbeidsform, MorsAktivitet, UtsettelseÅrsakType } from '@navikt/fp-common';
+import { getTypedFormComponents } from '@navikt/fp-formik';
 
 export enum PeriodeUtsettelseFormField {
     fom = 'fom',

@@ -1,4 +1,5 @@
 import { Arbeidsforhold } from '@navikt/fp-types';
+
 import { getTotalStillingsprosentPåSkjæringstidspunktet, getUnikeArbeidsforhold } from './arbeidsforholdUtils';
 
 describe('getUnikeArbeidsforhold', () => {

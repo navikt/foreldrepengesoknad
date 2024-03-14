@@ -1,8 +1,14 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+import { Utenlandsopphold } from '@navikt/fp-types';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
-import { Action, SvpDataContext, ContextDataType } from 'app/context/SvpDataContext';
-import { Utenlandsopphold } from 'app/types/Utenlandsopphold';
 
 const promiseAction =
     () =>
@@ -66,9 +72,9 @@ const arbeidsforhold = [
 ];
 
 const defaultUtenlandsopphold = {
-    iNorgeNeste12Mnd: false,
-    iNorgeSiste12Mnd: true,
-};
+    harBoddUtenforNorgeSiste12Mnd: false,
+    skalBoUtenforNorgeNeste12Mnd: true,
+} as Utenlandsopphold;
 
 export default {
     title: 'steps/SenereUtenlandsoppholdSteg',
@@ -83,22 +89,25 @@ interface Props {
 
 const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     utenlandsforhold = defaultUtenlandsopphold,
 }) => {
+    initAmplitude();
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
-            }}
-        >
-            <SenereUtenlandsoppholdSteg
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={action('button-click')}
-                arbeidsforhold={arbeidsforhold}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.SKAL_BO_I_UTLANDET]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
+                }}
+            >
+                <SenereUtenlandsoppholdSteg
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={action('button-click')}
+                    arbeidsforhold={arbeidsforhold}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 

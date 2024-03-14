@@ -1,6 +1,7 @@
-import { DelivisTilretteleggingPeriodeType } from 'app/steps/tilrettelegging/tilretteleggingStepFormConfig';
-import { ArbeidsforholdDTO } from './Arbeidsforhold';
 import { Attachment } from '@navikt/fp-types';
+
+import { ArbeidsforholdDTO } from './Arbeidsforhold';
+import { DelivisTilretteleggingPeriodeType } from './DelivisTilretteleggingPeriodeType';
 
 export enum TilretteleggingstypeOptions {
     'INGEN' = 'ingen',
@@ -29,7 +30,7 @@ export interface Stilling {
 export interface ArbeidsforholdForTilrettelegging {
     arbeidsgiverId?: string;
     type: Arbeidsforholdstype;
-    navn: string;
+    navn?: string;
     stillinger: Stilling[];
     startdato: string;
     sluttdato?: string;
@@ -77,23 +78,23 @@ export interface Tilrettelegging {
 
 interface TilretteleggingDTOBase {
     type: Tilretteleggingstype;
-    behovForTilretteleggingFom: Date;
+    behovForTilretteleggingFom: string;
     arbeidsforhold: ArbeidsforholdDTO;
 }
 export interface DelvisTilretteleggingDTO extends TilretteleggingDTOBase {
     type: Tilretteleggingstype.DELVIS;
-    tilrettelagtArbeidFom: Date;
+    tilrettelagtArbeidFom: string;
     stillingsprosent: number;
 }
 
 export interface IngenTilretteleggingDTO extends TilretteleggingDTOBase {
     type: Tilretteleggingstype.INGEN;
-    slutteArbeidFom: Date;
+    slutteArbeidFom: string;
 }
 
 export interface HelTilretteleggingDTO extends TilretteleggingDTOBase {
     type: Tilretteleggingstype.HEL;
-    tilrettelagtArbeidFom: Date;
+    tilrettelagtArbeidFom: string;
 }
 
 export type TilretteleggingDTO = DelvisTilretteleggingDTO | IngenTilretteleggingDTO | HelTilretteleggingDTO;

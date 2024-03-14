@@ -1,7 +1,8 @@
-import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
-import * as stories from './Oppsummering.stories';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import * as stories from './Oppsummering.stories';
 
 const { Default } = composeStories(stories);
 

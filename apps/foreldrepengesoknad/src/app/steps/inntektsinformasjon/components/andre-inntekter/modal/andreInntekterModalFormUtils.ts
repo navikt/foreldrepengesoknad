@@ -1,4 +1,3 @@
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
 import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 
 import {
@@ -7,6 +6,7 @@ import {
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { YesOrNo } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';

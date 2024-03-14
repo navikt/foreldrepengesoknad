@@ -1,26 +1,35 @@
 import { useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
 import { useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
+
 import { Step } from '@navikt/fp-common';
+import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
+import { Arbeidsforhold, Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
-import { Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
-import { RadioGroup, Form, ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import useStepConfig from 'app/appData/useStepConfig';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
+import useStepConfig from 'app/appData/useStepConfig';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 
 type Props = {
+    arbeidsforhold: Arbeidsforhold[];
     kjønn: Kjønn;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
+    arbeidsforhold,
+    kjønn,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 

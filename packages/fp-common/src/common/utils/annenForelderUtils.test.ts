@@ -5,7 +5,7 @@ describe('annenForelderUtils', () => {
     it('skal returnere true når søker er far eller medmor og mor er ufør', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
-            erUfør: true,
+            erMorUfør: true,
         } as AnnenForelder;
         const erFarEllerMedmor = true;
 

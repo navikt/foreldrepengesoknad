@@ -1,4 +1,4 @@
-import { YesOrNo } from '@navikt/sif-common-formik-ds/lib';
+import { YesOrNo } from '@navikt/fp-formik';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from './formUtils';
 
 describe('formUtils', () => {

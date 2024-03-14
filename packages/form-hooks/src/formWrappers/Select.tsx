@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { Select as DsSelect } from '@navikt/ds-react';
 import { getError, getValidationRules } from './formUtils';
@@ -12,6 +12,7 @@ export interface Props {
     description?: ReactNode;
     disabled?: boolean;
     className?: string;
+    style?: CSSProperties;
 }
 
 const Select: FunctionComponent<Props> = ({
@@ -23,6 +24,7 @@ const Select: FunctionComponent<Props> = ({
     disabled,
     className,
     children,
+    style,
 }) => {
     const {
         formState: { errors },
@@ -55,6 +57,7 @@ const Select: FunctionComponent<Props> = ({
             description={description}
             disabled={disabled}
             onChange={onChangeFn}
+            style={style}
         >
             <option style={{ display: 'none' }} />,{children}
         </DsSelect>

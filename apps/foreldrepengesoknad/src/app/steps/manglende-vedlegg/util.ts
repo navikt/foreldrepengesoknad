@@ -266,3 +266,15 @@ export const søknadInneholderIngenVedlegg = (vedlegg: VedleggDataType | undefin
 
     return ingenVedlegg;
 };
+
+export const getRelevantePerioder = (
+    perioder: Periode[],
+    endringssøknadPerioder: Periode[] | undefined,
+    erEndringssøknad: boolean,
+) => {
+    if (erEndringssøknad && endringssøknadPerioder !== undefined) {
+        return endringssøknadPerioder;
+    }
+
+    return perioder;
+};

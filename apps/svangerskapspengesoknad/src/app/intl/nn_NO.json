@@ -7,10 +7,8 @@
     "ok": "OK",
     "ja": "Ja",
     "nei": "Nei",
-    "backlink.label": "Førre steg",
     "pågående": "pågåande",
     "privat.arbeidsgiver": "Privat arbeidsgivar",
-    "søknad.gåVidere": "Neste steg",
     "slutter": "sluttar",
     "sluttet": "slutta",
     "somFrilanser": "som frilansar",
@@ -167,7 +165,6 @@
     "valideringsfeil.tilOgMedDato.påkrevd": "Du må oppgi ei sluttdato.",
     "valideringsfeil.tilOgMedDato.erIFremtiden": "Sluttdatoen kan ikkje vere meir enn ni månedar fram i tid.",
     "valideringsfeil.tilOgMedDato.etterFraDato": "Sluttdatoen må vere lik eller etter startdatoen.",
-    "valideringsfeil.tilOgMedDato.frilans.merEnn4UkerSiden": "Datoen er før 4 veker sidan. Det er ikkje relevant for svangerskapspengar dersom du ikkje har jobba dei siste 4 vekene som frilansar.",
     "valideringsfeil.tilOgMedDato.egenNæring.merEnn5MånederSiden": "Datoen er før 5 månader sidan. Om du avslutta verksemda for meir enn 5 månader sidan, treng du ikkje å oppgje verksemda til NAV.",
     "valideringsfeil.tilOgMedDato.arbeidIUtlandet.merEnn5MånederSiden": "Datoen er før 5 månader sidan. Om du slutta i jobben for meir enn 5 månader sidan, treng du ikkje å oppgje arbeidsforholdet til NAV.",
     "valideringsfeil.tilrettelegging.påkrevd": "Du må velje kva arbeidsforhold du ønskjer å søke svangerskapspengar for.",
@@ -366,5 +363,6 @@
     "bedriftsbanner.tittel.frilansarbeid": "Frilansar",
     "ny.periode": "Ny periode",
     "sesjonUtløpt.tittel": "Du er no logga ut.",
-    "SkjemaSteg.MinstEttDokument": "Du må lasta opp minst eitt dokument"
+    "SkjemaSteg.MinstEttDokument": "Du må lasta opp minst eitt dokument",
+    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige teikn i feltet \"{feltNavn}\"."
 }

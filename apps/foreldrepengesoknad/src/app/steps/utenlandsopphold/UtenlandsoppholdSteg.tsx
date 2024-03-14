@@ -1,12 +1,15 @@
+import { FormattedMessage } from 'react-intl';
+
 import { Heading } from '@navikt/ds-react';
-import { Utenlandsopphold } from '@navikt/fp-types';
+
+import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
+
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import { FormattedMessage } from 'react-intl';
 
 const utledNesteSide = (values: Utenlandsopphold) => {
     if (values.harBoddUtenforNorgeSiste12Mnd) {
@@ -18,13 +21,18 @@ const utledNesteSide = (values: Utenlandsopphold) => {
 };
 
 type Props = {
+    arbeidsforhold: Arbeidsforhold[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
-    const stepConfig = useStepConfig();
-    const navigator = useFpNavigator(mellomlagreSøknadOgNaviger);
+const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
+    arbeidsforhold,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}) => {
+    const stepConfig = useStepConfig(arbeidsforhold);
+    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
     const oppdaterUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD);

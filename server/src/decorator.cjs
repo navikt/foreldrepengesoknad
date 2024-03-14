@@ -17,7 +17,6 @@ const extractDecoratorFragments = (html) => {
         NAV_STYLES: document.getElementById('styles')[prop],
         NAV_HEADING: document.getElementById('header-withmenu')[prop],
         NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
-        NAV_MEGAMENU_RESOURCES: document.getElementById('megamenu-resources')[prop], // oversikt
         APP_SETTINGS: JSON.stringify({
             REST_API_URL: `${process.env.REST_API_URL}`,
             LOGIN_URL: `${process.env.LOGIN_URL}`,

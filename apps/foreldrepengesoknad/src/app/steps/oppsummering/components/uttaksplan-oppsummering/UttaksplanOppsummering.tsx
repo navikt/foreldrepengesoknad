@@ -1,9 +1,12 @@
-import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort } from '@navikt/ds-react';
+
+import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
+
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UttaksplanOppsummeringsliste from './UttaksplanOppsummeringsliste';
-import { Arbeidsforhold } from '@navikt/fp-types';
 
 interface Props {
     perioder: Periode[];
@@ -14,7 +17,7 @@ interface Props {
     antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;
     familiehendelsesdato: Date;
-    termindato: Date | undefined;
+    termindato: string | undefined;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
     antallBarn: number;

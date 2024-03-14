@@ -1,15 +1,17 @@
-import dayjs from 'dayjs';
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { AttachmentType, Skjemanummer, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
-import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
-import { EsDataContext, ContextDataType } from 'appData/EsDataContext';
+import { StoryFn } from '@storybook/react';
+import { ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import Dokumentasjon from 'types/Dokumentasjon';
-import OppsummeringSteg from './OppsummeringSteg';
-import { Søker, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
+import Dokumentasjon from 'types/Dokumentasjon';
+import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
+
+import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { initAmplitude } from '@navikt/fp-metrics';
+import { Søker, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+
+import OppsummeringSteg from './OppsummeringSteg';
 
 const promiseAction =
     () =>

@@ -1,7 +1,11 @@
-import { bemUtils, links } from '@navikt/fp-common';
+import { Accordion, BodyShort, Detail, Link, VStack } from '@navikt/ds-react';
+
+import { links } from '@navikt/fp-constants';
+import { bemUtils } from '@navikt/fp-utils';
+
 import Bankkonto from 'app/types/Bankkonto';
 import { Ytelse } from 'app/types/Ytelse';
-import { Accordion, BodyShort, Detail, Link, VStack } from '@navikt/ds-react';
+
 import './kontonummer-info.css';
 
 interface Props {

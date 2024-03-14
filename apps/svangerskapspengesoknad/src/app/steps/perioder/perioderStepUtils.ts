@@ -1,12 +1,19 @@
-import { PeriodeMedVariasjon, Tilrettelegging, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-import { PerioderFormData, PerioderFormField } from './perioderStepFormConfig';
-import { hasValue } from 'app/utils/validationUtils';
 import dayjs from 'dayjs';
-import { getNesteDagEtterSistePeriode } from 'app/utils/tilretteleggingUtils';
-import { ISOStringToDate, intlUtils } from '@navikt/fp-common';
 import { IntlShape } from 'react-intl';
-import { isISODateString } from '@navikt/ds-datepicker';
+
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { formatDate, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
+
+import {
+    PeriodeMedVariasjon,
+    TilOgMedDatoType,
+    Tilrettelegging,
+    TilretteleggingstypeOptions,
+} from 'app/types/Tilrettelegging';
 import { getFloatFromString } from 'app/utils/numberUtils';
+import { hasValue } from 'app/utils/validationUtils';
+
+import { PerioderFormData } from './PerioderFieldArray';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,
@@ -24,37 +31,18 @@ export const getMåSendeNySøknad = (
     );
 };
 
-export const getInitPerioderFormDataValues = (): Readonly<PerioderFormData> => ({
-    [PerioderFormField.varierendePerioder]: [
-        {
-            type: TilretteleggingstypeOptions.DELVIS,
-            fom: '',
-            tom: '',
-            stillingsprosent: '',
-            tomType: undefined!,
-        },
-    ],
-});
-
-export const getPerioderInitialValues = (tilrettelegging: Tilrettelegging): PerioderFormData => {
-    const initValues = getInitPerioderFormDataValues();
-    return {
-        varierendePerioder:
-            tilrettelegging.varierendePerioder && tilrettelegging.varierendePerioder.length > 0
-                ? tilrettelegging.varierendePerioder
-                : initValues.varierendePerioder,
-    };
-};
-
 export const mapPerioderFormDataToState = (
     id: string,
-    values: Partial<PerioderFormData>,
+    values: PerioderFormData,
     tilretteleggingFraState: Tilrettelegging[],
 ): Tilrettelegging[] => {
     const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
     const oppdatert = {
         ...tilretteleggingForOppdatering,
-        varierendePerioder: values.varierendePerioder,
+        varierendePerioder: values.varierendePerioder.map((p) => ({
+            ...p,
+            type: TilretteleggingstypeOptions.DELVIS,
+        })),
     } as Tilrettelegging;
 
     const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {
@@ -81,31 +69,60 @@ export const getPeriodeDerSøkerErTilbakeIFullStilling = (
         : undefined;
 };
 
+export const getMinDatoTom = (fom: string | undefined, minDatoFom: Date): Date => {
+    return fom && isStringAValidDate(fom) ? dayjs(fom).toDate() : minDatoFom;
+};
+
+export const getPeriodeInfoTekst = (
+    index: number,
+    sisteDagForSvangerskapspenger: string,
+    intl: IntlShape,
+    varierendePerioder?: PeriodeMedVariasjon[],
+) => {
+    if (
+        varierendePerioder &&
+        varierendePerioder[index]?.fom &&
+        (varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP || varierendePerioder[index].tom)
+    ) {
+        const tomDato =
+            varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
+                ? sisteDagForSvangerskapspenger
+                : dayjs(varierendePerioder[index].tom).format(ISO_DATE_FORMAT);
+        return `${formatDate(varierendePerioder[index].fom)} - ${formatDate(tomDato)}`;
+    }
+    return intl.formatMessage({ id: 'ny.periode' });
+};
+
+const getNesteDagEtterSistePeriode = (
+    sisteDagForSvangerskapspenger: string,
+    alleVarierendePerioder?: PeriodeMedVariasjon[],
+): string => {
+    if (!alleVarierendePerioder || alleVarierendePerioder.length === 0) {
+        return '';
+    }
+    const alleTomDatoer = alleVarierendePerioder
+        .filter((p) => p.tom || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
+        .map((periode) => {
+            if (periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
+                return dayjs(sisteDagForSvangerskapspenger).add(1, 'd');
+            } else {
+                return dayjs(periode.tom);
+            }
+        });
+
+    const maxTomDato = alleTomDatoer.length > 0 ? dayjs.max(alleTomDatoer) : undefined;
+    return maxTomDato ? maxTomDato.add(1, 'd').format(ISO_DATE_FORMAT) : '';
+};
+
 export const getUferdigPeriodeInput = (
-    formValues: Partial<PerioderFormData>,
-    sisteDagForSvangerskapspenger: Date,
+    sisteDagForSvangerskapspenger: string,
+    alleVarierendePerioder?: PeriodeMedVariasjon[],
 ): PeriodeMedVariasjon => {
     return {
-        fom: getNesteDagEtterSistePeriode(formValues, sisteDagForSvangerskapspenger),
+        fom: getNesteDagEtterSistePeriode(sisteDagForSvangerskapspenger, alleVarierendePerioder),
         tom: '',
         stillingsprosent: '',
         tomType: undefined!,
         type: TilretteleggingstypeOptions.DELVIS,
     } as PeriodeMedVariasjon;
-};
-
-export const getPeriodeSideTittel = (erFlereTilrettelegginger: boolean, navn: string, intl: IntlShape): string => {
-    return erFlereTilrettelegginger
-        ? intlUtils(intl, 'steps.label.periode.flere', { navn })
-        : intlUtils(intl, 'steps.label.periode.en');
-};
-
-export const getDescriptionTekst = (kanHaSVPFremTilTreUkerFørTermin: boolean, intl: IntlShape): string => {
-    return kanHaSVPFremTilTreUkerFørTermin
-        ? intlUtils(intl, 'perioder.varierende.description.termin')
-        : intlUtils(intl, 'perioder.varierende.description.fødsel');
-};
-
-export const getMinDatoTom = (fom: string | undefined, minDatoFom: Date): Date => {
-    return hasValue(fom) && isISODateString(fom) ? ISOStringToDate(fom)! : minDatoFom;
 };

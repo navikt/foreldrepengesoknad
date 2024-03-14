@@ -1,5 +1,7 @@
+import useEsNavigator from 'appData/useEsNavigator';
 import { FunctionComponent, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import {
     BodyShort,
     Button,
@@ -11,12 +13,10 @@ import {
     Link,
     VStack,
 } from '@navikt/ds-react';
-import { LanguageToggle } from '@navikt/fp-common';
+
 import { links } from '@navikt/fp-constants';
 import { LocaleAll } from '@navikt/fp-types';
-import { ContentWrapper, useCustomIntl } from '@navikt/fp-ui';
-
-import useEsNavigator from 'appData/useEsNavigator';
+import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 
 export interface Props {
     onChangeLocale: (locale: LocaleAll) => void;
@@ -33,7 +33,7 @@ const Velkommen: FunctionComponent<Props> = ({
     erVelkommen,
     mellomlagreOgNaviger,
 }) => {
-    const { i18n } = useCustomIntl();
+    const intl = useIntl();
 
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
@@ -55,8 +55,7 @@ const Velkommen: FunctionComponent<Props> = ({
                 <LanguageToggle
                     locale={locale}
                     availableLocales={['en', 'nb', 'nn']}
-                    toggle={(l: LocaleAll) => onChangeLocale(l)}
-                    isCleanVersion
+                    toggleLanguage={(l: LocaleAll) => onChangeLocale(l)}
                 />
                 <Heading size="large">
                     <FormattedMessage id={'Søknad.Pageheading'} />
@@ -92,7 +91,7 @@ const Velkommen: FunctionComponent<Props> = ({
                         </Link>
                     </VStack>
                 </GuidePanel>
-                <ExpansionCard size="medium" aria-label={i18n('Velkommen.Info.Header')}>
+                <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'Velkommen.Info.Header' })}>
                     <ExpansionCard.Header>
                         <ExpansionCard.Title size="small">
                             <FormattedMessage id="Velkommen.Info.Header" />
@@ -129,10 +128,14 @@ const Velkommen: FunctionComponent<Props> = ({
                     </ExpansionCard.Content>
                 </ExpansionCard>
                 <ConfirmationPanel
-                    label={i18n('Velkommen.Samtykke')}
+                    label={intl.formatMessage({ id: 'Velkommen.Samtykke' })}
                     onChange={() => setChecked((state) => !state)}
                     checked={isChecked}
-                    error={isError && !isChecked && i18n('Velkommen.Validering.BekreftLestOgForståttRettigheter')}
+                    error={
+                        isError &&
+                        !isChecked &&
+                        intl.formatMessage({ id: 'Velkommen.Validering.BekreftLestOgForståttRettigheter' })
+                    }
                 >
                     <VStack gap="5">
                         <HStack gap="1">

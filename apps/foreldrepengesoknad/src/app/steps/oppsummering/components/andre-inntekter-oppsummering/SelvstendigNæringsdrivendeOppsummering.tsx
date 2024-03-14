@@ -1,11 +1,15 @@
-import { formatDate } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { BodyShort } from '@navikt/ds-react';
+
+import { formatDate } from '@navikt/fp-common';
+
+import SøkerData from 'app/context/types/SøkerData';
+
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import InntekterTabell from './InntekterTabell';
 import Næringsdetaljer from './Næringsdetaljer';
-import { BodyShort } from '@navikt/ds-react';
-import SøkerData from 'app/context/types/SøkerData';
 
 interface Props {
     søkerData: SøkerData;

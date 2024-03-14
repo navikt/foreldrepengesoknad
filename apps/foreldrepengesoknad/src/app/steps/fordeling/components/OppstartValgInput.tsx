@@ -179,9 +179,10 @@ export const getRadioOptionsForSituasjon = (
     intl: IntlShape,
     deltUttak: boolean,
     førsteDagEtterAnnenForelder: Date | undefined,
+    datoForAleneomsorg: Date | undefined,
 ): React.ReactElement[] => {
     const erBarnetFødt = isFødtBarn(barn);
-    const adoptertFraUtlandetDato = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
+    const adoptertFraUtlandetDato = isAdoptertAnnetBarn(barn) ? ISOStringToDate(barn.ankomstdato) : undefined;
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erMor = !erFarEllerMedmor;
@@ -189,8 +190,8 @@ export const getRadioOptionsForSituasjon = (
     if (erMor && erFødsel) {
         return getRadioOptionMorFødsel(erBarnetFødt, intl, familiehendelsesdato);
     }
-    if (erFarEllerMedmor && !deltUttak && barn.datoForAleneomsorg) {
-        return getRadioOptionFarAleneomsorg(barn.datoForAleneomsorg, familiehendelsesdato);
+    if (erFarEllerMedmor && !deltUttak && datoForAleneomsorg) {
+        return getRadioOptionFarAleneomsorg(datoForAleneomsorg, familiehendelsesdato);
     }
     if (erFarEllerMedmor && erFødsel) {
         return getRadioOptionFarFødsel(

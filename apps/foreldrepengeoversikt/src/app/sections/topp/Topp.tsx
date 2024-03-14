@@ -1,6 +1,8 @@
-import { BodyShort, Heading } from '@navikt/ds-react';
-import { bemUtils } from '@navikt/fp-common';
 import TeddyBearCot from 'assets/TeddyBearCot';
+
+import { BodyShort, Heading } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
 
 import './topp.css';
 

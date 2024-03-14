@@ -1,10 +1,13 @@
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+
 import { allCommonMessages } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, SøkerBarn } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
-import { render, screen } from '@testing-library/react';
+
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import { BrowserRouter } from 'react-router-dom';
+
 import nbMessages from '../intl/nb_NO.json';
 import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
 import SøknadRoutes from './routes';
@@ -60,7 +63,6 @@ describe('<ForeldrepengesøknadRoutes>', () => {
                                 rolle: 'mor',
                             },
                             [ContextDataType.SØKER_DATA]: {
-                                erAleneOmOmsorg: false,
                                 harHattAnnenInntektSiste10Mnd: false,
                                 harJobbetSomFrilansSiste10Mnd: false,
                                 harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,

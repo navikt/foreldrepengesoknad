@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
+
 import * as stories from './ByttBrowserModal.stories';
 
 const { Default } = composeStories(stories);

@@ -152,7 +152,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const uttaksplanUtenAnnenPartsSamtidigUttak = uttaksplan.filter(
         (p) => !(isAnnenPartInfoPeriode(p) && !p.visPeriodeIPlan),
     );
-    const bareFarHarRett = !morHarRett;
+    const bareFarHarRett = !morHarRett && !erAleneOmOmsorg;
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
     const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);

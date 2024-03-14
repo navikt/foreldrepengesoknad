@@ -1,0 +1,15 @@
+.confirmationDialog {
+    max-width: 30rem;
+    &__content {
+        padding: 0.5rem 0 1.5rem 0;
+        > p:first-child {
+            margin-top: 0;
+        }
+        > p:last-child {
+            margin-bottom: 0;
+        }
+    }
+    @media (min-width: 20rem) {
+        min-width: 25rem;
+    }
+}

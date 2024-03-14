@@ -1,11 +1,11 @@
 import dayjs from 'dayjs';
-import { Uttaksdagen } from './Uttaksdagen';
-import { dateToISOString } from '@navikt/sif-common-formik-ds/lib';
-import { DatepickerLimitations } from '@navikt/ds-datepicker';
+
 import uttaksConstants from '../constants/constants';
 import { Situasjon } from '../types';
+import { Uttaksdagen } from './Uttaksdagen';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 import { getFørsteUttaksdag2UkerFørFødsel } from './wlbUtils';
+import { DatepickerLimitationsString, dateToISOString } from '@navikt/fp-formik';
 
 function sisteMuligePermisjonsdag(familiehendelsedato: Date): Date {
     const startDato = Uttaksdagen(familiehendelsedato).denneEllerNeste();
@@ -19,7 +19,7 @@ const konverterMinOgMaxDatoerTilString = (minDate: Date, maxDate: Date) => ({
     maxDate: dateToISOString(maxDate),
 });
 
-const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): DatepickerLimitations => {
+const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): DatepickerLimitationsString => {
     const minDato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     const maksDato = sisteMuligePermisjonsdag(familiehendelsesdato);
     return {
@@ -28,7 +28,7 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Datepi
     };
 };
 
-const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | undefined): DatepickerLimitations => {
+const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | undefined): DatepickerLimitationsString => {
     const termindatoMinus12Uker =
         termindato !== undefined
             ? dayjs(termindato).subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1, 'days')
@@ -56,7 +56,7 @@ const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | unde
     }
 };
 
-const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: string): DatepickerLimitations => {
+const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: string): DatepickerLimitationsString => {
     const maksDato = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
     const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1);
     return {
@@ -65,7 +65,7 @@ const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato:
     };
 };
 
-const ekstrauttakFørFødsel = (familiehendelsesdato: string): DatepickerLimitations => {
+const ekstrauttakFørFødsel = (familiehendelsesdato: string): DatepickerLimitationsString => {
     const sisteDagFørFødsel = Uttaksdagen(dayjs(familiehendelsesdato).toDate()).forrige();
     const minDato = Uttaksdagen(sisteDagFørFødsel).trekkFra(
         uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1,
@@ -80,9 +80,9 @@ const ekstrauttakFørFødsel = (familiehendelsesdato: string): DatepickerLimitat
 };
 
 const startdatoPermisjonAleneomsorgFarMedmor = (
-    datoForAleneomsorg: Date,
-    familiehendelsesdato: Date,
-): DatepickerLimitations => {
+    datoForAleneomsorg: string,
+    familiehendelsesdato: string,
+): DatepickerLimitationsString => {
     const minDato = Uttaksdagen(dayjs(datoForAleneomsorg).toDate()).denneEllerNeste();
     const maksDato = sisteMuligePermisjonsdag(dayjs(familiehendelsesdato).toDate());
     return {
@@ -91,11 +91,11 @@ const startdatoPermisjonAleneomsorgFarMedmor = (
     };
 };
 
-const startdatoPermisjonAdopsjon = (familiehendelsesdato: Date): DatepickerLimitations => {
+const startdatoPermisjonAdopsjon = (familiehendelsesdato: string): DatepickerLimitationsString => {
     return defaultPermisjonsperiodeAvgrensning(dayjs(familiehendelsesdato).toDate());
 };
 
-const morsSisteUttaksdag = (familiehendelsesdato: string): DatepickerLimitations => {
+const morsSisteUttaksdag = (familiehendelsesdato: string): DatepickerLimitationsString => {
     return defaultPermisjonsperiodeAvgrensning(dayjs(familiehendelsesdato).toDate());
 };
 
@@ -103,7 +103,7 @@ const startdatoPermisjonFarMedmor = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     situasjon: Situasjon,
-): DatepickerLimitations => {
+): DatepickerLimitationsString => {
     const defaultAvgrensning = defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
     if (situasjon === 'fødsel' && andreAugust2022ReglerGjelder(familiehendelsesdato)) {
         return {

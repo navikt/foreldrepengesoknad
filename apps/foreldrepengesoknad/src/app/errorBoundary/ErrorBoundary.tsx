@@ -1,9 +1,11 @@
 import * as Sentry from '@sentry/browser';
-import Feilside from 'app/pages/feilside/Feilside';
-import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
 import { Component, ReactElement } from 'react';
-import { links } from '@navikt/fp-common';
+
+import { links } from '@navikt/fp-constants';
 import { Søker } from '@navikt/fp-types';
+
+import { FOR_MANGE_VEDLEGG_ERROR } from 'app/api/apiUtils';
+import Feilside from 'app/pages/feilside/Feilside';
 
 interface Props {
     søker?: Søker;

@@ -11,17 +11,14 @@ import {
     isFarEllerMedmor,
 } from '@navikt/fp-common';
 
-import SøkerData from 'app/context/types/SøkerData';
-
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 
 interface Props {
     annenForelder: AnnenForelder;
-    søkerData: SøkerData;
     søkerrolle: Søkerrolle;
 }
 
-const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søkerData, søkerrolle }) => {
+const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søkerrolle }) => {
     const intl = useIntl();
     const erFarEllerMedmor = isFarEllerMedmor(søkerrolle);
 
@@ -40,7 +37,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
                         title={
-                            !søkerData.erAleneOmOmsorg
+                            !annenForelder.erAleneOmOmsorg
                                 ? intl.formatMessage({ id: 'oppsummering.annenForelder.fellesOmsorg.tittel' })
                                 : intl.formatMessage({ id: 'oppsummering.annenForelder.aleneOmOmsorg.tittel' })
                         }
@@ -48,14 +45,14 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                         <BodyShort>
                             <FormattedMessage
                                 id={
-                                    !søkerData.erAleneOmOmsorg
+                                    !annenForelder.erAleneOmOmsorg
                                         ? 'oppsummering.annenForelder.fellesOmsorg.tekst'
                                         : 'oppsummering.annenForelder.aleneOmOmsorg.tekst'
                                 }
                             />
                         </BodyShort>
                     </OppsummeringsPunkt>
-                    {!søkerData.erAleneOmOmsorg && (
+                    {!annenForelder.erAleneOmOmsorg && (
                         <OppsummeringsPunkt
                             title={intl.formatMessage(
                                 { id: 'oppsummering.annenForelder.rettPåForeldrepengerINorge' },
@@ -69,7 +66,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                             </BodyShort>
                         </OppsummeringsPunkt>
                     )}
-                    {!søkerData.erAleneOmOmsorg && !annenForelder.harRettPåForeldrepengerINorge && (
+                    {!annenForelder.erAleneOmOmsorg && !annenForelder.harRettPåForeldrepengerINorge && (
                         <OppsummeringsPunkt
                             title={intl.formatMessage(
                                 { id: 'oppsummering.annenForelder.harOppholdtSegIEØS' },
@@ -83,7 +80,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                             </BodyShort>
                         </OppsummeringsPunkt>
                     )}
-                    {!søkerData.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS === true && (
+                    {!annenForelder.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS === true && (
                         <OppsummeringsPunkt
                             title={intl.formatMessage(
                                 { id: 'oppsummering.annenForelder.rettPåForeldrepengerIEØS' },
@@ -98,19 +95,19 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                         </OppsummeringsPunkt>
                     )}
                     {erFarEllerMedmor &&
-                        !søkerData.erAleneOmOmsorg &&
+                        !annenForelder.erAleneOmOmsorg &&
                         !annenForelder.harRettPåForeldrepengerINorge &&
                         !annenForelder.harRettPåForeldrepengerIEØS && (
                             <OppsummeringsPunkt
                                 title={intl.formatMessage(
-                                    { id: 'annenForelder.erMorUfør' },
+                                    { id: 'oppsummering.annenForelder.erMorUfør' },
                                     {
                                         navn: annenForelder.fornavn,
                                     },
                                 )}
                             >
                                 <BodyShort>
-                                    <FormattedMessage id={annenForelder.erUfør ? 'ja' : 'nei'} />
+                                    <FormattedMessage id={annenForelder.erMorUfør ? 'ja' : 'nei'} />
                                 </BodyShort>
                             </OppsummeringsPunkt>
                         )}

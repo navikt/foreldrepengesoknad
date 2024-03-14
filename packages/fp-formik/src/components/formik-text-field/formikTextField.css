@@ -1,0 +1,28 @@
+.formikTextField--xxs input {
+    width: 35px;
+}
+.formikTextField--xs input {
+    width: 70px;
+}
+.formikTextField--s input {
+    width: 140px;
+}
+.formikTextField--m input {
+    width: 100%;
+    max-width: 210px;
+}
+.formikTextField--l input {
+    width: 100%;
+    max-width: 280px;
+}
+.formikTextField--xl input {
+    width: 100%;
+    max-width: 350px;
+}
+.formikTextField--xxl input {
+    width: 100%;
+    max-width: 420px;
+}
+.formikTextField--fullbredde input {
+    width: 100%;
+}

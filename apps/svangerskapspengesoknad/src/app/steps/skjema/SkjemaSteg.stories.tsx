@@ -1,10 +1,16 @@
-import { attachmentApi } from '@navikt/fp-api';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
-import { Action, ContextDataType, SvpDataContext } from 'app/context/SvpDataContext';
-import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import MockAdapter from 'axios-mock-adapter';
+import { MemoryRouter } from 'react-router-dom';
+
+import { attachmentApi } from '@navikt/fp-api';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+
 import SkjemaSteg from './SkjemaSteg';
 
 const defaultExport = {
@@ -94,41 +100,44 @@ interface TilretteleggingStepStoryProps {
 
 const Template: StoryFn<TilretteleggingStepStoryProps> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
+    gåTilNesteSide = action('button-click'),
     skalFeileOpplasting,
     maxAntallVedlegg = 40,
     tilrettelegging,
 }) => {
+    initAmplitude();
     const apiMock = new MockAdapter(attachmentApi);
     if (!skalFeileOpplasting) {
         apiMock.onPost('/rest-api/storage/svangerskapspenger/vedlegg').reply(200); //story
         apiMock.onPost('http://localhost:8888/rest/storage/svangerskapspenger/vedlegg').reply(200); //test
     }
     return (
-        <SvpDataContext
-            onDispatch={gåTilNesteSide}
-            initialState={{
-                [ContextDataType.INNTEKTSINFORMASJON]: {
-                    harHattAnnenInntekt: false,
-                    harJobbetSomFrilans: false,
-                    harJobbetSomSelvstendigNæringsdrivende: false,
-                },
-                [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
-                [ContextDataType.VALGT_TILRETTELEGGING_ID]: '990322244',
-                [ContextDataType.OM_BARNET]: {
-                    erBarnetFødt: false,
-                    termindato: '2024-02-18',
-                    fødselsdato: '2024-02-18',
-                },
-            }}
-        >
-            <SkjemaSteg
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                avbrytSøknad={promiseAction()}
-                arbeidsforhold={arbeidsforhold}
-                maxAntallVedlegg={maxAntallVedlegg}
-            />
-        </SvpDataContext>
+        <MemoryRouter initialEntries={[SøknadRoutes.SKJEMA]}>
+            <SvpDataContext
+                onDispatch={gåTilNesteSide}
+                initialState={{
+                    [ContextDataType.INNTEKTSINFORMASJON]: {
+                        harHattArbeidIUtlandet: false,
+                        harJobbetSomFrilans: false,
+                        harJobbetSomSelvstendigNæringsdrivende: false,
+                    },
+                    [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
+                    [ContextDataType.VALGT_TILRETTELEGGING_ID]: '990322244',
+                    [ContextDataType.OM_BARNET]: {
+                        erBarnetFødt: false,
+                        termindato: '2024-02-18',
+                        fødselsdato: '2024-02-18',
+                    },
+                }}
+            >
+                <SkjemaSteg
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    avbrytSøknad={promiseAction()}
+                    arbeidsforhold={arbeidsforhold}
+                    maxAntallVedlegg={maxAntallVedlegg}
+                />
+            </SvpDataContext>
+        </MemoryRouter>
     );
 };
 
