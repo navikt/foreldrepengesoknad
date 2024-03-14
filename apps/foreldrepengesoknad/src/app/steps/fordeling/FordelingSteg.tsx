@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import { Loader, VStack } from '@navikt/ds-react';
 
 import {
-    ISOStringToDate,
     Step,
     Uttaksdagen,
     getAntallUkerFellesperiode,
@@ -21,7 +20,11 @@ import getStønadskontoParams from 'app/api/getStønadskontoParams';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
-import { getFordelingFraKontoer, getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
+import {
+    getFordelingFraKontoer,
+    getIsDeltUttak,
+    getSisteUttaksdagAnnenForelder,
+} from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
 import {
@@ -141,12 +144,12 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
               )
             : [];
     const dagerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) * 5 : 0;
-    const sisteDagAnnenForelder =
-        deltUttak && annenPartsVedtak
-            ? Uttaksdagen(
-                  ISOStringToDate(annenPartsVedtak.perioder[annenPartsVedtak.perioder.length - 1].tom)!,
-              ).denneEllerForrige()
-            : undefined;
+    const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(
+        erFarEllerMedmor,
+        deltUttak,
+        eksisterendeVedtakAnnenPart?.uttaksplan,
+    );
+
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder ? Uttaksdagen(sisteDagAnnenForelder).neste() : undefined;
     const visMorsSisteDag = erFarEllerMedmor && sisteDagAnnenForelder;
     if (!valgtStønadskonto || (statusAnnenPartVedtak !== RequestStatus.FINISHED && !suspendAnnenPartVedtakApiRequest)) {

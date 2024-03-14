@@ -5,10 +5,12 @@ import { IntlShape } from 'react-intl';
 import {
     AnnenForelder,
     Barn,
+    Forelder,
     ISOStringToDate,
     Periode,
     StønadskontoType,
     TilgjengeligStønadskonto,
+    Uttaksdagen,
     capitalizeFirstLetter,
     førsteOktober2021ReglerGjelder,
     getAntallUkerAktivitetsfriKvote,
@@ -24,6 +26,7 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
+    isInfoPeriode,
     isUfødtBarn,
     uttaksConstants,
 } from '@navikt/fp-common';
@@ -805,4 +808,26 @@ export const getBeggeHarRettGrafFordeling = (
     ];
 
     return erAdopsjon ? fordelingEtterFødselAdopsjon : [fordelingFørFødsel, ...fordelingEtterFødselAdopsjon];
+};
+
+export const getSisteUttaksdagAnnenForelder = (
+    erFarEllerMedmor: boolean,
+    deltUttak: boolean,
+    perioderAnnenPart: Periode[] | undefined,
+): Date | undefined => {
+    if (!deltUttak || !perioderAnnenPart || perioderAnnenPart.length === 0) {
+        return undefined;
+    }
+    const annenPartForelder = erFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
+    const annenForeldersFiltrertePerioder = perioderAnnenPart.filter(
+        (p) => isInfoPeriode(p) && p.forelder === annenPartForelder,
+    );
+
+    const sisteDagAnnenForelder =
+        annenForeldersFiltrertePerioder && annenForeldersFiltrertePerioder.length > 0
+            ? Uttaksdagen(
+                  annenForeldersFiltrertePerioder[annenForeldersFiltrertePerioder.length - 1].tidsperiode.tom,
+              ).denneEllerForrige()
+            : undefined;
+    return sisteDagAnnenForelder;
 };
