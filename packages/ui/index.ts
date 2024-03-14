@@ -1,4 +1,4 @@
-import enMessages from './src/i18n/messages/en_Us.json';
+import enMessages from './src/i18n/messages/en_US.json';
 import nbMessages from './src/i18n/messages/nb_NO.json';
 import nnMessages from './src/i18n/messages/nn_NO.json';
 
