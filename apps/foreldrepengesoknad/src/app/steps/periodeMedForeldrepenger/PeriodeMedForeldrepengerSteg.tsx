@@ -2,16 +2,7 @@ import { useIntl } from 'react-intl';
 
 import { Loader } from '@navikt/ds-react';
 
-import {
-    AnnenForelder,
-    Barn,
-    Dekningsgrad,
-    DekningsgradDTO,
-    Step,
-    getKjønnFromFnr,
-    isAnnenForelderOppgitt,
-    isFødtBarn,
-} from '@navikt/fp-common';
+import { Dekningsgrad, DekningsgradDTO, Step, getKjønnFromFnr, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -22,31 +13,11 @@ import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'app/utils/annenForelderUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 
 import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
-
-//TODO GR: Move if reused in next step
-export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
-    const annenPartFødselsnummer =
-        isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
-    const barnFødselsnummer =
-        isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
-    return {
-        annenPartFødselsnummer,
-        barnFødselsnummer,
-        familiehendelse: getFamiliehendelsedato(barn),
-    };
-};
-
-//TODO GR: Move if reused in next step
-export const shouldSuspendAnnenPartVedtakApiRequest = (annenForelder: AnnenForelder) => {
-    const annenPartFnr =
-        isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
-    return annenPartFnr !== undefined && annenPartFnr !== '' ? false : true;
-};
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];

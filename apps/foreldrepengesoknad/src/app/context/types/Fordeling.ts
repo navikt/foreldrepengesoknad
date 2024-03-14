@@ -18,9 +18,6 @@ export type Fordeling = {
     antallUkerFellesperiodeTilSøker?: number;
     oppstartAvForeldrepengerValg?: OppstartValg;
     oppstartDato?: string;
-    //TODO GR: Spør om disse beholdes:
-    harAnnenForelderForeldrepenger?: boolean;
-    annenForelderSisteDag?: string;
 };
 
 export default Fordeling;

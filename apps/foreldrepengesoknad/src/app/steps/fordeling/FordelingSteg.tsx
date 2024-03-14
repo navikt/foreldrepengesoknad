@@ -24,16 +24,16 @@ import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversi
 import { getFordelingFraKontoer, getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
-import { getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
+import {
+    getAnnenPartVedtakParam,
+    getErAleneOmOmsorg,
+    shouldSuspendAnnenPartVedtakApiRequest,
+} from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtMinsterett, getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 
-import {
-    getAnnenPartVedtakParam,
-    shouldSuspendAnnenPartVedtakApiRequest,
-} from '../periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
 import FordelingForm from './FordelingForm';
 import MorsSisteDag from './components/mors-siste-dag/MorsSisteDag';
 
@@ -125,8 +125,6 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         ? tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)]
         : undefined;
 
-    //TODO GR: eksisterendeVedtakAnnenPart?.uttaksplan, er på infoperiode format og derfor vises ikke annen parts bruk av fellesperiode eller søkerens kvote.
-
     const fordelingScenario =
         valgtStønadskonto && minsterett
             ? getFordelingFraKontoer(
@@ -143,7 +141,6 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
               )
             : [];
     const dagerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) * 5 : 0;
-    //TODO GR: Må finnes siste uttaksperiode, filtrere bort på kun de og kun invilgede:
     const sisteDagAnnenForelder =
         deltUttak && annenPartsVedtak
             ? Uttaksdagen(
