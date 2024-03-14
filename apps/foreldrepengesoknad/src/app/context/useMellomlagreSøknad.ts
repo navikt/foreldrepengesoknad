@@ -6,11 +6,10 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import Api from 'app/api/api';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import { MELLOMLAGRET_VERSJON } from 'app/utils/mellomlagringUtils';
 import { redirectToLogin } from 'app/utils/redirectToLogin';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
-
-export const MELLOMLAGRET_VERSJON = 7;
 
 const mellomlagre = (
     locale: LocaleNo,
