@@ -1,6 +1,6 @@
-.oppstart-dato-mor-fødsel__div {
+.mor-oppstartinformasjon {
     margin-top: 3.2rem;
-    margin-left: -5rem;
+    margin-left: -13rem;
     background-color: var(--Surface-Selected, #e6f0ff);
     padding: 0.5rem;
     display: flex;
@@ -9,6 +9,6 @@
     width: 20rem;
 }
 
-.oppstart-dato-mor-fødsel--bold {
+.mor-oppstartinformasjon--bold {
     font-weight: bold;
 }
