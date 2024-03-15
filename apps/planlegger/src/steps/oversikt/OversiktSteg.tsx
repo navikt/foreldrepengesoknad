@@ -186,7 +186,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </ToggleGroup>
                     {!erAleneforsørger && fordeling?.fellesperiodefordeling && (
                         <Select
-                            label=""
+                            label="oversikt.fellesperiodefordeling"
                             name="fellesperiodefordeling"
                             onChange={(e) => {
                                 setCurrentOption(e.target.value);
