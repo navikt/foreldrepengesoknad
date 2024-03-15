@@ -17,9 +17,8 @@ import {
 
 import { BodyLong, Link, Radio, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { isRequired } from '@navikt/fp-validation';
-
-import { HVOR_LENGE_LENKE, VEIVISER_LENKE } from '../ArbeidssituasjonSteg';
 
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (isMorOgMedmor(hvemPlanlegger)) {
@@ -84,7 +83,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             id="arbeid.ufør.infoboks.lesMer"
                             values={{
                                 a: (msg: any) => (
-                                    <Link href={HVOR_LENGE_LENKE} className="lenke" rel="noreferrer" target="_blank">
+                                    <Link href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
                                 ),
@@ -112,7 +111,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             id="arbeid.ingen.infoboks.engangsstønad"
                             values={{
                                 a: (msg: any) => (
-                                    <Link href={VEIVISER_LENKE} className="lenke" rel="noreferrer" target="_blank">
+                                    <Link href={links.veiviser} className="lenke" rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
                                 ),

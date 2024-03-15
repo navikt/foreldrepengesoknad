@@ -63,7 +63,7 @@ FlereForsørgereBarnFødtSeptemberStartSeptember.args = {
         erBarnetFødt: true,
         erFødsel: true,
         fødselsdato: '2024-09-01',
-        termindato: '2024-09-01',
+        termindato: '2024-09-03',
         antallBarn: '1',
     },
 };
@@ -94,8 +94,8 @@ FlereForsørgereAdoptertBarnFødtJanuarStartAugust.args = {
         antallBarn: '1',
         erAdoptert: true,
         erBarnetFødt: true,
-        fødselsdato: '2024-02-11',
-        overtakelsesdato: '2024-03-01',
-        adopsjonsdato: '2024-02-10',
+        fødselsdato: '2026-01-11',
+        overtakelsesdato: '2026-03-01',
+        adopsjonsdato: '2026-02-10',
     },
 };

@@ -14,12 +14,11 @@ import 'dayjs/locale/nb';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import {
     getFellesperiodefordelingOptionValues,
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
-import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
