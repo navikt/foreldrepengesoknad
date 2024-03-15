@@ -5,15 +5,12 @@ import InfoboksGenerell from 'components/InfoboksGenerell';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { barnehagestartDato, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
-
-import { BARNEHAGELOVEN_TEKST } from '../BarnehageplassSteg';
-import { barnehagestartDato } from '../BarnehageplassSteg';
 
 const Aleneforsørger: FunctionComponent = () => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -43,7 +40,7 @@ const Aleneforsørger: FunctionComponent = () => {
                             id="barnehageplass.datoTekst"
                             values={{
                                 a: (msg: any) => (
-                                    <Link href={BARNEHAGELOVEN_TEKST} target="_blank" inlineText>
+                                    <Link href={links.barnehageloven} target="_blank" inlineText>
                                         {msg}
                                     </Link>
                                 ),
@@ -56,7 +53,7 @@ const Aleneforsørger: FunctionComponent = () => {
                                 id="barnehageplass.datoTekstTermin"
                                 values={{
                                     a: (msg: any) => (
-                                        <Link href={BARNEHAGELOVEN_TEKST} target="_blank" inlineText>
+                                        <Link href={links.barnehageloven} target="_blank" inlineText>
                                             {msg}
                                         </Link>
                                     ),

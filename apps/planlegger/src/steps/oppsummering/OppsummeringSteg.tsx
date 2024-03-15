@@ -15,6 +15,7 @@ import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'util
 
 import { Alert, BodyLong, ExpansionCard, HStack, Link, Loader, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -75,7 +76,18 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <BodyLong>
                                 <FormattedMessage
                                     id="oppsummering.infoboks.engangsstønad"
-                                    values={{ a: (msg: any) => <Link>{msg}</Link> }}
+                                    values={{
+                                        a: (msg: any) => (
+                                            <Link
+                                                href={links.veiviser}
+                                                target="_blank"
+                                                className="lenke"
+                                                rel="noreferrer"
+                                            >
+                                                {msg}
+                                            </Link>
+                                        ),
+                                    }}
                                 />
                             </BodyLong>
                         </Infoboks>
@@ -88,7 +100,18 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     ) : (
                         <FormattedMessage
                             id="oppsummering.informasjonPlanleggerErUnderUtvikling"
-                            values={{ a: (msg: any) => <Link>{msg}</Link> }}
+                            values={{
+                                a: (msg: any) => (
+                                    <Link
+                                        href={links.søknadForeldrepenger}
+                                        target="_blank"
+                                        className="lenke"
+                                        rel="noreferrer"
+                                    >
+                                        {msg}
+                                    </Link>
+                                ),
+                            }}
                         />
                     )}
                 </Alert>

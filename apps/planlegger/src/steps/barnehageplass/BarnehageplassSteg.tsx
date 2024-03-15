@@ -5,7 +5,6 @@ import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
 import { Heading, VStack } from '@navikt/ds-react';
@@ -17,26 +16,6 @@ import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
 
 dayjs.locale('nb');
-
-export const BARNEHAGELOVEN_TEKST =
-    'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/';
-
-export const barnehagestartDato = (barnet: OmBarnet) => {
-    const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetIkkeFødt(barnet);
-    const erAdoptert = erBarnetAdoptert(barnet);
-    if (erFødt || erIkkeFødt || erAdoptert) {
-        const dato = erIkkeFødt || erFødt ? barnet.termindato : barnet.fødselsdato;
-
-        if (dayjs(dato).month() < 8) return dayjs(dato).format('MMMM');
-
-        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM');
-
-        if (dayjs(dato).month() === 11)
-            return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM');
-    }
-    return undefined;
-};
 
 const BarnehageplassSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
