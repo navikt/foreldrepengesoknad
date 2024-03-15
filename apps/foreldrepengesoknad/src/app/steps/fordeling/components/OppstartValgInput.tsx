@@ -7,7 +7,6 @@ import {
     Barn,
     ISOStringToDate,
     andreAugust2022ReglerGjelder,
-    formatDate,
     formatDateExtended,
     førsteOktober2021ReglerGjelder,
     getFørsteUttaksdagForeldrepengerFørFødsel,
@@ -87,7 +86,10 @@ const getRadioOptionAdopsjonOmsorgsovertakelse = (familiehendelsesdato: Date): R
 const getRadioOptionAdopsjonAnkomstNorge = (ankomstNorge: Date): React.ReactElement => {
     return (
         <Radio value={OppstartValg.ANKOMSTDATO_NORGE}>
-            <FormattedMessage id="fordeling.oppstartValg.ankomstNorge" values={{ dato: formatDate(ankomstNorge) }} />
+            <FormattedMessage
+                id="fordeling.oppstartValg.ankomstNorge"
+                values={{ dato: formatDateExtended(ankomstNorge) }}
+            />
         </Radio>
     );
 };

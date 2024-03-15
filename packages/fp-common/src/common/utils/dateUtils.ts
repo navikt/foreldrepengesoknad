@@ -17,7 +17,7 @@ dayjs.extend(isBetween);
 
 dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';
-const dateFormatExtended = 'DD. MMM YYYY';
+const dateFormatExtended = 'DD. MMMM YYYY';
 const dateFormatMedUkedag = 'dddd DD. MMM YYYY';
 
 export const formatDate = (date: Date | string) => dayjs(date).format(dateFormat);

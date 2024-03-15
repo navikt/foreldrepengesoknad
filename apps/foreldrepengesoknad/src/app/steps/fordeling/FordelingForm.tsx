@@ -9,8 +9,8 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import Fordeling from 'app/context/types/Fordeling';
 
-import FellesperiodeFordeling from './components/FellesperiodeFordeling';
 import OppstartAvForeldrepenger from './components/OppstartAvForeldrepenger';
+import FellesperiodeFordeling from './components/fellesperiode-fordeling/FellesperiodeFordeling';
 
 type Props = {
     deltUttak: boolean;
@@ -42,8 +42,9 @@ const FordelingForm: React.FunctionComponent<Props> = ({
         oppdaterFordeling(values);
         return goToNextDefaultStep();
     };
-    const søkerDeltUttakINorgeFørst =
+    const søkerDeltUttakINorgeSomMorFørst =
         deltUttak &&
+        !erFarEllerMedmor &&
         førsteDagEtterAnnenForelder === undefined &&
         isAnnenForelderOppgitt(annenForelder) &&
         !annenForelder.harRettPåForeldrepengerIEØS;
@@ -51,7 +52,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
         <Form formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
                 <ErrorSummaryHookForm />
-                {søkerDeltUttakINorgeFørst && (
+                {søkerDeltUttakINorgeSomMorFørst && (
                     <FellesperiodeFordeling
                         navnPåForeldre={navnPåForeldre}
                         dagerMedFellesperiode={dagerMedFellesperiode}

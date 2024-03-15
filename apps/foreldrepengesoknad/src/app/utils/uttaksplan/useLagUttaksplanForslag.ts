@@ -14,7 +14,7 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/fp-formik';
+import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
@@ -71,7 +71,7 @@ export const useLagUttaksplanForslag = (
         annenPartsSisteDag,
         datoForAleneomsorg,
     );
-    const fellesperiodeUkerTilSøker = fordeling.antallUkerFellesperiodeTilSøker;
+    const fellesperiodeUkerTilSøker = getNumberFromNumberInputValue(fordeling.antallUkerFellesperiodeTilSøker);
     const fellesperiodeUkerMor = erFarEllerMedmor ? undefined : fellesperiodeUkerTilSøker;
     const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeUkerTilSøker : undefined;
     const farSinFørsteUttaksdag = erFarEllerMedmor ? startdatoPermisjon : undefined;

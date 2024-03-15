@@ -1,23 +1,26 @@
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, Radio, VStack } from '@navikt/ds-react';
+import { Alert, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, getVarighetString } from '@navikt/fp-common';
-import { RadioGroup, TextField } from '@navikt/fp-form-hooks';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { TextField } from '@navikt/fp-form-hooks';
+import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
+import { bemUtils } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
 
 import Fordeling, { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
-import { validateNumber } from 'app/steps/inntektsinformasjon/components/egen-næring/modal/validation/egenNæringValidation';
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
 
-import { validateAntallUkerFellesperiode } from '../fordelingFormUtils';
-import FellesperiodeValgVisning from './fellesperiode-valg-visning.tsx/FellesperiodeValgVisning';
+import { validateAntallUkerFellesperiode } from '../../fordelingFormUtils';
+import FellesperiodeValgVisning from '../fellesperiode-valg-visning.tsx/FellesperiodeValgVisning';
+import FordelingValg from '../fordeling-valg/FordelingValg';
+import './fellesperiode-fordeling.css';
 
 const getAntallUkerFellesperiodeTilSøker = (
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,
-    antallUkerFellesperiodeTilSøker: number | undefined,
+    antallUkerFellesperiodeTilSøker: string | undefined,
 ): number | undefined => {
     if (!valgtFordeling) {
         return undefined;
@@ -25,16 +28,17 @@ const getAntallUkerFellesperiodeTilSøker = (
     if (valgtFordeling === FellesperiodeFordelingValg.LIKT) {
         return antallDagerFellesperiode / 2;
     }
+    const antallUkerFellesperiodeTilSøkerNumber = getNumberFromNumberInputValue(antallUkerFellesperiodeTilSøker)!;
     const antallUkerMedFellesperiodeTotalt = antallDagerFellesperiode / 5;
-    const antallUkerInputErHeltall = antallUkerFellesperiodeTilSøker && antallUkerFellesperiodeTilSøker % 1 === 0;
+    const antallUkerInputErHeltall = antallUkerFellesperiodeTilSøker && antallUkerFellesperiodeTilSøkerNumber % 1 === 0;
 
     if (
         valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE &&
         antallUkerInputErHeltall &&
-        antallUkerFellesperiodeTilSøker >= 0 &&
-        antallUkerFellesperiodeTilSøker <= antallUkerMedFellesperiodeTotalt
+        antallUkerFellesperiodeTilSøkerNumber >= 0 &&
+        antallUkerFellesperiodeTilSøkerNumber <= antallUkerMedFellesperiodeTotalt
     ) {
-        return antallUkerFellesperiodeTilSøker * 5;
+        return antallUkerFellesperiodeTilSøkerNumber * 5;
     }
     return undefined;
 };
@@ -43,10 +47,19 @@ export const getValgtFellesperiodeFordeling = (
     erFarEllerMedmor: boolean,
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,
-    antallUkerFellesperiodeTilSøker: number | undefined,
+    antallUkerFellesperiodeTilSøker: string | undefined,
 ): FordelingDager[] | undefined => {
-    if (!valgtFordeling) {
-        return undefined;
+    if (
+        !valgtFordeling ||
+        (valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE &&
+            (!antallUkerFellesperiodeTilSøker || antallUkerFellesperiodeTilSøker.trim() === '0'))
+    ) {
+        return [
+            {
+                antallDager: antallDagerFellesperiode,
+                fargekode: FordelingFargekode.IKKE_TILDELT,
+            },
+        ];
     }
     const fargekodeSøker = erFarEllerMedmor ? FordelingFargekode.SØKER_FAR : FordelingFargekode.SØKER_MOR;
     const fordeling = [];
@@ -82,10 +95,11 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
     erFarEllerMedmor,
 }) => {
     const intl = useIntl();
+    const bem = bemUtils('fellesperiodeFordeling');
     const { watch } = useFormContext<Fordeling>();
     const valgtFordeling = watch('fordelingValg');
     const antallUkerFellesperiodeTilSøker = watch('antallUkerFellesperiodeTilSøker');
-    const likFordeling = getVarighetString(dagerMedFellesperiode / 2, intl);
+
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const fordelingsdager = getValgtFellesperiodeFordeling(
         erFarEllerMedmor,
@@ -93,48 +107,18 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
         valgtFordeling,
         antallUkerFellesperiodeTilSøker,
     );
-    console.log('fordelingsdager', fordelingsdager);
+
     return (
         <VStack gap="5">
-            <RadioGroup
-                name="fordelingValg"
-                label={<FormattedMessage id="fordeling.fordelingvalg.spørsmål" />}
-                description={<FormattedMessage id="fordeling.description.kanEndresSenere" />}
-                validate={[isRequired(intl.formatMessage({ id: 'fordeling.fordelingsvalg.måOppgis' }))]}
-            >
-                <Radio
-                    value={FellesperiodeFordelingValg.LIKT}
-                    description={intl.formatMessage(
-                        {
-                            id: 'fordeling.fordelingsvalg.option.likt.description',
-                        },
-                        {
-                            ukerDeg: likFordeling,
-                            ukerAnnenForelder: likFordeling,
-                            navnAnnenForelder: navnAnnenForelder,
-                        },
-                    )}
-                >
-                    <FormattedMessage id="fordeling.fordelingsvalg.option.likt" />
-                </Radio>
-                <Radio
-                    value={FellesperiodeFordelingValg.VIL_VELGE}
-                    description={intl.formatMessage({ id: 'fordeling.fordelingsvalg.option.valgfritt.description' })}
-                >
-                    <FormattedMessage id="fordeling.fordelingsvalg.option.valgfritt" />
-                </Radio>
-                <Radio value={FellesperiodeFordelingValg.VIL_IKKE_FORDELE_NÅ}>
-                    <FormattedMessage id="fordeling.fordelingsvalg.option.senere" />
-                </Radio>
-            </RadioGroup>
+            <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} navnAnnenForelder={navnAnnenForelder} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
                 <TextField
+                    className={bem.element('textInput')}
                     name="antallUkerFellesperiodeTilSøker"
                     label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
                     description={intl.formatMessage({ id: 'fordeling.antallUker.description' }, { navnAnnenForelder })}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'fordeling.antallUker.måOppgis' })),
-                        validateNumber(intl, 'fordeling.antallUker.ugyldigFormat'),
                         validateAntallUkerFellesperiode(intl, dagerMedFellesperiode),
                     ]}
                 ></TextField>

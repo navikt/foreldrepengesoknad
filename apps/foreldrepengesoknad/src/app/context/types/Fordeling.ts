@@ -15,7 +15,7 @@ export enum OppstartValg {
 
 export type Fordeling = {
     fordelingValg?: FellesperiodeFordelingValg;
-    antallUkerFellesperiodeTilSøker?: number;
+    antallUkerFellesperiodeTilSøker?: string;
     oppstartAvForeldrepengerValg?: OppstartValg;
     oppstartDato?: string;
 };
