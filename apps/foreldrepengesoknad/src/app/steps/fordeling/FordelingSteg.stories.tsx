@@ -666,6 +666,7 @@ FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args = {
     stønadskonto100: STØNADSKONTO_100,
     stønadskonto80: STØNADSKONTO_80,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    annenPartVedtak: vedtakMor,
 };
 
 export const FarSøkerAdopsjonToBarn = Template.bind({});
@@ -952,7 +953,6 @@ BareFarHarRettPrematurFødselFireBarn.args = {
     stønadskonto100: STØNADSKONTO_100,
     stønadskonto80: STØNADSKONTO_80,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    annenPartVedtak: vedtakMor,
 };
 
 export const BareFarHarRettAdopsjonMorErUfør = Template.bind({});

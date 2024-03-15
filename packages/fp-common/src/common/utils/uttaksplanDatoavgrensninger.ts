@@ -37,7 +37,7 @@ const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | unde
         termindato !== undefined ? dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker) : false;
 
     if (erFødselsdatoFørTermindatoMinus12Uker) {
-        const maksDato = Uttaksdagen(dayjs(termindato).toDate()).forrige();
+        const maksDato = Uttaksdagen(dayjs(termindato).toDate()).denneEllerNeste();
         const minDato = Uttaksdagen(familiehendelsesdato).denneEllerForrige();
         return {
             ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
@@ -45,7 +45,7 @@ const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | unde
         };
     } else {
         const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
-        const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).forrige();
+        const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).denneEllerNeste();
         const minDato = Uttaksdagen(maksDato).trekkFra(
             uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1,
         );

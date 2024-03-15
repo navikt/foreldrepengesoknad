@@ -181,13 +181,13 @@ export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boole
     if (date && otherDate) {
         return dayjs(date).isSameOrBefore(otherDate, 'day');
     }
-    return true;
+    return false;
 };
 export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {
         return dayjs(date).isSameOrAfter(otherDate, 'day');
     }
-    return true;
+    return false;
 };
 
 export const dateIsBetween = (date: DateValue, fom: DateValue | string, tom: DateValue | string): boolean =>

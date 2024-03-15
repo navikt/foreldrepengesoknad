@@ -183,6 +183,8 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
                     goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                     goToNextDefaultStep={navigator.goToNextDefaultStep}
                     førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
+                    valgtStønadskonto={valgtStønadskonto}
+                    annenPartsPerioder={eksisterendeVedtakAnnenPart?.uttaksplan}
                 ></FordelingForm>
             </VStack>
         </Step>

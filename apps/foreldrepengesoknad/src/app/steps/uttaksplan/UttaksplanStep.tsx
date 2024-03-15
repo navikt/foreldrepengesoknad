@@ -63,7 +63,6 @@ import {
 import useDebounce from 'app/utils/hooks/useDebounce';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
-import { useLagUttaksplanForslag } from 'app/utils/uttaksplan/useLagUttaksplanForslag';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
@@ -424,57 +423,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         return navigator.goToNextDefaultStep();
     };
 
-    const kontoRequestIsSuspended =
-        (eksisterendeSakAnnenPartRequestIsSuspended
-            ? false
-            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED) ||
-        (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
-
-    const { stønadskontoParams100, stønadskontoParams80 } = getStønadskontoParams(
-        barn,
-        annenForelder,
-        søkersituasjon,
-        barnFraNesteSak,
-        eksisterendeSakAnnenPartData,
-        eksisterendeSak,
-    );
-
-    const { data: stønadskontoer80 } = useApiGetData(
-        FpApiDataType.STØNADSKONTOER_80,
-        stønadskontoParams80,
-        kontoRequestIsSuspended,
-    );
-    const { data: stønadskontoer100, error: tilgjengeligeStønadskontoerError } = useApiGetData(
-        FpApiDataType.STØNADSKONTOER_100,
-        stønadskontoParams100,
-        kontoRequestIsSuspended,
-    );
-
-    const stønadskontoer = useMemo(() => {
-        if (stønadskontoer80 && stønadskontoer100) {
-            return getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
-        }
-        return undefined;
-    }, [stønadskontoer80, stønadskontoer100]);
-
-    const valgteStønadskontoer = useMemo(() => {
-        if (stønadskontoer) {
-            return periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                ? stønadskontoer[100]
-                : stønadskontoer[80];
-        }
-        return [];
-    }, [stønadskontoer, periodeMedForeldrepenger.dekningsgrad]);
-
-    const uttaksplanForslag = useLagUttaksplanForslag(valgteStønadskontoer, eksisterendeVedtakAnnenPart?.uttaksplan);
-
-    useEffect(() => {
-        if (uttaksplan.length === 0) {
-            oppdaterUttaksplan(uttaksplanForslag);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
         uttaksplan,
         familiehendelsesdatoDate!,
@@ -534,6 +482,31 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         morErAleneOmOmsorg,
         farMedmorErAleneOmOmsorg,
         rolle,
+    );
+    const kontoRequestIsSuspended =
+        (eksisterendeSakAnnenPartRequestIsSuspended
+            ? false
+            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED) ||
+        (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
+
+    const { stønadskontoParams100, stønadskontoParams80 } = getStønadskontoParams(
+        barn,
+        annenForelder,
+        søkersituasjon,
+        barnFraNesteSak,
+        eksisterendeSakAnnenPartData,
+        eksisterendeSak,
+    );
+
+    const { data: stønadskontoer80 } = useApiGetData(
+        FpApiDataType.STØNADSKONTOER_80,
+        stønadskontoParams80,
+        kontoRequestIsSuspended,
+    );
+    const { data: stønadskontoer100, error: tilgjengeligeStønadskontoerError } = useApiGetData(
+        FpApiDataType.STØNADSKONTOER_100,
+        stønadskontoParams100,
+        kontoRequestIsSuspended,
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
@@ -597,7 +570,13 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         );
     }
 
+    const stønadskontoer = getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
     const minsterettUkerToTette = getAntallUkerMinsterett(stønadskontoer100.minsteretter.toTette);
+
+    const valgteStønadskontoer =
+        periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? stønadskontoer[100]
+            : stønadskontoer[80];
 
     const erTomEndringssøknad =
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);

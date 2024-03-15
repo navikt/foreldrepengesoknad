@@ -89,6 +89,7 @@ const OppstartDatoMorFødsel = () => {
         oppstartDato !== undefined && !dayjs(oppstartDato).isSame(førsteUttaksdagMorFødsel, 'd');
 
     const fødselEllerTermin = isFødtBarn(barn) ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
+    const fødselEllerTerminDato = isFødtBarn(barn) ? intlUtils(intl, 'fødselsdato') : intlUtils(intl, 'termindato');
     const varighetString = getVarighetFørFamiliehendelse(familiehendelsesdato, oppstartDato, intl);
     const morInfoMistetDagerFørFødsel = getMorInfoMistetDagerFørFødsel(oppstartDato, førsteUttaksdagMorFødsel, intl);
     const morVarighetFellesperiodeFørFødsel = getMorInfoFellesperiodeFørFødsel(
@@ -98,19 +99,45 @@ const OppstartDatoMorFødsel = () => {
     );
     const visMisterDagerFørFødsel = morStarterIkkePå3UkerFørFødsel && morInfoMistetDagerFørFødsel;
     const visBrukFellesperiode = morStarterIkkePå3UkerFørFødsel && morVarighetFellesperiodeFørFødsel;
+    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const starterFørFamiliehendelse = dayjs(oppstartDato).isBefore(familiehendelsesdato, 'd');
+    const starterPåFamiliehendelse = dayjs(oppstartDato).isSame(familiehendelsesdato, 'd');
+    const starterPåUttaksdagEtterFamiliehendelse =
+        dayjs(oppstartDato).isAfter(familiehendelsesdato, 'd') &&
+        dayjs(oppstartDato).isSame(førsteUttaksdagPåEllerEtterFamHendelse, 'd');
+    const visInformasjon =
+        oppstartDato &&
+        isValidDate(oppstartDato) &&
+        dayjs(oppstartDato).isSameOrBefore(førsteUttaksdagPåEllerEtterFamHendelse);
     return (
         <div>
             <VStack gap="2">
                 <HStack gap="1">
                     <OppstartDatoInput />
-                    {oppstartDato && (
+                    {visInformasjon && (
                         <div className={bem.element('div')}>
-                            <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
-                                {intlUtils(intl, 'fordeling.oppstartValg.førFødselEllerTerminInfo', {
-                                    varighetString,
-                                    fødselEllerTermin,
-                                })}
-                            </BodyShort>
+                            {starterPåUttaksdagEtterFamiliehendelse && (
+                                <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
+                                    {intlUtils(intl, 'fordeling.oppstartValg.førsteUkedagEtterTerminFødsel', {
+                                        fødselEllerTerminDato,
+                                    })}
+                                </BodyShort>
+                            )}
+                            {starterFørFamiliehendelse && (
+                                <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
+                                    {intlUtils(intl, 'fordeling.oppstartValg.førFødselEllerTerminInfo', {
+                                        varighetString,
+                                        fødselEllerTermin,
+                                    })}
+                                </BodyShort>
+                            )}
+                            {starterPåFamiliehendelse && (
+                                <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
+                                    {intlUtils(intl, 'fordeling.oppstartValg.påFødselEllerTermin', {
+                                        fødselEllerTerminDato,
+                                    })}
+                                </BodyShort>
+                            )}
                             {visMisterDagerFørFødsel && (
                                 <BodyShort size="small">
                                     {intlUtils(intl, 'fordeling.oppstartValg.misterDagerInfo', {

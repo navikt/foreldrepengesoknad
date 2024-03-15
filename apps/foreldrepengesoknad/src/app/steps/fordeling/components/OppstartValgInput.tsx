@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
@@ -6,6 +7,7 @@ import { Radio } from '@navikt/ds-react';
 import {
     Barn,
     ISOStringToDate,
+    NavnPåForeldre,
     andreAugust2022ReglerGjelder,
     formatDateExtended,
     førsteOktober2021ReglerGjelder,
@@ -17,51 +19,61 @@ import {
 } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import { isRequired } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { OppstartValg } from 'app/context/types/Fordeling';
+import { getDatoForAleneomsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
-const getRadioOptionFarFødsel = (
-    erBarnetFødt: boolean,
+const getOppstartsvalgFarFødsel = (
     familiehendelsesDato: Date,
-    navnAnnenForelder: string,
-    intl: IntlShape,
     førsteDagEtterAnnenForelder: Date | undefined,
-): React.ReactElement[] => {
-    const radioOptions = [];
+): OppstartValg[] => {
+    const radioOptions = [] as OppstartValg[];
     if (andreAugust2022ReglerGjelder(familiehendelsesDato)) {
-        radioOptions.push(getRadioOptionFarPåFødselWLB(erBarnetFødt, intl));
+        radioOptions.push(OppstartValg.FAMILIEHENDELSESDATO);
     }
     if (førsteDagEtterAnnenForelder) {
-        radioOptions.push(getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder));
+        radioOptions.push(OppstartValg.DAGEN_ETTER_ANNEN_FORELDER);
     }
     if (førsteOktober2021ReglerGjelder(familiehendelsesDato)) {
-        radioOptions.push(getRadioOptionAnnenDato());
+        radioOptions.push(OppstartValg.ANNEN_DATO);
     }
     return radioOptions;
 };
 
-const getRadioOptionFarAleneomsorg = (datoForAleneomsorg: Date, familiehendelsesdato: Date) => {
-    const radioOptions = [];
-    radioOptions.push(getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg));
-
+const getOppstartsvalgFarAleneomsorg = (familiehendelsesdato: Date) => {
+    const radioOptions = [OppstartValg.OMSORGSOVERTAKELSE];
     if (førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
-        radioOptions.push(getRadioOptionAnnenDato());
+        radioOptions.push(OppstartValg.ANNEN_DATO);
     }
     return radioOptions;
 };
 
-const getRadioOptionMorFødsel = (
-    erBarnetFødt: boolean,
-    intl: IntlShape,
-    familiehendelsesdato: Date,
-): React.ReactElement[] => [
-    getRadioOptionTreUkerFørTermin(erBarnetFødt, intl, familiehendelsesdato),
-    getRadioOptionAnnenDatoMorFødsel(erBarnetFødt, intl),
-];
+const getOppstartsValgMorFødsel = () => {
+    return [OppstartValg.TRE_UKER_FØR_TERMIN, OppstartValg.ANNEN_DATO];
+};
 
-const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date): React.ReactElement => {
+const getOppstartsvalgAdopsjon = (
+    førsteDagEtterAnnenForelder: Date | undefined,
+    adoptertFraUtlandetDato: Date | undefined,
+): OppstartValg[] => {
+    const radioOptions = [OppstartValg.FAMILIEHENDELSESDATO];
+    if (adoptertFraUtlandetDato) {
+        radioOptions.push(OppstartValg.ANKOMSTDATO_NORGE);
+    }
+    if (førsteDagEtterAnnenForelder) {
+        radioOptions.push(OppstartValg.DAGEN_ETTER_ANNEN_FORELDER);
+    }
+    radioOptions.push(OppstartValg.ANNEN_DATO);
+    return radioOptions;
+};
+
+const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date | undefined): React.ReactElement => {
+    if (!datoForAleneomsorg) {
+        throw new Error('Mangler dato for aleneomsorg');
+    }
     return (
         <Radio value={OppstartValg.OMSORGSOVERTAKELSE}>
             <FormattedMessage
@@ -83,7 +95,10 @@ const getRadioOptionAdopsjonOmsorgsovertakelse = (familiehendelsesdato: Date): R
     );
 };
 
-const getRadioOptionAdopsjonAnkomstNorge = (ankomstNorge: Date): React.ReactElement => {
+const getRadioOptionAdopsjonAnkomstNorge = (ankomstNorge: Date | undefined): React.ReactElement => {
+    if (!ankomstNorge) {
+        throw new Error('Ukjent ankomstdato til Norge');
+    }
     return (
         <Radio value={OppstartValg.ANKOMSTDATO_NORGE}>
             <FormattedMessage
@@ -94,49 +109,55 @@ const getRadioOptionAdopsjonAnkomstNorge = (ankomstNorge: Date): React.ReactElem
     );
 };
 
-const getRadioOptionAdopsjon = (
-    familiehendelsesdato: Date,
-    navnAnnenForelder: string,
-    førsteDagEtterAnnenForelder: Date | undefined,
-    adoptertFraUtlandetDato: Date | undefined,
-): React.ReactElement[] => {
-    const radioOptions = [];
-    radioOptions.push(getRadioOptionAdopsjonOmsorgsovertakelse(familiehendelsesdato));
-    if (adoptertFraUtlandetDato) {
-        radioOptions.push(getRadioOptionAdopsjonAnkomstNorge(adoptertFraUtlandetDato));
-    }
-    if (førsteDagEtterAnnenForelder) {
-        radioOptions.push(getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder));
-    }
-    radioOptions.push(getRadioOptionAnnenDato());
-    return radioOptions;
-};
+const getRadioOptionFarPåFødselWLB = (
+    erBarnetFødt: boolean,
+    antallBarn: number,
+    intl: IntlShape,
+): React.ReactElement => {
+    const barnetEllerBarna = antallBarn > 1 ? intlUtils(intl, 'barnet') : intlUtils(intl, 'barna');
 
-const getRadioOptionFarPåFødselWLB = (erBarnetFødt: boolean, intl: IntlShape): React.ReactElement => {
-    const description = erBarnetFødt
-        ? intlUtils(intl, 'fordeling.oppstartValg.påFødsel.description.barnErFødt')
-        : intlUtils(intl, 'fordeling.oppstartValg.påFødsel.description.barnErIkkeFødt');
-    const tekstId = erBarnetFødt
-        ? 'fordeling.oppstartValg.påFødsel.barnErFødt'
-        : 'fordeling.oppstartValg.påFødsel.barnErIkkeFødt';
-    return (
-        <Radio value={OppstartValg.FAMILIEHENDELSESDATO} description={description}>
-            <FormattedMessage id={tekstId} />
-        </Radio>
-    );
+    if (erBarnetFødt) {
+        return (
+            <Radio
+                value={OppstartValg.FAMILIEHENDELSESDATO}
+                description={intlUtils(intl, 'fordeling.oppstartValg.påFødsel.description.barnErFødt', {
+                    barnetEllerBarna,
+                })}
+            >
+                <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErFødt" values={{ barnetEllerBarna }} />
+            </Radio>
+        );
+    } else {
+        return (
+            <Radio
+                value={OppstartValg.FAMILIEHENDELSESDATO}
+                description={intlUtils(intl, 'fordeling.oppstartValg.påFødsel.description.barnErIkkeFødt')}
+            >
+                <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErIkkeFødt" />
+            </Radio>
+        );
+    }
 };
 
 const getRadioOptionDagenEtterAnnenForelder = (
     navnAnnenForelder: string,
-    førsteDagEtterAnnenForelder: Date,
-): React.ReactElement => (
-    <Radio value={OppstartValg.DAGEN_ETTER_ANNEN_FORELDER}>
-        <FormattedMessage
-            id="fordeling.oppstartValg.dagenEtterAnnenForelder"
-            values={{ navnAnnenForelder, førsteDagEtterAnnenForelder: formatDateExtended(førsteDagEtterAnnenForelder) }}
-        />
-    </Radio>
-);
+    førsteDagEtterAnnenForelder: Date | undefined,
+): React.ReactElement => {
+    if (!førsteDagEtterAnnenForelder) {
+        throw new Error('Mangler dato for oppstart etter annen forelder.');
+    }
+    return (
+        <Radio value={OppstartValg.DAGEN_ETTER_ANNEN_FORELDER}>
+            <FormattedMessage
+                id="fordeling.oppstartValg.dagenEtterAnnenForelder"
+                values={{
+                    navnAnnenForelder,
+                    førsteDagEtterAnnenForelder: formatDateExtended(førsteDagEtterAnnenForelder),
+                }}
+            />
+        </Radio>
+    );
+};
 
 const getRadioOptionAnnenDato = (): React.ReactElement => (
     <Radio value={OppstartValg.ANNEN_DATO}>
@@ -174,63 +195,158 @@ const getRadioOptionTreUkerFørTermin = (
     );
 };
 
-export const getRadioOptionsForSituasjon = (
+export const getValgOptionsForOppstart = (
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
-    navnAnnenForelder: string,
-    intl: IntlShape,
     deltUttak: boolean,
     førsteDagEtterAnnenForelder: Date | undefined,
     datoForAleneomsorg: Date | undefined,
-): React.ReactElement[] => {
-    const erBarnetFødt = isFødtBarn(barn);
+): OppstartValg[] => {
     const adoptertFraUtlandetDato = isAdoptertAnnetBarn(barn) ? ISOStringToDate(barn.ankomstdato) : undefined;
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erMor = !erFarEllerMedmor;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     if (erMor && erFødsel) {
-        return getRadioOptionMorFødsel(erBarnetFødt, intl, familiehendelsesdato);
+        return getOppstartsValgMorFødsel();
     }
     if (erFarEllerMedmor && !deltUttak && datoForAleneomsorg) {
-        return getRadioOptionFarAleneomsorg(datoForAleneomsorg, familiehendelsesdato);
+        return getOppstartsvalgFarAleneomsorg(familiehendelsesdato);
     }
     if (erFarEllerMedmor && erFødsel) {
-        return getRadioOptionFarFødsel(
-            erBarnetFødt,
+        return getOppstartsvalgFarFødsel(
             familiehendelsesdato,
-            navnAnnenForelder,
-            intl,
+
             førsteDagEtterAnnenForelder,
         );
     }
+    return getOppstartsvalgAdopsjon(førsteDagEtterAnnenForelder, adoptertFraUtlandetDato);
+};
 
-    return getRadioOptionAdopsjon(
-        familiehendelsesdato,
-        navnAnnenForelder,
-        førsteDagEtterAnnenForelder,
-        adoptertFraUtlandetDato,
+const getRadioOptionFamiliehendelsesdato = (
+    erFarEllerMedmor: boolean,
+    intl: IntlShape,
+    erFødsel: boolean,
+    erBarnetFødt: boolean,
+    familiehendelsesdato: Date,
+    antallBarn: number,
+) => {
+    if (erFarEllerMedmor && erFødsel) {
+        return getRadioOptionFarPåFødselWLB(erBarnetFødt, antallBarn, intl);
+    }
+    return getRadioOptionAdopsjonOmsorgsovertakelse(familiehendelsesdato);
+};
+
+const getRadioOptionForAnnenDato = (
+    erFarEllerMedmor: boolean,
+    intl: IntlShape,
+    erFødsel: boolean,
+    erBarnetFødt: boolean,
+) => {
+    if (!erFarEllerMedmor && erFødsel) {
+        return getRadioOptionAnnenDatoMorFødsel(erBarnetFødt, intl);
+    }
+    return getRadioOptionAnnenDato();
+};
+
+export const mapOppstartValgToRadioOption = (
+    valg: OppstartValg,
+    barn: Barn,
+    erFødsel: boolean,
+    erFarEllerMedmor: boolean,
+    datoForAleneomsorg: Date | undefined,
+    navnAnnenForelder: string,
+    førsteDagEtterAnnenForelder: Date | undefined,
+    intl: IntlShape,
+) => {
+    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const erBarnetFødt = isFødtBarn(barn);
+    const ankomstNorge = isAdoptertAnnetBarn(barn) ? ISOStringToDate(barn.ankomstdato)! : undefined;
+    switch (valg) {
+        case OppstartValg.FAMILIEHENDELSESDATO:
+            return getRadioOptionFamiliehendelsesdato(
+                erFarEllerMedmor,
+                intl,
+                erFødsel,
+                erBarnetFødt,
+                familiehendelsesdato,
+                barn.antallBarn,
+            );
+        case OppstartValg.TRE_UKER_FØR_TERMIN:
+            return getRadioOptionTreUkerFørTermin(erBarnetFødt, intl, familiehendelsesdato);
+        case OppstartValg.OMSORGSOVERTAKELSE:
+            return getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg);
+        case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
+            return getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder);
+        case OppstartValg.ANKOMSTDATO_NORGE:
+            return getRadioOptionAdopsjonAnkomstNorge(ankomstNorge);
+        case OppstartValg.ANNEN_DATO:
+            return getRadioOptionForAnnenDato(erFarEllerMedmor, intl, erFødsel, erBarnetFødt);
+    }
+};
+
+export const getOppstartsValgeneToRadioOptions = (
+    oppstartsvalg: OppstartValg[],
+    barn: Barn,
+    erFødsel: boolean,
+    erFarEllerMedmor: boolean,
+    datoForAleneomsorg: Date | undefined,
+    navnAnnenForelder: string,
+    førsteDagEtterAnnenForelder: Date | undefined,
+    intl: IntlShape,
+): React.ReactElement[] => {
+    return oppstartsvalg.map((valg) =>
+        mapOppstartValgToRadioOption(
+            valg,
+            barn,
+            erFødsel,
+            erFarEllerMedmor,
+            datoForAleneomsorg,
+            navnAnnenForelder,
+            førsteDagEtterAnnenForelder,
+            intl,
+        ),
     );
 };
 
 interface Props {
-    oppstartsValgOptions: React.ReactElement[];
+    oppstartsvalg: OppstartValg[];
     erFarEllerMedmor: boolean;
     familiehendelsesdato: Date;
     erAleneOmOmsorg: boolean;
+    navnPåForeldre: NavnPåForeldre;
+    førsteDagEtterAnnenForelder: Date | undefined;
 }
 
 const OppstartValgInput: React.FunctionComponent<Props> = ({
-    oppstartsValgOptions,
+    oppstartsvalg,
     erFarEllerMedmor,
     familiehendelsesdato,
     erAleneOmOmsorg,
+    navnPåForeldre,
+    førsteDagEtterAnnenForelder,
 }) => {
     const intl = useIntl();
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
-    if (!oppstartsValgOptions || oppstartsValgOptions.length < 2) {
+    if (!oppstartsvalg || oppstartsvalg.length < 2) {
         return null;
     }
+    const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
+    const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const oppstartsValgOptions = getOppstartsValgeneToRadioOptions(
+        oppstartsvalg,
+        barn,
+        erFødsel,
+        erFarEllerMedmor,
+        datoForAleneomsorg,
+        navnAnnenForelder,
+        førsteDagEtterAnnenForelder,
+        intl,
+    );
 
     const descriptionId =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato) && !erAleneOmOmsorg

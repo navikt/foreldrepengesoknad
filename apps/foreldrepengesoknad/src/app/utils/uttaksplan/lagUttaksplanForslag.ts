@@ -1,11 +1,13 @@
 import {
-    getHarAktivitetskravIPeriodeUtenUttak,
-    leggTilAnnenPartsPerioderISøkerenesUttaksplan,
+    getHarAktivitetskravIPeriodeUtenUttak, // leggTilAnnenPartsPerioderISøkerenesUttaksplan,
 } from '@navikt/uttaksplan';
 import { finnOgSettInnHull } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import dayjs from 'dayjs';
 
 import {
+    AnnenForelder,
+    Barn,
+    BarnFraNesteSak,
     Periode,
     TilgjengeligStønadskonto,
     Uttaksdagen,
@@ -15,10 +17,10 @@ import {
     isFarEllerMedmor,
 } from '@navikt/fp-common';
 import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';
-import { notEmpty } from '@navikt/fp-validation';
+import { SøkersituasjonFp } from '@navikt/fp-types';
 
 import { getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import Fordeling from 'app/context/types/Fordeling';
 import { getOppstartsdatoFromInput } from 'app/steps/fordeling/fordelingFormUtils';
 
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from '../annenForelderUtils';
@@ -26,16 +28,16 @@ import { getFamiliehendelsedatoDate, getTermindato } from '../barnUtils';
 import { deltUttak } from './deltUttak';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 
-export const useLagUttaksplanForslag = (
+export const lagUttaksplanForslag = (
     valgtStønadskonto: TilgjengeligStønadskonto[],
     annenPartsPerioder: Periode[] | undefined,
+    søkersituasjon: SøkersituasjonFp,
+    barn: Barn,
+    barnFraNesteSak: BarnFraNesteSak | undefined,
+    annenForelder: AnnenForelder,
+    fordeling: Fordeling,
+    antallOppstartsValg: number,
 ): Periode[] => {
-    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
-    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING));
-
     const situasjon = søkersituasjon.situasjon;
     const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
     const erDeltUttak = getIsDeltUttak(annenForelder);
@@ -70,17 +72,18 @@ export const useLagUttaksplanForslag = (
         ankomstNorgeForAdoptertBarn,
         annenPartsSisteDag,
         datoForAleneomsorg,
+        antallOppstartsValg,
     );
     const fellesperiodeUkerTilSøker = getNumberFromNumberInputValue(fordeling.antallUkerFellesperiodeTilSøker);
     const fellesperiodeUkerMor = erFarEllerMedmor ? undefined : fellesperiodeUkerTilSøker;
     const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeUkerTilSøker : undefined;
     const farSinFørsteUttaksdag = erFarEllerMedmor ? startdatoPermisjon : undefined;
     const erAdopsjon = situasjon === 'adopsjon';
-    let forslag = [] as Periode[];
+    // let forslag = [] as Periode[];
 
     if (familiehendelsesdato) {
         if (erDeltUttak) {
-            const forslagDeltUttak = deltUttak({
+            const forslag = deltUttak({
                 situasjon,
                 famDato: familiehendelsesdato,
                 erFarEllerMedmor,
@@ -96,8 +99,8 @@ export const useLagUttaksplanForslag = (
                 førsteUttaksdagNesteBarnsSak,
             });
 
-            forslag = finnOgSettInnHull(
-                forslagDeltUttak,
+            return finnOgSettInnHull(
+                forslag,
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
@@ -106,7 +109,7 @@ export const useLagUttaksplanForslag = (
                 førsteUttaksdagNesteBarnsSak,
             );
         } else {
-            const forslagIkkeDeltUttak = ikkeDeltUttak(
+            const forslag = ikkeDeltUttak(
                 situasjon,
                 familiehendelsesdato,
                 erFarEllerMedmor,
@@ -118,8 +121,8 @@ export const useLagUttaksplanForslag = (
                 førsteUttaksdagNesteBarnsSak,
             );
 
-            forslag = finnOgSettInnHull(
-                forslagIkkeDeltUttak,
+            return finnOgSettInnHull(
+                forslag,
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
                 erAdopsjon,
@@ -130,18 +133,18 @@ export const useLagUttaksplanForslag = (
         }
     }
 
-    if (annenPartsPerioder && annenPartsPerioder.length > 0) {
-        return leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-            annenPartsPerioder,
-            forslag,
-            familiehendelsesdato,
-            harAktivitetskravIPeriodeUtenUttak,
-            erAdopsjon,
-            bareFarMedmorHarRett,
-            erFarEllerMedmor,
-            førsteUttaksdagNesteBarnsSak,
-        );
-    }
+    // if (annenPartsPerioder && annenPartsPerioder.length > 0) {
+    //     return leggTilAnnenPartsPerioderISøkerenesUttaksplan(
+    //         annenPartsPerioder,
+    //         forslag,
+    //         familiehendelsesdato,
+    //         harAktivitetskravIPeriodeUtenUttak,
+    //         erAdopsjon,
+    //         bareFarMedmorHarRett,
+    //         erFarEllerMedmor,
+    //         førsteUttaksdagNesteBarnsSak,
+    //     );
+    // }
 
-    return forslag;
+    return [];
 };

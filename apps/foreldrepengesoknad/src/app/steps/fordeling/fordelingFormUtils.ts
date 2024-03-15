@@ -52,8 +52,9 @@ export const getOppstartsdatoFromInput = (
     ankomstDatoNorge: Date | undefined,
     sisteDagAnnenForelder: Date | undefined,
     datoForAleneomsorg: Date | undefined,
+    antallOppstartsValg: number,
 ): Date => {
-    if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO) && oppstartDato) {
+    if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO || antallOppstartsValg === 0) && oppstartDato) {
         return ISOStringToDate(oppstartDato)!;
     }
     switch (oppstartValg) {
