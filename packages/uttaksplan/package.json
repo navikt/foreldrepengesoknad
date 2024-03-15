@@ -10,22 +10,22 @@
         "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^6.1.1",
-        "@navikt/ds-css": "^6.1.1",
-        "@navikt/ds-react": "^6.1.1",
+        "@navikt/aksel-icons": "^6.2.0",
+        "@navikt/ds-css": "^6.2.0",
+        "@navikt/ds-react": "^6.2.0",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-formik": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/sif-common-question-config": "^0.0.7",
-        "@types/react": "^18.2.48",
+        "@types/react": "^18.2.66",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.10",
         "formik": "^2.4.5",
         "lodash": "^4.17.21",
         "react": "^18.2.0",
-        "react-intl": "^6.6.1",
-        "typescript": "^5.3.3"
+        "react-intl": "^6.6.2",
+        "typescript": "^5.4.2"
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
