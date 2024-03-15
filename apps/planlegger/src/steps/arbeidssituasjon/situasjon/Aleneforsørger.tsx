@@ -6,7 +6,7 @@ import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 
 import { BodyLong, Link } from '@navikt/ds-react';
 
-import { HVOR_LENGE_LENKE, VEIVISER_LENKE } from '../ArbeidssituasjonSteg';
+import { links } from '@navikt/fp-constants';
 
 const Aleneforsørger: FunctionComponent = () => {
     const formMethods = useFormContext<Arbeidssituasjon>();
@@ -32,7 +32,7 @@ const Aleneforsørger: FunctionComponent = () => {
                             id="arbeid.ufør.infoboks.lesMerDeg"
                             values={{
                                 a: (msg: any) => (
-                                    <Link href={HVOR_LENGE_LENKE} className="lenke" rel="noreferrer" target="_blank">
+                                    <Link href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
                                 ),
@@ -51,7 +51,7 @@ const Aleneforsørger: FunctionComponent = () => {
                             id="arbeid.ingen.infoboks.engangsstønadDeg"
                             values={{
                                 a: (msg: any) => (
-                                    <Link href={VEIVISER_LENKE} className="lenke" rel="noreferrer" target="_blank">
+                                    <Link href={links.veiviser} className="lenke" rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
                                 ),

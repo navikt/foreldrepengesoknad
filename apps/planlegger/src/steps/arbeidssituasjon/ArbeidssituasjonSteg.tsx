@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
@@ -22,10 +23,6 @@ const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): strin
         ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
         : intl.formatMessage({ id: 'FlereForsørgere.Far' });
 
-// TODO Desse to bør leggast i links-fila i constants-pakka
-export const HVOR_LENGE_LENKE = 'https://www.nav.no/foreldrepenger#hvor-lenge';
-export const VEIVISER_LENKE = 'https://familie.nav.no/veiviser';
-
 const ArbeidssituasjonSteg: FunctionComponent = () => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
@@ -42,6 +39,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
 
     const lagre = (formValues: Arbeidssituasjon) => {
         lagreArbeidssituasjon(formValues);
+        if (
+            (ArbeidssituasjonEnum.INGEN || ArbeidssituasjonEnum.UFØR) &&
+            formValues.arbeidssituasjonAnnenPart === false
+        ) {
+            return navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
+        }
+        if ((ArbeidssituasjonEnum.INGEN || ArbeidssituasjonEnum.UFØR) && erAlenesøker) {
+            return navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
+        }
+
         return navigator.goToNextDefaultStep();
     };
 

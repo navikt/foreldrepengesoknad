@@ -28,6 +28,7 @@ import {
 import { BodyLong, Heading, Link, Loader, Radio, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -183,7 +184,18 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         <BodyLong>
                                             <FormattedMessage
                                                 id="periode.infoboks.nårBareFarHarRett.ingenKravTilMor"
-                                                values={{ a: (msg: any) => <Link>{msg}</Link> }}
+                                                values={{
+                                                    a: (msg: any) => (
+                                                        <Link
+                                                            href={links.godkjentAktivitet}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </Link>
+                                                    ),
+                                                }}
                                             />
                                         </BodyLong>
                                     </VStack>
@@ -240,7 +252,6 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 values={{
                                                     uker: antallUkerAktivitetsfriKvote,
                                                     uker2: antallUker,
-                                                    a: (msg: any) => <Link>{msg}</Link>,
                                                     b: (msg: any) => <b>{msg}</b>,
                                                 }}
                                             />
@@ -251,7 +262,16 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 values={{
                                                     uker: antallUkerAktivitetskravKvote,
                                                     uker2: antallUker,
-                                                    a: (msg: any) => <Link>{msg}</Link>,
+                                                    a: (msg: any) => (
+                                                        <Link
+                                                            href={links.godkjentAktivitet}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </Link>
+                                                    ),
                                                     b: (msg: any) => <b>{msg}</b>,
                                                 }}
                                             />
