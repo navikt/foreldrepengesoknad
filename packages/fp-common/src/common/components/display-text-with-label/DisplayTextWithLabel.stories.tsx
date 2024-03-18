@@ -1,12 +1,13 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
+
 import DisplayTextWithLabel, { DisplayTextWithLabelProps } from './DisplayTextWithLabel';
 
 export default {
     title: 'components/DisplayTextWithLabel',
     component: DisplayTextWithLabel,
-} as ComponentMeta<typeof DisplayTextWithLabel>;
+};
 
-const Template: Story<DisplayTextWithLabelProps> = (args) => <DisplayTextWithLabel {...args} />;
+const Template: StoryFn<DisplayTextWithLabelProps> = (args) => <DisplayTextWithLabel {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

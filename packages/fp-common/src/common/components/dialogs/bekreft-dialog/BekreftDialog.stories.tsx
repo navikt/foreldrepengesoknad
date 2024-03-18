@@ -1,12 +1,13 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
+
 import BekreftDialog, { BekreftDialogProps } from './BekreftDialog';
 
 export default {
     title: 'components/BekreftDialog',
     component: BekreftDialog,
-} as ComponentMeta<typeof BekreftDialog>;
+};
 
-const Template: Story<BekreftDialogProps> = (args) => <BekreftDialog {...args} />;
+const Template: StoryFn<BekreftDialogProps> = (args) => <BekreftDialog {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
