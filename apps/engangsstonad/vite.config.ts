@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 
 export default defineConfig({
@@ -15,6 +15,7 @@ export default defineConfig({
     ],
     build: {
         sourcemap: true,
+        cssCodeSplit: false,
     },
     resolve: {
         alias: {
