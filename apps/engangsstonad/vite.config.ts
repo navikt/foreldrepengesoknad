@@ -15,7 +15,7 @@ export default defineConfig({
     ],
     build: {
         sourcemap: true,
-        cssCodeSplit: false,
+        cssCodeSplit: true,
     },
     resolve: {
         alias: {
