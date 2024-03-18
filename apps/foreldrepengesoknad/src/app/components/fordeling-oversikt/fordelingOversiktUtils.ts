@@ -3,39 +3,48 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import {
+    AnnenForelder,
     Barn,
+    Forelder,
     ISOStringToDate,
     Periode,
     StønadskontoType,
     TilgjengeligStønadskonto,
+    Uttaksdagen,
     capitalizeFirstLetter,
     førsteOktober2021ReglerGjelder,
-    getNavnGenitivEierform,
-    getVarighetString,
-    intlUtils,
-    isAdoptertBarn,
-    isFarEllerMedmor,
-    isFødtBarn,
-    isUfødtBarn,
-    uttaksConstants,
-} from '@navikt/fp-common';
-import { links } from '@navikt/fp-constants';
-import { SøkersituasjonFp } from '@navikt/fp-types';
-
-import {
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepenger,
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
-} from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+    getNavnGenitivEierform,
+    getVarighetString,
+    intlUtils,
+    isAdoptertBarn,
+    isAnnenForelderOppgitt,
+    isFarEllerMedmor,
+    isFødtBarn,
+    isInfoPeriode,
+    isUfødtBarn,
+    uttaksConstants,
+} from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
+import { SøkersituasjonFp } from '@navikt/fp-types';
+
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
 import { TilgjengeligeMinsterettskontoer } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import { getFormattedMessage } from './FordelingOversikt';
+
+export const getIsDeltUttak = (annenForelder: AnnenForelder): boolean => {
+    return isAnnenForelderOppgitt(annenForelder)
+        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
+        : false;
+};
 
 export const getHarFåttEllerSkalFå = (barn: Barn, intl: IntlShape) => {
     if (isFødtBarn(barn)) {
@@ -799,4 +808,26 @@ export const getBeggeHarRettGrafFordeling = (
     ];
 
     return erAdopsjon ? fordelingEtterFødselAdopsjon : [fordelingFørFødsel, ...fordelingEtterFødselAdopsjon];
+};
+
+export const getSisteUttaksdagAnnenForelder = (
+    erFarEllerMedmor: boolean,
+    deltUttak: boolean,
+    perioderAnnenPart: Periode[] | undefined,
+): Date | undefined => {
+    if (!deltUttak || !perioderAnnenPart || perioderAnnenPart.length === 0) {
+        return undefined;
+    }
+    const annenPartForelder = erFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
+    const annenForeldersFiltrertePerioder = perioderAnnenPart.filter(
+        (p) => isInfoPeriode(p) && p.forelder === annenPartForelder,
+    );
+
+    const sisteDagAnnenForelder =
+        annenForeldersFiltrertePerioder && annenForeldersFiltrertePerioder.length > 0
+            ? Uttaksdagen(
+                  annenForeldersFiltrertePerioder[annenForeldersFiltrertePerioder.length - 1].tidsperiode.tom,
+              ).denneEllerForrige()
+            : undefined;
+    return sisteDagAnnenForelder;
 };

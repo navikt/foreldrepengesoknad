@@ -1,0 +1,15 @@
+.mor-oppstartinformasjon {
+    margin-top: 3.2rem;
+    margin-left: -13rem;
+    background-color: var(--Surface-Selected, #e6f0ff);
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 20rem;
+    height: 3.5rem;
+}
+
+.mor-oppstartinformasjon--bold {
+    font-weight: bold;
+}

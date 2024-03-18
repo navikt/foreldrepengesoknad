@@ -6,6 +6,7 @@ import {
     ISOStringToDate,
     TilgjengeligStønadskonto,
     førsteOktober2021ReglerGjelder,
+    getAntallUker,
     getFlerbarnsuker,
     guid,
     isAnnenForelderOppgitt,
@@ -16,9 +17,8 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import FlerbarnsdagerInformasjon from 'app/steps/uttaksplan-info/components/flerbarnsdagerInformasjon/FlerbarnsdagerInformasjon';
-import SammenhengendeUttakInformasjon from 'app/steps/uttaksplan-info/components/sammenhengendeUttakInformasjon/SammenhengendeUttakInformasjon';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import FlerbarnsdagerInformasjon from 'app/steps/fordeling/components/Flerbarnsdagerinformasjon';
+import SammenhengendeUttakInformasjon from 'app/steps/fordeling/components/SammenhengendeUttakInformasjon';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 

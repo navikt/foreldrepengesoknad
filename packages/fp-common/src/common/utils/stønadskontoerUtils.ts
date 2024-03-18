@@ -106,3 +106,50 @@ export const getUttakAnnenPartStønadskontoNavn = (
     }
     return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
 };
+
+export const getAntallUker = (kontoer: TilgjengeligStønadskonto[]): number => {
+    return kontoer.reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
+export const getAntallUkerForeldrepengerFørFødsel = (kontoer: TilgjengeligStønadskonto[]): number => {
+    return kontoer
+        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel)
+        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
+export const getAntallUkerMødrekvote = (kontoer: TilgjengeligStønadskonto[]): number => {
+    return kontoer
+        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Mødrekvote)
+        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
+export const getAntallUkerFedrekvote = (kontoer: TilgjengeligStønadskonto[]): number => {
+    return kontoer
+        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Fedrekvote)
+        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
+export const getAntallUkerFellesperiode = (kontoer: TilgjengeligStønadskonto[]): number => {
+    return kontoer
+        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Fellesperiode)
+        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
+export const getAntallUkerForeldrepenger = (kontoer: TilgjengeligStønadskonto[]): number => {
+    return kontoer
+        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Foreldrepenger)
+        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
+export const getAntallUkerAktivitetsfriKvote = (kontoer: TilgjengeligStønadskonto[]): number => {
+    return kontoer
+        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.AktivitetsfriKvote)
+        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+};
+
+export const getAntallUkerMinsterett = (minsteRettDager: number | undefined): number | undefined => {
+    if (minsteRettDager !== undefined) {
+        return minsteRettDager / 5;
+    }
+    return undefined;
+};

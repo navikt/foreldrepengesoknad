@@ -14,6 +14,7 @@ import {
     Uttaksdagen,
     bemUtils,
     capitalizeFirstLetter,
+    getAntallUker,
     getFlerbarnsuker,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
@@ -25,7 +26,6 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 

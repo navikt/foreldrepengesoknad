@@ -1,0 +1,13 @@
+.morsSisteDag {
+    padding: 1rem;
+    background-color: var(--a-deepblue-50);
+}
+
+.morsSisteDag__tittel {
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+}
+
+.morsSisteDag__tekst {
+    font-size: 14px
+}

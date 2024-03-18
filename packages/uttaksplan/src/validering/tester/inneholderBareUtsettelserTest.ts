@@ -6,12 +6,14 @@ import {
     isOverskrivbarPeriode,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
+
 import { RegelTestresultat } from '../utils/types/regelTypes';
 
 export function inneholderBareUtsettelserTest(grunnlag: Søknadsinfo): RegelTestresultat {
     const ikkeOverskrivbarePerioder = grunnlag.perioder.filter((p) => !isOverskrivbarPeriode(p));
     const inneholderAndrePerioderEnnUtsettelser = ikkeOverskrivbarePerioder.some((p) => !isUtsettelsesperiode(p));
-    const bareUtsettelser = !inneholderAndrePerioderEnnUtsettelser;
+    const finnesPerioderIPlanen = grunnlag.perioder.length > 0;
+    const bareUtsettelser = !inneholderAndrePerioderEnnUtsettelser && finnesPerioderIPlanen;
     const passerer = bareUtsettelser === false;
     const intlKey = grunnlag.erEndringssøknad
         ? 'uttaksplan.veileder.planenInneholderKunUtsettelser.endringssøknad'

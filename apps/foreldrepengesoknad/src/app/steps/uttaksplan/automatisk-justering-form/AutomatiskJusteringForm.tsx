@@ -8,7 +8,6 @@ import { Alert } from '@navikt/ds-react';
 import { Block, Periode, StønadskontoType, intlUtils, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 import { YesOrNo } from '@navikt/fp-formik';
-import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
@@ -29,10 +28,10 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
     const intl = useIntl();
     const uttaksdagPåEllerEtterTermin = Uttaksdagen(termindato).denneEllerNeste();
 
-    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
 
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
-    const brukerSvarteJaPåAutoJustering = uttaksplanMetadata.ønskerJustertUttakVedFødsel;
+    const brukerSvarteJaPåAutoJustering = uttaksplanMetadata?.ønskerJustertUttakVedFødsel;
 
     const svarteJaMenFlerePerioderInnen6Uker = brukerSvarteJaPåAutoJustering && perioderMedUttakRundtFødsel.length > 1;
     const svarteJaMenStarterIkkeLengerPåTermin =

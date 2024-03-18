@@ -94,6 +94,11 @@
     border-color: var(--a-data-surface-1);
 }
 
+.graf--ikke-tildelt {
+    background-color: #eceef0;
+    border: 2px solid var(--Surface-Neutral, #525962);
+}
+
 .graf__del-graf-box {
     border-width: 2px;
     border-style: solid;

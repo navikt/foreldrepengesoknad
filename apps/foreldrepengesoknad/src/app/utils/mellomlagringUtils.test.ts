@@ -52,7 +52,7 @@ describe('Test av mellomlagring', () => {
 
         result = shouldApplyStorage({
             version: MELLOMLAGRET_VERSJON,
-            currentRoute: SøknadRoutes.UTTAKSPLAN_INFO,
+            currentRoute: SøknadRoutes.FORDELING,
             søknad: {
                 erEndringssøknad: true,
             },

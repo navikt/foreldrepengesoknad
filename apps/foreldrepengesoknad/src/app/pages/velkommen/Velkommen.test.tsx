@@ -1,10 +1,12 @@
-import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
-import * as stories from './Velkommen.stories';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
-import SøknadRoutes from 'app/routes/routes';
+
 import { ContextDataType } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import * as stories from './Velkommen.stories';
 
 vi.mock('app/utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };

@@ -1,15 +1,18 @@
-import { Label, VStack } from '@navikt/ds-react';
-import { Datepicker } from '@navikt/fp-form-hooks';
-import { SøkerBarn } from '@navikt/fp-types';
-import { isRequired, isValidDate } from '@navikt/fp-validation';
-import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
-import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
-import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { Label, VStack } from '@navikt/ds-react';
+
+import { Datepicker } from '@navikt/fp-form-hooks';
+import { SøkerBarn } from '@navikt/fp-types';
+import { isRequired, isValidDate } from '@navikt/fp-validation';
+
+import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
+import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
+import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);

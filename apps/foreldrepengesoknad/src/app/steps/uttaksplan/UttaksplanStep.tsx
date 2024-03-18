@@ -17,6 +17,8 @@ import {
     Step,
     StepButtonWrapper,
     getAktiveArbeidsforhold,
+    getAntallUker,
+    getAntallUkerMinsterett,
     getErMorUfør,
     getFarMedmorErAleneOmOmsorg,
     getForeldreparSituasjon,
@@ -53,7 +55,7 @@ import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksp
 import { RequestStatus } from 'app/types/RequestState';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
+import { getEndringstidspunkt } from 'app/utils/dateUtils';
 import {
     getStartdatoFørstePeriodeAnnenPart,
     mapAnnenPartsEksisterendeSakFromDTO,
@@ -63,7 +65,6 @@ import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoU
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
-import { getAntallUker, getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
 import {
@@ -102,9 +103,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
@@ -118,9 +118,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
-    const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
+    const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata?.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(
-        uttaksplanMetadata.perioderSomSkalSendesInn || [],
+        uttaksplanMetadata?.perioderSomSkalSendesInn || [],
     );
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -146,7 +146,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const opprinneligPlan = eksisterendeSak?.uttaksplan;
     const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
-    const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
     const termindato = getTermindato(barn);
     const annenForelderFnr =
         isAnnenForelderOppgitt(annenForelder) && !!annenForelder.utenlandskFnr === false
@@ -235,7 +234,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         });
         oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+        oppdaterAppRoute(SøknadRoutes.FORDELING);
         mellomlagreSøknadOgNaviger();
         navigator.goToPreviousDefaultStep();
     };
@@ -302,7 +301,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             eksisterendeSak !== undefined &&
             opprinneligPlan !== undefined &&
             eksisterendeVedtakAnnenPart !== undefined &&
-            !uttaksplanMetadata.annenPartsUttakErLagtTilIPlan
+            !uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan
         ) {
             //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
             opprinneligPlan.forEach((p) => {
@@ -607,7 +606,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     return (
         <UttaksplanFormComponents.FormikWrapper
             initialValues={getUttaksplanFormInitialValues(
-                uttaksplanMetadata.ønskerJustertUttakVedFødsel,
+                uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
                 periodeRundtFødselKanAutomatiskJusteres,
             )}
             onSubmit={onSubmit}
@@ -664,9 +663,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             setUttaksplanErGyldig={setUttaksplanErGyldig}
                             eksisterendeSak={eksisterendeSak}
                             perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                            morsSisteDag={morsSisteDag}
                             harKomplettUttaksplan={harKomplettUttaksplan}
-                            opprinneligPlan={uttaksplanMetadata.harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
+                            opprinneligPlan={
+                                uttaksplanMetadata?.harUttaksplanBlittSlettet ? undefined : opprinneligPlan
+                            }
                             handleSlettUttaksplan={handleSlettUttaksplan}
                             handleResetUttaksplan={handleResetUttaksplan}
                             termindato={termindato ? dayjs(termindato).toDate() : undefined}

@@ -4,8 +4,8 @@ import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode, formaterDato, 
 import { Attachment, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
 import Environment from 'app/Environment';
+import Fordeling from 'app/context/types/Fordeling';
 import { Søknad } from 'app/context/types/Søknad';
-import UttaksplanInfo from 'app/context/types/UttaksplanInfo';
 import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
 import { SakerOppslag } from 'app/types/SakerOppslag';
@@ -71,7 +71,7 @@ export interface FpMellomlagretData {
     perioderSomSkalSendesInn?: Periode[];
     harUttaksplanBlittSlettet?: boolean;
     søknadGjelderEtNyttBarn?: boolean;
-    uttaksplanInfo?: UttaksplanInfo;
+    fordeling?: Fordeling;
     eksisterendeSak?: EksisterendeSak;
     endringstidspunkt?: Date;
     barnFraNesteSak?: BarnFraNesteSak;

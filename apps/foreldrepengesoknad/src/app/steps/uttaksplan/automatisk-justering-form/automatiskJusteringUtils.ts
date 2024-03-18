@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import {
     Barn,
     Forelder,
@@ -9,7 +11,6 @@ import {
     isUfødtBarn,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import dayjs from 'dayjs';
 
 export const getKanPeriodenRundtFødselJusteres = (
     periodeRundtFødsel: Periode,

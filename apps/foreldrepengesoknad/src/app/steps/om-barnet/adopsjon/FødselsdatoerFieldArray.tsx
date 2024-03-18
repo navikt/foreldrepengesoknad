@@ -1,10 +1,12 @@
-import { VStack } from '@navikt/ds-react';
-import { Datepicker } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+
+import { VStack } from '@navikt/ds-react';
+
+import { Datepicker } from '@navikt/fp-form-hooks';
+import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const erBarnetUnder15årPåAdopsjonsdato = (i18nText: string, adopsjonsdato?: string) => (fødselsdato: string) => {
     if (!adopsjonsdato) {

@@ -336,7 +336,9 @@ export const getPeriodeForelderNavn = (periode: Periode, navnPÃ¥Foreldre: NavnPÃ
     return 'Ingen forelder registrert';
 };
 
-export const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartInfoPeriode): number | undefined => {
+export const getSamtidigUttakEllerGraderingsProsent = (
+    periode: UttakAnnenPartInfoPeriode | Uttaksperiode,
+): number | undefined => {
     const periodeErGradert = periode.stillingsprosent !== undefined;
     const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
 
@@ -349,6 +351,13 @@ export const getSamtidigUttakEllerGraderingsProsent = (periode: UttakAnnenPartIn
     }
 
     return undefined;
+};
+
+export const getSamtidigUttaksprosent = (
+    gradertPeriode: boolean | undefined,
+    stillingsprosent: string | undefined,
+): string => {
+    return gradertPeriode && stillingsprosent ? (100 - parseInt(stillingsprosent, 10)).toString() : '100';
 };
 
 export const justerAndrePartsUttakAvFellesperiodeOmMulig = (

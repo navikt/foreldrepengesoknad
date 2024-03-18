@@ -1,8 +1,20 @@
 {
     "perioder": [
         {
-            "fom": "2024-02-19",
-            "tom": "2024-03-08",
+            "fom": "2024-03-08",
+            "tom": "2024-03-14",
+            "kontoType": "FELLESPERIODE",
+            "resultat": {
+                "innvilget": true,
+                "trekkerMinsterett": true,
+                "trekkerDager": true,
+                "årsak": "ANNET"
+            },
+            "flerbarnsdager": false
+        },
+        {
+            "fom": "2024-03-15",
+            "tom": "2024-04-04",
             "kontoType": "FORELDREPENGER_FØR_FØDSEL",
             "resultat": {
                 "innvilget": true,
@@ -13,8 +25,8 @@
             "flerbarnsdager": false
         },
         {
-            "fom": "2024-03-11",
-            "tom": "2024-03-24",
+            "fom": "2024-04-05",
+            "tom": "2024-05-16",
             "kontoType": "MØDREKVOTE",
             "resultat": {
                 "innvilget": true,
@@ -25,32 +37,8 @@
             "flerbarnsdager": false
         },
         {
-            "fom": "2024-03-25",
-            "tom": "2024-04-21",
-            "kontoType": "MØDREKVOTE",
-            "resultat": {
-                "innvilget": false,
-                "trekkerMinsterett": false,
-                "trekkerDager": false,
-                "årsak": "ANNET"
-            },
-            "flerbarnsdager": false
-        },
-        {
-            "fom": "2024-04-22",
-            "tom": "2024-04-26",
-            "kontoType": "MØDREKVOTE",
-            "resultat": {
-                "innvilget": false,
-                "trekkerMinsterett": false,
-                "trekkerDager": false,
-                "årsak": "ANNET"
-            },
-            "flerbarnsdager": false
-        },
-        {
-            "fom": "2024-04-27",
-            "tom": "2024-06-21",
+            "fom": "2024-05-17",
+            "tom": "2024-07-18",
             "kontoType": "MØDREKVOTE",
             "resultat": {
                 "innvilget": true,
@@ -61,20 +49,8 @@
             "flerbarnsdager": false
         },
         {
-            "fom": "2024-06-24",
-            "tom": "2024-08-16",
-            "kontoType": "FELLESPERIODE",
-            "resultat": {
-                "innvilget": true,
-                "trekkerMinsterett": true,
-                "trekkerDager": true,
-                "årsak": "ANNET"
-            },
-            "flerbarnsdager": false
-        },
-        {
-            "fom": "2024-10-07",
-            "tom": "2024-11-29",
+            "fom": "2024-07-19",
+            "tom": "2024-09-05",
             "kontoType": "FELLESPERIODE",
             "resultat": {
                 "innvilget": true,
@@ -85,7 +61,7 @@
             "flerbarnsdager": false
         }
     ],
-    "termindato": "2024-03-13",
+    "termindato": "2024-04-05",
     "dekningsgrad": "HUNDRE",
     "antallBarn": 1
 }
