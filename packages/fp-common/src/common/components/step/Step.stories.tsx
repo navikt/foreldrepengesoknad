@@ -1,13 +1,14 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 import { HashRouter } from 'react-router-dom';
+
 import Step, { StepProps } from './Step';
 
 export default {
     title: 'components/Step',
     component: Step,
-} as ComponentMeta<typeof Step>;
+};
 
-const Template: Story<StepProps> = (args) => (
+const Template: StoryFn<StepProps> = (args) => (
     <HashRouter>
         <Step {...args} />
     </HashRouter>

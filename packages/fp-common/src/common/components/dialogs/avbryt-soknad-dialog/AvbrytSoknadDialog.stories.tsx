@@ -1,12 +1,13 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
+
 import AvbrytSøknadDialog, { AvbrytSøknadDialogProps } from './AvbrytSoknadDialog';
 
 export default {
     title: 'components/AvbrytSoknadDialog',
     component: AvbrytSøknadDialog,
-} as ComponentMeta<typeof AvbrytSøknadDialog>;
+};
 
-const Template: Story<AvbrytSøknadDialogProps> = (args) => <AvbrytSøknadDialog {...args} />;
+const Template: StoryFn<AvbrytSøknadDialogProps> = (args) => <AvbrytSøknadDialog {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

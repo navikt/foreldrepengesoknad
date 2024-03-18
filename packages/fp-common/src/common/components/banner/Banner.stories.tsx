@@ -1,12 +1,13 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
+
 import Banner, { BannerProps } from './Banner';
 
 export default {
     title: 'components/Banner',
     component: Banner,
-} as ComponentMeta<typeof Banner>;
+};
 
-const Template: Story<BannerProps> = (args) => <Banner {...args} />;
+const Template: StoryFn<BannerProps> = (args) => <Banner {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

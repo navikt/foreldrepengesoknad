@@ -1,12 +1,13 @@
-import { ComponentMeta, Story } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
+
 import ProgressStepper, { ProgressStepperProps } from './ProgressStepper';
 
 export default {
     title: 'components/ProgressStepper',
     component: ProgressStepper,
-} as ComponentMeta<typeof ProgressStepper>;
+};
 
-const Template: Story<ProgressStepperProps> = (args) => <ProgressStepper {...args} />;
+const Template: StoryFn<ProgressStepperProps> = (args) => <ProgressStepper {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 
 export default defineConfig({
@@ -12,6 +12,12 @@ export default defineConfig({
         checker({
             typescript: true,
         }),
+        {
+            name: 'crossorigin',
+            transformIndexHtml(html) {
+                return html.replace(/<link rel="stylesheet" crossorigin/g, '<link rel="stylesheet" ');
+            },
+        },
     ],
     build: {
         sourcemap: true,
