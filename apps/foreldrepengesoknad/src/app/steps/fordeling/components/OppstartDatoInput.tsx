@@ -69,6 +69,7 @@ const OppstartDatoInput = () => {
             description={intlUtils(intl, 'fordeling.oppstartDato.description')}
             minDate={minDato}
             maxDate={maksDato}
+            showMonthAndYearDropdowns={true}
             defaultMonth={defaultDate}
             disableWeekends={true}
             validate={[
