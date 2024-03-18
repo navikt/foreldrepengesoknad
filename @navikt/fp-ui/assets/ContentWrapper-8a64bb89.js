@@ -1,1 +1,0 @@
-import{j as o}from"./jsx-runtime-ffb262ed.js";import{b as p}from"./dateUtils-2a257382.js";import"./dates-3338231f.js";import"./index-76fb7be0.js";const r=({children:t})=>{const e=p("content");return o.jsx("div",{className:e.block,children:t})};try{r.displayName="ContentWrapper",r.__docgenInfo={description:"",displayName:"ContentWrapper",props:{}}}catch{}export{r as C};
