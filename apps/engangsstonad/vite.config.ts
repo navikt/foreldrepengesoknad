@@ -12,10 +12,15 @@ export default defineConfig({
         checker({
             typescript: true,
         }),
+        {
+            name: 'crossorigin',
+            transformIndexHtml(html) {
+                return html.replace(/crossorigin/g, '');
+            },
+        },
     ],
     build: {
         sourcemap: true,
-        cssCodeSplit: true,
     },
     resolve: {
         alias: {
