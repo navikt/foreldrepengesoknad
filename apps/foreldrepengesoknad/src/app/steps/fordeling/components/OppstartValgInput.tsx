@@ -1,5 +1,5 @@
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
 import dayjs from 'dayjs';
-import _ from 'lodash';
 import React from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
@@ -12,7 +12,6 @@ import {
     andreAugust2022ReglerGjelder,
     formatDateExtended,
     førsteOktober2021ReglerGjelder,
-    getFørsteUttaksdagForeldrepengerFørFødsel,
     intlUtils,
     isAdoptertAnnetBarn,
     isFarEllerMedmor,
@@ -189,9 +188,6 @@ const getRadioOptionAnnenDatoMorFødsel = (erBarnetFødt: boolean, intl: IntlSha
 
 const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.ReactElement => {
     const termindato = ISOStringToDate(getTermindato(barn));
-    if (!termindato) {
-        throw new Error('Ukjent termindato for barnet.');
-    }
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
     return (
         <Radio
@@ -207,9 +203,6 @@ const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.Rea
 
 const getRadioOptionTreUkerFørFødsel = (intl: IntlShape, barn: Barn): React.ReactElement => {
     const fødselsdato = ISOStringToDate(getFødselsdato(barn));
-    if (!fødselsdato) {
-        throw new Error('Ukjent fødselsdato for barnet.');
-    }
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(fødselsdato);
     return (
         <Radio

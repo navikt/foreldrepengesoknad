@@ -1,4 +1,8 @@
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
+import {
+    getFørsteUttaksdagAnkomstdatoNorge,
+    getFørsteUttaksdagForeldrepengerFørFødsel,
+    getFørsteUttaksdagOmsorgsovertakelse,
+} from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
@@ -52,7 +56,10 @@ export const validateOppstartsdato =
         return undefined;
     };
 
-const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date) => {
+const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date | undefined) => {
+    if (!sisteDagAnnenForelder) {
+        throw new Error('Mangler informasjon om annen forelders siste dag.');
+    }
     const sisteUttaksdagAnnenForelder = Uttaksdagen(sisteDagAnnenForelder).denneEllerForrige();
     return Uttaksdagen(sisteUttaksdagAnnenForelder).neste();
 };
@@ -72,34 +79,17 @@ export const getOppstartsdatoFromInput = (
     }
     switch (oppstartValg) {
         case OppstartValg.TRE_UKER_FØR_TERMIN:
-            if (termindato) {
-                return getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
-            } else {
-                throw new Error('Mangler informasjon om termindato.');
-            }
+            return getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
         case OppstartValg.TRE_UKER_FØR_FØDSEL:
             return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
-
         case OppstartValg.FAMILIEHENDELSESDATO:
             return familiehendelsesdato;
         case OppstartValg.ANKOMSTDATO_NORGE:
-            if (ankomstDatoNorge) {
-                return ankomstDatoNorge;
-            } else {
-                throw new Error('Mangler informasjon om ankomst til Norge.');
-            }
+            return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
-            if (sisteDagAnnenForelder) {
-                return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder);
-            } else {
-                throw new Error('Mangler informasjon om annen forelders siste dag.');
-            }
+            return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder);
         case OppstartValg.OMSORGSOVERTAKELSE:
-            if (datoForAleneomsorg) {
-                return Uttaksdagen(datoForAleneomsorg).denneEllerNeste();
-            } else {
-                throw new Error('Mangler informasjon om omsorgsovertakelsedato.');
-            }
+            return getFørsteUttaksdagOmsorgsovertakelse(datoForAleneomsorg);
         default:
             throw new Error('Ukjent verdi på oppstartValg.');
     }

@@ -1,3 +1,4 @@
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { IntlShape, useIntl } from 'react-intl';
@@ -8,7 +9,6 @@ import {
     ISOStringToDate,
     Tidsperioden,
     Uttaksdagen,
-    getFørsteUttaksdagForeldrepengerFørFødsel,
     getValidTidsperiode,
     getVarighetString,
     intlUtils,

@@ -18,10 +18,10 @@ import MorOppstartInformasjon from '../mor-oppstart-informasjon/MorOppstartInfor
 const OppstartDatoMorFødsel = () => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
+    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const { watch } = useFormContext<Fordeling>();
     const oppstartDato = watch('oppstartDato');
-    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen(familiehendelsesdato!).denneEllerNeste();
+    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     const visInformasjon =
         oppstartDato &&
         isValidDate(oppstartDato) &&
