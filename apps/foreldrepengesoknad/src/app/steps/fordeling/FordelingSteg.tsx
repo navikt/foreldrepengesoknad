@@ -143,7 +143,8 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
                   eksisterendeVedtakAnnenPart?.uttaksplan,
               )
             : [];
-    const dagerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) * 5 : 0;
+    const ukerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) : 0;
+    const dagerMedFellesperiode = ukerMedFellesperiode * 5;
     const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(
         erFarEllerMedmor,
         deltUttak,
@@ -185,6 +186,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
                     førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
                     valgtStønadskonto={valgtStønadskonto}
                     annenPartsPerioder={eksisterendeVedtakAnnenPart?.uttaksplan}
+                    ukerMedFellesperiode={ukerMedFellesperiode}
                 ></FordelingForm>
             </VStack>
         </Step>

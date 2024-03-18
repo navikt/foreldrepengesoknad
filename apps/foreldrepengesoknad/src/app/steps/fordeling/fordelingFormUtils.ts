@@ -5,7 +5,20 @@ import { IntlShape } from 'react-intl';
 import { ISOStringToDate, Uttaksdagen, formatDate, intlUtils } from '@navikt/fp-common';
 import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
 
-import { OppstartValg } from 'app/context/types/Fordeling';
+import Fordeling, { FellesperiodeFordelingValg, OppstartValg } from 'app/context/types/Fordeling';
+
+export const getAntallUkerFellesperiodeTilSøker = (
+    antallUkerFellesperiode: number,
+    fordeling: Fordeling,
+): number | undefined => {
+    if (fordeling.fordelingValg === FellesperiodeFordelingValg.LIKT) {
+        return antallUkerFellesperiode / 2;
+    }
+    if (fordeling.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE) {
+        return getNumberFromNumberInputValue(fordeling.antallUkerFellesperiodeTilSøker);
+    }
+    return undefined;
+};
 
 export const validateAntallUkerFellesperiode = (intl: IntlShape, dagerMedFellesperiode: number) => (value: string) => {
     const valueNumber = getNumberFromNumberInputValue(value)!;
@@ -64,6 +77,9 @@ export const getOppstartsdatoFromInput = (
             } else {
                 throw new Error('Mangler informasjon om termindato.');
             }
+        case OppstartValg.TRE_UKER_FØR_FØDSEL:
+            return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
+
         case OppstartValg.FAMILIEHENDELSESDATO:
             return familiehendelsesdato;
         case OppstartValg.ANKOMSTDATO_NORGE:

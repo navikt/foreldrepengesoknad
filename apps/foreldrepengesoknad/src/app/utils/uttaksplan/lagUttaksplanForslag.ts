@@ -16,12 +16,12 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';
+import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
 import { getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import Fordeling from 'app/context/types/Fordeling';
-import { getOppstartsdatoFromInput } from 'app/steps/fordeling/fordelingFormUtils';
+import { getAntallUkerFellesperiodeTilSøker, getOppstartsdatoFromInput } from 'app/steps/fordeling/fordelingFormUtils';
 
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from '../annenForelderUtils';
 import { getFamiliehendelsedatoDate, getTermindato } from '../barnUtils';
@@ -37,6 +37,7 @@ export const lagUttaksplanForslag = (
     annenForelder: AnnenForelder,
     fordeling: Fordeling,
     antallOppstartsValg: number,
+    antallUkerFellesperiode: number,
 ): Periode[] => {
     const situasjon = søkersituasjon.situasjon;
     const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
@@ -74,12 +75,11 @@ export const lagUttaksplanForslag = (
         datoForAleneomsorg,
         antallOppstartsValg,
     );
-    const fellesperiodeUkerTilSøker = getNumberFromNumberInputValue(fordeling.antallUkerFellesperiodeTilSøker);
+    const fellesperiodeUkerTilSøker = getAntallUkerFellesperiodeTilSøker(antallUkerFellesperiode, fordeling);
     const fellesperiodeUkerMor = erFarEllerMedmor ? undefined : fellesperiodeUkerTilSøker;
     const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeUkerTilSøker : undefined;
     const farSinFørsteUttaksdag = erFarEllerMedmor ? startdatoPermisjon : undefined;
     const erAdopsjon = situasjon === 'adopsjon';
-    // let forslag = [] as Periode[];
 
     if (familiehendelsesdato) {
         if (erDeltUttak) {
@@ -132,19 +132,6 @@ export const lagUttaksplanForslag = (
             );
         }
     }
-
-    // if (annenPartsPerioder && annenPartsPerioder.length > 0) {
-    //     return leggTilAnnenPartsPerioderISøkerenesUttaksplan(
-    //         annenPartsPerioder,
-    //         forslag,
-    //         familiehendelsesdato,
-    //         harAktivitetskravIPeriodeUtenUttak,
-    //         erAdopsjon,
-    //         bareFarMedmorHarRett,
-    //         erFarEllerMedmor,
-    //         førsteUttaksdagNesteBarnsSak,
-    //     );
-    // }
 
     return [];
 };

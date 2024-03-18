@@ -14,7 +14,7 @@ import { ISOStringToDate } from '@navikt/fp-formik';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import Fordeling from 'app/context/types/Fordeling';
+import Fordeling, { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
 import { getDatoForAleneomsorg } from 'app/utils/annenForelderUtils';
 import { lagUttaksplanForslag } from 'app/utils/uttaksplan/lagUttaksplanForslag';
 
@@ -29,6 +29,7 @@ type Props = {
     førsteDagEtterAnnenForelder: Date | undefined;
     valgtStønadskonto: TilgjengeligStønadskonto[];
     annenPartsPerioder: Periode[] | undefined;
+    ukerMedFellesperiode: number;
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
 };
@@ -40,6 +41,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     førsteDagEtterAnnenForelder,
     valgtStønadskonto,
     annenPartsPerioder,
+    ukerMedFellesperiode,
     goToPreviousDefaultStep,
     goToNextDefaultStep,
 }) => {
@@ -74,7 +76,10 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const onSubmit = (values: Fordeling) => {
         const mappedFordelingValues = {
             fordelingValg: values.fordelingValg,
-            antallUkerFellesperiodeTilSøker: values.antallUkerFellesperiodeTilSøker,
+            antallUkerFellesperiodeTilSøker:
+                values.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE
+                    ? values.antallUkerFellesperiodeTilSøker
+                    : undefined,
             oppstartAvForeldrepengerValg:
                 values.oppstartAvForeldrepengerValg &&
                 oppstartsValgOptions.includes(values.oppstartAvForeldrepengerValg)
@@ -89,8 +94,9 @@ const FordelingForm: React.FunctionComponent<Props> = ({
             barn,
             barnFraNesteSak,
             annenForelder,
-            values,
+            mappedFordelingValues,
             oppstartsValgOptions.length,
+            ukerMedFellesperiode,
         );
         oppdaterFordeling(mappedFordelingValues);
         oppdaterUttaksplan(uttaksplanForslag);
