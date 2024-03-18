@@ -178,7 +178,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
                 ></FordelingOversikt>
                 {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
                 <FordelingForm
-                    deltUttak={deltUttak}
+                    erDeltUttak={deltUttak}
                     navnPåForeldre={navnPåForeldre}
                     dagerMedFellesperiode={dagerMedFellesperiode}
                     goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}

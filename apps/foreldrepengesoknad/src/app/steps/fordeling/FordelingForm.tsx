@@ -1,3 +1,7 @@
+import {
+    getHarAktivitetskravIPeriodeUtenUttak,
+    leggTilAnnenPartsPerioderISøkerenesUttaksplan,
+} from '@navikt/uttaksplan';
 import { useForm } from 'react-hook-form';
 
 import { VStack } from '@navikt/ds-react';
@@ -6,6 +10,7 @@ import {
     NavnPåForeldre,
     Periode,
     TilgjengeligStønadskonto,
+    getKunFarHarRett,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
@@ -13,9 +18,11 @@ import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { getMorHarRettINorge } from 'app/api/getStønadskontoParams';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import Fordeling, { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
-import { getDatoForAleneomsorg } from 'app/utils/annenForelderUtils';
+import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
+import { getFamiliehendelsedatoDate } from 'app/utils/barnUtils';
 import { lagUttaksplanForslag } from 'app/utils/uttaksplan/lagUttaksplanForslag';
 
 import OppstartAvForeldrepenger from './components/OppstartAvForeldrepenger';
@@ -23,7 +30,7 @@ import { getValgOptionsForOppstart } from './components/OppstartValgInput';
 import FellesperiodeFordeling from './components/fellesperiode-fordeling/FellesperiodeFordeling';
 
 type Props = {
-    deltUttak: boolean;
+    erDeltUttak: boolean;
     navnPåForeldre: NavnPåForeldre;
     dagerMedFellesperiode: number;
     førsteDagEtterAnnenForelder: Date | undefined;
@@ -35,7 +42,7 @@ type Props = {
 };
 
 const FordelingForm: React.FunctionComponent<Props> = ({
-    deltUttak,
+    erDeltUttak,
     navnPåForeldre,
     dagerMedFellesperiode,
     førsteDagEtterAnnenForelder,
@@ -54,12 +61,18 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
+    const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
+    const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
+    const søkerErAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
+    const bareFarMedmorHarRett = getKunFarHarRett(erFarEllerMedmor, annenForelder, søkerErAleneOmOmsorg);
+    const morHarRett = getMorHarRettINorge(erFarEllerMedmor, annenForelder);
+
     const formMethods = useForm<Fordeling>({
         defaultValues: fordelingAvForeldrepenger,
     });
 
     const søkerDeltUttakINorgeSomMorFørst =
-        deltUttak &&
+        erDeltUttak &&
         !erFarEllerMedmor &&
         førsteDagEtterAnnenForelder === undefined &&
         isAnnenForelderOppgitt(annenForelder) &&
@@ -68,7 +81,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const oppstartsValgOptions = getValgOptionsForOppstart(
         søkersituasjon,
         barn,
-        deltUttak,
+        erDeltUttak,
         førsteDagEtterAnnenForelder,
         datoForAleneomsorg,
     );
@@ -98,8 +111,31 @@ const FordelingForm: React.FunctionComponent<Props> = ({
             oppstartsValgOptions.length,
             ukerMedFellesperiode,
         );
+        let uttaksplanMedAnnenPart;
+        if (annenPartsPerioder && annenPartsPerioder.length > 0 && uttaksplanForslag.length > 0) {
+            const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
+                erDeltUttak,
+                morHarRett,
+                søkerErAleneOmOmsorg,
+            });
+            uttaksplanMedAnnenPart = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
+                annenPartsPerioder,
+                uttaksplanForslag,
+                familiehendelsesdato,
+                harAktivitetskravIPeriodeUtenUttak,
+                erAdopsjon,
+                bareFarMedmorHarRett,
+                erFarEllerMedmor,
+                barnFraNesteSak?.startdatoFørsteStønadsperiode,
+            );
+        } else if (annenPartsPerioder && annenPartsPerioder.length > 0) {
+            uttaksplanMedAnnenPart = annenPartsPerioder;
+        } else {
+            uttaksplanMedAnnenPart = uttaksplanForslag;
+        }
+
         oppdaterFordeling(mappedFordelingValues);
-        oppdaterUttaksplan(uttaksplanForslag);
+        oppdaterUttaksplan(uttaksplanMedAnnenPart);
         return goToNextDefaultStep();
     };
     return (
