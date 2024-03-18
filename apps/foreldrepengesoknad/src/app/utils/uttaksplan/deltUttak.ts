@@ -2,6 +2,7 @@ import {
     splittPeriodePåDato,
     splittUttaksperiodePåFamiliehendelsesdato,
 } from '@navikt/uttaksplan/src/builder/leggTilPeriode';
+import dayjs from 'dayjs';
 
 import {
     Forelder,
@@ -193,12 +194,12 @@ const deltUttakAdopsjon = (
 const deltUttakFødselMor = (
     famDato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    ønsketStartdatoPermisjon: Date | undefined,
+    ønsketStartdatoPermisjon: Date,
     fellesperiodeukerMor: number | undefined,
 ): Periode[] => {
     const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
-    const skalHaForeldrePengerFørFødsel = ønsketStartdatoPermisjon ? true : false;
+    const skalHaForeldrePengerFørFødsel = dayjs(ønsketStartdatoPermisjon).isBefore(dayjs(famDato), 'd');
     const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel,
     );
@@ -406,7 +407,7 @@ const deltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: Date,
     fellesperiodeukerMor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
@@ -440,7 +441,7 @@ export interface DeltUttakParams {
     famDato: Date;
     erFarEllerMedmor: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    startdatoPermisjon: Date | undefined;
+    startdatoPermisjon: Date;
     fellesperiodeUkerMor: number | undefined;
     harAnnenForelderSøktFP: boolean | undefined;
     antallUkerFellesperiodeFarMedmor: number | undefined;
