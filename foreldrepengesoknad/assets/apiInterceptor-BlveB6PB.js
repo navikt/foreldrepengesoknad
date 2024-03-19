@@ -1,1 +1,0 @@
-import{a as r,E as a}from"./axios-Dg6gsKS0.js";const n=a.REST_API_URL,t=r.create({baseURL:n}),c=s=>{t.defaults.headers.common["Accept-Language"]=s},i=s=>(t.interceptors.request.use(e=>(e.timeout=60*1e3,s&&(e.headers.fnr=s),e)),t.interceptors.response.use(e=>e,e=>Promise.reject(e)),t);export{t as A,i as g,c as s};

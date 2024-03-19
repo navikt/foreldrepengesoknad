@@ -1,0 +1,1 @@
+import{a as s}from"./axios-Cm0UX6qg.js";const i=s.create(),d=(a,o)=>e=>{const r={withCredentials:!0,timeout:45e3,headers:{"content-type":"multipart/form-data"}},t=new FormData;t.append("id",e.id),t.append("vedlegg",e.file,e.filename);const n=`${a}/storage/${o}/vedlegg`;return i.post(n,t,r)};export{i as a,d as g};

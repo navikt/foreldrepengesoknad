@@ -1,0 +1,1 @@
+var s=(e=>(e.visFeilside="FEATURE_VIS_FEILSIDE",e.visAlertstripe="FEATURE_VIS_ALERTSTRIPE",e))(s||{});const i=()=>{const e=document.getElementById("nav:appSettings"),t=JSON.parse(e.text);return{REST_API_URL:t.REST_API_URL,LOGIN_URL:t.LOGIN_URL,APP_VERSION:t.APP_VERSION,INNSYN:t.INNSYN,[s.visFeilside]:t[s.visFeilside],[s.visAlertstripe]:t[s.visAlertstripe]}},n=i();export{n as E};
