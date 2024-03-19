@@ -1,4 +1,4 @@
-import { CalendarIcon, TasklistStartIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, CalendarIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import Infoboks from 'components/Infoboks';
@@ -13,10 +13,9 @@ import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoer';
 
-import { Alert, BodyLong, ExpansionCard, HStack, Link, Loader, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, ExpansionCard, HStack, Link, Loader, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
@@ -150,13 +149,15 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                 )}
 
                 <VStack gap="10">
-                    <VStack gap="10">
-                        <StepButtons
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            nextButtonOnClick={() => undefined}
-                            useSimplifiedTexts
-                        ></StepButtons>
-                    </VStack>
+                    <HStack>
+                        <Button
+                            variant="secondary"
+                            onClick={navigator.goToPreviousDefaultStep}
+                            icon={<ArrowLeftIcon />}
+                        >
+                            <FormattedMessage id="oppsummering.tilbakeTil" />
+                        </Button>
+                    </HStack>
                 </VStack>
             </VStack>
         </OppsummeringHeader>
