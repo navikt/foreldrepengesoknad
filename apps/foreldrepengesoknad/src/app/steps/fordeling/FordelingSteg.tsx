@@ -63,6 +63,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
     const { dekningsgrad } = periodeMedForeldrepenger;
@@ -185,7 +186,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
                     goToNextDefaultStep={navigator.goToNextDefaultStep}
                     førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
                     valgtStønadskonto={valgtStønadskonto}
-                    annenPartsPerioder={eksisterendeVedtakAnnenPart?.uttaksplan}
+                    eksisterendeVedtakAnnenPart={eksisterendeVedtakAnnenPart}
                     ukerMedFellesperiode={ukerMedFellesperiode}
                 ></FordelingForm>
             </VStack>

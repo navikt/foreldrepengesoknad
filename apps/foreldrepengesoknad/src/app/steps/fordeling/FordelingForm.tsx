@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form';
 import { VStack } from '@navikt/ds-react';
 
 import {
+    EksisterendeSak,
     NavnPåForeldre,
-    Periode,
     TilgjengeligStønadskonto,
     getKunFarHarRett,
     isAnnenForelderOppgitt,
@@ -35,7 +35,7 @@ type Props = {
     dagerMedFellesperiode: number;
     førsteDagEtterAnnenForelder: Date | undefined;
     valgtStønadskonto: TilgjengeligStønadskonto[];
-    annenPartsPerioder: Periode[] | undefined;
+    eksisterendeVedtakAnnenPart: EksisterendeSak | undefined;
     ukerMedFellesperiode: number;
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
@@ -47,7 +47,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     dagerMedFellesperiode,
     førsteDagEtterAnnenForelder,
     valgtStønadskonto,
-    annenPartsPerioder,
+    eksisterendeVedtakAnnenPart,
     ukerMedFellesperiode,
     goToPreviousDefaultStep,
     goToNextDefaultStep,
@@ -58,8 +58,11 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const fordelingAvForeldrepenger = useContextGetData(ContextDataType.FORDELING);
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+    const oppdaterEksisterendeSak = useContextSaveData(ContextDataType.EKSISTERENDE_SAK);
+    const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
     const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
     const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
@@ -70,6 +73,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const formMethods = useForm<Fordeling>({
         defaultValues: fordelingAvForeldrepenger,
     });
+    const annenPartsPerioder = eksisterendeVedtakAnnenPart?.uttaksplan;
 
     const søkerDeltUttakINorgeSomMorFørst =
         erDeltUttak &&
@@ -136,6 +140,10 @@ const FordelingForm: React.FunctionComponent<Props> = ({
 
         oppdaterFordeling(mappedFordelingValues);
         oppdaterUttaksplan(uttaksplanMedAnnenPart);
+        if (eksisterendeVedtakAnnenPart) {
+            oppdaterEksisterendeSak(eksisterendeVedtakAnnenPart);
+            oppdaterUttaksplanMetadata({ ...uttaksplanMetadata, annenPartsUttakErLagtTilIPlan: true });
+        }
         return goToNextDefaultStep();
     };
     return (
