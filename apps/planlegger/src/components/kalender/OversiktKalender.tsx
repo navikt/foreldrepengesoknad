@@ -61,15 +61,6 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         { fom: dayjs(startdatoSøker2), tom: dayjs(sluttdatoSøker2).subtract(1, 'day') },
     ];
 
-    return (
-        <Calendar
-            startdatoSøker1={startdatoSøker1}
-            sluttdatoSøker2={sluttdatoSøker2}
-            sluttdatoSøker1={sluttdatoSøker1}
-            startdatoSøker2={startdatoSøker2}
-            termindatoEllerFødselsdato={termindatoEllerFødselsdato}
-            perioder={perioder}
-        />
-    );
+    return <Calendar perioder={perioder} />;
 };
 export default OversiktKalender;
