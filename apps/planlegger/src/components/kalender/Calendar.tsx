@@ -5,7 +5,6 @@ import { HStack, VStack } from '@navikt/ds-react';
 
 import Day, { DagIPeriode, PeriodType } from './Day';
 import Month from './Month';
-import Year from './Year';
 
 type Periode = {
     fom: Dayjs;
@@ -62,24 +61,6 @@ const erSisteDag = (date: Dayjs, day: number, perioder: Periode[]) => {
     );
 };
 
-const findMonthsOfYear = (year: number, startdatoSøker1: Dayjs, sluttdatoSøker2: Dayjs): number[] => {
-    if (startdatoSøker1.year() === year) {
-        const endOfYear = startdatoSøker1.endOf('year');
-        const lastDate = sluttdatoSøker2.isBefore(endOfYear) ? sluttdatoSøker2 : endOfYear;
-        return [...new Array(lastDate.month() + 1)]
-            .map((_nr, index) => index)
-            .filter((nr) => nr >= startdatoSøker1.month());
-    }
-    if (sluttdatoSøker2.year() === year) {
-        const startOfYear = sluttdatoSøker2.startOf('year');
-        const firstDate = startdatoSøker1.isAfter(startOfYear) ? startdatoSøker1 : startOfYear;
-        return [...new Array(sluttdatoSøker2.month() + 1)]
-            .map((_nr, index) => index)
-            .filter((nr) => nr >= firstDate.month());
-    }
-    throw new Error('År er ikke gyldig');
-};
-
 const finnStartEllerSlutt = (year: number, month: number, day: number, perioder: Periode[]) => {
     const date = dayjs().year(year).month(month).date(day);
     const førsteDag = erFørsteDag(date, day, perioder);
@@ -95,6 +76,20 @@ const finnStartEllerSlutt = (year: number, month: number, day: number, perioder:
         return DagIPeriode.SISTE_DAG;
     }
     return DagIPeriode.DAG_MELLOM;
+};
+
+const findMonths = (firstDate: Dayjs, lastDate: Dayjs): Array<{ month: number; year: number }> => {
+    const numberOfMonthsToAddStart = firstDate.month() % 3;
+    const numberOfMonthsToAddEnd = (12 - lastDate.month()) % 3;
+
+    const firstDateInCalendar = firstDate.subtract(numberOfMonthsToAddStart, 'month');
+    const lastDateInCalendar = lastDate.add(numberOfMonthsToAddEnd, 'month');
+    const numberOfMonthsBetween = lastDateInCalendar.diff(firstDateInCalendar, 'month');
+
+    return [...new Array(numberOfMonthsBetween)].map((_, index) => ({
+        month: firstDateInCalendar.add(index, 'month').month(),
+        year: firstDateInCalendar.add(index, 'month').year(),
+    }));
 };
 
 interface Props {
@@ -114,38 +109,49 @@ const Calendar: FunctionComponent<Props> = ({
     termindatoEllerFødselsdato,
     perioder,
 }) => {
-    const years = [...new Set([dayjs(startdatoSøker1).year(), dayjs(sluttdatoSøker2).year()])];
+    const months = findMonths(perioder[0].fom, perioder[perioder.length - 1].tom);
+
     return (
         <VStack gap="5">
-            {years.map((year) => (
-                <Year key={year} year={year}>
-                    <HStack gap="10">
-                        {findMonthsOfYear(year, dayjs(startdatoSøker1), dayjs(sluttdatoSøker2)).map((month) => (
-                            <Month key={year + month} year={year} month={month}>
-                                {[...Array(dayjs().year(year).month(month).daysInMonth()).keys()].map((day) => (
-                                    <Day
-                                        key={year + month + day}
-                                        day={day - 1}
-                                        periodType={finnPeriodeType(
-                                            year,
-                                            month,
-                                            day,
-                                            startdatoSøker1,
-                                            sluttdatoSøker1,
-                                            startdatoSøker2,
-                                            sluttdatoSøker2,
-                                            dayjs(termindatoEllerFødselsdato),
-                                        )}
-                                        startEllerSlutt={finnStartEllerSlutt(year, month, day, perioder)}
-                                        isFirstDay={day === 0}
-                                        isLastDay={day === dayjs().year(year).month(month).daysInMonth() - 1}
-                                    />
-                                ))}
-                            </Month>
-                        ))}
-                    </HStack>
-                </Year>
-            ))}
+            <HStack gap="10">
+                {months.map((monthData, index) => (
+                    <Month
+                        key={monthData.year + monthData.month}
+                        year={monthData.year}
+                        month={monthData.month}
+                        showYear={index > 0 && months[index - 1].year !== monthData.year}
+                    >
+                        {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map(
+                            (day) => (
+                                <Day
+                                    key={monthData.year + monthData.month + day}
+                                    day={day - 1}
+                                    periodType={finnPeriodeType(
+                                        monthData.year,
+                                        monthData.month,
+                                        day,
+                                        startdatoSøker1,
+                                        sluttdatoSøker1,
+                                        startdatoSøker2,
+                                        sluttdatoSøker2,
+                                        dayjs(termindatoEllerFødselsdato),
+                                    )}
+                                    startEllerSlutt={finnStartEllerSlutt(
+                                        monthData.year,
+                                        monthData.month,
+                                        day,
+                                        perioder,
+                                    )}
+                                    isFirstDay={day === 0}
+                                    isLastDay={
+                                        day === dayjs().year(monthData.year).month(monthData.month).daysInMonth() - 1
+                                    }
+                                />
+                            ),
+                        )}
+                    </Month>
+                ))}
+            </HStack>
         </VStack>
     );
 };

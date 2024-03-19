@@ -7,12 +7,13 @@ import styles from './month.module.css';
 type Props = {
     year: number;
     month: number;
+    showYear: boolean;
     children: React.ReactNode[];
 };
 
-const Month: React.FunctionComponent<Props> = ({ year, month, children }) => {
+const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children }) => {
     const monthDate = dayjs().year(year).month(month).startOf('month');
-    const monthName = monthDate.format('MMMM');
+    const monthName = monthDate.format('MMM');
     const monthNameUppercase = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
     const startWeekDay = monthDate.isoWeekday();
@@ -25,7 +26,7 @@ const Month: React.FunctionComponent<Props> = ({ year, month, children }) => {
 
     return (
         <Box className={styles.box}>
-            <Heading size="small">{monthNameUppercase}</Heading>
+            <Heading size="small">{showYear ? `${monthNameUppercase} (${year})` : monthNameUppercase}</Heading>
             {nrOfWeeks.map((weeknr) => (
                 <HGrid key={weeknr} columns={7}>
                     {[...Array(7).keys()].map((dag) => {
