@@ -2,9 +2,9 @@ import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-utils';
 
 import Planlegger from './Planlegger';
 import enMessages from './intl/messages/en_NO.json';

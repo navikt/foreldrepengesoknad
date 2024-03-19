@@ -2,7 +2,6 @@ import { Preview } from '@storybook/react';
 
 import '@navikt/ds-css';
 
-import { allCommonMessages } from '@navikt/fp-common';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
@@ -19,8 +18,8 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...allCommonMessages.nb, ...uiMessages.nb },
-    nn: { ...nnMessages, ...allCommonMessages.nn, ...uiMessages.nn },
+    nb: { ...nbMessages, ...uiMessages.nb },
+    nn: { ...nnMessages, ...uiMessages.nn },
 });
 
 export const globalTypes = {

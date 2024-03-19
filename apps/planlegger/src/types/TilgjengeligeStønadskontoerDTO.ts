@@ -1,4 +1,8 @@
-import { MinsterettType } from '@navikt/fp-common';
+export enum MinsterettType {
+    farRundtFødsel = 'farRundtFødsel',
+    generellMinsterett = 'generellMinsterett',
+    toTette = 'toTette',
+}
 
 export interface TilgjengeligeMinsterettskontoer {
     [MinsterettType.farRundtFødsel]: number;

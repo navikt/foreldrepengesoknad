@@ -23,16 +23,15 @@ import {
     getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
 
 import { BodyLong, ExpansionCard, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
 
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
 const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
     const values = [{ id: 0, antallUkerSøker1: undefined, antallUkerSøker2: undefined }] as Fellesperiodefordeling[];
-    console.log(antallUkerFellesperiode);
 
     for (let i = 0; i <= antallUkerFellesperiode; i++) {
         const value = { id: i + 1, antallUkerSøker2: antallUkerFellesperiode - i, antallUkerSøker1: i };
@@ -120,27 +119,25 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                 <ExpansionCard.Content>
                     <VStack gap="10">
                         <GreenPanel>
-                            <div>
-                                <Heading size="small">
-                                    {erAleneforsørger ? (
-                                        <FormattedMessage id="oppsummering.forelder" />
-                                    ) : (
-                                        <FormattedMessage id="oppsummering.foreldre" />
-                                    )}
-                                </Heading>
+                            <Heading size="small">
+                                {erAleneforsørger ? (
+                                    <FormattedMessage id="oppsummering.forelder" />
+                                ) : (
+                                    <FormattedMessage id="oppsummering.foreldre" />
+                                )}
+                            </Heading>
 
-                                <BodyLong>
-                                    {erAleneforsørger ? (
-                                        <FormattedMessage id="navn" values={{ navn: navn1 }} />
-                                    ) : (
-                                        <FormattedMessage id="navnBegge" values={{ navn1: navn1, navn2: navn2 }} />
-                                    )}
-                                </BodyLong>
-                            </div>
+                            <BodyLong>
+                                {erAleneforsørger ? (
+                                    <FormattedMessage id="navn" values={{ navn: navn1 }} />
+                                ) : (
+                                    <FormattedMessage id="navnBegge" values={{ navn1: navn1, navn2: navn2 }} />
+                                )}
+                            </BodyLong>
                         </GreenPanel>
 
                         <GreenPanel>
-                            <div>
+                            <>
                                 <Heading size="small">
                                     <FormattedMessage id="barnet.tittel" />
                                 </Heading>
@@ -181,11 +178,11 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         />
                                     </BodyLong>
                                 )}
-                            </div>
+                            </>
                         </GreenPanel>
 
                         <GreenPanel>
-                            <div>
+                            <>
                                 <Heading size="small">
                                     <FormattedMessage id="arbeid.tittel" />
                                 </Heading>
@@ -207,11 +204,11 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         />
                                     </BodyLong>
                                 )}
-                            </div>
+                            </>
                         </GreenPanel>
 
                         <GreenPanel>
-                            <div>
+                            <>
                                 <Heading size="small">
                                     <FormattedMessage id="periode" />
                                 </Heading>
@@ -283,7 +280,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         </div>
                                     </VStack>
                                 )}
-                            </div>
+                            </>
                         </GreenPanel>
                     </VStack>
                 </ExpansionCard.Content>

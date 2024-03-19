@@ -30,10 +30,10 @@ import {
     getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
 
 import { BodyLong, Heading, Loader, VStack } from '@navikt/ds-react';
 
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { notEmpty } from '@navikt/fp-validation';
 
