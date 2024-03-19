@@ -11,33 +11,30 @@ type Periode = {
     tom: Dayjs;
 };
 
-const finnPeriodeType = (
-    year: number,
-    month: number,
-    day: number,
-    startdatoSøker1: Date,
-    sluttdatoSøker1: Dayjs,
-    startdatoSøker2: Dayjs | undefined,
-    sluttdatoSøker2: Dayjs,
-    termindatoEllerFødselsdato: Dayjs,
-) => {
+const finnPeriodeType = (year: number, month: number, day: number, perioder: Periode[]) => {
     const date = dayjs().year(year).month(month).date(day);
 
-    if (date.isBefore(startdatoSøker1) || date.isAfter(sluttdatoSøker2)) {
+    const fomFørstePeriode = perioder[0].fom;
+    const tomFørstePeriode = perioder[0].tom;
+    const tomAndrePeriode = perioder[1].tom;
+    const fomTredjePeriode = perioder[2].fom;
+    const tomTredjePeriode = perioder[2].tom;
+
+    if (date.isBefore(fomFørstePeriode) || date.isAfter(tomTredjePeriode)) {
         return PeriodType.INGEN;
     }
     if (date.isoWeekday() === 5 || date.isoWeekday() === 6) {
         return PeriodType.HELGEDAG;
     }
-    if (date.isSame(termindatoEllerFødselsdato, 'date')) {
+    if (date.isSame(tomFørstePeriode, 'date')) {
         return PeriodType.TERMINDATO;
     }
 
-    if (date.isBetween(startdatoSøker1, sluttdatoSøker1)) {
+    if (date.isBetween(fomFørstePeriode, tomAndrePeriode)) {
         return PeriodType.FORELDREPENGER_MOR;
     }
 
-    if (date.isBetween(startdatoSøker2, sluttdatoSøker2)) {
+    if (date.isBetween(fomTredjePeriode, tomTredjePeriode)) {
         return PeriodType.FORELDREPENGER_FAR;
     }
     return PeriodType.INGEN;
@@ -93,22 +90,10 @@ const findMonths = (firstDate: Dayjs, lastDate: Dayjs): Array<{ month: number; y
 };
 
 interface Props {
-    startdatoSøker1: Date;
-    startdatoSøker2: Dayjs | undefined;
-    sluttdatoSøker1: Dayjs;
-    sluttdatoSøker2: Dayjs;
-    termindatoEllerFødselsdato: string;
     perioder: Periode[];
 }
 
-const Calendar: FunctionComponent<Props> = ({
-    startdatoSøker1,
-    sluttdatoSøker2,
-    sluttdatoSøker1,
-    startdatoSøker2,
-    termindatoEllerFødselsdato,
-    perioder,
-}) => {
+const Calendar: FunctionComponent<Props> = ({ perioder }) => {
     const months = findMonths(perioder[0].fom, perioder[perioder.length - 1].tom);
 
     return (
@@ -125,17 +110,8 @@ const Calendar: FunctionComponent<Props> = ({
                             (day) => (
                                 <Day
                                     key={monthData.year + monthData.month + day}
-                                    day={day - 1}
-                                    periodType={finnPeriodeType(
-                                        monthData.year,
-                                        monthData.month,
-                                        day,
-                                        startdatoSøker1,
-                                        sluttdatoSøker1,
-                                        startdatoSøker2,
-                                        sluttdatoSøker2,
-                                        dayjs(termindatoEllerFødselsdato),
-                                    )}
+                                    day={day}
+                                    periodType={finnPeriodeType(monthData.year, monthData.month, day, perioder)}
                                     startEllerSlutt={finnStartEllerSlutt(
                                         monthData.year,
                                         monthData.month,
