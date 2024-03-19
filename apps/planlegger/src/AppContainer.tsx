@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
 import { LocaleAll } from '@navikt/fp-types';
-import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
+import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import Planlegger from './Planlegger';
 import enMessages from './intl/messages/en_NO.json';
@@ -13,10 +13,21 @@ import nnMessages from './intl/messages/nn_NO.json';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
+const allNbMessages = { ...nbMessages, ...uiMessages.nb };
+
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace FormatjsIntl {
+        interface Message {
+            ids: keyof typeof allNbMessages;
+        }
+    }
+}
+
 const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: { ...nbMessages },
-    nn: { ...nnMessages },
-    en: { ...enMessages },
+    nb: allNbMessages,
+    nn: { ...nnMessages, ...uiMessages.nn },
+    en: { ...enMessages, ...uiMessages.en },
 };
 
 const AppContainer = () => {
