@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import styles from './Infoboks.module.css';
 import IconCircle from './ikoner/IconCircle';
+import styles from './infoboks.module.css';
 
 interface Props {
     header: string | React.ReactNode;
