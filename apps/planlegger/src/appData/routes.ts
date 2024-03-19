@@ -23,7 +23,6 @@ export const PATH_ORDER = [
 ];
 
 export const REQUIRED_APP_STEPS = [
-    PlanleggerRoutes.OM_PLANLEGGEREN,
     PlanleggerRoutes.HVEM_PLANLEGGER,
     PlanleggerRoutes.OM_BARNET,
     // PlanleggerRoutes.BARNEHAGEPLASS,
