@@ -8,11 +8,11 @@ export enum PeriodType {
     TERMINDATO = 'TERMINDATO',
 }
 
-export enum DagIPeriode {
-    FØRSTE_DAG = 'FØRSTE_DAG',
-    SISTE_DAG = 'SISTE_DAG',
-    FØRSTE_OG_SISTE_DAG = 'FØRSTE_OG_SISTE_DAG',
-    DAG_MELLOM = 'DAG_MELLOM',
+export enum DayType {
+    FIRST_DAY = 'FIRST_DAY',
+    LAST_DAY = 'LAST_DAY',
+    FIRST_AND_LAST_DAY = 'FIRST_AND_LAST_DAY',
+    BETWEEN_DAY = 'BETWEEN_DAY',
 }
 
 const DAY_STYLE = {
@@ -26,18 +26,16 @@ const DAY_STYLE = {
 type Props = {
     day: number;
     periodType: PeriodType;
-    startEllerSlutt?: DagIPeriode;
-    isFirstDay?: boolean;
-    isLastDay?: boolean;
+    dayType: DayType;
 };
 
-const Day: React.FunctionComponent<Props> = ({ day, periodType, startEllerSlutt }) => {
-    const erStart = startEllerSlutt === DagIPeriode.FØRSTE_DAG;
-    const erSlutt = startEllerSlutt === DagIPeriode.SISTE_DAG;
-    const erStartOgSlutt = startEllerSlutt === DagIPeriode.FØRSTE_OG_SISTE_DAG;
+const Day: React.FunctionComponent<Props> = ({ day, periodType, dayType }) => {
+    const isStart = dayType === DayType.FIRST_DAY;
+    const isEnd = dayType === DayType.LAST_DAY;
+    const isStartAndEnd = dayType === DayType.FIRST_AND_LAST_DAY;
     return (
         <div
-            className={`${styles.days} ${DAY_STYLE[periodType]} ${erStart && styles.firstDay} ${erSlutt && styles.lastDay} ${erStartOgSlutt && styles.firstAndLastDay}`}
+            className={`${styles.days} ${DAY_STYLE[periodType]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay}`}
         >
             {day}
         </div>

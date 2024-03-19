@@ -3,76 +3,76 @@ import { FunctionComponent } from 'react';
 
 import { HStack, VStack } from '@navikt/ds-react';
 
-import Day, { DagIPeriode, PeriodType } from './Day';
+import Day, { DayType, PeriodType } from './Day';
 import Month from './Month';
 
-type Periode = {
+type Period = {
     fom: Dayjs;
     tom: Dayjs;
 };
 
-const finnPeriodeType = (year: number, month: number, day: number, perioder: Periode[]) => {
+const findPeriodType = (year: number, month: number, day: number, periods: Period[]) => {
     const date = dayjs().year(year).month(month).date(day);
 
-    const fomFørstePeriode = perioder[0].fom;
-    const tomFørstePeriode = perioder[0].tom;
-    const tomAndrePeriode = perioder[1].tom;
-    const fomTredjePeriode = perioder[2].fom;
-    const tomTredjePeriode = perioder[2].tom;
+    const fomFirstPeriod = periods[0].fom;
+    const tomFirstPeriod = periods[0].tom;
+    const tomSecondPeriod = periods[1].tom;
+    const fomThirdPeriod = periods[2].fom;
+    const tomThirdPeriod = periods[2].tom;
 
-    if (date.isBefore(fomFørstePeriode) || date.isAfter(tomTredjePeriode)) {
+    if (date.isBefore(fomFirstPeriod) || date.isAfter(tomThirdPeriod)) {
         return PeriodType.INGEN;
     }
     if (date.isoWeekday() === 5 || date.isoWeekday() === 6) {
         return PeriodType.HELGEDAG;
     }
-    if (date.isSame(tomFørstePeriode, 'date')) {
+    if (date.isSame(tomFirstPeriod, 'date')) {
         return PeriodType.TERMINDATO;
     }
 
-    if (date.isBetween(fomFørstePeriode, tomAndrePeriode)) {
+    if (date.isBetween(fomFirstPeriod, tomSecondPeriod)) {
         return PeriodType.FORELDREPENGER_MOR;
     }
 
-    if (date.isBetween(fomTredjePeriode, tomTredjePeriode)) {
+    if (date.isBetween(fomThirdPeriod, tomThirdPeriod)) {
         return PeriodType.FORELDREPENGER_FAR;
     }
     return PeriodType.INGEN;
 };
 
-const erFørsteDag = (date: Dayjs, day: number, perioder: Periode[]) => {
+const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
     return (
         date.isoWeekday() === 5 ||
         date.isoWeekday() === 7 ||
         day === 0 ||
-        perioder.some((periode) => date.startOf('day').isSame(periode.fom.startOf('day')))
+        periods.some((period) => date.startOf('day').isSame(period.fom.startOf('day')))
     );
 };
 
-const erSisteDag = (date: Dayjs, day: number, perioder: Periode[]) => {
+const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
     return (
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 4 ||
         day === date.daysInMonth() - 1 ||
-        perioder.some((periode) => date.startOf('day').isSame(periode.tom.startOf('day')))
+        periods.some((period) => date.startOf('day').isSame(period.tom.startOf('day')))
     );
 };
 
-const finnStartEllerSlutt = (year: number, month: number, day: number, perioder: Periode[]) => {
+const findDayType = (year: number, month: number, day: number, periods: Period[]) => {
     const date = dayjs().year(year).month(month).date(day);
-    const førsteDag = erFørsteDag(date, day, perioder);
-    const sisteDag = erSisteDag(date, day, perioder);
+    const firstDay = isFirstDay(date, day, periods);
+    const lastDay = isLastDay(date, day, periods);
 
-    if (førsteDag && sisteDag) {
-        return DagIPeriode.FØRSTE_OG_SISTE_DAG;
+    if (firstDay && lastDay) {
+        return DayType.FIRST_AND_LAST_DAY;
     }
-    if (førsteDag) {
-        return DagIPeriode.FØRSTE_DAG;
+    if (firstDay) {
+        return DayType.FIRST_DAY;
     }
-    if (sisteDag) {
-        return DagIPeriode.SISTE_DAG;
+    if (lastDay) {
+        return DayType.LAST_DAY;
     }
-    return DagIPeriode.DAG_MELLOM;
+    return DayType.BETWEEN_DAY;
 };
 
 const findMonths = (firstDate: Dayjs, lastDate: Dayjs): Array<{ month: number; year: number }> => {
@@ -90,11 +90,11 @@ const findMonths = (firstDate: Dayjs, lastDate: Dayjs): Array<{ month: number; y
 };
 
 interface Props {
-    perioder: Periode[];
+    periods: Period[];
 }
 
-const Calendar: FunctionComponent<Props> = ({ perioder }) => {
-    const months = findMonths(perioder[0].fom, perioder[perioder.length - 1].tom);
+const Calendar: FunctionComponent<Props> = ({ periods }) => {
+    const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
 
     return (
         <VStack gap="5">
@@ -111,17 +111,8 @@ const Calendar: FunctionComponent<Props> = ({ perioder }) => {
                                 <Day
                                     key={monthData.year + monthData.month + day}
                                     day={day}
-                                    periodType={finnPeriodeType(monthData.year, monthData.month, day, perioder)}
-                                    startEllerSlutt={finnStartEllerSlutt(
-                                        monthData.year,
-                                        monthData.month,
-                                        day,
-                                        perioder,
-                                    )}
-                                    isFirstDay={day === 0}
-                                    isLastDay={
-                                        day === dayjs().year(monthData.year).month(monthData.month).daysInMonth() - 1
-                                    }
+                                    periodType={findPeriodType(monthData.year, monthData.month, day, periods)}
+                                    dayType={findDayType(monthData.year, monthData.month, day, periods)}
                                 />
                             ),
                         )}
