@@ -26,10 +26,13 @@ const StepButtons: FunctionComponent<Props> = ({
     useSimplifiedTexts = false,
 }) => {
     return (
-<<<<<<< HEAD
         <HStack gap="2">
             <Button type="button" variant="secondary" onClick={goToPreviousStep} style={{ flex: 1 }}>
-                <FormattedMessage id="StepButtons.Forrige" />
+                {useSimplifiedTexts ? (
+                    <FormattedMessage id="StepButtons.ForrigeSimple" />
+                ) : (
+                    <FormattedMessage id="StepButtons.Forrige" />
+                )}
             </Button>
             {isNexButtonVisible && (
                 <Button
@@ -41,38 +44,12 @@ const StepButtons: FunctionComponent<Props> = ({
                     loading={isLoading || isDisabledAndLoading}
                     style={{ flex: 1 }}
                 >
-                    {isSendButton && <FormattedMessage id="StepButtons.Send" />}
-                    {!isSendButton && <FormattedMessage id="StepButtons.Neste" />}
+                    {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
+                    {!isSendButton && !useSimplifiedTexts && <FormattedMessage id={'StepButtons.Neste'} />}
+                    {!isSendButton && useSimplifiedTexts && <FormattedMessage id={'StepButtons.NesteSimple'} />}
                 </Button>
             )}
         </HStack>
-=======
-        <UiIntlProvider>
-            <StepButtonWrapper>
-                <Button type="button" variant="secondary" onClick={goToPreviousStep}>
-                    {useSimplifiedTexts ? (
-                        <FormattedMessage id="StepButtons.ForrigeSimple" />
-                    ) : (
-                        <FormattedMessage id="StepButtons.Forrige" />
-                    )}
-                </Button>
-                {isNexButtonVisible && (
-                    <Button
-                        icon={isSendButton ? <PaperplaneIcon aria-hidden /> : undefined}
-                        iconPosition="right"
-                        type={nextButtonOnClick ? 'button' : 'submit'}
-                        onClick={nextButtonOnClick}
-                        disabled={isDisabled || isDisabledAndLoading}
-                        loading={isLoading || isDisabledAndLoading}
-                    >
-                        {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
-                        {!isSendButton && !useSimplifiedTexts && <FormattedMessage id={'StepButtons.Neste'} />}
-                        {!isSendButton && useSimplifiedTexts && <FormattedMessage id={'StepButtons.NesteSimple'} />}
-                    </Button>
-                )}
-            </StepButtonWrapper>
-        </UiIntlProvider>
->>>>>>> bf643cebc (rebase)
     );
 };
 
