@@ -3,6 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
+import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -56,6 +57,9 @@ const Template: StoryFn<{
             <PlanleggerDataContext
                 initialState={{
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                    [ContextDataType.ARBEIDSSITUASJON]: {
+                        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+                    },
                     [ContextDataType.OM_BARNET]: omBarnet,
                     [ContextDataType.HVOR_LANG_PERIODE]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
                 }}
