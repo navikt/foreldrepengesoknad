@@ -18,7 +18,7 @@
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/sif-common-question-config": "^0.0.7",
-        "@types/react": "^18.2.66",
+        "@types/react": "^18.2.67",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.10",
         "formik": "^2.4.5",
