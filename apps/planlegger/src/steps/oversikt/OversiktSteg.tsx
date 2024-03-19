@@ -82,7 +82,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
-    const periode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
+    const periode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
 
     const formMethods = useForm<Fordeling>({
@@ -96,7 +96,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
 
-    const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(Dekningsgrad.HUNDRE_PROSENT);
+    const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(periode.dekningsgrad);
     const [currentOption, setCurrentOption] = useState('');
     console.log(currentOption);
 
@@ -104,9 +104,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         return <Loader />;
     }
 
-    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        stønadskontoer[dekningsgrad || periode?.dekningsgrad],
-    );
+    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
 
     const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
 
@@ -174,7 +172,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </InfoboksGenerell>
 
                     <ToggleGroup
-                        defaultValue={Dekningsgrad.HUNDRE_PROSENT}
+                        defaultValue={periode?.dekningsgrad}
                         size="medium"
                         variant="neutral"
                         onChange={(value) => setDekningsgrad(value as Dekningsgrad)}
