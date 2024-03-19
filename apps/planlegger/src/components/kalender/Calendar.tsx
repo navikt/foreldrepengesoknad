@@ -75,13 +75,23 @@ const findDayType = (year: number, month: number, day: number, periods: Period[]
     return DayType.BETWEEN_DAY;
 };
 
+//TODO Prøv å bruk Dayjs.diff i staden for (Eg fekk feil resultat da eg testa)
+const monthDiff = (d1: Date, d2: Date) => {
+    let months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth();
+    months += d2.getMonth();
+    return months <= 0 ? 0 : months;
+};
+
 const findMonths = (firstDate: Dayjs, lastDate: Dayjs): Array<{ month: number; year: number }> => {
     const numberOfMonthsToAddStart = firstDate.month() % 3;
-    const numberOfMonthsToAddEnd = (12 - lastDate.month()) % 3;
+    const numberOfMonthsToAddEnd = 3 - (lastDate.month() % 3);
 
     const firstDateInCalendar = firstDate.subtract(numberOfMonthsToAddStart, 'month');
     const lastDateInCalendar = lastDate.add(numberOfMonthsToAddEnd, 'month');
-    const numberOfMonthsBetween = lastDateInCalendar.diff(firstDateInCalendar, 'month');
+
+    const numberOfMonthsBetween = monthDiff(firstDateInCalendar.toDate(), lastDateInCalendar.toDate());
 
     return [...new Array(numberOfMonthsBetween)].map((_, index) => ({
         month: firstDateInCalendar.add(index, 'month').month(),
