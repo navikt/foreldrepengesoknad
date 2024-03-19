@@ -170,12 +170,12 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             )}
                         </BodyLong>
                     </InfoboksGenerell>
-
                     <ToggleGroup
                         defaultValue={periode?.dekningsgrad}
                         size="medium"
                         variant="neutral"
                         onChange={(value) => setDekningsgrad(value as Dekningsgrad)}
+                        style={{ width: '100%' }}
                     >
                         <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
                             <FormattedMessage id="oversikt.100" />
@@ -184,7 +184,6 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <FormattedMessage id="oversikt.80" />
                         </ToggleGroup.Item>
                     </ToggleGroup>
-
                     {!erAleneforsørger && fordeling?.fellesperiodefordeling && (
                         <Select
                             label=""
