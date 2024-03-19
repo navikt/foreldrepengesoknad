@@ -10,7 +10,7 @@ import { Heading } from '@navikt/ds-react';
 import {
     BoIUtlandetOppsummeringspunkt,
     HendelseType,
-    OppsummeringIndex,
+    OppsummeringPanel,
     SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
 import { Søker } from '@navikt/fp-types';
@@ -57,7 +57,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
             <Heading size="large">
                 <FormattedMessage id="Søknad.Pageheading" />
             </Heading>
-            <OppsummeringIndex
+            <OppsummeringPanel
                 appName="Engangsstønad"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
@@ -66,9 +66,9 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søker} />
-                <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.OmBarnet' })}>
+                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.OmBarnet' })}>
                     <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
-                </OppsummeringIndex.Punkt>
+                </OppsummeringPanel.Punkt>
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={barnData[0]}
                     hendelseType={barnData[1]}
@@ -76,7 +76,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                     tidligereUtenlandsopphold={tidligereUtenlandsopphold}
                     senereUtenlandsopphold={senereUtenlandsopphold}
                 />
-            </OppsummeringIndex>
+            </OppsummeringPanel>
         </ContentWrapper>
     );
 };

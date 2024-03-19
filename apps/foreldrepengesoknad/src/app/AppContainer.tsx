@@ -1,22 +1,39 @@
-import { useState } from 'react';
 import dayjs from 'dayjs';
-import { IntlProvider } from '@navikt/fp-ui';
-import { LocaleNo } from '@navikt/fp-types';
+import { useState } from 'react';
+
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
-import Foreldrepengesøknad from './Foreldrepengesøknad';
+import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { LocaleNo } from '@navikt/fp-types';
+import { IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
+
 import ByttBrowserModal from 'app/pages/byttBrowserModal/ByttBrowserModal';
-import ErrorBoundary from './errorBoundary/ErrorBoundary';
-import { shouldChangeBrowser } from './utils/browserUtils';
-import nnMessages from './intl/nn_NO.json';
-import nbMessages from './intl/nb_NO.json';
+
+import Foreldrepengesøknad from './Foreldrepengesøknad';
 import { setAxiosLocale } from './api/apiInterceptor';
 import { FpApiDataContext } from './api/context/FpApiDataContext';
+import ErrorBoundary from './errorBoundary/ErrorBoundary';
+import nbMessages from './intl/nb_NO.json';
+import nnMessages from './intl/nn_NO.json';
+import { shouldChangeBrowser } from './utils/browserUtils';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: { ...nbMessages, ...allCommonMessages.nb },
-    nn: { ...nnMessages, ...allCommonMessages.nn },
+    nb: {
+        ...nbMessages,
+        ...allCommonMessages.nb,
+        ...uiMessages.nb,
+        ...utenlandsoppholdMessages.nb,
+        ...oppsummeringMessages.nb,
+    },
+    nn: {
+        ...nnMessages,
+        ...allCommonMessages.nn,
+        ...uiMessages.nn,
+        ...utenlandsoppholdMessages.nn,
+        ...oppsummeringMessages.nn,
+    },
 };
 
 dayjs.locale(localeFromSessionStorage);

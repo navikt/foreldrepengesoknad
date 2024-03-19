@@ -17,7 +17,7 @@ import {
 import {
     BoIUtlandetOppsummeringspunkt,
     HendelseType,
-    OppsummeringIndex,
+    OppsummeringPanel,
     SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
 import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
@@ -143,7 +143,7 @@ const Oppsummering: FunctionComponent<Props> = ({
             <Heading size="large">
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
-            <OppsummeringIndex
+            <OppsummeringPanel
                 appName="Foreldrepenger"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
@@ -153,12 +153,12 @@ const Oppsummering: FunctionComponent<Props> = ({
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
                 <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
-                <OppsummeringIndex.Punkt tittel="Barnet" hide={erEndringssøknad}>
+                <OppsummeringPanel.Punkt tittel="Barnet" hide={erEndringssøknad}>
                     <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
-                </OppsummeringIndex.Punkt>
-                <OppsummeringIndex.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
+                </OppsummeringPanel.Punkt>
+                <OppsummeringPanel.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
                     <AnnenForelderOppsummering annenForelder={annenForelder} søkerrolle={søkersituasjon.rolle} />
-                </OppsummeringIndex.Punkt>
+                </OppsummeringPanel.Punkt>
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={datoOgHendelsetype[0]}
                     hendelseType={datoOgHendelsetype[1]}
@@ -167,15 +167,15 @@ const Oppsummering: FunctionComponent<Props> = ({
                     senereUtenlandsopphold={tempMappingSenere(senereUtenlandsopphold)}
                     hide={erEndringssøknad}
                 />
-                <OppsummeringIndex.Punkt tittel="Arbeidsforhold og andre inntektskilder" hide={erEndringssøknad}>
+                <OppsummeringPanel.Punkt tittel="Arbeidsforhold og andre inntektskilder" hide={erEndringssøknad}>
                     <ArbeidsforholdOgAndreInntekterOppsummering
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         barn={barn}
                         søkersituasjon={søkersituasjon}
                         søkerData={søkerData}
                     />
-                </OppsummeringIndex.Punkt>
-                <OppsummeringIndex.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
+                </OppsummeringPanel.Punkt>
+                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
                     <UttaksplanOppsummering
                         perioder={uttaksplan}
                         navnPåForeldre={navnPåForeldre}
@@ -192,15 +192,15 @@ const Oppsummering: FunctionComponent<Props> = ({
                         antallBarn={barn.antallBarn}
                         ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
                     />
-                </OppsummeringIndex.Punkt>
-                <OppsummeringIndex.Punkt
+                </OppsummeringPanel.Punkt>
+                <OppsummeringPanel.Punkt
                     hide={vedlegg === undefined || inneholderIkkeVedlegg}
                     tittel={intl.formatMessage({
                         id: manglerDokumentasjon ? 'oppsummering.manglerDokumentasjon' : 'oppsummering.dokumentasjon',
                     })}
                 >
                     <DokumentasjonOppsummering vedlegg={vedlegg!} setManglerDokumentasjon={setManglerDokumentasjon} />
-                </OppsummeringIndex.Punkt>
+                </OppsummeringPanel.Punkt>
                 <Block visible={manglerDokumentasjon} margin="xl">
                     <Alert variant="info">
                         <VStack gap="2">
@@ -213,7 +213,7 @@ const Oppsummering: FunctionComponent<Props> = ({
                         </VStack>
                     </Alert>
                 </Block>
-            </OppsummeringIndex>
+            </OppsummeringPanel>
         </ContentWrapper>
     );
 };

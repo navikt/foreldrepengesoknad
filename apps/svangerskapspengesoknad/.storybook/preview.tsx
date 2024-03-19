@@ -2,6 +2,9 @@ import { Preview } from '@storybook/react';
 
 import '@navikt/ds-css';
 
+import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { uiMessages } from '@navikt/fp-ui';
+import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/app/intl/nb_NO.json';
@@ -18,8 +21,8 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: nbMessages,
-    nn: nnMessages,
+    nb: { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb },
+    nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },
 });
 
 export const globalTypes = {

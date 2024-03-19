@@ -4,8 +4,6 @@ import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack } from '@navikt/ds-react';
 
-import UiIntlProvider from '../i18n/ui/UiIntlProvider';
-
 interface Props {
     goToPreviousStep: () => void;
     nextButtonOnClick?: () => void;
@@ -26,27 +24,25 @@ const StepButtons: FunctionComponent<Props> = ({
     isSendButton = false,
 }) => {
     return (
-        <UiIntlProvider>
-            <HStack gap="2">
-                <Button type="button" variant="secondary" onClick={goToPreviousStep} style={{ flex: 1 }}>
-                    <FormattedMessage id="StepButtons.Forrige" />
+        <HStack gap="2">
+            <Button type="button" variant="secondary" onClick={goToPreviousStep} style={{ flex: 1 }}>
+                <FormattedMessage id="StepButtons.Forrige" />
+            </Button>
+            {isNexButtonVisible && (
+                <Button
+                    icon={isSendButton ? <PaperplaneIcon aria-hidden /> : undefined}
+                    iconPosition="right"
+                    type={nextButtonOnClick ? 'button' : 'submit'}
+                    onClick={nextButtonOnClick}
+                    disabled={isDisabled || isDisabledAndLoading}
+                    loading={isLoading || isDisabledAndLoading}
+                    style={{ flex: 1 }}
+                >
+                    {isSendButton && <FormattedMessage id="StepButtons.Send" />}
+                    {!isSendButton && <FormattedMessage id="StepButtons.Neste" />}
                 </Button>
-                {isNexButtonVisible && (
-                    <Button
-                        icon={isSendButton ? <PaperplaneIcon aria-hidden /> : undefined}
-                        iconPosition="right"
-                        type={nextButtonOnClick ? 'button' : 'submit'}
-                        onClick={nextButtonOnClick}
-                        disabled={isDisabled || isDisabledAndLoading}
-                        loading={isLoading || isDisabledAndLoading}
-                        style={{ flex: 1 }}
-                    >
-                        {isSendButton && <FormattedMessage id="StepButtons.Send" />}
-                        {!isSendButton && <FormattedMessage id="StepButtons.Neste" />}
-                    </Button>
-                )}
-            </HStack>
-        </UiIntlProvider>
+            )}
+        </HStack>
     );
 };
 

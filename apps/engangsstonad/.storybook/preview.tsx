@@ -3,6 +3,9 @@ import 'styles/globals.css';
 
 import '@navikt/ds-css';
 
+import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { uiMessages } from '@navikt/fp-ui';
+import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import enMessages from '../src/intl/messages/en_US.json';
@@ -18,9 +21,9 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: nbMessages,
-    nn: nnMessages,
-    en: enMessages,
+    nb: { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb },
+    nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },
+    en: { ...enMessages, ...uiMessages.en, ...utenlandsoppholdMessages.en, ...oppsummeringMessages.en },
 });
 
 export const globalTypes = {

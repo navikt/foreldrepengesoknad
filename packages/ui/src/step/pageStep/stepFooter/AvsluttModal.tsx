@@ -1,8 +1,7 @@
 import { FunctionComponent } from 'react';
+import { useIntl } from 'react-intl';
 
 import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react';
-
-import useUiIntl from '../../../i18n/ui/useUiIntl';
 
 interface Props {
     isOpen: boolean;
@@ -12,7 +11,7 @@ interface Props {
 }
 
 const AvsluttModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFortsettSenere }) => {
-    const intl = useUiIntl();
+    const intl = useIntl();
     return (
         <Modal
             open={isOpen}
