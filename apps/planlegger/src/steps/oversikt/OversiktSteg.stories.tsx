@@ -4,12 +4,12 @@ import { Action, ContextDataType, PlanleggerDataContext } from 'appData/Planlegg
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
+import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 
-import { Dekningsgrad } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import OversiktSteg from './OversiktSteg';

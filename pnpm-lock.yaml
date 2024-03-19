@@ -845,9 +845,6 @@ importers:
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@navikt/fp-common':
-        specifier: workspace:*
-        version: link:../../packages/fp-common
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants

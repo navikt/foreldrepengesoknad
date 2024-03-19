@@ -26,7 +26,6 @@
         "@navikt/ds-react": "6.2.0",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-api": "workspace:*",
-        "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",

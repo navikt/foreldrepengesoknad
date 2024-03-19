@@ -3,9 +3,13 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { getFellesperiodefordelingOptionValues } from 'steps/fordeling/FordelingSteg';
 import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
-import { getAntallUkerFedrekvote, getAntallUkerFellesperiode, getAntallUkerMødrekvote } from 'utils/stønadskontoer';
-
-import { TilgjengeligStønadskonto, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
+import {
+    TilgjengeligStønadskonto,
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerMødrekvote,
+} from 'utils/stønadskontoer';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
 
 interface Props {
     omBarnet: OmBarnet;
