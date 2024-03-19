@@ -39,17 +39,15 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
 
     const lagre = (formValues: Arbeidssituasjon) => {
         lagreArbeidssituasjon(formValues);
+
         if (
-            (ArbeidssituasjonEnum.INGEN || ArbeidssituasjonEnum.UFØR) &&
-            formValues.arbeidssituasjonAnnenPart === false
+            formValues.arbeidssituasjon !== ArbeidssituasjonEnum.JOBBER &&
+            (isAlene(hvemPlanlegger) || formValues.arbeidssituasjonAnnenPart === false)
         ) {
             return navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
         }
-        if ((ArbeidssituasjonEnum.INGEN || ArbeidssituasjonEnum.UFØR) && erAlenesøker) {
-            return navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
-        }
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
     };
 
     const erAlenesøker = isAlene(hvemPlanlegger);

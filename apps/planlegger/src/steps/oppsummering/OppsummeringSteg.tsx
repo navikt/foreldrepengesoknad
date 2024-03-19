@@ -28,7 +28,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
-    const { dekningsgrad } = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
+    const hvorLangPeriode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
     const erAleneforsørger = isAlene(hvemPlanlegger);
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const harRettEllerIkke = () => {
@@ -47,7 +47,9 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
         return <Loader />;
     }
 
-    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
+    const selectedKonto = hvorLangPeriode
+        ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[hvorLangPeriode.dekningsgrad])
+        : undefined;
 
     //TODO: dra ut expansioncards til egne komponenter
     //TODO: bruk input data til å vise riktig i kalenderen
@@ -116,34 +118,36 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     )}
                 </Alert>
 
-                <VStack gap="5">
-                    {harRett && (
-                        <ExpansionCard aria-label="">
-                            <ExpansionCard.Header>
-                                <HStack gap="5" align="center">
-                                    <IconCircle size="large" color="green">
-                                        <CalendarIcon height={28} width={28} fontSize="1.5rem" />
-                                    </IconCircle>
-                                    <ExpansionCard.Title size="medium">
-                                        {isAlene(hvemPlanlegger) ? (
-                                            <FormattedMessage id="oppsummering.planenDin" />
-                                        ) : (
-                                            <FormattedMessage id="oppsummering.planenDeres" />
-                                        )}
-                                    </ExpansionCard.Title>
-                                </HStack>
-                            </ExpansionCard.Header>
-                            <ExpansionCard.Content>
-                                <OversiktKalender
-                                    valgtStønadskonto={selectedKonto}
-                                    omBarnet={barnet}
-                                    fellesperiodefordeling={fordeling?.fellesperiodefordeling}
-                                />
-                            </ExpansionCard.Content>
-                        </ExpansionCard>
-                    )}
-                    <OppgittInformasjon stønadskontoer={stønadskontoer} />
-                </VStack>
+                {selectedKonto && (
+                    <VStack gap="5">
+                        {harRett && (
+                            <ExpansionCard aria-label="">
+                                <ExpansionCard.Header>
+                                    <HStack gap="5" align="center">
+                                        <IconCircle size="large" color="green">
+                                            <CalendarIcon height={28} width={28} fontSize="1.5rem" />
+                                        </IconCircle>
+                                        <ExpansionCard.Title size="medium">
+                                            {isAlene(hvemPlanlegger) ? (
+                                                <FormattedMessage id="oppsummering.planenDin" />
+                                            ) : (
+                                                <FormattedMessage id="oppsummering.planenDeres" />
+                                            )}
+                                        </ExpansionCard.Title>
+                                    </HStack>
+                                </ExpansionCard.Header>
+                                <ExpansionCard.Content>
+                                    <OversiktKalender
+                                        valgtStønadskonto={selectedKonto}
+                                        omBarnet={barnet}
+                                        fellesperiodefordeling={fordeling?.fellesperiodefordeling}
+                                    />
+                                </ExpansionCard.Content>
+                            </ExpansionCard>
+                        )}
+                        <OppgittInformasjon stønadskontoer={stønadskontoer} />
+                    </VStack>
+                )}
 
                 <VStack gap="10">
                     <VStack gap="10">
