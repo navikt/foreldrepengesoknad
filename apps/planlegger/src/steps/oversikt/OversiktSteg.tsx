@@ -84,7 +84,11 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const periode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
 
-    const formMethods = useForm<Fordeling>();
+    const formMethods = useForm<Fordeling>({
+        defaultValues: {
+            fellesperiodefordeling: fordeling?.fellesperiodefordeling,
+        },
+    });
     const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
 
     const erFødt = erBarnetFødt(barnet);
@@ -188,10 +192,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             name="fellesperiodefordeling"
                             onChange={(e) => {
                                 setCurrentOption(e.target.value);
-                                console.log(e.target.value);
                                 lagreFordeling({ fellesperiodefordeling: e.target.value });
                             }}
-                            selectedValue={fordeling.fellesperiodefordeling}
                         >
                             {fellesperiodeSelectOptions}
                         </Select>
