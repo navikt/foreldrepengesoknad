@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
+import { Dekningsgrad } from 'types/Dekningsgrad';
 import { isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
@@ -24,10 +25,10 @@ import {
     getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
 
 import { BodyLong, Heading, Link, Loader, Radio, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';

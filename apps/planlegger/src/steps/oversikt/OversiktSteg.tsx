@@ -19,6 +19,7 @@ import {
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
 import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
@@ -28,13 +29,13 @@ import {
     getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
 
 import { BodyLong, BodyShort, HStack, Heading, Loader, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-common';
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Form, Select } from '@navikt/fp-form-hooks';
 import { StepButtons } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 dayjs.locale('nb');

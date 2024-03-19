@@ -1,4 +1,4 @@
-import { Dekningsgrad } from '@navikt/fp-common';
+import { Dekningsgrad } from './Dekningsgrad';
 
 export type HvorLangPeriode = {
     dekningsgrad: Dekningsgrad;
