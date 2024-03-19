@@ -3,6 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
+import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
@@ -64,6 +65,9 @@ const Template: StoryFn<{
                     [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                     [ContextDataType.OM_BARNET]: omBarnet,
+                    [ContextDataType.ARBEIDSSITUASJON]: {
+                        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+                    },
                 }}
             >
                 <OversiktSteg stønadskontoer={kontoer} />
