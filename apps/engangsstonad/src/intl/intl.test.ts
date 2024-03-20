@@ -64,10 +64,10 @@ describe('intl messages', () => {
         const allTranslationsCode = Object.keys(JSON.parse(foundTranslations));
 
         const missingKeysCode = Object.keys(nb).filter((key) => {
-            // Ikkje sjekk denne sidan den er dynamisk, og derfor litt styr å skriva anleis i kode sidan den dynamiske delen er ni-delt
-            if (key.includes('AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.')) {
-                return false;
-            }
+            // // Ikkje sjekk denne sidan den er dynamisk, og derfor litt styr å skriva anleis i kode sidan den dynamiske delen er ni-delt
+            // if (key.includes('AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.')) {
+            //     return false;
+            // }
             return !allTranslationsCode.includes(key);
         });
         if (missingKeysCode.length > 0) {
