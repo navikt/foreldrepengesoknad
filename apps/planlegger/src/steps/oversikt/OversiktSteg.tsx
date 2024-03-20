@@ -18,14 +18,18 @@ import {
     getFellesperiodefordelingOptionValues,
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
+import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
+import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
+    getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
+    getAntallUkerForeldrepenger,
     getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
@@ -150,6 +154,30 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
 
+    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
+
+    const kunFarHarRettHovedsøker =
+        hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR &&
+        (arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER ||
+            arbeidssituasjon.arbeidssituasjonAnnenPart);
+
+    const kunFarHarRettMedsøker =
+        hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR &&
+        arbeidssituasjon.arbeidssituasjon !== ArbeidssituasjonEnum.JOBBER &&
+        arbeidssituasjon.arbeidssituasjonAnnenPart;
+
+    const kunFarHarRett = kunFarHarRettHovedsøker || kunFarHarRettMedsøker;
+
+    const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(selectedKonto);
+    const totalUker = getAntallUkerForeldrepenger(selectedKonto);
+    const aktivitetskravUker = totalUker - aktivitetsfriUker;
+
+    const kunMorHarRett =
+        hvemPlanlegger.type !== SøkersituasjonEnum.FAR &&
+        hvemPlanlegger.type !== SøkersituasjonEnum.FAR_OG_FAR &&
+        arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER &&
+        arbeidssituasjon.arbeidssituasjonAnnenPart !== true;
+
     return (
         <Form formMethods={formMethods}>
             <PlanleggerPage steps={stepConfig}>
@@ -184,7 +212,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <FormattedMessage id="oversikt.80" />
                         </ToggleGroup.Item>
                     </ToggleGroup>
-                    {!erAleneforsørger && fordeling?.fellesperiodefordeling && (
+                    {!erAleneforsørger && fordeling?.fellesperiodefordeling && !kunFarHarRett && !kunMorHarRett && (
                         <Select
                             label={<FormattedMessage id="oversikt.fellesperiodefordeling" />}
                             name="fellesperiodefordeling"
@@ -196,44 +224,85 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             {fellesperiodeSelectOptions}
                         </Select>
                     )}
-                    <VStack gap="2">
-                        <HStack gap="1">
-                            <div className="bluePanel">
-                                <HStack gap="2" align="center">
-                                    <BlåSirkel />
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="ukerForeldrepenger"
-                                            values={{
-                                                hvem: hvem1,
-                                                uker: antallUkerSøker1,
-                                                dato: dayjs(startdatoSøker1).format('dddd D MMM'),
-                                            }}
-                                        />
-                                    </BodyShort>
-                                </HStack>
-                            </div>
-                            <Spacer />
-                            {!erAleneforsørger && annenPartTekst && (
-                                <HStack gap="3" wrap={false}>
-                                    <div className="greenPanel">
-                                        <HStack gap="2" align="center">
-                                            <GrønnSirkel />
-                                            <BodyShort>
-                                                <FormattedMessage
-                                                    id="ukerForeldrepenger"
-                                                    values={{
-                                                        hvem: capitalizeFirstLetter(annenPartTekst),
-                                                        uker: antallUkerSøker2,
-                                                        dato: dayjs(startdatoSøker2).format('dddd D MMM'),
-                                                    }}
-                                                />
-                                            </BodyShort>
+                    <VStack gap="5">
+                        {!kunFarHarRett ? (
+                            <HStack gap="1">
+                                <div className="bluePanel">
+                                    <HStack gap="2" align="center">
+                                        <BlåSirkel />
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="ukerForeldrepenger"
+                                                values={{
+                                                    hvem: hvem1,
+                                                    uker: antallUkerSøker1,
+                                                    dato: dayjs(startdatoSøker1).format('dddd D MMM'),
+                                                }}
+                                            />
+                                        </BodyShort>
+                                    </HStack>
+                                </div>
+                                <Spacer />
+                                {!erAleneforsørger && annenPartTekst && !kunMorHarRett && (
+                                    <HStack gap="3" wrap={false}>
+                                        <div className="greenPanel">
+                                            <HStack gap="2" align="center">
+                                                <GrønnSirkel />
+                                                <BodyShort>
+                                                    <FormattedMessage
+                                                        id="ukerForeldrepenger"
+                                                        values={{
+                                                            hvem: capitalizeFirstLetter(annenPartTekst),
+                                                            uker: antallUkerSøker2,
+                                                            dato: dayjs(startdatoSøker2).format('dddd D MMM'),
+                                                        }}
+                                                    />
+                                                </BodyShort>
+                                            </HStack>
+                                        </div>
+                                    </HStack>
+                                )}
+                            </HStack>
+                        ) : (
+                            <>
+                                {!erAleneforsørger && annenPartTekst && (
+                                    <HStack gap="1">
+                                        <div className="bluePanel">
+                                            <HStack gap="2" align="center">
+                                                <BlåSirkel />
+                                                <BodyShort>
+                                                    <FormattedMessage
+                                                        id="ukerUtenAktivitetskrav"
+                                                        values={{
+                                                            hvem: capitalizeFirstLetter(annenPartTekst),
+                                                            uker: aktivitetsfriUker,
+                                                        }}
+                                                    />
+                                                </BodyShort>
+                                            </HStack>
+                                        </div>
+                                        <Spacer />
+                                        <HStack gap="3" wrap={false}>
+                                            <div className="greenPanel">
+                                                <HStack gap="2" align="center">
+                                                    <GrønnSirkel />
+                                                    <BodyShort>
+                                                        <FormattedMessage
+                                                            id="ukerMedAktivitetskrav"
+                                                            values={{
+                                                                hvem: capitalizeFirstLetter(annenPartTekst),
+                                                                uker: aktivitetskravUker,
+                                                            }}
+                                                        />
+                                                    </BodyShort>
+                                                </HStack>
+                                            </div>
                                         </HStack>
-                                    </div>
-                                </HStack>
-                            )}
-                        </HStack>
+                                    </HStack>
+                                )}
+                            </>
+                        )}
+
                         <div className="pinkPanel">
                             <HStack gap="2" align="center">
                                 <HeartFillIcon color="#F68282" />

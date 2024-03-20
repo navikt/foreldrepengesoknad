@@ -206,6 +206,8 @@
     "oversikt.uforutsetteEndringer.hvisManFårNyttBarnFørTreÅr": "Hvis man får et nytt barn før det har gått tre år",
     "oversikt.uforutsetteEndringer.hvisManFårNyttBarnFørTreÅr.tekst": "Hvis man får et nytt barn før det har gått tre år må man bruke opp foreldrepengene før man starter med foreldrepenger for det neste barnet.",
     "ukerForeldrepenger": "{hvem}, {uker} uker, starter {dato} ",
+    "ukerUtenAktivitetskrav": "{hvem}, {uker} uker uten krav til mor",
+    "ukerMedAktivitetskrav": "{hvem}, {uker} uker med krav til mor",
     "barnehagestartIkontekst": "Barnehagestart i løpet av {mnd}",
     "termindatoIkontekst": "Termindato {dato}",
     "fødselsdatoIkontekst": "Fødselsdato {dato}",

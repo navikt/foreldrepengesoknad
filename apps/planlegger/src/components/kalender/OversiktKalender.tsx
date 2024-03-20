@@ -57,10 +57,8 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
     if (kunMorHarRett) {
         const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindatoEllerFødselsdato).toDate());
         const sluttdatoSøker1 =
-            antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1.antallUkerSøker1
-                ? dayjs(startdatoSøker1)
-                      .add(antallUkerMødrekvote, 'weeks')
-                      .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
+            antallUkerFellesperiode && antallUkerFellesperiode
+                ? dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').add(antallUkerFellesperiode, 'weeks')
                 : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
 
         perioder.push({
@@ -76,7 +74,7 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         perioder.push({
             fom: dayjs(termindatoEllerFødselsdato).add(1, 'day'),
             tom: dayjs(sluttdatoSøker1),
-            type: 'mor',
+            type: 'søker',
         });
     }
 
@@ -115,12 +113,12 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         perioder.push({
             fom: dayjs(termindatoEllerFødselsdato).add(1, 'day'),
             tom: dayjs(sluttdatoSøker1),
-            type: 'mor',
+            type: 'søker',
         });
         perioder.push({
             fom: dayjs(startdatoSøker2),
             tom: dayjs(sluttdatoSøker2),
-            type: 'far',
+            type: 'medsøker',
         });
 
         console.log(perioder);
@@ -141,7 +139,7 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         perioder.push({
             fom: dayjs(termindatoEllerFødselsdato).add(1, 'day'),
             tom: dayjs(termindatoEllerFødselsdato).add(totalUker, 'weeks'),
-            type: 'far',
+            type: 'søker',
         });
     }
 

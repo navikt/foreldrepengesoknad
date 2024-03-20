@@ -134,8 +134,8 @@ PeriodeAleneforsørgerFarTermin.args = {
     },
 };
 
-export const PeriodeAleneforsørgerFødt = Template.bind({});
-PeriodeAleneforsørgerFødt.args = {
+export const PeriodeAleneforsørgerMorFødt = Template.bind({});
+PeriodeAleneforsørgerMorFødt.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
