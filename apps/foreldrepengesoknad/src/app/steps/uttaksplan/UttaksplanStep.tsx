@@ -63,6 +63,7 @@ import {
 import useDebounce from 'app/utils/hooks/useDebounce';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
+import { lagUttaksplanForslag } from 'app/utils/uttaksplan/lagUttaksplanForslag';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
@@ -109,6 +110,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
+    const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING));
 
     const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterBarnFraNesteSak = useContextSaveData(ContextDataType.BARN_FRA_NESTE_SAK);
@@ -534,6 +536,47 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         });
     };
 
+    const stønadskontoer = useMemo(() => {
+        if (stønadskontoer80 && stønadskontoer100) {
+            return getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
+        }
+        return undefined;
+    }, [stønadskontoer80, stønadskontoer100]);
+
+    const valgteStønadskontoer = useMemo(() => {
+        if (stønadskontoer) {
+            return periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                ? stønadskontoer[100]
+                : stønadskontoer[80];
+        }
+        return [];
+    }, [stønadskontoer, periodeMedForeldrepenger.dekningsgrad]);
+
+    useEffect(() => {
+        if (uttaksplan.length === 0) {
+            const uttaksplanForslag = lagUttaksplanForslag(
+                valgteStønadskontoer,
+                eksisterendeVedtakAnnenPart?.uttaksplan,
+                søkersituasjon,
+                barn,
+                barnFraNesteSak,
+                annenForelder,
+                fordeling,
+                uttaksplanMetadata,
+                oppdaterUttaksplanMetadata,
+            );
+            oppdaterUttaksplan(uttaksplanForslag);
+            mellomlagreSøknadOgNaviger();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (!eksisterendeSak && !erEndringssøknad && eksisterendeVedtakAnnenPart !== undefined) {
+            oppdaterEksisterendeSak(eksisterendeVedtakAnnenPart);
+        }
+    }, [erEndringssøknad, eksisterendeVedtakAnnenPart, eksisterendeSak, oppdaterEksisterendeSak]);
+
     useEffect(() => {
         if (tilgjengeligeStønadskontoerError) {
             sendErrorMessageToSentry(tilgjengeligeStønadskontoerError);
@@ -570,13 +613,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         );
     }
 
-    const stønadskontoer = getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
     const minsterettUkerToTette = getAntallUkerMinsterett(stønadskontoer100.minsteretter.toTette);
-
-    const valgteStønadskontoer =
-        periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? stønadskontoer[100]
-            : stønadskontoer[80];
 
     const erTomEndringssøknad =
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);

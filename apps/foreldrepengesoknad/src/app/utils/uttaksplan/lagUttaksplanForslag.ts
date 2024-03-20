@@ -1,5 +1,6 @@
 import {
-    getHarAktivitetskravIPeriodeUtenUttak, // leggTilAnnenPartsPerioderISøkerenesUttaksplan,
+    getHarAktivitetskravIPeriodeUtenUttak,
+    leggTilAnnenPartsPerioderISøkerenesUttaksplan,
 } from '@navikt/uttaksplan';
 import { finnOgSettInnHull } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
 import dayjs from 'dayjs';
@@ -11,6 +12,7 @@ import {
     Periode,
     TilgjengeligStønadskonto,
     Uttaksdagen,
+    getAntallUkerFellesperiode,
     getKunFarHarRett,
     isAdoptertAnnetBarn,
     isAnnenForelderOppgitt,
@@ -22,6 +24,7 @@ import { SøkersituasjonFp } from '@navikt/fp-types';
 import { getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import Fordeling from 'app/context/types/Fordeling';
 import { getAntallUkerFellesperiodeTilSøker, getOppstartsdatoFromInput } from 'app/steps/fordeling/fordelingFormUtils';
+import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from '../annenForelderUtils';
 import { getFamiliehendelsedatoDate, getTermindato } from '../barnUtils';
@@ -36,10 +39,11 @@ export const lagUttaksplanForslag = (
     barnFraNesteSak: BarnFraNesteSak | undefined,
     annenForelder: AnnenForelder,
     fordeling: Fordeling,
-    antallOppstartsValg: number,
-    antallUkerFellesperiode: number,
+    uttaksplanMetadata: UttaksplanMetaData | undefined,
+    oppdaterUttaksplanMetadata: (metadata: UttaksplanMetaData) => void,
 ): Periode[] => {
     const situasjon = søkersituasjon.situasjon;
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
     const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
     const erDeltUttak = getIsDeltUttak(annenForelder);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -73,13 +77,13 @@ export const lagUttaksplanForslag = (
         ankomstNorgeForAdoptertBarn,
         annenPartsSisteDag,
         datoForAleneomsorg,
-        antallOppstartsValg,
     );
     const fellesperiodeUkerTilSøker = getAntallUkerFellesperiodeTilSøker(antallUkerFellesperiode, fordeling);
     const fellesperiodeUkerMor = erFarEllerMedmor ? undefined : fellesperiodeUkerTilSøker;
     const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeUkerTilSøker : undefined;
     const farSinFørsteUttaksdag = erFarEllerMedmor ? startdatoPermisjon : undefined;
     const erAdopsjon = situasjon === 'adopsjon';
+    let søkerensUttaksplanForslag = [] as Periode[];
 
     if (familiehendelsesdato) {
         if (erDeltUttak) {
@@ -99,7 +103,7 @@ export const lagUttaksplanForslag = (
                 førsteUttaksdagNesteBarnsSak,
             });
 
-            return finnOgSettInnHull(
+            søkerensUttaksplanForslag = finnOgSettInnHull(
                 forslag,
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
@@ -121,7 +125,7 @@ export const lagUttaksplanForslag = (
                 førsteUttaksdagNesteBarnsSak,
             );
 
-            return finnOgSettInnHull(
+            søkerensUttaksplanForslag = finnOgSettInnHull(
                 forslag,
                 harAktivitetskravIPeriodeUtenUttak,
                 familiehendelsesdato,
@@ -133,5 +137,35 @@ export const lagUttaksplanForslag = (
         }
     }
 
-    return [];
+    let uttaksplanForslagMedAnnenPartsVedtak = [] as Periode[];
+    if (annenPartsPerioder && annenPartsPerioder.length > 0 && søkerensUttaksplanForslag.length > 0) {
+        const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
+            erDeltUttak,
+            morHarRett,
+            søkerErAleneOmOmsorg,
+        });
+        uttaksplanForslagMedAnnenPartsVedtak = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
+            annenPartsPerioder,
+            søkerensUttaksplanForslag,
+            familiehendelsesdato,
+            harAktivitetskravIPeriodeUtenUttak,
+            erAdopsjon,
+            bareFarMedmorHarRett,
+            erFarEllerMedmor,
+            barnFraNesteSak?.startdatoFørsteStønadsperiode,
+        );
+        oppdaterUttaksplanMetadata({
+            ...uttaksplanMetadata,
+            annenPartsUttakErLagtTilIPlan: true,
+        });
+    } else if (annenPartsPerioder && annenPartsPerioder.length > 0) {
+        uttaksplanForslagMedAnnenPartsVedtak = annenPartsPerioder;
+        oppdaterUttaksplanMetadata({
+            ...uttaksplanMetadata,
+            annenPartsUttakErLagtTilIPlan: true,
+        });
+    } else {
+        uttaksplanForslagMedAnnenPartsVedtak = søkerensUttaksplanForslag;
+    }
+    return uttaksplanForslagMedAnnenPartsVedtak;
 };
