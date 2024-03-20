@@ -61,7 +61,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                             ) : (
                                 <FormattedMessage
                                     id={'arbeid.hvaGjelder'}
-                                    values={{ navn: getNavnPåSøker(hvemPlanlegger) }}
+                                    values={{ navn: getNavnPåSøker(hvemPlanlegger, intl) }}
                                 />
                             )
                         }

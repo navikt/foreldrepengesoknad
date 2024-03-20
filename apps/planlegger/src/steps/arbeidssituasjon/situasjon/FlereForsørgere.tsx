@@ -24,8 +24,8 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
     const arbeidssituasjon = formMethods.watch('arbeidssituasjon');
     const arbeidssituasjonAnnenPart = formMethods.watch('arbeidssituasjonAnnenPart');
 
-    const fornavnSøker = getFornavnPåSøker(hvemPlanlegger);
-    const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger);
+    const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
+    const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 
     return (
         <VStack gap="10">
