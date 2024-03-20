@@ -65,10 +65,10 @@ const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string)
     return undefined;
 };
 
-const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
+export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     termindatoSaksgrunnlag?: string,
     termindatoSaksgrunnlagAnnenPart?: string,
-) => {
+): string | undefined => {
     if (termindatoSaksgrunnlagAnnenPart) {
         return termindatoSaksgrunnlagAnnenPart;
     }

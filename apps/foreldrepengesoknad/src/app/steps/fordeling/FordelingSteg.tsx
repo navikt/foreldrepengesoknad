@@ -10,6 +10,7 @@ import {
     getNavnPåForeldre,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
+    isFødtBarn,
 } from '@navikt/fp-common';
 import { Arbeidsforhold, Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
@@ -18,6 +19,7 @@ import { FpApiDataType } from 'app/api/context/FpApiDataContext';
 import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
+    getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
@@ -34,7 +36,7 @@ import {
     getErAleneOmOmsorg,
     shouldSuspendAnnenPartVedtakApiRequest,
 } from 'app/utils/annenForelderUtils';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtMinsterett, getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
@@ -67,6 +69,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const oppdaterBarn = notEmpty(useContextSaveData(ContextDataType.OM_BARNET));
 
+    const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
     const { dekningsgrad } = periodeMedForeldrepenger;
@@ -163,11 +166,26 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         barn.antallBarn,
         eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
     );
+    const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        termindato,
+        eksisterendeVedtakAnnenPart?.grunnlag.termindato,
+    );
     useEffect(() => {
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
             oppdaterBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn]);
+
+    useEffect(() => {
+        if (
+            erFarEllerMedmor &&
+            isFødtBarn(barn) &&
+            saksgrunnlagsTermindato &&
+            barn.termindato !== saksgrunnlagsTermindato
+        ) {
+            oppdaterBarn({ ...barn, termindato: saksgrunnlagsTermindato });
+        }
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato]);
 
     if (!valgtStønadskonto || (statusAnnenPartVedtak !== RequestStatus.FINISHED && !suspendAnnenPartVedtakApiRequest)) {
         return (
