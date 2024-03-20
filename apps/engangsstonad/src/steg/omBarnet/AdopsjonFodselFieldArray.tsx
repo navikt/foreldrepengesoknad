@@ -22,21 +22,21 @@ interface Props {
 
 const getIntlKey = (index: number, intl: IntlShape) => {
     switch (index) {
-        case 1:
+        case 0:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.1' });
-        case 2:
+        case 1:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.2' });
-        case 3:
+        case 2:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.3' });
-        case 4:
+        case 3:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.4' });
-        case 5:
+        case 4:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.5' });
-        case 6:
+        case 5:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.6' });
-        case 7:
+        case 6:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.7' });
-        case 8:
+        case 7:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.8' });
         default:
             return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.9' });
