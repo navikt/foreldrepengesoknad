@@ -6,6 +6,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Radio } from '@navikt/ds-react';
 
 import {
+    AnnenForelder,
     Barn,
     ISOStringToDate,
     NavnPåForeldre,
@@ -313,15 +314,16 @@ export const mapOppstartValgToRadioOption = (
 
 export const getOppstartsValgeneToRadioOptions = (
     oppstartsvalg: OppstartValg[],
-    deltUttak: boolean,
+    annenForelder: AnnenForelder,
     barn: Barn,
     erFødsel: boolean,
     erFarEllerMedmor: boolean,
-    datoForAleneomsorg: Date | undefined,
     navnAnnenForelder: string,
     førsteDagEtterAnnenForelder: Date | undefined,
     intl: IntlShape,
 ): React.ReactElement[] => {
+    const deltUttak = getIsDeltUttak(annenForelder);
+    const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
     return oppstartsvalg.map((valg) =>
         mapOppstartValgToRadioOption(
             valg,
@@ -358,21 +360,18 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const deltUttak = getIsDeltUttak(annenForelder);
     const bareFarHarRett = getKunFarHarRett(erFarEllerMedmor, annenForelder, erAleneOmOmsorg);
     if (!oppstartsvalg || oppstartsvalg.length < 2) {
         return null;
     }
-    const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const oppstartsValgOptions = getOppstartsValgeneToRadioOptions(
         oppstartsvalg,
-        deltUttak,
+        annenForelder,
         barn,
         erFødsel,
         erFarEllerMedmor,
-        datoForAleneomsorg,
         navnAnnenForelder,
         førsteDagEtterAnnenForelder,
         intl,
