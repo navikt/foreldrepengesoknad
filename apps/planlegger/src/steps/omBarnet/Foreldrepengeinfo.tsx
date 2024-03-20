@@ -25,7 +25,8 @@ const Foreldrepengeinfo: FunctionComponent = () => {
                             </BodyLong>
 
                             <BodyLong>
-                                <FormattedMessage id="TODO" />
+                                {/* TODO Bytt ut test */}
+                                <FormattedMessage id="barnet.foreldrepengerInfoTekstDeg" />
                             </BodyLong>
                         </VStack>
                     )}

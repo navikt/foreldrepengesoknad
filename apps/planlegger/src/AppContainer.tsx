@@ -1,4 +1,3 @@
-import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -6,7 +5,7 @@ import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-utils';
 
-import Planlegger from './Planlegger';
+import PlanleggerDataInit from './Planlegger';
 import enMessages from './intl/messages/en_NO.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -43,9 +42,7 @@ const AppContainer = () => {
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
                 <BrowserRouter>
-                    <PlanleggerDataContext>
-                        <Planlegger locale={locale} changeLocale={changeLocale} />
-                    </PlanleggerDataContext>
+                    <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
                 </BrowserRouter>
             </ErrorBoundary>
         </IntlProvider>
