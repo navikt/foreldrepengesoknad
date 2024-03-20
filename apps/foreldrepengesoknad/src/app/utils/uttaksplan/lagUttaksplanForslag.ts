@@ -38,10 +38,13 @@ export const lagUttaksplanForslag = (
     barn: Barn,
     barnFraNesteSak: BarnFraNesteSak | undefined,
     annenForelder: AnnenForelder,
-    fordeling: Fordeling,
+    fordeling: Fordeling | undefined,
     uttaksplanMetadata: UttaksplanMetaData | undefined,
     oppdaterUttaksplanMetadata: (metadata: UttaksplanMetaData) => void,
 ): Periode[] => {
+    if (!fordeling) {
+        throw new Error('Fordeling er undefined.');
+    }
     const situasjon = søkersituasjon.situasjon;
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
     const familiehendelsesdato = getFamiliehendelsedatoDate(barn);

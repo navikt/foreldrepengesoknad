@@ -110,7 +110,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
-    const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING));
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
 
     const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterBarnFraNesteSak = useContextSaveData(ContextDataType.BARN_FRA_NESTE_SAK);
