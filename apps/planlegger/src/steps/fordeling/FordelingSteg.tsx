@@ -3,8 +3,8 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import GreenPanel from 'components/GreenPanel';
-import Infoboks from 'components/Infoboks';
-import InfoboksGenerell from 'components/InfoboksGenerell';
+import Infoboks from 'components/infoboks/Infoboks';
+import InfoboksGenerell from 'components/infoboks/InfoboksGenerell';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';

@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading, Show } from '@navikt/ds-react';
 
-import styles from './planleggerPage/planleggerFrontpage.module.css';
+import styles from './oppsummeringHeader.module.css';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];

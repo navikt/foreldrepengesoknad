@@ -3,9 +3,9 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infoboks from 'components/Infoboks';
-import InfoboksGenerell from 'components/InfoboksGenerell';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
+import Infoboks from 'components/infoboks/Infoboks';
+import InfoboksGenerell from 'components/infoboks/InfoboksGenerell';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
