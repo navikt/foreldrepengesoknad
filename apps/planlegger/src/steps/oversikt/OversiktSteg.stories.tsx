@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
-import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
@@ -22,6 +22,8 @@ const kontoer = {
             FEDREKVOTE: 75,
             FELLESPERIODE: 80,
             FORELDREPENGER_FØR_FØDSEL: 15,
+            AKTIVITETSFRI_KVOTE: 40,
+            FORELDREPENGER: 200,
         },
         minsteretter: {
             farRundtFødsel: 0,
@@ -35,6 +37,8 @@ const kontoer = {
             FEDREKVOTE: 95,
             FELLESPERIODE: 90,
             FORELDREPENGER_FØR_FØDSEL: 15,
+            AKTIVITETSFRI_KVOTE: 40,
+            FORELDREPENGER: 250,
         },
         minsteretter: {
             farRundtFødsel: 0,
@@ -53,8 +57,16 @@ const Template: StoryFn<{
     hvorLangPeriode: HvorLangPeriode;
     fordeling: Fordeling;
     omBarnet: OmBarnet;
+    arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ gåTilNesteSide = action('button-click'), hvemPlanlegger, fordeling, hvorLangPeriode, omBarnet }) => {
+}> = ({
+    gåTilNesteSide = action('button-click'),
+    hvemPlanlegger,
+    fordeling,
+    hvorLangPeriode,
+    omBarnet,
+    arbeidssituasjon,
+}) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.OVERSIKT]}>
@@ -65,9 +77,7 @@ const Template: StoryFn<{
                     [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                     [ContextDataType.OM_BARNET]: omBarnet,
-                    [ContextDataType.ARBEIDSSITUASJON]: {
-                        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
-                    },
+                    [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                 }}
             >
                 <OversiktSteg stønadskontoer={kontoer} />
@@ -95,6 +105,10 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
         termindato: '2022-10-24',
         antallBarn: '1',
     },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        arbeidssituasjonAnnenPart: true,
+    },
 };
 
 export const PeriodeAleneforsørgerFarHundreProsentTermin = Template.bind({});
@@ -114,6 +128,9 @@ PeriodeAleneforsørgerFarHundreProsentTermin.args = {
         erBarnetFødt: false,
         termindato: '2022-10-24',
         antallBarn: '1',
+    },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
     },
 };
 
@@ -136,6 +153,9 @@ PeriodeAleneforsørgerÅttiProsentFødt.args = {
         termindato: '2024-09-01',
         antallBarn: '1',
     },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+    },
 };
 
 export const PeriodeFlereForsørgereÅttiProsentToBarnFødt = Template.bind({});
@@ -157,6 +177,10 @@ PeriodeFlereForsørgereÅttiProsentToBarnFødt.args = {
         fødselsdato: '2024-10-01',
         termindato: '2024-10-03',
         antallBarn: '2',
+    },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        arbeidssituasjonAnnenPart: true,
     },
 };
 
@@ -182,5 +206,9 @@ PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
         overtakelsesdato: '2024-09-01',
         adopsjonsdato: '2024-09-01',
         antallBarn: '1',
+    },
+    arbeidssituasjon: {
+        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        arbeidssituasjonAnnenPart: true,
     },
 };

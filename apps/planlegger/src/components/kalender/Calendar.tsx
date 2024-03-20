@@ -6,35 +6,46 @@ import { HStack, VStack } from '@navikt/ds-react';
 import Day, { DayType, PeriodType } from './Day';
 import Month from './Month';
 
-type Period = {
+export type Period = {
     fom: Dayjs;
     tom: Dayjs;
+    type: 'førTermin' | 'familiehendelse' | 'aktivitetskrav' | 'utenAktivitetskrav' | 'mor' | 'far';
 };
 
 const findPeriodType = (year: number, month: number, day: number, periods: Period[]) => {
     const date = dayjs().year(year).month(month).date(day);
 
-    const fomFirstPeriod = periods[0].fom;
-    const tomFirstPeriod = periods[0].tom;
-    const tomSecondPeriod = periods[1].tom;
-    const fomThirdPeriod = periods[2].fom;
-    const tomThirdPeriod = periods[2].tom;
+    const fomFørstePeriode = periods[0].fom;
+    const tomSistePeriode = periods[periods.length - 1].tom;
+    const familiehendelse = periods.find((p) => p.type === 'familiehendelse')?.fom;
+    const morEllerAktivitetfriPeriode = periods.find((p) => p.type === 'mor' || p.type === 'utenAktivitetskrav');
+    const førTermin = periods.find((p) => p.type === 'førTermin');
 
-    if (date.isBefore(fomFirstPeriod) || date.isAfter(tomThirdPeriod)) {
+    const farsPeriode = periods.find((p) => p.type === 'far' || p.type === 'aktivitetskrav');
+
+    if (date.isBefore(fomFørstePeriode) || date.isAfter(tomSistePeriode)) {
         return PeriodType.INGEN;
     }
-    if (date.isoWeekday() === 5 || date.isoWeekday() === 6) {
-        return PeriodType.HELGEDAG;
-    }
-    if (date.isSame(tomFirstPeriod, 'date')) {
+
+    if (familiehendelse && date.isSame(familiehendelse, 'date')) {
         return PeriodType.TERMINDATO;
     }
 
-    if (date.isBetween(fomFirstPeriod, tomSecondPeriod)) {
-        return PeriodType.FORELDREPENGER_MOR;
+    if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
+        return PeriodType.HELGEDAG;
     }
 
-    if (date.isBetween(fomThirdPeriod, tomThirdPeriod)) {
+    if (
+        morEllerAktivitetfriPeriode &&
+        date.isBetween(morEllerAktivitetfriPeriode.fom, morEllerAktivitetfriPeriode.tom)
+    ) {
+        return PeriodType.FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI;
+    }
+    if (førTermin && date.isBetween(førTermin.fom, førTermin.tom)) {
+        return PeriodType.FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI;
+    }
+
+    if (farsPeriode && date.isBetween(farsPeriode.fom, farsPeriode.tom)) {
         return PeriodType.FORELDREPENGER_FAR;
     }
     return PeriodType.INGEN;
@@ -42,19 +53,19 @@ const findPeriodType = (year: number, month: number, day: number, periods: Perio
 
 const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
     return (
-        date.isoWeekday() === 5 ||
-        date.isoWeekday() === 7 ||
-        day === 0 ||
+        date.isoWeekday() === 6 ||
+        date.isoWeekday() === 1 ||
+        day === 1 ||
         periods.some((period) => date.startOf('day').isSame(period.fom.startOf('day')))
     );
 };
 
 const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
     return (
-        date.isoWeekday() === 6 ||
-        date.isoWeekday() === 4 ||
-        day === date.daysInMonth() - 1 ||
-        periods.some((period) => date.startOf('day').isSame(period.tom.startOf('day')))
+        date.isoWeekday() === 7 ||
+        date.isoWeekday() === 5 ||
+        day === date.daysInMonth() ||
+        periods.some((period) => date.startOf('day').isSame(period.tom.startOf('day').subtract(1, 'day')))
     );
 };
 
@@ -120,9 +131,9 @@ const Calendar: FunctionComponent<Props> = ({ periods }) => {
                             (day) => (
                                 <Day
                                     key={monthData.year + monthData.month + day}
-                                    day={day}
-                                    periodType={findPeriodType(monthData.year, monthData.month, day, periods)}
-                                    dayType={findDayType(monthData.year, monthData.month, day, periods)}
+                                    day={day + 1}
+                                    periodType={findPeriodType(monthData.year, monthData.month, day + 1, periods)}
+                                    dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
                                 />
                             ),
                         )}

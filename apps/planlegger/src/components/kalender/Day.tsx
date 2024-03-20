@@ -2,7 +2,7 @@ import styles from './day.module.css';
 
 export enum PeriodType {
     INGEN = 'INGEN',
-    FORELDREPENGER_MOR = 'FORELDREPENGER_MOR',
+    FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI = 'FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI',
     FORELDREPENGER_FAR = 'FORELDREPENGER_FAR',
     HELGEDAG = 'HELGEDAG',
     TERMINDATO = 'TERMINDATO',
@@ -17,7 +17,7 @@ export enum DayType {
 
 const DAY_STYLE = {
     [PeriodType.INGEN]: styles.none,
-    [PeriodType.FORELDREPENGER_MOR]: styles.foreldrepengerMor,
+    [PeriodType.FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI]: styles.foreldrepengerMor,
     [PeriodType.FORELDREPENGER_FAR]: styles.foreldrepengerFar,
     [PeriodType.HELGEDAG]: styles.helgedag,
     [PeriodType.TERMINDATO]: styles.termindato,
@@ -37,7 +37,7 @@ const Day: React.FunctionComponent<Props> = ({ day, periodType, dayType }) => {
         <div
             className={`${styles.days} ${DAY_STYLE[periodType]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay}`}
         >
-            {day + 1}
+            {day}
         </div>
     );
 };
