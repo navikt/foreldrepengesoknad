@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import { Loader, VStack } from '@navikt/ds-react';
@@ -16,7 +16,9 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
 import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
-import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import getStønadskontoParams, {
+    getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
+} from 'app/api/getStønadskontoParams';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
@@ -25,7 +27,7 @@ import {
     getIsDeltUttak,
     getSisteUttaksdagAnnenForelder,
 } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
 import {
     getAnnenPartVedtakParam,
@@ -63,6 +65,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+    const oppdaterBarn = notEmpty(useContextSaveData(ContextDataType.OM_BARNET));
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
@@ -154,6 +157,18 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
 
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder ? Uttaksdagen(sisteDagAnnenForelder).neste() : undefined;
     const visMorsSisteDag = erFarEllerMedmor && sisteDagAnnenForelder;
+
+    const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
+        barn.antallBarn,
+        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
+    );
+    useEffect(() => {
+        if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
+            oppdaterBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
+        }
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn]);
+
     if (!valgtStønadskonto || (statusAnnenPartVedtak !== RequestStatus.FINISHED && !suspendAnnenPartVedtakApiRequest)) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
