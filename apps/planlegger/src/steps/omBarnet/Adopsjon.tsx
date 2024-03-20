@@ -56,7 +56,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                     maxDate={dayjs().toDate()}
                     autofocusWhenEmpty
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.duMåOppgi' })),
+                        isRequired(intl.formatMessage({ id: 'validation.required' })),
                         isValidDate(intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.gyldig' })),
                         isBeforeTodayOrToday(
                             intl.formatMessage({
@@ -82,7 +82,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.duMåOppgi' })),
+                        isRequired(intl.formatMessage({ id: 'validation.required' })),
                         isValidDate(intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' })),
                         isLessThanThreeWeeksAgo(
                             intl.formatMessage({

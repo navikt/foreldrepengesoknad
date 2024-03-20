@@ -16,6 +16,7 @@ export interface Props {
     className?: string;
     style?: CSSProperties;
     autofocusWhenEmpty?: boolean;
+    customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
 const Select: FunctionComponent<Props> = ({
@@ -29,6 +30,7 @@ const Select: FunctionComponent<Props> = ({
     children,
     style,
     autofocusWhenEmpty,
+    customErrorFormatter,
 }) => {
     const {
         formState: { errors },
@@ -56,7 +58,7 @@ const Select: FunctionComponent<Props> = ({
             ref={field.ref}
             value={field.value}
             className={className}
-            error={getError(errors, name)}
+            error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             label={label}
             description={description}
             disabled={disabled}

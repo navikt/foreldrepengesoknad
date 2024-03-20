@@ -3,32 +3,14 @@ import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import Infoboks from 'components/infoboks/Infoboks';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
-import {
-    HvemPlanlegger,
-    getFornavnPåAnnenPart,
-    getFornavnPåSøker,
-    isFar,
-    isFarOgFar,
-    isMorOgFar,
-    isMorOgMedmor,
-} from 'types/HvemPlanlegger';
+import { HvemPlanlegger, getFornavnPåAnnenPart, getFornavnPåSøker } from 'types/HvemPlanlegger';
 
 import { BodyLong, Link, Radio, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { isRequired } from '@navikt/fp-validation';
-
-const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
-    if (isMorOgMedmor(hvemPlanlegger)) {
-        return intl.formatMessage({ id: 'FlereForsørgere.Medmor' });
-    }
-    if (isFar(hvemPlanlegger) || isFarOgFar(hvemPlanlegger) || isMorOgFar(hvemPlanlegger)) {
-        return intl.formatMessage({ id: 'FlereForsørgere.Far' });
-    }
-    return undefined;
-};
 
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
@@ -126,16 +108,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                     <GreenRadioGroup
                         name="arbeidssituasjonAnnenPart"
                         label={<FormattedMessage id="arbeid.andreForelder" values={{ navn: fornavnAnnenPart }} />}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage(
-                                    { id: 'feilmelding.arbeidssituasjonFlere.duMåOppgi' },
-                                    {
-                                        hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                    },
-                                ),
-                            ),
-                        ]}
+                        validate={[isRequired(intl.formatMessage({ id: 'validation.required' }))]}
                     >
                         <Radio value={true} autoFocus>
                             <FormattedMessage id="ja" />

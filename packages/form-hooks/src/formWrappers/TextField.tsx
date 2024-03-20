@@ -19,6 +19,7 @@ export interface Props {
     style?: CSSProperties;
     shouldReplaceInvisibleChars?: boolean;
     autofocusWhenEmpty?: boolean;
+    customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
 const TextField: FunctionComponent<Props> = ({
@@ -35,6 +36,7 @@ const TextField: FunctionComponent<Props> = ({
     style,
     shouldReplaceInvisibleChars = false,
     autofocusWhenEmpty,
+    customErrorFormatter,
 }) => {
     const {
         formState: { errors },
@@ -75,7 +77,7 @@ const TextField: FunctionComponent<Props> = ({
             label={label}
             description={description}
             type={type}
-            error={getError(errors, name)}
+            error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             autoFocus={autoFocus || (autofocusWhenEmpty && field.value === undefined)}
             autoComplete="off"
             maxLength={maxLength}

@@ -216,7 +216,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             validate={[
                                 isRequired(
                                     intl.formatMessage({
-                                        id: 'feilmelding.periode.hvorLangPeriode.duMåOppgi',
+                                        id: 'validation.required',
                                     }),
                                 ),
                             ]}

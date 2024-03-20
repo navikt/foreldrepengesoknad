@@ -1,5 +1,6 @@
 import { ComponentProps, FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { formatError } from 'utils/customErrorFormatter';
 
 import { RadioGroup } from '@navikt/fp-form-hooks';
 
@@ -12,7 +13,9 @@ const GreenRadioGroup: FunctionComponent<ComponentProps<typeof RadioGroup>> = (p
 
     return (
         <GreenPanel isDarkGreen={value === undefined}>
-            <RadioGroup {...props}>{props.children}</RadioGroup>
+            <RadioGroup {...props} customErrorFormatter={formatError}>
+                {props.children}
+            </RadioGroup>
         </GreenPanel>
     );
 };

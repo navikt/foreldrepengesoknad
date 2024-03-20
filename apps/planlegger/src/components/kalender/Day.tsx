@@ -37,7 +37,7 @@ const Day: React.FunctionComponent<Props> = ({ day, periodType, dayType }) => {
         <div
             className={`${styles.days} ${DAY_STYLE[periodType]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay}`}
         >
-            {day}
+            {day + 1}
         </div>
     );
 };

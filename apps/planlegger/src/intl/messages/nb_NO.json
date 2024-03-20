@@ -261,5 +261,6 @@
     "FlereForsørgere.Mor": "mor",
     "FlereForsørgere.Far": "far",
     "FlereForsørgere.Medmor": "medmor",
-    "ProgressStepper.NavigasjonAriaLabel": "Navigasjon"
+    "ProgressStepper.NavigasjonAriaLabel": "Navigasjon",
+    "validation.required": "Oj, du må huske å svare på dette spørsmålet før du går videre"
 }

@@ -7,6 +7,7 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { formatError } from 'utils/customErrorFormatter';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
@@ -47,7 +48,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         validate={[
                             isRequired(
                                 intl.formatMessage({
-                                    id: 'feilmelding.hvemPlanlegger.duMåOppgi',
+                                    id: 'validation.required',
                                 }),
                             ),
                         ]}
@@ -76,25 +77,13 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         <TextField
                                             label={intl.formatMessage({ id: 'navn.mor' })}
                                             name="navnPåMor"
-                                            validate={[
-                                                isRequired(
-                                                    intl.formatMessage({
-                                                        id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
-                                                    }),
-                                                ),
-                                            ]}
                                             autofocusWhenEmpty
+                                            customErrorFormatter={formatError}
                                         />
                                         <TextField
                                             label={intl.formatMessage({ id: 'navn.far' })}
                                             name="navnPåFar"
-                                            validate={[
-                                                isRequired(
-                                                    intl.formatMessage({
-                                                        id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
-                                                    }),
-                                                ),
-                                            ]}
+                                            customErrorFormatter={formatError}
                                         />
                                     </VStack>
                                 )}
@@ -103,25 +92,13 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         <TextField
                                             label={intl.formatMessage({ id: 'navn.mor' })}
                                             name="navnPåMor"
-                                            validate={[
-                                                isRequired(
-                                                    intl.formatMessage({
-                                                        id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
-                                                    }),
-                                                ),
-                                            ]}
                                             autofocusWhenEmpty
+                                            customErrorFormatter={formatError}
                                         />
                                         <TextField
                                             label={intl.formatMessage({ id: 'navn.medmor' })}
                                             name="navnPåMedmor"
-                                            validate={[
-                                                isRequired(
-                                                    intl.formatMessage({
-                                                        id: 'feilmelding.hvemPlanlegger.navnMedmor.duMåOppgi',
-                                                    }),
-                                                ),
-                                            ]}
+                                            customErrorFormatter={formatError}
                                         />
                                     </VStack>
                                 )}
@@ -130,25 +107,13 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         <TextField
                                             label={intl.formatMessage({ id: 'navn.far' })}
                                             name="navnPåFar"
-                                            validate={[
-                                                isRequired(
-                                                    intl.formatMessage({
-                                                        id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
-                                                    }),
-                                                ),
-                                            ]}
                                             autofocusWhenEmpty
+                                            customErrorFormatter={formatError}
                                         />
                                         <TextField
                                             label={intl.formatMessage({ id: 'navn.far' })}
                                             name="navnPåMedfar"
-                                            validate={[
-                                                isRequired(
-                                                    intl.formatMessage({
-                                                        id: 'feilmelding.hvemPlanlegger.navnMedfar.duMåOppgi',
-                                                    }),
-                                                ),
-                                            ]}
+                                            customErrorFormatter={formatError}
                                         />
                                     </VStack>
                                 )}
@@ -156,28 +121,16 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                     <TextField
                                         label={intl.formatMessage({ id: 'navn.mor' })}
                                         name="navnPåMor"
-                                        validate={[
-                                            isRequired(
-                                                intl.formatMessage({
-                                                    id: 'feilmelding.hvemPlanlegger.navnMor.duMåOppgi',
-                                                }),
-                                            ),
-                                        ]}
                                         autofocusWhenEmpty
+                                        customErrorFormatter={formatError}
                                     />
                                 )}
                                 {planleggerType === SøkersituasjonEnum.FAR && (
                                     <TextField
                                         label={intl.formatMessage({ id: 'navn.far' })}
                                         name="navnPåFar"
-                                        validate={[
-                                            isRequired(
-                                                intl.formatMessage({
-                                                    id: 'feilmelding.hvemPlanlegger.navnFar.duMåOppgi',
-                                                }),
-                                            ),
-                                        ]}
                                         autofocusWhenEmpty
+                                        customErrorFormatter={formatError}
                                     />
                                 )}
                             </>
