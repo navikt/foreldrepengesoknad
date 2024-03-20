@@ -112,6 +112,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
+    const [harPlanForslagIFørstegangssøknad, setHarPlanForslagIFørstegangssøknad] = useState(
+        erEndringssøknad || uttaksplan.length > 0,
+    );
     const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterBarnFraNesteSak = useContextSaveData(ContextDataType.BARN_FRA_NESTE_SAK);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
@@ -566,6 +569,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                 oppdaterUttaksplanMetadata,
             );
             oppdaterUttaksplan(uttaksplanForslag);
+            setHarPlanForslagIFørstegangssøknad(true);
             mellomlagreSøknadOgNaviger();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -600,6 +604,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);
 
     if (
+        !harPlanForslagIFørstegangssøknad ||
         !stønadskontoer100 ||
         !stønadskontoer80 ||
         (eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
