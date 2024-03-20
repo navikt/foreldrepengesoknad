@@ -12,6 +12,7 @@ import {
     andreAugust2022ReglerGjelder,
     formatDateExtended,
     førsteOktober2021ReglerGjelder,
+    getKunFarHarRett,
     intlUtils,
     isAdoptertAnnetBarn,
     isFarEllerMedmor,
@@ -358,6 +359,7 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const deltUttak = getIsDeltUttak(annenForelder);
+    const bareFarHarRett = getKunFarHarRett(erFarEllerMedmor, annenForelder, erAleneOmOmsorg);
     if (!oppstartsvalg || oppstartsvalg.length < 2) {
         return null;
     }
@@ -377,7 +379,7 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({
     );
 
     const descriptionId =
-        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato) && !erAleneOmOmsorg
+        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato) && !erAleneOmOmsorg && !bareFarHarRett
             ? 'fordeling.oppstartValg.description.fedreWLB'
             : 'fordeling.description.kanEndresSenere';
     return (
