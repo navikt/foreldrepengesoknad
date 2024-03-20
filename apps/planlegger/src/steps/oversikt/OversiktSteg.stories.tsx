@@ -97,8 +97,8 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
     },
 };
 
-export const PeriodeAleneForsørgerFarHundreProsentTermin = Template.bind({});
-PeriodeAleneForsørgerFarHundreProsentTermin.args = {
+export const PeriodeAleneforsørgerFarHundreProsentTermin = Template.bind({});
+PeriodeAleneforsørgerFarHundreProsentTermin.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         type: SøkersituasjonEnum.FAR,
