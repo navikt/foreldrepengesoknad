@@ -86,8 +86,8 @@ const Template: StoryFn<{
     );
 };
 
-export const PeriodeFlereForsørgereHundreProsentTermin = Template.bind({});
-PeriodeFlereForsørgereHundreProsentTermin.args = {
+export const PeriodeFlereForsørgereTerminBeggeHarRett = Template.bind({});
+PeriodeFlereForsørgereTerminBeggeHarRett.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
@@ -111,8 +111,8 @@ PeriodeFlereForsørgereHundreProsentTermin.args = {
     },
 };
 
-export const PeriodeAleneforsørgerFarHundreProsentTermin = Template.bind({});
-PeriodeAleneforsørgerFarHundreProsentTermin.args = {
+export const PeriodeAleneforsørgerFarTermin = Template.bind({});
+PeriodeAleneforsørgerFarTermin.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         type: SøkersituasjonEnum.FAR,
@@ -134,8 +134,8 @@ PeriodeAleneforsørgerFarHundreProsentTermin.args = {
     },
 };
 
-export const PeriodeAleneforsørgerÅttiProsentFødt = Template.bind({});
-PeriodeAleneforsørgerÅttiProsentFødt.args = {
+export const PeriodeAleneforsørgerFødt = Template.bind({});
+PeriodeAleneforsørgerFødt.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         type: SøkersituasjonEnum.MOR,
@@ -158,8 +158,8 @@ PeriodeAleneforsørgerÅttiProsentFødt.args = {
     },
 };
 
-export const PeriodeFlereForsørgereÅttiProsentToBarnFødt = Template.bind({});
-PeriodeFlereForsørgereÅttiProsentToBarnFødt.args = {
+export const PeriodeFlereForsørgereToBarnFødtKunMorHarRett = Template.bind({});
+PeriodeFlereForsørgereToBarnFødtKunMorHarRett.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         navnPåMedmor: 'Kari Utvikler',
@@ -180,12 +180,12 @@ PeriodeFlereForsørgereÅttiProsentToBarnFødt.args = {
     },
     arbeidssituasjon: {
         arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
-        arbeidssituasjonAnnenPart: true,
+        arbeidssituasjonAnnenPart: false,
     },
 };
 
-export const PeriodeFlereForsørgereÅttiProsentAdoptert = Template.bind({});
-PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
+export const PeriodeFlereForsørgereAdoptertKunFarHarRett = Template.bind({});
+PeriodeFlereForsørgereAdoptertKunFarHarRett.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         navnPåFar: 'Espen Utvikler',
@@ -208,7 +208,7 @@ PeriodeFlereForsørgereÅttiProsentAdoptert.args = {
         antallBarn: '1',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        arbeidssituasjon: ArbeidssituasjonEnum.INGEN,
         arbeidssituasjonAnnenPart: true,
     },
 };
