@@ -2,6 +2,7 @@ import { ArrowLeftIcon, CalendarIcon, TasklistStartIcon } from '@navikt/aksel-ic
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import OppgittInformasjon from 'components/expansionCard/OppgittInformasjon';
+import HvorMyeIkon from 'components/ikoner/HvorMyeIkon';
 import IconCircle from 'components/ikoner/IconCircle';
 import Infoboks from 'components/infoboks/Infoboks';
 import OversiktKalender from 'components/kalender/OversiktKalender';
@@ -18,8 +19,7 @@ import { Alert, BodyLong, Box, Button, ExpansionCard, HStack, Heading, Link, Loa
 import { links } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
-import HvaSkjerNårIkon from './HvaSkjerNårIkon';
-import HvorMyeIkon from './HvorMyeIkon';
+import HvaSkjerNårIkon from '../../components/ikoner/HvaSkjerNårIkon';
 import styles from './oppsummering.module.css';
 
 interface Props {
