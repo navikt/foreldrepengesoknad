@@ -9,7 +9,7 @@ import Month from './Month';
 export type Period = {
     fom: Dayjs;
     tom: Dayjs;
-    type: 'førTermin' | 'familiehendelse' | 'aktivitetskrav' | 'utenAktivitetskrav' | 'mor' | 'far';
+    type: 'førTermin' | 'familiehendelse' | 'aktivitetskrav' | 'utenAktivitetskrav' | 'søker' | 'medsøker';
 };
 
 const findPeriodType = (year: number, month: number, day: number, periods: Period[]) => {
@@ -18,10 +18,10 @@ const findPeriodType = (year: number, month: number, day: number, periods: Perio
     const fomFørstePeriode = periods[0].fom;
     const tomSistePeriode = periods[periods.length - 1].tom;
     const familiehendelse = periods.find((p) => p.type === 'familiehendelse')?.fom;
-    const morEllerAktivitetfriPeriode = periods.find((p) => p.type === 'mor' || p.type === 'utenAktivitetskrav');
+    const morEllerAktivitetfriPeriode = periods.find((p) => p.type === 'søker' || p.type === 'utenAktivitetskrav');
     const førTermin = periods.find((p) => p.type === 'førTermin');
 
-    const farsPeriode = periods.find((p) => p.type === 'far' || p.type === 'aktivitetskrav');
+    const farsPeriode = periods.find((p) => p.type === 'medsøker' || p.type === 'aktivitetskrav');
 
     if (date.isBefore(fomFørstePeriode, 'day') || date.isAfter(tomSistePeriode, 'day')) {
         return PeriodType.INGEN;
