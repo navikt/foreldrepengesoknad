@@ -260,7 +260,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                     ) : (
                                         <FormattedMessage
                                             id="barnet.underTreMndTilTerminMor"
-                                            values={{ navn: getNavnPåSøker(hvemPlanlegger) }}
+                                            values={{ navn: getNavnPåSøker(hvemPlanlegger, intl) }}
                                         />
                                     )}
                                 </BodyLong>

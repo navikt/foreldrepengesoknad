@@ -4,7 +4,7 @@ import GreenPanel from 'components/GreenPanel';
 import IconCircle from 'components/ikoner/IconCircle';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Fellesperiodefordeling } from 'types/Fordeling';
 import {
@@ -44,6 +44,7 @@ interface Props {
 }
 
 const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
+    const intl = useIntl();
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
@@ -54,10 +55,10 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const { dekningsgrad } = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
-    const navn1 = getNavnPåSøker(hvemPlanlegger);
-    const navn2 = getNavnPåAnnenPart(hvemPlanlegger);
-    const fornavn1 = getFornavnPåSøker(hvemPlanlegger);
-    const fornavn2 = getFornavnPåAnnenPart(hvemPlanlegger);
+    const navn1 = getNavnPåSøker(hvemPlanlegger, intl);
+    const navn2 = getNavnPåAnnenPart(hvemPlanlegger, intl);
+    const fornavn1 = getFornavnPåSøker(hvemPlanlegger, intl);
+    const fornavn2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
     const arbeidssituasjonSøker1 = arbeidssituasjon.arbeidssituasjon;
     const arbeidssituasjonAnnenPart = () => {
         if (arbeidssituasjon.arbeidssituasjonAnnenPart === true) {

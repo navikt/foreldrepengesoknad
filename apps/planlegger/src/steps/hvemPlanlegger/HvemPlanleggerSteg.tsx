@@ -71,53 +71,10 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                     </GreenRadioGroup>
                     {planleggerType && (
                         <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør}>
-                            <>
-                                {planleggerType === SøkersituasjonEnum.MOR_OG_FAR && (
-                                    <VStack gap="10">
-                                        <TextField
-                                            label={intl.formatMessage({ id: 'navn.mor' })}
-                                            name="navnPåMor"
-                                            autofocusWhenEmpty
-                                            customErrorFormatter={formatError}
-                                        />
-                                        <TextField
-                                            label={intl.formatMessage({ id: 'navn.far' })}
-                                            name="navnPåFar"
-                                            customErrorFormatter={formatError}
-                                        />
-                                    </VStack>
-                                )}
-                                {planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR && (
-                                    <VStack gap="10">
-                                        <TextField
-                                            label={intl.formatMessage({ id: 'navn.mor' })}
-                                            name="navnPåMor"
-                                            autofocusWhenEmpty
-                                            customErrorFormatter={formatError}
-                                        />
-                                        <TextField
-                                            label={intl.formatMessage({ id: 'navn.medmor' })}
-                                            name="navnPåMedmor"
-                                            customErrorFormatter={formatError}
-                                        />
-                                    </VStack>
-                                )}
-                                {planleggerType === SøkersituasjonEnum.FAR_OG_FAR && (
-                                    <VStack gap="10">
-                                        <TextField
-                                            label={intl.formatMessage({ id: 'navn.far' })}
-                                            name="navnPåFar"
-                                            autofocusWhenEmpty
-                                            customErrorFormatter={formatError}
-                                        />
-                                        <TextField
-                                            label={intl.formatMessage({ id: 'navn.far' })}
-                                            name="navnPåMedfar"
-                                            customErrorFormatter={formatError}
-                                        />
-                                    </VStack>
-                                )}
-                                {planleggerType === SøkersituasjonEnum.MOR && (
+                            <VStack gap="10">
+                                {(planleggerType === SøkersituasjonEnum.MOR_OG_FAR ||
+                                    planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR ||
+                                    planleggerType === SøkersituasjonEnum.MOR) && (
                                     <TextField
                                         label={intl.formatMessage({ id: 'navn.mor' })}
                                         name="navnPåMor"
@@ -125,15 +82,30 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         customErrorFormatter={formatError}
                                     />
                                 )}
-                                {planleggerType === SøkersituasjonEnum.FAR && (
+                                {(planleggerType === SøkersituasjonEnum.MOR_OG_FAR ||
+                                    planleggerType === SøkersituasjonEnum.FAR_OG_FAR ||
+                                    planleggerType === SøkersituasjonEnum.FAR) && (
                                     <TextField
                                         label={intl.formatMessage({ id: 'navn.far' })}
                                         name="navnPåFar"
-                                        autofocusWhenEmpty
                                         customErrorFormatter={formatError}
                                     />
                                 )}
-                            </>
+                                {planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR && (
+                                    <TextField
+                                        label={intl.formatMessage({ id: 'navn.medmor' })}
+                                        name="navnPåMedmor"
+                                        customErrorFormatter={formatError}
+                                    />
+                                )}
+                                {planleggerType === SøkersituasjonEnum.FAR_OG_FAR && (
+                                    <TextField
+                                        label={intl.formatMessage({ id: 'navn.far' })}
+                                        name="navnPåMedfar"
+                                        customErrorFormatter={formatError}
+                                    />
+                                )}
+                            </VStack>
                         </GreenPanel>
                     )}
                     <VStack gap="20">

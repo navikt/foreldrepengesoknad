@@ -137,8 +137,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const formMethods = useForm<Fordeling>({ defaultValues: fordeling });
 
-    const fornavnSøker = getFornavnPåSøker(hvemPlanlegger);
-    const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger);
+    const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
+    const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 
     const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
     const [currentOption, setCurrentOption] = useState('');
