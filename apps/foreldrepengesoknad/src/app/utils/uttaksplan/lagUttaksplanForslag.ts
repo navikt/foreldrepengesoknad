@@ -31,115 +31,126 @@ import { getFamiliehendelsedatoDate, getTermindato } from '../barnUtils';
 import { deltUttak } from './deltUttak';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 
-export const lagUttaksplanForslag = (
-    valgtStønadskonto: TilgjengeligStønadskonto[],
-    annenPartsPerioder: Periode[] | undefined,
+const getSøkerensUttaksplanForslag = (
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
-    barnFraNesteSak: BarnFraNesteSak | undefined,
+    valgtStønadskonto: TilgjengeligStønadskonto[],
     annenForelder: AnnenForelder,
-    fordeling: Fordeling | undefined,
-    uttaksplanMetadata: UttaksplanMetaData | undefined,
-    oppdaterUttaksplanMetadata: (metadata: UttaksplanMetaData) => void,
+    annenPartsPerioder: Periode[] | undefined,
+    fordeling: Fordeling,
+    barnFraNesteSak: BarnFraNesteSak | undefined,
 ): Periode[] => {
-    if (!fordeling) {
-        throw new Error('Fordeling er undefined.');
-    }
-    const situasjon = søkersituasjon.situasjon;
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
-    const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
-    const erDeltUttak = getIsDeltUttak(annenForelder);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const søkerErAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
+    const erDeltUttak = getIsDeltUttak(annenForelder);
+    const situasjon = søkersituasjon.situasjon;
+    const erAdopsjon = situasjon === 'adopsjon';
+    const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
     const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
-    const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) && annenForelder.erMorUfør;
+    const termindato = ISOStringToDate(getTermindato(barn));
+    const ankomstNorgeForAdoptertBarn =
+        isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? dayjs(barn.ankomstdato).toDate() : undefined;
+    const søkerErAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
+    const annenPartsSisteDag = annenPartsPerioder
+        ? Uttaksdagen(annenPartsPerioder[annenPartsPerioder.length - 1].tidsperiode.tom).denneEllerForrige()
+        : undefined;
+    const startdatoPermisjon = getOppstartsdatoFromInput(
+        fordeling.oppstartAvForeldrepengerValg,
+        fordeling.oppstartDato,
+        termindato,
+        familiehendelsesdato,
+        ankomstNorgeForAdoptertBarn,
+        annenPartsSisteDag,
+        datoForAleneomsorg,
+    );
+    const morSinSisteUttaksdag = erFarEllerMedmor ? annenPartsSisteDag : undefined;
     const bareFarMedmorHarRett = getKunFarHarRett(erFarEllerMedmor, annenForelder, søkerErAleneOmOmsorg);
     const morHarRett = !erFarEllerMedmor || !bareFarMedmorHarRett;
-    const termindato = getTermindato(barn);
-    const termindatoDate = ISOStringToDate(termindato);
+
+    const fellesperiodeUkerTilSøker = getAntallUkerFellesperiodeTilSøker(antallUkerFellesperiode, fordeling);
+    const fellesperiodeUkerMor = erFarEllerMedmor ? undefined : fellesperiodeUkerTilSøker;
+    const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeUkerTilSøker : undefined;
+    const farSinFørsteUttaksdag = erFarEllerMedmor ? startdatoPermisjon : undefined;
+    const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) && annenForelder.erMorUfør;
     const annenForelderHarRettPåForeldrepengerIEØS =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerIEØS;
     const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
+
     const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
         erDeltUttak,
         morHarRett,
         søkerErAleneOmOmsorg,
     });
     const harAnnenForelderSøktFP = annenPartsPerioder !== undefined;
-    const annenPartsSisteDag = annenPartsPerioder
-        ? Uttaksdagen(annenPartsPerioder[annenPartsPerioder.length - 1].tidsperiode.tom).denneEllerForrige()
-        : undefined;
-    const morSinSisteUttaksdag = erFarEllerMedmor ? annenPartsSisteDag : undefined;
-    const ankomstNorgeForAdoptertBarn =
-        isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? dayjs(barn.ankomstdato).toDate() : undefined;
-    const startdatoPermisjon = getOppstartsdatoFromInput(
-        fordeling.oppstartAvForeldrepengerValg,
-        fordeling.oppstartDato,
-        termindatoDate,
-        familiehendelsesdato,
-        ankomstNorgeForAdoptertBarn,
-        annenPartsSisteDag,
-        datoForAleneomsorg,
-    );
-    const fellesperiodeUkerTilSøker = getAntallUkerFellesperiodeTilSøker(antallUkerFellesperiode, fordeling);
-    const fellesperiodeUkerMor = erFarEllerMedmor ? undefined : fellesperiodeUkerTilSøker;
-    const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeUkerTilSøker : undefined;
-    const farSinFørsteUttaksdag = erFarEllerMedmor ? startdatoPermisjon : undefined;
-    const erAdopsjon = situasjon === 'adopsjon';
-    let søkerensUttaksplanForslag = [] as Periode[];
+    if (erDeltUttak) {
+        const forslag = deltUttak({
+            situasjon,
+            famDato: familiehendelsesdato,
+            erFarEllerMedmor,
+            tilgjengeligeStønadskontoer: valgtStønadskonto,
+            startdatoPermisjon,
+            fellesperiodeUkerMor,
+            harAnnenForelderSøktFP,
+            antallUkerFellesperiodeFarMedmor,
+            morSinSisteUttaksdag,
+            farSinFørsteUttaksdag,
+            annenForelderHarRettPåForeldrepengerIEØS,
+            termindato,
+            førsteUttaksdagNesteBarnsSak,
+        });
 
-    if (familiehendelsesdato) {
-        if (erDeltUttak) {
-            const forslag = deltUttak({
-                situasjon,
-                famDato: familiehendelsesdato,
-                erFarEllerMedmor,
-                tilgjengeligeStønadskontoer: valgtStønadskonto,
-                startdatoPermisjon,
-                fellesperiodeUkerMor,
-                harAnnenForelderSøktFP,
-                antallUkerFellesperiodeFarMedmor,
-                morSinSisteUttaksdag,
-                farSinFørsteUttaksdag,
-                annenForelderHarRettPåForeldrepengerIEØS,
-                termindato: termindatoDate,
-                førsteUttaksdagNesteBarnsSak,
-            });
+        return finnOgSettInnHull(
+            forslag,
+            harAktivitetskravIPeriodeUtenUttak,
+            familiehendelsesdato,
+            erAdopsjon,
+            false,
+            erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak,
+        );
+    } else {
+        const forslag = ikkeDeltUttak(
+            situasjon,
+            familiehendelsesdato,
+            erFarEllerMedmor,
+            valgtStønadskonto,
+            startdatoPermisjon,
+            annenForelderErUfør,
+            bareFarMedmorHarRett,
+            termindato,
+            førsteUttaksdagNesteBarnsSak,
+        );
 
-            søkerensUttaksplanForslag = finnOgSettInnHull(
-                forslag,
-                harAktivitetskravIPeriodeUtenUttak,
-                familiehendelsesdato,
-                erAdopsjon,
-                false,
-                erFarEllerMedmor,
-                førsteUttaksdagNesteBarnsSak,
-            );
-        } else {
-            const forslag = ikkeDeltUttak(
-                situasjon,
-                familiehendelsesdato,
-                erFarEllerMedmor,
-                valgtStønadskonto,
-                startdatoPermisjon,
-                annenForelderErUfør,
-                bareFarMedmorHarRett,
-                termindatoDate,
-                førsteUttaksdagNesteBarnsSak,
-            );
-
-            søkerensUttaksplanForslag = finnOgSettInnHull(
-                forslag,
-                harAktivitetskravIPeriodeUtenUttak,
-                familiehendelsesdato,
-                erAdopsjon,
-                bareFarMedmorHarRett,
-                erFarEllerMedmor,
-                førsteUttaksdagNesteBarnsSak,
-            );
-        }
+        return finnOgSettInnHull(
+            forslag,
+            harAktivitetskravIPeriodeUtenUttak,
+            familiehendelsesdato,
+            erAdopsjon,
+            bareFarMedmorHarRett,
+            erFarEllerMedmor,
+            førsteUttaksdagNesteBarnsSak,
+        );
     }
+};
 
+const oppdaterPlanForslagMedAnnenPartsPerioder = (
+    søkerensUttaksplanForslag: Periode[],
+    annenPartsPerioder: Periode[] | undefined,
+    annenForelder: AnnenForelder,
+    uttaksplanMetadata: UttaksplanMetaData | undefined,
+    barn: Barn,
+    søkersituasjon: SøkersituasjonFp,
+    barnFraNesteSak: BarnFraNesteSak | undefined,
+    oppdaterUttaksplanMetadata: (metadata: UttaksplanMetaData) => void,
+): Periode[] => {
+    const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
+    const situasjon = søkersituasjon.situasjon;
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const søkerErAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
+    const bareFarMedmorHarRett = getKunFarHarRett(erFarEllerMedmor, annenForelder, søkerErAleneOmOmsorg);
+    const morHarRett = !erFarEllerMedmor || !bareFarMedmorHarRett;
+    const erDeltUttak = getIsDeltUttak(annenForelder);
+    const erAdopsjon = situasjon === 'adopsjon';
     if (annenPartsPerioder && annenPartsPerioder.length > 0 && søkerensUttaksplanForslag.length > 0) {
         const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
             erDeltUttak,
@@ -170,4 +181,41 @@ export const lagUttaksplanForslag = (
     } else {
         return søkerensUttaksplanForslag;
     }
+};
+
+export const lagUttaksplanForslag = (
+    valgtStønadskonto: TilgjengeligStønadskonto[],
+    annenPartsPerioder: Periode[] | undefined,
+    søkersituasjon: SøkersituasjonFp,
+    barn: Barn,
+    barnFraNesteSak: BarnFraNesteSak | undefined,
+    annenForelder: AnnenForelder,
+    fordeling: Fordeling | undefined,
+    uttaksplanMetadata: UttaksplanMetaData | undefined,
+    oppdaterUttaksplanMetadata: (metadata: UttaksplanMetaData) => void,
+): Periode[] => {
+    if (!fordeling) {
+        throw new Error('Fordeling er undefined.');
+    }
+
+    const søkerensUttaksplanForslag = getSøkerensUttaksplanForslag(
+        søkersituasjon,
+        barn,
+        valgtStønadskonto,
+        annenForelder,
+        annenPartsPerioder,
+        fordeling,
+        barnFraNesteSak,
+    );
+
+    return oppdaterPlanForslagMedAnnenPartsPerioder(
+        søkerensUttaksplanForslag,
+        annenPartsPerioder,
+        annenForelder,
+        uttaksplanMetadata,
+        barn,
+        søkersituasjon,
+        barnFraNesteSak,
+        oppdaterUttaksplanMetadata,
+    );
 };

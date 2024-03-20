@@ -1,4 +1,10 @@
 import {
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
+import dayjs from 'dayjs';
+
+import {
     Forelder,
     Periode,
     Periodetype,
@@ -16,10 +22,6 @@ import {
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import {
-    splittPeriodePåDato,
-    splittUttaksperiodePåFamiliehendelsesdato,
-} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
@@ -191,7 +193,7 @@ const ikkeDeltUttakFødselMor = (
 ) => {
     const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
-    const skalHaForeldrePengerFørFødsel = startdatoPermisjon ? true : false;
+    const skalHaForeldrePengerFørFødsel = dayjs(startdatoPermisjon).isBefore(dayjs(famDato), 'd');
 
     if (foreldrePengerFørFødselKonto !== undefined && skalHaForeldrePengerFørFødsel && startdatoPermisjon) {
         const dagerFørFødsel = Uttaksdagen(startdatoPermisjon).getUttaksdagerFremTilDato(førsteUttaksdag);
