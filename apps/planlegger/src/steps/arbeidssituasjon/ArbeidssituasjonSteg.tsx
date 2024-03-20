@@ -6,9 +6,9 @@ import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger, getNavnPåSøker, isAlene, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
+import { getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
@@ -17,11 +17,6 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
-
-const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
-    isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)
-        ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
-        : intl.formatMessage({ id: 'FlereForsørgere.Far' });
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
     const intl = useIntl();
@@ -73,16 +68,9 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         name="arbeidssituasjon"
                         validate={[
                             isRequired(
-                                erAlenesøker
-                                    ? intl.formatMessage({
-                                          id: 'feilmelding.arbeidssituasjonAlene.duMåOppgi',
-                                      })
-                                    : intl.formatMessage(
-                                          {
-                                              id: 'feilmelding.arbeidssituasjonFlere.duMåOppgi',
-                                          },
-                                          { hvem: finnSøkerTekst(intl, hvemPlanlegger) },
-                                      ),
+                                intl.formatMessage({
+                                    id: 'validation.required',
+                                }),
                             ),
                         ]}
                     >

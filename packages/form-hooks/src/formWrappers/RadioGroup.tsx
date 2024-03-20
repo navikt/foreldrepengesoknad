@@ -13,6 +13,7 @@ interface Props {
     onChange?: (value: string | boolean | number) => void;
     children: ReactElement[];
     className?: string;
+    customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
 const RadioGroup: FunctionComponent<Props> = ({
@@ -23,6 +24,7 @@ const RadioGroup: FunctionComponent<Props> = ({
     onChange,
     children,
     className,
+    customErrorFormatter,
 }) => {
     const {
         formState: { errors },
@@ -40,7 +42,7 @@ const RadioGroup: FunctionComponent<Props> = ({
             value={field.value !== undefined ? field.value : null}
             legend={label}
             description={description}
-            error={getError(errors, name)}
+            error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             onChange={(value) => {
                 if (onChange) {
                     onChange(value);

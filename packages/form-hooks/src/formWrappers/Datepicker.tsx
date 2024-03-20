@@ -43,6 +43,7 @@ export interface Props {
     showMonthAndYearDropdowns?: boolean;
     disableWeekends?: boolean;
     autofocusWhenEmpty?: boolean;
+    customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
 const Datepicker: FunctionComponent<Props> = ({
@@ -57,6 +58,7 @@ const Datepicker: FunctionComponent<Props> = ({
     showMonthAndYearDropdowns,
     disableWeekends,
     autofocusWhenEmpty,
+    customErrorFormatter,
 }): JSX.Element => {
     const {
         formState: { errors },
@@ -128,7 +130,7 @@ const Datepicker: FunctionComponent<Props> = ({
                 value={fieldValue}
                 label={label}
                 description={description}
-                error={getError(errors, name)}
+                error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
                 placeholder="dd.mm.åååå"
                 autoFocus={autofocusWhenEmpty && field.value === undefined}
             />
