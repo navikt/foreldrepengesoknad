@@ -43,10 +43,12 @@ const FordelingForm: React.FunctionComponent<Props> = ({
 }) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const fordelingAvForeldrepenger = useContextGetData(ContextDataType.FORDELING);
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const oppdaterUttaksplanMetaData = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
     const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
 
     const formMethods = useForm<Fordeling>({
@@ -83,6 +85,12 @@ const FordelingForm: React.FunctionComponent<Props> = ({
             oppstartDato: values.oppstartDato,
         };
         oppdaterFordeling(mappedFordelingValues);
+        if (uttaksplanMetadata?.harUttaksplanBlittSlettet !== false) {
+            oppdaterUttaksplanMetaData({
+                ...uttaksplanMetadata,
+                harUttaksplanBlittSlettet: false,
+            });
+        }
         return goToNextDefaultStep();
     };
     return (
