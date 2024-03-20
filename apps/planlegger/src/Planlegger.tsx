@@ -1,9 +1,11 @@
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { decodeBase64String } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
 import { LocaleAll } from '@navikt/fp-types';
@@ -19,7 +21,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const Planlegger: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
@@ -70,4 +72,18 @@ const Planlegger: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     return <PlanleggerRouter locale={locale} changeLocale={changeLocale} stønadskontoer={requestData.data} />;
 };
 
-export default Planlegger;
+const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+    const locations = useLocation();
+
+    const data = locations.search.includes('?data')
+        ? JSON.parse(decodeBase64String(locations.search.replace('?data=', '')))
+        : undefined;
+
+    return (
+        <PlanleggerDataContext initialState={data}>
+            <PlanleggerDataFetcher locale={locale} changeLocale={changeLocale} />
+        </PlanleggerDataContext>
+    );
+};
+
+export default PlanleggerDataInit;
