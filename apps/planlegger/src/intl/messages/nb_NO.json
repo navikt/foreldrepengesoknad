@@ -262,5 +262,8 @@
     "FlereForsørgere.Far": "far",
     "FlereForsørgere.Medmor": "medmor",
     "ProgressStepper.NavigasjonAriaLabel": "Navigasjon",
-    "validation.required": "Oj, du må huske å svare på dette spørsmålet før du går videre"
+    "validation.required": "Oj, du må huske å svare på dette spørsmålet før du går videre",
+    "HvemPlanlegger.DefaultMorNavn": "Mor",
+    "HvemPlanlegger.DefaultFarNavn": "Far",
+    "HvemPlanlegger.DefaultMedMorNavn": "Medmor"
 }
