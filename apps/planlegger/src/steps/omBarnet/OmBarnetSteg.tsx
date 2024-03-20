@@ -2,7 +2,7 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infoboks from 'components/Infoboks';
+import Infoboks from 'components/infoboks/Infoboks';
 import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';

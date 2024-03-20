@@ -1,0 +1,37 @@
+.background {
+    background-color: var(--a-gray-100);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.content {
+    max-width: 704px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--a-surface-default);
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.header {
+    max-width: 704px;
+    margin: 0 auto;
+    background-color: var(--a-surface-default);
+}
+
+.languageToggle {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 1rem;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: var(--a-surface-default);
+    }
+    .background {
+        background-color: var(--a-surface-default);
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+    }
+}

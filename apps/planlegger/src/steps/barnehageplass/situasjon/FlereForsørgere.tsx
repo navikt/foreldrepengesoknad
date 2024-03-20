@@ -1,7 +1,7 @@
 import { BabyWrappedIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import Infoboks from 'components/Infoboks';
-import InfoboksGenerell from 'components/InfoboksGenerell';
+import Infoboks from 'components/infoboks/Infoboks';
+import InfoboksGenerell from 'components/infoboks/InfoboksGenerell';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
