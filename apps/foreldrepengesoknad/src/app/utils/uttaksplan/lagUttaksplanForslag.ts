@@ -140,14 +140,13 @@ export const lagUttaksplanForslag = (
         }
     }
 
-    let uttaksplanForslagMedAnnenPartsVedtak = [] as Periode[];
     if (annenPartsPerioder && annenPartsPerioder.length > 0 && søkerensUttaksplanForslag.length > 0) {
         const harAktivitetskravIPeriodeUtenUttak = getHarAktivitetskravIPeriodeUtenUttak({
             erDeltUttak,
             morHarRett,
             søkerErAleneOmOmsorg,
         });
-        uttaksplanForslagMedAnnenPartsVedtak = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
+        const uttaksplanForslagMedAnnenPartsVedtak = leggTilAnnenPartsPerioderISøkerenesUttaksplan(
             annenPartsPerioder,
             søkerensUttaksplanForslag,
             familiehendelsesdato,
@@ -161,14 +160,14 @@ export const lagUttaksplanForslag = (
             ...uttaksplanMetadata,
             annenPartsUttakErLagtTilIPlan: true,
         });
+        return uttaksplanForslagMedAnnenPartsVedtak;
     } else if (annenPartsPerioder && annenPartsPerioder.length > 0) {
-        uttaksplanForslagMedAnnenPartsVedtak = annenPartsPerioder;
         oppdaterUttaksplanMetadata({
             ...uttaksplanMetadata,
             annenPartsUttakErLagtTilIPlan: true,
         });
+        return annenPartsPerioder;
     } else {
-        uttaksplanForslagMedAnnenPartsVedtak = søkerensUttaksplanForslag;
+        return søkerensUttaksplanForslag;
     }
-    return uttaksplanForslagMedAnnenPartsVedtak;
 };
