@@ -1,6 +1,6 @@
 const HvorMyeIkon = () => (
     <svg width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_2436_45089)">
+        <g clipPath="url(#clip0_2436_45089)">
             <rect x="19.5898" y="1.77783" width="3.09791" height="10.2924" fill="#FFECCC" />
             <rect x="19.5898" y="30.5967" width="3.09791" height="10.2924" fill="#FFECCC" />
             <rect
@@ -90,12 +90,12 @@ const HvorMyeIkon = () => (
                 height="18.2222"
                 rx="5.77778"
                 stroke="#23262A"
-                stroke-width="1.33333"
+                strokeWidth="1.33333"
             />
             <path
                 d="M41.1931 5.7037C41.1931 8.49279 38.9598 10.7407 36.2209 10.7407C33.482 10.7407 31.2487 8.49279 31.2487 5.7037C31.2487 2.91462 33.482 0.666667 36.2209 0.666667C38.9598 0.666667 41.1931 2.91462 41.1931 5.7037Z"
                 stroke="#23262A"
-                stroke-width="1.33333"
+                strokeWidth="1.33333"
             />
             <mask id="path-15-inside-1_2436_45089" fill="white">
                 <ellipse cx="34.6102" cy="5.70398" rx="0.805556" ry="0.814815" />
@@ -115,22 +115,22 @@ const HvorMyeIkon = () => (
                 fill="#23262A"
                 mask="url(#path-17-inside-2_2436_45089)"
             />
-            <path d="M39.4451 9.582L31.9375 17.1084" stroke="#23262A" stroke-width="1.33333" />
+            <path d="M39.4451 9.582L31.9375 17.1084" stroke="#23262A" strokeWidth="1.33333" />
             <path
                 d="M0.912637 17.5765L13.9992 10.021L17.1486 15.4759C19.2351 19.0897 17.9969 23.7106 14.3831 25.797C10.7694 27.8834 6.14845 26.6452 4.06204 23.0315L0.912637 17.5765Z"
                 stroke="#23262A"
-                stroke-width="1.33333"
+                strokeWidth="1.33333"
             />
             <path
                 d="M27.9975 34.2706L14.9109 41.8262L11.7615 36.3713C9.6751 32.7575 10.9133 28.1366 14.527 26.0502C18.1408 23.9638 22.7617 25.2019 24.8481 28.8157L27.9975 34.2706Z"
                 stroke="#23262A"
-                stroke-width="1.33333"
+                strokeWidth="1.33333"
             />
-            <path d="M5.13281 23.5571L17.4496 16.446" stroke="#23262A" stroke-width="1.33333" />
+            <path d="M5.13281 23.5571L17.4496 16.446" stroke="#23262A" strokeWidth="1.33333" />
             <path
                 d="M14.9111 41.8265L13.686 39.7045L18.0822 32.2078L26.7726 32.1489L27.9977 34.2709L14.9111 41.8265Z"
                 stroke="#23262A"
-                stroke-width="1.33333"
+                strokeWidth="1.33333"
             />
             <mask id="path-24-inside-3_2436_45089" fill="white">
                 <ellipse cx="14.4549" cy="25.7589" rx="1.1746" ry="1.16828" transform="rotate(-30 14.4549 25.7589)" />
