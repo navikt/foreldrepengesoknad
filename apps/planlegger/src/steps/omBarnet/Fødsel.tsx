@@ -7,6 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, getNavnPåSøker, isAlene, isFar, isMor } from 'types/HvemPlanlegger';
+import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, Radio, VStack } from '@navikt/ds-react';
 
@@ -54,7 +55,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                 validate={[
                     isRequired(
                         intl.formatMessage({
-                            id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
+                            id: 'validation.required',
                         }),
                     ),
                 ]}
@@ -84,9 +85,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                 maxDate={dayjs().toDate()}
                                 autofocusWhenEmpty
                                 validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.duMåOppgi' }),
-                                    ),
+                                    isRequired(intl.formatMessage({ id: 'validation.required' })),
                                     isValidDate(
                                         intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.gyldig' }),
                                     ),
@@ -101,6 +100,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                         }),
                                     ),
                                 ]}
+                                customErrorFormatter={formatError}
                             />
                             <Datepicker
                                 label={<FormattedMessage id="barnet.nårVarTermin" />}
@@ -108,9 +108,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                 minDate={dayjs().subtract(3, 'week').toDate()}
                                 maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                                 validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.duMåOppgi' }),
-                                    ),
+                                    isRequired(intl.formatMessage({ id: 'validation.required' })),
                                     isValidDate(
                                         intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' }),
                                     ),
@@ -121,6 +119,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                         }),
                                     ),
                                 ]}
+                                customErrorFormatter={formatError}
                             />
                         </VStack>
                     </GreenPanel>
@@ -183,7 +182,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                             maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                             autofocusWhenEmpty
                             validate={[
-                                isRequired(intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.duMåOppgi' })),
+                                isRequired(intl.formatMessage({ id: 'validation.required' })),
                                 isValidDate(intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' })),
                                 isLessThanThreeWeeksAgo(
                                     intl.formatMessage({
@@ -196,6 +195,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                     }),
                                 ),
                             ]}
+                            customErrorFormatter={formatError}
                         />
                     </GreenPanel>
                     {dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (

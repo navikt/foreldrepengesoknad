@@ -78,7 +78,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             validate={[
                                 isRequired(
                                     intl.formatMessage({
-                                        id: 'feilmelding.fødselPanel.fødselEllerAdopsjon.duMåOppgi',
+                                        id: 'validation.required',
                                     }),
                                 ),
                             ]}
@@ -97,7 +97,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                 validate={[
                                     isRequired(
                                         intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.erBarnetFødt.duMåOppgi',
+                                            id: 'validation.required',
                                         }),
                                     ),
                                 ]}

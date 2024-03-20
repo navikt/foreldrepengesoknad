@@ -24,6 +24,7 @@ import {
     isMorOgMedmor,
 } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { formatError } from 'utils/customErrorFormatter';
 import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -35,7 +36,7 @@ import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper
 import { BodyLong, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { notEmpty } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
     isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)
@@ -219,6 +220,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 setCurrentOption(e.target.value);
                                             }}
                                             autofocusWhenEmpty
+                                            validate={[isRequired(intl.formatMessage({ id: 'validation.required' }))]}
+                                            customErrorFormatter={formatError}
                                         >
                                             {fellesperiodeSelectOptions}
                                         </Select>
