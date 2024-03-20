@@ -23,7 +23,7 @@ const findPeriodType = (year: number, month: number, day: number, periods: Perio
 
     const farsPeriode = periods.find((p) => p.type === 'far' || p.type === 'aktivitetskrav');
 
-    if (date.isBefore(fomFørstePeriode) || date.isAfter(tomSistePeriode)) {
+    if (date.isBefore(fomFørstePeriode, 'day') || date.isAfter(tomSistePeriode, 'day')) {
         return PeriodType.INGEN;
     }
 
@@ -37,17 +37,18 @@ const findPeriodType = (year: number, month: number, day: number, periods: Perio
 
     if (
         morEllerAktivitetfriPeriode &&
-        date.isBetween(morEllerAktivitetfriPeriode.fom, morEllerAktivitetfriPeriode.tom)
+        date.isBetween(morEllerAktivitetfriPeriode.fom, morEllerAktivitetfriPeriode.tom, 'day', '[]')
     ) {
         return PeriodType.FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI;
     }
-    if (førTermin && date.isBetween(førTermin.fom, førTermin.tom)) {
+    if (førTermin && date.isBetween(førTermin.fom, førTermin.tom, 'day', '[]')) {
         return PeriodType.FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI;
     }
 
-    if (farsPeriode && date.isBetween(farsPeriode.fom, farsPeriode.tom)) {
+    if (farsPeriode && date.isBetween(farsPeriode.fom, farsPeriode.tom, 'day', '[]')) {
         return PeriodType.FORELDREPENGER_FAR;
     }
+
     return PeriodType.INGEN;
 };
 
@@ -56,7 +57,7 @@ const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 1 ||
         day === 1 ||
-        periods.some((period) => date.startOf('day').isSame(period.fom.startOf('day')))
+        periods.some((period) => date.isSame(period.fom, 'day'))
     );
 };
 
@@ -65,7 +66,7 @@ const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
         day === date.daysInMonth() ||
-        periods.some((period) => date.startOf('day').isSame(period.tom.startOf('day').subtract(1, 'day')))
+        periods.some((period) => date.isSame(period.tom, 'day'))
     );
 };
 
