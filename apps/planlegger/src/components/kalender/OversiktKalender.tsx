@@ -118,10 +118,12 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
             type: 'mor',
         });
         perioder.push({
-            fom: dayjs(startdatoSøker2).add(1, 'day'),
+            fom: dayjs(startdatoSøker2),
             tom: dayjs(sluttdatoSøker2),
             type: 'far',
         });
+
+        console.log(perioder);
     }
 
     //1. Far har rett, mor ikkje har rett => familiehandelse , medAktivitetskrav, utenAktivitetskrav

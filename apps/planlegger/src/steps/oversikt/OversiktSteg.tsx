@@ -128,7 +128,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                   .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
             : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
 
-    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1) : undefined;
+    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1).add(1, 'day') : undefined;
     const sluttdatoSøker2 =
         antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2.antallUkerSøker2
             ? dayjs(startdatoSøker2)
@@ -207,7 +207,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             values={{
                                                 hvem: hvem1,
                                                 uker: antallUkerSøker1,
-                                                dato: dayjs(startdatoSøker1).add(1, 'day').format('dddd D MMM'),
+                                                dato: dayjs(startdatoSøker1).format('dddd D MMM'),
                                             }}
                                         />
                                     </BodyShort>
@@ -225,7 +225,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                     values={{
                                                         hvem: capitalizeFirstLetter(annenPartTekst),
                                                         uker: antallUkerSøker2,
-                                                        dato: dayjs(startdatoSøker2).add(1, 'day').format('dddd D MMM'),
+                                                        dato: dayjs(startdatoSøker2).format('dddd D MMM'),
                                                     }}
                                                 />
                                             </BodyShort>
