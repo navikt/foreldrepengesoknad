@@ -34,7 +34,6 @@ const findPeriodType = (year: number, month: number, day: number, periods: Perio
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
         return PeriodType.HELGEDAG;
     }
-
     if (
         morEllerAktivitetfriPeriode &&
         date.isBetween(morEllerAktivitetfriPeriode.fom, morEllerAktivitetfriPeriode.tom, 'day', '[]')
@@ -48,7 +47,6 @@ const findPeriodType = (year: number, month: number, day: number, periods: Perio
     if (farsPeriode && date.isBetween(farsPeriode.fom, farsPeriode.tom, 'day', '[]')) {
         return PeriodType.FORELDREPENGER_FAR;
     }
-
     return PeriodType.INGEN;
 };
 
