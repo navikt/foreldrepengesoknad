@@ -1,5 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import Calendar, { Period } from 'components/kalender/Calendar';
+import Calendar, { Period } from 'components/calendar/Calendar';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { getFellesperiodefordelingOptionValues } from 'steps/fordeling/FordelingSteg';

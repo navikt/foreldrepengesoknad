@@ -9,6 +9,9 @@
     margin: 0 auto;
     padding: 2rem;
     background-color: var(--a-surface-default);
+}
+
+.contentBorder {
     border-radius: 0 0 0.5rem 0.5rem;
 }
 
@@ -18,16 +21,17 @@
     background-color: var(--a-surface-default);
 }
 
-.languageToggle {
-    width: 100%;
+@media (max-width: 68px) {
+    .content {
+        max-width: 100%;
+    }
+    .header {
+        max-width: 100%;
+    }
 }
-
 @media (max-width: 768px) {
     .content {
         padding: 1rem;
-        margin: 0 auto;
-        padding: 2rem;
-        background-color: var(--a-surface-default);
     }
     .background {
         background-color: var(--a-surface-default);

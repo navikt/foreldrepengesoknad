@@ -1,7 +1,6 @@
 import { BabyWrappedIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import Infoboks from 'components/infoboks/Infoboks';
-import InfoboksGenerell from 'components/infoboks/InfoboksGenerell';
+import Infoboks from 'components/boxes/Infoboks';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -65,14 +64,15 @@ const Aleneforsørger: FunctionComponent = () => {
                 </BodyLong>
             </Infoboks>
 
-            <InfoboksGenerell
+            <Infoboks
                 header={<FormattedMessage id="barnehageplass.barnehageTittel" />}
                 icon={<InformationIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                isGray
             >
                 <BodyLong>
                     <FormattedMessage id="barnehageplass.barnehageTekst" />
                 </BodyLong>
-            </InfoboksGenerell>
+            </Infoboks>
         </VStack>
     );
 };

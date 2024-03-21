@@ -1,5 +1,5 @@
 import { InformationIcon } from '@navikt/aksel-icons';
-import IconCircle from 'components/ikoner/IconCircle';
+import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 
 import { ExpansionCard, HStack } from '@navikt/ds-react';
@@ -12,9 +12,9 @@ const HvorforSpørNAVOmDette: React.FunctionComponent<Props> = ({ text }) => {
         <ExpansionCard aria-label="">
             <ExpansionCard.Header>
                 <HStack gap="10" align="center">
-                    <IconCircle size="xl" color="green">
+                    <IconCircleWrapper size="xl" color="green">
                         <InformationIcon height={25} width={25} />
-                    </IconCircle>
+                    </IconCircleWrapper>
                     <ExpansionCard.Title size="medium">
                         <FormattedMessage id="hvem.info.tittel" />
                     </ExpansionCard.Title>

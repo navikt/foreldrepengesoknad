@@ -3,10 +3,9 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
+import Infoboks from 'components/boxes/Infoboks';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
-import Infoboks from 'components/infoboks/Infoboks';
-import InfoboksGenerell from 'components/infoboks/InfoboksGenerell';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -126,16 +125,17 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
 
     return (
-        <PlanleggerPage steps={stepConfig}>
+        <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <VStack gap="5">
                         <Heading size="medium" spacing>
                             <FormattedMessage id="periode.tittel" />
                         </Heading>
-                        <InfoboksGenerell
+                        <Infoboks
                             header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
                             icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                            isGray
                         >
                             {erAlenesøker ? (
                                 <BodyLong>
@@ -156,9 +156,9 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     )}
                                 </BodyLong>
                             )}
-                        </InfoboksGenerell>
+                        </Infoboks>
                         {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
-                            <InfoboksGenerell
+                            <Infoboks
                                 header={
                                     <>
                                         {farHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareMorHarRett" />}
@@ -166,6 +166,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     </>
                                 }
                                 icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                                isGray
                             >
                                 {farHarIkkeRett && (
                                     <VStack gap="2">
@@ -201,7 +202,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         </BodyLong>
                                     </VStack>
                                 )}
-                            </InfoboksGenerell>
+                            </Infoboks>
                         )}
 
                         <GreenRadioGroup
@@ -291,7 +292,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </VStack>
                 </VStack>
             </Form>
-        </PlanleggerPage>
+        </PlanleggerStepPage>
     );
 };
 

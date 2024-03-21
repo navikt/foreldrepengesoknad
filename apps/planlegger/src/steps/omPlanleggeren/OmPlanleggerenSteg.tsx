@@ -1,8 +1,7 @@
 import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import LanguageToggle from 'components/LanguageToggle';
-import IconCircle from 'components/ikoner/IconCircle';
-import PlanleggerFrontpage from 'components/planleggerPage/PlanleggerFrontpage';
+import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
+import LanguageToggle from 'components/language/LanguageToggle';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -10,6 +9,7 @@ import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-rea
 
 import { LocaleAll } from '@navikt/fp-types';
 
+import PlanleggerForside from './PlanleggerForside';
 import styles from './omPlanleggerenSteg.module.css';
 
 interface Props {
@@ -21,7 +21,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
     const navigator = usePlanleggerNavigator();
 
     return (
-        <PlanleggerFrontpage locale={locale} changeLocale={changeLocale}>
+        <PlanleggerForside locale={locale} changeLocale={changeLocale}>
             <VStack gap="10">
                 <BodyShort size="large">
                     <FormattedMessage id="om.ingress" />
@@ -32,17 +32,17 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                             <FormattedMessage id="om.underoverskrift" />
                         </Heading>
                         <HStack gap="4" align="center" wrap={false}>
-                            <IconCircle color="green" size="medium">
+                            <IconCircleWrapper color="green" size="medium">
                                 <QuestionmarkIcon width="24" height="25" />
-                            </IconCircle>
+                            </IconCircleWrapper>
                             <BodyShort>
                                 <FormattedMessage id="om.trinn1" />
                             </BodyShort>
                         </HStack>
                         <HStack gap="4" align="center" wrap={false}>
-                            <IconCircle color="green" size="medium">
+                            <IconCircleWrapper color="green" size="medium">
                                 <CalendarIcon width="24" height="25" />
-                            </IconCircle>
+                            </IconCircleWrapper>
                             <BodyShort>
                                 <FormattedMessage id="om.trinn2" />
                             </BodyShort>
@@ -67,7 +67,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                     </HStack>
                 </Show>
             </VStack>
-        </PlanleggerFrontpage>
+        </PlanleggerForside>
     );
 };
 

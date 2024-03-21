@@ -2,8 +2,8 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infoboks from 'components/infoboks/Infoboks';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import Infoboks from 'components/boxes/Infoboks';
+import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
@@ -59,7 +59,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const erAlenesøker = isAlene(hvemPlanlegger);
 
     return (
-        <PlanleggerPage steps={stepConfig}>
+        <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <Heading level="2" size="medium">
@@ -166,7 +166,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                     </VStack>
                 </VStack>
             </Form>
-        </PlanleggerPage>
+        </PlanleggerStepPage>
     );
 };
 

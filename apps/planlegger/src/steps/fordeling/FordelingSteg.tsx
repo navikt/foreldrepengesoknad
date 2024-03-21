@@ -2,10 +2,9 @@ import { CalendarIcon, SectorChartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import GreenPanel from 'components/GreenPanel';
-import Infoboks from 'components/infoboks/Infoboks';
-import InfoboksGenerell from 'components/infoboks/InfoboksGenerell';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import GreenPanel from 'components/boxes/GreenPanel';
+import Infoboks from 'components/boxes/Infoboks';
+import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -184,7 +183,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     );
 
     return (
-        <PlanleggerPage steps={stepConfig}>
+        <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="20">
                     <VStack gap="10">
@@ -194,7 +193,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         {!isAlene(hvemPlanlegger) && dekningsgrad && (
                             <VStack gap="10">
                                 <VStack gap="10">
-                                    <InfoboksGenerell
+                                    <Infoboks
                                         header={<FormattedMessage id="fordeling.infoboks.hvordanFordeleTittel" />}
                                         icon={
                                             <SectorChartIcon
@@ -204,11 +203,12 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 fontSize="1.5rem"
                                             />
                                         }
+                                        isGray
                                     >
                                         <BodyLong>
                                             <FormattedMessage id="fordeling.infoboks.hvordanFordeleTekst" />
                                         </BodyLong>
-                                    </InfoboksGenerell>
+                                    </Infoboks>
                                 </VStack>
 
                                 <VStack gap="10">
@@ -297,7 +297,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </VStack>
                 </VStack>
             </Form>
-        </PlanleggerPage>
+        </PlanleggerStepPage>
     );
 };
 

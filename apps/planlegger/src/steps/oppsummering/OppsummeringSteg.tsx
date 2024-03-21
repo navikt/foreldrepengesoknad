@@ -1,12 +1,9 @@
 import { ArrowLeftIcon, CalendarIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import OppgittInformasjon from 'components/expansionCard/OppgittInformasjon';
-import HvorMyeIkon from 'components/ikoner/HvorMyeIkon';
-import IconCircle from 'components/ikoner/IconCircle';
-import Infoboks from 'components/infoboks/Infoboks';
-import OversiktKalender from 'components/kalender/OversiktKalender';
-import OppsummeringHeader from 'components/oppsummeringPage/OppsummeringHeader';
+import Infoboks from 'components/boxes/Infoboks';
+import OversiktKalender from 'components/calendar/OversiktKalender';
+import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
@@ -19,7 +16,10 @@ import { Alert, BodyLong, Box, Button, ExpansionCard, HStack, Heading, Link, Loa
 import { links } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
-import HvaSkjerNårIkon from '../../components/ikoner/HvaSkjerNårIkon';
+import OppgittInformasjon from './OppgittInformasjon';
+import OppsummeringHeader from './OppsummeringHeader';
+import HvaSkjerNårIkon from './ikoner/HvaSkjerNårIkon';
+import HvorMyeIkon from './ikoner/HvorMyeIkon';
 import styles from './oppsummering.module.css';
 
 interface Props {
@@ -57,7 +57,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     //TODO: dra ut expansioncards til egne komponenter
     //TODO: bruk input data til å vise riktig i kalenderen
     return (
-        <div>
+        <>
             <OppsummeringHeader>
                 <VStack gap="10">
                     {!harRett && (
@@ -128,9 +128,9 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <ExpansionCard aria-label="">
                                     <ExpansionCard.Header>
                                         <HStack gap="5" align="center">
-                                            <IconCircle size="large" color="green">
+                                            <IconCircleWrapper size="large" color="green">
                                                 <CalendarIcon height={28} width={28} fontSize="1.5rem" />
-                                            </IconCircle>
+                                            </IconCircleWrapper>
                                             <ExpansionCard.Title size="medium">
                                                 {isAlene(hvemPlanlegger) ? (
                                                     <FormattedMessage id="oppsummering.planenDin" />
@@ -205,7 +205,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </Link>
                 </VStack>
             </div>
-        </div>
+        </>
     );
 };
 export default Oppsummering;

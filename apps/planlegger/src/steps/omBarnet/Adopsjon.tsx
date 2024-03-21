@@ -1,4 +1,4 @@
-import GreenPanel from 'components/GreenPanel';
+import GreenPanel from 'components/boxes/GreenPanel';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';

@@ -3,7 +3,7 @@ import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -48,7 +48,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
     const erAlenesøker = isAlene(hvemPlanlegger);
 
     return (
-        <PlanleggerPage steps={stepConfig}>
+        <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="5">
                     <Heading level="2" size="medium">
@@ -95,7 +95,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     </VStack>
                 </VStack>
             </Form>
-        </PlanleggerPage>
+        </PlanleggerStepPage>
     );
 };
 

@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/browser';
 import { Component } from 'react';
 
-import ErrorPage from './ErrorPage';
+import ErrorPage, { AppName } from './ErrorPage';
 
 interface Props {
-    appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger' | 'Foreldrepengeplanlegger';
+    appName: AppName;
     children: React.ReactNode;
     retryCallback: () => void;
 }

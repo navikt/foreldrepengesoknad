@@ -4,7 +4,7 @@ import { formatError } from 'utils/customErrorFormatter';
 
 import { RadioGroup } from '@navikt/fp-form-hooks';
 
-import GreenPanel from '../GreenPanel';
+import GreenPanel from '../boxes/GreenPanel';
 
 const GreenRadioGroup: FunctionComponent<ComponentProps<typeof RadioGroup>> = (props) => {
     const formMethods = useFormContext();
