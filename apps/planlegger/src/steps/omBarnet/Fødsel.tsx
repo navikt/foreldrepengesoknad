@@ -86,17 +86,15 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                 autofocusWhenEmpty
                                 validate={[
                                     isRequired(intl.formatMessage({ id: 'validation.required' })),
-                                    isValidDate(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.fødselsdato.gyldig' }),
-                                    ),
+                                    isValidDate(intl.formatMessage({ id: 'validation.validDate' })),
                                     isBeforeTodayOrToday(
                                         intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.fødselsdato.måVæreIdagEllerTidligere',
+                                            id: 'validation.inFuture',
                                         }),
                                     ),
                                     isAfterOrSameAsSixMonthsAgo(
                                         intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.fødselsdato.ikkeMerEnn6MånederTilbake',
+                                            id: 'validation.olderThan6months',
                                         }),
                                     ),
                                 ]}
@@ -109,13 +107,11 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                 maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                                 validate={[
                                     isRequired(intl.formatMessage({ id: 'validation.required' })),
-                                    isValidDate(
-                                        intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' }),
-                                    ),
+                                    isValidDate(intl.formatMessage({ id: 'validation.validDate' })),
 
                                     erI22SvangerskapsukeEllerSenere(
                                         intl.formatMessage({
-                                            id: 'feilmelding.fødselPanel.termindato.duMåVæreIUke22',
+                                            id: 'validation.duMåVæreIUke22',
                                         }),
                                     ),
                                 ]}
@@ -183,15 +179,15 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                             autofocusWhenEmpty
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'validation.required' })),
-                                isValidDate(intl.formatMessage({ id: 'feilmelding.fødselPanel.termindato.gyldig' })),
+                                isValidDate(intl.formatMessage({ id: 'validation.validDate' })),
                                 isLessThanThreeWeeksAgo(
                                     intl.formatMessage({
-                                        id: 'feilmelding.fødselPanel.termindato.termindatoKanIkkeVære3UkerFraIdag',
+                                        id: 'validation.kanIkkeVære3UkerFraIdag',
                                     }),
                                 ),
                                 erI22SvangerskapsukeEllerSenere(
                                     intl.formatMessage({
-                                        id: 'feilmelding.fødselPanel.termindato.duMåVæreIUke22',
+                                        id: 'validation.duMåVæreIUke22',
                                     }),
                                 ),
                             ]}
