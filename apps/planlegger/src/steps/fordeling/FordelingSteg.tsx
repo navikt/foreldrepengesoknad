@@ -3,7 +3,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import GreenPanel from 'components/boxes/GreenPanel';
-import Infoboks from 'components/boxes/Infoboks';
+import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
@@ -193,7 +193,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         {!isAlene(hvemPlanlegger) && dekningsgrad && (
                             <VStack gap="10">
                                 <VStack gap="10">
-                                    <Infoboks
+                                    <Infobox
                                         header={<FormattedMessage id="fordeling.infoboks.hvordanFordeleTittel" />}
                                         icon={
                                             <SectorChartIcon
@@ -208,7 +208,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         <BodyLong>
                                             <FormattedMessage id="fordeling.infoboks.hvordanFordeleTekst" />
                                         </BodyLong>
-                                    </Infoboks>
+                                    </Infobox>
                                 </VStack>
 
                                 <VStack gap="10">
@@ -228,7 +228,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     </GreenPanel>
 
                                     {currentOption !== undefined && currentOption > '0' && (
-                                        <Infoboks
+                                        <Infobox
                                             header={<FormattedMessage id="fordeling.infoboksTittel" />}
                                             icon={
                                                 <CalendarIcon
@@ -279,7 +279,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             <BodyLong size="small">
                                                 <FormattedMessage id="fordeling.infoboksTekst.hvis" />
                                             </BodyLong>
-                                        </Infoboks>
+                                        </Infobox>
                                     )}
                                 </VStack>
                             </VStack>

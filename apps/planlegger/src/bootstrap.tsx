@@ -1,13 +1,16 @@
-import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import * as countries from 'i18n-iso-countries';
-import AppContainer from './AppContainer';
-import { initAmplitude } from '@navikt/fp-metrics';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
-import './styles/global.less';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import '@navikt/ds-css';
+
+import { initAmplitude } from '@navikt/fp-metrics';
+
+import AppContainer from './AppContainer';
+import './styles/global.less';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
@@ -25,4 +28,8 @@ initAmplitude();
 const container = document.getElementById('app');
 const root = createRoot(container!);
 
-root.render(<AppContainer />);
+root.render(
+    <StrictMode>
+        <AppContainer />
+    </StrictMode>,
+);

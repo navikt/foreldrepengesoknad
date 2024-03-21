@@ -5,15 +5,10 @@ interface Props {
     isDarkGreen?: boolean;
 }
 
-const GreenPanel: React.FunctionComponent<Props> = ({ children, isDarkGreen }) => {
-    return (
-        <Box
-            background={isDarkGreen ? 'surface-alt-2-moderate' : 'surface-alt-2-subtle'}
-            borderRadius="large"
-            padding="4"
-        >
-            {children}
-        </Box>
-    );
-};
+const GreenPanel: React.FunctionComponent<Props> = ({ children, isDarkGreen }) => (
+    <Box background={isDarkGreen ? 'surface-alt-2-moderate' : 'surface-alt-2-subtle'} borderRadius="large" padding="4">
+        {children}
+    </Box>
+);
+
 export default GreenPanel;

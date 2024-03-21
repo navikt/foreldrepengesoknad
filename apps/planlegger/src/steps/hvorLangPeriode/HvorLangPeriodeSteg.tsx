@@ -3,7 +3,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infoboks from 'components/boxes/Infoboks';
+import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
@@ -132,7 +132,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         <Heading size="medium" spacing>
                             <FormattedMessage id="periode.tittel" />
                         </Heading>
-                        <Infoboks
+                        <Infobox
                             header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
                             icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                             isGray
@@ -156,9 +156,9 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     )}
                                 </BodyLong>
                             )}
-                        </Infoboks>
+                        </Infobox>
                         {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
-                            <Infoboks
+                            <Infobox
                                 header={
                                     <>
                                         {farHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareMorHarRett" />}
@@ -202,7 +202,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         </BodyLong>
                                     </VStack>
                                 )}
-                            </Infoboks>
+                            </Infobox>
                         )}
 
                         <GreenRadioGroup
@@ -232,7 +232,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </Radio>
                         </GreenRadioGroup>
                         {dekningsgrad && (
-                            <Infoboks
+                            <Infobox
                                 header={
                                     <FormattedMessage
                                         id="periode.infoboks.sisteDagTittel"
@@ -280,7 +280,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         </BodyLong>
                                     </VStack>
                                 )}
-                            </Infoboks>
+                            </Infobox>
                         )}
                     </VStack>
                     <VStack gap="10">

@@ -1,5 +1,5 @@
 import { CheckmarkIcon, XMarkIcon } from '@navikt/aksel-icons';
-import Infoboks from 'components/boxes/Infoboks';
+import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -30,7 +30,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
     return (
         <VStack gap="10">
             {arbeidssituasjon === ArbeidssituasjonEnum.JOBBER && (
-                <Infoboks
+                <Infobox
                     header={
                         <FormattedMessage
                             id="arbeid.jobber.infoboks.harRettTilForeldrepenger"
@@ -45,10 +45,10 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             values={{ navn: fornavnSøker }}
                         />
                     </BodyLong>
-                </Infoboks>
+                </Infobox>
             )}
             {arbeidssituasjon === ArbeidssituasjonEnum.UFØR && (
-                <Infoboks
+                <Infobox
                     header={
                         <FormattedMessage
                             id="arbeid.infoboks.harIkkeRettTilForeldrepenger"
@@ -73,10 +73,10 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             }}
                         />
                     </BodyLong>
-                </Infoboks>
+                </Infobox>
             )}
             {arbeidssituasjon === ArbeidssituasjonEnum.INGEN && (
-                <Infoboks
+                <Infobox
                     header={
                         <FormattedMessage
                             id="arbeid.infoboks.harIkkeRettTilForeldrepenger"
@@ -101,7 +101,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             }}
                         />
                     </BodyLong>
-                </Infoboks>
+                </Infobox>
             )}
             {arbeidssituasjon && (
                 <VStack gap="5">
@@ -118,7 +118,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                         </Radio>
                     </GreenRadioGroup>
                     {arbeidssituasjonAnnenPart === true && (
-                        <Infoboks
+                        <Infobox
                             header={
                                 <FormattedMessage
                                     id="arbeid.jobber.infoboks.harRettTilForeldrepenger"
@@ -130,10 +130,10 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             <BodyLong>
                                 <FormattedMessage id="arbeid.jobber.infoboks.harJobbetSeksAvTiMnd" />
                             </BodyLong>
-                        </Infoboks>
+                        </Infobox>
                     )}
                     {arbeidssituasjonAnnenPart === false && (
-                        <Infoboks
+                        <Infobox
                             header={
                                 <FormattedMessage
                                     id="arbeid.infoboks.harIkkeRettTilForeldrepenger"
@@ -145,7 +145,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             <BodyLong>
                                 <FormattedMessage id="arbeid.ingen.infoboks.manHarIkkeRett" />
                             </BodyLong>
-                        </Infoboks>
+                        </Infobox>
                     )}
                 </VStack>
             )}
