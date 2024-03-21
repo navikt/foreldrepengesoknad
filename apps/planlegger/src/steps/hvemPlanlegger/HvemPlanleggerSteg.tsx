@@ -1,8 +1,8 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import useStepData from 'appData/useStepData';
-import GreenPanel from 'components/GreenPanel';
+import GreenPanel from 'components/boxes/GreenPanel';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -37,7 +37,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
     const erHvemPlanleggerIkkeOppgittFraFør = hvemPlanlegger === undefined;
 
     return (
-        <PlanleggerPage steps={stepConfig}>
+        <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <GreenRadioGroup
@@ -113,7 +113,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                     </VStack>
                 </VStack>
             </Form>
-        </PlanleggerPage>
+        </PlanleggerStepPage>
     );
 };
 

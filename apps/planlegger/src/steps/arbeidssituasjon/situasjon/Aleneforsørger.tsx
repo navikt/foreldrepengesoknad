@@ -1,4 +1,4 @@
-import Infoboks from 'components/infoboks/Infoboks';
+import Infoboks from 'components/boxes/Infoboks';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';

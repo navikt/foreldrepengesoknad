@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FormattedMessage } from 'react-intl';
@@ -23,7 +23,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
     return (
-        <PlanleggerPage steps={stepConfig}>
+        <PlanleggerStepPage steps={stepConfig}>
             <VStack gap="10">
                 <Heading size="large">
                     <FormattedMessage id="barnehageplass.tittel" />
@@ -42,7 +42,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                     </VStack>
                 </VStack>
             </VStack>
-        </PlanleggerPage>
+        </PlanleggerStepPage>
     );
 };
 

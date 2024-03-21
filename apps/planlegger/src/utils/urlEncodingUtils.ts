@@ -31,14 +31,14 @@ function isWellFormed(str: string) {
     }
 }
 
-export const encodeToBase64String = (stringToBeEncoded: string) => {
+export const encodeToBase64 = (stringToBeEncoded: string) => {
     if (isWellFormed(stringToBeEncoded)) {
         return bytesToBase64(new TextEncoder().encode(stringToBeEncoded));
     }
     throw Error('Error in base64 encoding');
 };
 
-export const decodeBase64String = (stringToBeDecoded: string) => {
+export const decodeBase64 = (stringToBeDecoded: string) => {
     if (isWellFormed(stringToBeDecoded)) {
         return new TextDecoder().decode(base64ToBytes(stringToBeDecoded));
     }

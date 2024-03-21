@@ -2,13 +2,9 @@ import { HeartFillIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import OmÅTilpassePlanen from 'components/expansionCard/OmÅTilpassePlanen';
-import UforutsetteEndringer from 'components/expansionCard/UforutsetteEndringer';
-import BlåSirkel from 'components/ikoner/BlåSirkel';
-import GrønnSirkel from 'components/ikoner/GrønnSirkel';
-import InfoboksGenerell from 'components/infoboks/InfoboksGenerell';
-import OversiktKalender from 'components/kalender/OversiktKalender';
-import PlanleggerPage from 'components/planleggerPage/PlanleggerPage';
+import Infoboks from 'components/boxes/Infoboks';
+import OversiktKalender from 'components/calendar/OversiktKalender';
+import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FunctionComponent, useState } from 'react';
@@ -41,6 +37,11 @@ import { Form, Select } from '@navikt/fp-form-hooks';
 import { StepButtons } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
+
+import OmÅTilpassePlanen from './OmÅTilpassePlanen';
+import UforutsetteEndringer from './UforutsetteEndringer';
+import BlåSirkel from './ikoner/BlåSirkel';
+import GrønnSirkel from './ikoner/GrønnSirkel';
 
 dayjs.locale('nb');
 
@@ -88,6 +89,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const periode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
 
     const formMethods = useForm<Fordeling>({
         defaultValues: {
@@ -154,8 +156,6 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
 
-    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
-
     const kunFarHarRettHovedsøker =
         hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR &&
         (arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER ||
@@ -180,14 +180,15 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     return (
         <Form formMethods={formMethods}>
-            <PlanleggerPage steps={stepConfig}>
+            <PlanleggerStepPage steps={stepConfig}>
                 <VStack gap="10">
                     <Heading size="large" spacing>
                         {erAleneforsørger && <FormattedMessage id="oversikt.tittelDeg" />}
                         {!erAleneforsørger && <FormattedMessage id="oversikt.tittel" />}
                     </Heading>
-                    <InfoboksGenerell
+                    <Infoboks
                         header={<FormattedMessage id="oversikt.infoboks.utkast" />}
+                        isGray
                         icon={<InformationIcon height={24} width={24} fontSize="1-5rem" />}
                     >
                         <BodyLong>
@@ -197,7 +198,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage id="oversikt.infoboks.utkast.tekst" />
                             )}
                         </BodyLong>
-                    </InfoboksGenerell>
+                    </Infoboks>
                     <ToggleGroup
                         defaultValue={periode?.dekningsgrad}
                         size="medium"
@@ -346,7 +347,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         useSimplifiedTexts
                     />
                 </VStack>
-            </PlanleggerPage>
+            </PlanleggerStepPage>
         </Form>
     );
 };
