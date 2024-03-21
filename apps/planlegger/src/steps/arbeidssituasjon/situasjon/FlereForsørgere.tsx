@@ -1,6 +1,6 @@
 import { CheckmarkIcon, XMarkIcon } from '@navikt/aksel-icons';
+import Infoboks from 'components/boxes/Infoboks';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
-import Infoboks from 'components/infoboks/Infoboks';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';

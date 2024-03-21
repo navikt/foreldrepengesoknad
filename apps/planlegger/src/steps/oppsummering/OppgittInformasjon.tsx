@@ -1,7 +1,7 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import GreenPanel from 'components/GreenPanel';
-import IconCircle from 'components/ikoner/IconCircle';
+import GreenPanel from 'components/boxes/GreenPanel';
+import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -105,9 +105,9 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
             <ExpansionCard aria-label="">
                 <ExpansionCard.Header>
                     <HStack gap="5" align="center">
-                        <IconCircle size="large" color="green">
+                        <IconCircleWrapper size="large" color="green">
                             <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" />
-                        </IconCircle>
+                        </IconCircleWrapper>
                         <ExpansionCard.Title size="medium">
                             {isAlene(hvemPlanlegger) ? (
                                 <FormattedMessage id="oppsummering.oppgittInformasjonDeg" />

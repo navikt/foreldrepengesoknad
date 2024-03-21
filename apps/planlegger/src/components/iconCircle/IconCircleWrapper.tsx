@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactElement } from 'react';
 
-import styles from './ikonCircle.module.css';
+import styles from './iconCircleWrapper.module.css';
 
 type CircleColor = 'darkGreen' | 'mediumGreen' | 'green' | 'gray' | 'blue' | 'lightBlue';
 type CircleSize = 'medium' | 'large' | 'xl';

@@ -1,7 +1,7 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
-import GreenPanel from 'components/GreenPanel';
+import GreenPanel from 'components/boxes/GreenPanel';
+import Infoboks from 'components/boxes/Infoboks';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
-import Infoboks from 'components/infoboks/Infoboks';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';

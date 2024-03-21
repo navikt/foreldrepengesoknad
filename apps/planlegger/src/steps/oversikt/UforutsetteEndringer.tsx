@@ -1,6 +1,6 @@
 import { ExclamationmarkIcon, PersonPregnantIcon, StethoscopeIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import IconCircle from 'components/ikoner/IconCircle';
+import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 import { isFar } from 'types/HvemPlanlegger';
 
@@ -14,9 +14,9 @@ const UforutsetteEndringer: React.FunctionComponent = () => {
             <ExpansionCard.Header>
                 <HStack gap="10" align="center">
                     <div>
-                        <IconCircle color="green" size="large">
+                        <IconCircleWrapper color="green" size="large">
                             <ExclamationmarkIcon height={22} width={22} fontSize="1.5rem" />
-                        </IconCircle>
+                        </IconCircleWrapper>
                     </div>
                     <div>
                         <ExpansionCard.Title size="medium">
@@ -42,9 +42,9 @@ const Innhold = () => {
             <VStack gap="5">
                 <HStack gap="5" align="start" wrap={false} justify="space-between">
                     <div>
-                        <IconCircle color="lightBlue" size="medium">
+                        <IconCircleWrapper color="lightBlue" size="medium">
                             <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
-                        </IconCircle>
+                        </IconCircleWrapper>
                     </div>
                     <div>
                         <Heading size="small">
@@ -67,9 +67,9 @@ const Innhold = () => {
                 {!erFar && (
                     <HStack gap="5" align="start" wrap={false} justify="space-between">
                         <div>
-                            <IconCircle color="lightBlue" size="medium">
+                            <IconCircleWrapper color="lightBlue" size="medium">
                                 <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
-                            </IconCircle>
+                            </IconCircleWrapper>
                         </div>
                         <div>
                             <Heading size="small">
@@ -84,9 +84,9 @@ const Innhold = () => {
 
                 <HStack gap="5" align="start" wrap={false} justify="space-between">
                     <div>
-                        <IconCircle color="lightBlue" size="medium">
+                        <IconCircleWrapper color="lightBlue" size="medium">
                             <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
-                        </IconCircle>
+                        </IconCircleWrapper>
                     </div>
                     <div>
                         <Heading size="small">

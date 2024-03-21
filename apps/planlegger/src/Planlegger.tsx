@@ -5,7 +5,7 @@ import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import { decodeBase64String } from 'utils/urlEncodingUtils';
+import { decodeBase64 } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
 import { LocaleAll } from '@navikt/fp-types';
@@ -76,7 +76,7 @@ const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) 
     const locations = useLocation();
 
     const data = locations.search.includes('?data')
-        ? JSON.parse(decodeBase64String(locations.search.replace('?data=', '')))
+        ? JSON.parse(decodeBase64(locations.search.replace('?data=', '')))
         : undefined;
 
     return (
