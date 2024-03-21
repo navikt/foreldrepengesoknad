@@ -1,4 +1,4 @@
-import Infoboks from 'components/boxes/Infoboks';
+import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -16,14 +16,14 @@ const Aleneforsørger: FunctionComponent = () => {
     return (
         <>
             {arbeidssituasjon === ArbeidssituasjonEnum.JOBBER && (
-                <Infoboks header={<FormattedMessage id="arbeid.jobber.infoboks.harRettTilForeldrepengerDeg" />}>
+                <Infobox header={<FormattedMessage id="arbeid.jobber.infoboks.harRettTilForeldrepengerDeg" />}>
                     <BodyLong>
                         <FormattedMessage id="arbeid.jobber.infoboks.harJobbetSeksAvTiMnd" />
                     </BodyLong>
-                </Infoboks>
+                </Infobox>
             )}
             {arbeidssituasjon === ArbeidssituasjonEnum.UFØR && (
-                <Infoboks header={<FormattedMessage id="arbeid.infoboks.harIkkeRettTilForeldrepengerDeg" />}>
+                <Infobox header={<FormattedMessage id="arbeid.infoboks.harIkkeRettTilForeldrepengerDeg" />}>
                     <BodyLong>
                         <FormattedMessage id="arbeid.ufør.infoboks.erUførDeg" />
                     </BodyLong>
@@ -39,10 +39,10 @@ const Aleneforsørger: FunctionComponent = () => {
                             }}
                         />
                     </BodyLong>
-                </Infoboks>
+                </Infobox>
             )}
             {arbeidssituasjon === ArbeidssituasjonEnum.INGEN && (
-                <Infoboks header={<FormattedMessage id="arbeid.infoboks.harIkkeRettTilForeldrepengerDeg" />}>
+                <Infobox header={<FormattedMessage id="arbeid.infoboks.harIkkeRettTilForeldrepengerDeg" />}>
                     <BodyLong>
                         <FormattedMessage id="arbeid.ingen.infoboks.manHarIkkeRett" />
                     </BodyLong>
@@ -58,7 +58,7 @@ const Aleneforsørger: FunctionComponent = () => {
                             }}
                         />
                     </BodyLong>
-                </Infoboks>
+                </Infobox>
             )}
         </>
     );

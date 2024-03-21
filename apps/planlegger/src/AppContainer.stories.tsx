@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import { Action, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import MockAdapter from 'axios-mock-adapter';
+import { StrictMode } from 'react';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -55,9 +56,11 @@ const Template: StoryFn<{
         return [200, kontoer];
     });
     return (
-        <PlanleggerDataContext onDispatch={gåTilNesteSide}>
-            <AppContainer />
-        </PlanleggerDataContext>
+        <StrictMode>
+            <PlanleggerDataContext onDispatch={gåTilNesteSide}>
+                <AppContainer />
+            </PlanleggerDataContext>
+        </StrictMode>
     );
 };
 

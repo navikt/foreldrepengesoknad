@@ -2,7 +2,7 @@ import { HeartFillIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infoboks from 'components/boxes/Infoboks';
+import Infobox from 'components/boxes/Infobox';
 import OversiktKalender from 'components/calendar/OversiktKalender';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
@@ -186,7 +186,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         {erAleneforsørger && <FormattedMessage id="oversikt.tittelDeg" />}
                         {!erAleneforsørger && <FormattedMessage id="oversikt.tittel" />}
                     </Heading>
-                    <Infoboks
+                    <Infobox
                         header={<FormattedMessage id="oversikt.infoboks.utkast" />}
                         isGray
                         icon={<InformationIcon height={24} width={24} fontSize="1-5rem" />}
@@ -198,7 +198,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage id="oversikt.infoboks.utkast.tekst" />
                             )}
                         </BodyLong>
-                    </Infoboks>
+                    </Infobox>
                     <ToggleGroup
                         defaultValue={periode?.dekningsgrad}
                         size="medium"

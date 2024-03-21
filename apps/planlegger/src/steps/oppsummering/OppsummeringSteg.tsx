@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, CalendarIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import Infoboks from 'components/boxes/Infoboks';
+import Infoboks from 'components/boxes/Infobox';
 import OversiktKalender from 'components/calendar/OversiktKalender';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FunctionComponent } from 'react';
