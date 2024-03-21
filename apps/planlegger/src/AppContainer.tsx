@@ -6,7 +6,7 @@ import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-utils';
 
 import PlanleggerDataInit from './Planlegger';
-import enMessages from './intl/messages/en_NO.json';
+import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
 
