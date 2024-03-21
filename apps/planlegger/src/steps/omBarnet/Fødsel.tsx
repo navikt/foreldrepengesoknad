@@ -1,6 +1,6 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
 import GreenPanel from 'components/boxes/GreenPanel';
-import Infoboks from 'components/boxes/Infoboks';
+import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
@@ -121,7 +121,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                     </GreenPanel>
 
                     {erFødselsdato !== undefined && dayjs(erFødselsdato).isAfter(DATO_3_ÅR_SIDEN) && (
-                        <Infoboks
+                        <Infobox
                             header={
                                 erAlenesøker ? (
                                     <FormattedMessage id="barnet.født.infoboksTittelDeg" />
@@ -143,10 +143,10 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                     <FormattedMessage id="barnet.født.infoboksTekstFar" />
                                 </BodyLong>
                             )}
-                        </Infoboks>
+                        </Infobox>
                     )}
                     {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATO_3_ÅR_SIDEN) && (
-                        <Infoboks
+                        <Infobox
                             header={
                                 erAlenesøker ? (
                                     <FormattedMessage id="barnet.født.infoboksTittelDeg.eldreEnnTreÅr" />
@@ -163,7 +163,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                             <BodyLong>
                                 <FormattedMessage id="barnet.født.infoboks.manKanSøkeTilbakeITid" />
                             </BodyLong>
-                        </Infoboks>
+                        </Infobox>
                     )}
                 </VStack>
             )}
@@ -197,7 +197,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                     {dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
                         <>
                             {!erFar && (
-                                <Infoboks
+                                <Infobox
                                     header={
                                         erMor ? (
                                             <FormattedMessage
@@ -234,13 +234,13 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                     <BodyLong>
                                         {!erAlenesøker && <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />}
                                     </BodyLong>
-                                </Infoboks>
+                                </Infobox>
                             )}
                         </>
                     )}
                     {termindato !== undefined && dayjs(termindato).isBefore(DATO_3_MND_FRAM) && (
                         <>
-                            <Infoboks
+                            <Infobox
                                 header={
                                     erAlenesøker ? (
                                         <FormattedMessage id="barnet.underTreMndTilTerminDeg" />
@@ -267,7 +267,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                                         <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />
                                     )}
                                 </BodyLong>
-                            </Infoboks>
+                            </Infobox>
                         </>
                     )}
                 </VStack>

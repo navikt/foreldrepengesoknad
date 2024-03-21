@@ -2,7 +2,7 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infoboks from 'components/boxes/Infoboks';
+import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -132,7 +132,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             />
                         )}
                         {erFødsel === false && antallBarn && (
-                            <Infoboks
+                            <Infobox
                                 header={
                                     erAlenesøker ? (
                                         <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoDeg" />
@@ -152,7 +152,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                         <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2" />
                                     )}
                                 </BodyLong>
-                            </Infoboks>
+                            </Infobox>
                         )}
                     </VStack>
                     <VStack gap="10">

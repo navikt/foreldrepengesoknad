@@ -5,7 +5,7 @@ import styles from './iconCircleWrapper.module.css';
 type CircleColor = 'darkGreen' | 'mediumGreen' | 'green' | 'gray' | 'blue' | 'lightBlue';
 type CircleSize = 'medium' | 'large' | 'xl';
 
-const getColor = (color: CircleColor) => {
+const getColor = (color: CircleColor): string => {
     if (color === 'green') {
         return styles.green;
     }
@@ -20,7 +20,7 @@ const getColor = (color: CircleColor) => {
     }
     return color === 'mediumGreen' ? styles.mediumGreen : styles.darkGreen;
 };
-const getSize = (size: CircleSize) => {
+const getSize = (size: CircleSize): string => {
     if (size === 'medium') {
         return styles.mediumCircle;
     }
@@ -34,8 +34,8 @@ interface Props {
     size: CircleSize;
 }
 
-const IconCircle: FunctionComponent<Props> = ({ children, color, size }) => {
-    return <div className={`${getSize(size)} ${getColor(color)}`}>{children}</div>;
-};
+const IconCircle: FunctionComponent<Props> = ({ children, color, size }) => (
+    <div className={`${getSize(size)} ${getColor(color)}`}>{children}</div>
+);
 
 export default IconCircle;
