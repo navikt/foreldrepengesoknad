@@ -12,8 +12,8 @@ import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
-const MAX_FIL_STØRRELSE_KB = 16384;
-const KILOBYTES_IN_BYTE = 0.0009765625;
+const MAX_FIL_STØRRELSE_MB = 16;
+const MEGABYTES_TO_BYTE_RATIO = 1000000
 
 // TODO Fjern any her utan å måtte dra inn axios i denne pakka
 type SaveAttachment = (attachment: Attachment) => Promise<any>;
@@ -38,8 +38,7 @@ const fileExtensionIsValid = (filename: string): boolean => {
 };
 
 const fileSizeIsValid = (filesizeInB: number): boolean => {
-    const filesizeInKb = filesizeInB * KILOBYTES_IN_BYTE;
-    return filesizeInKb <= MAX_FIL_STØRRELSE_KB;
+    return filesizeInB <= MAX_FIL_STØRRELSE_MB * MEGABYTES_TO_BYTE_RATIO;
 };
 
 const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {
