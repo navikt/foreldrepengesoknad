@@ -120,8 +120,6 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
             tom: dayjs(sluttdatoSøker2),
             type: 'medsøker',
         });
-
-        console.log(perioder);
     }
 
     //1. Far har rett, mor ikkje har rett => familiehandelse , medAktivitetskrav, utenAktivitetskrav
@@ -175,7 +173,6 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
             type: 'aktivitetskrav',
         });
     }
-    console.log(perioder);
     return <Calendar periods={perioder} />;
 };
 export default OversiktKalender;

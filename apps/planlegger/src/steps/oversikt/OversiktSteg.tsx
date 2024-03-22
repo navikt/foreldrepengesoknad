@@ -103,8 +103,6 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const erAdoptert = erBarnetAdoptert(barnet);
 
     const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(periode.dekningsgrad);
-    const [currentOption, setCurrentOption] = useState('');
-    console.log(currentOption);
 
     if (!stønadskontoer) {
         return <Loader />;
@@ -218,7 +216,6 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             label={<FormattedMessage id="oversikt.fellesperiodefordeling" />}
                             name="fellesperiodefordeling"
                             onChange={(e) => {
-                                setCurrentOption(e.target.value);
                                 lagreFordeling({ fellesperiodefordeling: e.target.value });
                             }}
                         >

@@ -19,7 +19,7 @@ const Infoboks: React.FC<Props> = ({ header, children, icon, isGray = false }) =
                     {header}
                 </Heading>
                 <IconCircleWrapper size="medium" color={isGray ? 'gray' : 'blue'}>
-                    <>{icon}</>
+                    {icon}
                 </IconCircleWrapper>
             </HStack>
             {children}

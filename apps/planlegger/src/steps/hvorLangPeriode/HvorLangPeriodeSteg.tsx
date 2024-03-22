@@ -64,24 +64,6 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const dekningsgrad = formMethods.watch('dekningsgrad');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
-    const harBeggeRett = () => {
-        if (
-            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.INGEN ||
-            (arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.UFØR &&
-                arbeidssituasjon.arbeidssituasjonAnnenPart === false)
-        ) {
-            return false;
-        }
-        if (
-            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.UFØR &&
-            arbeidssituasjon.arbeidssituasjonAnnenPart === true
-        ) {
-            return true;
-        }
-        return true;
-    };
-    const ingenHarRett = harBeggeRett();
-    console.log(ingenHarRett);
 
     const harMorRett = () => {
         if (

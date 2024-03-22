@@ -54,7 +54,6 @@ const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): st
 
 export const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
     const values = [{ id: 0, antallUkerSøker1: undefined, antallUkerSøker2: undefined }] as Fellesperiodefordeling[];
-    console.log(antallUkerFellesperiode);
 
     for (let i = 0; i <= antallUkerFellesperiode; i++) {
         const value = { id: i + 1, antallUkerSøker2: antallUkerFellesperiode - i, antallUkerSøker1: i };
