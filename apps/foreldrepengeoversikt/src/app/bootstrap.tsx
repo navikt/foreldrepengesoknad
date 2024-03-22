@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/browser';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import '@navikt/ds-css';
@@ -25,5 +26,9 @@ initAmplitude();
 const container = document.getElementById('app');
 if (container) {
     const root = createRoot(container);
-    root.render(<AppContainer />);
+    root.render(
+        <StrictMode>
+            <AppContainer />
+        </StrictMode>,
+    );
 }
