@@ -13,7 +13,7 @@ import { FileUploadError } from './typer/FileUploadError';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
-const MEGABYTES_TO_BYTE_RATIO = 1000000
+const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
 // TODO Fjern any her utan å måtte dra inn axios i denne pakka
 type SaveAttachment = (attachment: Attachment) => Promise<any>;
@@ -38,7 +38,7 @@ const fileExtensionIsValid = (filename: string): boolean => {
 };
 
 const fileSizeIsValid = (filesizeInB: number): boolean => {
-    return filesizeInB <= MAX_FIL_STØRRELSE_MB * MEGABYTES_TO_BYTE_RATIO;
+    return filesizeInB <= MAX_FIL_STØRRELSE_BYTES;
 };
 
 const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {

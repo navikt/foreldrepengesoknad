@@ -29,7 +29,7 @@ export interface Props {
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
-const MEGABYTES_TO_BYTE_RATIO = 1000000
+const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
 const mapFilerTilPendingVedlegg = (
     filer: File[],
@@ -49,7 +49,7 @@ const fileExtensionIsValid = (filename: string): boolean => {
 };
 
 const fileSizeIsValid = (filesizeInB: number): boolean => {
-    return filesizeInB <= MAX_FIL_STØRRELSE_MB * MEGABYTES_TO_BYTE_RATIO;
+    return filesizeInB <= MAX_FIL_STØRRELSE_BYTES;
 };  
 
 const sjekkVedlegg = (
