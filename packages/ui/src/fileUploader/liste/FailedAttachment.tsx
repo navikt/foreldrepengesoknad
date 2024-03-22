@@ -6,7 +6,7 @@ import { Attachment } from '@navikt/fp-types';
 
 import { FileUploadError } from '../typer/FileUploadError';
 
-const MAX_FIL_STØRRELSE_KB = 16777;
+const MAX_FIL_STØRRELSE_KB = 16384;
 
 interface OwnProps {
     failedAttachment: Attachment;

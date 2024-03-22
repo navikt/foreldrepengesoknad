@@ -29,7 +29,7 @@ export interface Props {
 }
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
-const MAX_FIL_STØRRELSE_KB = 16777;
+const MAX_FIL_STØRRELSE_KB = 16384;
 const KILOBYTES_IN_BYTE = 0.0009765625;
 
 const mapFilerTilPendingVedlegg = (
