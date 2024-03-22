@@ -17,7 +17,7 @@ const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => {
             header={
                 <>
                     <Show below="md">
-                        <GreenHeading useDarkGreen>
+                        <GreenHeading isDarkGreen>
                             <HStack gap="4" align="center">
                                 <IconCircleWrapper color="darkGreen" size="xl">
                                     <CheckmarkCircleIcon height={28} width={28} fontSize="1.5rem" />

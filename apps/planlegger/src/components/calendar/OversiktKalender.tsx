@@ -16,6 +16,7 @@ import {
 } from 'utils/stønadskontoer';
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
@@ -62,18 +63,18 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
                 : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
 
         perioder.push({
-            fom: dayjs(startdatoSøker1),
-            tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day'),
+            fom: dayjs(startdatoSøker1).format(ISO_DATE_FORMAT),
+            tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day').format(ISO_DATE_FORMAT),
             type: 'førTermin',
         });
         perioder.push({
-            fom: dayjs(termindatoEllerFødselsdato),
-            tom: dayjs(termindatoEllerFødselsdato),
+            fom: termindatoEllerFødselsdato,
+            tom: termindatoEllerFødselsdato,
             type: 'familiehendelse',
         });
         perioder.push({
-            fom: dayjs(termindatoEllerFødselsdato).add(1, 'day'),
-            tom: dayjs(sluttdatoSøker1),
+            fom: dayjs(termindatoEllerFødselsdato).add(1, 'day').format(ISO_DATE_FORMAT),
+            tom: sluttdatoSøker1.format(ISO_DATE_FORMAT),
             type: 'søker',
         });
     }
@@ -82,7 +83,9 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER &&
         arbeidssituasjon.arbeidssituasjonAnnenPart === true;
     if (beggeHarRett) {
-        const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindatoEllerFødselsdato).toDate());
+        const startdatoSøker1 = dayjs(
+            getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindatoEllerFødselsdato).toDate()),
+        );
         const sluttdatoSøker1 =
             antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1.antallUkerSøker1
                 ? dayjs(startdatoSøker1)
@@ -100,24 +103,24 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
 
         if (hvemPlanlegger.type !== SøkersituasjonEnum.FAR_OG_FAR) {
             perioder.push({
-                fom: dayjs(startdatoSøker1),
-                tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day'),
+                fom: startdatoSøker1.format(ISO_DATE_FORMAT),
+                tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day').format(ISO_DATE_FORMAT),
                 type: 'førTermin',
             });
         }
         perioder.push({
-            fom: dayjs(termindatoEllerFødselsdato),
-            tom: dayjs(termindatoEllerFødselsdato),
+            fom: termindatoEllerFødselsdato,
+            tom: termindatoEllerFødselsdato,
             type: 'familiehendelse',
         });
         perioder.push({
-            fom: dayjs(termindatoEllerFødselsdato).add(1, 'day'),
-            tom: dayjs(sluttdatoSøker1),
+            fom: dayjs(termindatoEllerFødselsdato).add(1, 'day').format(ISO_DATE_FORMAT),
+            tom: sluttdatoSøker1.format(ISO_DATE_FORMAT),
             type: 'søker',
         });
         perioder.push({
-            fom: dayjs(startdatoSøker2),
-            tom: dayjs(sluttdatoSøker2),
+            fom: startdatoSøker2.format(ISO_DATE_FORMAT),
+            tom: sluttdatoSøker2.format(ISO_DATE_FORMAT),
             type: 'medsøker',
         });
     }
@@ -130,13 +133,13 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         const totalUker = getAntallUkerForeldrepenger(valgtStønadskonto);
 
         perioder.push({
-            fom: dayjs(termindatoEllerFødselsdato),
-            tom: dayjs(termindatoEllerFødselsdato),
+            fom: termindatoEllerFødselsdato,
+            tom: termindatoEllerFødselsdato,
             type: 'familiehendelse',
         });
         perioder.push({
-            fom: dayjs(termindatoEllerFødselsdato).add(1, 'day'),
-            tom: dayjs(termindatoEllerFødselsdato).add(totalUker, 'weeks'),
+            fom: dayjs(termindatoEllerFødselsdato).add(1, 'day').format(ISO_DATE_FORMAT),
+            tom: dayjs(termindatoEllerFødselsdato).add(totalUker, 'weeks').format(ISO_DATE_FORMAT),
             type: 'søker',
         });
     }
@@ -158,18 +161,18 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         const sluttAktivitetsfri = dayjs(termindatoEllerFødselsdato).add(aktivitetsfriUker, 'weeks');
 
         perioder.push({
-            fom: dayjs(termindatoEllerFødselsdato),
-            tom: dayjs(termindatoEllerFødselsdato),
+            fom: termindatoEllerFødselsdato,
+            tom: termindatoEllerFødselsdato,
             type: 'familiehendelse',
         });
         perioder.push({
-            fom: dayjs(termindatoEllerFødselsdato).add(1, 'day'),
-            tom: sluttAktivitetsfri,
+            fom: dayjs(termindatoEllerFødselsdato).add(1, 'day').format(ISO_DATE_FORMAT),
+            tom: sluttAktivitetsfri.format(ISO_DATE_FORMAT),
             type: 'utenAktivitetskrav',
         });
         perioder.push({
-            fom: sluttAktivitetsfri.add(1, 'day'),
-            tom: sluttAktivitetsfri.add(aktivitetskravUker, 'weeks'),
+            fom: sluttAktivitetsfri.add(1, 'day').format(ISO_DATE_FORMAT),
+            tom: sluttAktivitetsfri.add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
             type: 'aktivitetskrav',
         });
     }
