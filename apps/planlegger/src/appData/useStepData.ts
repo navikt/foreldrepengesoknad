@@ -42,20 +42,13 @@ const showHvorLangPeriodeEllerOversiktStep = (
     currentPath: PlanleggerRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
-    if (path === PlanleggerRoutes.HVOR_LANG_PERIODE) {
+    if (path === PlanleggerRoutes.HVOR_LANG_PERIODE || path === PlanleggerRoutes.OVERSIKT) {
         const hvemPlanlegger = getData(ContextDataType.HVEM_PLANLEGGER);
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
         const skalVise =
             hvemPlanlegger && arbeidssituasjon ? !skalGåRettTilOppsummering(hvemPlanlegger, arbeidssituasjon) : false;
         const erValgtOgEtterSteg = skalVise && isAfterStep(PlanleggerRoutes.ARBEIDSSITUASJON, currentPath);
         return erValgtOgEtterSteg || !!getData(ContextDataType.HVOR_LANG_PERIODE);
-    }
-    if (path === PlanleggerRoutes.OVERSIKT) {
-        const hvemPlanlegger = getData(ContextDataType.HVEM_PLANLEGGER);
-        const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
-        const skalVise =
-            hvemPlanlegger && arbeidssituasjon ? !skalGåRettTilOppsummering(hvemPlanlegger, arbeidssituasjon) : false;
-        return skalVise && isAfterStep(PlanleggerRoutes.ARBEIDSSITUASJON, currentPath);
     }
     return false;
 };

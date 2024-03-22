@@ -7,8 +7,8 @@ import Day, { DayType, PeriodType } from './Day';
 import Month from './Month';
 
 export type Period = {
-    fom: Dayjs;
-    tom: Dayjs;
+    fom: string;
+    tom: string;
     type: 'førTermin' | 'familiehendelse' | 'aktivitetskrav' | 'utenAktivitetskrav' | 'søker' | 'medsøker';
 };
 
@@ -94,12 +94,12 @@ const monthDiff = (d1: Date, d2: Date) => {
     return months <= 0 ? 0 : months;
 };
 
-const findMonths = (firstDate: Dayjs, lastDate: Dayjs): Array<{ month: number; year: number }> => {
-    const numberOfMonthsToAddStart = firstDate.month() % 3;
-    const numberOfMonthsToAddEnd = 3 - (lastDate.month() % 3);
+const findMonths = (firstDate: string, lastDate: string): Array<{ month: number; year: number }> => {
+    const numberOfMonthsToAddStart = dayjs(firstDate).month() % 3;
+    const numberOfMonthsToAddEnd = 3 - (dayjs(lastDate).month() % 3);
 
-    const firstDateInCalendar = firstDate.subtract(numberOfMonthsToAddStart, 'month');
-    const lastDateInCalendar = lastDate.add(numberOfMonthsToAddEnd, 'month');
+    const firstDateInCalendar = dayjs(firstDate).subtract(numberOfMonthsToAddStart, 'month');
+    const lastDateInCalendar = dayjs(lastDate).add(numberOfMonthsToAddEnd, 'month');
 
     const numberOfMonthsBetween = monthDiff(firstDateInCalendar.toDate(), lastDateInCalendar.toDate());
 
