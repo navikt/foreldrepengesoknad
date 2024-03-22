@@ -4,20 +4,23 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
-import { ISOStringToDate, Uttaksdagen, intlUtils } from '@navikt/fp-common';
+import { ISOStringToDate, Uttaksdagen, intlUtils, isFødtBarn } from '@navikt/fp-common';
 import { isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import Fordeling from 'app/context/types/Fordeling';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 
 import OppstartDatoInput from '../OppstartDatoInput';
-import { getErBarnetFødtFørEllerPåTermin } from '../OppstartValgInput';
+import { getErBarnetFødtInnenTreUkerFørTermin } from '../OppstartValgInput';
 import MorOppstartInformasjon from '../mor-oppstart-informasjon/MorOppstartInformasjon';
 
 const OppstartDatoMorFødsel = () => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const erBarnetFødt = isFødtBarn(barn);
+    const termindato = getTermindato(barn);
+    const fødselsdato = getFødselsdato(barn);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const { watch } = useFormContext<Fordeling>();
     const oppstartDato = watch('oppstartDato');
@@ -26,7 +29,7 @@ const OppstartDatoMorFødsel = () => {
         oppstartDato &&
         isValidDate(oppstartDato) &&
         dayjs(oppstartDato).isSameOrBefore(førsteUttaksdagPåEllerEtterFamHendelse);
-    const fødselEllerTermindato = getErBarnetFødtFørEllerPåTermin(barn)
+    const fødselEllerTermindato = getErBarnetFødtInnenTreUkerFørTermin(erBarnetFødt, termindato, fødselsdato)
         ? intlUtils(intl, 'fødselsdato')
         : intlUtils(intl, 'termindato');
     return (

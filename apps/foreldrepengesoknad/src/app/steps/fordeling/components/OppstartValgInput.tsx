@@ -51,15 +51,45 @@ const getOppstartsvalgFarAleneomsorg = () => {
     return radioOptions;
 };
 
-export const getErBarnetFødtFørEllerPåTermin = (barn: Barn) => {
-    const erBarnetFødt = isFødtBarn(barn);
-    const termindato = getTermindato(barn);
-    const fødselsdato = getFødselsdato(barn);
-    return (erBarnetFødt && termindato && dayjs(fødselsdato).isSameOrBefore(termindato, 'd')) || !termindato;
+export const getErBarnetFødtMerEnnTolvUkerFørTermin = (
+    erBarnetFødt: boolean,
+    termindato: string | undefined,
+    fødselsdato: string | undefined,
+) => {
+    const tolvUkerFørTermin = dayjs(termindato).subtract(12, 'weeks');
+    return erBarnetFødt && termindato && dayjs(fødselsdato).isBefore(tolvUkerFørTermin, 'd');
+};
+
+export const getErBarnetFødtInnenTreUkerFørTermin = (
+    erBarnetFødt: boolean,
+    termindato: string | undefined,
+    fødselsdato: string | undefined,
+) => {
+    const treUkerFørTermin = dayjs(termindato).subtract(3, 'weeks');
+    return erBarnetFødt && termindato && dayjs(fødselsdato).isSameOrAfter(treUkerFørTermin, 'd');
+};
+
+export const getErBarnetFødtMerEnnTreUkerFørTermin = (
+    erBarnetFødt: boolean,
+    termindato: string | undefined,
+    fødselsdato: string | undefined,
+) => {
+    const treUkerFørTermin = dayjs(termindato).subtract(3, 'weeks');
+    return erBarnetFødt && treUkerFørTermin && dayjs(fødselsdato).isBefore(treUkerFørTermin, 'd');
 };
 
 const getOppstartsValgMorFødsel = (barn: Barn) => {
-    if (getErBarnetFødtFørEllerPåTermin(barn)) {
+    const erBarnetFødt = isFødtBarn(barn);
+    const termindato = getTermindato(barn);
+    const fødselsdato = getFødselsdato(barn);
+
+    if (getErBarnetFødtMerEnnTolvUkerFørTermin(erBarnetFødt, termindato, fødselsdato)) {
+        return [OppstartValg.FAMILIEHENDELSESDATO];
+    }
+    if (getErBarnetFødtMerEnnTreUkerFørTermin(erBarnetFødt, termindato, fødselsdato)) {
+        return [OppstartValg.FAMILIEHENDELSESDATO, OppstartValg.ANNEN_DATO];
+    }
+    if (getErBarnetFødtInnenTreUkerFørTermin(erBarnetFødt, termindato, fødselsdato)) {
         return [OppstartValg.TRE_UKER_FØR_FØDSEL, OppstartValg.ANNEN_DATO];
     }
     return [OppstartValg.TRE_UKER_FØR_TERMIN, OppstartValg.ANNEN_DATO];
@@ -148,6 +178,16 @@ const getRadioOptionFarPåFødselWLB = (
             </Radio>
         );
     }
+};
+
+const getRadioOptionMorFødsel = (antallBarn: number, intl: IntlShape) => {
+    const barnetEllerBarna = antallBarn === 1 ? intlUtils(intl, 'barnet') : intlUtils(intl, 'barna');
+
+    return (
+        <Radio value={OppstartValg.FAMILIEHENDELSESDATO}>
+            <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErFødt" values={{ barnetEllerBarna }} />
+        </Radio>
+    );
 };
 
 const getRadioOptionDagenEtterAnnenForelder = (
@@ -256,6 +296,9 @@ const getRadioOptionFamiliehendelsesdato = (
 ) => {
     if (erFarEllerMedmor && erFødsel) {
         return getRadioOptionFarPåFødselWLB(erBarnetFødt, antallBarn, deltUttak, intl);
+    }
+    if (!erFarEllerMedmor && erFødsel) {
+        return getRadioOptionMorFødsel(antallBarn, intl);
     }
     return getRadioOptionAdopsjonOmsorgsovertakelse(familiehendelsesdato);
 };
