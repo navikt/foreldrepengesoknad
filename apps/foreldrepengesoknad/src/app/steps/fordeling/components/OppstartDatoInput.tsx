@@ -1,4 +1,5 @@
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { AnnenForelder, Barn, ISOStringToDate, intlUtils, uttaksplanDatoavgrensninger } from '@navikt/fp-common';
@@ -12,6 +13,22 @@ import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'app/utils/annenForeld
 import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getTermindato } from 'app/utils/barnUtils';
 
 import { validateOppstartsdato } from '../fordelingFormUtils';
+
+const getDefaultDateOppstartsdato = (
+    minDate: Date | undefined,
+    maxDate: Date | undefined,
+    erFarEllerMedmor: boolean,
+    erAdopsjon: boolean,
+    familiehendelsesdato: Date,
+) => {
+    if (minDate && maxDate && dayjs(minDate).isSame(dayjs(maxDate), 'd')) {
+        return minDate;
+    }
+    if (erFarEllerMedmor || erAdopsjon) {
+        familiehendelsesdato;
+    }
+    return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
+};
 
 const getDatoAvgrensninger = (
     barn: Barn,
@@ -58,10 +75,14 @@ const OppstartDatoInput = () => {
     const minDato = ISOStringToDate(datoAvgrensninger.minDate);
     const maksDato = ISOStringToDate(datoAvgrensninger.maxDate);
     const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
-    const defaultDate =
-        erFarEllerMedmor || erAdopsjon
-            ? familiehendelsesdato
-            : getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
+    const defaultDate = getDefaultDateOppstartsdato(
+        minDato,
+        maksDato,
+        erFarEllerMedmor,
+        erAdopsjon,
+        familiehendelsesdato,
+    );
+
     return (
         <Datepicker
             name="oppstartDato"
