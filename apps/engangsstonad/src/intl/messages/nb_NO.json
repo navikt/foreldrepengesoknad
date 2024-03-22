@@ -1,7 +1,6 @@
 {
     "Søknad.Pagetitle": "Søknad om engangsstønad",
     "Søknad.Pageheading": "Søknad om engangsstønad",
-
     "Velkommen.Ingress.Del1": "Engangsstønad kan du få hvis du venter barn og ikke har hatt inntekt som gir rett til foreldrepenger i 6 av de siste 10 månedene. Med engangsstønad får du hele beløpet utbetalt med en gang. Hvis du har foreldrepenger får du penger en gang i måneden.",
     "Velkommen.Ingress.Del2": "Det er først og fremst mødre som kan søke om engangsstønad, men far/medmor kan få engangsstønad i noen tilfelle, disse er beskrevet ",
     "Velkommen.Ingress.Del3": "Du kan søke på foreldrepenger i stedet for engangsstønad dersom du har hatt inntekt, vært i militæret eller mottatt noen av disse ytelsene fra nav: arbeidsavklaringspenger, dagpenger, sykepenger, pleie- eller omsorgspenger. Foreldrepenger er en skattepliktig ytelse som vil si at det gir deg opptjening til pensjon og kan gi deg rett på andre ytelser som for eksempel sykepenger og pleiepenger.",
@@ -23,12 +22,10 @@
     "Velkommen.LestOgForstått.Link": "gi NAV riktige opplysninger og melde fra om endringer.",
     "Velkommen.KunEnStønad": "Velger du å søke om engangsstønad kan du ikke ombestemme deg senere og heller søke om foreldrepenger.",
     "Velkommen.StartSøknad": "Start søknaden",
-
     "SøkersituasjonSteg.Situasjon": "Hva gjelder for deg?",
     "SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon": "Du må oppgi hva som gjelder for deg",
     "SøkersituasjonSteg.Adopsjon": "Adopsjon",
     "SøkersituasjonSteg.Fødsel": "Fødsel",
-
     "AdopsjonPanel.Spørsmål.Stebarnsadopsjon": "Adopterer du ektefellens barn?",
     "AdopsjonPanel.Spørsmål.Stebarnsadopsjondato": "Fra hvilken dato adopterer du din ektefelles barn?",
     "AdopsjonPanel.Spørsmål.Required": "Du må oppgi om du adopterer ektefelles barn",
@@ -86,7 +83,6 @@
     "FødselPanel.Radiobutton.Ettbarn": "Ett barn",
     "FødselPanel.Radiobutton.Tvillinger": "Tvillinger",
     "FødselPanel.Radiobutton.Flere": "Tre eller flere barn",
-
     "DokumentasjonSteg.MinstEttDokumentAdopsjon": "Du må laste opp bekreftelse på adopsjon",
     "DokumentasjonSteg.MinstEttDokumentTermin": "Du må laste opp bekreftelse på termindato",
     "TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi": "Du må oppgi terminbekreftelse dato",
@@ -96,11 +92,10 @@
     "TerminDokPanel.Terminbekreftelsesdato": "Når fikk du terminbekreftelsen?",
     "TerminDokPanel.Vedlegg.Terminbekreftelse": "Last opp bekreftelse på termindato",
     "TerminDokPanel.Vedlegg.Terminbekreftelse.Info": "Terminbekreftelsen får du hos jordmor eller legen din. Den må være datert i 22. svangerskapsuke eller senere. Hvis barnet er født i utlandet og ikke er registrert i folkeregisteret, må du legge ved fødselsattesten til barnet.",
-    "TerminDokPanel.Dok.Storrelse": "Filen kan ikke være større enn 9MB og kan være i formatene pdf, png og jpg.",
+    "TerminDokPanel.Dok.Storrelse": "Filen kan ikke være større enn 16MB og kan være i formatene pdf, png og jpg.",
     "AdopsjonDokPanel.Vedlegg.Adopsjon": "Bekreftelse på adopsjon",
     "AdopsjonDokPanel.Veilederpanel.Text": "Du må legge ved bekreftelse på datoen du overtok omsorgen for barnet, og adopsjonsbevilling hvis du har mottatt dette.",
-    "AdopsjonDokPanel.Dok.Storrelse": "Filen kan ikke være større enn 9MB og kan være i formatene pdf, png og jpg.",
-
+    "AdopsjonDokPanel.Dok.Storrelse": "Filen kan ikke være større enn 16MB og kan være i formatene pdf, png og jpg.",
     "OppsummeringSteg.OmBarnet": "Barnet",
     "OmBarnetOppsummering.EttBarn": "ett barn",
     "OmBarnetOppsummering.ToBarn": "to barn",
@@ -114,7 +109,6 @@
     "OmBarnetOppsummering.SomErDatert": "Terminbekreftelsen:",
     "OmBarnetOppsummering.VedlagtOmsorgsovertakelseBekreftelse": "Vedlagt bekreftelse på omsorgsovertakelse",
     "OmBarnetOppsummering.VedlagtTerminbekreftelse": "Vedlagt dokumentasjon",
-
     "UseStepConfig.Søkersituasjon": "Din situasjon",
     "UseStepConfig.OmBarnet": "Barnet",
     "UseStepConfig.Termin": "Bekreft termin",
