@@ -22,7 +22,7 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
         header={
             <>
                 <Show below="md">
-                    <GreenHeading useDarkGreen>
+                    <GreenHeading isDarkGreen>
                         <VStack gap="4" align="center">
                             <div className={styles.languageToggle}>
                                 <LanguageToggle locale={locale} changeLocale={changeLocale} />

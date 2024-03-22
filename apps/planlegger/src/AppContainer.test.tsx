@@ -76,15 +76,15 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
-        expect(screen.getByText('Steg 3 av 6')).toBeInTheDocument();
+        expect(screen.getByText('Steg 3 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
-        expect(screen.getByText('Steg 2 av 6')).toBeInTheDocument();
+        expect(screen.getByText('Steg 2 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 6')).toBeInTheDocument();
+        expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
