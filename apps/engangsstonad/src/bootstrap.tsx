@@ -4,6 +4,7 @@ import * as countries from 'i18n-iso-countries';
 import * as langEN from 'i18n-iso-countries/langs/en.json';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import 'styles/globals.css';
 
@@ -31,5 +32,9 @@ initAmplitude();
 const container = document.getElementById('app');
 if (container) {
     const root = createRoot(container);
-    root.render(<AppContainer />);
+    root.render(
+        <StrictMode>
+            <AppContainer />
+        </StrictMode>,
+    );
 }
