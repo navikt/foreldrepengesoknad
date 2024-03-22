@@ -116,7 +116,7 @@
     "periode.infoboks.sisteDagTekst": "Hvis barnet blir født på termin og hvis dere tar permisjon sammenhengende fra tre uker før termin.",
     "periode.infoboks.sisteDagTekstFar.førsteUker": "<b>{uker} av de {uker2} ukene</b> kan far bruke uten krav til mor.",
     "periode.infoboks.sisteDagTekstFar.andreUker": "<b>{uker} av de {uker2} ukene</b> kan far bruke hvis mor er i <a>godkjent aktivitet</a>.",
-    "fordeling.tittel": "Fordelig",
+    "fordeling.tittel": "Fordeling",
     "fordeling.fordelingTittel": "Hvordan vil dere fordele fellesperioden?",
     "fordeling.fordelingOptions": "{uker} til {hvem}, {uker2} til {hvem2}",
     "fordeling.fordelingOptionsMedUker": "{uker} uker til {hvem}, {uker2} uker til {hvem2}",

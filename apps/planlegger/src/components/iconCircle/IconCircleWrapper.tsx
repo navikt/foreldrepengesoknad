@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 
 import styles from './iconCircleWrapper.module.css';
 
@@ -29,7 +29,7 @@ const getSize = (size: CircleSize): string => {
 };
 
 interface Props {
-    children: ReactElement;
+    children: ReactNode;
     color: CircleColor;
     size: CircleSize;
 }
