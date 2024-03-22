@@ -45,16 +45,16 @@ export default {
 
 const Template: StoryFn<{
     gåTilNesteSide: (action: Action) => void;
-    doLogging?: boolean;
-}> = ({ gåTilNesteSide = action('button-click'), doLogging = true }) => {
+    brukStønadskontoMock?: boolean;
+}> = ({ gåTilNesteSide = action('button-click'), brukStønadskontoMock = false }) => {
     initAmplitude();
-    const apiMock = new MockAdapter(planleggerApi);
-    apiMock.onPost('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
-        if (doLogging) {
-            console.log('network request: get https://foreldrepengesoknad-api.nav.no/rest/konto');
-        }
-        return [200, kontoer];
-    });
+    if (brukStønadskontoMock) {
+        const apiMock = new MockAdapter(planleggerApi);
+        apiMock.onPost('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
+            return [200, kontoer];
+        });
+    }
+
     return (
         <StrictMode>
             <PlanleggerDataContext onDispatch={gåTilNesteSide}>
