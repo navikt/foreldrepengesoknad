@@ -10,7 +10,7 @@
     "FileInput.Vedlegg.Lastoppknapp.Flere": "Last opp flere filer",
     "Attachment.Vedlegg.Slett": "Fjern vedlegg {navn}",
     "FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet": "{filename} - Ops noe gikk galt prøv igjen",
-    "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "{filename} - er for stor. Maksimal tillat filstørrelse er {maxStørrelse}MB.",
+    "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "{filename} - er for stor. Maksimal tillatt filstørrelse er {maxStørrelse}MB.",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "{filename} - Vedlegg er ikke av gyldig type",
     "FailedAttachment.Vedlegg.Feilmelding.Timeout": "{filename} - Det tok for lang tid å laste opp dokumentet ditt. Sjekk nettverket ditt eller prøv å laste opp færre dokumenter på en gang",
     "StepButtons.Forrige": "Forrige steg",
