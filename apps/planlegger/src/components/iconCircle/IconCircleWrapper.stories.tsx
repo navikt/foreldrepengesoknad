@@ -3,10 +3,10 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import IconCircleWrapper from './IconCircleWrapper';
 
-const meta: Meta<typeof IconCircleWrapper> = {
+const meta = {
     title: 'components/IconCircleWrapper',
     component: IconCircleWrapper,
-};
+} satisfies Meta<typeof IconCircleWrapper>;
 export default meta;
 
 type Story = StoryObj<typeof IconCircleWrapper>;

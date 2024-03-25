@@ -2,10 +2,10 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import GreenHeading from './GreenHeading';
 
-const meta: Meta<typeof GreenHeading> = {
+const meta = {
     title: 'components/GreenHeading',
     component: GreenHeading,
-};
+} satisfies Meta<typeof GreenHeading>;
 export default meta;
 
 type Story = StoryObj<typeof GreenHeading>;

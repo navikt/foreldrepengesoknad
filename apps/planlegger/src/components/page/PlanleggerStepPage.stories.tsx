@@ -3,10 +3,10 @@ import { PlanleggerRoutes } from 'appData/routes';
 
 import PlanleggerStepPage from './PlanleggerStepPage';
 
-const meta: Meta<typeof PlanleggerStepPage> = {
+const meta = {
     title: 'components/PlanleggerStepPage',
     component: PlanleggerStepPage,
-};
+} satisfies Meta<typeof PlanleggerStepPage>;
 export default meta;
 
 type Story = StoryObj<typeof PlanleggerStepPage>;

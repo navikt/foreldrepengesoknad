@@ -1,10 +1,10 @@
-export enum ArbeidssituasjonEnum {
+export enum Arbeidsstatus {
     JOBBER = 'Jobber',
     UFØR = 'Ufør',
     INGEN = 'Jobber ikke',
 }
 
 export type Arbeidssituasjon = {
-    arbeidssituasjon?: ArbeidssituasjonEnum;
-    arbeidssituasjonAnnenPart?: boolean;
+    status?: Arbeidsstatus;
+    jobberAnnenPart?: boolean;
 };

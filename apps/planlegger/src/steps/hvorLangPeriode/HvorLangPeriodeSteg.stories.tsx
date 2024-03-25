@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
-import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
@@ -83,8 +83,8 @@ FlereForsørgereEttBarnKunMorHarRett.args = {
         antallBarn: '1',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
-        arbeidssituasjonAnnenPart: false,
+        status: Arbeidsstatus.JOBBER,
+        jobberAnnenPart: false,
     },
     stønadskontoer: {
         '80': defaultKonto80,
@@ -106,8 +106,8 @@ FlereForsørgereToBarn.args = {
         antallBarn: '2',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
-        arbeidssituasjonAnnenPart: true,
+        status: Arbeidsstatus.JOBBER,
+        jobberAnnenPart: true,
     },
     stønadskontoer: {
         '80': defaultKonto80,
@@ -128,7 +128,7 @@ AleneforsørgerMorEttBarn.args = {
         antallBarn: '1',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        status: Arbeidsstatus.JOBBER,
     },
     stønadskontoer: {
         '80': defaultKonto80,
@@ -149,8 +149,8 @@ FlereForsørgereKunFarHarRett.args = {
         antallBarn: '1',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.INGEN,
-        arbeidssituasjonAnnenPart: true,
+        status: Arbeidsstatus.INGEN,
+        jobberAnnenPart: true,
     },
     stønadskontoer: {
         '80': {
@@ -188,7 +188,7 @@ AleneforsørgerFarToBarn.args = {
         antallBarn: '2',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        status: Arbeidsstatus.JOBBER,
     },
     stønadskontoer: {
         '80': defaultKonto80,

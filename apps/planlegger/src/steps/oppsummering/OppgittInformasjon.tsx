@@ -59,9 +59,9 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const navn2 = getNavnPåAnnenPart(hvemPlanlegger, intl);
     const fornavn1 = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavn2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
-    const arbeidssituasjonSøker1 = arbeidssituasjon.arbeidssituasjon;
+    const arbeidssituasjonSøker1 = arbeidssituasjon.status;
     const arbeidssituasjonAnnenPart = () => {
-        if (arbeidssituasjon.arbeidssituasjonAnnenPart === true) {
+        if (arbeidssituasjon.jobberAnnenPart === true) {
             return 'Jobber';
         }
         return 'Jobber ikke';

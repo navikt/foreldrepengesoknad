@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
-import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
@@ -106,8 +106,8 @@ PeriodeFlereForsørgereTerminBeggeHarRett.args = {
         antallBarn: '1',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
-        arbeidssituasjonAnnenPart: true,
+        status: Arbeidsstatus.JOBBER,
+        jobberAnnenPart: true,
     },
 };
 
@@ -130,7 +130,7 @@ PeriodeAleneforsørgerFarTermin.args = {
         antallBarn: '1',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        status: Arbeidsstatus.JOBBER,
     },
 };
 
@@ -154,7 +154,7 @@ PeriodeAleneforsørgerMorFødt.args = {
         antallBarn: '1',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
+        status: Arbeidsstatus.JOBBER,
     },
 };
 
@@ -179,8 +179,8 @@ PeriodeFlereForsørgereToBarnFødtKunMorHarRett.args = {
         antallBarn: '2',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.JOBBER,
-        arbeidssituasjonAnnenPart: false,
+        status: Arbeidsstatus.JOBBER,
+        jobberAnnenPart: false,
     },
 };
 
@@ -208,7 +208,7 @@ PeriodeFlereForsørgereAdoptertKunFarHarRett.args = {
         antallBarn: '1',
     },
     arbeidssituasjon: {
-        arbeidssituasjon: ArbeidssituasjonEnum.INGEN,
-        arbeidssituasjonAnnenPart: true,
+        status: Arbeidsstatus.INGEN,
+        jobberAnnenPart: true,
     },
 };

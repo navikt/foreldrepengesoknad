@@ -7,10 +7,10 @@ import { Form } from '@navikt/fp-form-hooks';
 
 import GreenRadioGroup from './GreenRadioGroup';
 
-const meta: Meta<typeof GreenRadioGroup> = {
+const meta = {
     title: 'components/GreenRadioGroup',
     component: GreenRadioGroup,
-};
+} satisfies Meta<typeof GreenRadioGroup>;
 export default meta;
 
 type Story = StoryObj<typeof GreenRadioGroup>;

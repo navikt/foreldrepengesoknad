@@ -2,10 +2,10 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import GreenPanel from './GreenPanel';
 
-const meta: Meta<typeof GreenPanel> = {
+const meta = {
     title: 'components/GreenPanel',
     component: GreenPanel,
-};
+} satisfies Meta<typeof GreenPanel>;
 export default meta;
 
 type Story = StoryObj<typeof GreenPanel>;
