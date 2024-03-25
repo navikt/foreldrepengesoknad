@@ -1,5 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
@@ -40,18 +40,23 @@ const defaultKonto100 = {
     },
 };
 
-export default {
-    title: 'HvorLangPeriodeSteg',
-    component: HvorLangPeriodeSteg,
-};
-
-const Template: StoryFn<{
+interface StoryArgs {
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     stønadskontoer?: TilgjengeligeStønadskontoerDTO;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ hvemPlanlegger, omBarnet, arbeidssituasjon, stønadskontoer, gåTilNesteSide = action('button-click') }) => {
+}
+
+type Story = StoryObj<StoryArgs>;
+
+const customRenderer = ({
+    hvemPlanlegger,
+    omBarnet,
+    arbeidssituasjon,
+    stønadskontoer,
+    gåTilNesteSide = action('button-click'),
+}: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.HVOR_LANG_PERIODE]}>
@@ -69,129 +74,143 @@ const Template: StoryFn<{
     );
 };
 
-export const FlereForsørgereEttBarnKunMorHarRett = Template.bind({});
-FlereForsørgereEttBarnKunMorHarRett.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR_OG_FAR,
-    },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2024-01-01',
-        antallBarn: '1',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
-        jobberAnnenPart: false,
-    },
-    stønadskontoer: {
-        '80': defaultKonto80,
-        '100': defaultKonto100,
-    },
-};
+const meta = {
+    title: 'HvorLangPeriodeSteg',
+    component: HvorLangPeriodeSteg,
+    render: customRenderer,
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-export const FlereForsørgereToBarn = Template.bind({});
-FlereForsørgereToBarn.args = {
-    hvemPlanlegger: {
-        navnPåMedmor: 'Esther Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR_OG_MEDMOR,
-    },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2024-01-01',
-        antallBarn: '2',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
-        jobberAnnenPart: true,
-    },
-    stønadskontoer: {
-        '80': defaultKonto80,
-        '100': defaultKonto100,
-    },
-};
-
-export const AleneforsørgerMorEttBarn = Template.bind({});
-AleneforsørgerMorEttBarn.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR,
-    },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2024-01-01',
-        antallBarn: '1',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
-    },
-    stønadskontoer: {
-        '80': defaultKonto80,
-        '100': defaultKonto100,
-    },
-};
-export const FlereForsørgereKunFarHarRett = Template.bind({});
-FlereForsørgereKunFarHarRett.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR_OG_FAR,
-    },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2024-01-01',
-        antallBarn: '1',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.INGEN,
-        jobberAnnenPart: true,
-    },
-    stønadskontoer: {
-        '80': {
-            kontoer: {
-                FORELDREPENGER: 250,
-            },
-            minsteretter: {
-                farRundtFødsel: 0,
-                generellMinsterett: 40,
-                toTette: 0,
-            },
+export const FlereForsørgereEttBarnKunMorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_FAR,
         },
-        '100': {
-            kontoer: {
-                FORELDREPENGER: 200,
-            },
-            minsteretter: {
-                farRundtFødsel: 0,
-                generellMinsterett: 40,
-                toTette: 0,
-            },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        stønadskontoer: {
+            '80': defaultKonto80,
+            '100': defaultKonto100,
         },
     },
 };
-export const AleneforsørgerFarToBarn = Template.bind({});
-AleneforsørgerFarToBarn.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        type: Situasjon.FAR,
+
+export const FlereForsørgereToBarn: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMedmor: 'Esther Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '2',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': defaultKonto80,
+            '100': defaultKonto100,
+        },
     },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2024-01-01',
-        antallBarn: '2',
+};
+
+export const AleneforsørgerMorEttBarn: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+        },
+        stønadskontoer: {
+            '80': defaultKonto80,
+            '100': defaultKonto100,
+        },
     },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
+};
+
+export const FlereForsørgereKunFarHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 250,
+                },
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    generellMinsterett: 40,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 200,
+                },
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    generellMinsterett: 40,
+                    toTette: 0,
+                },
+            },
+        },
     },
-    stønadskontoer: {
-        '80': defaultKonto80,
-        '100': defaultKonto100,
+};
+
+export const AleneforsørgerFarToBarn: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.FAR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '2',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+        },
+        stønadskontoer: {
+            '80': defaultKonto80,
+            '100': defaultKonto100,
+        },
     },
 };

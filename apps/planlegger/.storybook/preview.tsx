@@ -1,4 +1,5 @@
 import { Preview } from '@storybook/react';
+import dayjs from 'dayjs';
 
 import '@navikt/ds-css';
 
@@ -8,6 +9,8 @@ import { getIntlDecorator } from '@navikt/fp-utils-test';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
 import '../src/styles/global.less';
+
+dayjs.locale('nb');
 
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
