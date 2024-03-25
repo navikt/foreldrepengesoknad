@@ -6,7 +6,7 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, erFarDelAvSøknaden, erMorDelAvSøknaden } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { Radio, VStack } from '@navikt/ds-react';
@@ -15,7 +15,7 @@ import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
-import { SøkersituasjonEnum } from '../../types/Søkersituasjon';
+import { Situasjon } from '../../types/Søkersituasjon';
 
 const HvemPlanleggerSteg: FunctionComponent = () => {
     const intl = useIntl();
@@ -23,16 +23,16 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
     const stepConfig = useStepData();
 
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
-    const lagreHvemPlanlegger = useContextSaveData(ContextDataType.HVEM_PLANLEGGER);
+    const oppdaterHvemPlanlegger = useContextSaveData(ContextDataType.HVEM_PLANLEGGER);
 
     const lagre = (formValues: HvemPlanlegger) => {
-        lagreHvemPlanlegger(formValues);
-        return navigator.goToNextDefaultStep();
+        oppdaterHvemPlanlegger(formValues);
+        navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<HvemPlanlegger>({ defaultValues: hvemPlanlegger });
 
-    const planleggerType = formMethods.watch('type');
+    const type = formMethods.watch('type');
 
     const erHvemPlanleggerIkkeOppgittFraFør = hvemPlanlegger === undefined;
 
@@ -53,28 +53,26 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                             ),
                         ]}
                     >
-                        <Radio value={SøkersituasjonEnum.MOR_OG_FAR} autoFocus>
+                        <Radio value={Situasjon.MOR_OG_FAR} autoFocus>
                             <FormattedMessage id="hvem.morOgFar" />
                         </Radio>
-                        <Radio value={SøkersituasjonEnum.MOR_OG_MEDMOR}>
+                        <Radio value={Situasjon.MOR_OG_MEDMOR}>
                             <FormattedMessage id="hvem.morOgMedmor" />
                         </Radio>
-                        <Radio value={SøkersituasjonEnum.FAR_OG_FAR}>
+                        <Radio value={Situasjon.FAR_OG_FAR}>
                             <FormattedMessage id="hvem.farOgFar" />
                         </Radio>
-                        <Radio value={SøkersituasjonEnum.MOR}>
+                        <Radio value={Situasjon.MOR}>
                             <FormattedMessage id="hvem.bareMor" />
                         </Radio>
-                        <Radio value={SøkersituasjonEnum.FAR}>
+                        <Radio value={Situasjon.FAR}>
                             <FormattedMessage id="hvem.bareFar" />
                         </Radio>
                     </GreenRadioGroup>
-                    {planleggerType && (
+                    {type && (
                         <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør}>
                             <VStack gap="10">
-                                {(planleggerType === SøkersituasjonEnum.MOR_OG_FAR ||
-                                    planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR ||
-                                    planleggerType === SøkersituasjonEnum.MOR) && (
+                                {erMorDelAvSøknaden(type) && (
                                     <TextField
                                         label={intl.formatMessage({ id: 'navn.mor' })}
                                         name="navnPåMor"
@@ -82,23 +80,21 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         customErrorFormatter={formatError}
                                     />
                                 )}
-                                {(planleggerType === SøkersituasjonEnum.MOR_OG_FAR ||
-                                    planleggerType === SøkersituasjonEnum.FAR_OG_FAR ||
-                                    planleggerType === SøkersituasjonEnum.FAR) && (
+                                {erFarDelAvSøknaden(type) && (
                                     <TextField
                                         label={intl.formatMessage({ id: 'navn.far' })}
                                         name="navnPåFar"
                                         customErrorFormatter={formatError}
                                     />
                                 )}
-                                {planleggerType === SøkersituasjonEnum.MOR_OG_MEDMOR && (
+                                {type === Situasjon.MOR_OG_MEDMOR && (
                                     <TextField
                                         label={intl.formatMessage({ id: 'navn.medmor' })}
                                         name="navnPåMedmor"
                                         customErrorFormatter={formatError}
                                     />
                                 )}
-                                {planleggerType === SøkersituasjonEnum.FAR_OG_FAR && (
+                                {type === Situasjon.FAR_OG_FAR && (
                                     <TextField
                                         label={intl.formatMessage({ id: 'navn.far' })}
                                         name="navnPåMedfar"

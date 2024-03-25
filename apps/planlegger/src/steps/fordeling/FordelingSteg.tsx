@@ -11,17 +11,8 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { erBarnetIkkeFødt } from 'types/Barnet';
 import { Fellesperiodefordeling, Fordeling } from 'types/Fordeling';
-import {
-    HvemPlanlegger,
-    getFornavnPåAnnenPart,
-    getFornavnPåSøker,
-    isAlene,
-    isFar,
-    isFarOgFar,
-    isMor,
-    isMorOgFar,
-    isMorOgMedmor,
-} from 'types/HvemPlanlegger';
+import { HvemPlanlegger, getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { formatError } from 'utils/customErrorFormatter';
 import {
@@ -38,15 +29,21 @@ import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
-    isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)
+    hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
+    hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
+    hvemPlanlegger.type === Situasjon.MOR
         ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
         : intl.formatMessage({ id: 'FlereForsørgere.Far' });
 
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
-    if (isMorOgMedmor(hvemPlanlegger)) {
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'FlereForsørgere.Medmor' });
     }
-    if (isFar(hvemPlanlegger) || isFarOgFar(hvemPlanlegger) || isMorOgFar(hvemPlanlegger)) {
+    if (
+        hvemPlanlegger.type === Situasjon.FAR ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR
+    ) {
         return intl.formatMessage({ id: 'FlereForsørgere.Far' });
     }
     return undefined;

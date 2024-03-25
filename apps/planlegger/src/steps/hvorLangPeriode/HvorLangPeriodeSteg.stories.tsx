@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -74,7 +74,7 @@ FlereForsørgereEttBarnKunMorHarRett.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
+        type: Situasjon.MOR_OG_FAR,
     },
     omBarnet: {
         erBarnetFødt: false,
@@ -97,7 +97,7 @@ FlereForsørgereToBarn.args = {
     hvemPlanlegger: {
         navnPåMedmor: 'Esther Utvikler',
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_MEDMOR,
+        type: Situasjon.MOR_OG_MEDMOR,
     },
     omBarnet: {
         erBarnetFødt: false,
@@ -119,7 +119,7 @@ export const AleneforsørgerMorEttBarn = Template.bind({});
 AleneforsørgerMorEttBarn.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR,
+        type: Situasjon.MOR,
     },
     omBarnet: {
         erBarnetFødt: false,
@@ -140,7 +140,7 @@ FlereForsørgereKunFarHarRett.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
+        type: Situasjon.MOR_OG_FAR,
     },
     omBarnet: {
         erBarnetFødt: false,
@@ -179,7 +179,7 @@ export const AleneforsørgerFarToBarn = Template.bind({});
 AleneforsørgerFarToBarn.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
-        type: SøkersituasjonEnum.FAR,
+        type: Situasjon.FAR,
     },
     omBarnet: {
         erBarnetFødt: false,

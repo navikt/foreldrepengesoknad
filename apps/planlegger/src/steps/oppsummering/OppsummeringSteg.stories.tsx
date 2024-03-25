@@ -9,7 +9,7 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { Situasjon } from 'types/Søkersituasjon';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -87,7 +87,7 @@ OppsummeringFlereForsørgereHundreProsentTermin.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
+        type: Situasjon.MOR_OG_FAR,
     },
     fordeling: {
         fellesperiodefordeling: 6,
@@ -110,7 +110,7 @@ export const OppsummeringAleneforsørgerÅttiProsentFødselToBarn = Template.bin
 OppsummeringAleneforsørgerÅttiProsentFødselToBarn.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR,
+        type: Situasjon.MOR,
     },
     fordeling: {
         fellesperiodefordeling: 6,
@@ -134,7 +134,7 @@ OppsummeringFlereForsørgereHundreProsentAdopsjon.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         navnPåMedmor: 'Esther Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_MEDMOR,
+        type: Situasjon.MOR_OG_MEDMOR,
     },
     fordeling: {
         fellesperiodefordeling: 6,

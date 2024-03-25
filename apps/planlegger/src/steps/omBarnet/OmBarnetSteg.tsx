@@ -16,7 +16,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import GreenRadioGroup from '../../components/formWrappers/GreenRadioGroup';
 import Adopsjon from './Adopsjon';
-import Fødsel from './Fødsel';
+import Fødsel from './fødsel/ErIkkeFødtPanel';
 
 const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     if (erFødsel) {
@@ -41,11 +41,11 @@ const OmBarnetSteg: React.FunctionComponent = () => {
 
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const lagreOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
     const lagre = (formValues: OmBarnet) => {
-        lagreOmBarnet(formValues);
-        return navigator.goToNextDefaultStep();
+        oppdaterOmBarnet(formValues);
+        navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<OmBarnet>({
@@ -123,42 +123,46 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             <Fødsel
                                 hvemPlanlegger={hvemPlanlegger}
                                 erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
+                                antallBarn={antallBarn}
                             />
                         )}
                         {erFødsel === false && antallBarn && (
-                            <Adopsjon
-                                erAlenesøker={erAlenesøker}
-                                erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
-                            />
-                        )}
-                        {erFødsel === false && antallBarn && (
-                            <Infobox
-                                header={
-                                    erAlenesøker ? (
-                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoDeg" />
-                                    ) : (
-                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfo" />
-                                    )
-                                }
-                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
-                            >
-                                <BodyLong>
-                                    <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekst" />
-                                </BodyLong>
-                                <BodyLong>
-                                    {erAlenesøker ? (
-                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2Deg" />
-                                    ) : (
-                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2" />
-                                    )}
-                                </BodyLong>
-                            </Infobox>
+                            <>
+                                <Adopsjon
+                                    erAlenesøker={erAlenesøker}
+                                    erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
+                                    antallBarn={antallBarn}
+                                />
+                                <Infobox
+                                    header={
+                                        erAlenesøker ? (
+                                            <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoDeg" />
+                                        ) : (
+                                            <FormattedMessage id="barnet.adopsjon.foreldrepengerInfo" />
+                                        )
+                                    }
+                                    icon={
+                                        <TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />
+                                    }
+                                >
+                                    <BodyLong>
+                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekst" />
+                                    </BodyLong>
+                                    <BodyLong>
+                                        {erAlenesøker ? (
+                                            <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2Deg" />
+                                        ) : (
+                                            <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2" />
+                                        )}
+                                    </BodyLong>
+                                </Infobox>
+                            </>
                         )}
                     </VStack>
                     <VStack gap="10">
                         <VStack>
                             <StepButtonsHookForm<OmBarnet>
-                                saveDataOnPreviousClick={lagreOmBarnet}
+                                saveDataOnPreviousClick={oppdaterOmBarnet}
                                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                                 useSimplifiedTexts
                             />

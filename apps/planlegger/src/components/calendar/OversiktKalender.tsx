@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { getFellesperiodefordelingOptionValues } from 'steps/fordeling/FordelingSteg';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { Situasjon } from 'types/Søkersituasjon';
 import {
     TilgjengeligStønadskonto,
     getAntallUkerAktivitetsfriKvote,
@@ -51,8 +51,8 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
     const perioder = [] as Period[];
 
     const kunMorHarRett =
-        hvemPlanlegger.type !== SøkersituasjonEnum.FAR &&
-        hvemPlanlegger.type !== SøkersituasjonEnum.FAR_OG_FAR &&
+        hvemPlanlegger.type !== Situasjon.FAR &&
+        hvemPlanlegger.type !== Situasjon.FAR_OG_FAR &&
         arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart !== true;
     if (kunMorHarRett) {
@@ -99,7 +99,7 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
                       .add(antallUkerFedrekvote, 'weeks')
                 : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks');
 
-        if (hvemPlanlegger.type !== SøkersituasjonEnum.FAR_OG_FAR) {
+        if (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) {
             perioder.push({
                 fom: startdatoSøker1.format(ISO_DATE_FORMAT),
                 tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day').format(ISO_DATE_FORMAT),
@@ -124,8 +124,7 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
     }
 
     //1. Far har rett, mor ikkje har rett => familiehandelse , medAktivitetskrav, utenAktivitetskrav
-    const aleneforsørgerFar =
-        hvemPlanlegger.type === SøkersituasjonEnum.FAR && arbeidssituasjon.status === Arbeidsstatus.JOBBER;
+    const aleneforsørgerFar = hvemPlanlegger.type === Situasjon.FAR && arbeidssituasjon.status === Arbeidsstatus.JOBBER;
     if (aleneforsørgerFar) {
         const totalUker = getAntallUkerForeldrepenger(valgtStønadskonto);
 
@@ -142,11 +141,11 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
     }
 
     const kunFarHarRettHovedsøker =
-        hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR &&
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
         (arbeidssituasjon.status === Arbeidsstatus.JOBBER || arbeidssituasjon.jobberAnnenPart);
 
     const kunFarHarRettMedsøker =
-        hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR &&
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR &&
         arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart;
     if (kunFarHarRettHovedsøker || kunFarHarRettMedsøker) {

@@ -9,7 +9,7 @@ import {
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
-import { isFar } from 'types/HvemPlanlegger';
+import { Situasjon } from 'types/Søkersituasjon';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -41,7 +41,7 @@ const OmÅTilpassePlanen: React.FunctionComponent = () => {
 
 const Innhold = () => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const erFar = isFar(hvemPlanlegger);
+    const erFar = hvemPlanlegger.type === Situasjon.FAR;
     // TODO: endre fra erFar til kun far har rett
     return (
         <>

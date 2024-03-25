@@ -1,27 +1,34 @@
-import { MemoryRouter } from 'react-router-dom';
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
+import { MemoryRouter } from 'react-router-dom';
+
 import { initAmplitude } from '@navikt/fp-metrics';
+
 import HvemPlanleggerSteg from './HvemPlanleggerSteg';
 
-export default {
+interface StoryArgs {
+    gåTilNesteSide?: (action: Action) => void;
+}
+
+const meta = {
     title: 'HvemPlanleggerSteg',
     component: HvemPlanleggerSteg,
-};
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-const Template: StoryFn<{
-    gåTilNesteSide: (action: Action) => void;
-}> = ({ gåTilNesteSide = action('button-click') }) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[PlanleggerRoutes.HVEM_PLANLEGGER]}>
-            <PlanleggerDataContext onDispatch={gåTilNesteSide}>
-                <HvemPlanleggerSteg />
-            </PlanleggerDataContext>
-        </MemoryRouter>
-    );
-};
+type Story = StoryObj<StoryArgs>;
 
-export const Default = Template.bind({});
+export const Default: Story = {
+    render: ({ gåTilNesteSide = action('button-click') }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[PlanleggerRoutes.HVEM_PLANLEGGER]}>
+                <PlanleggerDataContext onDispatch={gåTilNesteSide}>
+                    <HvemPlanleggerSteg />
+                </PlanleggerDataContext>
+            </MemoryRouter>
+        );
+    },
+};

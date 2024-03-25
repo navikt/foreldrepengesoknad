@@ -2,7 +2,6 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FormattedMessage } from 'react-intl';
 import { isAlene } from 'types/HvemPlanlegger';
@@ -15,11 +14,11 @@ import { notEmpty } from '@navikt/fp-validation';
 import Aleneforsørger from './situasjon/Aleneforsørger';
 import FlereForsørgere from './situasjon/FlereForsørgere';
 
-dayjs.locale('nb');
-
 const BarnehageplassSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
+
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
     return (
@@ -29,8 +28,8 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
                     <FormattedMessage id="barnehageplass.tittel" />
                 </Heading>
                 <VStack gap="10">
-                    {!isAlene(hvemPlanlegger) && <FlereForsørgere />}
-                    {isAlene(hvemPlanlegger) && <Aleneforsørger />}
+                    {!isAlene(hvemPlanlegger) && <FlereForsørgere barnet={barnet} />}
+                    {isAlene(hvemPlanlegger) && <Aleneforsørger barnet={barnet} />}
                 </VStack>
                 <VStack gap="20">
                     <VStack>

@@ -1,15 +1,17 @@
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react';
 
-import { notEmpty } from '@navikt/fp-validation';
+interface Props {
+    hvemPlanlegger: HvemPlanlegger;
+}
 
-const Foreldrepengeinfo: FunctionComponent = () => {
+//TODO Skal denne brukast?
+
+const Foreldrepengeinfo: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
     const intl = useIntl();
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
     return (
         <VStack gap="10">
@@ -26,7 +28,7 @@ const Foreldrepengeinfo: FunctionComponent = () => {
                             </BodyLong>
 
                             <BodyLong>
-                                {/* TODO Bytt ut test */}
+                                {/* TODO Bytt ut tekst */}
                                 <FormattedMessage id="barnet.foreldrepengerInfoTekstDeg" />
                             </BodyLong>
                         </VStack>

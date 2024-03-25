@@ -1,8 +1,6 @@
 import GreenPanel from 'components/boxes/GreenPanel';
 import dayjs from 'dayjs';
-import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -19,13 +17,12 @@ import {
 type Props = {
     erAlenesøker: boolean;
     erOmBarnetIkkeOppgittFraFør: boolean;
+    antallBarn?: string;
 };
 
-const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør }) => {
+const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBarn }) => {
     const intl = useIntl();
-    const formMethods = useFormContext<OmBarnet>();
 
-    const antallBarn = formMethods.watch('antallBarn');
     const flereBarn = antallBarn === '3' || antallBarn === '2';
 
     return (
