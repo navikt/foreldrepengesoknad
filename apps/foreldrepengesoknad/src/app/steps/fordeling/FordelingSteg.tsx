@@ -171,14 +171,10 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
 
-    //TODO GR: Ikke oppdater barnet i useEffect, oppdater heller i onSubmit. Send med antall barn fra saksgrunnlag ned til visningen. Evt ha begge i samme useEffect.
     useEffect(() => {
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
             oppdaterBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
         }
-    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn]);
-
-    useEffect(() => {
         if (
             erFarEllerMedmor &&
             isFødtBarn(barn) &&
