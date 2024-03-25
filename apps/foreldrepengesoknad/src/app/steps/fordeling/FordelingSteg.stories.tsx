@@ -101,11 +101,107 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const STØNADSKONTO_100 = {
+const STØNADSKONTO_100_DELT_UTTAK_FØDSEL = {
     kontoer: {
         MØDREKVOTE: 75,
         FEDREKVOTE: 75,
         FELLESPERIODE: 80,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 10,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+const STØNADSKONTO_100_DELT_UTTAK_FØDSEL_FØR_WLB = {
+    ...STØNADSKONTO_100_DELT_UTTAK_FØDSEL,
+    minsteretter: { ...STØNADSKONTO_100_DELT_UTTAK_FØDSEL.minsteretter, farRundtFødsel: 0 },
+};
+
+const STØNADSKONTO_100_DELT_UTTAK_FØDSEL_TVILLINGER = {
+    kontoer: {
+        MØDREKVOTE: 75,
+        FEDREKVOTE: 75,
+        FELLESPERIODE: 165,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+        FLERBARNSDAGER: 85,
+    },
+    minsteretter: {
+        farRundtFødsel: 10,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_DELT_UTTAK_FØDSEL_TRILLINGER_FØR_WLB = {
+    ...STØNADSKONTO_100_DELT_UTTAK_FØDSEL,
+    kontoer: { ...STØNADSKONTO_100_DELT_UTTAK_FØDSEL.kontoer, FELLESPERIODE: 370 },
+    minsteretter: { ...STØNADSKONTO_100_DELT_UTTAK_FØDSEL.minsteretter, farRundtFødsel: 0 },
+};
+
+const STØNADSKONTO_100_DELT_UTTAK_FØDSEL_FIRLINGER_ETTER_WLB = {
+    ...STØNADSKONTO_100_DELT_UTTAK_FØDSEL_TRILLINGER_FØR_WLB,
+    minsteretter: { ...STØNADSKONTO_100_DELT_UTTAK_FØDSEL.minsteretter, farRundtFødsel: 10 },
+};
+
+const STØNADSKONTO_100_DELT_UTTAK_FØDSEL_PREMATUR = {
+    kontoer: {
+        MØDREKVOTE: 75,
+        FEDREKVOTE: 75,
+        FELLESPERIODE: 100,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 10,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_80_DELT_UTTAK = {
+    kontoer: {
+        MØDREKVOTE: 95,
+        FEDREKVOTE: 95,
+        FELLESPERIODE: 90,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        generellMinsterett: 0,
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_80_DELT_UTTAK_TRE_BARN_ADOPSJON_FØR_WLB = {
+    kontoer: {
+        MØDREKVOTE: 95,
+        FEDREKVOTE: 95,
+        FELLESPERIODE: 370,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_DELT_UTTAK_ADOPSJON = {
+    kontoer: {
+        MØDREKVOTE: 95,
+        FEDREKVOTE: 95,
+        FELLESPERIODE: 90,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_80_ALENEOMSORG_MOR = {
+    kontoer: {
+        FORELDREPENGER: 280,
         FORELDREPENGER_FØR_FØDSEL: 15,
     },
     minsteretter: {
@@ -115,16 +211,146 @@ const STØNADSKONTO_100 = {
     },
 };
 
-const STØNADSKONTO_80 = {
+const STØNADSKONTO_100_ALENEOMSORG_MOR_ADOPSJON = {
     kontoer: {
-        MØDREKVOTE: 95,
-        FEDREKVOTE: 95,
-        FELLESPERIODE: 90,
+        FORELDREPENGER: 230,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_ALENEOMSORG_MOR_PREMATUR = {
+    kontoer: {
+        FORELDREPENGER: 273,
         FORELDREPENGER_FØR_FØDSEL: 15,
     },
     minsteretter: {
         farRundtFødsel: 0,
         generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_ALENEOMSORG_FAR_PREMATUR = {
+    kontoer: {
+        FORELDREPENGER: 273,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_ALENEOMSORG_MOR_ADOPSJON_TRILLINGER = {
+    kontoer: {
+        FORELDREPENGER: 460,
+        FORELDREPENGER_FØR_FØDSEL: 15,
+    },
+    minsteretter: {
+        farRundtFødsel: 0,
+        generellMinsterett: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_ALENEOMSORG_FAR_ETTER_WLB = {
+    kontoer: {
+        FORELDREPENGER: 230,
+    },
+    minsteretter: {
+        generellMinsterett: 0,
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_ALENEOMSORG_FAR_TVILLINGER = {
+    kontoer: {
+        FORELDREPENGER: 385,
+    },
+    minsteretter: {
+        generellMinsterett: 0,
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_BFHR_FIRE_BARN = {
+    kontoer: {
+        FORELDREPENGER: 530,
+    },
+    minsteretter: {
+        generellMinsterett: 375,
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_BFHR_MOR_IKKE_UFØR = {
+    kontoer: {
+        FORELDREPENGER: 250,
+    },
+    minsteretter: {
+        generellMinsterett: 40,
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_BFHR_MOR_UFØR = {
+    kontoer: {
+        FORELDREPENGER: 200,
+    },
+    minsteretter: {
+        generellMinsterett: 75,
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_BFHR_MOR_IKKE_UFØR_PREMATUR = {
+    kontoer: {
+        FORELDREPENGER: 371,
+    },
+    minsteretter: {
+        generellMinsterett: 85,
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+};
+const STØNADSKONTO_100_BFHR_TVILLINGER_FØR_1_OKT_MOR_UFØR = {
+    kontoer: {
+        FORELDREPENGER: 285,
+    },
+    minsteretter: {
+        generellMinsterett: 75,
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_ALENEOMSORG_FAR_FIRE_BARN = {
+    kontoer: {
+        FORELDREPENGER: 560,
+    },
+    minsteretter: {
+        generellMinsterett: 0,
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+};
+
+const STØNADSKONTO_100_ALENEOMSORG_FAR_FIRE_BARN_FØR_1_OKT_2021 = {
+    kontoer: {
+        FORELDREPENGER: 460,
+    },
+    minsteretter: {
+        generellMinsterett: 0,
+        farRundtFødsel: 0,
         toTette: 0,
     },
 };
@@ -169,7 +395,7 @@ const Template: StoryFn<Props> = ({
         apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto100);
     };
     return (
-        <MemoryRouter initialEntries={[SøknadRoutes.PERIODE_MED_FORELDREPENGER]}>
+        <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
             <AxiosMock mock={restMock}>
                 <FpApiDataContext>
                     <FpDataContext
@@ -201,8 +427,8 @@ const Template: StoryFn<Props> = ({
 
 //ALENEOMSORG
 
-export const MorAleneomsorgDekning100EttBarnFør1Okt2021 = Template.bind({});
-MorAleneomsorgDekning100EttBarnFør1Okt2021.args = {
+export const MorAleneomsorgDekning100EttBarnFør1Okt2021Dekningsgrad80 = Template.bind({});
+MorAleneomsorgDekning100EttBarnFør1Okt2021Dekningsgrad80.args = {
     søkerInfo: søkerInfoKvinne,
     erAleneOmOmsorg: true,
     søkersituasjon: {
@@ -221,9 +447,9 @@ MorAleneomsorgDekning100EttBarnFør1Okt2021.args = {
         kanIkkeOppgis: false,
         datoForAleneomsorg: '2021-09-21',
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
-    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    stønadskonto100: STØNADSKONTO_80_ALENEOMSORG_MOR,
+    stønadskonto80: STØNADSKONTO_80_ALENEOMSORG_MOR,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
 export const MorAleneomsorgDekning80EttBarnFør1Okt2021 = Template.bind({});
@@ -246,8 +472,8 @@ MorAleneomsorgDekning80EttBarnFør1Okt2021.args = {
         kanIkkeOppgis: false,
         datoForAleneomsorg: '2021-09-21',
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_80_ALENEOMSORG_MOR,
+    stønadskonto80: STØNADSKONTO_80_ALENEOMSORG_MOR,
     dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
@@ -271,13 +497,13 @@ MorAleneomsorgEttBarnPrematurFødsel.args = {
         datoForAleneomsorg: '2023-09-21',
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_MOR_PREMATUR,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_MOR_PREMATUR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const MorAleneomsorgAdopsjonToBarn = Template.bind({});
-MorAleneomsorgAdopsjonToBarn.args = {
+export const MorAleneomsorgAdopsjonTrillinger = Template.bind({});
+MorAleneomsorgAdopsjonTrillinger.args = {
     søkerInfo: søkerInfoKvinne,
     erAleneOmOmsorg: true,
     søkersituasjon: {
@@ -287,14 +513,14 @@ MorAleneomsorgAdopsjonToBarn.args = {
     barnet: {
         type: BarnType.ADOPTERT_STEBARN,
         fødselsdatoer: ['2024-02-21'],
-        antallBarn: 2,
+        antallBarn: 3,
         adopsjonsdato: '2024-02-21',
     },
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_MOR_ADOPSJON_TRILLINGER,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_MOR_ADOPSJON_TRILLINGER,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -318,8 +544,8 @@ FarMedmorAleneomsorgFødtTvillinger.args = {
         datoForAleneomsorg: '20213-09-21',
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_FAR_TVILLINGER,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_FAR_TVILLINGER,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -343,8 +569,8 @@ FarMedmorAleneomsorgFødtFireBarnFør1Okt2021.args = {
         datoForAleneomsorg: '2021-09-21',
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_FAR_FIRE_BARN_FØR_1_OKT_2021,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_FAR_FIRE_BARN_FØR_1_OKT_2021,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -368,8 +594,8 @@ FarMedmorAleneomsorgFødtTreBarnFørWLB.args = {
         datoForAleneomsorg: '2022-09-21',
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_FAR_FIRE_BARN_FØR_1_OKT_2021,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_FAR_FIRE_BARN_FØR_1_OKT_2021,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -392,8 +618,8 @@ FarMedmorAleneomsorgEttBarnTerminEtterWLB.args = {
         datoForAleneomsorg: '2024-09-21',
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_FAR_ETTER_WLB,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_FAR_ETTER_WLB,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -417,8 +643,8 @@ FarMedmorAleneomsorgPrematursFødtBarn.args = {
         datoForAleneomsorg: '2024-01-21',
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_FAR_PREMATUR,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_FAR_PREMATUR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -439,8 +665,8 @@ FarMedmorAleneomsorgAdopsjonFireBarn.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_FAR_FIRE_BARN,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_FAR_FIRE_BARN,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -465,8 +691,8 @@ MorDeltUttakEttBarnPrematurFødsel.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_PREMATUR,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_PREMATUR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -489,13 +715,13 @@ MorDeltUttakEttBarnTermin.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const MorDeltUttakTvillingerFødtFørWLB = Template.bind({});
-MorDeltUttakTvillingerFødtFørWLB.args = {
+export const MorDeltUttakTvillingerFødt = Template.bind({});
+MorDeltUttakTvillingerFødt.args = {
     søkerInfo: søkerInfoKvinne,
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -504,8 +730,8 @@ MorDeltUttakTvillingerFødtFørWLB.args = {
     barnet: {
         type: BarnType.FØDT,
         antallBarn: 2,
-        fødselsdatoer: ['2022-07-21'],
-        termindato: '2022-07-21',
+        fødselsdatoer: ['2024-02-21'],
+        termindato: '2024-02-21',
     },
     annenForelder: {
         fornavn: 'Hans',
@@ -514,8 +740,8 @@ MorDeltUttakTvillingerFødtFørWLB.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_TVILLINGER,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_TVILLINGER,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -538,8 +764,8 @@ MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     annenPartVedtak: vedtakFar,
 };
@@ -564,8 +790,8 @@ FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_FØR_WLB,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_FØR_WLB,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -589,8 +815,8 @@ FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_TRILLINGER_FØR_WLB,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_TRILLINGER_FØR_WLB,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -613,8 +839,8 @@ FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_FIRLINGER_ETTER_WLB,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_FIRLINGER_ETTER_WLB,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -638,8 +864,8 @@ FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_PREMATUR,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL_PREMATUR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -663,8 +889,8 @@ FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_FØDSEL,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_FØDSEL,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     annenPartVedtak: vedtakMor,
 };
@@ -689,13 +915,13 @@ FarSøkerAdopsjonToBarn.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_ADOPSJON,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_ADOPSJON,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021 = Template.bind({});
-MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021.args = {
+export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80 = Template.bind({});
+MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80.args = {
     søkerInfo: søkerInfoMann,
     søkersituasjon: {
         situasjon: 'adopsjon',
@@ -715,15 +941,15 @@ MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021.args = {
         harRettPåForeldrepengerINorge: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
-    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    stønadskonto100: STØNADSKONTO_80_DELT_UTTAK_TRE_BARN_ADOPSJON_FØR_WLB,
+    stønadskonto80: STØNADSKONTO_80_DELT_UTTAK_TRE_BARN_ADOPSJON_FØR_WLB,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
 //DELT UTTAK EØS
 
-export const MorSøkerFarHarRettIEØSTermin = Template.bind({});
-MorSøkerFarHarRettIEØSTermin.args = {
+export const MorSøkerFarHarRettIEØSTerminDekningsgrad80 = Template.bind({});
+MorSøkerFarHarRettIEØSTerminDekningsgrad80.args = {
     søkerInfo: søkerInfoMann,
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -743,9 +969,9 @@ MorSøkerFarHarRettIEØSTermin.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
-    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+    stønadskonto100: STØNADSKONTO_80_DELT_UTTAK,
+    stønadskonto80: STØNADSKONTO_80_DELT_UTTAK,
+    dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
 };
 
 export const FarMedmorSøkerMorHarRettIEØSAdopsjon = Template.bind({});
@@ -770,8 +996,8 @@ FarMedmorSøkerMorHarRettIEØSAdopsjon.args = {
         harRettPåForeldrepengerIEØS: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_ADOPSJON,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_ADOPSJON,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -796,8 +1022,8 @@ BareMorHarRettTermin.args = {
         harRettPåForeldrepengerINorge: false,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_DELT_UTTAK_ADOPSJON,
+    stønadskonto80: STØNADSKONTO_100_DELT_UTTAK_ADOPSJON,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -821,8 +1047,8 @@ BareMorHarRettAdopsjon.args = {
         harRettPåForeldrepengerINorge: false,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_ALENEOMSORG_MOR_ADOPSJON,
+    stønadskonto80: STØNADSKONTO_100_ALENEOMSORG_MOR_ADOPSJON,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -846,8 +1072,8 @@ BareFarHarRettOgMorErUførTermin4Barn.args = {
         kanIkkeOppgis: false,
         erMorUfør: true,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_BFHR_FIRE_BARN,
+    stønadskonto80: STØNADSKONTO_100_BFHR_FIRE_BARN,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -872,8 +1098,8 @@ BareFarHarRettOgMorErIkkeUførFødtBarn.args = {
         kanIkkeOppgis: false,
         erMorUfør: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_BFHR_MOR_IKKE_UFØR,
+    stønadskonto80: STØNADSKONTO_100_BFHR_MOR_IKKE_UFØR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -898,13 +1124,13 @@ BareFarHarRettTvillingerFødtFør1Okt2021.args = {
         kanIkkeOppgis: false,
         erMorUfør: true,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_BFHR_TVILLINGER_FØR_1_OKT_MOR_UFØR,
+    stønadskonto80: STØNADSKONTO_100_BFHR_TVILLINGER_FØR_1_OKT_MOR_UFØR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const BareFarHarRettTrillingerFødtFørWLB = Template.bind({});
-BareFarHarRettTrillingerFødtFørWLB.args = {
+export const BareFarHarRettTvillingerFødtFørWLB = Template.bind({});
+BareFarHarRettTvillingerFødtFørWLB.args = {
     søkerInfo: søkerInfoMann,
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -924,13 +1150,13 @@ BareFarHarRettTrillingerFødtFørWLB.args = {
         kanIkkeOppgis: false,
         erMorUfør: true,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_BFHR_TVILLINGER_FØR_1_OKT_MOR_UFØR,
+    stønadskonto80: STØNADSKONTO_100_BFHR_TVILLINGER_FØR_1_OKT_MOR_UFØR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
-export const BareFarHarRettPrematurFødselFireBarn = Template.bind({});
-BareFarHarRettPrematurFødselFireBarn.args = {
+export const BareFarHarRettPrematurFødsel = Template.bind({});
+BareFarHarRettPrematurFødsel.args = {
     søkerInfo: søkerInfoMann,
     søkersituasjon: {
         situasjon: 'fødsel',
@@ -938,7 +1164,7 @@ BareFarHarRettPrematurFødselFireBarn.args = {
     },
     barnet: {
         type: BarnType.FØDT,
-        antallBarn: 4,
+        antallBarn: 1,
         fødselsdatoer: ['2024-01-21'],
         termindato: '2024-04-21',
     },
@@ -950,8 +1176,8 @@ BareFarHarRettPrematurFødselFireBarn.args = {
         kanIkkeOppgis: false,
         erMorUfør: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_BFHR_MOR_IKKE_UFØR_PREMATUR,
+    stønadskonto80: STØNADSKONTO_100_BFHR_MOR_IKKE_UFØR_PREMATUR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
 
@@ -976,9 +1202,7 @@ BareFarHarRettAdopsjonMorErUfør.args = {
         erMorUfør: true,
         kanIkkeOppgis: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto100: STØNADSKONTO_100_BFHR_MOR_UFØR,
+    stønadskonto80: STØNADSKONTO_100_BFHR_MOR_UFØR,
     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
 };
-
-//TODO: Angi riktige stønadskontoer.
