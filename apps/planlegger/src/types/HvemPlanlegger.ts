@@ -1,83 +1,79 @@
 import { IntlShape } from 'react-intl';
 import HvemPlanlegger from 'steps/hvemPlanlegger/HvemPlanleggerSteg';
 
-import { SøkersituasjonEnum } from './Søkersituasjon';
+import { Situasjon } from './Søkersituasjon';
 
 export type HvemPlanlegger = MorOgFar | MorOgMedmor | FarOgFar | Mor | Far;
 
 export type MorOgFar = {
-    type: SøkersituasjonEnum.MOR_OG_FAR;
+    type: Situasjon.MOR_OG_FAR;
     navnPåMor?: string;
     navnPåFar?: string;
 };
 
 export type MorOgMedmor = {
-    type: SøkersituasjonEnum.MOR_OG_MEDMOR;
+    type: Situasjon.MOR_OG_MEDMOR;
     navnPåMor?: string;
     navnPåMedmor?: string;
 };
 
 export type FarOgFar = {
-    type: SøkersituasjonEnum.FAR_OG_FAR;
+    type: Situasjon.FAR_OG_FAR;
     navnPåFar?: string;
     navnPåMedfar?: string;
 };
 
 export type Mor = {
-    type: SøkersituasjonEnum.MOR;
+    type: Situasjon.MOR;
     navnPåMor?: string;
 };
 
 export type Far = {
-    type: SøkersituasjonEnum.FAR;
+    type: Situasjon.FAR;
     navnPåFar?: string;
-};
-
-export const isMorOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar => {
-    return hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR;
-};
-export const isMorOgMedmor = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgMedmor => {
-    return hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR;
-};
-export const isFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar => {
-    return hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR;
-};
-export const isMor = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Mor => {
-    return hvemPlanlegger.type === SøkersituasjonEnum.MOR;
-};
-export const isFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Far => {
-    return hvemPlanlegger.type === SøkersituasjonEnum.FAR;
 };
 
 export const isFlere = (hvemPlanlegger: HvemPlanlegger) => {
     return (
-        hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR ||
-        hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR ||
-        hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_MEDMOR
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR
     );
 };
 export const isAlene = (hvemPlanlegger: HvemPlanlegger) => {
     return isFlere(hvemPlanlegger) === false;
 };
 
+export const erMorDelAvSøknaden = (type: Situasjon) => {
+    return type === Situasjon.MOR_OG_FAR || type === Situasjon.MOR_OG_MEDMOR || type === Situasjon.MOR;
+};
+
+export const erFarDelAvSøknaden = (type: Situasjon) => {
+    return type === Situasjon.MOR_OG_FAR || type === Situasjon.FAR_OG_FAR || type === Situasjon.FAR;
+};
+
 export const getNavnPåSøker = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
-    if (isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)) {
+    if (
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
+        hvemPlanlegger.type === Situasjon.MOR
+    ) {
         return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
     }
-    if (isFarOgFar(hvemPlanlegger) || isFar(hvemPlanlegger)) {
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR || hvemPlanlegger.type === Situasjon.FAR) {
         return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
     }
     throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
 };
 
 export const getNavnPåAnnenPart = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
-    if (isMorOgMedmor(hvemPlanlegger)) {
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
     }
-    if (isMorOgFar(hvemPlanlegger)) {
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_FAR) {
         return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
     }
-    if (isFarOgFar(hvemPlanlegger)) {
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
         return hvemPlanlegger.navnPåMedfar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
     }
     return undefined;

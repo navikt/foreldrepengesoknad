@@ -5,7 +5,7 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { Situasjon } from 'types/Søkersituasjon';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -42,7 +42,7 @@ FlereForsørgereBarnTerminDesemberStartAugustOmToÅr.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         navnPåFar: 'Espen Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
+        type: Situasjon.MOR_OG_FAR,
     },
     omBarnet: {
         erBarnetFødt: false,
@@ -57,7 +57,7 @@ FlereForsørgereBarnFødtSeptemberStartSeptember.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
+        type: Situasjon.MOR_OG_FAR,
     },
     omBarnet: {
         erBarnetFødt: true,
@@ -72,7 +72,7 @@ export const AleneforsørgerBarnFødtJanuarStartAugust = Template.bind({});
 AleneforsørgerBarnFødtJanuarStartAugust.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR,
+        type: Situasjon.MOR,
     },
     omBarnet: {
         erBarnetFødt: true,
@@ -88,7 +88,7 @@ FlereForsørgereAdoptertBarnFødtJanuarStartAugust.args = {
     hvemPlanlegger: {
         navnPåMor: 'Klara Utvikler',
         navnPåFar: 'Espen Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
+        type: Situasjon.MOR_OG_FAR,
     },
     omBarnet: {
         antallBarn: '1',

@@ -1,24 +1,23 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { Situasjon } from 'types/Søkersituasjon';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import OmBarnetSteg from './OmBarnetSteg';
 
-export default {
-    title: 'OmBarnetSteg',
-    component: OmBarnetSteg,
-};
-
-const Template: StoryFn<{
+interface StoryArgs {
     hvemPlanlegger: HvemPlanlegger;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }) => {
+}
+
+type Story = StoryObj<StoryArgs>;
+
+const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.OM_BARNET]}>
@@ -34,27 +33,37 @@ const Template: StoryFn<{
     );
 };
 
-export const FlereForsørgere = Template.bind({});
-FlereForsørgere.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
+const meta = {
+    title: 'OmBarnetSteg',
+    component: OmBarnetSteg,
+    render: customRenderer,
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+export const FlereForsørgere: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
     },
 };
 
-export const AleneforsørgerMor = Template.bind({});
-AleneforsørgerMor.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR,
+export const AleneforsørgerMorFlereForsørgere: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR,
+        },
     },
 };
 
-export const AleneforsørgerFar = Template.bind({});
-AleneforsørgerFar.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        type: SøkersituasjonEnum.FAR,
+export const AleneforsørgerFar: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.FAR,
+        },
     },
 };

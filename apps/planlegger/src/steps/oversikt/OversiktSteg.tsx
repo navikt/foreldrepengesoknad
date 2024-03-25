@@ -18,8 +18,8 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, isAlene, isFar, isFarOgFar, isMor, isMorOgFar, isMorOgMedmor } from 'types/HvemPlanlegger';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
+import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
     getAntallUkerAktivitetsfriKvote,
@@ -61,17 +61,23 @@ const termindatoEllerFødselsdato = (barnet: OmBarnet) => {
 };
 
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
-    if (isMorOgMedmor(hvemPlanlegger)) {
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'FlereForsørgere.Medmor' });
     }
-    if (isFar(hvemPlanlegger) || isFarOgFar(hvemPlanlegger) || isMorOgFar(hvemPlanlegger)) {
+    if (
+        hvemPlanlegger.type === Situasjon.FAR ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR
+    ) {
         return intl.formatMessage({ id: 'FlereForsørgere.Far' });
     }
     return undefined;
 };
 
 const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
-    isMorOgFar(hvemPlanlegger) || isMorOgMedmor(hvemPlanlegger) || isMor(hvemPlanlegger)
+    hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
+    hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
+    hvemPlanlegger.type === Situasjon.MOR
         ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
         : intl.formatMessage({ id: 'FlereForsørgere.Far' });
 
@@ -155,11 +161,11 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const erAleneforsørger = isAlene(hvemPlanlegger);
 
     const kunFarHarRettHovedsøker =
-        hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR &&
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
         (arbeidssituasjon.status === Arbeidsstatus.JOBBER || arbeidssituasjon.jobberAnnenPart);
 
     const kunFarHarRettMedsøker =
-        hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR &&
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR &&
         arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart;
 
@@ -170,8 +176,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const aktivitetskravUker = totalUker - aktivitetsfriUker;
 
     const kunMorHarRett =
-        hvemPlanlegger.type !== SøkersituasjonEnum.FAR &&
-        hvemPlanlegger.type !== SøkersituasjonEnum.FAR_OG_FAR &&
+        hvemPlanlegger.type !== Situasjon.FAR &&
+        hvemPlanlegger.type !== Situasjon.FAR_OG_FAR &&
         arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart !== true;
 
