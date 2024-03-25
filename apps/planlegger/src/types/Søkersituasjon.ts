@@ -1,4 +1,4 @@
-export enum SøkersituasjonEnum {
+export enum Situasjon {
     MOR_OG_FAR = 'morOgFar',
     MOR_OG_MEDMOR = 'morOgMedmor',
     FAR_OG_FAR = 'farOgFar',
@@ -7,5 +7,5 @@ export enum SøkersituasjonEnum {
 }
 
 export type Søkersituasjon = {
-    situasjon?: SøkersituasjonEnum;
+    situasjon?: Situasjon;
 };

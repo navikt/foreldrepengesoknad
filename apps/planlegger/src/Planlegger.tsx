@@ -3,7 +3,7 @@ import { FunctionComponent, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { decodeBase64 } from 'utils/urlEncodingUtils';
 
@@ -31,13 +31,13 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
             antallBarn: omBarnet?.antallBarn,
             morHarRett: arbeidssituasjon?.status === Arbeidsstatus.JOBBER,
             farHarRett: arbeidssituasjon?.jobberAnnenPart,
-            morHarAleneomsorg: søkersituasjon?.situasjon === SøkersituasjonEnum.MOR,
-            farHarAleneomsorg: søkersituasjon?.situasjon === SøkersituasjonEnum.FAR,
+            morHarAleneomsorg: søkersituasjon?.situasjon === Situasjon.MOR,
+            farHarAleneomsorg: søkersituasjon?.situasjon === Situasjon.FAR,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
             termindato: omBarnet && erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined,
             omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.adopsjonsdato : undefined,
             morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-            erMor: søkersituasjon?.situasjon !== SøkersituasjonEnum.FAR,
+            erMor: søkersituasjon?.situasjon !== Situasjon.FAR,
             minsterett: true,
             harAnnenForelderTilsvarendeRettEØS: false,
         }),
@@ -75,9 +75,8 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
 const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const locations = useLocation();
 
-    const data = locations.search.includes('?data')
-        ? JSON.parse(decodeBase64(locations.search.replace('?data=', '')))
-        : undefined;
+    const dataParam = new URLSearchParams(locations.search).get('data');
+    const data = dataParam ? JSON.parse(decodeBase64(dataParam)) : undefined;
 
     return (
         <PlanleggerDataContext initialState={data}>

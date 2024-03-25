@@ -7,7 +7,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { SøkersituasjonEnum } from 'types/Søkersituasjon';
+import { Situasjon } from 'types/Søkersituasjon';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -76,7 +76,7 @@ FlereForsørgereEttBarn.args = {
     hvemPlanlegger: {
         navnPåFar: 'Espen Utvikler',
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_FAR,
+        type: Situasjon.MOR_OG_FAR,
     },
     omBarnet: {
         erBarnetFødt: false,
@@ -91,7 +91,7 @@ FlereForsørgereToBarn.args = {
     hvemPlanlegger: {
         navnPåMedmor: 'Esther Utvikler',
         navnPåMor: 'Klara Utvikler',
-        type: SøkersituasjonEnum.MOR_OG_MEDMOR,
+        type: Situasjon.MOR_OG_MEDMOR,
     },
     omBarnet: {
         erBarnetFødt: false,
