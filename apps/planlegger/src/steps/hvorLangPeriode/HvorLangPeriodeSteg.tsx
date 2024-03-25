@@ -46,14 +46,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
 
-    const lagrePeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
-
-    const lagre = (formValues: HvorLangPeriode) => {
-        lagrePeriode(formValues);
-
-        const erAlenesøker = isAlene(hvemPlanlegger);
-        return navigator.goToNextStep(erAlenesøker ? PlanleggerRoutes.OVERSIKT : PlanleggerRoutes.FORDELING);
-    };
+    const oppdaterPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
 
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
@@ -61,24 +54,18 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         return <Loader />;
     }
 
-    const dekningsgrad = formMethods.watch('dekningsgrad');
-
     const erAlenesøker = isAlene(hvemPlanlegger);
 
-    const harMorRett = () => {
-        if (arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR) {
-            return true;
-        }
-        return false;
+    const lagre = (formValues: HvorLangPeriode) => {
+        oppdaterPeriode(formValues);
+        return navigator.goToNextStep(erAlenesøker ? PlanleggerRoutes.OVERSIKT : PlanleggerRoutes.FORDELING);
     };
-    const morHarIkkeRett = harMorRett();
-    const harFarRett = () => {
-        if (arbeidssituasjon.jobberAnnenPart === false) {
-            return true;
-        }
-        return false;
-    };
-    const farHarIkkeRett = harFarRett();
+
+    const dekningsgrad = formMethods.watch('dekningsgrad');
+
+    const morHarIkkeRett =
+        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
+    const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
 
     const selectedKonto =
         periode || dekningsgrad
@@ -264,7 +251,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </VStack>
                     <VStack gap="10">
                         <StepButtonsHookForm<HvorLangPeriode>
-                            saveDataOnPreviousClick={lagrePeriode}
+                            saveDataOnPreviousClick={oppdaterPeriode}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             useSimplifiedTexts
                         />
