@@ -25,7 +25,7 @@ const getDefaultDateOppstartsdato = (
         return minDate;
     }
     if (erFarEllerMedmor || erAdopsjon) {
-        familiehendelsesdato;
+        return familiehendelsesdato;
     }
     return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
 };
