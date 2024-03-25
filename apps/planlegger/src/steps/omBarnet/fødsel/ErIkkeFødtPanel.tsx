@@ -27,7 +27,7 @@ type Props = {
     antallBarn?: string;
 };
 
-const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør }) => {
+const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnet>();
@@ -141,4 +141,4 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
         </VStack>
     );
 };
-export default Fødsel;
+export default ErIkkeFødtPanel;

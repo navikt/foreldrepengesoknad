@@ -1,7 +1,7 @@
 import { PlanleggerRoutes } from 'appData/routes';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { encodeToBase64, stringify } from 'utils/urlEncodingUtils';
+import { encodeToBase64 } from 'utils/urlEncodingUtils';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
@@ -27,7 +27,7 @@ const usePlanleggerNavigator = () => {
 
     useEffect(() => {
         if (path) {
-            navigate(`${path}?data=${encodeToBase64(stringify(context))}`);
+            navigate(`${path}?data=${encodeToBase64(JSON.stringify(context))}`);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [path]);

@@ -45,42 +45,33 @@ interface Props {
 
 const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const intl = useIntl();
+
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetIkkeFødt(barnet);
-    const erAdoptert = erBarnetAdoptert(barnet);
-    const antallBarn = barnet.antallBarn;
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const { dekningsgrad } = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
+
+    if (!stønadskontoer) {
+        return <Loader />;
+    }
+
+    const erFødt = erBarnetFødt(barnet);
+    const erAdoptert = erBarnetAdoptert(barnet);
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
     const navn1 = getNavnPåSøker(hvemPlanlegger, intl);
     const navn2 = getNavnPåAnnenPart(hvemPlanlegger, intl);
     const fornavn1 = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavn2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
-    const arbeidssituasjonSøker1 = arbeidssituasjon.status;
-    const arbeidssituasjonAnnenPart = () => {
-        if (arbeidssituasjon.jobberAnnenPart === true) {
-            return 'Jobber';
-        }
-        return 'Jobber ikke';
-    };
-    const fordeling = useContextGetData(ContextDataType.FORDELING);
-    if (!stønadskontoer) {
-        return <Loader />;
-    }
 
     const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
     const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
     const antallUker = getAntallUker(selectedKonto);
-    const antallUkerVedAdopsjon = () => {
-        if (erAdoptert) {
-            return getAntallUker(selectedKonto) - getAntallUkerForeldrepengerFørFødsel(selectedKonto);
-        }
-        return getAntallUker(selectedKonto);
-    };
-    const antallUkerAdopsjon = antallUkerVedAdopsjon();
+
+    const antallUkerAdopsjon = erAdoptert
+        ? getAntallUker(selectedKonto) - getAntallUkerForeldrepengerFørFødsel(selectedKonto)
+        : getAntallUker(selectedKonto);
 
     const list = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
     const antallUkerFellesperiodeSøker1 = fordeling ? list[fordeling.fellesperiodefordeling].antallUkerSøker1 : '';
@@ -100,6 +91,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
         antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2
             ? dayjs(startdatoSøker2).add(antallUkerFellesperiodeSøker2, 'weeks').add(antallUkerFedrekvote, 'weeks')
             : undefined;
+
     return (
         <VStack gap="10">
             <ExpansionCard aria-label="">
@@ -109,7 +101,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" />
                         </IconCircleWrapper>
                         <ExpansionCard.Title size="medium">
-                            {isAlene(hvemPlanlegger) ? (
+                            {erAleneforsørger ? (
                                 <FormattedMessage id="oppsummering.oppgittInformasjonDeg" />
                             ) : (
                                 <FormattedMessage id="oppsummering.oppgittInformasjon" />
@@ -136,7 +128,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 )}
                             </BodyLong>
                         </GreenPanel>
-
                         <GreenPanel>
                             <>
                                 <Heading size="small">
@@ -149,7 +140,10 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     </BodyLong>
                                 )}
                                 <BodyLong>
-                                    <FormattedMessage id="oppsummering.antallBarn" values={{ antall: antallBarn }} />
+                                    <FormattedMessage
+                                        id="oppsummering.antallBarn"
+                                        values={{ antall: barnet.antallBarn }}
+                                    />
                                 </BodyLong>
                                 {erFødt && (
                                     <BodyLong>
@@ -161,7 +155,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         />
                                     </BodyLong>
                                 )}
-                                {(erIkkeFødt || (erFødt && !erAdoptert)) && (
+                                {(erBarnetIkkeFødt(barnet) || (erFødt && !erAdoptert)) && (
                                     <BodyLong>
                                         <FormattedMessage
                                             id="oppsummering.termindato"
@@ -181,7 +175,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 )}
                             </>
                         </GreenPanel>
-
                         <GreenPanel>
                             <>
                                 <Heading size="small">
@@ -190,7 +183,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <BodyLong>
                                     <FormattedMessage
                                         id="arbeidssituasjon"
-                                        values={{ navn: fornavn1, arbeidssituasjon: arbeidssituasjonSøker1 }}
+                                        values={{ navn: fornavn1, arbeidssituasjon: arbeidssituasjon.status }}
                                     />
                                 </BodyLong>
 
@@ -200,14 +193,17 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             id="arbeidssituasjon"
                                             values={{
                                                 navn: fornavn2,
-                                                arbeidssituasjon: arbeidssituasjonAnnenPart(),
+                                                arbeidssituasjon:
+                                                    //TODO Hardkoda tekstar
+                                                    arbeidssituasjon.jobberAnnenPart === true
+                                                        ? 'Jobber'
+                                                        : 'Jobber ikke',
                                             }}
                                         />
                                     </BodyLong>
                                 )}
                             </>
                         </GreenPanel>
-
                         <GreenPanel>
                             <>
                                 <Heading size="small">
@@ -240,7 +236,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 }}
                                             />
                                         </BodyLong>
-
                                         <div>
                                             <BodyLong>
                                                 <FormattedMessage

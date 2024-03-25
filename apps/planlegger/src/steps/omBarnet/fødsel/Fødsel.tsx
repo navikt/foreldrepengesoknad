@@ -53,6 +53,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                 <ErFødtPanel
                     hvemPlanlegger={hvemPlanlegger}
                     erOmBarnetIkkeOppgittFraFør={erOmBarnetIkkeOppgittFraFør}
+                    antallBarn={antallBarn}
                 />
             )}
             {erBarnetFødt === false && (
