@@ -204,7 +204,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         >
             <VStack gap="5">
                 <FordelingOversikt
-                    kontoer={valgtStønadskonto!}
+                    kontoer={valgtStønadskonto}
                     navnFarMedmor={navnFarMedmor}
                     navnMor={navnMor}
                     deltUttak={deltUttak}
