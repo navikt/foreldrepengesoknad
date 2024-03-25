@@ -14,12 +14,12 @@ import { ISOStringToDate } from '@navikt/fp-formik';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import Fordeling, { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
+import Fordeling from 'app/context/types/Fordeling';
 import { getDatoForAleneomsorg } from 'app/utils/annenForelderUtils';
 
-import OppstartAvForeldrepenger from './components/OppstartAvForeldrepenger';
-import { getValgOptionsForOppstart } from './components/OppstartValgInput';
-import FellesperiodeFordeling from './components/fellesperiode-fordeling/FellesperiodeFordeling';
+import FellesperiodeFordeling from './fellesperiode-fordeling/FellesperiodeFordeling';
+import OppstartAvForeldrepenger from './oppstart-av-foreldrepenger/OppstartAvForeldrepenger';
+import { getValgOptionsForOppstart } from './oppstart-av-foreldrepenger/OppstartValgInput';
 
 type Props = {
     erDeltUttak: boolean;
@@ -53,9 +53,10 @@ const FordelingForm: React.FunctionComponent<Props> = ({
 
     const formMethods = useForm<Fordeling>({
         defaultValues: fordelingAvForeldrepenger,
+        shouldUnregister: true,
     });
 
-    const søkerDeltUttakINorgeSomMorFørst =
+    const søkerDeltUttakINorgeSomMorFørFar =
         erDeltUttak &&
         !erFarEllerMedmor &&
         førsteDagEtterAnnenForelder === undefined &&
@@ -71,20 +72,9 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     );
 
     const onSubmit = (values: Fordeling) => {
-        const mappedFordelingValues = {
-            fordelingValg: values.fordelingValg,
-            antallUkerFellesperiodeTilSøker:
-                values.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE
-                    ? values.antallUkerFellesperiodeTilSøker
-                    : undefined,
-            oppstartAvForeldrepengerValg:
-                values.oppstartAvForeldrepengerValg &&
-                oppstartsValgOptions.includes(values.oppstartAvForeldrepengerValg)
-                    ? values.oppstartAvForeldrepengerValg
-                    : undefined,
-            oppstartDato: values.oppstartDato,
-        };
-        oppdaterFordeling(mappedFordelingValues);
+        oppdaterFordeling(values);
+
+        //TODO Uttaksplanrefaktorering: trenger man dette?
         if (uttaksplanMetadata?.harUttaksplanBlittSlettet !== false) {
             oppdaterUttaksplanMetaData({
                 ...uttaksplanMetadata,
@@ -97,7 +87,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
         <Form formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
                 <ErrorSummaryHookForm />
-                {søkerDeltUttakINorgeSomMorFørst && (
+                {søkerDeltUttakINorgeSomMorFørFar && (
                     <FellesperiodeFordeling
                         navnPåForeldre={navnPåForeldre}
                         dagerMedFellesperiode={dagerMedFellesperiode}

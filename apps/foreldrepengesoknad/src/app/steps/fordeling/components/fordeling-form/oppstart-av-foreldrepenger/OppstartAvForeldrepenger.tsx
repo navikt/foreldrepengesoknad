@@ -11,8 +11,8 @@ import { getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedatoDate } from 'app/utils/barnUtils';
 
 import OppstartDatoInput from './OppstartDatoInput';
+import OppstartDatoMorFødsel from './OppstartDatoMorFødsel';
 import OppstartValgInput from './OppstartValgInput';
-import OppstartDatoMorFødsel from './oppstarsdato-mor-fødsel/OppstartDatoMorFødsel';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;
@@ -38,7 +38,7 @@ const OppstartAvForeldrepenger: React.FunctionComponent<Props> = ({
     const oppstartValg = watch('oppstartAvForeldrepengerValg');
 
     const visOppstartsDatoInput =
-        oppstartsvalg && (oppstartsvalg.length <= 1 || (oppstartValg && OppstartValg.ANNEN_DATO === oppstartValg));
+        oppstartsvalg.length <= 1 || (oppstartValg && OppstartValg.ANNEN_DATO === oppstartValg);
     return (
         <VStack gap="5">
             <OppstartValgInput

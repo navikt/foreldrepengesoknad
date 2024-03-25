@@ -2,15 +2,15 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert } from '@navikt/ds-react';
 
-import { Block, getVarighetString, intlUtils } from '@navikt/fp-common';
+import { Block, getVarighetString } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import {
     getDegEllerMorTekst,
     getDinEllerFarGenitivEierformTekst,
     getHarFåttEllerSkalFå,
-} from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+} from 'app/steps/fordeling/components/fordeling-oversikt/fordelingOversiktUtils';
 import { getTekstForAntallBarn } from 'app/utils/barnUtils';
 
 interface Props {
@@ -25,8 +25,8 @@ interface Props {
 const getBarnTekst = (antallBarn: number, erAdopsjon: boolean, intl: IntlShape) => {
     if (erAdopsjon) {
         return antallBarn === 2
-            ? intlUtils(intl, 'oppsummering.barn.antallBarn.toBarn').toLowerCase()
-            : intlUtils(intl, 'oppsummering.barn.antallBarn.flere', { antallBarn });
+            ? intl.formatMessage({ id: 'oppsummering.barn.antallBarn.toBarn' }).toLowerCase()
+            : intl.formatMessage({ id: 'oppsummering.barn.antallBarn.flere' }, { antallBarn });
     }
     return getTekstForAntallBarn(antallBarn, intl).toLowerCase();
 };

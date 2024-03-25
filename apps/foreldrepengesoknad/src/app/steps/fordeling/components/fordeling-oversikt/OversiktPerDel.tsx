@@ -8,8 +8,8 @@ import { bemUtils, guid } from '@navikt/fp-common';
 
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 
-import { getFordelingDelTittel } from '../fordelingOversiktUtils';
-import DelGraf from '../grafer/del-graf/DelGraf';
+import { getFordelingDelTittel } from './fordelingOversiktUtils';
+import DelGraf from './grafer/del-graf/DelGraf';
 import './oversikt-per-del.css';
 
 interface Props {

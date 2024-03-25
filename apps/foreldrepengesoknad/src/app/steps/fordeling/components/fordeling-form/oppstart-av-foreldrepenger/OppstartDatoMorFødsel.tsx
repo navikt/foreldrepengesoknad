@@ -4,16 +4,16 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
-import { ISOStringToDate, Uttaksdagen, intlUtils, isFødtBarn } from '@navikt/fp-common';
+import { ISOStringToDate, Uttaksdagen, isFødtBarn } from '@navikt/fp-common';
 import { isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import Fordeling from 'app/context/types/Fordeling';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 
-import OppstartDatoInput from '../OppstartDatoInput';
-import { getErBarnetFødtInnenTreUkerFørTermin } from '../OppstartValgInput';
-import MorOppstartInformasjon from '../mor-oppstart-informasjon/MorOppstartInformasjon';
+import MorOppstartInformasjon from './MorOppstartInformasjon';
+import OppstartDatoInput from './OppstartDatoInput';
+import { getErBarnetFødtInnenTreUkerFørTermin } from './OppstartValgInput';
 
 const OppstartDatoMorFødsel = () => {
     const intl = useIntl();
@@ -30,8 +30,8 @@ const OppstartDatoMorFødsel = () => {
         isValidDate(oppstartDato) &&
         dayjs(oppstartDato).isSameOrBefore(førsteUttaksdagPåEllerEtterFamHendelse);
     const fødselEllerTermindato = getErBarnetFødtInnenTreUkerFørTermin(erBarnetFødt, termindato, fødselsdato)
-        ? intlUtils(intl, 'fødselsdato')
-        : intlUtils(intl, 'termindato');
+        ? intl.formatMessage({ id: 'fødselsdato' })
+        : intl.formatMessage({ id: 'termindato' });
     return (
         <div>
             <VStack gap="3">

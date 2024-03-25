@@ -44,7 +44,7 @@ const FordelingValg: React.FunctionComponent<Props> = ({ dagerMedFellesperiode, 
             >
                 <FormattedMessage id="fordeling.fordelingsvalg.option.valgfritt" />
             </Radio>
-            <Radio value={FellesperiodeFordelingValg.VIL_IKKE_FORDELE_NÅ}>
+            <Radio value={FellesperiodeFordelingValg.HOPP_OVER_FORDELING}>
                 <FormattedMessage id="fordeling.fordelingsvalg.option.senere" />
             </Radio>
         </RadioGroup>

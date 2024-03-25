@@ -14,7 +14,6 @@ import {
     andreAugust2022ReglerGjelder,
     bemUtils,
     førsteOktober2021ReglerGjelder,
-    intlUtils,
     uttaksConstants,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
@@ -22,13 +21,8 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 
-import {
-    getBarnetEllerBarnaTekst,
-    getDegEllerMorTekst,
-    getDegEllerSegTekst,
-    getDuEllerDereTekst,
-} from '../fordelingOversiktUtils';
 import './fordeling-påvirkninger.css';
+import { getDegEllerMorTekst, getDegEllerSegTekst, getDuEllerDereTekst } from './fordelingOversiktUtils';
 
 interface Props {
     deltUttak: boolean;
@@ -56,7 +50,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const bem = bemUtils('fordeling-påvirkninger');
-    const heading = intlUtils(intl, 'fordeling.påvirkninger.tittel');
+    const heading = intl.formatMessage({ id: 'fordeling.påvirkninger.tittel' });
     const onToggleHandler = (open: boolean) => {
         if (open) {
             logAmplitudeEvent('applikasjon-hendelse', {
@@ -69,7 +63,6 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     const degEllerSeg = getDegEllerSegTekst(erFarEllerMedmor, intl);
     const degEllerMor = getDegEllerMorTekst(erFarEllerMedmor, navnAnnenForelder, intl);
     const duEllerDere = getDuEllerDereTekst(deltUttak, intl);
-    const barnetEllerBarna = getBarnetEllerBarnaTekst(barn.antallBarn, intl);
     const morMinsterettUkerToTette = erAdopsjon
         ? uttaksConstants.ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON
         : uttaksConstants.ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL;
@@ -97,12 +90,12 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                                     <BodyShort className={bem.element('undertittel')}>
                                         <FormattedMessage
                                             id="fordeling.påvirkninger.barnSyk.tittel"
-                                            values={{ barnetEllerBarna }}
+                                            values={{ antallBarn: barn.antallBarn }}
                                         />
                                     </BodyShort>
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.barnSyk.info"
-                                        values={{ morTekst, barnetEllerBarna }}
+                                        values={{ morTekst, antallBarn: barn.antallBarn }}
                                     />
                                 </VStack>
                             </div>
@@ -121,7 +114,13 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                                     </BodyShort>
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.morSykFørste6Uker.info"
-                                        values={{ morTekst, farTekst, degEllerSeg, degEllerMor, barnetEllerBarna }}
+                                        values={{
+                                            morTekst,
+                                            farTekst,
+                                            degEllerSeg,
+                                            degEllerMor,
+                                            antallBarn: barn.antallBarn,
+                                        }}
                                     />
                                 </VStack>
                             </div>
@@ -156,7 +155,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                                 <BodyShort className={bem.element('undertittel')}>
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.utsettelse.tittel"
-                                        values={{ barnetEllerBarna }}
+                                        values={{ antallBarn: barn.antallBarn }}
                                     />
                                 </BodyShort>
                                 <FormattedMessage
@@ -241,12 +240,12 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                                 <BodyShort className={bem.element('undertittel')}>
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.prematur.tittel"
-                                        values={{ barnetEllerBarna }}
+                                        values={{ antallBarn: barn.antallBarn }}
                                     />
                                 </BodyShort>
                                 <FormattedMessage
                                     id="fordeling.påvirkninger.prematur.info"
-                                    values={{ barnetEllerBarna, duEllerDere }}
+                                    values={{ antallBarn: barn.antallBarn, duEllerDere }}
                                 />
                             </VStack>
                         </div>

@@ -1,7 +1,7 @@
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -11,7 +11,6 @@ import {
     Uttaksdagen,
     getValidTidsperiode,
     getVarighetString,
-    intlUtils,
     isFødtBarn,
 } from '@navikt/fp-common';
 import { bemUtils, isValidDate } from '@navikt/fp-utils';
@@ -34,7 +33,7 @@ const getMorInfoMistetDagerFørFødsel = (
     if (
         !oppstartsdato ||
         !isValidDate(oppstartsdato) ||
-        dayjs(oppstartsdato).isBefore(førsteUttaksdagForeldrepengerFørFødsel, 'd')
+        dayjs(oppstartsdato).isSameOrBefore(førsteUttaksdagForeldrepengerFørFødsel, 'd')
     ) {
         return undefined;
     }
@@ -52,7 +51,7 @@ const getMorInfoFellesperiodeFørFødsel = (
     if (
         !oppstartsdato ||
         !isValidDate(oppstartsdato) ||
-        dayjs(oppstartsdato).isAfter(førsteUttaksdagForeldrepengerFørFødsel, 'd')
+        dayjs(oppstartsdato).isSameOrAfter(førsteUttaksdagForeldrepengerFørFødsel, 'd')
     ) {
         return undefined;
     }
@@ -77,70 +76,84 @@ const getVarighetFørFamiliehendelse = (
     return tidsperiode ? getVarighetString(Tidsperioden(tidsperiode).getAntallUttaksdager(), intl) : '';
 };
 
+const getStarterPåUttaksdagEtterFamiliehendelse = (familiehendelsesdato: Date, oppstartDato: string | undefined) => {
+    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+
+    return (
+        oppstartDato &&
+        dayjs(oppstartDato).isAfter(familiehendelsesdato, 'd') &&
+        dayjs(oppstartDato).isSame(førsteUttaksdagPåEllerEtterFamHendelse, 'd')
+    );
+};
+
 const MorOppstartInformasjon: React.FunctionComponent<Props> = ({ oppstartDato }) => {
     const intl = useIntl();
     const bem = bemUtils('mor-oppstartinformasjon');
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
-    const fødselEllerTermin = isFødtBarn(barn) ? intlUtils(intl, 'fødsel') : intlUtils(intl, 'termin');
-    const fødselEllerTerminDato = isFødtBarn(barn) ? intlUtils(intl, 'fødselsdato') : intlUtils(intl, 'termindato');
-    const varighetString = getVarighetFørFamiliehendelse(familiehendelsesdato, oppstartDato, intl);
     const førsteUttaksdagMorFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
+
+    const starterPåUttaksdagEtterFamiliehendelse = getStarterPåUttaksdagEtterFamiliehendelse(
+        familiehendelsesdato,
+        oppstartDato,
+    );
+    const starterFørFamiliehendelse = dayjs(oppstartDato).isBefore(familiehendelsesdato, 'd');
+    const starterPåFamiliehendelse = dayjs(oppstartDato).isSame(familiehendelsesdato, 'd');
     const morInfoMistetDagerFørFødsel = getMorInfoMistetDagerFørFødsel(oppstartDato, førsteUttaksdagMorFødsel, intl);
-    const morVarighetFellesperiodeFørFødsel = getMorInfoFellesperiodeFørFødsel(
+    const morInfoFellesperiodeFørFødsel = getMorInfoFellesperiodeFørFødsel(
         oppstartDato,
         førsteUttaksdagMorFødsel,
         intl,
     );
 
-    const morStarterIkkePå3UkerFørFødsel =
-        oppstartDato !== undefined && !dayjs(oppstartDato).isSame(førsteUttaksdagMorFødsel, 'd');
-    const visMisterDagerFørFødsel = morStarterIkkePå3UkerFørFødsel && morInfoMistetDagerFørFødsel;
-    const visBrukFellesperiode = morStarterIkkePå3UkerFørFødsel && morVarighetFellesperiodeFørFødsel;
-    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-
-    const starterFørFamiliehendelse = dayjs(oppstartDato).isBefore(familiehendelsesdato, 'd');
-    const starterPåFamiliehendelse = dayjs(oppstartDato).isSame(familiehendelsesdato, 'd');
-    const starterPåUttaksdagEtterFamiliehendelse =
-        dayjs(oppstartDato).isAfter(familiehendelsesdato, 'd') &&
-        dayjs(oppstartDato).isSame(førsteUttaksdagPåEllerEtterFamHendelse, 'd');
+    const varighetString = getVarighetFørFamiliehendelse(familiehendelsesdato, oppstartDato, intl);
+    const fødselEllerTermin = isFødtBarn(barn)
+        ? intl.formatMessage({ id: 'fødsel' })
+        : intl.formatMessage({ id: 'termin' });
+    const fødselEllerTerminDato = isFødtBarn(barn)
+        ? intl.formatMessage({ id: 'fødselsdato' })
+        : intl.formatMessage({ id: 'termindato' });
 
     return (
         <div className={bem.block}>
             {starterPåUttaksdagEtterFamiliehendelse && (
                 <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
-                    {intlUtils(intl, 'fordeling.oppstartValg.førsteUkedagEtterTerminFødsel', {
-                        fødselEllerTerminDato,
-                    })}
+                    <FormattedMessage
+                        id="fordeling.oppstartValg.førsteUkedagEtterTerminFødsel"
+                        values={{ fødselEllerTerminDato }}
+                    />
                 </BodyShort>
             )}
             {starterFørFamiliehendelse && (
                 <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
-                    {intlUtils(intl, 'fordeling.oppstartValg.førFødselEllerTerminInfo', {
-                        varighetString,
-                        fødselEllerTermin,
-                    })}
+                    <FormattedMessage
+                        id="fordeling.oppstartValg.førFødselEllerTerminInfo"
+                        values={{ varighetString, fødselEllerTermin }}
+                    />
                 </BodyShort>
             )}
             {starterPåFamiliehendelse && (
                 <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
-                    {intlUtils(intl, 'fordeling.oppstartValg.påFødselEllerTermin', {
-                        fødselEllerTerminDato,
-                    })}
+                    <FormattedMessage
+                        id="fordeling.oppstartValg.påFødselEllerTermin"
+                        values={{ fødselEllerTerminDato }}
+                    />
                 </BodyShort>
             )}
-            {visMisterDagerFørFødsel && (
+            {morInfoMistetDagerFørFødsel && (
                 <BodyShort size="small">
-                    {intlUtils(intl, 'fordeling.oppstartValg.misterDagerInfo', {
-                        varighetString: morInfoMistetDagerFørFødsel,
-                    })}
+                    <FormattedMessage
+                        id="fordeling.oppstartValg.misterDagerInfo"
+                        values={{ varighetString: morInfoMistetDagerFørFødsel }}
+                    />
                 </BodyShort>
             )}
-            {visBrukFellesperiode && (
+            {morInfoFellesperiodeFørFødsel && (
                 <BodyShort size="small">
-                    {intlUtils(intl, 'fordeling.oppstartValg.taFraFellesperioden', {
-                        varighetString: morVarighetFellesperiodeFørFødsel,
-                    })}
+                    <FormattedMessage
+                        id="fordeling.oppstartValg.taFraFellesperioden"
+                        values={{ varighetString: morInfoFellesperiodeFørFødsel }}
+                    />
                 </BodyShort>
             )}
         </div>

@@ -53,9 +53,7 @@ const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | unde
         };
     } else {
         const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).denneEllerNeste();
-        const minDato = Uttaksdagen(maksDato).trekkFra(
-            uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1,
-        );
+        const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5);
         return {
             ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
             weekendsNotSelectable: true,

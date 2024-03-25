@@ -17,15 +17,15 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import FlerbarnsdagerInformasjon from 'app/steps/fordeling/components/Flerbarnsdagerinformasjon';
-import SammenhengendeUttakInformasjon from 'app/steps/fordeling/components/SammenhengendeUttakInformasjon';
+import FlerbarnsdagerInformasjon from 'app/steps/fordeling/components/fordeling-oversikt/Flerbarnsdagerinformasjon';
+import SammenhengendeUttakInformasjon from 'app/steps/fordeling/components/fordeling-oversikt/SammenhengendeUttakInformasjon';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
-import FordelingPåvirkninger from './fordeling-påvirkninger/FordelingPåvirkninger';
+import FordelingPåvirkninger from './FordelingPåvirkninger';
+import OversiktPerDel from './OversiktPerDel';
 import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
 import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
-import OversiktPerDel from './oversikt-per-del/OversiktPerDel';
 
 export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
     return (

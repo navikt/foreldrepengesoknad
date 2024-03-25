@@ -21,13 +21,12 @@ import {
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
-import { getIsDeltUttak } from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
 import Fordeling from 'app/context/types/Fordeling';
-import { getAntallUkerFellesperiodeTilSøker, getOppstartsdatoFromInput } from 'app/steps/fordeling/fordelingFormUtils';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 
-import { getDatoForAleneomsorg, getErAleneOmOmsorg } from '../annenForelderUtils';
+import { getDatoForAleneomsorg, getErAleneOmOmsorg, getIsDeltUttak } from '../annenForelderUtils';
 import { getFamiliehendelsedatoDate, getTermindato } from '../barnUtils';
+import { getAntallUkerFellesperiodeTilSøker, getOppstartsdatoFromFordelingValg } from '../fordelingUtils';
 import { deltUttak } from './deltUttak';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 
@@ -54,7 +53,7 @@ const getSøkerensUttaksplanForslag = (
     const annenPartsSisteDag = annenPartsPerioder
         ? Uttaksdagen(annenPartsPerioder[annenPartsPerioder.length - 1].tidsperiode.tom).denneEllerForrige()
         : undefined;
-    const startdatoPermisjon = getOppstartsdatoFromInput(
+    const startdatoPermisjon = getOppstartsdatoFromFordelingValg(
         fordeling.oppstartAvForeldrepengerValg,
         fordeling.oppstartDato,
         termindato,

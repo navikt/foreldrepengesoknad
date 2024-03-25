@@ -23,17 +23,17 @@ import getStønadskontoParams, {
 } from 'app/api/getStønadskontoParams';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import FordelingOversikt from 'app/components/fordeling-oversikt/FordelingOversikt';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import FordelingOversikt from 'app/steps/fordeling/components/fordeling-oversikt/FordelingOversikt';
 import {
     getFordelingFraKontoer,
-    getIsDeltUttak,
     getSisteUttaksdagAnnenForelder,
-} from 'app/components/fordeling-oversikt/fordelingOversiktUtils';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+} from 'app/steps/fordeling/components/fordeling-oversikt/fordelingOversiktUtils';
 import { RequestStatus } from 'app/types/RequestState';
 import {
     getAnnenPartVedtakParam,
     getErAleneOmOmsorg,
+    getIsDeltUttak,
     shouldSuspendAnnenPartVedtakApiRequest,
 } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -41,7 +41,7 @@ import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUt
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtMinsterett, getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 
-import FordelingForm from './FordelingForm';
+import FordelingForm from './components/fordeling-form/FordelingForm';
 import MorsSisteDag from './components/mors-siste-dag/MorsSisteDag';
 
 type Props = {
@@ -170,6 +170,8 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
+
+    //TODO GR: Ikke oppdater barnet i useEffect, oppdater heller i onSubmit. Send med antall barn fra saksgrunnlag ned til visningen. Evt ha begge i samme useEffect.
     useEffect(() => {
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
             oppdaterBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });

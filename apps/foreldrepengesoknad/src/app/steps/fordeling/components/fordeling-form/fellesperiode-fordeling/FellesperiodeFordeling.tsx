@@ -12,9 +12,9 @@ import { isRequired } from '@navikt/fp-validation';
 import Fordeling, { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
 
-import { validateAntallUkerFellesperiode } from '../../fordelingFormUtils';
-import FellesperiodeValgVisning from '../fellesperiode-valg-visning.tsx/FellesperiodeValgVisning';
-import FordelingValg from '../fordeling-valg/FordelingValg';
+import { validateAntallUkerFellesperiode } from '../fordelingFormUtils';
+import FellesperiodeValgVisning from './FellesperiodeValgVisning';
+import FordelingValg from './FordelingValg';
 import './fellesperiode-fordeling.css';
 
 const getAntallUkerFellesperiodeTilSøker = (
@@ -123,7 +123,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                     ]}
                 ></TextField>
             )}
-            {valgtFordeling === FellesperiodeFordelingValg.VIL_IKKE_FORDELE_NÅ && (
+            {valgtFordeling === FellesperiodeFordelingValg.HOPP_OVER_FORDELING && (
                 <Alert variant="info">
                     <FormattedMessage id="fordeling.fordelingsvalg.senere.info" />
                 </Alert>

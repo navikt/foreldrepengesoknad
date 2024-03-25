@@ -3,13 +3,19 @@ import {
     getFørsteUttaksdagForeldrepengerFørFødsel,
     getFørsteUttaksdagOmsorgsovertakelse,
 } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
-import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
 
-import { ISOStringToDate, Uttaksdagen, formatDate, intlUtils } from '@navikt/fp-common';
-import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
+import { Uttaksdagen } from '@navikt/fp-common';
+import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';
 
 import Fordeling, { FellesperiodeFordelingValg, OppstartValg } from 'app/context/types/Fordeling';
+
+export const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date | undefined) => {
+    if (!sisteDagAnnenForelder) {
+        throw new Error('Mangler informasjon om annen forelders siste dag.');
+    }
+    const sisteUttaksdagAnnenForelder = Uttaksdagen(sisteDagAnnenForelder).denneEllerForrige();
+    return Uttaksdagen(sisteUttaksdagAnnenForelder).neste();
+};
 
 export const getAntallUkerFellesperiodeTilSøker = (
     antallUkerFellesperiode: number,
@@ -24,47 +30,7 @@ export const getAntallUkerFellesperiodeTilSøker = (
     return undefined;
 };
 
-export const validateAntallUkerFellesperiode = (intl: IntlShape, dagerMedFellesperiode: number) => (value: string) => {
-    const valueNumber = getNumberFromNumberInputValue(value)!;
-    const maxValueUker = dagerMedFellesperiode / 5;
-
-    if (valueNumber === undefined || Math.round(valueNumber) !== valueNumber) {
-        return intlUtils(intl, 'fordeling.antallUker.ugyldigFormat');
-    }
-
-    if (valueNumber < 0) {
-        return intlUtils(intl, 'fordeling.antallUker.forLiten');
-    }
-
-    if (valueNumber > maxValueUker) {
-        return intlUtils(intl, 'fordeling.antallUker.forStor', { maxValue: maxValueUker });
-    }
-
-    return undefined;
-};
-
-export const validateOppstartsdato =
-    (intl: IntlShape, minDato: Date | undefined, maxDato: Date | undefined) => (value: string) => {
-        if (minDato && dayjs(value).isBefore(minDato, 'd')) {
-            return intlUtils(intl, 'fordeling.oppstartsdato.forTidlig', { minDato: formatDate(minDato) });
-        }
-
-        if (maxDato && dayjs(value).isAfter(maxDato, 'd')) {
-            return intlUtils(intl, 'fordeling.oppstartsdato.forSent', { maxDato: formatDate(maxDato) });
-        }
-
-        return undefined;
-    };
-
-const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date | undefined) => {
-    if (!sisteDagAnnenForelder) {
-        throw new Error('Mangler informasjon om annen forelders siste dag.');
-    }
-    const sisteUttaksdagAnnenForelder = Uttaksdagen(sisteDagAnnenForelder).denneEllerForrige();
-    return Uttaksdagen(sisteUttaksdagAnnenForelder).neste();
-};
-
-export const getOppstartsdatoFromInput = (
+export const getOppstartsdatoFromFordelingValg = (
     oppstartValg: OppstartValg | undefined,
     oppstartDato: string | undefined,
     termindato: Date | undefined,

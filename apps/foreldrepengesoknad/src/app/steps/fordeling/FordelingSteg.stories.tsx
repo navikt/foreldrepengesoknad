@@ -427,6 +427,7 @@ const Template: StoryFn<Props> = ({
 
 //ALENEOMSORG
 
+//TODO: Skriv stønadskontoene rett inn i historien (de som ikke er gjenbrukt)
 export const MorAleneomsorgDekning100EttBarnFør1Okt2021Dekningsgrad80 = Template.bind({});
 MorAleneomsorgDekning100EttBarnFør1Okt2021Dekningsgrad80.args = {
     søkerInfo: søkerInfoKvinne,

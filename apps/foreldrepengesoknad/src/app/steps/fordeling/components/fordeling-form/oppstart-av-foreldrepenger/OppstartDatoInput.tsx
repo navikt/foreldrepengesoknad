@@ -2,7 +2,7 @@ import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { AnnenForelder, Barn, ISOStringToDate, intlUtils, uttaksplanDatoavgrensninger } from '@navikt/fp-common';
+import { AnnenForelder, Barn, ISOStringToDate, uttaksplanDatoavgrensninger } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { DatepickerLimitationsString } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
@@ -87,15 +87,15 @@ const OppstartDatoInput = () => {
         <Datepicker
             name="oppstartDato"
             label={<FormattedMessage id="fordeling.oppstartDato.spørsmål" />}
-            description={intlUtils(intl, 'fordeling.oppstartDato.description')}
+            description={intl.formatMessage({ id: 'fordeling.oppstartDato.description' })}
             minDate={minDato}
             maxDate={maksDato}
             showMonthAndYearDropdowns={true}
             defaultMonth={defaultDate}
             disableWeekends={true}
             validate={[
-                isRequired(intlUtils(intl, 'fordeling.oppstartDato.måOppgis')),
-                isValidDate(intlUtils(intl, 'fordeling.oppstartDato.gyldig')),
+                isRequired(intl.formatMessage({ id: 'fordeling.oppstartDato.måOppgis' })),
+                isValidDate(intl.formatMessage({ id: 'fordeling.oppstartDato.gyldig' })),
                 validateOppstartsdato(intl, minDato, maksDato),
             ]}
         />

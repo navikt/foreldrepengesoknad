@@ -38,9 +38,9 @@ import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
-import { getIsDeltUttak } from '../fordeling-oversikt/fordelingOversiktUtils';
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
 import './infoOmSøknaden.less';
 

@@ -27,3 +27,9 @@ export const shouldSuspendAnnenPartVedtakApiRequest = (annenForelder: AnnenForel
         isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
     return annenPartFnr !== undefined && annenPartFnr !== '' ? false : true;
 };
+
+export const getIsDeltUttak = (annenForelder: AnnenForelder): boolean => {
+    return isAnnenForelderOppgitt(annenForelder)
+        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
+        : false;
+};

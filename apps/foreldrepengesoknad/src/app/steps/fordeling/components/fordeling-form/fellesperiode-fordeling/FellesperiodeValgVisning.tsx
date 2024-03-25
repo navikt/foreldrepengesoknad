@@ -4,7 +4,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { bemUtils, getVarighetString, guid } from '@navikt/fp-common';
 
-import DelGraf from 'app/components/fordeling-oversikt/grafer/del-graf/DelGraf';
+import DelGraf from 'app/steps/fordeling/components/fordeling-oversikt/grafer/del-graf/DelGraf';
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
 
 import './fellesperiodeValgVisning.css';
