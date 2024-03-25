@@ -6,7 +6,7 @@ import OversiktKalender from 'components/calendar/OversiktKalender';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoer';
@@ -36,9 +36,8 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const harRettEllerIkke = () => {
         if (
-            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.INGEN ||
-            (arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.UFØR &&
-                arbeidssituasjon.arbeidssituasjonAnnenPart === false)
+            arbeidssituasjon.status === Arbeidsstatus.INGEN ||
+            (arbeidssituasjon.status === Arbeidsstatus.UFØR && arbeidssituasjon.jobberAnnenPart === false)
         ) {
             return false;
         }

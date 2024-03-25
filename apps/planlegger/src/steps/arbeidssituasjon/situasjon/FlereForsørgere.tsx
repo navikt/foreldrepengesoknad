@@ -4,7 +4,7 @@ import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, getFornavnPåAnnenPart, getFornavnPåSøker } from 'types/HvemPlanlegger';
 
 import { BodyLong, Link, Radio, VStack } from '@navikt/ds-react';
@@ -14,22 +14,21 @@ import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
+    status?: Arbeidsstatus;
 };
 
-const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
+const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<Arbeidssituasjon>();
-
-    const arbeidssituasjon = formMethods.watch('arbeidssituasjon');
-    const arbeidssituasjonAnnenPart = formMethods.watch('arbeidssituasjonAnnenPart');
+    const jobberAnnenPart = formMethods.watch('jobberAnnenPart');
 
     const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 
     return (
         <VStack gap="10">
-            {arbeidssituasjon === ArbeidssituasjonEnum.JOBBER && (
+            {status === Arbeidsstatus.JOBBER && (
                 <Infobox
                     header={
                         <FormattedMessage
@@ -47,7 +46,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                     </BodyLong>
                 </Infobox>
             )}
-            {arbeidssituasjon === ArbeidssituasjonEnum.UFØR && (
+            {status === Arbeidsstatus.UFØR && (
                 <Infobox
                     header={
                         <FormattedMessage
@@ -75,7 +74,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                     </BodyLong>
                 </Infobox>
             )}
-            {arbeidssituasjon === ArbeidssituasjonEnum.INGEN && (
+            {status === Arbeidsstatus.INGEN && (
                 <Infobox
                     header={
                         <FormattedMessage
@@ -103,10 +102,10 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                     </BodyLong>
                 </Infobox>
             )}
-            {arbeidssituasjon && (
+            {status && (
                 <VStack gap="5">
                     <GreenRadioGroup
-                        name="arbeidssituasjonAnnenPart"
+                        name="jobberAnnenPart"
                         label={<FormattedMessage id="arbeid.andreForelder" values={{ navn: fornavnAnnenPart }} />}
                         validate={[isRequired(intl.formatMessage({ id: 'validation.required' }))]}
                     >
@@ -117,7 +116,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             <FormattedMessage id="nei" />
                         </Radio>
                     </GreenRadioGroup>
-                    {arbeidssituasjonAnnenPart === true && (
+                    {jobberAnnenPart === true && (
                         <Infobox
                             header={
                                 <FormattedMessage
@@ -132,7 +131,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             </BodyLong>
                         </Infobox>
                     )}
-                    {arbeidssituasjonAnnenPart === false && (
+                    {jobberAnnenPart === false && (
                         <Infobox
                             header={
                                 <FormattedMessage

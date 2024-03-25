@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { isAlene } from 'types/HvemPlanlegger';
@@ -66,17 +66,14 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const erAlenesøker = isAlene(hvemPlanlegger);
 
     const harMorRett = () => {
-        if (
-            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.INGEN ||
-            arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.UFØR
-        ) {
+        if (arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR) {
             return true;
         }
         return false;
     };
     const morHarIkkeRett = harMorRett();
     const harFarRett = () => {
-        if (arbeidssituasjon.arbeidssituasjonAnnenPart === false) {
+        if (arbeidssituasjon.jobberAnnenPart === false) {
             return true;
         }
         return false;

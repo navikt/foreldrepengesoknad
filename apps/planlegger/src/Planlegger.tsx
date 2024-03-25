@@ -1,7 +1,7 @@
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { SøkersituasjonEnum } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
@@ -29,14 +29,14 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
     const params = useMemo(
         () => ({
             antallBarn: omBarnet?.antallBarn,
-            morHarRett: arbeidssituasjon?.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER,
-            farHarRett: arbeidssituasjon?.arbeidssituasjonAnnenPart,
+            morHarRett: arbeidssituasjon?.status === Arbeidsstatus.JOBBER,
+            farHarRett: arbeidssituasjon?.jobberAnnenPart,
             morHarAleneomsorg: søkersituasjon?.situasjon === SøkersituasjonEnum.MOR,
             farHarAleneomsorg: søkersituasjon?.situasjon === SøkersituasjonEnum.FAR,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
             termindato: omBarnet && erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined,
             omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.adopsjonsdato : undefined,
-            morHarUføretrygd: arbeidssituasjon?.arbeidssituasjon === ArbeidssituasjonEnum.UFØR,
+            morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
             erMor: søkersituasjon?.situasjon !== SøkersituasjonEnum.FAR,
             minsterett: true,
             harAnnenForelderTilsvarendeRettEØS: false,

@@ -3,10 +3,10 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import Infobox from './Infobox';
 
-const meta: Meta<typeof Infobox> = {
+const meta = {
     title: 'components/Infobox',
     component: Infobox,
-};
+} satisfies Meta<typeof Infobox>;
 export default meta;
 
 type Story = StoryObj<typeof Infobox>;

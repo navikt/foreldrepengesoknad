@@ -1,34 +1,177 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-
-import * as stories from './ArbeidssituasjonSteg.stories';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 
-const { ArbeidssituasjonMorOgFar } = composeStories(stories);
+import * as stories from './ArbeidssituasjonSteg.stories';
+
+const { ArbeidssituasjonMorOgFar, ArbeidssituasjonAleneforsørger } = composeStories(stories);
 
 describe('<ArbeidssituasjonSteg>', () => {
-    //TODO: Fiks test
-    it.skip('skal vise arbeidssituasjon for far og mor', async () => {
+    it('skal vise arbeidssituasjon for far og mor og velge at begge har rett', async () => {
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Jobber og tjener mer enn 50 000 i året eller er ufør')[0]);
         await userEvent.click(
-            screen.getAllByText(
-                'Jobber ikke eller jobber og tjener under 50 000 i året eller er student uten deltidsjobb',
-            )[1],
+            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 59 310 kr det siste året'),
         );
+
+        expect(screen.getByText('Klara vil ha rett til foreldrepenger')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Ja'));
+
+        expect(screen.getByText('Espen vil ha rett til foreldrepenger')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                arbeidssituasjonFar: 'jobberIkke',
-                arbeidssituasjonMor: 'jobber',
+                jobberAnnenPart: true,
+                status: 'Jobber',
+            },
+            key: ContextDataType.ARBEIDSSITUASJON,
+            type: 'update',
+        });
+    });
+
+    it('skal vise arbeidssituasjon for far og mor og velge at kun mor har rett', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+
+        await userEvent.click(
+            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 59 310 kr det siste året'),
+        );
+
+        await userEvent.click(screen.getByText('Nei'));
+
+        expect(screen.getByText('Espen har ikke rett til foreldrepenger')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                jobberAnnenPart: false,
+                status: 'Jobber',
+            },
+            key: ContextDataType.ARBEIDSSITUASJON,
+            type: 'update',
+        });
+    });
+
+    it('skal vise arbeidssituasjon for far og mor og velge at mor er ufør', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Er ufør'));
+
+        await userEvent.click(screen.getByText('Nei'));
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                jobberAnnenPart: false,
+                status: 'Ufør',
+            },
+            key: ContextDataType.ARBEIDSSITUASJON,
+            type: 'update',
+        });
+    });
+
+    it('skal vise arbeidssituasjon for far og mor og velge at ingen av disse for mor', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Ingen av disse'));
+
+        await userEvent.click(screen.getByText('Nei'));
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                jobberAnnenPart: false,
+                status: 'Jobber ikke',
+            },
+            key: ContextDataType.ARBEIDSSITUASJON,
+            type: 'update',
+        });
+    });
+
+    it('skal vise arbeidssituasjon for aleneforsørger og velge at har rett', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+
+        await userEvent.click(
+            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 59 310 kr det siste året'),
+        );
+
+        expect(screen.getByText('Du vil ha rett til foreldrepenger')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                status: 'Jobber',
+            },
+            key: ContextDataType.ARBEIDSSITUASJON,
+            type: 'update',
+        });
+    });
+
+    it('skal vise arbeidssituasjon for aleneforsørger og velge at er ufør', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Er ufør'));
+
+        expect(screen.getByText('Du har ikke rett til foreldrepenger')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                status: 'Ufør',
+            },
+            key: ContextDataType.ARBEIDSSITUASJON,
+            type: 'update',
+        });
+    });
+
+    it('skal vise arbeidssituasjon for aleneforsørger og velge Ingen av disse', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Ingen av disse'));
+
+        expect(screen.getByText('Du har ikke rett til foreldrepenger')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                status: 'Jobber ikke',
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
