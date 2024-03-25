@@ -1,6 +1,5 @@
-import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
-import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import { Meta, StoryObj } from '@storybook/react';
+import { ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -10,6 +9,7 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { Situasjon } from 'types/Søkersituasjon';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -43,31 +43,30 @@ const kontoer = {
         },
     },
 };
-export default {
-    title: 'OppsummeringSteg',
-    component: OppsummeringSteg,
-};
 
-const Template: StoryFn<{
-    gåTilNesteSide: (action: Action) => void;
+interface StoryArgs {
     hvemPlanlegger: HvemPlanlegger;
     fordeling: Fordeling;
     hvorLangPeriode: HvorLangPeriode;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
-}> = ({
-    gåTilNesteSide = action('button-click'),
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+}
+
+type Story = StoryObj<StoryArgs>;
+
+const customRenderer = ({
     hvemPlanlegger,
     fordeling,
     hvorLangPeriode,
     omBarnet,
     arbeidssituasjon,
-}) => {
+    stønadskontoer = kontoer,
+}: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
             <PlanleggerDataContext
-                onDispatch={gåTilNesteSide}
                 initialState={{
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                     [ContextDataType.FORDELING]: fordeling,
@@ -76,82 +75,94 @@ const Template: StoryFn<{
                     [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                 }}
             >
-                <OppsummeringSteg stønadskontoer={kontoer} />
+                <OppsummeringSteg stønadskontoer={stønadskontoer} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
 };
 
-export const OppsummeringFlereForsørgereHundreProsentTermin = Template.bind({});
-OppsummeringFlereForsørgereHundreProsentTermin.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR_OG_FAR,
-    },
-    fordeling: {
-        fellesperiodefordeling: 6,
-    },
-    hvorLangPeriode: {
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    },
-    omBarnet: {
-        erFødsel: true,
-        erBarnetFødt: false,
-        termindato: '2022-10-24',
-        antallBarn: '1',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.INGEN,
-        jobberAnnenPart: false,
-    },
-};
-export const OppsummeringAleneforsørgerÅttiProsentFødselToBarn = Template.bind({});
-OppsummeringAleneforsørgerÅttiProsentFødselToBarn.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR,
-    },
-    fordeling: {
-        fellesperiodefordeling: 6,
-    },
-    hvorLangPeriode: {
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-    },
-    omBarnet: {
-        erFødsel: true,
-        erBarnetFødt: true,
-        termindato: '2022-07-10',
-        antallBarn: '2',
-        fødselsdato: '2022-08-10',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.INGEN,
+const meta = {
+    title: 'OppsummeringSteg',
+    component: OppsummeringSteg,
+    render: customRenderer,
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+export const OppsummeringFlereForsørgereHundreProsentTermin: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        fordeling: {
+            fellesperiodefordeling: 6,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: false,
+            termindato: '2022-10-24',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: false,
+        },
     },
 };
-export const OppsummeringFlereForsørgereHundreProsentAdopsjon = Template.bind({});
-OppsummeringFlereForsørgereHundreProsentAdopsjon.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        navnPåMedmor: 'Esther Utvikler',
-        type: Situasjon.MOR_OG_MEDMOR,
+
+export const OppsummeringAleneforsørgerÅttiProsentFødselToBarn: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR,
+        },
+        fordeling: {
+            fellesperiodefordeling: 6,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: true,
+            termindato: '2022-07-10',
+            antallBarn: '2',
+            fødselsdato: '2022-08-10',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+        },
     },
-    fordeling: {
-        fellesperiodefordeling: 6,
-    },
-    hvorLangPeriode: {
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    },
-    omBarnet: {
-        erFødsel: false,
-        erBarnetFødt: true,
-        erAdoptert: true,
-        fødselsdato: '2022-07-10',
-        antallBarn: '1',
-        overtakelsesdato: '2022-010-10',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
-        jobberAnnenPart: true,
+};
+
+export const OppsummeringFlereForsørgereHundreProsentAdopsjon: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            navnPåMedmor: 'Esther Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+        fordeling: {
+            fellesperiodefordeling: 6,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: false,
+            erBarnetFødt: true,
+            erAdoptert: true,
+            fødselsdato: '2022-07-10',
+            antallBarn: '1',
+            overtakelsesdato: '2022-010-10',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
     },
 };

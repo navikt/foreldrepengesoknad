@@ -1,5 +1,3 @@
-import { ContextDataMap } from 'appData/PlanleggerDataContext';
-
 // From https://developer.mozilla.org/en-US/docs/Glossary/Base64#the_unicode_problem.
 function base64ToBytes(base64: string) {
     const binString = atob(base64);
@@ -43,16 +41,4 @@ export const decodeBase64 = (stringToBeDecoded: string) => {
         return new TextDecoder().decode(base64ToBytes(stringToBeDecoded));
     }
     throw Error('Error in base64 decoding');
-};
-
-const sortObject = (unordered: Record<string, any>) =>
-    Object.keys(unordered)
-        .sort((s1, s2) => s1.localeCompare(s2))
-        .reduce<Record<string, any>>((obj, key) => {
-            obj[key] = unordered[key];
-            return obj;
-        }, {});
-
-export const stringify = (state: ContextDataMap) => {
-    return JSON.stringify(sortObject(state));
 };

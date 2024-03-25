@@ -28,26 +28,23 @@ interface Props {
 
 const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const navigator = usePlanleggerNavigator();
+
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const hvorLangPeriode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
-    const erAleneforsørger = isAlene(hvemPlanlegger);
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
-    const harRettEllerIkke = () => {
-        if (
-            arbeidssituasjon.status === Arbeidsstatus.INGEN ||
-            (arbeidssituasjon.status === Arbeidsstatus.UFØR && arbeidssituasjon.jobberAnnenPart === false)
-        ) {
-            return false;
-        }
-        return true;
-    };
-    const harRett = harRettEllerIkke();
 
     if (!stønadskontoer) {
         return <Loader />;
     }
+
+    const erAleneforsørger = isAlene(hvemPlanlegger);
+    const harRett =
+        arbeidssituasjon.status === Arbeidsstatus.INGEN ||
+        (arbeidssituasjon.status === Arbeidsstatus.UFØR && arbeidssituasjon.jobberAnnenPart === false)
+            ? false
+            : true;
 
     const selectedKonto = hvorLangPeriode
         ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[hvorLangPeriode.dekningsgrad])
@@ -98,7 +95,6 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </Infoboks>
                         </VStack>
                     )}
-
                     <Alert variant="info">
                         {!harRett ? (
                             <FormattedMessage id="oppsummering.informasjonPlanleggerErUnderUtviklingIkkeRett" />
@@ -120,7 +116,6 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             />
                         )}
                     </Alert>
-
                     {selectedKonto && (
                         <VStack gap="5">
                             {harRett && (
@@ -151,7 +146,6 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <OppgittInformasjon stønadskontoer={stønadskontoer} />
                         </VStack>
                     )}
-
                     <VStack gap="10">
                         <HStack>
                             <Button

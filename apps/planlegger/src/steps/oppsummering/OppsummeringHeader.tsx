@@ -10,42 +10,40 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => {
-    return (
-        <PlanleggerStep
-            useLargerBorderRadius
-            header={
-                <>
-                    <Show below="md">
-                        <GreenHeading isDarkGreen>
-                            <HStack gap="4" align="center">
-                                <IconCircleWrapper color="darkGreen" size="xl">
-                                    <CheckmarkCircleIcon height={28} width={28} fontSize="1.5rem" />
-                                </IconCircleWrapper>
-                                <Heading size="medium">
-                                    <FormattedMessage id="oppsummering.tittel" />
-                                </Heading>
-                            </HStack>
-                        </GreenHeading>
-                    </Show>
-                    <Show above="md">
-                        <GreenHeading>
-                            <HStack gap="4" align="center">
-                                <IconCircleWrapper color="darkGreen" size="xl">
-                                    <CheckmarkIcon height={40} width={40} fontSize="1.5rem" />
-                                </IconCircleWrapper>
-                                <Heading size="medium">
-                                    <FormattedMessage id="oppsummering.tittel" />
-                                </Heading>
-                            </HStack>
-                        </GreenHeading>
-                    </Show>
-                </>
-            }
-        >
-            {children}
-        </PlanleggerStep>
-    );
-};
+const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
+    <PlanleggerStep
+        useLargerBorderRadius
+        header={
+            <>
+                <Show below="md">
+                    <GreenHeading isDarkGreen>
+                        <HStack gap="4" align="center">
+                            <IconCircleWrapper color="darkGreen" size="xl">
+                                <CheckmarkCircleIcon height={28} width={28} fontSize="1.5rem" />
+                            </IconCircleWrapper>
+                            <Heading size="medium">
+                                <FormattedMessage id="oppsummering.tittel" />
+                            </Heading>
+                        </HStack>
+                    </GreenHeading>
+                </Show>
+                <Show above="md">
+                    <GreenHeading>
+                        <HStack gap="4" align="center">
+                            <IconCircleWrapper color="darkGreen" size="xl">
+                                <CheckmarkIcon height={40} width={40} fontSize="1.5rem" />
+                            </IconCircleWrapper>
+                            <Heading size="medium">
+                                <FormattedMessage id="oppsummering.tittel" />
+                            </Heading>
+                        </HStack>
+                    </GreenHeading>
+                </Show>
+            </>
+        }
+    >
+        {children}
+    </PlanleggerStep>
+);
 
 export default OppsummeringHeader;
