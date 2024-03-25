@@ -11,6 +11,7 @@ import {
     ISO_DATE_FORMAT,
     ISO_DATE_REGEX,
     TIME_FORMAT,
+    WEEKDAY_DDMMMYYYY_DATE_FORMAT,
 } from '@navikt/fp-constants';
 
 dayjs.extend(isBetween);
@@ -26,6 +27,7 @@ export const formatDate = (date: DateTypes): string => dayjs(date).format(DDMMYY
 export const formatDateIso = (date: DateTypes): string => dayjs(date).format(ISO_DATE_FORMAT);
 export const formatDateExtended = (date: DateTypes): string => dayjs(date).format(DDMMMMYYY_DATE_FORMAT);
 export const formatTime = (date: DateTypes): string => dayjs(date).format(TIME_FORMAT);
+export const formatDateMedUkedag = (date: Date | string) => dayjs(date).format(WEEKDAY_DDMMMYYYY_DATE_FORMAT);
 
 /** --- Finn dato relativt til gitt dato --- */
 export const dagenFør = (dato: DateTypes): Dayjs => dayjs(dato).startOf('day');

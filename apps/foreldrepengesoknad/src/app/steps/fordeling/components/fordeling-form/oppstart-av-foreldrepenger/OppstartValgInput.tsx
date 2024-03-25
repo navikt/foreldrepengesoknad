@@ -7,10 +7,8 @@ import { Radio } from '@navikt/ds-react';
 
 import {
     Barn,
-    ISOStringToDate,
     NavnPåForeldre,
     andreAugust2022ReglerGjelder,
-    formatDateExtended,
     førsteOktober2021ReglerGjelder,
     getKunFarHarRett,
     isAdoptertAnnetBarn,
@@ -18,7 +16,9 @@ import {
     isFødtBarn,
 } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
+import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
+import { formatDateExtended } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';

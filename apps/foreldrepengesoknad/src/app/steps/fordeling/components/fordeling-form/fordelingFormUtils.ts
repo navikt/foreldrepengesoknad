@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { formatDate } from '@navikt/fp-common';
 import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
+import { formatDate } from '@navikt/fp-utils';
 
 export const validateAntallUkerFellesperiode = (intl: IntlShape, dagerMedFellesperiode: number) => (value: string) => {
     const valueNumber = getNumberFromNumberInputValue(value)!;

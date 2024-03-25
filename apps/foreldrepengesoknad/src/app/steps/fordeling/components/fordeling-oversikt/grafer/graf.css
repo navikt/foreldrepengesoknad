@@ -1,6 +1,7 @@
 .graf {
     display: flex;
     flex-direction: row;
+    padding-bottom: 1rem;
 }
 
 .graf__container {

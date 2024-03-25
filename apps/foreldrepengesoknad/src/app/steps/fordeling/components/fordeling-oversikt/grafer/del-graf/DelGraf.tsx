@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 
-import { bemUtils, guid } from '@navikt/fp-common';
+import { guid } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import { FordelingDager } from 'app/types/FordelingOversikt';
 

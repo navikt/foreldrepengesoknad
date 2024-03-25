@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
+import { VStack } from '@navikt/ds-react';
+
 import {
-    Block,
-    ISOStringToDate,
     TilgjengeligStønadskonto,
     førsteOktober2021ReglerGjelder,
     getAntallUker,
@@ -14,6 +14,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
+import { ISOStringToDate } from '@navikt/fp-formik';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -86,39 +87,35 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     const visBeggeHarRettGraf = deltUttak && !annenForelderHarKunRettIEØS;
     const visFlerbarnsdagerInformasjon = deltUttak && !!antallFlerbarnsdager && antallFlerbarnsdager > 0;
     return (
-        <>
+        <VStack gap="1">
             {visBeggeHarRettGraf && (
-                <Block padBottom="l">
-                    <BeggeHarRettGraf
-                        kontoer={kontoer}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                        erAdopsjon={erAdopsjon}
-                        erBarnetFødt={erBarnetFødt}
-                        sumDager={sumDager}
+                <BeggeHarRettGraf
+                    kontoer={kontoer}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    erAdopsjon={erAdopsjon}
+                    erBarnetFødt={erBarnetFødt}
+                    sumDager={sumDager}
+                    currentUthevet={currentUthevet}
+                    navnMor={navnMor}
+                    navnFarMedmor={navnFarMedmor}
+                    setCurrentUthevet={setCurrentUthevet}
+                ></BeggeHarRettGraf>
+            )}
+            {fordelingScenario.map((del) => {
+                return (
+                    <OversiktPerDel
+                        key={guid()}
+                        delInformasjon={del}
                         currentUthevet={currentUthevet}
+                        erFarEllerMedmor={erFarEllerMedmor}
                         navnMor={navnMor}
                         navnFarMedmor={navnFarMedmor}
+                        erFødsel={erFødsel}
                         setCurrentUthevet={setCurrentUthevet}
-                    ></BeggeHarRettGraf>
-                </Block>
-            )}
-            <Block padBottom="s">
-                {fordelingScenario.map((del) => {
-                    return (
-                        <OversiktPerDel
-                            key={guid()}
-                            delInformasjon={del}
-                            currentUthevet={currentUthevet}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            navnMor={navnMor}
-                            navnFarMedmor={navnFarMedmor}
-                            erFødsel={erFødsel}
-                            setCurrentUthevet={setCurrentUthevet}
-                            annenForelderKunRettIEØS={annenForelderHarKunRettIEØS}
-                        />
-                    );
-                })}
-            </Block>
+                        annenForelderKunRettIEØS={annenForelderHarKunRettIEØS}
+                    />
+                );
+            })}
             {visFlerbarnsdagerInformasjon && (
                 <FlerbarnsdagerInformasjon
                     flerbarnsDager={antallFlerbarnsdager}
@@ -132,20 +129,18 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
             {!førsteOktober2021ReglerGjelder(familiehendelsesdato) && (
                 <SammenhengendeUttakInformasjon annenForeldrerHarRett={deltUttak} />
             )}
-            <Block padBottom="xl">
-                <FordelingPåvirkninger
-                    deltUttak={deltUttak}
-                    erAdopsjon={erAdopsjon}
-                    navnAnnenForelder={navnAnnenForelder}
-                    morTekst={morTekst}
-                    farTekst={farTekst}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    erIkkeFødtBarn={erIkkeFødtBarn}
-                    familiehendelsesdato={familiehendelsesdato}
-                    annenForelderHarKunRettIEØS={!!annenForelderHarKunRettIEØS}
-                />
-            </Block>
-        </>
+            <FordelingPåvirkninger
+                deltUttak={deltUttak}
+                erAdopsjon={erAdopsjon}
+                navnAnnenForelder={navnAnnenForelder}
+                morTekst={morTekst}
+                farTekst={farTekst}
+                erFarEllerMedmor={erFarEllerMedmor}
+                erIkkeFødtBarn={erIkkeFødtBarn}
+                familiehendelsesdato={familiehendelsesdato}
+                annenForelderHarKunRettIEØS={!!annenForelderHarKunRettIEØS}
+            />
+        </VStack>
     );
 };
 

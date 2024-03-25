@@ -2,7 +2,7 @@ import { HeartFillIcon } from '@navikt/aksel-icons';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import './../graf.css';
 

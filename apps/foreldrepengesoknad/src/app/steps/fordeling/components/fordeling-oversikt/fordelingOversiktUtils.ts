@@ -1,3 +1,4 @@
+import { getVarighetString } from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import { getBrukteDager } from '@navikt/uttaksplan/src/utils/brukteDagerUtils';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
@@ -5,12 +6,10 @@ import { IntlShape } from 'react-intl';
 import {
     Barn,
     Forelder,
-    ISOStringToDate,
     Periode,
     StønadskontoType,
     TilgjengeligStønadskonto,
     Uttaksdagen,
-    capitalizeFirstLetter,
     førsteOktober2021ReglerGjelder,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
@@ -19,7 +18,6 @@ import {
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
     getNavnGenitivEierform,
-    getVarighetString,
     isAdoptertBarn,
     isFarEllerMedmor,
     isFødtBarn,
@@ -28,7 +26,9 @@ import {
     uttaksConstants,
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
+import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
 import { TilgjengeligeMinsterettskontoer } from 'app/types/TilgjengeligeStønadskontoerDTO';

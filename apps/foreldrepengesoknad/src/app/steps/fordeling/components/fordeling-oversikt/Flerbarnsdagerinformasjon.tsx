@@ -1,8 +1,8 @@
+import { getVarighetString } from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { Alert } from '@navikt/ds-react';
+import { Alert, VStack } from '@navikt/ds-react';
 
-import { Block, getVarighetString } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -47,9 +47,9 @@ const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
     const degEllerMor = getDegEllerMorTekst(erFarEllerMedmor, morTekst, intl);
     const dinEllerFarSin = getDinEllerFarGenitivEierformTekst(erFarEllerMedmor, farTekst, intl);
     return (
-        <Block padBottom="l">
-            <Alert variant="info">
-                <Block padBottom="l">
+        <Alert variant="info" style={{ paddingBottom: '2rem', marginTop: '1.5rem' }}>
+            <VStack gap="3">
+                <div>
                     <FormattedMessage
                         id="fordeling.flerbarnsuker.info.del1"
                         values={{
@@ -60,8 +60,8 @@ const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
                             farTekst,
                         }}
                     />
-                </Block>
-                <Block padBottom="m">
+                </div>
+                <div>
                     <FormattedMessage
                         id="fordeling.flerbarnsuker.info.del2"
                         values={{
@@ -70,9 +70,9 @@ const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
                             dinEllerFarSin,
                         }}
                     />
-                </Block>
-            </Alert>
-        </Block>
+                </div>
+            </VStack>
+        </Alert>
     );
 };
 

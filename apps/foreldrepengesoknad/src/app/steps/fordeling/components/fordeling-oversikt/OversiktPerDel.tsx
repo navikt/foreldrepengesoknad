@@ -4,7 +4,8 @@ import { useIntl } from 'react-intl';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
-import { bemUtils, guid } from '@navikt/fp-common';
+import { guid } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 

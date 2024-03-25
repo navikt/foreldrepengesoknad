@@ -2,19 +2,17 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert } from '@navikt/ds-react';
 
-import { Block } from '@navikt/fp-common';
-
 interface Props {
     annenForeldrerHarRett: boolean;
 }
 const SammenhengendeUttakInformasjon: React.FunctionComponent<Props> = ({ annenForeldrerHarRett }) => {
     return (
-        <Block padBottom="l">
+        <div style={{ margin: '1rem 0' }}>
             <Alert variant="info">
                 {annenForeldrerHarRett && <FormattedMessage id="fordeling.sammenhengendeUttak.info.beggeHarRett" />}
                 {!annenForeldrerHarRett && <FormattedMessage id="fordeling.sammenhengendeUttak.info.enHarRett" />}
             </Alert>
-        </Block>
+        </div>
     );
 };
 

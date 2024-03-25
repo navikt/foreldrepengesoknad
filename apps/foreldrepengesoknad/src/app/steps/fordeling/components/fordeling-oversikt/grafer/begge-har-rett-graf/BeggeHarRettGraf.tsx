@@ -4,7 +4,8 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { TilgjengeligStønadskonto, bemUtils, capitalizeFirstLetter } from '@navikt/fp-common';
+import { TilgjengeligStønadskonto } from '@navikt/fp-common';
+import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { FordelingEier, FordelingGrafInfo } from 'app/types/FordelingOversikt';
 import { getFamiliehendelseNavn } from 'app/utils/familiehendelseUtils';
