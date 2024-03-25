@@ -14,7 +14,7 @@ import {
     getFellesperiodefordelingOptionValues,
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
-import { ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
@@ -156,13 +156,12 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const kunFarHarRettHovedsøker =
         hvemPlanlegger.type === SøkersituasjonEnum.FAR_OG_FAR &&
-        (arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER ||
-            arbeidssituasjon.arbeidssituasjonAnnenPart);
+        (arbeidssituasjon.status === Arbeidsstatus.JOBBER || arbeidssituasjon.jobberAnnenPart);
 
     const kunFarHarRettMedsøker =
         hvemPlanlegger.type === SøkersituasjonEnum.MOR_OG_FAR &&
-        arbeidssituasjon.arbeidssituasjon !== ArbeidssituasjonEnum.JOBBER &&
-        arbeidssituasjon.arbeidssituasjonAnnenPart;
+        arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
+        arbeidssituasjon.jobberAnnenPart;
 
     const kunFarHarRett = kunFarHarRettHovedsøker || kunFarHarRettMedsøker;
 
@@ -173,8 +172,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const kunMorHarRett =
         hvemPlanlegger.type !== SøkersituasjonEnum.FAR &&
         hvemPlanlegger.type !== SøkersituasjonEnum.FAR_OG_FAR &&
-        arbeidssituasjon.arbeidssituasjon === ArbeidssituasjonEnum.JOBBER &&
-        arbeidssituasjon.arbeidssituasjonAnnenPart !== true;
+        arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
+        arbeidssituasjon.jobberAnnenPart !== true;
 
     return (
         <Form formMethods={formMethods}>

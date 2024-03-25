@@ -7,7 +7,7 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
@@ -26,26 +26,25 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
-    const lagreArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
+    const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
     });
 
-    const lagre = (formValues: Arbeidssituasjon) => {
-        lagreArbeidssituasjon(formValues);
-
-        if (
-            formValues.arbeidssituasjon !== ArbeidssituasjonEnum.JOBBER &&
-            (isAlene(hvemPlanlegger) || formValues.arbeidssituasjonAnnenPart === false)
-        ) {
-            return navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
-        }
-
-        return navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
-    };
+    const status = formMethods.watch('status');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
+
+    const lagre = (formValues: Arbeidssituasjon) => {
+        oppdaterArbeidssituasjon(formValues);
+
+        const nextStep =
+            formValues.status !== Arbeidsstatus.JOBBER && (erAlenesøker || formValues.jobberAnnenPart === false)
+                ? PlanleggerRoutes.OPPSUMMERING
+                : PlanleggerRoutes.HVOR_LANG_PERIODE;
+        navigator.goToNextStep(nextStep);
+    };
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
@@ -65,7 +64,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 />
                             )
                         }
-                        name="arbeidssituasjon"
+                        name="status"
                         validate={[
                             isRequired(
                                 intl.formatMessage({
@@ -74,21 +73,21 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                             ),
                         ]}
                     >
-                        <Radio value={ArbeidssituasjonEnum.JOBBER} autoFocus>
+                        <Radio value={Arbeidsstatus.JOBBER} autoFocus>
                             <FormattedMessage id="arbeid.jobber" />
                         </Radio>
-                        <Radio value={ArbeidssituasjonEnum.UFØR}>
+                        <Radio value={Arbeidsstatus.UFØR}>
                             <FormattedMessage id="arbeid.ufør" />
                         </Radio>
-                        <Radio value={ArbeidssituasjonEnum.INGEN}>
+                        <Radio value={Arbeidsstatus.INGEN}>
                             <FormattedMessage id="arbeid.ingen" />
                         </Radio>
                     </GreenRadioGroup>
-                    {erAlenesøker && <Aleneforsørger />}
-                    {!erAlenesøker && <FlereForsørgere hvemPlanlegger={hvemPlanlegger} />}
+                    {erAlenesøker && <Aleneforsørger status={status} />}
+                    {!erAlenesøker && <FlereForsørgere status={status} hvemPlanlegger={hvemPlanlegger} />}
                     <VStack gap="20">
                         <StepButtonsHookForm
-                            saveDataOnPreviousClick={lagreArbeidssituasjon}
+                            saveDataOnPreviousClick={oppdaterArbeidssituasjon}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             useSimplifiedTexts
                         />

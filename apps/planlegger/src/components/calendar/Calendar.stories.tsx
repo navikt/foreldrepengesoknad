@@ -2,10 +2,10 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import Calendar from './Calendar';
 
-const meta: Meta<typeof Calendar> = {
+const meta = {
     title: 'components/Calendar',
     component: Calendar,
-};
+} satisfies Meta<typeof Calendar>;
 export default meta;
 
 type Story = StoryObj<typeof Calendar>;

@@ -121,7 +121,7 @@ const Calendar: FunctionComponent<Props> = ({ periods }) => {
             <HStack gap="10">
                 {months.map((monthData, index) => (
                     <Month
-                        key={monthData.year + monthData.month}
+                        key={monthData.year + '-' + monthData.month}
                         year={monthData.year}
                         month={monthData.month}
                         showYear={index > 0 && months[index - 1].year !== monthData.year}

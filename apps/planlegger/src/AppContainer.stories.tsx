@@ -1,5 +1,4 @@
-import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
@@ -38,30 +37,33 @@ const kontoer = {
     },
 };
 
-export default {
+const meta = {
     title: 'AppContainer',
     component: AppContainer,
-};
+} satisfies Meta<typeof AppContainer>;
+export default meta;
 
-const Template: StoryFn<{
+type Story = StoryObj<{
     gåTilNesteSide: (action: Action) => void;
     brukStønadskontoMock?: boolean;
-}> = ({ gåTilNesteSide = action('button-click'), brukStønadskontoMock = false }) => {
-    initAmplitude();
-    if (brukStønadskontoMock) {
-        const apiMock = new MockAdapter(planleggerApi);
-        apiMock.onPost('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
-            return [200, kontoer];
-        });
-    }
+}>;
 
-    return (
-        <StrictMode>
-            <PlanleggerDataContext onDispatch={gåTilNesteSide}>
-                <AppContainer />
-            </PlanleggerDataContext>
-        </StrictMode>
-    );
+export const Default: Story = {
+    render: (args) => {
+        initAmplitude();
+        if (args.brukStønadskontoMock) {
+            const apiMock = new MockAdapter(planleggerApi);
+            apiMock.onPost('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
+                return [200, kontoer];
+            });
+        }
+
+        return (
+            <StrictMode>
+                <PlanleggerDataContext onDispatch={args.gåTilNesteSide}>
+                    <AppContainer />
+                </PlanleggerDataContext>
+            </StrictMode>
+        );
+    },
 };
-
-export const Default = Template.bind({});

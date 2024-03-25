@@ -2,7 +2,7 @@ import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes
 import { ProgressStep } from 'components/progressStepper/ProgressStepper';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Arbeidssituasjon, ArbeidssituasjonEnum } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, isAlene, isFlere } from 'types/HvemPlanlegger';
 
 import { notEmpty } from '@navikt/fp-validation';
@@ -10,8 +10,8 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './PlanleggerDataContext';
 
 const skalGåRettTilOppsummering = (hvemPlanlegger: HvemPlanlegger, arbeidssituasjon: Arbeidssituasjon) =>
-    arbeidssituasjon.arbeidssituasjon !== ArbeidssituasjonEnum.JOBBER &&
-    (isAlene(hvemPlanlegger) || arbeidssituasjon.arbeidssituasjonAnnenPart === false);
+    arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
+    (isAlene(hvemPlanlegger) || arbeidssituasjon.jobberAnnenPart === false);
 
 const isAfterStep = (previousStepPath: PlanleggerRoutes, currentStepPath: PlanleggerRoutes): boolean => {
     return PATH_ORDER.indexOf(currentStepPath) > PATH_ORDER.indexOf(previousStepPath);
