@@ -16,7 +16,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import GreenRadioGroup from '../../components/formWrappers/GreenRadioGroup';
 import Adopsjon from './Adopsjon';
-import Fødsel from './fødsel/ErIkkeFødtPanel';
+import Fødsel from './fødsel/Fødsel';
 
 const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     if (erFødsel) {
