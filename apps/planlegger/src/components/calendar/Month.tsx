@@ -29,12 +29,12 @@ const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children
             <Heading size="small">{showYear ? `${monthNameUppercase} (${year})` : monthNameUppercase}</Heading>
             {nrOfWeeks.map((weeknr) => (
                 <HGrid key={weeknr} columns={7}>
-                    {[...Array(7).keys()].map((dag) => {
-                        if (weeknr === 0 && dag < startWeekDay - 1) {
-                            return <div key={dag} />;
+                    {[...Array(7).keys()].map((day) => {
+                        if (weeknr === 0 && day < startWeekDay - 1) {
+                            return <div key={day} />;
                         }
-                        if (weeknr + 1 === nrOfWeeks.length && dag >= endWeekday) {
-                            return <div key={dag} />;
+                        if (weeknr + 1 === nrOfWeeks.length && day >= endWeekday) {
+                            return <div key={day} />;
                         }
                         return children[arrayCounter++];
                     })}

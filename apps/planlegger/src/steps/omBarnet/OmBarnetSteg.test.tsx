@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import dayjs from 'dayjs';
 
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OmBarnetSteg.stories';
 
@@ -39,7 +39,7 @@ describe('<OmBarnetSteg>', () => {
                 antallBarn: '1',
                 erBarnetFødt: false,
                 erFødsel: true,
-                termindato: '2024-03-25',
+                termindato: dayjs().format(ISO_DATE_FORMAT),
             },
             key: ContextDataType.OM_BARNET,
             type: 'update',
@@ -78,8 +78,8 @@ describe('<OmBarnetSteg>', () => {
                 antallBarn: '1',
                 erBarnetFødt: true,
                 erFødsel: true,
-                fødselsdato: '2024-03-25',
-                termindato: '2024-03-15',
+                fødselsdato: dayjs().format(ISO_DATE_FORMAT),
+                termindato: dayjs().subtract(10, 'days').format(ISO_DATE_FORMAT),
             },
             key: ContextDataType.OM_BARNET,
             type: 'update',
@@ -113,8 +113,8 @@ describe('<OmBarnetSteg>', () => {
             data: {
                 antallBarn: '1',
                 erFødsel: false,
-                fødselsdato: '2024-03-15',
-                overtakelsesdato: '2024-03-25',
+                overtakelsesdato: dayjs().format(ISO_DATE_FORMAT),
+                fødselsdato: dayjs().subtract(10, 'days').format(ISO_DATE_FORMAT),
             },
             key: ContextDataType.OM_BARNET,
             type: 'update',
