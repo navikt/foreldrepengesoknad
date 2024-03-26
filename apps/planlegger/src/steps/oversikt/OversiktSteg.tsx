@@ -337,6 +337,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         valgtStønadskonto={selectedKonto}
                         omBarnet={barnet}
                         fellesperiodefordeling={fellesperiodefordeling}
+                        arbeidssituasjon={arbeidssituasjon}
+                        hvemPlanlegger={hvemPlanlegger}
                     />
                     <VStack gap="5">
                         <OmÅTilpassePlanen />
