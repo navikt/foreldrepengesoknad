@@ -1,5 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
@@ -8,12 +8,13 @@ import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import FordelingSteg from './FordelingSteg';
 
-const kontoer = {
+const DEFAULT_STØNADSKONTO = {
     '100': {
         kontoer: {
             MØDREKVOTE: 75,
@@ -41,16 +42,22 @@ const kontoer = {
         },
     },
 };
-export default {
-    title: 'FordelingSteg',
-    component: FordelingSteg,
-};
 
-const Template: StoryFn<{
+interface StoryArgs {
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
     gåTilNesteSide: (action: Action) => void;
-}> = ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click') }) => {
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+}
+
+type Story = StoryObj<StoryArgs>;
+
+const customRenderer = ({
+    hvemPlanlegger,
+    omBarnet,
+    stønadskontoer = DEFAULT_STØNADSKONTO,
+    gåTilNesteSide = action('button-click'),
+}: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.FORDELING]}>
@@ -65,38 +72,47 @@ const Template: StoryFn<{
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <FordelingSteg stønadskontoer={kontoer} />
+                <FordelingSteg stønadskontoer={stønadskontoer} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
 };
 
-export const FlereForsørgereEttBarn = Template.bind({});
-FlereForsørgereEttBarn.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR_OG_FAR,
-    },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2024-01-01',
-        antallBarn: '1',
+const meta = {
+    title: 'FordelingSteg',
+    component: FordelingSteg,
+    render: customRenderer,
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+export const FlereForsørgereEttBarn: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '1',
+        },
     },
 };
 
-export const FlereForsørgereToBarn = Template.bind({});
-FlereForsørgereToBarn.args = {
-    hvemPlanlegger: {
-        navnPåMedmor: 'Esther Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR_OG_MEDMOR,
-    },
-    omBarnet: {
-        erBarnetFødt: false,
-        erFødsel: true,
-        termindato: '2024-01-01',
-        antallBarn: '2',
+export const FlereForsørgereToBarn: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMedmor: 'Esther Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '2',
+        },
     },
 };

@@ -1,10 +1,10 @@
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import Calendar, { Period } from 'components/calendar/Calendar';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { getFellesperiodefordelingOptionValues } from 'steps/fordeling/FordelingSteg';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 import {
     TilgjengeligStønadskonto,
@@ -17,21 +17,25 @@ import {
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { notEmpty } from '@navikt/fp-validation';
 
 import { DayColor } from './Day';
 
 interface Props {
     omBarnet: OmBarnet;
+    hvemPlanlegger: HvemPlanlegger;
+    arbeidssituasjon: Arbeidssituasjon;
     fellesperiodefordeling?: number;
     valgtStønadskonto: TilgjengeligStønadskonto[];
 }
 
-const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarnet, fellesperiodefordeling }) => {
+const OversiktKalender: FunctionComponent<Props> = ({
+    valgtStønadskonto,
+    omBarnet,
+    fellesperiodefordeling,
+    hvemPlanlegger,
+    arbeidssituasjon,
+}) => {
     const termindatoEllerFødselsdato = erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : omBarnet.fødselsdato;
-
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
 
     if (!termindatoEllerFødselsdato) {
         throw Error('Det er feil i data om barnet. Ingen termindato. (oversikt steg: kalender)');

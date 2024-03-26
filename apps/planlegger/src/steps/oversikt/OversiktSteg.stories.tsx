@@ -1,5 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
@@ -10,12 +10,13 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { Situasjon } from 'types/Søkersituasjon';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import OversiktSteg from './OversiktSteg';
 
-const kontoer = {
+const DEFAULT_STØNADSKONTOER = {
     '100': {
         kontoer: {
             MØDREKVOTE: 75,
@@ -47,26 +48,28 @@ const kontoer = {
         },
     },
 };
-export default {
-    title: 'OversiktSteg',
-    component: OversiktSteg,
-};
 
-const Template: StoryFn<{
+interface StoryArgs {
     hvemPlanlegger: HvemPlanlegger;
     hvorLangPeriode: HvorLangPeriode;
     fordeling: Fordeling;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide: (action: Action) => void;
-}> = ({
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+}
+
+type Story = StoryObj<StoryArgs>;
+
+const customRenderer = ({
     gåTilNesteSide = action('button-click'),
     hvemPlanlegger,
     fordeling,
     hvorLangPeriode,
     omBarnet,
     arbeidssituasjon,
-}) => {
+    stønadskontoer = DEFAULT_STØNADSKONTOER,
+}: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.OVERSIKT]}>
@@ -80,135 +83,147 @@ const Template: StoryFn<{
                     [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                 }}
             >
-                <OversiktSteg stønadskontoer={kontoer} />
+                <OversiktSteg stønadskontoer={stønadskontoer} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
 };
 
-export const PeriodeFlereForsørgereTerminBeggeHarRett = Template.bind({});
-PeriodeFlereForsørgereTerminBeggeHarRett.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR_OG_FAR,
-    },
-    fordeling: {
-        fellesperiodefordeling: 6,
-    },
-    hvorLangPeriode: {
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    },
-    omBarnet: {
-        erFødsel: true,
-        erBarnetFødt: false,
-        termindato: '2022-10-24',
-        antallBarn: '1',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
-        jobberAnnenPart: true,
+const meta = {
+    title: 'OversiktSteg',
+    component: OversiktSteg,
+    render: customRenderer,
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+export const PeriodeFlereForsørgereTerminBeggeHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        fordeling: {
+            fellesperiodefordeling: 6,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: false,
+            termindato: '2022-10-24',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
     },
 };
 
-export const PeriodeAleneforsørgerFarTermin = Template.bind({});
-PeriodeAleneforsørgerFarTermin.args = {
-    hvemPlanlegger: {
-        navnPåFar: 'Espen Utvikler',
-        type: Situasjon.FAR,
-    },
-    fordeling: {
-        fellesperiodefordeling: 6,
-    },
-    hvorLangPeriode: {
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    },
-    omBarnet: {
-        erFødsel: true,
-        erBarnetFødt: false,
-        termindato: '2022-10-24',
-        antallBarn: '1',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
-    },
-};
-
-export const PeriodeAleneforsørgerMorFødt = Template.bind({});
-PeriodeAleneforsørgerMorFødt.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        type: Situasjon.MOR,
-    },
-    fordeling: {
-        fellesperiodefordeling: 7,
-    },
-    hvorLangPeriode: {
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    },
-    omBarnet: {
-        erBarnetFødt: true,
-        erFødsel: true,
-        fødselsdato: '2024-09-01',
-        termindato: '2024-09-01',
-        antallBarn: '1',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
+export const PeriodeAleneforsørgerFarTermin: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.FAR,
+        },
+        fordeling: {
+            fellesperiodefordeling: 6,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: false,
+            termindato: '2022-10-24',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+        },
     },
 };
 
-export const PeriodeFlereForsørgereToBarnFødtKunMorHarRett = Template.bind({});
-PeriodeFlereForsørgereToBarnFødtKunMorHarRett.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        navnPåMedmor: 'Kari Utvikler',
-        type: Situasjon.MOR_OG_MEDMOR,
-    },
-    fordeling: {
-        fellesperiodefordeling: 9,
-    },
-    hvorLangPeriode: {
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-    },
-    omBarnet: {
-        erBarnetFødt: true,
-        erFødsel: true,
-        fødselsdato: '2024-10-01',
-        termindato: '2024-10-03',
-        antallBarn: '2',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.JOBBER,
-        jobberAnnenPart: false,
+export const PeriodeAleneforsørgerMorFødt: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR,
+        },
+        fordeling: {
+            fellesperiodefordeling: 7,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erBarnetFødt: true,
+            erFødsel: true,
+            fødselsdato: '2024-09-01',
+            termindato: '2024-09-01',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+        },
     },
 };
 
-export const PeriodeFlereForsørgereAdoptertKunFarHarRett = Template.bind({});
-PeriodeFlereForsørgereAdoptertKunFarHarRett.args = {
-    hvemPlanlegger: {
-        navnPåMor: 'Klara Utvikler',
-        navnPåFar: 'Espen Utvikler',
-        type: Situasjon.MOR_OG_FAR,
+export const PeriodeFlereForsørgereToBarnFødtKunMorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            navnPåMedmor: 'Kari Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+        fordeling: {
+            fellesperiodefordeling: 9,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        },
+        omBarnet: {
+            erBarnetFødt: true,
+            erFødsel: true,
+            fødselsdato: '2024-10-01',
+            termindato: '2024-10-03',
+            antallBarn: '2',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
     },
-    fordeling: {
-        fellesperiodefordeling: 9,
-    },
-    hvorLangPeriode: {
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-    },
-    omBarnet: {
-        erBarnetFødt: true,
-        erFødsel: false,
-        erAdoptert: true,
-        fødselsdato: '2024-09-01',
-        termindato: '2024-09-01',
-        overtakelsesdato: '2024-09-01',
-        adopsjonsdato: '2024-09-01',
-        antallBarn: '1',
-    },
-    arbeidssituasjon: {
-        status: Arbeidsstatus.INGEN,
-        jobberAnnenPart: true,
+};
+
+export const PeriodeFlereForsørgereAdoptertKunFarHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        fordeling: {
+            fellesperiodefordeling: 9,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        },
+        omBarnet: {
+            erBarnetFødt: true,
+            erFødsel: false,
+            erAdoptert: true,
+            fødselsdato: '2024-09-01',
+            termindato: '2024-09-01',
+            overtakelsesdato: '2024-09-01',
+            adopsjonsdato: '2024-09-01',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
     },
 };
