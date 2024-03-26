@@ -111,7 +111,7 @@ const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date | undefine
         throw new Error('Mangler dato for aleneomsorg');
     }
     return (
-        <Radio value={OppstartValg.OMSORGSOVERTAKELSE}>
+        <Radio key={OppstartValg.OMSORGSOVERTAKELSE} value={OppstartValg.OMSORGSOVERTAKELSE}>
             <FormattedMessage
                 id="fordeling.oppstartValg.omsorgsovertakelsen"
                 values={{ dato: formatDateExtended(datoForAleneomsorg) }}
@@ -122,7 +122,7 @@ const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date | undefine
 
 const getRadioOptionAdopsjonOmsorgsovertakelse = (familiehendelsesdato: Date): React.ReactElement => {
     return (
-        <Radio value={OppstartValg.FAMILIEHENDELSESDATO}>
+        <Radio key={OppstartValg.FAMILIEHENDELSESDATO} value={OppstartValg.FAMILIEHENDELSESDATO}>
             <FormattedMessage
                 id="fordeling.oppstartValg.omsorgsovertakelsen"
                 values={{ dato: formatDateExtended(familiehendelsesdato) }}
@@ -136,7 +136,7 @@ const getRadioOptionAdopsjonAnkomstNorge = (ankomstNorge: Date | undefined): Rea
         throw new Error('Ukjent ankomstdato til Norge');
     }
     return (
-        <Radio value={OppstartValg.ANKOMSTDATO_NORGE}>
+        <Radio key={OppstartValg.ANKOMSTDATO_NORGE} value={OppstartValg.ANKOMSTDATO_NORGE}>
             <FormattedMessage
                 id="fordeling.oppstartValg.ankomstNorge"
                 values={{ dato: formatDateExtended(ankomstNorge) }}
@@ -161,7 +161,11 @@ const getRadioOptionFarPåFødselWLB = (
               )
             : '';
         return (
-            <Radio value={OppstartValg.FAMILIEHENDELSESDATO} description={description}>
+            <Radio
+                key={OppstartValg.FAMILIEHENDELSESDATO}
+                value={OppstartValg.FAMILIEHENDELSESDATO}
+                description={description}
+            >
                 <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErFødt" values={{ antallBarn }} />
             </Radio>
         );
@@ -170,7 +174,11 @@ const getRadioOptionFarPåFødselWLB = (
             ? intl.formatMessage({ id: 'fordeling.oppstartValg.påFødsel.description.barnErIkkeFødt' })
             : '';
         return (
-            <Radio value={OppstartValg.FAMILIEHENDELSESDATO} description={description}>
+            <Radio
+                key={OppstartValg.FAMILIEHENDELSESDATO}
+                value={OppstartValg.FAMILIEHENDELSESDATO}
+                description={description}
+            >
                 <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErIkkeFødt" />
             </Radio>
         );
@@ -179,7 +187,7 @@ const getRadioOptionFarPåFødselWLB = (
 
 const getRadioOptionMorFødsel = (antallBarn: number) => {
     return (
-        <Radio value={OppstartValg.FAMILIEHENDELSESDATO}>
+        <Radio key={OppstartValg.FAMILIEHENDELSESDATO} value={OppstartValg.FAMILIEHENDELSESDATO}>
             <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErFødt" values={{ antallBarn }} />
         </Radio>
     );
@@ -193,7 +201,7 @@ const getRadioOptionDagenEtterAnnenForelder = (
         throw new Error('Mangler dato for oppstart etter annen forelder.');
     }
     return (
-        <Radio value={OppstartValg.DAGEN_ETTER_ANNEN_FORELDER}>
+        <Radio key={OppstartValg.DAGEN_ETTER_ANNEN_FORELDER} value={OppstartValg.DAGEN_ETTER_ANNEN_FORELDER}>
             <FormattedMessage
                 id="fordeling.oppstartValg.dagenEtterAnnenForelder"
                 values={{
@@ -206,7 +214,7 @@ const getRadioOptionDagenEtterAnnenForelder = (
 };
 
 const getRadioOptionAnnenDato = (): React.ReactElement => (
-    <Radio value={OppstartValg.ANNEN_DATO}>
+    <Radio key={OppstartValg.ANNEN_DATO} value={OppstartValg.ANNEN_DATO}>
         <FormattedMessage id="fordeling.oppstartValg.annenDato" />
     </Radio>
 );
@@ -216,7 +224,7 @@ const getRadioOptionAnnenDatoMorFødsel = (erBarnetFødt: boolean, intl: IntlSha
         ? intl.formatMessage({ id: 'fordeling.oppstartValg.annenDato.description.fødsel' })
         : intl.formatMessage({ id: 'fordeling.oppstartValg.annenDato.description.termin' });
     return (
-        <Radio value={OppstartValg.ANNEN_DATO} description={description}>
+        <Radio key={OppstartValg.ANNEN_DATO} value={OppstartValg.ANNEN_DATO} description={description}>
             <FormattedMessage id="fordeling.oppstartValg.annenDato" />
         </Radio>
     );
@@ -227,6 +235,7 @@ const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.Rea
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
     return (
         <Radio
+            key={OppstartValg.TRE_UKER_FØR_TERMIN}
             value={OppstartValg.TRE_UKER_FØR_TERMIN}
             description={intl.formatMessage(
                 { id: 'fordeling.oppstartValg.treUkerFør.description' },
@@ -245,6 +254,7 @@ const getRadioOptionTreUkerFørFødsel = (intl: IntlShape, barn: Barn): React.Re
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(fødselsdato);
     return (
         <Radio
+            key={OppstartValg.TRE_UKER_FØR_FØDSEL}
             value={OppstartValg.TRE_UKER_FØR_FØDSEL}
             description={intl.formatMessage(
                 { id: 'fordeling.oppstartValg.treUkerFør.description' },
