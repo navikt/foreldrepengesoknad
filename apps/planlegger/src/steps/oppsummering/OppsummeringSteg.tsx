@@ -139,6 +139,8 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             valgtStønadskonto={selectedKonto}
                                             omBarnet={barnet}
                                             fellesperiodefordeling={fordeling?.fellesperiodefordeling}
+                                            arbeidssituasjon={arbeidssituasjon}
+                                            hvemPlanlegger={hvemPlanlegger}
                                         />
                                     </ExpansionCard.Content>
                                 </ExpansionCard>
