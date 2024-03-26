@@ -19,6 +19,8 @@ import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { DayColor } from './Day';
+
 interface Props {
     omBarnet: OmBarnet;
     fellesperiodefordeling?: number;
@@ -65,17 +67,17 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         perioder.push({
             fom: dayjs(startdatoSøker1).format(ISO_DATE_FORMAT),
             tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day').format(ISO_DATE_FORMAT),
-            type: 'førTermin',
+            color: DayColor.BLUE,
         });
         perioder.push({
             fom: termindatoEllerFødselsdato,
             tom: termindatoEllerFødselsdato,
-            type: 'familiehendelse',
+            color: DayColor.PINK,
         });
         perioder.push({
             fom: dayjs(termindatoEllerFødselsdato).add(1, 'day').format(ISO_DATE_FORMAT),
             tom: sluttdatoSøker1.format(ISO_DATE_FORMAT),
-            type: 'søker',
+            color: DayColor.BLUE,
         });
     }
 
@@ -103,23 +105,23 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
             perioder.push({
                 fom: startdatoSøker1.format(ISO_DATE_FORMAT),
                 tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day').format(ISO_DATE_FORMAT),
-                type: 'førTermin',
+                color: DayColor.BLUE,
             });
         }
         perioder.push({
             fom: termindatoEllerFødselsdato,
             tom: termindatoEllerFødselsdato,
-            type: 'familiehendelse',
+            color: DayColor.PINK,
         });
         perioder.push({
             fom: dayjs(termindatoEllerFødselsdato).add(1, 'day').format(ISO_DATE_FORMAT),
             tom: sluttdatoSøker1.format(ISO_DATE_FORMAT),
-            type: 'søker',
+            color: DayColor.BLUE,
         });
         perioder.push({
             fom: startdatoSøker2.format(ISO_DATE_FORMAT),
             tom: sluttdatoSøker2.format(ISO_DATE_FORMAT),
-            type: 'medsøker',
+            color: DayColor.GREEN,
         });
     }
 
@@ -131,12 +133,12 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         perioder.push({
             fom: termindatoEllerFødselsdato,
             tom: termindatoEllerFødselsdato,
-            type: 'familiehendelse',
+            color: DayColor.PINK,
         });
         perioder.push({
             fom: dayjs(termindatoEllerFødselsdato).add(1, 'day').format(ISO_DATE_FORMAT),
             tom: dayjs(termindatoEllerFødselsdato).add(totalUker, 'weeks').format(ISO_DATE_FORMAT),
-            type: 'søker',
+            color: DayColor.BLUE,
         });
     }
 
@@ -158,17 +160,17 @@ const OversiktKalender: FunctionComponent<Props> = ({ valgtStønadskonto, omBarn
         perioder.push({
             fom: termindatoEllerFødselsdato,
             tom: termindatoEllerFødselsdato,
-            type: 'familiehendelse',
+            color: DayColor.PINK,
         });
         perioder.push({
             fom: dayjs(termindatoEllerFødselsdato).add(1, 'day').format(ISO_DATE_FORMAT),
             tom: sluttAktivitetsfri.format(ISO_DATE_FORMAT),
-            type: 'utenAktivitetskrav',
+            color: DayColor.BLUE,
         });
         perioder.push({
             fom: sluttAktivitetsfri.add(1, 'day').format(ISO_DATE_FORMAT),
             tom: sluttAktivitetsfri.add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
-            type: 'aktivitetskrav',
+            color: DayColor.GREEN,
         });
     }
     return <Calendar periods={perioder} />;

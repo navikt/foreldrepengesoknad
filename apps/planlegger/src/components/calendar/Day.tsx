@@ -1,11 +1,11 @@
 import styles from './day.module.css';
 
-export enum PeriodType {
-    INGEN = 'INGEN',
-    FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI = 'FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI',
-    FORELDREPENGER_FAR = 'FORELDREPENGER_FAR',
-    HELGEDAG = 'HELGEDAG',
-    TERMINDATO = 'TERMINDATO',
+export enum DayColor {
+    NONE = 'NONE',
+    PINK = 'PINK',
+    BLUE = 'BLUE',
+    GREEN = 'GREEN',
+    GRAY = 'GRAY',
 }
 
 export enum DayType {
@@ -16,26 +16,26 @@ export enum DayType {
 }
 
 const DAY_STYLE = {
-    [PeriodType.INGEN]: styles.none,
-    [PeriodType.FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI]: styles.foreldrepengerMor,
-    [PeriodType.FORELDREPENGER_FAR]: styles.foreldrepengerFar,
-    [PeriodType.HELGEDAG]: styles.helgedag,
-    [PeriodType.TERMINDATO]: styles.termindato,
+    [DayColor.NONE]: styles.none,
+    [DayColor.BLUE]: styles.blueDay,
+    [DayColor.GREEN]: styles.greenDay,
+    [DayColor.GRAY]: styles.grayDay,
+    [DayColor.PINK]: styles.pinkDay,
 };
 
 type Props = {
     day: number;
-    periodType: PeriodType;
+    dayColor: DayColor;
     dayType: DayType;
 };
 
-const Day: React.FunctionComponent<Props> = ({ day, periodType, dayType }) => {
+const Day: React.FunctionComponent<Props> = ({ day, dayColor, dayType }) => {
     const isStart = dayType === DayType.FIRST_DAY;
     const isEnd = dayType === DayType.LAST_DAY;
     const isStartAndEnd = dayType === DayType.FIRST_AND_LAST_DAY;
     return (
         <div
-            className={`${styles.days} ${DAY_STYLE[periodType]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay}`}
+            className={`${styles.days} ${DAY_STYLE[dayColor]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay}`}
         >
             {day}
         </div>
