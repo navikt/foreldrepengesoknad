@@ -10,30 +10,30 @@
     line-height: 13px;
 }
 
-.foreldrepengerMor {
+.blueDay {
     background-color: var(--a-blue-300);
 }
 
-.foreldrepengerFar {
+.greenDay {
     background-color: var(--a-green-100);
     border-top: 1px solid var(--a-green-300);
     border-bottom: 1px solid var(--a-green-300);
 }
 
-.foreldrepengerFar.firstDay {
+.greenDay.firstDay {
     border-left: 1px solid var(--a-green-300);
 }
 
-.foreldrepengerFar.lastDay {
+.greenDay.lastDay {
     border-right: 1px solid var(--a-green-300);
 }
 
-.foreldrepengerFar.firstAndLastDay {
+.greenDay.firstAndLastDay {
     border-left: 1px solid var(--a-green-300);
     border-right: 1px solid var(--a-green-300);
 }
 
-.helgedag {
+.grayDay {
     background-color: var(--a-gray-200);
 }
 
@@ -42,7 +42,7 @@
     padding-right: 2px;
 }
 
-.termindato {
+.pinkDay {
     --c: var(--a-red-100);
     width: 20px;
     height: 19px;

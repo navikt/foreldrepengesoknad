@@ -3,51 +3,31 @@ import { FunctionComponent } from 'react';
 
 import { HStack, VStack } from '@navikt/ds-react';
 
-import Day, { DayType, PeriodType } from './Day';
+import Day, { DayColor, DayType } from './Day';
 import Month from './Month';
 
 export type Period = {
     fom: string;
     tom: string;
-    type: 'førTermin' | 'familiehendelse' | 'aktivitetskrav' | 'utenAktivitetskrav' | 'søker' | 'medsøker';
+    color: DayColor;
 };
 
-const findPeriodType = (year: number, month: number, day: number, periods: Period[]) => {
+const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
     const date = dayjs().year(year).month(month).date(day);
 
-    const fomFørstePeriode = periods[0].fom;
-    const tomSistePeriode = periods[periods.length - 1].tom;
-    const familiehendelse = periods.find((p) => p.type === 'familiehendelse')?.fom;
-    const morEllerAktivitetfriPeriode = periods.find((p) => p.type === 'søker' || p.type === 'utenAktivitetskrav');
-    const førTermin = periods.find((p) => p.type === 'førTermin');
+    const fomFirstPeriod = periods[0].fom;
+    const tomLastPeriod = periods[periods.length - 1].tom;
 
-    const farsPeriode = periods.find((p) => p.type === 'medsøker' || p.type === 'aktivitetskrav');
-
-    if (date.isBefore(fomFørstePeriode, 'day') || date.isAfter(tomSistePeriode, 'day')) {
-        return PeriodType.INGEN;
-    }
-
-    if (familiehendelse && date.isSame(familiehendelse, 'date')) {
-        return PeriodType.TERMINDATO;
+    if (date.isBefore(fomFirstPeriod, 'day') || date.isAfter(tomLastPeriod, 'day')) {
+        return DayColor.NONE;
     }
 
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
-        return PeriodType.HELGEDAG;
-    }
-    if (
-        morEllerAktivitetfriPeriode &&
-        date.isBetween(morEllerAktivitetfriPeriode.fom, morEllerAktivitetfriPeriode.tom, 'day', '[]')
-    ) {
-        return PeriodType.FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI;
-    }
-    if (førTermin && date.isBetween(førTermin.fom, førTermin.tom, 'day', '[]')) {
-        return PeriodType.FORELDREPENGER_MOR_ELLER_AKTIVITETSFRI;
+        return DayColor.GRAY;
     }
 
-    if (farsPeriode && date.isBetween(farsPeriode.fom, farsPeriode.tom, 'day', '[]')) {
-        return PeriodType.FORELDREPENGER_FAR;
-    }
-    return PeriodType.INGEN;
+    const period = periods.find((period) => date.isBetween(period.fom, period.tom, 'day', '[]'));
+    return period?.color || DayColor.NONE;
 };
 
 const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
@@ -131,7 +111,7 @@ const Calendar: FunctionComponent<Props> = ({ periods }) => {
                                 <Day
                                     key={monthData.year + monthData.month + day}
                                     day={day + 1}
-                                    periodType={findPeriodType(monthData.year, monthData.month, day + 1, periods)}
+                                    dayColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
                                     dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
                                 />
                             ),
