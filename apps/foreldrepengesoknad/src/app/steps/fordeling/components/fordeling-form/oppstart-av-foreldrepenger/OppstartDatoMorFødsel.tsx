@@ -6,7 +6,8 @@ import { Alert, HStack, VStack } from '@navikt/ds-react';
 
 import { Uttaksdagen, isFødtBarn } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
-import { isValidDate, notEmpty } from '@navikt/fp-validation';
+import { isValidDate } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import Fordeling from 'app/context/types/Fordeling';
