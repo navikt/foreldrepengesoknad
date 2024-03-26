@@ -1076,7 +1076,7 @@
     "fordeling.fordelingsvalg.senere.info": "I planen din på neste steg vil ikke fellesperioden vises fordi du har valgt å fordele denne senere. Du kan sende inn søknaden uten å ha fordelt fellesperiode og gjøre det senere, eller du kan legge til noe av fellesperioden inn i planen i neste steg.",
     "fordeling.fordelingsvalg.måOppgis": "Du må oppgi hvordan du vil fordele fellesperioden.",
     "fordeling.antallUker.spørsmål": "Hvor mange uker vil du ha?",
-    "fordeling.antallUker.description": "Ukene som blir igjen, kan deles av deg og {navnAnnenForelder}.",
+    "fordeling.antallUker.description": "Angis i hele uker. Ukene som blir igjen, kan deles av deg og {navnAnnenForelder}.",
     "fordeling.antallUker.måOppgis": "Du må oppgi antall uker du ønsker å ha av fellesperioden.",
     "fordeling.antallUker.ugyldigFormat": "Antall uker du ønsker å ha av fellesperioden må være et heltall.",
     "fordeling.antallUker.forLiten": "Antall uker du ønsker å ha av fellesperioden kan ikke være mindre enn 0.",

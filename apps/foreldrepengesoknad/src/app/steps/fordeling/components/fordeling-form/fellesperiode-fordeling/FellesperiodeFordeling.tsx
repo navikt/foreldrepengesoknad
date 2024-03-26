@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { TextField } from '@navikt/fp-form-hooks';
+import { NumericField } from '@navikt/fp-form-hooks';
 import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
 import { bemUtils } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
@@ -112,7 +112,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} navnAnnenForelder={navnAnnenForelder} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
-                <TextField
+                <NumericField
                     className={bem.element('textInput')}
                     name="antallUkerFellesperiodeTilSøker"
                     label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
@@ -121,7 +121,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                         isRequired(intl.formatMessage({ id: 'fordeling.antallUker.måOppgis' })),
                         validateAntallUkerFellesperiode(intl, dagerMedFellesperiode),
                     ]}
-                ></TextField>
+                />
             )}
             {valgtFordeling === FellesperiodeFordelingValg.HOPP_OVER_FORDELING && (
                 <Alert variant="info">
