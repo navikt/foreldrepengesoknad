@@ -13,3 +13,10 @@
 .mor-oppstartinformasjon--bold {
     font-weight: bold;
 }
+
+@media (max-width: 768px) {
+    .mor-oppstartinformasjon {
+        margin-top: 0rem;
+        margin-left: 0rem;
+    }
+}
