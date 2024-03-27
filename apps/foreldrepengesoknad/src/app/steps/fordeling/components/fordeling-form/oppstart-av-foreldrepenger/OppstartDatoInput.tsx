@@ -88,7 +88,7 @@ const OppstartDatoInput: React.FunctionComponent<Props> = ({ oppstartValg }) => 
         familiehendelsesdato,
     );
     const spørsmålId =
-        oppstartValg === OppstartValg.ANNEN_DATO ? 'fordeling.oppstartDato.input.' : 'fordeling.oppstartDato.spørsmål';
+        oppstartValg === OppstartValg.ANNEN_DATO ? 'fordeling.oppstartDato.input' : 'fordeling.oppstartDato.spørsmål';
 
     return (
         <Datepicker
