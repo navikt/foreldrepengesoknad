@@ -103,7 +103,14 @@ export const getFordelingDelTittel = (
     const navnAnnenForelder = erFarEllerMedmor ? navnMor : navnFarMedmor;
     if (delInfo.eier === FordelingEier.Mor && erFødsel) {
         const dagerFørFødsel = uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5;
-        const varighetUkerEtterFødsel = (delInfo.sumDager - dagerFørFødsel) / 5;
+        const dagerEtterFødsel = delInfo.sumDager - dagerFørFødsel;
+        let varighetUkerEtterFødsel = undefined;
+        if (dagerEtterFødsel % 5 === 0) {
+            varighetUkerEtterFødsel = (delInfo.sumDager - dagerFørFødsel) / 5;
+        } else {
+            varighetUkerEtterFødsel = getVarighetString(delInfo.sumDager - dagerFørFødsel, intl);
+        }
+
         varighetTekst = intl.formatMessage(
             { id: 'fordeling.varighet.morFødsel' },
             { varighetUker: varighetUkerEtterFødsel },
