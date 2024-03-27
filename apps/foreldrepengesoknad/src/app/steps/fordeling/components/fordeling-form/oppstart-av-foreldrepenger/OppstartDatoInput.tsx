@@ -1,5 +1,6 @@
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
 import dayjs from 'dayjs';
+import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { AnnenForelder, Barn, uttaksplanDatoavgrensninger } from '@navikt/fp-common';
@@ -9,6 +10,7 @@ import { SøkersituasjonFp } from '@navikt/fp-types';
 import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { OppstartValg } from 'app/context/types/Fordeling';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getTermindato } from 'app/utils/barnUtils';
 
@@ -63,8 +65,11 @@ const getDatoAvgrensninger = (
         søkersituasjon.situasjon,
     );
 };
+interface Props {
+    oppstartValg: OppstartValg | undefined;
+}
 
-const OppstartDatoInput = () => {
+const OppstartDatoInput: React.FunctionComponent<Props> = ({ oppstartValg }) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -82,11 +87,13 @@ const OppstartDatoInput = () => {
         erAdopsjon,
         familiehendelsesdato,
     );
+    const spørsmålId =
+        oppstartValg === OppstartValg.ANNEN_DATO ? 'fordeling.oppstartDato.input.' : 'fordeling.oppstartDato.spørsmål';
 
     return (
         <Datepicker
             name="oppstartDato"
-            label={<FormattedMessage id="fordeling.oppstartDato.spørsmål" />}
+            label={<FormattedMessage id={spørsmålId} />}
             description={intl.formatMessage({ id: 'fordeling.oppstartDato.description' })}
             minDate={minDato}
             maxDate={maksDato}

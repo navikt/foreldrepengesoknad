@@ -10,14 +10,18 @@ import { isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import Fordeling from 'app/context/types/Fordeling';
+import Fordeling, { OppstartValg } from 'app/context/types/Fordeling';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 
 import MorOppstartInformasjon from './MorOppstartInformasjon';
 import OppstartDatoInput from './OppstartDatoInput';
 import { getErBarnetFødtInnenTreUkerFørTermin } from './OppstartValgInput';
 
-const OppstartDatoMorFødsel = () => {
+interface Props {
+    oppstartValg: OppstartValg | undefined;
+}
+
+const OppstartDatoMorFødsel: React.FunctionComponent<Props> = ({ oppstartValg }) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const erBarnetFødt = isFødtBarn(barn);
@@ -38,7 +42,7 @@ const OppstartDatoMorFødsel = () => {
         <div>
             <VStack gap="3">
                 <HStack gap="1">
-                    <OppstartDatoInput />
+                    <OppstartDatoInput oppstartValg={oppstartValg} />
                     {visInformasjon && <MorOppstartInformasjon oppstartDato={oppstartDato} />}
                 </HStack>
                 <Alert variant="info">

@@ -49,8 +49,8 @@ const OppstartAvForeldrepenger: React.FunctionComponent<Props> = ({
                 navnPåForeldre={navnPåForeldre}
                 førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
             />
-            {visOppstartsDatoInput && erMorFødsel && <OppstartDatoMorFødsel />}
-            {visOppstartsDatoInput && !erMorFødsel && <OppstartDatoInput />}
+            {visOppstartsDatoInput && erMorFødsel && <OppstartDatoMorFødsel oppstartValg={oppstartValg} />}
+            {visOppstartsDatoInput && !erMorFødsel && <OppstartDatoInput oppstartValg={oppstartValg} />}
         </VStack>
     );
 };

@@ -1106,6 +1106,7 @@
     "fordeling.oppstartValg.omsorgsovertakelsen": "På omsorgsovertakelsen, {dato}",
     "fordeling.oppstartValg.ankomstNorge": "På ankomstdagen til Norge, {dato}",
     "fordeling.oppstartDato.spørsmål": "Når vil du starte din periode med foreldrepenger?",
+    "fordeling.oppstartDato.input": "Dato jeg vil starte mine foreldrepenger",
     "fordeling.oppstartDato.måOppgis": "Du må oppgi dato når du vil starte dine foreldrepenger.",
     "fordeling.oppstartDato.gyldig": "Dato du vil starte dine foreldrepenger må være en gyldig dato på formatet dd.mm.åååå.",
     "fordeling.oppstartDato.description": "Dette kan endres senere, også etter at søknaden er sendt.",
