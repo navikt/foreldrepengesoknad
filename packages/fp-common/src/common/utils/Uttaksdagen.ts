@@ -44,7 +44,7 @@ function getUttaksdagFørDato(dato: Date): Date {
  * @param dato
  */
 function getUttaksdagTilOgMedDato(dato: Date): Date {
-    const newDate = new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12);
+    const newDate = dato ? new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
         case 6:
             return dayjs.utc(newDate).subtract(24, 'hours').startOf('day').toDate();
@@ -69,7 +69,7 @@ function getUttaksdagEtterDato(dato: Date): Date {
  * @param dato
  */
 function getUttaksdagFraOgMedDato(dato: Date): Date {
-    const newDate = new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12);
+    const newDate = dato ? new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
         case 6:
             return dayjs.utc(newDate).add(48, 'hours').startOf('day').toDate();
