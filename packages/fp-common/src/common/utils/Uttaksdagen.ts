@@ -2,7 +2,6 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import dayjs from 'dayjs';
 import { Tidsperioden } from './Tidsperioden';
 import { formatDate } from '@navikt/fp-utils';
-
 dayjs.extend(isoWeek);
 
 /**
@@ -40,15 +39,17 @@ function getUttaksdagFørDato(dato: Date): Date {
 }
 
 /**
- * Sjekker om dato er en ukedag, dersom ikke finner den foregående fredag
+ * Sjekker om dato er en ukedag, dersom ikke finner den foregående fredag.
+ * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
  * @param dato
  */
 function getUttaksdagTilOgMedDato(dato: Date): Date {
+    const newDate = new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12);
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(dato).subtract(24, 'hours').toDate();
+            return dayjs.utc(newDate).subtract(24, 'hours').startOf('day').toDate();
         case 7:
-            return dayjs.utc(dato).subtract(48, 'hours').toDate();
+            return dayjs.utc(newDate).subtract(48, 'hours').startOf('day').toDate();
         default:
             return dato;
     }
@@ -64,14 +65,16 @@ function getUttaksdagEtterDato(dato: Date): Date {
 
 /**
  * Sjekker om dato er en ukedag, dersom ikke finner den nærmeste påfølgende mandag
+ * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer legges til.
  * @param dato
  */
 function getUttaksdagFraOgMedDato(dato: Date): Date {
+    const newDate = new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12);
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(dato).add(48, 'hours').toDate();
+            return dayjs.utc(newDate).add(48, 'hours').startOf('day').toDate();
         case 7:
-            return dayjs.utc(dato).add(24, 'hours').toDate();
+            return dayjs.utc(newDate).add(24, 'hours').startOf('day').toDate();
         default:
             return dato;
     }
