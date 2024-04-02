@@ -2,13 +2,14 @@ import { ArrowLeftIcon, CalendarIcon, TasklistStartIcon } from '@navikt/aksel-ic
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import Infoboks from 'components/boxes/Infobox';
-import OversiktKalender from 'components/calendar/OversiktKalender';
+import Calendar from 'components/calendar/Calendar';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
 import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoer';
 
 import { Alert, BodyLong, Box, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -26,7 +27,7 @@ interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
 }
 
-const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const navigator = usePlanleggerNavigator();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
@@ -45,6 +46,10 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const valgtStønadskonto = hvorLangPeriode
         ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[hvorLangPeriode.dekningsgrad])
         : undefined;
+
+    const uttaksperioder = valgtStønadskonto
+        ? lagKalenderPerioder(valgtStønadskonto, barnet, hvemPlanlegger, arbeidssituasjon, fordeling?.antallUkerSøker1)
+        : [];
 
     //TODO: dra ut expansioncards til egne komponenter
     //TODO: bruk input data til å vise riktig i kalenderen
@@ -131,13 +136,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         </HStack>
                                     </ExpansionCard.Header>
                                     <ExpansionCard.Content>
-                                        <OversiktKalender
-                                            valgtStønadskonto={valgtStønadskonto}
-                                            omBarnet={barnet}
-                                            antallUkerFellesperiodeSøker1={fordeling?.antallUkerSøker1}
-                                            arbeidssituasjon={arbeidssituasjon}
-                                            hvemPlanlegger={hvemPlanlegger}
-                                        />
+                                        <Calendar periods={uttaksperioder} />
                                     </ExpansionCard.Content>
                                 </ExpansionCard>
                             )}
@@ -206,4 +205,4 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
         </>
     );
 };
-export default Oppsummering;
+export default OppsummeringSteg;
