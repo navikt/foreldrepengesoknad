@@ -16,6 +16,7 @@ import {
     capitalizeFirstLetter,
     getAntallUker,
     getFlerbarnsuker,
+    getVarighetString,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
@@ -169,7 +170,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="uttaksplaninfo.49Uker"
                                 values={{
-                                    antallUker: getAntallUker(stønadskonto100),
+                                    varighetString: getVarighetString(getAntallUker(stønadskonto100) * 5, intl),
                                 }}
                             />
                         </Radio>
@@ -186,7 +187,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="uttaksplaninfo.59Uker"
                                 values={{
-                                    antallUker: getAntallUker(stønadskonto80),
+                                    varighetString: getVarighetString(getAntallUker(stønadskonto80) * 5, intl),
                                 }}
                             />
                         </Radio>
