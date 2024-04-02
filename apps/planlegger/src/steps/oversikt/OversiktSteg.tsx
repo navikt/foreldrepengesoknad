@@ -14,22 +14,20 @@ import {
     finnFellesperiodeFordelingOptionTekst,
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {
     getAntallUkerAktivitetsfriKvote,
-    getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepenger,
-    getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
+import { finnUttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong, BodyShort, HStack, Heading, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -100,6 +98,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const formMethods = useForm<Fordeling>({
         defaultValues: fordeling,
     });
+
     const antallUkerFellesperiodeSøker1 = formMethods.watch('antallUkerSøker1');
 
     const erFødt = erBarnetFødt(barnet);
@@ -108,57 +107,26 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(periode.dekningsgrad);
 
-    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
+    const valgtStønadskonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
 
-    //TODO FIX adopsjonsdato
-    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
-    const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
-    const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
-    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
 
-    const fellesperiodeOptionValues = getFellesperiodefordelingSelectOptions(antallUkerFellesperiode);
-    const antallUkerFellesperiodeSøker2 = antallUkerFellesperiode - antallUkerFellesperiodeSøker1;
+    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = finnUttaksdata(
+        hvemHarRett,
+        valgtStønadskonto,
+        barnet,
+        antallUkerFellesperiodeSøker1,
+    );
 
-    const sluttdatoSøker1 = antallUkerFellesperiodeSøker1
-        ? dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').add(antallUkerFellesperiodeSøker1, 'weeks')
-        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
-
-    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1).add(1, 'day') : undefined;
-    const sluttdatoSøker2 = antallUkerFellesperiodeSøker2
-        ? dayjs(startdatoSøker2).add(antallUkerFellesperiodeSøker2, 'weeks').add(antallUkerFedrekvote, 'weeks')
-        : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks');
-
-    const antallUkerSøker1 = dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks');
-    const antallUkerSøker2 = dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'weeks');
-
-    const søkerTekst = finnSøkerTekst(intl, hvemPlanlegger);
     const annenPartTekst = finnAnnenPartTekst(intl, hvemPlanlegger);
-    const hvem1 = capitalizeFirstLetter(søkerTekst);
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
 
-    const kunFarHarRettHovedsøker =
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
-        (arbeidssituasjon.status === Arbeidsstatus.JOBBER || arbeidssituasjon.jobberAnnenPart);
-
-    const kunFarHarRettMedsøker =
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR &&
-        arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
-        arbeidssituasjon.jobberAnnenPart;
-
-    const kunFarHarRett = kunFarHarRettHovedsøker || kunFarHarRettMedsøker;
-
-    const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(selectedKonto);
-    const totalUker = getAntallUkerForeldrepenger(selectedKonto);
+    const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+    const totalUker = getAntallUkerForeldrepenger(valgtStønadskonto);
     const aktivitetskravUker = totalUker - aktivitetsfriUker;
-
-    const kunMorHarRett =
-        hvemPlanlegger.type !== Situasjon.FAR &&
-        hvemPlanlegger.type !== Situasjon.FAR_OG_FAR &&
-        arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
-        arbeidssituasjon.jobberAnnenPart !== true;
 
     return (
         <Form formMethods={formMethods}>
@@ -195,23 +163,26 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <FormattedMessage id="oversikt.80" />
                         </ToggleGroup.Item>
                     </ToggleGroup>
-                    {!erAleneforsørger && fordeling?.antallUkerSøker1 && !kunFarHarRett && !kunMorHarRett && (
-                        <Select
-                            label={<FormattedMessage id="oversikt.fellesperiodefordeling" />}
-                            name="fellesperiodefordeling"
-                            onChange={(e) => {
-                                lagreFordeling({ antallUkerSøker1: e.target.value });
-                            }}
-                        >
-                            {fellesperiodeOptionValues.map((value) => (
-                                <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                    {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
-                                </option>
-                            ))}
-                        </Select>
-                    )}
+                    {!erAleneforsørger &&
+                        fordeling?.antallUkerSøker1 &&
+                        hvemHarRett !== 'kunFarHarRett' &&
+                        hvemHarRett !== 'kunMorHarRett' && (
+                            <Select
+                                label={<FormattedMessage id="oversikt.fellesperiodefordeling" />}
+                                name="fellesperiodefordeling"
+                                onChange={(e) => {
+                                    lagreFordeling({ antallUkerSøker1: e.target.value });
+                                }}
+                            >
+                                {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
+                                    <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
+                                        {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
+                                    </option>
+                                ))}
+                            </Select>
+                        )}
                     <VStack gap="5">
-                        {!kunFarHarRett ? (
+                        {hvemHarRett !== 'kunFarHarRett' ? (
                             <HStack gap="1">
                                 <div className="bluePanel">
                                     <HStack gap="2" align="center">
@@ -220,8 +191,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             <FormattedMessage
                                                 id="ukerForeldrepenger"
                                                 values={{
-                                                    hvem: hvem1,
-                                                    uker: antallUkerSøker1,
+                                                    hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
+                                                    uker: dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks'),
                                                     dato: dayjs(startdatoSøker1).format('dddd D MMM'),
                                                 }}
                                             />
@@ -229,7 +200,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     </HStack>
                                 </div>
                                 <Spacer />
-                                {!erAleneforsørger && annenPartTekst && !kunMorHarRett && (
+                                {!erAleneforsørger && annenPartTekst && hvemHarRett !== 'kunMorHarRett' && (
                                     <HStack gap="3" wrap={false}>
                                         <div className="greenPanel">
                                             <HStack gap="2" align="center">
@@ -239,7 +210,10 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                         id="ukerForeldrepenger"
                                                         values={{
                                                             hvem: capitalizeFirstLetter(annenPartTekst),
-                                                            uker: antallUkerSøker2,
+                                                            uker: dayjs(sluttdatoSøker2).diff(
+                                                                dayjs(startdatoSøker2),
+                                                                'weeks',
+                                                            ),
                                                             dato: dayjs(startdatoSøker2).format('dddd D MMM'),
                                                         }}
                                                     />
@@ -316,7 +290,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </div>
                     </VStack>
                     <OversiktKalender
-                        valgtStønadskonto={selectedKonto}
+                        valgtStønadskonto={valgtStønadskonto}
                         omBarnet={barnet}
                         antallUkerFellesperiodeSøker1={antallUkerFellesperiodeSøker1}
                         arbeidssituasjon={arbeidssituasjon}

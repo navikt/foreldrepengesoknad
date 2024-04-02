@@ -17,6 +17,7 @@ import {
 } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {
     getAntallUker,
     getAntallUkerFellesperiode,
@@ -70,7 +71,9 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
     const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const { sluttdatoSøker1, startdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(
+        hvemHarRett,
         valgtStønadskonto,
         barnet,
         fordeling?.antallUkerSøker1,
