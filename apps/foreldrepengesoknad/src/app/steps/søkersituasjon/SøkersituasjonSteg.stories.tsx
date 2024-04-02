@@ -1,8 +1,8 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { Kjønn } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
@@ -18,26 +18,21 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'steps/SøkersituasjonSteg',
-    component: SøkersituasjonSteg,
-};
-
-interface Props {
-    kjønn: Kjønn;
+type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
-    avbrytSøknad: () => void;
     gåTilNesteSide: (action: Action) => void;
-}
+} & ComponentProps<typeof SøkersituasjonSteg>;
 
-const Template: StoryFn<Props> = ({
+type Story = StoryObj<StoryArgs>;
+
+const customRenderer = ({
     kjønn,
     søkersituasjon,
     mellomlagreSøknadOgNaviger = promiseAction(),
     avbrytSøknad = action('button-click'),
     gåTilNesteSide,
-}) => {
+    arbeidsforhold = [],
+}: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.SØKERSITUASJON]}>
@@ -48,7 +43,7 @@ const Template: StoryFn<Props> = ({
                 }}
             >
                 <SøkersituasjonSteg
-                    arbeidsforhold={[]}
+                    arbeidsforhold={arbeidsforhold}
                     kjønn={kjønn}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     avbrytSøknad={avbrytSøknad}
@@ -58,21 +53,31 @@ const Template: StoryFn<Props> = ({
     );
 };
 
-export const Mor = Template.bind({});
-Mor.args = {
-    kjønn: 'K',
+const meta = {
+    title: 'steps/SøkersituasjonSteg',
+    component: SøkersituasjonSteg,
+    render: customRenderer,
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+export const Mor: Story = {
+    args: {
+        kjønn: 'K',
+    },
 };
 
-export const Far = Template.bind({});
-Far.args = {
-    kjønn: 'M',
+export const Far: Story = {
+    args: {
+        kjønn: 'M',
+    },
 };
 
-export const HarMellomlagretData = Template.bind({});
-HarMellomlagretData.args = {
-    kjønn: 'K',
-    søkersituasjon: {
-        situasjon: 'adopsjon',
-        rolle: 'mor',
+export const HarMellomlagretData: Story = {
+    args: {
+        kjønn: 'K',
+        søkersituasjon: {
+            situasjon: 'adopsjon',
+            rolle: 'mor',
+        },
     },
 };

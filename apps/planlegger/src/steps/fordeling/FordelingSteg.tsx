@@ -62,7 +62,11 @@ export const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: n
     return values;
 };
 
-export const finnOptionTekst = (intl: IntlShape, value: Fellesperiodefordeling, hvemPlanlegger: HvemPlanlegger) => {
+export const finnFellesperiodeFordelingOptionTekst = (
+    intl: IntlShape,
+    value: Fellesperiodefordeling,
+    hvemPlanlegger: HvemPlanlegger,
+) => {
     if (value.antallUkerSøker1 === undefined && value.antallUkerSøker2 === undefined) {
         return null;
     }
@@ -192,7 +196,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         >
                             {fellesperiodeOptionValues.map((value) => (
                                 <option key={value.id} value={value.id}>
-                                    {finnOptionTekst(intl, value, hvemPlanlegger)}
+                                    {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
                                 </option>
                             ))}
                         </Select>

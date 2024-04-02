@@ -26,10 +26,12 @@ if (process.env.NODE_ENV !== 'development') {
 initAmplitude();
 
 const container = document.getElementById('app');
-const root = createRoot(container!);
 
-root.render(
-    <StrictMode>
-        <AppContainer />
-    </StrictMode>,
-);
+if (container) {
+    const root = createRoot(container);
+    root.render(
+        <StrictMode>
+            <AppContainer />
+        </StrictMode>,
+    );
+}
