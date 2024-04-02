@@ -2,13 +2,13 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -43,12 +43,11 @@ const DEFAULT_STØNADSKONTO = {
     },
 };
 
-interface StoryArgs {
+type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
     gåTilNesteSide: (action: Action) => void;
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
-}
+} & ComponentProps<typeof FordelingSteg>;
 
 type Story = StoryObj<StoryArgs>;
 

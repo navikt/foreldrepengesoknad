@@ -11,6 +11,8 @@ import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
 import OversiktSteg from 'steps/oversikt/OversiktSteg';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
+import { Loader } from '@navikt/ds-react';
+
 import { LocaleAll } from '@navikt/fp-types';
 
 interface Props {
@@ -31,13 +33,19 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
             <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={<HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />}
+                element={stønadskontoer ? <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
-            <Route path={PlanleggerRoutes.FORDELING} element={<FordelingSteg stønadskontoer={stønadskontoer} />} />
-            <Route path={PlanleggerRoutes.OVERSIKT} element={<OversiktSteg stønadskontoer={stønadskontoer} />} />
+            <Route
+                path={PlanleggerRoutes.FORDELING}
+                element={stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+            />
+            <Route
+                path={PlanleggerRoutes.OVERSIKT}
+                element={stønadskontoer ? <OversiktSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+            />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg stønadskontoer={stønadskontoer} />}
+                element={stønadskontoer ? <OppsummeringSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route path="*" element={<Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} />} />
         </Routes>

@@ -1,60 +1,52 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import GreenPanel from 'components/boxes/GreenPanel';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
-import { Fellesperiodefordeling } from 'types/Fordeling';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
+import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { Fordeling } from 'types/Fordeling';
 import {
+    HvemPlanlegger,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
     getNavnPåAnnenPart,
     getNavnPåSøker,
     isAlene,
 } from 'types/HvemPlanlegger';
+import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
     getAntallUker,
-    getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepengerFørFødsel,
-    getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
+import { finnUttaksdata } from 'utils/uttakHjelper';
 
-import { BodyLong, ExpansionCard, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
+import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { notEmpty } from '@navikt/fp-validation';
 
-const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
-    const values = [{ id: 0, antallUkerSøker1: undefined, antallUkerSøker2: undefined }] as Fellesperiodefordeling[];
-
-    for (let i = 0; i <= antallUkerFellesperiode; i++) {
-        const value = { id: i + 1, antallUkerSøker2: antallUkerFellesperiode - i, antallUkerSøker1: i };
-        values.push(value);
-    }
-    return values;
-};
 interface Props {
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    barnet: OmBarnet;
+    hvemPlanlegger: HvemPlanlegger;
+    arbeidssituasjon: Arbeidssituasjon;
+    hvorLangPeriode: HvorLangPeriode;
+    fordeling?: Fordeling;
 }
 
-const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const OppgittInformasjon: FunctionComponent<Props> = ({
+    stønadskontoer,
+    barnet,
+    hvemPlanlegger,
+    arbeidssituasjon,
+    hvorLangPeriode,
+    fordeling,
+}) => {
     const intl = useIntl();
-
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const { dekningsgrad } = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
-    const fordeling = useContextGetData(ContextDataType.FORDELING);
-
-    if (!stønadskontoer) {
-        return <Loader />;
-    }
 
     const erFødt = erBarnetFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -65,32 +57,24 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const fornavn1 = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavn2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 
-    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
-    const antallUker = getAntallUker(selectedKonto);
+    const valgtStønadskonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        stønadskontoer[hvorLangPeriode.dekningsgrad],
+    );
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUker = getAntallUker(valgtStønadskonto);
 
     const antallUkerAdopsjon = erAdoptert
-        ? getAntallUker(selectedKonto) - getAntallUkerForeldrepengerFørFødsel(selectedKonto)
-        : getAntallUker(selectedKonto);
+        ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
+        : getAntallUker(valgtStønadskonto);
 
-    const list = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
-    const antallUkerFellesperiodeSøker1 = fordeling ? list[fordeling.fellesperiodefordeling].antallUkerSøker1 : '';
-    const antallUkerFellesperiodeSøker2 = fordeling ? list[fordeling.fellesperiodefordeling].antallUkerSøker2 : '';
-    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
-    const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
-    const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
+    const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
+    const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
-    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate());
-
-    const sluttdatoSøker1 =
-        antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1
-            ? dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').add(antallUkerFellesperiodeSøker1, 'weeks')
-            : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
-    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1) : undefined;
-    const sluttdatoSøker2 =
-        antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2
-            ? dayjs(startdatoSøker2).add(antallUkerFellesperiodeSøker2, 'weeks').add(antallUkerFedrekvote, 'weeks')
-            : undefined;
+    const { sluttdatoSøker1, startdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(
+        valgtStønadskonto,
+        barnet,
+        fordeling?.antallUkerSøker1,
+    );
 
     return (
         <VStack gap="10">
@@ -214,12 +198,12 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     {erAdoptert ? (
                                         <FormattedMessage
                                             id="periode.perioder"
-                                            values={{ prosent: dekningsgrad, uker: antallUkerAdopsjon }}
+                                            values={{ prosent: hvorLangPeriode.dekningsgrad, uker: antallUkerAdopsjon }}
                                         />
                                     ) : (
                                         <FormattedMessage
                                             id="periode.perioder"
-                                            values={{ prosent: dekningsgrad, uker: antallUker }}
+                                            values={{ prosent: hvorLangPeriode.dekningsgrad, uker: antallUker }}
                                         />
                                     )}
                                 </BodyLong>
@@ -260,7 +244,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                     id="fordeling.infoboksTekst.førsteDag"
                                                     values={{
                                                         hvem: fornavn2,
-                                                        dag: dayjs(startdatoSøker2).add(1, 'day').format('DD.MM.YY'),
+                                                        dag: dayjs(sluttdatoSøker1).add(1, 'day').format('DD.MM.YY'),
                                                     }}
                                                 />
                                             </BodyLong>

@@ -1,7 +1,6 @@
 import Calendar, { Period } from 'components/calendar/Calendar';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
-import { getFellesperiodefordelingOptionValues } from 'steps/fordeling/FordelingSteg';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -24,14 +23,14 @@ interface Props {
     omBarnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    fellesperiodefordeling?: number;
+    antallUkerFellesperiodeSøker1?: number;
     valgtStønadskonto: TilgjengeligStønadskonto[];
 }
 
 const OversiktKalender: FunctionComponent<Props> = ({
     valgtStønadskonto,
     omBarnet,
-    fellesperiodefordeling,
+    antallUkerFellesperiodeSøker1,
     hvemPlanlegger,
     arbeidssituasjon,
 }) => {
@@ -45,13 +44,8 @@ const OversiktKalender: FunctionComponent<Props> = ({
     const antallUkerFedrekvote = getAntallUkerFedrekvote(valgtStønadskonto);
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
-    const fellesperiodeOptionValues = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
-
-    const antallUkerFellesperiodeSøker1 = fellesperiodefordeling
-        ? fellesperiodeOptionValues[fellesperiodefordeling]
-        : undefined;
-    const antallUkerFellesperiodeSøker2 = fellesperiodefordeling
-        ? fellesperiodeOptionValues[fellesperiodefordeling]
+    const antallUkerFellesperiodeSøker2 = antallUkerFellesperiodeSøker1
+        ? antallUkerFellesperiode - antallUkerFellesperiodeSøker1
         : undefined;
 
     const perioder = [] as Period[];
@@ -62,7 +56,7 @@ const OversiktKalender: FunctionComponent<Props> = ({
         arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart !== true;
     if (kunMorHarRett) {
-        const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindatoEllerFødselsdato).toDate());
+        const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(termindatoEllerFødselsdato);
         const sluttdatoSøker1 =
             antallUkerFellesperiode && antallUkerFellesperiode
                 ? dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').add(antallUkerFellesperiode, 'weeks')
@@ -87,22 +81,15 @@ const OversiktKalender: FunctionComponent<Props> = ({
 
     const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
     if (beggeHarRett) {
-        const startdatoSøker1 = dayjs(
-            getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindatoEllerFødselsdato).toDate()),
-        );
-        const sluttdatoSøker1 =
-            antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1.antallUkerSøker1
-                ? dayjs(startdatoSøker1)
-                      .add(antallUkerMødrekvote, 'weeks')
-                      .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
-                : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
+        const startdatoSøker1 = dayjs(getFørsteUttaksdagForeldrepengerFørFødsel(termindatoEllerFødselsdato));
+        const sluttdatoSøker1 = antallUkerFellesperiodeSøker1
+            ? dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').add(antallUkerFellesperiodeSøker1, 'weeks')
+            : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
 
         const startdatoSøker2 = dayjs(sluttdatoSøker1).add(1, 'day');
         const sluttdatoSøker2 =
-            antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2.antallUkerSøker2
-                ? dayjs(startdatoSøker2)
-                      .add(antallUkerFellesperiodeSøker2.antallUkerSøker2, 'weeks')
-                      .add(antallUkerFedrekvote, 'weeks')
+            antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2
+                ? dayjs(startdatoSøker2).add(antallUkerFellesperiodeSøker2, 'weeks').add(antallUkerFedrekvote, 'weeks')
                 : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks');
 
         if (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) {

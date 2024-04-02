@@ -5,34 +5,28 @@ import useStepData from 'appData/useStepData';
 import GreenPanel from 'components/boxes/GreenPanel';
 import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { erBarnetIkkeFødt } from 'types/Barnet';
-import { Fellesperiodefordeling, Fordeling } from 'types/Fordeling';
+import { Fordeling } from 'types/Fordeling';
 import {
     HvemPlanlegger,
     erFarDelAvSøknaden,
     erMorDelAvSøknaden,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
-    isAlene,
 } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { formatError } from 'utils/customErrorFormatter';
 import {
-    getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
-    getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
+import { finnUttaksdata } from 'utils/uttakHjelper';
 
-import { BodyLong, Heading, Loader, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, VStack } from '@navikt/ds-react';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -53,11 +47,15 @@ const finnPart2Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string
     return undefined;
 };
 
-export const getFellesperiodefordelingOptionValues = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
-    const values = [{ id: 0, antallUkerSøker1: undefined, antallUkerSøker2: undefined }] as Fellesperiodefordeling[];
+type Fellesperiodefordeling = {
+    antallUkerSøker1: number;
+    antallUkerSøker2: number;
+};
 
+export const getFellesperiodefordelingSelectOptions = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
+    const values = [];
     for (let i = 0; i <= antallUkerFellesperiode; i++) {
-        values.push({ id: i + 1, antallUkerSøker2: antallUkerFellesperiode - i, antallUkerSøker1: i });
+        values.push({ antallUkerSøker2: antallUkerFellesperiode - i, antallUkerSøker1: i });
     }
     return values;
 };
@@ -67,10 +65,6 @@ export const finnFellesperiodeFordelingOptionTekst = (
     value: Fellesperiodefordeling,
     hvemPlanlegger: HvemPlanlegger,
 ) => {
-    if (value.antallUkerSøker1 === undefined && value.antallUkerSøker2 === undefined) {
-        return null;
-    }
-
     const part1Tekst = finnPart1Tekst(intl, hvemPlanlegger);
     const part2Tekst = finnPart2Tekst(intl, hvemPlanlegger);
 
@@ -104,7 +98,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
 };
 
 interface Props {
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer: TilgjengeligeStønadskontoerDTO;
 }
 
 const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
@@ -119,56 +113,26 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
 
-    const formMethods = useForm<Fordeling>({ defaultValues: fordeling });
+    const formMethods = useForm<Fordeling>({
+        defaultValues: fordeling,
+    });
 
-    if (!stønadskontoer) {
-        return <Loader />;
-    }
-
-    if (isAlene(hvemPlanlegger)) {
-        throw new Error('Ureachable code');
-    }
+    const antallUkerSøker1 = formMethods.watch('antallUkerSøker1');
 
     const lagre = (formValues: Fordeling) => {
         oppdaterFordeling(formValues);
-        return navigator.goToNextDefaultStep();
+        navigator.goToNextDefaultStep();
     };
 
-    const fellesperiodefordeling = formMethods.watch('fellesperiodefordeling');
+    const valgtStønadskonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
 
-    const selectedKonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
-    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
-    const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
-    const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
-
-    const startdatoSøker1 = dayjs(getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate())).format(
-        ISO_DATE_FORMAT,
+    const { startdatoSøker1, sluttdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(
+        valgtStønadskonto,
+        barnet,
+        antallUkerSøker1,
     );
-
-    const fellesperiodeOptionValues = getFellesperiodefordelingOptionValues(antallUkerFellesperiode);
-    const antallUkerFellesperiodeSøker1 = fellesperiodefordeling
-        ? fellesperiodeOptionValues[fellesperiodefordeling]
-        : undefined;
-    const antallUkerFellesperiodeSøker2 = fellesperiodefordeling
-        ? fellesperiodeOptionValues[fellesperiodefordeling]
-        : undefined;
-
-    const sluttdatoSøker1 =
-        antallUkerFellesperiodeSøker1 && antallUkerFellesperiodeSøker1.antallUkerSøker1
-            ? dayjs(startdatoSøker1)
-                  .add(antallUkerMødrekvote, 'weeks')
-                  .add(antallUkerFellesperiodeSøker1.antallUkerSøker1, 'weeks')
-                  .format(ISO_DATE_FORMAT)
-            : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT);
-    const sluttdatoSøker2 =
-        antallUkerFellesperiodeSøker2 && antallUkerFellesperiodeSøker2.antallUkerSøker2
-            ? dayjs(sluttdatoSøker1)
-                  .add(antallUkerFellesperiodeSøker2.antallUkerSøker2, 'weeks')
-                  .add(antallUkerFedrekvote, 'weeks')
-                  .format(ISO_DATE_FORMAT)
-            : undefined;
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
@@ -188,20 +152,20 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </Infobox>
                     <GreenPanel isDarkGreen={fordeling === undefined}>
                         <Select
-                            name="fellesperiodefordeling"
+                            name="antallUkerSøker1"
                             label={<FormattedMessage id="fordeling.fordelingTittel" />}
                             autofocusWhenEmpty
                             validate={[isRequired(intl.formatMessage({ id: 'validation.required' }))]}
                             customErrorFormatter={formatError}
                         >
-                            {fellesperiodeOptionValues.map((value) => (
-                                <option key={value.id} value={value.id}>
+                            {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
+                                <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
                                     {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
                                 </option>
                             ))}
                         </Select>
                     </GreenPanel>
-                    {fellesperiodefordeling !== undefined && fellesperiodefordeling > 0 && (
+                    {antallUkerSøker1 > 0 && (
                         <FordelingsdetaljerPanel
                             fornavnPart1={getFornavnPåSøker(hvemPlanlegger, intl)}
                             startdatoPart1={startdatoSøker1}
