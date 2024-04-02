@@ -1,1 +1,0 @@
-import{d as e}from"./dateUtils-DAVVZO_E.js";import{m as o}from"./useSvpNavigator-CImYrSO5.js";e.extend(o);const m=10,u=1e3,r=s=>s!==""&&s!==void 0&&s!==null,d=(s,t)=>{let a=t;if(s&&r(s)){const n=e.max([e(t),e(s)]);a=n?n.toDate():t}return a},l=(s,t)=>e().isBefore(e(s),"d")?t.formatMessage({id:"slutter"}):t.formatMessage({id:"sluttet"});export{m as T,u as a,l as b,d as g,r as h};
