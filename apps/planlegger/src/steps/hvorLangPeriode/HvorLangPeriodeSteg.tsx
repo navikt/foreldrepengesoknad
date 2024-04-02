@@ -6,12 +6,11 @@ import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetIkkeFødt, erEttBarn, erToBarn } from 'types/Barnet';
+import { erEttBarn, erToBarn } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
@@ -19,21 +18,18 @@ import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskont
 import {
     getAntallUker,
     getAntallUkerAktivitetsfriKvote,
-    getAntallUkerFedrekvote,
-    getAntallUkerFellesperiode,
-    getAntallUkerMødrekvote,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from 'utils/uttakHjelper';
+import { finnUttaksdata } from 'utils/uttakHjelper';
 
-import { BodyLong, Heading, Link, Loader, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Link, Radio, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 interface Props {
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer: TilgjengeligeStønadskontoerDTO;
 }
 
 const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
@@ -50,10 +46,6 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
-    if (!stønadskontoer) {
-        return <Loader />;
-    }
-
     const erAlenesøker = isAlene(hvemPlanlegger);
 
     const lagre = (formValues: HvorLangPeriode) => {
@@ -67,28 +59,18 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
 
-    const selectedKonto =
+    const valgtStønadskonto =
         periode || dekningsgrad
             ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
                   stønadskontoer[dekningsgrad || periode?.dekningsgrad],
               )
             : [];
-    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : undefined;
-    const antallUker = getAntallUker(selectedKonto);
-    const antallUkerMødrekvote = getAntallUkerMødrekvote(selectedKonto);
-    const antallUkerFedrekvote = getAntallUkerFedrekvote(selectedKonto);
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(selectedKonto);
-    const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(selectedKonto);
+
+    const antallUker = getAntallUker(valgtStønadskonto);
+    const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
     const antallUkerAktivitetskravKvote = antallUker - antallUkerAktivitetsfriKvote;
 
-    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(dayjs(termindato).toDate());
-
-    const sluttdatoForeldrepenger = startdatoSøker1
-        ? dayjs(startdatoSøker1)
-              .add(antallUkerMødrekvote, 'weeks')
-              .add(antallUkerFedrekvote, 'weeks')
-              .add(antallUkerFellesperiode, 'weeks')
-        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
+    const { sluttdatoForeldrepenger } = finnUttaksdata(valgtStønadskonto, barnet);
 
     return (
         <PlanleggerStepPage steps={stepConfig}>

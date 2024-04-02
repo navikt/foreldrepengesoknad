@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -44,14 +45,14 @@ const kontoer = {
     },
 };
 
-interface StoryArgs {
+type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     fordeling: Fordeling;
     hvorLangPeriode: HvorLangPeriode;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     stønadskontoer?: TilgjengeligeStønadskontoerDTO;
-}
+} & ComponentProps<typeof OppsummeringSteg>;
 
 type Story = StoryObj<StoryArgs>;
 
@@ -96,7 +97,7 @@ export const OppsummeringFlereForsørgereHundreProsentTermin: Story = {
             type: Situasjon.MOR_OG_FAR,
         },
         fordeling: {
-            fellesperiodefordeling: 6,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -121,7 +122,7 @@ export const OppsummeringAleneforsørgerÅttiProsentFødselToBarn: Story = {
             type: Situasjon.MOR,
         },
         fordeling: {
-            fellesperiodefordeling: 6,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
@@ -147,7 +148,7 @@ export const OppsummeringFlereForsørgereHundreProsentAdopsjon: Story = {
             type: Situasjon.MOR_OG_MEDMOR,
         },
         fordeling: {
-            fellesperiodefordeling: 6,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,

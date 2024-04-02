@@ -22,15 +22,15 @@ describe('<FordelingSteg>', () => {
         await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele fellesperioden?'), '9');
 
         expect(screen.getByText('Klaras første dag: 11.12.23')).toBeInTheDocument();
-        expect(screen.getByText('Klaras siste dag: 20.05.24')).toBeInTheDocument();
-        expect(screen.getByText('Espens første dag: 21.05.24')).toBeInTheDocument();
+        expect(screen.getByText('Klaras siste dag: 27.05.24')).toBeInTheDocument();
+        expect(screen.getByText('Espens første dag: 28.05.24')).toBeInTheDocument();
         expect(screen.getByText('Espens siste dag: 28.10.24')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                fellesperiodefordeling: '9',
+                antallUkerSøker1: '9',
             },
             key: ContextDataType.FORDELING,
             type: 'update',

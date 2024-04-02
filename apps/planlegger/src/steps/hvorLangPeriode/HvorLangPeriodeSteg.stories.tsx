@@ -2,12 +2,12 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -40,13 +40,12 @@ const defaultKonto100 = {
     },
 };
 
-interface StoryArgs {
+type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
     gåTilNesteSide: (action: Action) => void;
-}
+} & ComponentProps<typeof HvorLangPeriodeSteg>;
 
 type Story = StoryObj<StoryArgs>;
 
@@ -54,7 +53,10 @@ const customRenderer = ({
     hvemPlanlegger,
     omBarnet,
     arbeidssituasjon,
-    stønadskontoer,
+    stønadskontoer = {
+        '80': defaultKonto80,
+        '100': defaultKonto100,
+    },
     gåTilNesteSide = action('button-click'),
 }: StoryArgs) => {
     initAmplitude();
@@ -98,10 +100,6 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
-            '80': defaultKonto80,
-            '100': defaultKonto100,
-        },
     },
 };
 
@@ -122,10 +120,6 @@ export const FlereForsørgereToBarn: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
-            '80': defaultKonto80,
-            '100': defaultKonto100,
-        },
     },
 };
 
@@ -143,10 +137,6 @@ export const AleneforsørgerMorEttBarn: Story = {
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
-        },
-        stønadskontoer: {
-            '80': defaultKonto80,
-            '100': defaultKonto100,
         },
     },
 };
@@ -207,10 +197,6 @@ export const AleneforsørgerFarToBarn: Story = {
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
-        },
-        stønadskontoer: {
-            '80': defaultKonto80,
-            '100': defaultKonto100,
         },
     },
 };

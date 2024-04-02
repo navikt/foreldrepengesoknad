@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -10,7 +11,6 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { Situasjon } from 'types/Søkersituasjon';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -49,15 +49,14 @@ const DEFAULT_STØNADSKONTOER = {
     },
 };
 
-interface StoryArgs {
+type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     hvorLangPeriode: HvorLangPeriode;
     fordeling: Fordeling;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide: (action: Action) => void;
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
-}
+} & ComponentProps<typeof OversiktSteg>;
 
 type Story = StoryObj<StoryArgs>;
 
@@ -99,7 +98,7 @@ export default meta;
 export const PeriodeFlereForsørgereTerminBeggeHarRett: Story = {
     args: {
         fordeling: {
-            fellesperiodefordeling: 6,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -129,7 +128,7 @@ export const PeriodeAleneforsørgerFarTermin: Story = {
             type: Situasjon.FAR,
         },
         fordeling: {
-            fellesperiodefordeling: 6,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -153,7 +152,7 @@ export const PeriodeAleneforsørgerMorFødt: Story = {
             type: Situasjon.MOR,
         },
         fordeling: {
-            fellesperiodefordeling: 7,
+            antallUkerSøker1: 6,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -179,7 +178,7 @@ export const PeriodeFlereForsørgereToBarnFødtKunMorHarRett: Story = {
             type: Situasjon.MOR_OG_MEDMOR,
         },
         fordeling: {
-            fellesperiodefordeling: 9,
+            antallUkerSøker1: 8,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
@@ -206,7 +205,7 @@ export const PeriodeFlereForsørgereAdoptertKunFarHarRett: Story = {
             type: Situasjon.MOR_OG_FAR,
         },
         fordeling: {
-            fellesperiodefordeling: 9,
+            antallUkerSøker1: 8,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,

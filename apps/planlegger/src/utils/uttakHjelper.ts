@@ -1,15 +1,25 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
+
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
+import {
+    TilgjengeligStønadskonto,
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerMødrekvote,
+} from './stønadskontoer';
 
 dayjs.extend(isoWeek);
 
 const ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL = 3;
 
-const getUkedag = (dato: Date): number => {
+const getUkedag = (dato: string): number => {
     return dayjs(dato).isoWeekday();
 };
 
-const erUttaksdag = (dato: Date): boolean => {
+const erUttaksdag = (dato: string): boolean => {
     return getUkedag(dato) !== 6 && getUkedag(dato) !== 7;
 };
 
@@ -17,12 +27,12 @@ const erUttaksdag = (dato: Date): boolean => {
  * Sjekker om dato er en ukedag, dersom ikke finner den nærmeste påfølgende mandag
  * @param dato
  */
-const getUttaksdagFraOgMedDato = (dato: Date): Date => {
+const getUttaksdagFraOgMedDato = (dato: string): string => {
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(dato).add(48, 'hours').toDate();
+            return dayjs.utc(dato).add(48, 'hours').format(ISO_DATE_FORMAT);
         case 7:
-            return dayjs.utc(dato).add(24, 'hours').toDate();
+            return dayjs.utc(dato).add(24, 'hours').format(ISO_DATE_FORMAT);
         default:
             return dato;
     }
@@ -33,7 +43,7 @@ const getUttaksdagFraOgMedDato = (dato: Date): Date => {
  * @param dato
  * @param uttaksdager
  */
-const trekkUttaksdagerFraDato = (dato: Date, uttaksdager: number): Date => {
+const trekkUttaksdagerFraDato = (dato: string, uttaksdager: number): string => {
     if (erUttaksdag(dato) === false) {
         throw new Error('trekkUttaksdagerFraDato: Dato må være uttaksdag');
     }
@@ -44,7 +54,7 @@ const trekkUttaksdagerFraDato = (dato: Date, uttaksdager: number): Date => {
         const tellerdato = dayjs
             .utc(dato)
             .add(--dagteller * 24, 'hours')
-            .toDate();
+            .format(ISO_DATE_FORMAT);
         if (erUttaksdag(tellerdato)) {
             nyDato = tellerdato;
             uttaksdageteller++;
@@ -53,9 +63,57 @@ const trekkUttaksdagerFraDato = (dato: Date, uttaksdager: number): Date => {
     return nyDato;
 };
 
-export const getFørsteUttaksdagForeldrepengerFørFødsel = (familiehendelsesdato: Date): Date => {
+export const getFørsteUttaksdagForeldrepengerFørFødsel = (familiehendelsesdato: string): string => {
     return trekkUttaksdagerFraDato(
         getUttaksdagFraOgMedDato(familiehendelsesdato),
         ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
     );
+};
+
+export const finnUttaksdata = (
+    valgtStønadskonto: TilgjengeligStønadskonto[],
+    barnet: OmBarnet,
+    antallUkerFellesperiodeSøker1?: number,
+) => {
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUkerFellesperiodeSøker2 = antallUkerFellesperiodeSøker1
+        ? antallUkerFellesperiode - antallUkerFellesperiodeSøker1
+        : undefined;
+
+    const antallUkerMødrekvote = getAntallUkerMødrekvote(valgtStønadskonto);
+    const antallUkerFedrekvote = getAntallUkerFedrekvote(valgtStønadskonto);
+
+    // TODO FIX fødselsdato og adopsjon
+    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
+
+    // TODO FIX far skal ikkje ha før-fødsel
+    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
+
+    const sluttdatoSøker1 = antallUkerFellesperiodeSøker1
+        ? dayjs(startdatoSøker1)
+              .add(antallUkerMødrekvote, 'weeks')
+              .add(antallUkerFellesperiodeSøker1, 'weeks')
+              .format(ISO_DATE_FORMAT)
+        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT);
+
+    const sluttdatoSøker2 = antallUkerFellesperiodeSøker2
+        ? dayjs(sluttdatoSøker1)
+              .add(antallUkerFellesperiodeSøker2, 'weeks')
+              .add(antallUkerFedrekvote, 'weeks')
+              .format(ISO_DATE_FORMAT)
+        : undefined;
+
+    const sluttdatoForeldrepenger = startdatoSøker1
+        ? dayjs(startdatoSøker1)
+              .add(antallUkerMødrekvote, 'weeks')
+              .add(antallUkerFedrekvote, 'weeks')
+              .add(antallUkerFellesperiode, 'weeks')
+        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
+
+    return {
+        startdatoSøker1,
+        sluttdatoSøker1,
+        sluttdatoSøker2,
+        sluttdatoForeldrepenger,
+    };
 };

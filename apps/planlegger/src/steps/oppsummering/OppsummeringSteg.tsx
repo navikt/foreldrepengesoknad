@@ -11,7 +11,7 @@ import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoer';
 
-import { Alert, BodyLong, Box, Button, ExpansionCard, HStack, Heading, Link, Loader, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Box, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
@@ -23,7 +23,7 @@ import HvorMyeIkon from './ikoner/HvorMyeIkon';
 import styles from './oppsummering.module.css';
 
 interface Props {
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer: TilgjengeligeStønadskontoerDTO;
 }
 
 const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
@@ -35,10 +35,6 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const hvorLangPeriode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
 
-    if (!stønadskontoer) {
-        return <Loader />;
-    }
-
     const erAleneforsørger = isAlene(hvemPlanlegger);
     const harRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN ||
@@ -46,7 +42,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
             ? false
             : true;
 
-    const selectedKonto = hvorLangPeriode
+    const valgtStønadskonto = hvorLangPeriode
         ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[hvorLangPeriode.dekningsgrad])
         : undefined;
 
@@ -116,7 +112,7 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             />
                         )}
                     </Alert>
-                    {selectedKonto && (
+                    {valgtStønadskonto && hvorLangPeriode && (
                         <VStack gap="5">
                             {harRett && (
                                 <ExpansionCard aria-label="">
@@ -136,16 +132,23 @@ const Oppsummering: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     </ExpansionCard.Header>
                                     <ExpansionCard.Content>
                                         <OversiktKalender
-                                            valgtStønadskonto={selectedKonto}
+                                            valgtStønadskonto={valgtStønadskonto}
                                             omBarnet={barnet}
-                                            fellesperiodefordeling={fordeling?.fellesperiodefordeling}
+                                            antallUkerFellesperiodeSøker1={fordeling?.antallUkerSøker1}
                                             arbeidssituasjon={arbeidssituasjon}
                                             hvemPlanlegger={hvemPlanlegger}
                                         />
                                     </ExpansionCard.Content>
                                 </ExpansionCard>
                             )}
-                            <OppgittInformasjon stønadskontoer={stønadskontoer} />
+                            <OppgittInformasjon
+                                stønadskontoer={stønadskontoer}
+                                barnet={barnet}
+                                hvemPlanlegger={hvemPlanlegger}
+                                arbeidssituasjon={arbeidssituasjon}
+                                hvorLangPeriode={hvorLangPeriode}
+                                fordeling={fordeling}
+                            />
                         </VStack>
                     )}
                     <VStack gap="10">
