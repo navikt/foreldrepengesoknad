@@ -11,8 +11,8 @@ import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import {
+    finnFellesperiodeFordelingOptionTekst,
     getFellesperiodefordelingOptionValues,
-    getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
@@ -146,11 +146,6 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                   .add(antallUkerFedrekvote, 'weeks')
             : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks');
 
-    const fellesperiodeSelectOptions = getFellesperiodefordelingSelectOptions(
-        intl,
-        fellesperiodeOptionValues,
-        hvemPlanlegger,
-    );
     const antallUkerSøker1 = dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks');
     const antallUkerSøker2 = dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'weeks');
 
@@ -224,7 +219,11 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 lagreFordeling({ fellesperiodefordeling: e.target.value });
                             }}
                         >
-                            {fellesperiodeSelectOptions}
+                            {fellesperiodeOptionValues.map((value) => (
+                                <option key={value.id} value={value.id}>
+                                    {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
+                                </option>
+                            ))}
                         </Select>
                     )}
                     <VStack gap="5">

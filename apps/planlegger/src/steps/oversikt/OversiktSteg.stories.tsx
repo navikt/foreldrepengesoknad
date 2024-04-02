@@ -98,11 +98,6 @@ export default meta;
 
 export const PeriodeFlereForsørgereTerminBeggeHarRett: Story = {
     args: {
-        hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
-            navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
-        },
         fordeling: {
             fellesperiodefordeling: 6,
         },
@@ -118,6 +113,11 @@ export const PeriodeFlereForsørgereTerminBeggeHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
+        },
+        hvemPlanlegger: {
+            navnPåMor: 'Olga',
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.MOR_OG_FAR,
         },
     },
 };
