@@ -1,12 +1,14 @@
-import { FormattedMessage } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { XMarkIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Button, VStack } from '@navikt/ds-react';
-import { createCountryOptions, formatDate, isSameOrAfterToday } from '@navikt/fp-utils';
+
+import { DATE_1_YEAR_FROM_NOW, DATE_TODAY } from '@navikt/fp-constants';
 import { Datepicker, Select } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { DATE_1_YEAR_FROM_NOW, DATE_TODAY } from '@navikt/fp-constants';
+import { createCountryOptions, formatDate, isSameOrAfterToday } from '@navikt/fp-utils';
 import {
     isAfterOrSame,
     isBeforeOrSame,
@@ -17,15 +19,13 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
-import useUtenlandsoppholdIntl from '../intl/useUtenlandsoppholdIntl';
-
 interface OwnProps {
     index: number;
     fjernOpphold: (index: number) => void;
 }
 
 const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
-    const { i18n } = useUtenlandsoppholdIntl();
+    const intl = useIntl();
 
     const {
         watch,
@@ -53,7 +53,11 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                     />
                 }
                 validate={[
-                    isRequired(i18n('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandDuSkalBoIPåkreved')),
+                    isRequired(
+                        intl.formatMessage({
+                            id: 'SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandDuSkalBoIPåkreved',
+                        }),
+                    ),
                 ]}
             >
                 {createCountryOptions().map((o: Record<string, any>) => (
@@ -68,20 +72,32 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                 minDate={minDateFom}
                 maxDate={maxDateFom}
                 validate={[
-                    isRequired(i18n('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandFomDuSkalBoIPåkreved')),
-                    isValidDate(i18n('SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato')),
-                    isDatesNotTheSame(i18n('SenereUtenlandsoppholdSteg.FomErLikTom'), tom),
-                    isBeforeOrSame(i18n('SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato'), tom),
-                    isDateWithinRange(
-                        i18n('SenereUtenlandsoppholdSteg.DateOutsideRangeFom', {
-                            min: formatDate(minDateFom),
-                            max: formatDate(maxDateFom),
+                    isRequired(
+                        intl.formatMessage({
+                            id: 'SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandFomDuSkalBoIPåkreved',
                         }),
+                    ),
+                    isValidDate(intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato' })),
+                    isDatesNotTheSame(intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.FomErLikTom' }), tom),
+                    isBeforeOrSame(
+                        intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato' }),
+                        tom,
+                    ),
+                    isDateWithinRange(
+                        intl.formatMessage(
+                            { id: 'SenereUtenlandsoppholdSteg.DateOutsideRangeFom' },
+                            {
+                                min: formatDate(minDateFom),
+                                max: formatDate(maxDateFom),
+                            },
+                        ),
                         minDateFom,
                         maxDateFom,
                     ),
                     isPeriodNotOverlappingOthers(
-                        i18n('SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'),
+                        intl.formatMessage({
+                            id: 'SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp',
+                        }),
                         { date: tom, isStartDate: false },
                         alleAndreUtenlandsopphold,
                     ),
@@ -94,20 +110,32 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                 minDate={minDateTom}
                 maxDate={maxDateTom}
                 validate={[
-                    isRequired(i18n('SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandTomDuSkalBoIPåkreved')),
-                    isValidDate(i18n('SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato')),
-                    isDatesNotTheSame(i18n('SenereUtenlandsoppholdSteg.TomErLikFom'), fom),
-                    isAfterOrSame(i18n('SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato'), fom),
-                    isDateWithinRange(
-                        i18n('SenereUtenlandsoppholdSteg.DateOutsideRangeTom', {
-                            min: formatDate(minDateTom),
-                            max: formatDate(maxDateTom),
+                    isRequired(
+                        intl.formatMessage({
+                            id: 'SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandTomDuSkalBoIPåkreved',
                         }),
+                    ),
+                    isValidDate(intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato' })),
+                    isDatesNotTheSame(intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.TomErLikFom' }), fom),
+                    isAfterOrSame(
+                        intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato' }),
+                        fom,
+                    ),
+                    isDateWithinRange(
+                        intl.formatMessage(
+                            { id: 'SenereUtenlandsoppholdSteg.DateOutsideRangeTom' },
+                            {
+                                min: formatDate(minDateTom),
+                                max: formatDate(maxDateTom),
+                            },
+                        ),
                         minDateTom,
                         maxDateTom,
                     ),
                     isPeriodNotOverlappingOthers(
-                        i18n('SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'),
+                        intl.formatMessage({
+                            id: 'SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp',
+                        }),
                         { date: fom, isStartDate: true },
                         alleAndreUtenlandsopphold,
                     ),

@@ -61,7 +61,8 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                     label={
                         fields.length === 1
                             ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
-                            : intl.formatMessage({ id: `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}` })
+                            : // @ts-ignore Bør ikkje bruka dynamiske tekstId'ar
+                              intl.formatMessage({ id: `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}` })
                     }
                     validate={[
                         isRequired(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi' })),

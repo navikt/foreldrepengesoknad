@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { useIntl } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import useUiIntl from '../../../i18n/ui/useUiIntl';
 import AvsluttModal from './AvsluttModal';
 import './stepFooter.css';
 
@@ -15,7 +15,7 @@ interface Props {
 
 function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
     const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
-    const intl = useUiIntl();
+    const intl = useIntl();
 
     const bem = bemUtils('stepFooter');
     return (

@@ -2,6 +2,7 @@ import { Preview } from '@storybook/react';
 
 import '@navikt/ds-css';
 
+import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/app/intl/nb_NO.json';
@@ -17,7 +18,7 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: nbMessages,
+    nb: { ...nbMessages, ...uiMessages.nb },
 });
 
 const preview: Preview = {

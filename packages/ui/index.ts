@@ -1,3 +1,13 @@
+import enMessages from './src/i18n/messages/en_US.json';
+import nbMessages from './src/i18n/messages/nb_NO.json';
+import nnMessages from './src/i18n/messages/nn_NO.json';
+
+export const uiMessages = {
+    nb: nbMessages,
+    nn: nnMessages,
+    en: enMessages,
+};
+
 export { default as ContentWrapper } from './src/contentWrapper/ContentWrapper';
 export { default as ErrorBoundary } from './src/error/ErrorBoundary';
 export { default as ErrorSummaryFp } from './src/error/ErrorSummaryFp';
@@ -11,8 +21,6 @@ export { default as HorizontalLine } from './src/horizontalLine/HorizontalLine';
 export { default as Umyndig } from './src/umyndig/Umyndig';
 export { default as LanguageToggle } from './src/languageToggle/LanguageToggle';
 export { default as IntlProvider } from './src/i18n/IntlProvider';
-export { useCustomIntl } from './src/i18n/useCustomI18n';
-export type { CustomIntlShape, I18nFn } from './src/i18n/useCustomI18n';
 export { default as Step } from './src/step/pageStep/Step';
 export { default as ProgressStepper } from './src/step/progressStepper/ProgressStepper';
 export type { ProgressStep } from './src/step/progressStepper/ProgressStepper';

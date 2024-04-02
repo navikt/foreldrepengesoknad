@@ -6,7 +6,7 @@ import { Attachment } from '@navikt/fp-types';
 
 import { FileUploadError } from '../typer/FileUploadError';
 
-const MAX_FIL_STØRRELSE_KB = 16777;
+const MAX_FIL_STØRRELSE_MB = 16;
 
 interface OwnProps {
     failedAttachment: Attachment;
@@ -31,7 +31,7 @@ const FailedAttachment: React.FunctionComponent<OwnProps> = ({ failedAttachment,
             {failedAttachment.error === FileUploadError.MAX_SIZE && (
                 <FormattedMessage
                     id="FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse"
-                    values={{ filename: failedAttachment.filename, maxStørrelse: MAX_FIL_STØRRELSE_KB }}
+                    values={{ filename: failedAttachment.filename, maxStørrelse: MAX_FIL_STØRRELSE_MB }}
                 />
             )}
             {failedAttachment.error === FileUploadError.VALID_EXTENSION && (

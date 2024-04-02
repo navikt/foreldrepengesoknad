@@ -1,7 +1,6 @@
 {
     "Søknad.Pagetitle": "Application for lump-sum grant",
     "Søknad.Pageheading": "Application for lump-sum grant",
-
     "Velkommen.Ingress.Del1": "You can get lump-sum grant if you are expecting a child and have not had income that entitles you to parental benefit for 6 of the last 10 months. With a lump sum gant, you get the entire amount paid at once. If you have parental benefit, you will receive money once a month.",
     "Velkommen.Ingress.Del2": "It is primarily mothers who can apply for lump-sum grant, but fathers/co-mothers can receive one-off benefits in some cases, these are described ",
     "Velkommen.Ingress.Del3": "You can apply for parental benefit instead of lump-sum grant if you have had an income, served in the military or received any of these benefits from NAV: employment verification allowance, unemployment benefit, sickness allowance, care or care allowance. Parental benefit is a taxable benefit, which means that it gives you earnings for a pension and can entitle you to other benefits such as sickness allowance and care allowance.",
@@ -23,12 +22,10 @@
     "Velkommen.LestOgForstått.Link": "provide NAV with the correct information and report any changes.",
     "Velkommen.KunEnStønad": "If you choose to apply for the lump-sum grant, you cannot change your mind at a later date. You cannot receive both the lump-sum grant and parental benefits for the same child.",
     "Velkommen.StartSøknad": "Start with the application",
-
     "SøkersituasjonSteg.Situasjon": "What applies to you?",
     "SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon": "You must enter what applies to you",
     "SøkersituasjonSteg.Adopsjon": "Adoption",
     "SøkersituasjonSteg.Fødsel": "Birth",
-
     "AdopsjonPanel.Spørsmål.Stebarnsadopsjon": "Are you adopting your spouse's children?",
     "AdopsjonPanel.Spørsmål.Stebarnsadopsjondato": "Enter the date of adoption of the spouse's children",
     "AdopsjonPanel.Spørsmål.Required": "You must enter if you are adopting your spouse's children or not",
@@ -86,7 +83,6 @@
     "FødselPanel.Radiobutton.Ettbarn": "One child",
     "FødselPanel.Radiobutton.Tvillinger": "Twins",
     "FødselPanel.Radiobutton.Flere": "Triplets or more",
-
     "DokumentasjonSteg.MinstEttDokumentAdopsjon": "You must upload confirmation of adoption",
     "DokumentasjonSteg.MinstEttDokumentTermin": "You must upload confirmation of the due date",
     "TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi": "You must enter the term confirmation date",
@@ -96,11 +92,10 @@
     "TerminDokPanel.Terminbekreftelsesdato": "Due date confirmation date",
     "TerminDokPanel.Vedlegg.Terminbekreftelse": "Please upload confirmation of due date",
     "TerminDokPanel.Vedlegg.Terminbekreftelse.Info": "You can get the appointment confirmation from your midwife or doctor. It must be dated in the 22nd week of pregnancy or later. If the child was born abroad and is not registered in the national register, you must attach the child's birth certificate.",
-    "TerminDokPanel.Dok.Storrelse": "The file cannot be larger than 9MB and must be in one of the folloving formats: pdf, png or jpg.",
+    "TerminDokPanel.Dok.Storrelse": "The file cannot be larger than 16MB and must be in one of the folloving formats: pdf, png or jpg.",
     "AdopsjonDokPanel.Vedlegg.Adopsjon": "Confirmation of adoption",
     "AdopsjonDokPanel.Veilederpanel.Text": "You must attach confirmation of the date you took over care of the child, and adoption permit if you have received this.",
-    "AdopsjonDokPanel.Dok.Storrelse": "The file cannot be larger than 9MB and must be in one of the folloving formats: pdf, png or jpg.",
-
+    "AdopsjonDokPanel.Dok.Storrelse": "The file cannot be larger than 16MB and must be in one of the folloving formats: pdf, png or jpg.",
     "OppsummeringSteg.OmBarnet": "The Child",
     "OmBarnetOppsummering.EttBarn": "one child",
     "OmBarnetOppsummering.ToBarn": "two children",
@@ -114,7 +109,6 @@
     "OmBarnetOppsummering.SomErDatert": "Which is dated:",
     "OmBarnetOppsummering.VedlagtOmsorgsovertakelseBekreftelse": "Attached confirmation of taking over care",
     "OmBarnetOppsummering.VedlagtTerminbekreftelse": "Confirmation of the expected date of delivery is attached",
-
     "UseStepConfig.Søkersituasjon": "Your situation",
     "UseStepConfig.OmBarnet": "The Child",
     "UseStepConfig.Termin": "Confirm expected date of delivery",

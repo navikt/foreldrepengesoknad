@@ -9,7 +9,6 @@ import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form
 import { UtenlandsoppholdPeriode, UtenlandsoppholdSenere } from '@navikt/fp-types';
 import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
 
-import UtenlandsoppholdIntlProvider from '../intl/UtenlandsoppholdIntlProvider';
 import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
 
 const DEFAULT_PERIODE = {
@@ -55,36 +54,34 @@ const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     }, [append]);
 
     return (
-        <UtenlandsoppholdIntlProvider>
-            <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
-                <Form formMethods={formMethods} onSubmit={saveOnNext}>
-                    <VStack gap="10">
-                        <ErrorSummaryHookForm />
-                        <VStack gap="10" align="start">
-                            {fields.map((field, index) => (
-                                <Fragment key={field.id}>
-                                    <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={remove} />
-                                    {fields.length > 1 && <HorizontalLine />}
-                                </Fragment>
-                            ))}
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                size="small"
-                                icon={<PlusIcon aria-hidden />}
-                                onClick={leggTilOpphold}
-                            >
-                                <FormattedMessage id="SenereUtenlandsoppholdSteg.Knapp.LeggTilLand" />
-                            </Button>
-                        </VStack>
-                        <StepButtonsHookForm<UtenlandsoppholdSenere>
-                            goToPreviousStep={goToPreviousStep}
-                            saveDataOnPreviousClick={saveOnPrevious}
-                        />
+        <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
+            <Form formMethods={formMethods} onSubmit={saveOnNext}>
+                <VStack gap="10">
+                    <ErrorSummaryHookForm />
+                    <VStack gap="10" align="start">
+                        {fields.map((field, index) => (
+                            <Fragment key={field.id}>
+                                <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={remove} />
+                                {fields.length > 1 && <HorizontalLine />}
+                            </Fragment>
+                        ))}
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            size="small"
+                            icon={<PlusIcon aria-hidden />}
+                            onClick={leggTilOpphold}
+                        >
+                            <FormattedMessage id="SenereUtenlandsoppholdSteg.Knapp.LeggTilLand" />
+                        </Button>
                     </VStack>
-                </Form>
-            </Step>
-        </UtenlandsoppholdIntlProvider>
+                    <StepButtonsHookForm<UtenlandsoppholdSenere>
+                        goToPreviousStep={goToPreviousStep}
+                        saveDataOnPreviousClick={saveOnPrevious}
+                    />
+                </VStack>
+            </Form>
+        </Step>
     );
 };
 

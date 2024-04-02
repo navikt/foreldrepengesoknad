@@ -1,9 +1,9 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { useEffect, useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Stepper } from '@navikt/ds-react';
 
-import useUiIntl from '../../i18n/ui/useUiIntl';
 import './progressStepper.css';
 
 export type ProgressStep<TYPE> = {
@@ -19,7 +19,7 @@ export interface ProgressStepperProps<TYPE> {
 }
 
 const ProgressStepper = <TYPE extends string>({ steps, onStepSelect }: ProgressStepperProps<TYPE>) => {
-    const intl = useUiIntl();
+    const intl = useIntl();
     const [allStepsVisible, setAllStepsVisible] = useState(false);
 
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
