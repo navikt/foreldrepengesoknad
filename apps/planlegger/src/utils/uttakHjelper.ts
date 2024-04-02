@@ -4,6 +4,7 @@ import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
+import { HvemHarRett } from './hvemHarRettHjelper';
 import {
     TilgjengeligStønadskonto,
     getAntallUkerFedrekvote,
@@ -71,6 +72,7 @@ export const getFørsteUttaksdagForeldrepengerFørFødsel = (familiehendelsesdat
 };
 
 export const finnUttaksdata = (
+    hvemHarRett: HvemHarRett,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
     antallUkerFellesperiodeSøker1?: number,
@@ -88,30 +90,30 @@ export const finnUttaksdata = (
 
     // TODO FIX far skal ikkje ha før-fødsel
     const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
-
-    const sluttdatoSøker1 = antallUkerFellesperiodeSøker1
-        ? dayjs(startdatoSøker1)
-              .add(antallUkerMødrekvote, 'weeks')
-              .add(antallUkerFellesperiodeSøker1, 'weeks')
-              .format(ISO_DATE_FORMAT)
+    const antallUker = hvemHarRett === 'kunMorHarRett' ? antallUkerFellesperiode : antallUkerFellesperiodeSøker1;
+    const sluttdatoSøker1 = antallUker
+        ? dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').add(antallUker, 'weeks').format(ISO_DATE_FORMAT)
         : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT);
 
+    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1).add(1, 'day').format(ISO_DATE_FORMAT) : undefined;
     const sluttdatoSøker2 = antallUkerFellesperiodeSøker2
-        ? dayjs(sluttdatoSøker1)
+        ? dayjs(startdatoSøker2)
               .add(antallUkerFellesperiodeSøker2, 'weeks')
               .add(antallUkerFedrekvote, 'weeks')
               .format(ISO_DATE_FORMAT)
-        : undefined;
+        : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks').format(ISO_DATE_FORMAT);
 
     const sluttdatoForeldrepenger = startdatoSøker1
         ? dayjs(startdatoSøker1)
               .add(antallUkerMødrekvote, 'weeks')
               .add(antallUkerFedrekvote, 'weeks')
               .add(antallUkerFellesperiode, 'weeks')
-        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks');
+              .format(ISO_DATE_FORMAT)
+        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT);
 
     return {
         startdatoSøker1,
+        startdatoSøker2,
         sluttdatoSøker1,
         sluttdatoSøker2,
         sluttdatoForeldrepenger,

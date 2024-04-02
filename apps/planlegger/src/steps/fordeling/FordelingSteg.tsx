@@ -19,6 +19,7 @@ import {
 import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { formatError } from 'utils/customErrorFormatter';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {
     getAntallUkerFellesperiode,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
@@ -109,6 +110,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const { dekningsgrad } = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
@@ -128,7 +130,9 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const { startdatoSøker1, sluttdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(
+        hvemHarRett,
         valgtStønadskonto,
         barnet,
         antallUkerSøker1,

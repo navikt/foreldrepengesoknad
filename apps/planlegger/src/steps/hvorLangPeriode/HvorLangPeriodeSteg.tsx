@@ -6,6 +6,7 @@ import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -15,6 +16,7 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {
     getAntallUker,
     getAntallUkerAktivitetsfriKvote,
@@ -70,7 +72,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
     const antallUkerAktivitetskravKvote = antallUker - antallUkerAktivitetsfriKvote;
 
-    const { sluttdatoForeldrepenger } = finnUttaksdata(valgtStønadskonto, barnet);
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const { sluttdatoForeldrepenger } = finnUttaksdata(hvemHarRett, valgtStønadskonto, barnet);
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
@@ -185,7 +188,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     <FormattedMessage
                                         id="periode.infoboks.sisteDagTittel"
                                         values={{
-                                            dato: sluttdatoForeldrepenger.format('dddd DD. MMMM YYYY'),
+                                            dato: dayjs(sluttdatoForeldrepenger).format('dddd DD. MMMM YYYY'),
                                         }}
                                     />
                                 }
