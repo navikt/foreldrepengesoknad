@@ -1,57 +1,42 @@
-import Calendar, { Period } from 'components/calendar/Calendar';
+import { Period } from 'components/calendar/Calendar';
+import { DayColor } from 'components/calendar/Day';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
+
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
+import { utledHvemSomHarRett } from './hvemHarRettHjelper';
 import {
     TilgjengeligStønadskonto,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerForeldrepenger,
-} from 'utils/stønadskontoer';
-import { finnUttaksdata } from 'utils/uttakHjelper';
+} from './stønadskontoer';
+import { finnUttaksdata } from './uttakHjelper';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-
-import { DayColor } from './Day';
-
-interface Props {
-    omBarnet: OmBarnet;
-    hvemPlanlegger: HvemPlanlegger;
-    arbeidssituasjon: Arbeidssituasjon;
-    antallUkerFellesperiodeSøker1?: number;
-    valgtStønadskonto: TilgjengeligStønadskonto[];
-}
-
-const OversiktKalender: FunctionComponent<Props> = ({
-    valgtStønadskonto,
-    omBarnet,
-    antallUkerFellesperiodeSøker1,
-    hvemPlanlegger,
-    arbeidssituasjon,
-}) => {
+export const lagKalenderPerioder = (
+    valgtStønadskonto: TilgjengeligStønadskonto[],
+    barnet: OmBarnet,
+    hvemPlanlegger: HvemPlanlegger,
+    arbeidssituasjon: Arbeidssituasjon,
+    antallUkerFellesperiodeSøker1?: number,
+): Period[] => {
     //TODO Kva med adopsjon?
-    const termindatoEllerFødselsdato = erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : omBarnet.fødselsdato;
-
-    if (!termindatoEllerFødselsdato) {
-        throw Error('Det er feil i data om barnet. Ingen termindato. (oversikt steg: kalender)');
-    }
+    const termindatoEllerFødselsdato = erBarnetIkkeFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
 
     const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = finnUttaksdata(
         hvemHarRett,
         valgtStønadskonto,
-        omBarnet,
+        barnet,
         antallUkerFellesperiodeSøker1,
     );
 
-    const perioder = [] as Period[];
-
     if (hvemHarRett === 'kunMorHarRett') {
-        perioder.push(
+        return [
             {
                 fom: startdatoSøker1,
                 tom: dayjs(termindatoEllerFødselsdato).subtract(1, 'day').format(ISO_DATE_FORMAT),
@@ -67,10 +52,11 @@ const OversiktKalender: FunctionComponent<Props> = ({
                 tom: sluttdatoSøker1,
                 color: DayColor.BLUE,
             },
-        );
+        ];
     }
 
     if (hvemHarRett === 'beggeHarRett' && startdatoSøker2) {
+        const perioder = [];
         if (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) {
             perioder.push({
                 fom: startdatoSøker1,
@@ -78,7 +64,7 @@ const OversiktKalender: FunctionComponent<Props> = ({
                 color: DayColor.BLUE,
             });
         }
-        perioder.push(
+        return perioder.concat(
             {
                 fom: termindatoEllerFødselsdato,
                 tom: termindatoEllerFødselsdato,
@@ -100,7 +86,7 @@ const OversiktKalender: FunctionComponent<Props> = ({
     if (hvemHarRett === 'kunFarHarRettAleneforsørger') {
         const totalUker = getAntallUkerForeldrepenger(valgtStønadskonto);
 
-        perioder.push(
+        return [
             {
                 fom: termindatoEllerFødselsdato,
                 tom: termindatoEllerFødselsdato,
@@ -111,7 +97,7 @@ const OversiktKalender: FunctionComponent<Props> = ({
                 tom: dayjs(termindatoEllerFødselsdato).add(totalUker, 'weeks').format(ISO_DATE_FORMAT),
                 color: DayColor.BLUE,
             },
-        );
+        ];
     }
 
     if (hvemHarRett === 'kunFarHarRett') {
@@ -121,7 +107,7 @@ const OversiktKalender: FunctionComponent<Props> = ({
 
         const sluttAktivitetsfri = dayjs(termindatoEllerFødselsdato).add(aktivitetsfriUker, 'weeks');
 
-        perioder.push(
+        return [
             {
                 fom: termindatoEllerFødselsdato,
                 tom: termindatoEllerFødselsdato,
@@ -137,8 +123,8 @@ const OversiktKalender: FunctionComponent<Props> = ({
                 tom: sluttAktivitetsfri.add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
                 color: DayColor.GREEN,
             },
-        );
+        ];
     }
-    return <Calendar periods={perioder} />;
+
+    return [];
 };
-export default OversiktKalender;

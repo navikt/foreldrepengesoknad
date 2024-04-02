@@ -3,7 +3,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
-import OversiktKalender from 'components/calendar/OversiktKalender';
+import Calendar from 'components/calendar/Calendar';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
@@ -21,6 +21,7 @@ import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
+import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
 import {
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFellesperiode,
@@ -127,6 +128,14 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
     const totalUker = getAntallUkerForeldrepenger(valgtStønadskonto);
     const aktivitetskravUker = totalUker - aktivitetsfriUker;
+
+    const uttaksperioder = lagKalenderPerioder(
+        valgtStønadskonto,
+        barnet,
+        hvemPlanlegger,
+        arbeidssituasjon,
+        fordeling?.antallUkerSøker1,
+    );
 
     return (
         <Form formMethods={formMethods}>
@@ -289,13 +298,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </HStack>
                         </div>
                     </VStack>
-                    <OversiktKalender
-                        valgtStønadskonto={valgtStønadskonto}
-                        omBarnet={barnet}
-                        antallUkerFellesperiodeSøker1={antallUkerFellesperiodeSøker1}
-                        arbeidssituasjon={arbeidssituasjon}
-                        hvemPlanlegger={hvemPlanlegger}
-                    />
+                    <Calendar periods={uttaksperioder} />
                     <VStack gap="5">
                         <OmÅTilpassePlanen />
                         <UforutsetteEndringer />
