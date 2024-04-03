@@ -8,7 +8,7 @@ import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
-import '../src/styles/global.less';
+import '../src/styles/global.css';
 
 dayjs.locale('nb');
 
@@ -42,7 +42,14 @@ export const globalTypes = {
 };
 
 const preview: Preview = {
-    decorators: [withIntlProvider],
+    decorators: [
+        withIntlProvider,
+        (Story) => (
+            <div style={{ backgroundColor: 'var(--a-gray-100)', height: '100%' }}>
+                <Story />
+            </div>
+        ),
+    ],
 };
 
 export default preview;

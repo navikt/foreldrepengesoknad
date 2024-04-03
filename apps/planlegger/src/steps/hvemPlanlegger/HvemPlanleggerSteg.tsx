@@ -104,9 +104,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                             </VStack>
                         </GreenPanel>
                     )}
-                    <VStack gap="20">
-                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} useSimplifiedTexts />
-                    </VStack>
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} useSimplifiedTexts />
                 </VStack>
             </Form>
         </PlanleggerStepPage>
