@@ -14,8 +14,8 @@
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@types/amplitude-js": "^8.16.5",
-        "@types/node": "^20.12.2",
-        "@types/react": "^18.2.73",
+        "@types/node": "^20.12.3",
+        "@types/react": "^18.2.74",
         "tsconfig": "workspace:*",
         "typescript": "^5.4.3"
     }

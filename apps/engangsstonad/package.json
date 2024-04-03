@@ -20,9 +20,9 @@
         "extract": "formatjs extract"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^6.3.3",
-        "@navikt/ds-css": "^6.3.3",
-        "@navikt/ds-react": "6.3.3",
+        "@navikt/aksel-icons": "^6.3.4",
+        "@navikt/ds-css": "^6.3.4",
+        "@navikt/ds-react": "6.3.4",
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
@@ -64,7 +64,7 @@
         "@testing-library/react": "^14.2.1",
         "@testing-library/user-event": "^14.5.2",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-        "@types/react": "^18.2.73",
+        "@types/react": "^18.2.74",
         "@types/react-document-title": "^2.0.9",
         "@types/react-dom": "^18.2.23",
         "@types/react-router-dom": "^5.3.3",
