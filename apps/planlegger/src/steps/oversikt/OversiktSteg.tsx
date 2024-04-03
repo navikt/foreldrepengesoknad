@@ -41,6 +41,7 @@ import OmÅTilpassePlanen from './OmÅTilpassePlanen';
 import UforutsetteEndringer from './UforutsetteEndringer';
 import BlåSirkel from './ikoner/BlåSirkel';
 import GrønnSirkel from './ikoner/GrønnSirkel';
+import styles from './oversiktSteg.module.css';
 
 dayjs.locale('nb');
 
@@ -193,7 +194,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     <VStack gap="5">
                         {hvemHarRett !== 'kunFarHarRett' ? (
                             <HStack gap="1">
-                                <div className="bluePanel">
+                                <div className={styles.bluePanel}>
                                     <HStack gap="2" align="center">
                                         <BlåSirkel />
                                         <BodyShort>
@@ -211,7 +212,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <Spacer />
                                 {!erAleneforsørger && annenPartTekst && hvemHarRett !== 'kunMorHarRett' && (
                                     <HStack gap="3" wrap={false}>
-                                        <div className="greenPanel">
+                                        <div className={styles.greenPanel}>
                                             <HStack gap="2" align="center">
                                                 <GrønnSirkel />
                                                 <BodyShort>
@@ -236,7 +237,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <>
                                 {!erAleneforsørger && annenPartTekst && (
                                     <HStack gap="1">
-                                        <div className="bluePanel">
+                                        <div className={styles.bluePanel}>
                                             <HStack gap="2" align="center">
                                                 <BlåSirkel />
                                                 <BodyShort>
@@ -252,7 +253,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         </div>
                                         <Spacer />
                                         <HStack gap="3" wrap={false}>
-                                            <div className="greenPanel">
+                                            <div className={styles.greenPanel}>
                                                 <HStack gap="2" align="center">
                                                     <GrønnSirkel />
                                                     <BodyShort>
@@ -271,8 +272,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 )}
                             </>
                         )}
-
-                        <div className="pinkPanel">
+                        <div className={styles.pinkPanel}>
                             <HStack gap="2" align="center">
                                 <HeartFillIcon color="#F68282" />
                                 <BodyShort>
