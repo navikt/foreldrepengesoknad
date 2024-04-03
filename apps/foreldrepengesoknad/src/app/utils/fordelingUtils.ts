@@ -1,7 +1,7 @@
 import {
     getFørsteUttaksdagAnkomstdatoNorge,
+    getFørsteUttaksdagDatoForAleneomsorg,
     getFørsteUttaksdagForeldrepengerFørFødsel,
-    getFørsteUttaksdagOmsorgsovertakelse,
 } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
 
 import { Uttaksdagen } from '@navikt/fp-common';
@@ -53,8 +53,8 @@ export const getOppstartsdatoFromFordelingValg = (
             return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
             return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder);
-        case OppstartValg.OMSORGSOVERTAKELSE:
-            return getFørsteUttaksdagOmsorgsovertakelse(datoForAleneomsorg);
+        case OppstartValg.DATO_FOR_ALENEOMSORG:
+            return getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg);
         default:
             throw new Error('Ukjent verdi på oppstartValg.');
     }

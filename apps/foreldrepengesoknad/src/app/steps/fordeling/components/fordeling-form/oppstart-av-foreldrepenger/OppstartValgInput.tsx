@@ -44,7 +44,7 @@ const getOppstartsvalgFarFødsel = (
 };
 
 const getOppstartsvalgFarAleneomsorg = () => {
-    return [OppstartValg.OMSORGSOVERTAKELSE, OppstartValg.ANNEN_DATO];
+    return [OppstartValg.DATO_FOR_ALENEOMSORG, OppstartValg.ANNEN_DATO];
 };
 
 export const getErBarnetFødtMerEnnTolvUkerFørTermin = (
@@ -111,16 +111,16 @@ const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date | undefine
         throw new Error('Mangler dato for aleneomsorg');
     }
     return (
-        <Radio key={OppstartValg.OMSORGSOVERTAKELSE} value={OppstartValg.OMSORGSOVERTAKELSE}>
+        <Radio key={OppstartValg.DATO_FOR_ALENEOMSORG} value={OppstartValg.DATO_FOR_ALENEOMSORG}>
             <FormattedMessage
-                id="fordeling.oppstartValg.omsorgsovertakelsen"
+                id="fordeling.oppstartValg.datoForAleneomsorg"
                 values={{ dato: formatDateExtended(datoForAleneomsorg) }}
             />
         </Radio>
     );
 };
 
-const getRadioOptionAdopsjonOmsorgsovertakelse = (familiehendelsesdato: Date): React.ReactElement => {
+const getRadioOptionAdopsjon = (familiehendelsesdato: Date): React.ReactElement => {
     return (
         <Radio key={OppstartValg.FAMILIEHENDELSESDATO} value={OppstartValg.FAMILIEHENDELSESDATO}>
             <FormattedMessage
@@ -283,7 +283,7 @@ export const getValgOptionsForOppstart = (
     if (erMor && erFødsel) {
         return getOppstartsValgMorFødsel(barn);
     }
-    if (erFarEllerMedmor && !deltUttak && datoForAleneomsorg) {
+    if (erFarEllerMedmor && !deltUttak && datoForAleneomsorg && erFødsel) {
         return getOppstartsvalgFarAleneomsorg();
     }
     if (erFarEllerMedmor && erFødsel) {
@@ -311,7 +311,7 @@ const getRadioOptionFamiliehendelsesdato = (
     if (!erFarEllerMedmor && erFødsel) {
         return getRadioOptionMorFødsel(antallBarn);
     }
-    return getRadioOptionAdopsjonOmsorgsovertakelse(familiehendelsesdato);
+    return getRadioOptionAdopsjon(familiehendelsesdato);
 };
 
 const getRadioOptionForAnnenDato = (
@@ -355,7 +355,7 @@ export const mapOppstartValgToRadioOption = (
             return getRadioOptionTreUkerFørTermin(intl, barn);
         case OppstartValg.TRE_UKER_FØR_FØDSEL:
             return getRadioOptionTreUkerFørFødsel(intl, barn);
-        case OppstartValg.OMSORGSOVERTAKELSE:
+        case OppstartValg.DATO_FOR_ALENEOMSORG:
             return getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
             return getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder);

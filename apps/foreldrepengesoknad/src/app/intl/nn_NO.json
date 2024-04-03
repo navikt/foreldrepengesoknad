@@ -1104,6 +1104,7 @@
     "fordeling.oppstartValg.dagenEtterAnnenForelder": "Første dag etter {navnAnnenForelder}, {førsteDagEtterAnnenForelder}",
     "fordeling.oppstartValg.førsteDagEtterFarMedmor": "Første dag etter {farTekst}, {dato}",
     "fordeling.oppstartValg.omsorgsovertakelsen": "På omsorgsovertakelsen, {dato}",
+    "fordeling.oppstartValg.datoForAleneomsorg": "På datoen jeg ble alene om omsorgen, {dato}",
     "fordeling.oppstartValg.ankomstNorge": "På ankomstdagen til Norge, {dato}",
     "fordeling.oppstartDato.spørsmål": "Når vil du starte din periode med foreldrepenger?",
     "fordeling.oppstartDato.input": "Dato jeg vil starte mine foreldrepenger:",

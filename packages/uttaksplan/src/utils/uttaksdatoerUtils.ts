@@ -80,11 +80,11 @@ export function getFørsteUttaksdagAnkomstdatoNorge(anksomstdatoNorge: Date | un
     return Uttaksdagen(anksomstdatoNorge).denneEllerNeste();
 }
 
-export function getFørsteUttaksdagOmsorgsovertakelse(omsorgsovertakelse: Date | undefined): Date {
-    if (!omsorgsovertakelse) {
-        throw new Error('Mangler informasjon om omsorgsovertakelsedato.');
+export function getFørsteUttaksdagDatoForAleneomsorg(datoFroAleneomsorg: Date | undefined): Date {
+    if (!datoFroAleneomsorg) {
+        throw new Error('Mangler informasjon om dato for aleneomsorg.');
     }
-    return Uttaksdagen(omsorgsovertakelse).denneEllerNeste();
+    return Uttaksdagen(datoFroAleneomsorg).denneEllerNeste();
 }
 
 export function getFørsteMuligeUttaksdag(
