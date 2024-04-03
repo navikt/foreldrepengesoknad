@@ -1,12 +1,13 @@
 import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import * as stories from './FormHooks.stories';
 
 const { VisFormkomponenter } = composeStories(stories);
 
 describe('<FormHooks>', () => {
-    it('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
+    it('skal sjekke at input-komponenter fungerer', async () => {
         const utils = render(<VisFormkomponenter />);
 
         await userEvent.click(screen.getByText('Dette er en radioknapp'));
