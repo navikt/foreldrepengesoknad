@@ -18,6 +18,7 @@ const DelGraf: React.FunctionComponent<Props> = ({ fordelingsdager, sumDager }) 
 
     return (
         <div
+            aria-hidden={true}
             style={{
                 display: 'flex',
                 flexDirection: 'row',

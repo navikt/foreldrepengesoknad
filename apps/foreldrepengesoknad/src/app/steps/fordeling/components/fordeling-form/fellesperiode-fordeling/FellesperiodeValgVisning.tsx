@@ -28,7 +28,7 @@ const FellesperiodeValgVisning: React.FunctionComponent<Props> = ({
     const fordelingErValgt =
         fordelingsdager.length > 0 && !fordelingsdager.every((f) => f.fargekode === FordelingFargekode.IKKE_TILDELT);
     return (
-        <VStack gap="1">
+        <VStack gap="1" aria-hidden={true}>
             {fordelingErValgt && (
                 <div
                     className={bem.element('textTop')}

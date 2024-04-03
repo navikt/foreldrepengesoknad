@@ -65,7 +65,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
     const sumBredde = sumDager + widthFamiliehendelse;
     const famiHendelseFieldWidth = (widthFamiliehendelse / sumBredde) * 100;
     return (
-        <div className={bem.block}>
+        <div className={bem.block} aria-hidden={true}>
             {fordelingList.map((fordeling: FordelingGrafInfo, index) => {
                 const width = (fordeling.antallDager / sumBredde) * 100;
                 const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
