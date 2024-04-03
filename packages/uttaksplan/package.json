@@ -32,7 +32,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@testing-library/jest-dom": "^6.4.2",
-        "@testing-library/react": "^14.2.1",
+        "@testing-library/react": "^14.2.2",
         "@types/lodash": "^4.17.0",
         "@types/lodash.throttle": "^4.1.9",
         "@vitejs/plugin-react": "^4.2.1",
@@ -40,7 +40,7 @@
         "mockdate": "^3.0.5",
         "path": "^0.12.7",
         "tsconfig": "workspace:*",
-        "vite": "^5.1.6",
+        "vite": "^5.2.7",
         "vite-plugin-checker": "^0.6.4",
         "vitest": "^1.4.0"
     }
