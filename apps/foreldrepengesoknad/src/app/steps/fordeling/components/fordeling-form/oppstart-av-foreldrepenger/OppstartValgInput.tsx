@@ -110,10 +110,20 @@ const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date | undefine
     if (!datoForAleneomsorg) {
         throw new Error('Mangler dato for aleneomsorg');
     }
+    if (dayjs().isAfter(dayjs(datoForAleneomsorg), 'd')) {
+        return (
+            <Radio key={OppstartValg.DATO_FOR_ALENEOMSORG} value={OppstartValg.DATO_FOR_ALENEOMSORG}>
+                <FormattedMessage
+                    id="fordeling.oppstartValg.datoForAleneomsorg.iFortid"
+                    values={{ dato: formatDateExtended(datoForAleneomsorg) }}
+                />
+            </Radio>
+        );
+    }
     return (
         <Radio key={OppstartValg.DATO_FOR_ALENEOMSORG} value={OppstartValg.DATO_FOR_ALENEOMSORG}>
             <FormattedMessage
-                id="fordeling.oppstartValg.datoForAleneomsorg"
+                id="fordeling.oppstartValg.datoForAleneomsorg.iFremtid"
                 values={{ dato: formatDateExtended(datoForAleneomsorg) }}
             />
         </Radio>
