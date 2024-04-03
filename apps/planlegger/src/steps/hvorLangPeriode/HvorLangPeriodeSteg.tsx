@@ -24,7 +24,7 @@ import {
 } from 'utils/stønadskontoer';
 import { finnUttaksdata } from 'utils/uttakHjelper';
 
-import { BodyLong, Heading, Link, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -77,170 +77,164 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
-            <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
-                    <VStack gap="5">
-                        <Heading size="medium" spacing>
-                            <FormattedMessage id="periode.tittel" />
-                        </Heading>
+            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+                <VStack gap="10" style={{ flex: 1 }}>
+                    <Heading size="medium" spacing>
+                        <FormattedMessage id="periode.tittel" />
+                    </Heading>
+                    <Infobox
+                        header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
+                        icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                        isGray
+                    >
+                        {erAlenesøker ? (
+                            <BodyLong>
+                                {erEttBarn(barnet) && (
+                                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstDeg" />
+                                )}
+                                {erToBarn(barnet) && (
+                                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
+                                )}
+                            </BodyLong>
+                        ) : (
+                            <BodyLong>
+                                {erEttBarn(barnet) && <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />}
+                                {erToBarn(barnet) && (
+                                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
+                                )}
+                            </BodyLong>
+                        )}
+                    </Infobox>
+                    {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
                         <Infobox
-                            header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
-                            icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                            header={
+                                <>
+                                    {farHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareMorHarRett" />}
+                                    {morHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareFarHarRett" />}
+                                </>
+                            }
+                            icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                             isGray
                         >
-                            {erAlenesøker ? (
-                                <BodyLong>
-                                    {erEttBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstDeg" />
-                                    )}
-                                    {erToBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
-                                    )}
-                                </BodyLong>
-                            ) : (
-                                <BodyLong>
-                                    {erEttBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />
-                                    )}
-                                    {erToBarn(barnet) && (
-                                        <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
-                                    )}
-                                </BodyLong>
+                            {farHarIkkeRett && (
+                                <VStack gap="2">
+                                    <BodyLong>
+                                        <FormattedMessage id="periode.infoboks.nårBareMorHarRett.fårHelePerioden" />
+                                    </BodyLong>
+                                    <BodyLong>
+                                        <FormattedMessage id="periode.infoboks.nårBareMorHarRett.ingenKravTilFar" />
+                                    </BodyLong>
+                                </VStack>
+                            )}
+                            {morHarIkkeRett && (
+                                <VStack gap="2">
+                                    <BodyLong>
+                                        <FormattedMessage id="periode.infoboks.nårBareFarHarRett.kanFåhelePerioden" />
+                                    </BodyLong>
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="periode.infoboks.nårBareFarHarRett.ingenKravTilMor"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <Link
+                                                        href={links.godkjentAktivitet}
+                                                        className="lenke"
+                                                        rel="noreferrer"
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </Link>
+                                                ),
+                                            }}
+                                        />
+                                    </BodyLong>
+                                </VStack>
                             )}
                         </Infobox>
-                        {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
-                            <Infobox
-                                header={
-                                    <>
-                                        {farHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareMorHarRett" />}
-                                        {morHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareFarHarRett" />}
-                                    </>
-                                }
-                                icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                                isGray
-                            >
-                                {farHarIkkeRett && (
-                                    <VStack gap="2">
-                                        <BodyLong>
-                                            <FormattedMessage id="periode.infoboks.nårBareMorHarRett.fårHelePerioden" />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage id="periode.infoboks.nårBareMorHarRett.ingenKravTilFar" />
-                                        </BodyLong>
-                                    </VStack>
-                                )}
-                                {morHarIkkeRett && (
-                                    <VStack gap="2">
-                                        <BodyLong>
-                                            <FormattedMessage id="periode.infoboks.nårBareFarHarRett.kanFåhelePerioden" />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="periode.infoboks.nårBareFarHarRett.ingenKravTilMor"
-                                                values={{
-                                                    a: (msg: any) => (
-                                                        <Link
-                                                            href={links.godkjentAktivitet}
-                                                            className="lenke"
-                                                            rel="noreferrer"
-                                                            target="_blank"
-                                                        >
-                                                            {msg}
-                                                        </Link>
-                                                    ),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                    </VStack>
-                                )}
-                            </Infobox>
-                        )}
-
-                        <GreenRadioGroup
-                            label={
-                                erAlenesøker ? (
-                                    <FormattedMessage id="periode.hvorLangPeriodeDeg" />
-                                ) : (
-                                    <FormattedMessage id="periode.hvorLangPeriode" />
-                                )
+                    )}
+                    <GreenRadioGroup
+                        label={
+                            erAlenesøker ? (
+                                <FormattedMessage id="periode.hvorLangPeriodeDeg" />
+                            ) : (
+                                <FormattedMessage id="periode.hvorLangPeriode" />
+                            )
+                        }
+                        name="dekningsgrad"
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'validation.required',
+                                }),
+                            ),
+                        ]}
+                    >
+                        <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
+                            {erEttBarn(barnet) && <FormattedMessage id="periode.100" />}
+                            {erToBarn(barnet) && <FormattedMessage id="periode.100.toBarn" />}
+                        </Radio>
+                        <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
+                            {erEttBarn(barnet) && <FormattedMessage id="periode.80" />}
+                            {erToBarn(barnet) && <FormattedMessage id="periode.80.toBarn" />}{' '}
+                        </Radio>
+                    </GreenRadioGroup>
+                    {dekningsgrad && (
+                        <Infobox
+                            header={
+                                <FormattedMessage
+                                    id="periode.infoboks.sisteDagTittel"
+                                    values={{
+                                        dato: dayjs(sluttdatoForeldrepenger).format('dddd DD. MMMM YYYY'),
+                                    }}
+                                />
                             }
-                            name="dekningsgrad"
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({
-                                        id: 'validation.required',
-                                    }),
-                                ),
-                            ]}
+                            icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         >
-                            <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
-                                {erEttBarn(barnet) && <FormattedMessage id="periode.100" />}
-                                {erToBarn(barnet) && <FormattedMessage id="periode.100.toBarn" />}
-                            </Radio>
-                            <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
-                                {erEttBarn(barnet) && <FormattedMessage id="periode.80" />}
-                                {erToBarn(barnet) && <FormattedMessage id="periode.80.toBarn" />}{' '}
-                            </Radio>
-                        </GreenRadioGroup>
-                        {dekningsgrad && (
-                            <Infobox
-                                header={
-                                    <FormattedMessage
-                                        id="periode.infoboks.sisteDagTittel"
-                                        values={{
-                                            dato: dayjs(sluttdatoForeldrepenger).format('dddd DD. MMMM YYYY'),
-                                        }}
-                                    />
-                                }
-                                icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                            >
-                                <BodyLong>
-                                    <FormattedMessage id="periode.infoboks.sisteDagTekst" />
-                                </BodyLong>
-                                {morHarIkkeRett && (
-                                    <VStack gap="2">
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="periode.infoboks.sisteDagTekstFar.førsteUker"
-                                                values={{
-                                                    uker: antallUkerAktivitetsfriKvote,
-                                                    uker2: antallUker,
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                }}
-                                            />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="periode.infoboks.sisteDagTekstFar.andreUker"
-                                                values={{
-                                                    uker: antallUkerAktivitetskravKvote,
-                                                    uker2: antallUker,
-                                                    a: (msg: any) => (
-                                                        <Link
-                                                            href={links.godkjentAktivitet}
-                                                            className="lenke"
-                                                            rel="noreferrer"
-                                                            target="_blank"
-                                                        >
-                                                            {msg}
-                                                        </Link>
-                                                    ),
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                }}
-                                            />
-                                        </BodyLong>
-                                    </VStack>
-                                )}
-                            </Infobox>
-                        )}
-                    </VStack>
-                    <VStack gap="10">
-                        <StepButtonsHookForm<HvorLangPeriode>
-                            saveDataOnPreviousClick={oppdaterPeriode}
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            useSimplifiedTexts
-                        />
-                    </VStack>
+                            <BodyLong>
+                                <FormattedMessage id="periode.infoboks.sisteDagTekst" />
+                            </BodyLong>
+                            {morHarIkkeRett && (
+                                <VStack gap="2">
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="periode.infoboks.sisteDagTekstFar.førsteUker"
+                                            values={{
+                                                uker: antallUkerAktivitetsfriKvote,
+                                                uker2: antallUker,
+                                                b: (msg: any) => <b>{msg}</b>,
+                                            }}
+                                        />
+                                    </BodyLong>
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="periode.infoboks.sisteDagTekstFar.andreUker"
+                                            values={{
+                                                uker: antallUkerAktivitetskravKvote,
+                                                uker2: antallUker,
+                                                a: (msg: any) => (
+                                                    <Link
+                                                        href={links.godkjentAktivitet}
+                                                        className="lenke"
+                                                        rel="noreferrer"
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </Link>
+                                                ),
+                                                b: (msg: any) => <b>{msg}</b>,
+                                            }}
+                                        />
+                                    </BodyLong>
+                                </VStack>
+                            )}
+                        </Infobox>
+                    )}
+                    <Spacer />
+                    <StepButtonsHookForm<HvorLangPeriode>
+                        saveDataOnPreviousClick={oppdaterPeriode}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        useSimplifiedTexts
+                    />
                 </VStack>
             </Form>
         </PlanleggerStepPage>

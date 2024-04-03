@@ -26,7 +26,7 @@ import {
 } from 'utils/stønadskontoer';
 import { finnUttaksdata } from 'utils/uttakHjelper';
 
-import { BodyLong, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -140,8 +140,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
-            <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
+            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+                <VStack gap="10" style={{ flex: 1 }}>
                     <Heading size="large" spacing>
                         <FormattedMessage id="fordeling.tittel" />
                     </Heading>
@@ -179,6 +179,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             sluttdatoPart2={sluttdatoSøker2}
                         />
                     )}
+                    <Spacer />
                     <StepButtonsHookForm<Fordeling>
                         saveDataOnPreviousClick={oppdaterFordeling}
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
