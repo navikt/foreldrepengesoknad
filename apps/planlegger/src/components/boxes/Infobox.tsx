@@ -14,7 +14,7 @@ interface Props {
 const Infoboks: React.FC<Props> = ({ header, children, icon, isGray = false }) => (
     <Box background={isGray ? 'bg-subtle' : 'surface-alt-3-subtle'} padding="4" borderRadius="large">
         <VStack gap="2">
-            <HStack justify="space-between">
+            <HStack justify="space-between" wrap={false}>
                 <Heading size="small" className={styles.header}>
                     {header}
                 </Heading>
