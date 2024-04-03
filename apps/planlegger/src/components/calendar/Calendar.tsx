@@ -22,11 +22,16 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
         return DayColor.NONE;
     }
 
+    const period = periods.find((period) => date.isBetween(period.fom, period.tom, 'day', '[]'));
+
+    if (period?.color === DayColor.PINK) {
+        return DayColor.PINK;
+    }
+
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
         return DayColor.GRAY;
     }
 
-    const period = periods.find((period) => date.isBetween(period.fom, period.tom, 'day', '[]'));
     return period?.color || DayColor.NONE;
 };
 
