@@ -10,7 +10,7 @@ import '@navikt/ds-css';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import AppContainer from './AppContainer';
-import './styles/global.less';
+import './styles/global.css';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);

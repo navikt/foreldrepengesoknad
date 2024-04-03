@@ -54,6 +54,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                             icon={<ArrowRightIcon />}
                             iconPosition="right"
                             className={styles.button}
+                            autoFocus
                         >
                             <FormattedMessage id="om.start.planlegger" />
                         </Button>
