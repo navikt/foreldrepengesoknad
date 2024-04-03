@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
-import { formatDate } from '@navikt/fp-utils';
+import { erUttaksdag } from '@navikt/fp-common';
+import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';
+import { formatDate, isValidDate } from '@navikt/fp-utils';
 
 export const validateAntallUkerFellesperiode = (intl: IntlShape, dagerMedFellesperiode: number) => (value: string) => {
     const valueNumber = getNumberFromNumberInputValue(value)!;
@@ -31,6 +32,10 @@ export const validateOppstartsdato =
 
         if (maxDato && dayjs(value).isAfter(maxDato, 'd')) {
             return intl.formatMessage({ id: 'fordeling.oppstartsdato.forSent' }, { maxDato: formatDate(maxDato) });
+        }
+
+        if (value && isValidDate(value) && !erUttaksdag(ISOStringToDate(value)!)) {
+            return intl.formatMessage({ id: 'fordeling.oppstartsdato.ukedag' });
         }
 
         return undefined;

@@ -1114,6 +1114,7 @@
     "fordeling.oppstartDato.description": "Dette kan endres senere, også etter at søknaden er sendt.",
     "fordeling.oppstartsdato.forTidlig": "Oppstartsdato for foreldrepenger kan være tidligst {minDato}.",
     "fordeling.oppstartsdato.forSent": "Oppstartsdato for foreldrepenger kan være senest {maxDato}.",
+    "fordeling.oppstartsdato.ukedag": "Oppstartsdato for foreldrepenger må være en ukedag.",
     "fordeling.oppstartValg.førFødselEllerTerminInfo": "{varighetString} før {fødselEllerTermin}.",
     "fordeling.oppstartValg.førsteUkedagEtterTerminFødsel": "Første ukedag etter {fødselEllerTerminDato}",
     "fordeling.oppstartValg.påFødselEllerTermin": "På {fødselEllerTermindato}",

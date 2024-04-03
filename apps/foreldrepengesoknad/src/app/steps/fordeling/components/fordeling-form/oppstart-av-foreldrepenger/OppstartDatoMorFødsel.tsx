@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
-import { Uttaksdagen, isFødtBarn } from '@navikt/fp-common';
+import { Uttaksdagen, erUttaksdag, isFødtBarn } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -34,6 +34,7 @@ const OppstartDatoMorFødsel: React.FunctionComponent<Props> = ({ oppstartValg }
     const visInformasjon =
         oppstartDato &&
         isValidDate(oppstartDato) &&
+        erUttaksdag(ISOStringToDate(oppstartDato)!) &&
         dayjs(oppstartDato).isSameOrBefore(førsteUttaksdagPåEllerEtterFamHendelse);
     const fødselEllerTermindato = getErBarnetFødtInnenTreUkerFørTermin(erBarnetFødt, termindato, fødselsdato)
         ? intl.formatMessage({ id: 'fødselsdato' })
