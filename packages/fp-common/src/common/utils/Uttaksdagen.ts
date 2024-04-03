@@ -44,17 +44,15 @@ function getUttaksdagFørDato(dato: Date): Date {
  * @param dato
  */
 function getUttaksdagTilOgMedDato(dato: Date): Date {
-    const newDate = dato ? new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(newDate).subtract(24, 'hours').startOf('day').toDate();
+            return dayjs.utc(dato).subtract(24, 'hours').toDate();
         case 7:
-            return dayjs.utc(newDate).subtract(48, 'hours').startOf('day').toDate();
+            return dayjs.utc(dato).subtract(48, 'hours').toDate();
         default:
             return dato;
     }
 }
-
 /**
  * Første gyldige uttaksdag etter dato
  * @param termin
@@ -69,12 +67,11 @@ function getUttaksdagEtterDato(dato: Date): Date {
  * @param dato
  */
 function getUttaksdagFraOgMedDato(dato: Date): Date {
-    const newDate = dato ? new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(newDate).add(48, 'hours').startOf('day').toDate();
+            return dayjs.utc(dato).add(48, 'hours').toDate();
         case 7:
-            return dayjs.utc(newDate).add(24, 'hours').startOf('day').toDate();
+            return dayjs.utc(dato).add(24, 'hours').toDate();
         default:
             return dato;
     }
