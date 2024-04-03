@@ -97,6 +97,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitIsClicked, setSubmitIsClicked] = useState(false);
+    const [harPlanBlittEndret, setHarPlanBlittEndret] = useState(false);
 
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
     const [uttaksplanErGyldig, setUttaksplanErGyldig] = useState(true);
@@ -517,6 +518,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const handleOnPlanChange = (nyPlan: Periode[]) => {
         setSubmitIsClicked(false);
         setIsSubmitting(false);
+        setHarPlanBlittEndret(true);
 
         oppdaterUttaksplan(nyPlan);
 
@@ -754,10 +756,14 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                 {!erEndringssøknad && (
                                     <Button
                                         variant="secondary"
-                                        onClick={(event) => {
-                                            event.preventDefault();
-                                            setGåTilbakeIsOpen(true);
-                                        }}
+                                        onClick={
+                                            harPlanBlittEndret
+                                                ? (event) => {
+                                                      event.preventDefault();
+                                                      setGåTilbakeIsOpen(true);
+                                                  }
+                                                : goToPreviousStep
+                                        }
                                     >
                                         <FormattedMessage id="backlink.label" />
                                     </Button>

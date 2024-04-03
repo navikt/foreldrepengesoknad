@@ -1,6 +1,8 @@
 import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
-import { useFormContext, useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
+
 import { UNSAFE_Combobox } from '@navikt/ds-react';
+
 import { getError, getValidationRules } from './formUtils';
 
 export interface Props {
@@ -46,7 +48,7 @@ const Combobox: FunctionComponent<Props> = ({
         <UNSAFE_Combobox
             ref={field.ref}
             label={label}
-            selectedOptions={[field.value]}
+            selectedOptions={field.value ? [field.value] : undefined}
             description={description}
             className={className}
             onToggleSelected={onToggleSelected}
