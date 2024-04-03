@@ -44,11 +44,21 @@ export const globalTypes = {
 const preview: Preview = {
     decorators: [
         withIntlProvider,
-        (Story) => (
-            <div style={{ backgroundColor: 'var(--a-gray-100)', height: '100%' }}>
-                <Story />
-            </div>
-        ),
+        (Story, context) => {
+            if (context.componentId.includes('components-')) {
+                return <Story />;
+            }
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 50px)' }}>
+                    <div style={{ backgroundColor: '#AC7976' }}>--- NAV Header (Placeholder) ---</div>
+                    <div id="app">
+                        <Story />
+                    </div>
+                    <div style={{ backgroundColor: '#AC7976' }}>--- NAV Footer (Placeholder) ---</div>
+                </div>
+            );
+        },
     ],
 };
 
