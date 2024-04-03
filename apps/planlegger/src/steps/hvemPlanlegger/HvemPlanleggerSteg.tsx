@@ -9,7 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, erFarDelAvSøknaden, erMorDelAvSøknaden } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
 
-import { Radio, VStack } from '@navikt/ds-react';
+import { Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
@@ -38,8 +38,8 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
-            <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
+            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+                <VStack gap="10" style={{ flex: 1 }}>
                     <GreenRadioGroup
                         name="type"
                         label={intl.formatMessage({
@@ -104,6 +104,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                             </VStack>
                         </GreenPanel>
                     )}
+                    <Spacer />
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} useSimplifiedTexts />
                 </VStack>
             </Form>

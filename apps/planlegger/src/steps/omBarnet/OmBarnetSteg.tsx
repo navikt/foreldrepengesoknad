@@ -9,7 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 
-import { BodyLong, Heading, Radio, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -60,21 +60,39 @@ const OmBarnetSteg: React.FunctionComponent = () => {
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
-            <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
+            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+                <VStack gap="10" style={{ flex: 1 }}>
                     <Heading level="2" size="medium">
                         <FormattedMessage id="barnet.tittel" />
                     </Heading>
-                    <VStack gap="10">
+                    <GreenRadioGroup
+                        name="erFødsel"
+                        label={
+                            erAlenesøker ? (
+                                <FormattedMessage id="barnet.hvaGjelderDeg" />
+                            ) : (
+                                <FormattedMessage id="barnet.hvaGjelder" />
+                            )
+                        }
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'validation.required',
+                                }),
+                            ),
+                        ]}
+                    >
+                        <Radio value={true} autoFocus>
+                            <FormattedMessage id="barnet.fødsel" />
+                        </Radio>
+                        <Radio value={false}>
+                            <FormattedMessage id="barnet.adopsjon" />
+                        </Radio>
+                    </GreenRadioGroup>
+                    {erFødsel !== undefined && (
                         <GreenRadioGroup
-                            name="erFødsel"
-                            label={
-                                erAlenesøker ? (
-                                    <FormattedMessage id="barnet.hvaGjelderDeg" />
-                                ) : (
-                                    <FormattedMessage id="barnet.hvaGjelder" />
-                                )
-                            }
+                            name="antallBarn"
+                            label={finnHvorMangeBarnLabel(erAlenesøker, erFødsel)}
                             validate={[
                                 isRequired(
                                     intl.formatMessage({
@@ -83,42 +101,22 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                 ),
                             ]}
                         >
-                            <Radio value={true} autoFocus>
-                                <FormattedMessage id="barnet.fødsel" />
+                            <Radio value="1" autoFocus={omBarnet === undefined}>
+                                <FormattedMessage id="barnet.ett" />
                             </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="barnet.adopsjon" />
+                            <Radio value="2">
+                                {erFødsel ? (
+                                    <FormattedMessage id="barnet.tvillinger" />
+                                ) : (
+                                    <FormattedMessage id="barnet.to" />
+                                )}
+                            </Radio>
+                            <Radio value="3">
+                                <FormattedMessage id="barnet.flereEnnTo" />
                             </Radio>
                         </GreenRadioGroup>
-                        {erFødsel !== undefined && (
-                            <GreenRadioGroup
-                                name="antallBarn"
-                                label={finnHvorMangeBarnLabel(erAlenesøker, erFødsel)}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({
-                                            id: 'validation.required',
-                                        }),
-                                    ),
-                                ]}
-                            >
-                                <Radio value="1" autoFocus={omBarnet === undefined}>
-                                    <FormattedMessage id="barnet.ett" />
-                                </Radio>
-                                <Radio value="2">
-                                    {erFødsel ? (
-                                        <FormattedMessage id="barnet.tvillinger" />
-                                    ) : (
-                                        <FormattedMessage id="barnet.to" />
-                                    )}
-                                </Radio>
-                                <Radio value="3">
-                                    <FormattedMessage id="barnet.flereEnnTo" />
-                                </Radio>
-                            </GreenRadioGroup>
-                        )}
-                    </VStack>
-                    <VStack gap="5">
+                    )}
+                    <>
                         {erFødsel && antallBarn && (
                             <Fødsel
                                 hvemPlanlegger={hvemPlanlegger}
@@ -158,16 +156,13 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                 </Infobox>
                             </>
                         )}
-                    </VStack>
-                    <VStack gap="10">
-                        <VStack>
-                            <StepButtonsHookForm<OmBarnet>
-                                saveDataOnPreviousClick={oppdaterOmBarnet}
-                                goToPreviousStep={navigator.goToPreviousDefaultStep}
-                                useSimplifiedTexts
-                            />
-                        </VStack>
-                    </VStack>
+                    </>
+                    <Spacer />
+                    <StepButtonsHookForm<OmBarnet>
+                        saveDataOnPreviousClick={oppdaterOmBarnet}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        useSimplifiedTexts
+                    />
                 </VStack>
             </Form>
         </PlanleggerStepPage>

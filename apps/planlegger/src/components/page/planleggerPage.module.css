@@ -39,5 +39,7 @@
         max-width: none;
         margin: inherit;
         flex: 1;
+        flex-direction: column;
+        display: flex;
     }
 }

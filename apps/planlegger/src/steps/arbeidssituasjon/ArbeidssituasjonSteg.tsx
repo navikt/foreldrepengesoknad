@@ -10,7 +10,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 
-import { Heading, Radio, VStack } from '@navikt/ds-react';
+import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -48,8 +48,8 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
-            <Form formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="5">
+            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+                <VStack gap="10" style={{ flex: 1 }}>
                     <Heading level="2" size="medium">
                         <FormattedMessage id="arbeid.tittel" />
                     </Heading>
@@ -85,13 +85,12 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                     </GreenRadioGroup>
                     {erAlenesøker && <Aleneforsørger status={status} />}
                     {!erAlenesøker && <FlereForsørgere status={status} hvemPlanlegger={hvemPlanlegger} />}
-                    <VStack gap="20">
-                        <StepButtonsHookForm
-                            saveDataOnPreviousClick={oppdaterArbeidssituasjon}
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            useSimplifiedTexts
-                        />
-                    </VStack>
+                    <Spacer />
+                    <StepButtonsHookForm
+                        saveDataOnPreviousClick={oppdaterArbeidssituasjon}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        useSimplifiedTexts
+                    />
                 </VStack>
             </Form>
         </PlanleggerStepPage>
