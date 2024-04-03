@@ -1,5 +1,5 @@
 export enum FellesperiodeFordelingValg {
-    LIKT = 'LIKT',
+    ALT = 'ALT',
     VIL_VELGE = 'VIL_VELGE',
     HOPP_OVER_FORDELING = 'HOPP_OVER_FORDELING',
 }

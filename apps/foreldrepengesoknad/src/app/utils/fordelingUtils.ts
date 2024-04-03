@@ -21,8 +21,8 @@ export const getAntallUkerFellesperiodeTilSøker = (
     antallUkerFellesperiode: number,
     fordeling: Fordeling,
 ): number | undefined => {
-    if (fordeling.fordelingValg === FellesperiodeFordelingValg.LIKT) {
-        return antallUkerFellesperiode / 2;
+    if (fordeling.fordelingValg === FellesperiodeFordelingValg.ALT) {
+        return antallUkerFellesperiode;
     }
     if (fordeling.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE) {
         return getNumberFromNumberInputValue(fordeling.antallUkerFellesperiodeTilSøker);

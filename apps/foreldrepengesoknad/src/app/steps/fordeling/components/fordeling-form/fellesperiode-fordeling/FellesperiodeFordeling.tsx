@@ -17,7 +17,7 @@ import FellesperiodeValgVisning from './FellesperiodeValgVisning';
 import FordelingValg from './FordelingValg';
 import './fellesperiode-fordeling.css';
 
-const getAntallUkerFellesperiodeTilSøker = (
+const getAntallDagerFellesperiodeTilSøker = (
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,
     antallUkerFellesperiodeTilSøker: string | undefined,
@@ -25,8 +25,8 @@ const getAntallUkerFellesperiodeTilSøker = (
     if (!valgtFordeling) {
         return undefined;
     }
-    if (valgtFordeling === FellesperiodeFordelingValg.LIKT) {
-        return antallDagerFellesperiode / 2;
+    if (valgtFordeling === FellesperiodeFordelingValg.ALT) {
+        return antallDagerFellesperiode;
     }
     const antallUkerFellesperiodeTilSøkerNumber = getNumberFromNumberInputValue(antallUkerFellesperiodeTilSøker)!;
     const antallUkerMedFellesperiodeTotalt = antallDagerFellesperiode / 5;
@@ -63,7 +63,7 @@ export const getValgtFellesperiodeFordeling = (
     }
     const fargekodeSøker = erFarEllerMedmor ? FordelingFargekode.SØKER_FAR : FordelingFargekode.SØKER_MOR;
     const fordeling = [];
-    const dagerTilSøker = getAntallUkerFellesperiodeTilSøker(
+    const dagerTilSøker = getAntallDagerFellesperiodeTilSøker(
         antallDagerFellesperiode,
         valgtFordeling,
         antallUkerFellesperiodeTilSøker,
@@ -110,7 +110,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
 
     return (
         <VStack gap="5">
-            <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} navnAnnenForelder={navnAnnenForelder} />
+            <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
                 <NumericField
                     className={bem.element('textInput')}

@@ -10,12 +10,10 @@ import { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
 
 interface Props {
     dagerMedFellesperiode: number;
-    navnAnnenForelder: string;
 }
 
-const FordelingValg: React.FunctionComponent<Props> = ({ dagerMedFellesperiode, navnAnnenForelder }) => {
+const FordelingValg: React.FunctionComponent<Props> = ({ dagerMedFellesperiode }) => {
     const intl = useIntl();
-    const likFordeling = getVarighetString(dagerMedFellesperiode / 2, intl);
     return (
         <RadioGroup
             name="fordelingValg"
@@ -24,19 +22,17 @@ const FordelingValg: React.FunctionComponent<Props> = ({ dagerMedFellesperiode, 
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.fordelingsvalg.måOppgis' }))]}
         >
             <Radio
-                value={FellesperiodeFordelingValg.LIKT}
+                value={FellesperiodeFordelingValg.ALT}
                 description={intl.formatMessage(
                     {
-                        id: 'fordeling.fordelingsvalg.option.likt.description',
+                        id: 'fordeling.fordelingsvalg.option.alt.description',
                     },
                     {
-                        ukerDeg: likFordeling,
-                        ukerAnnenForelder: likFordeling,
-                        navnAnnenForelder: navnAnnenForelder,
+                        ukerDeg: getVarighetString(dagerMedFellesperiode, intl),
                     },
                 )}
             >
-                <FormattedMessage id="fordeling.fordelingsvalg.option.likt" />
+                <FormattedMessage id="fordeling.fordelingsvalg.option.alt" />
             </Radio>
             <Radio
                 value={FellesperiodeFordelingValg.VIL_VELGE}
