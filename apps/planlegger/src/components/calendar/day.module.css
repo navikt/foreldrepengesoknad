@@ -12,7 +12,7 @@
     letter-spacing: 0.06px;
 }
 
-@media (max-width: 592px) {
+@media (max-width: 630px) {
     .days {
         height: 15px;
         padding: 2px 0px;

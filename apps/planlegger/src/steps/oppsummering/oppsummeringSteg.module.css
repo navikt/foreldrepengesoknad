@@ -22,17 +22,7 @@
 }
 
 .calendar {
-    padding: 24px;
-}
-
-@media (max-width: 687px) {
-    .calendar {
-        padding: 0px;
-    }
-}
-
-@media (max-width: 479px) {
-    .calendar {
-        padding: 0px;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
