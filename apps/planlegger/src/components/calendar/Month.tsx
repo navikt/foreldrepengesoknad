@@ -1,8 +1,11 @@
 import dayjs from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek';
 
 import { Box, HGrid, Heading } from '@navikt/ds-react';
 
 import styles from './month.module.css';
+
+dayjs.extend(isoWeek);
 
 type Props = {
     year: number;

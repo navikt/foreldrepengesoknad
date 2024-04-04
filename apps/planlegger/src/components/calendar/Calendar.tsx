@@ -1,10 +1,13 @@
 import dayjs, { Dayjs } from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek';
 import { FunctionComponent } from 'react';
 
-import { HStack, VStack } from '@navikt/ds-react';
+import { HStack } from '@navikt/ds-react';
 
 import Day, { DayColor, DayType } from './Day';
 import Month from './Month';
+
+dayjs.extend(isoWeek);
 
 export type Period = {
     fom: string;
@@ -102,29 +105,25 @@ const Calendar: FunctionComponent<Props> = ({ periods }) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
 
     return (
-        <VStack gap="5">
-            <HStack gap="10">
-                {months.map((monthData, index) => (
-                    <Month
-                        key={monthData.year + '-' + monthData.month}
-                        year={monthData.year}
-                        month={monthData.month}
-                        showYear={index > 0 && months[index - 1].year !== monthData.year}
-                    >
-                        {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map(
-                            (day) => (
-                                <Day
-                                    key={monthData.year + monthData.month + day}
-                                    day={day + 1}
-                                    dayColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
-                                    dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
-                                />
-                            ),
-                        )}
-                    </Month>
-                ))}
-            </HStack>
-        </VStack>
+        <HStack justify="space-evenly" gap={{ sm: '0', md: '8' }}>
+            {months.map((monthData, index) => (
+                <Month
+                    key={monthData.year + '-' + monthData.month}
+                    year={monthData.year}
+                    month={monthData.month}
+                    showYear={index > 0 && months[index - 1].year !== monthData.year}
+                >
+                    {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map((day) => (
+                        <Day
+                            key={monthData.year + monthData.month + day}
+                            day={day + 1}
+                            dayColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
+                            dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
+                        />
+                    ))}
+                </Month>
+            ))}
+        </HStack>
     );
 };
 

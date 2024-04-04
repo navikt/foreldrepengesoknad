@@ -298,7 +298,9 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </HStack>
                         </div>
                     </VStack>
-                    <Calendar periods={uttaksperioder} />
+                    <div className={styles.calendar}>
+                        <Calendar periods={uttaksperioder} />
+                    </div>
                     <VStack gap="5">
                         <OmÅTilpassePlanen />
                         <UforutsetteEndringer />
