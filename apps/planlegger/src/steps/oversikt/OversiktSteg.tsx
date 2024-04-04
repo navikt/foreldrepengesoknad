@@ -179,7 +179,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         hvemHarRett !== 'kunMorHarRett' && (
                             <Select
                                 label={<FormattedMessage id="oversikt.fellesperiodefordeling" />}
-                                name="fellesperiodefordeling"
+                                name="antallUkerSøker1"
                                 onChange={(e) => {
                                     lagreFordeling({ antallUkerSøker1: e.target.value });
                                 }}
