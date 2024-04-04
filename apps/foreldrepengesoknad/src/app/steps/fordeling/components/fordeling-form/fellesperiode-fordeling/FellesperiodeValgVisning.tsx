@@ -54,7 +54,11 @@ const FellesperiodeValgVisning: React.FunctionComponent<Props> = ({
                                     width: `${width}%`,
                                 }}
                             >
-                                <FormattedMessage id={infoTekstId} values={{ varighetString }} />
+                                {fordeling.antallDager <= 10 ? (
+                                    varighetString
+                                ) : (
+                                    <FormattedMessage id={infoTekstId} values={{ varighetString }} />
+                                )}
                             </div>
                         );
                     })}
