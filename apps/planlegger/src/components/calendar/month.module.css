@@ -3,14 +3,7 @@
     width: 170px;
 }
 
-@media (max-width: 592px) {
-    .box {
-        padding-top: 2px;
-        width: 130px;
-    }
-}
-
-@media (max-width: 560px) {
+@media (max-width: 630px) {
     .box {
         padding-top: 2px;
         width: 120px;

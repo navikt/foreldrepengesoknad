@@ -24,9 +24,12 @@
 
 .calendar {
     padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-@media (max-width: 687px) {
+@media (max-width: 768px) {
     .calendar {
         padding: 0px;
     }

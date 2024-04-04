@@ -2,10 +2,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { FunctionComponent } from 'react';
 
-import { HStack } from '@navikt/ds-react';
+import { HGrid } from '@navikt/ds-react';
 
 import Day, { DayColor, DayType } from './Day';
 import Month from './Month';
+import styles from './calendar.module.css';
 
 dayjs.extend(isoWeek);
 
@@ -99,13 +100,17 @@ const findMonths = (firstDate: string, lastDate: string): Array<{ month: number;
 
 interface Props {
     periods: Period[];
+    useSmallerWidth?: boolean;
 }
 
-const Calendar: FunctionComponent<Props> = ({ periods }) => {
+const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
 
     return (
-        <HStack justify="space-evenly" gap={{ sm: '0', md: '8' }}>
+        <HGrid
+            gap={{ xs: '1', sm: '4', md: '8' }}
+            className={useSmallerWidth ? styles.gridColumnsSmall : styles.gridColumnsWide}
+        >
             {months.map((monthData, index) => (
                 <Month
                     key={monthData.year + '-' + monthData.month}
@@ -123,7 +128,7 @@ const Calendar: FunctionComponent<Props> = ({ periods }) => {
                     ))}
                 </Month>
             ))}
-        </HStack>
+        </HGrid>
     );
 };
 
