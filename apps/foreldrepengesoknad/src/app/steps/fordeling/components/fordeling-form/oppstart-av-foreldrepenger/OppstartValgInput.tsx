@@ -31,7 +31,10 @@ const getOppstartsvalgFarFødsel = (
     førsteDagEtterAnnenForelder: Date | undefined,
 ): OppstartValg[] => {
     const radioOptions = [] as OppstartValg[];
-    if (andreAugust2022ReglerGjelder(familiehendelsesDato)) {
+    const erFødselsdatoOverTreMånederTilbakeITid = dayjs(familiehendelsesDato).isBefore(
+        dayjs().startOf('month').subtract(3, 'months').toDate(),
+    );
+    if (andreAugust2022ReglerGjelder(familiehendelsesDato) && !erFødselsdatoOverTreMånederTilbakeITid) {
         radioOptions.push(OppstartValg.FAMILIEHENDELSESDATO);
     }
     if (førsteDagEtterAnnenForelder) {
