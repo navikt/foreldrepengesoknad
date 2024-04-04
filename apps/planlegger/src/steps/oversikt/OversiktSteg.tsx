@@ -135,7 +135,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         barnet,
         hvemPlanlegger,
         arbeidssituasjon,
-        fordeling?.antallUkerSøker1,
+        antallUkerFellesperiodeSøker1,
     );
 
     return (
@@ -174,7 +174,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </ToggleGroup.Item>
                     </ToggleGroup>
                     {!erAleneforsørger &&
-                        fordeling?.antallUkerSøker1 &&
+                        antallUkerFellesperiodeSøker1 &&
                         hvemHarRett !== 'kunFarHarRett' &&
                         hvemHarRett !== 'kunMorHarRett' && (
                             <Select
