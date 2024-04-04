@@ -4,6 +4,7 @@ import { IntlShape } from 'react-intl';
 
 import { Barn, intlUtils, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkerBarn } from '@navikt/fp-types';
 
 dayjs.extend(utc);
@@ -21,7 +22,7 @@ export const getFamiliehendelsedato = (barn: Barn): string => {
 
 export const getFamiliehendelsedatoDate = (barn: Barn): Date => {
     const familiehendelse = getFamiliehendelsedato(barn);
-    return dayjs(familiehendelse).toDate();
+    return ISOStringToDate(familiehendelse)!;
 };
 
 const barnFødselsdatoLikSakFødselsdato = (
