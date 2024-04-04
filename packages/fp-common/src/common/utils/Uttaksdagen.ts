@@ -101,7 +101,7 @@ function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
             uttaksdageteller++;
         }
     }
-    return dayjs(nyDato).startOf('day').toDate();
+    return nyDato;
 }
 
 /**
@@ -126,7 +126,7 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
             uttaksdageteller++;
         }
     }
-    return dayjs(nyDato).startOf('day').toDate();
+    return nyDato;
 }
 
 /**
