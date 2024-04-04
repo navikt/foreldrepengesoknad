@@ -21,7 +21,7 @@ import OppgittInformasjon from './OppgittInformasjon';
 import OppsummeringHeader from './OppsummeringHeader';
 import HvaSkjerNårIkon from './ikoner/HvaSkjerNårIkon';
 import HvorMyeIkon from './ikoner/HvorMyeIkon';
-import styles from './oppsummering.module.css';
+import styles from './oppsummeringSteg.module.css';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
@@ -135,7 +135,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             </ExpansionCard.Title>
                                         </HStack>
                                     </ExpansionCard.Header>
-                                    <ExpansionCard.Content>
+                                    <ExpansionCard.Content className={styles.calendar}>
                                         <Calendar periods={uttaksperioder} />
                                     </ExpansionCard.Content>
                                 </ExpansionCard>

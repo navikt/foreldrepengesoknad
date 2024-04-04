@@ -1,5 +1,18 @@
 .box {
-    padding: 5px;
+    padding-top: 20px;
     width: 170px;
-    margin: 8px;
+}
+
+@media (max-width: 592px) {
+    .box {
+        padding-top: 2px;
+        width: 130px;
+    }
+}
+
+@media (max-width: 560px) {
+    .box {
+        padding-top: 2px;
+        width: 120px;
+    }
 }

@@ -21,3 +21,21 @@
     padding: 10px;
     width: fit-content;
 }
+
+.calendar {
+    padding: 24px;
+}
+
+@media (max-width: 687px) {
+    .calendar {
+        padding: 0px;
+    }
+}
+
+@media (max-width: 479px) {
+    .calendar {
+        padding: 0px;
+        margin-left: -32px;
+        margin-right: -32px;
+    }
+}
