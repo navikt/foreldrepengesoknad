@@ -7,7 +7,7 @@ const meta = {
     title: 'components/Calendar',
     component: Calendar,
     render: (args) => (
-        <div style={{ maxWidth: '800px' }}>
+        <div style={{ maxWidth: '704px' }}>
             <Calendar {...args} />
         </div>
     ),
