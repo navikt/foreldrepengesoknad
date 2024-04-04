@@ -17,7 +17,7 @@
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.4.2",
-        "@types/react": "^18.2.73",
+        "@types/react": "^18.2.74",
         "tsconfig": "workspace:*",
         "typescript": "^5.4.3"
     }
