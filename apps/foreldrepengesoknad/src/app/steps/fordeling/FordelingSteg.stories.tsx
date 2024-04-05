@@ -55,7 +55,7 @@ const vedtakMor = {
     perioder: [
         {
             fom: '2024-07-07',
-            tom: '2024-07-27',
+            tom: '2024-07-24',
             kontoType: 'FEDREKVOTE',
             overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
             resultat: {
@@ -67,7 +67,7 @@ const vedtakMor = {
         },
         {
             fom: '2024-08-11',
-            tom: '2024-08-30',
+            tom: '2024-08-12',
             kontoType: 'FELLESPERIODE',
             resultat: {
                 innvilget: true,
@@ -482,12 +482,16 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
         },
         barnet: {
             type: BarnType.ADOPTERT_ANNET_BARN,
-            fødselsdatoer: ['2022-08-21'],
+            fødselsdatoer: ['2021-08-21'],
             antallBarn: 4,
-            adopsjonsdato: '2021-08-21',
+            adopsjonsdato: '2021-08-23',
         },
         annenForelder: {
-            kanIkkeOppgis: true,
+            fornavn: 'Hanne',
+            etternavn: 'Utvikler',
+            erAleneOmOmsorg: true,
+            datoForAleneomsorg: '2024-01-21',
+            kanIkkeOppgis: false,
         },
         stønadskonto100: {
             kontoer: {
@@ -779,7 +783,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
         },
         barnet: {
             type: BarnType.FØDT,
-            antallBarn: 4,
+            antallBarn: 1,
             fødselsdatoer: ['2024-02-21'],
             termindato: '2024-05-21',
         },
@@ -896,7 +900,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
             antallBarn: 3,
             fødselsdatoer: ['2021-02-21'],
             adopsjonsdato: '2021-02-21',
-            ankomstdato: '2021-02-21',
+            ankomstdato: '2021-05-21',
         },
         annenForelder: {
             fornavn: 'Hans',
@@ -926,7 +930,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
 
 export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
     args: {
-        søker: søkerInfoMann,
+        søker: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -937,7 +941,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
             termindato: '2024-07-21',
         },
         annenForelder: {
-            fornavn: 'Hanne',
+            fornavn: 'Hans',
             etternavn: 'Utvikler',
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
@@ -1025,12 +1029,10 @@ export const BareMorHarRettTermin: Story = {
         },
         stønadskonto100: {
             kontoer: {
-                MØDREKVOTE: 95,
-                FEDREKVOTE: 95,
-                FELLESPERIODE: 90,
+                FORELDREPENGER: 230,
             },
             minsteretter: {
-                farRundtFødsel: 0,
+                farRundtFødsel: 15,
                 generellMinsterett: 0,
                 toTette: 0,
             },
@@ -1170,82 +1172,11 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
         stønadskonto100: {
             kontoer: {
                 FORELDREPENGER: 285,
+                FLERBARNSDAGER: 85,
             },
             minsteretter: {
-                generellMinsterett: 75,
+                generellMinsterett: 0,
                 farRundtFødsel: 0,
-                toTette: 0,
-            },
-        },
-        stønadskonto80: undefined,
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    },
-};
-
-export const BareFarHarRettTvillingerFødtFørWLB: Story = {
-    args: {
-        søker: søkerInfoMann,
-        søkersituasjon: {
-            situasjon: 'fødsel',
-            rolle: 'far',
-        },
-        barnet: {
-            type: BarnType.FØDT,
-            antallBarn: 3,
-            fødselsdatoer: ['2022-07-21'],
-            termindato: '2022-07-21',
-        },
-        annenForelder: {
-            fornavn: 'Hanne',
-            etternavn: 'Utvikler',
-            fnr: '1212121313',
-            harRettPåForeldrepengerINorge: false,
-            kanIkkeOppgis: false,
-            erMorUfør: true,
-        },
-        stønadskonto100: {
-            kontoer: {
-                FORELDREPENGER: 285,
-            },
-            minsteretter: {
-                generellMinsterett: 75,
-                farRundtFødsel: 0,
-                toTette: 0,
-            },
-        },
-        stønadskonto80: undefined,
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-    },
-};
-
-export const BareFarHarRettPrematurFødsel: Story = {
-    args: {
-        søker: søkerInfoMann,
-        søkersituasjon: {
-            situasjon: 'fødsel',
-            rolle: 'far',
-        },
-        barnet: {
-            type: BarnType.FØDT,
-            antallBarn: 1,
-            fødselsdatoer: ['2024-01-21'],
-            termindato: '2024-04-21',
-        },
-        annenForelder: {
-            fornavn: 'Hanne',
-            etternavn: 'Utvikler',
-            fnr: '1212121313',
-            harRettPåForeldrepengerINorge: false,
-            kanIkkeOppgis: false,
-            erMorUfør: false,
-        },
-        stønadskonto100: {
-            kontoer: {
-                FORELDREPENGER: 371,
-            },
-            minsteretter: {
-                generellMinsterett: 85,
-                farRundtFødsel: 10,
                 toTette: 0,
             },
         },

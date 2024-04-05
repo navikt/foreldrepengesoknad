@@ -22,6 +22,19 @@ const {
     MorDeltUttakTvillingerFødt,
     MorDeltUttakFarSøkteMorsKvoteOgFellesperiode,
     FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021,
+    FarMedmorSøkerDeltUttakTrillingerFødtFørWLB,
+    FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB,
+    FarMedmorSøkerDeltUttakEttBarnFødtPrematurt,
+    FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode,
+    MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80,
+    MorSøkerFarHarRettIEØSTerminDekningsgrad80,
+    FarMedmorSøkerMorHarRettIEØSAdopsjon,
+    BareMorHarRettTermin,
+    BareMorHarRettAdopsjon,
+    BareFarHarRettOgMorErUførTermin4Barn,
+    BareFarHarRettOgMorErIkkeUførFødtBarn,
+    BareFarHarRettTvillingerFødtFør1Okt2021,
+    BareFarHarRettAdopsjonMorErUfør,
 } = composeStories(stories);
 
 describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
@@ -1049,3 +1062,491 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
     // });
 });
 //
+
+describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022', async () => {
+        render(
+            <FarMedmorSøkerDeltUttakTrillingerFødtFørWLB
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Fødsel')).toBeInTheDocument();
+        expect(screen.getByText('Hannes del')).toBeInTheDocument();
+        expect(screen.getByText('Din del')).toBeInTheDocument();
+
+        expect(screen.getByText('15 + 3 uker til Hanne')).toBeInTheDocument();
+        expect(screen.getByText('74 uker kan deles, fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('15 uker til deg')).toBeInTheDocument();
+
+        expect(
+            screen.getByText(
+                'Dere kan velge om dere vil ha foreldrepenger samtidig i opp til 46 uker fordi dere har fått trillinger. ',
+                {
+                    exact: false,
+                },
+            ),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument(); //TODO: Er det riktig tekst som ikke skal være der?
+    });
+
+    it('skal ikke kunne begynne uttaket før fødsel', async () => {
+        const utils = render(
+            <FarMedmorSøkerDeltUttakTrillingerFødtFørWLB
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
+        await userEvent.type(oppstart, dayjs('2022-07-20').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(oppstart);
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.07.2022.')).toHaveLength(2);
+    });
+});
+
+describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022', async () => {
+        render(
+            <FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('15 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
+        expect(
+            screen.getByText('kan brukes i perioden rundt fødsel, samtidig med Hanne.', { exact: false }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Ofte får fedre permisjon dekket de første to ukene rundt fødsel fra arbeidsgiveren sin.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Fra termindato')).toBeInTheDocument();
+        expect(
+            screen.getByText('Jeg vil ha to uker med foreldrepenger som starter på termindato.', { exact: false }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+    });
+
+    it('skal ikke kunne begynne uttaket før 2 uker før termin', async () => {
+        const utils = render(
+            <FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-07-05').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(oppstart);
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.07.2024.')).toHaveLength(2);
+    });
+});
+
+describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til far med delt uttak der barnet er født prematurt', async () => {
+        render(
+            <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('20 uker kan deles, fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('12 uker og 4 dager av disse', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText('er lagt til i fellesperioden fordi barnet ble født før svangerskapsuke 33.', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
+        expect(
+            screen.getByText('kan brukes i perioden rundt fødsel, samtidig med Hanne.', { exact: false }),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('flerbarnsuker')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Ofte får fedre permisjon dekket de første to ukene rundt fødsel fra arbeidsgiveren sin.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
+        expect(
+            screen.getByText('Jeg vil ha to uker med foreldrepenger som starter fra datoen barnet ble født.', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+    });
+
+    it('skal ikke kunne begynne uttaket før fødselsdato', async () => {
+        const utils = render(
+            <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-02-20').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(oppstart);
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
+    });
+});
+
+describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til far søker etter mor og mor har tatt ut deler av fellesperiode og hans kvote', async () => {
+        render(
+            <FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('15 + 3 uker til Hanne')).toBeInTheDocument();
+        expect(screen.getByText('16 uker kan deles, fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('1 dag', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'er allerede brukt av Hanne. Dette kan endres. Det gjenstår 15 uker og 4 dager som kan brukes av deg eller Hanne.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText('15 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('2 uker og 3 dager', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText('er allerede brukt av Hanne fordi du er enten syk eller innlagt i helseinstitusjon.', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).toBeInTheDocument();
+        expect(screen.getByText('Fra Hanne sin søknad.')).toBeInTheDocument();
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
+        expect(screen.getByText('Første dag etter Hanne, 13. august 2024')).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+    });
+});
+describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktige oppstartsvalg til mor som søker adopsjon for tre barn adoptert fra utlandet før 1 okt 2021', async () => {
+        render(
+            <MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('På omsorgsovertakelsen, 21. februar 2021')).toBeInTheDocument();
+        expect(screen.getByText('På ankomstdagen til Norge, 21. mai 2021')).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+    });
+});
+
+describe('Fordeling - MorSøkerFarHarRettIEØSTerminDekningsgrad80', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig EØS informasjon til mor som søker med far som har rett i EØS, dekningsgrad 80', async () => {
+        render(
+            <MorSøkerFarHarRettIEØSTerminDekningsgrad80
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('19 + 3 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText("18 uker som påvirkes av Hans' foreldrepenger")).toBeInTheDocument();
+        expect(
+            screen.getByText('Når Hans skal ha dager fra denne perioden, må du være i aktivitet.', { exact: false }),
+        );
+        expect(
+            screen.getByText('Hvis Hans bruker mer enn 19 uker med foreldrepenger i et annet EØS land', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+    });
+});
+
+describe('Fordeling - FarMedmorSøkerMorHarRettIEØSAdopsjon', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig EØS informasjon til far som søker på adopsjon og med mor som har rett i EØS', async () => {
+        render(
+            <FarMedmorSøkerMorHarRettIEØSAdopsjon
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('19 uker til deg')).toBeInTheDocument();
+        expect(
+            screen.getByText('kan brukes når som helst innen tre år etter omsorgsovertakelsen.', { exact: false }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('18 uker som påvirkes av Hannes foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText('Når du skal ha dager fra denne perioden, må Hanne være i aktivitet.', { exact: false }),
+        );
+        expect(
+            screen.getByText('Hvis Hanne bruker mer enn 19 uker med foreldrepenger i et annet EØS land', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+    });
+});
+describe('Fordeling - BareMorHarRettTermin', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til mor søker på termin, kun mor har rett', async () => {
+        render(
+            <BareMorHarRettTermin
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('43 + 3 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('6 uker')).toBeInTheDocument();
+        expect(screen.getByText('er satt av til rett etter fødsel.', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText('40 uker')).toBeInTheDocument();
+        expect(screen.getByText('kan brukes når som helst før barnet fyller 3 år.')).toBeInTheDocument();
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Tre uker før termin')).toBeInTheDocument();
+        expect(screen.getByText('Du vil ha permisjon med foreldrepenger fra 01. juli 2024.')).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+    });
+});
+describe('Fordeling - BareMorHarRettAdopsjon', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til mor søker på adopsjon, kun mor har rett', async () => {
+        render(
+            <BareMorHarRettAdopsjon
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('46 uker til deg')).toBeInTheDocument();
+        expect(
+            screen.getByText('kan brukes når som helst innen tre år etter omsorgsovertakelsen.', { exact: false }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('På omsorgsovertakelsen, 21. august 2022')).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+        expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
+        expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+        ).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis dere har foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
+        ).not.toBeInTheDocument();
+    });
+});
+describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til far søker på termin, kun far har rett, mor er ufør, fire barn', async () => {
+        render(
+            <BareFarHarRettOgMorErUførTermin4Barn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('106 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('75 uker', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText('kan brukes av deg uten krav til Hannes aktivitet.', { exact: false }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('31 uker', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText('kan brukes av deg hvis Hanne er i aktivitet.', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText('Hvis Hanne ikke er i aktivitet, vil du tape dager.', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Fra termindato')).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+        expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
+        expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barna blir født før svangerskapsuke 33')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+        ).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis dere har foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
+        ).not.toBeInTheDocument();
+    });
+});
+
+describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til far søker på fødsel, kun far har rett, mor er ikke ufør, ett barn', async () => {
+        render(
+            <BareFarHarRettOgMorErIkkeUførFødtBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('50 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('8 uker')).toBeInTheDocument();
+        expect(
+            screen.getByText('kan brukes av deg uten krav til Hannes aktivitet.', { exact: false }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('42 uker')).toBeInTheDocument();
+        expect(screen.getByText('kan brukes av deg hvis Hanne er i aktivitet.', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText('Hvis Hanne ikke er i aktivitet, vil du tape dager.', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+    });
+    it('kan ikke starte tidligere enn 2 uker før fødsel', async () => {
+        const utils = render(
+            <BareFarHarRettOgMorErIkkeUførFødtBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-01-05').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.01.2024.')).toHaveLength(2);
+    });
+});
+
+describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til far, kun far har rett, tvillinger født før 1 okt 2021', async () => {
+        render(
+            <BareFarHarRettTvillingerFødtFør1Okt2021
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('57 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('kan brukes av deg hvis Hanne er i aktivitet.', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.queryByText('kan brukes av deg uten krav til Hannes aktivitet.', { exact: false }),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+    });
+    it('kan ikke starte tidligere enn to uker før fødsel', async () => {
+        const utils = render(
+            <BareFarHarRettOgMorErIkkeUførFødtBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-01-05').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.01.2024.')).toHaveLength(2);
+    });
+});
+describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise riktig informasjon til far, kun far har rett, tvillinger født før 1 okt 2021', async () => {
+        render(
+            <BareFarHarRettAdopsjonMorErUfør
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('40 uker til deg')).toBeInTheDocument();
+        expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('På omsorgsovertakelsen, 21. februar 2024')).toBeInTheDocument();
+        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+    });
+
+    it('kan ikke starte tidligere enn adopsjonsdatoen', async () => {
+        const utils = render(
+            <BareFarHarRettAdopsjonMorErUfør
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-02-20').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
+    });
+});
