@@ -281,6 +281,38 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
     });
+    it('kan ikke angi for sen oppstartsdato', async () => {
+        const utils = render(
+            <MorAleneomsorgEttBarnPrematurFødsel
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
+        await userEvent.type(oppstart, dayjs('2023-09-22').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.09.2023.')).toHaveLength(2);
+    });
+    it('kan ikke angi for tidlig oppstartsdato', async () => {
+        const utils = render(
+            <MorAleneomsorgEttBarnPrematurFødsel
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
+        await userEvent.type(oppstart, dayjs('2023-09-20').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.09.2023.')).toHaveLength(2);
+    });
 });
 
 describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
@@ -316,6 +348,40 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
     });
+    it('skal ikke kunne starte før adopsjonsdatoen', async () => {
+        const utils = render(
+            <MorAleneomsorgAdopsjonTrillinger
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-02-20').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
+    });
+    // it('skal ikke kunne starte etter 3 år etter adopsjonsdatoen', async () => {
+    //     const utils = render(
+    //         <MorAleneomsorgAdopsjonTrillinger
+    //             gåTilNesteSide={gåTilNesteSide}
+    //             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+    //         />,
+    //     );
+    //     expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+    //     await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+    //     const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+    //     await userEvent.type(oppstart, dayjs('2027-02-22').format('DD.MM.YYYY'));
+    //     fireEvent.blur(oppstart);
+
+    //     await userEvent.click(screen.getByText('Neste steg'));
+    //     expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+    //     expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 19.02.2027.')).toHaveLength(2);
+    // });
 });
 
 describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
@@ -346,6 +412,23 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
         await userEvent.click(screen.getByText('På datoen jeg ble alene om omsorgen, 23. september 2023'));
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+    });
+    it('skal ikke kunne starte før datoen for alenomsorg', async () => {
+        const utils = render(
+            <FarMedmorAleneomsorgFødtTvillinger
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2023-09-22').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 25.09.2023.')).toHaveLength(2);
     });
 });
 
@@ -466,7 +549,7 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
-    it('skal vise riktig informasjon til far med aleneomsorg der barnet er født prematurt', async () => {
+    it('skal vise riktig informasjon til far med aleneomsorg der barna er adopterte', async () => {
         render(
             <FarMedmorAleneomsorgAdopsjonFireBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -482,6 +565,23 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
                 'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
             ),
         ).toBeInTheDocument();
+    });
+    it('skal ikke kunne starte foreldrepengene før adopsjonsdatoen', async () => {
+        const utils = render(
+            <FarMedmorAleneomsorgAdopsjonFireBarn
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2021-08-20').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 23.08.2021.')).toHaveLength(2);
     });
 });
 
@@ -729,16 +829,75 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
                 'Når du ikke starter foreldrepengerperioden 3 uker før termindato, mister du rett til foreldrepenger disse dagene. Hvis du starter tidligere enn 3 uker før, vil du bruke fra fellesperioden.',
             ),
         ).toBeInTheDocument();
-        // await userEvent.type(oppstart, dayjs('2024-06-20').format(DDMMYYYY_DATE_FORMAT));
-        // fireEvent.blur(oppstart);
-        // expect(await screen.findByText('1 dag før termin.')).toBeInTheDocument();
-        // expect(screen.getByText('Du mister 2 uker og 4 dager.')).toBeInTheDocument();
-        // await userEvent.type(oppstart, dayjs('2024-05-23').format(DDMMYYYY_DATE_FORMAT));
-        // fireEvent.blur(oppstart);
-        // expect(await screen.findByText('4 uker og 1 dag før termin.')).toBeInTheDocument();
-        // expect(screen.getByText('1 uke og 1 dag tas fra felelsperioden.')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+    });
+    it('skal vise riktig informasjon til mor ønsker å starte dagen før termin', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnTermin
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.type(oppstart, dayjs('2024-06-20').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(oppstart);
+        expect(await screen.findByText('1 dag før termin.')).toBeInTheDocument();
+        expect(screen.getByText('Du mister 2 uker og 4 dager.')).toBeInTheDocument();
+    });
+    it('skal vise riktig informasjon til mor skal bruke 1 dag av fellesperioden', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnTermin
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-05-30').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(oppstart);
+        expect(await screen.findByText('3 uker og 1 dag før termin.')).toBeInTheDocument();
+        expect(screen.getByText('1 dag tas fra fellesperioden.')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+    });
+    it('kan ikke angi for sen oppstartsdato', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnTermin
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-06-22').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.06.2024.')).toHaveLength(2);
+    });
+    it('kan ikke angi for tidlig oppstartsdato', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnTermin
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
+        const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
+        await userEvent.type(oppstart, dayjs('2024-03-28').format('DD.MM.YYYY'));
+        fireEvent.blur(oppstart);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 29.03.2024.')).toHaveLength(2);
     });
 });
 
@@ -858,5 +1017,35 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
             screen.getByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
         ).toBeInTheDocument();
     });
+
+    it('skal ikke kunne begynne uttaket før fødsel', async () => {
+        const utils = render(
+            <FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
+        await userEvent.type(oppstart, dayjs('2021-07-20').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(oppstart);
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.07.2021.')).toHaveLength(2);
+    });
+
+    // it('skal ikke kunne begynne uttaket etter tre år etter fødsel', async () => {
+    //     const utils = render(
+    //         <FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021
+    //             gåTilNesteSide={gåTilNesteSide}
+    //             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+    //         />,
+    //     );
+    //     expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+    //     const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
+    //     await userEvent.type(oppstart, dayjs('2024-07-22').format(DDMMYYYY_DATE_FORMAT));
+    //     fireEvent.blur(oppstart);
+    //     await userEvent.click(screen.getByText('Neste steg'));
+    //     expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.07.2024.')).toHaveLength(2);
+    // });
 });
 //
