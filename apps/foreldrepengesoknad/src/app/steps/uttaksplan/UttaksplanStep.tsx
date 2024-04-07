@@ -1,5 +1,10 @@
-import { Uttaksplan, getHarAktivitetskravIPeriodeUtenUttak, kreverUttaksplanVedlegg } from '@navikt/uttaksplan';
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+import {
+    Uttaksplan,
+    finnOgSettInnHull,
+    getHarAktivitetskravIPeriodeUtenUttak,
+    kreverUttaksplanVedlegg,
+    settInnAnnenPartsUttak,
+} from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -63,7 +68,6 @@ import {
 import useDebounce from 'app/utils/hooks/useDebounce';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
-import { lagUttaksplanForslag } from 'app/utils/uttaksplan/lagUttaksplanForslag';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
@@ -73,6 +77,7 @@ import {
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
+import { lagUttaksplanForslag } from './lagUttaksplanForslag';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];

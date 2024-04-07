@@ -1,11 +1,12 @@
-import { getVarighetString } from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
-import { getBrukteDager } from '@navikt/uttaksplan/src/utils/brukteDagerUtils';
+import { getBrukteDager } from '@navikt/uttaksplan/';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import {
+    AnnenForelder,
     Barn,
     Forelder,
+    NavnPåForeldre,
     Periode,
     StønadskontoType,
     TilgjengeligStønadskonto,
@@ -18,7 +19,9 @@ import {
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
     getNavnGenitivEierform,
+    getVarighetString,
     isAdoptertBarn,
+    isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
     isInfoPeriode,
@@ -32,6 +35,7 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
 import { TilgjengeligeMinsterettskontoer } from 'app/types/TilgjengeligeStønadskontoerDTO';
+import { getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
@@ -630,13 +634,16 @@ export const getFordelingFraKontoer = (
     minsteretter: TilgjengeligeMinsterettskontoer,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
-    erAleneomsorg: boolean,
-    navnMor: string,
-    navnFar: string,
+    navnPåForeldre: NavnPåForeldre,
+    annenForelder: AnnenForelder,
     intl: IntlShape,
-    annenPartHarKunRettIEØS?: boolean,
     uttaksplanAnnenPart?: Periode[],
 ): DelInformasjon[] => {
+    const navnMor = navnPåForeldre.mor;
+    const navnFarMedmor = navnPåForeldre.farMedmor;
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const annenPartHarKunRettIEØS = !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
+    const erAleneomsorg = getErAleneOmOmsorg(annenForelder);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const termindato = getTermindato(barn);
     const fødselsdato = getFødselsdato(barn);
@@ -655,13 +662,13 @@ export const getFordelingFraKontoer = (
         erFarEllerMedmor,
         familiehendelsesdato,
     );
-    const annenPartNavn = erFarEllerMedmor ? navnMor : navnFar;
+    const annenPartNavn = erFarEllerMedmor ? navnMor : navnFarMedmor;
     const skalViseMorsDel =
         dagerMødrekvote > 0 && ((erFarEllerMedmor && !annenPartHarKunRettIEØS) || !erFarEllerMedmor);
     const skalViseFarsDel =
         dagerFedrekvote > 0 && (erFarEllerMedmor || (!erFarEllerMedmor && !annenPartHarKunRettIEØS));
     const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
-    const farTekst = getFarTekst(erFarEllerMedmor, navnFar, intl);
+    const farTekst = getFarTekst(erFarEllerMedmor, navnFarMedmor, intl);
     if (skalViseMorsDel) {
         const dagerMorsKvoteBruktAvFar = erFarEllerMedmor
             ? undefined
@@ -682,7 +689,7 @@ export const getFordelingFraKontoer = (
             false,
             morTekst,
             intl,
-            navnFar,
+            navnFarMedmor,
             dagerMorsKvoteBruktAvFar,
         );
         fordelingsinformasjon.push(fordelingMor);

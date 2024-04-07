@@ -1,17 +1,18 @@
-import { getVarighetString } from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
+import { getVarighetString } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { getTekstForAntallBarn } from 'app/utils/barnUtils';
+
 import {
     getDegEllerMorTekst,
     getDinEllerFarGenitivEierformTekst,
     getHarFåttEllerSkalFå,
-} from 'app/steps/fordeling/components/fordeling-oversikt/fordelingOversiktUtils';
-import { getTekstForAntallBarn } from 'app/utils/barnUtils';
+} from './fordelingOversiktUtils';
 
 interface Props {
     flerbarnsDager: number;

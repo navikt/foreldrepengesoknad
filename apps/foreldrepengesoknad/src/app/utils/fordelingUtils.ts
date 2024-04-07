@@ -2,7 +2,7 @@ import {
     getFørsteUttaksdagAnkomstdatoNorge,
     getFørsteUttaksdagDatoForAleneomsorg,
     getFørsteUttaksdagForeldrepengerFørFødsel,
-} from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
+} from '@navikt/uttaksplan';
 
 import { Uttaksdagen } from '@navikt/fp-common';
 import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';

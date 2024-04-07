@@ -1,8 +1,9 @@
 import {
+    finnOgSettInnHull,
+    settInnAnnenPartsUttak,
     splittPeriodePåDato,
     splittUttaksperiodePåFamiliehendelsesdato,
-} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+} from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 
 import {

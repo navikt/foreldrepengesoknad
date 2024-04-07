@@ -18,13 +18,13 @@ import { ISOStringToDate } from '@navikt/fp-formik';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import FlerbarnsdagerInformasjon from 'app/steps/fordeling/components/fordeling-oversikt/Flerbarnsdagerinformasjon';
-import SammenhengendeUttakInformasjon from 'app/steps/fordeling/components/fordeling-oversikt/SammenhengendeUttakInformasjon';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
+import FlerbarnsdagerInformasjon from './Flerbarnsdagerinformasjon';
 import FordelingPåvirkninger from './FordelingPåvirkninger';
 import OversiktPerDel from './OversiktPerDel';
+import SammenhengendeUttakInformasjon from './SammenhengendeUttakInformasjon';
 import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
 import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 

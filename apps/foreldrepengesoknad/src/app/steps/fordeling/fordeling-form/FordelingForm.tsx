@@ -45,10 +45,12 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const fordelingAvForeldrepenger = useContextGetData(ContextDataType.FORDELING);
+
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterUttaksplanMetaData = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
+
+    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
 
     const formMethods = useForm<Fordeling>({

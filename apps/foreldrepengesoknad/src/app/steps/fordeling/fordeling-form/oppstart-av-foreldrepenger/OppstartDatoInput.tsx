@@ -1,4 +1,4 @@
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';

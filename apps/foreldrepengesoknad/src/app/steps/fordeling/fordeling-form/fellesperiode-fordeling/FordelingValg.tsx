@@ -1,8 +1,8 @@
-import { getVarighetString } from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio } from '@navikt/ds-react';
 
+import { getVarighetString } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 

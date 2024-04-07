@@ -1,14 +1,13 @@
-import { getVarighetString } from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
+import { getVarighetString, guid } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
-import DelGraf from 'app/steps/fordeling/components/fordeling-oversikt/grafer/del-graf/DelGraf';
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
 
+import DelGraf from '../../fordeling-oversikt/grafer/del-graf/DelGraf';
 import './fellesperiodeValgVisning.css';
 
 interface Props {

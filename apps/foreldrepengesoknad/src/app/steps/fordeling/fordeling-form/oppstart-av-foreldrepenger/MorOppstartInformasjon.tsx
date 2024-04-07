@@ -1,12 +1,11 @@
-import { getVarighetString } from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan/src/utils/uttaksdatoerUtils';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Tidsperioden, Uttaksdagen, getValidTidsperiode, isFødtBarn } from '@navikt/fp-common';
+import { Tidsperioden, Uttaksdagen, getValidTidsperiode, getVarighetString, isFødtBarn } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { bemUtils, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

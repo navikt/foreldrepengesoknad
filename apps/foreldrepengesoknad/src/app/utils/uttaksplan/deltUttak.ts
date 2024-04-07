@@ -1,7 +1,4 @@
-import {
-    splittPeriodePåDato,
-    splittUttaksperiodePåFamiliehendelsesdato,
-} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
+import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 
 import {

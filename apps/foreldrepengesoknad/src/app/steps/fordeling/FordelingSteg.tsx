@@ -8,7 +8,6 @@ import {
     Uttaksdagen,
     getAntallUkerFellesperiode,
     getNavnPåForeldre,
-    isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isFødtBarn,
 } from '@navikt/fp-common';
@@ -24,15 +23,9 @@ import getStønadskontoParams, {
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import FordelingOversikt from 'app/steps/fordeling/components/fordeling-oversikt/FordelingOversikt';
-import {
-    getFordelingFraKontoer,
-    getSisteUttaksdagAnnenForelder,
-} from 'app/steps/fordeling/components/fordeling-oversikt/fordelingOversiktUtils';
 import { RequestStatus } from 'app/types/RequestState';
 import {
     getAnnenPartVedtakParam,
-    getErAleneOmOmsorg,
     getIsDeltUttak,
     shouldSuspendAnnenPartVedtakApiRequest,
 } from 'app/utils/annenForelderUtils';
@@ -41,8 +34,10 @@ import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUt
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
 import { getValgtMinsterett, getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 
-import FordelingForm from './components/fordeling-form/FordelingForm';
-import MorsSisteDag from './components/mors-siste-dag/MorsSisteDag';
+import FordelingForm from './fordeling-form/FordelingForm';
+import FordelingOversikt from './fordeling-oversikt/FordelingOversikt';
+import { getFordelingFraKontoer, getSisteUttaksdagAnnenForelder } from './fordeling-oversikt/fordelingOversiktUtils';
+import MorsSisteDag from './mors-siste-dag/MorsSisteDag';
 
 type Props = {
     søker: Søker;
@@ -73,15 +68,12 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
     const { dekningsgrad } = periodeMedForeldrepenger;
-    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
     const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
     const navnMor = navnPåForeldre.mor;
     const navnFarMedmor = navnPåForeldre.farMedmor;
-    const annenForeldrerHarKunRettiEØS = !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
     const deltUttak = getIsDeltUttak(annenForelder);
-    const erAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
 
     const { data: annenPartsVedtak, requestStatus: statusAnnenPartVedtak } = useApiPostData(
         FpApiDataType.ANNEN_PART_VEDTAK,
@@ -142,11 +134,9 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
                   minsterett,
                   søkersituasjon,
                   barn,
-                  erAleneOmOmsorg,
-                  navnMor,
-                  navnFarMedmor,
+                  navnPåForeldre,
+                  annenForelder,
                   intl,
-                  annenForeldrerHarKunRettiEØS,
                   eksisterendeVedtakAnnenPart?.uttaksplan,
               )
             : [];

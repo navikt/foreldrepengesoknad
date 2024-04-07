@@ -3,8 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import { getNavnGenitivEierform } from '@navikt/fp-common';
-import { bemUtils } from '@navikt/fp-utils';
-import { formatDateMedUkedag } from '@navikt/fp-utils/src/dateUtils';
+import { bemUtils, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import './mors-siste-dag.css';
 
