@@ -1,9 +1,6 @@
 import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import dayjs from 'dayjs';
-
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './FordelingSteg.stories';
 
@@ -82,7 +79,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(screen.getAllByText('Du må oppgi dato når du vil starte dine foreldrepenger.')).toHaveLength(2);
 
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-08-31').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '31.08.2021');
         fireEvent.blur(oppstart);
         expect(screen.getByText('3 uker før fødsel.')).toBeInTheDocument();
         expect(screen.queryByText('Du mister', { exact: false })).not.toBeInTheDocument();
@@ -101,7 +98,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-09-21').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '21.09.2021');
         fireEvent.blur(oppstart);
         expect(screen.getByText('På fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
@@ -121,7 +118,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-07-15').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '15.07.2021');
         fireEvent.blur(oppstart);
         expect(screen.getByText('9 uker og 3 dager før fødsel.')).toBeInTheDocument();
         expect(screen.getByText('6 uker og 3 dager tas fra fellesperioden.')).toBeInTheDocument();
@@ -141,7 +138,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-08-30').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '30.08.2021');
         fireEvent.blur(oppstart);
         expect(screen.getByText('3 uker og 1 dag før fødsel.')).toBeInTheDocument();
         expect(screen.getByText('1 dag tas fra fellesperioden.')).toBeInTheDocument();
@@ -156,7 +153,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-09-01').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '01.09.2021');
         fireEvent.blur(oppstart);
         expect(screen.getByText('2 uker og 4 dager før fødsel.')).toBeInTheDocument();
         expect(screen.getByText('Du mister 1 dag.')).toBeInTheDocument();
@@ -171,7 +168,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-09-20').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '20.09.2021');
         fireEvent.blur(oppstart);
         expect(screen.getByText('1 dag før fødsel.')).toBeInTheDocument();
         expect(screen.getByText('Du mister 2 uker og 4 dager.')).toBeInTheDocument();
@@ -206,7 +203,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-09-22').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '22.09.2021');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -223,7 +220,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-06-28').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '28.06.2021');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -240,7 +237,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-07-03').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '03.07.2021');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -286,7 +283,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
         expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
         const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
 
-        await userEvent.type(oppstart, dayjs('2023-09-21').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '21.09.2023');
         fireEvent.blur(oppstart);
         expect(screen.getByText('På fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
@@ -303,7 +300,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
         );
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
-        await userEvent.type(oppstart, dayjs('2023-09-22').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '22.09.2023');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -319,7 +316,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
         );
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
-        await userEvent.type(oppstart, dayjs('2023-09-20').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '20.09.2023');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -371,7 +368,7 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-02-20').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '20.02.2024');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -388,7 +385,7 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
     //     expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
     //     await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
     //     const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-    //     await userEvent.type(oppstart, dayjs('2027-02-22').format('DD.MM.YYYY'));
+    //     await userEvent.type(oppstart, '22.02.2027);
     //     fireEvent.blur(oppstart);
 
     //     await userEvent.click(screen.getByText('Neste steg'));
@@ -436,7 +433,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2023-09-22').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '22.09.2023');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -589,7 +586,7 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2021-08-20').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '20.08.2021');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -653,7 +650,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
 
         await userEvent.click(screen.getByText('Jeg vil ha hele fellesperioden'));
         const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
-        await userEvent.type(oppstart, dayjs('2023-09-21').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '21.09.2023');
         expect(screen.getByText('På fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
         fireEvent.blur(oppstart);
@@ -833,7 +830,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-06-21').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '21.06.2024');
         fireEvent.blur(oppstart);
         expect(screen.getByText('På termindato')).toBeInTheDocument();
         expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
@@ -856,7 +853,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
         expect(screen.getByText('Fordeling av foreldrepenger')).toBeInTheDocument();
-        await userEvent.type(oppstart, dayjs('2024-06-20').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '20.06.2024');
         fireEvent.blur(oppstart);
         expect(screen.getByText('1 dag før termin.')).toBeInTheDocument();
         expect(screen.getByText('Du mister 2 uker og 4 dager.')).toBeInTheDocument();
@@ -871,7 +868,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-05-30').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '30.05.2024');
         fireEvent.blur(oppstart);
         expect(screen.getByText('3 uker og 1 dag før termin.')).toBeInTheDocument();
         expect(screen.getByText('1 dag tas fra fellesperioden.')).toBeInTheDocument();
@@ -888,7 +885,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-06-22').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '22.06.2024');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -905,7 +902,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-03-28').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '28.03.2024');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -1040,7 +1037,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
         );
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
-        await userEvent.type(oppstart, dayjs('2021-07-20').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '20.07.2021');
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.07.2021.')).toHaveLength(2);
@@ -1055,7 +1052,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
     //     );
     //     expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
     //     const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
-    //     await userEvent.type(oppstart, dayjs('2024-07-22').format(DDMMYYYY_DATE_FORMAT));
+    //     await userEvent.type(oppstart, '22.07.2024');
     //     fireEvent.blur(oppstart);
     //     await userEvent.click(screen.getByText('Neste steg'));
     //     expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.07.2024.')).toHaveLength(2);
@@ -1105,7 +1102,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
         );
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         const oppstart = utils.getByLabelText('Når vil du starte din periode med foreldrepenger?');
-        await userEvent.type(oppstart, dayjs('2022-07-20').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '20.07.2022');
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.07.2022.')).toHaveLength(2);
@@ -1153,7 +1150,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-07-05').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '05.07.2024');
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.07.2024.')).toHaveLength(2);
@@ -1211,7 +1208,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-02-20').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(oppstart, '20.02.2024');
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
@@ -1464,7 +1461,7 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-01-05').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '05.01.2024');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -1507,7 +1504,7 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-01-05').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '05.01.2024');
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
@@ -1542,7 +1539,7 @@ describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = utils.getByLabelText('Dato jeg vil starte mine foreldrepenger:');
-        await userEvent.type(oppstart, dayjs('2024-02-20').format('DD.MM.YYYY'));
+        await userEvent.type(oppstart, '20.02.2024');
         fireEvent.blur(oppstart);
 
         await userEvent.click(screen.getByText('Neste steg'));
