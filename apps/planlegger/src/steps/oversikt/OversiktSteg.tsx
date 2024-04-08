@@ -113,6 +113,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = finnUttaksdata(
         hvemHarRett,
+        hvemPlanlegger,
         valgtStønadskonto,
         barnet,
         antallUkerFellesperiodeSøker1,

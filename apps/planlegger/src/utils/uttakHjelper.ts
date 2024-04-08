@@ -1,14 +1,19 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { OmBarnet, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { Situasjon } from 'types/Søkersituasjon';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { treUkerSiden } from '@navikt/fp-utils';
 
 import { HvemHarRett } from './hvemHarRettHjelper';
 import {
     TilgjengeligStønadskonto,
+    getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
+    getAntallUkerForeldrepenger,
     getAntallUkerMødrekvote,
 } from './stønadskontoer';
 
@@ -64,58 +69,138 @@ const trekkUttaksdagerFraDato = (dato: string, uttaksdager: number): string => {
     return nyDato;
 };
 
-export const getFørsteUttaksdagForeldrepengerFørFødsel = (familiehendelsesdato: string): string => {
+const getFamiliehendelsedato = (barnet: OmBarnet) => {
+    if (erBarnetAdoptert(barnet)) {
+        return barnet.overtakelsesdato;
+    }
+    return erBarnetIkkeFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
+};
+
+const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnet): string => {
+    if (erBarnetAdoptert(barnet)) {
+        throw new Error('Kan ikke være adoptert');
+    }
+
+    const familiehendelsedato = getFamiliehendelsedato(barnet);
+
+    if (
+        erBarnetFødt(barnet) &&
+        barnet.termindato &&
+        dayjs(familiehendelsedato).isBefore(dayjs(treUkerSiden(barnet.termindato)))
+    ) {
+        return familiehendelsedato;
+    }
+
     return trekkUttaksdagerFraDato(
-        getUttaksdagFraOgMedDato(familiehendelsesdato),
+        getUttaksdagFraOgMedDato(familiehendelsedato),
         ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
     );
 };
 
-export const finnUttaksdata = (
+const finnUttaksdataDeltUttak = (
     hvemHarRett: HvemHarRett,
+    hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
-    antallUkerFellesperiodeSøker1?: number,
+    antallUkerFellesperiodeForSøker1?: number,
 ) => {
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
-    const antallUkerFellesperiodeSøker2 = antallUkerFellesperiodeSøker1
-        ? antallUkerFellesperiode - antallUkerFellesperiodeSøker1
+    const totaltAntallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUkerFellesperiodeForSøker2 = antallUkerFellesperiodeForSøker1
+        ? totaltAntallUkerFellesperiode - antallUkerFellesperiodeForSøker1
         : undefined;
 
     const antallUkerMødrekvote = getAntallUkerMødrekvote(valgtStønadskonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(valgtStønadskonto);
 
-    // TODO FIX fødselsdato og adopsjon
-    const termindato = erBarnetIkkeFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
+    const familiehendelsedato = getFamiliehendelsedato(barnet);
 
-    // TODO FIX far skal ikkje ha før-fødsel
-    const startdatoSøker1 = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
-    const antallUker = hvemHarRett === 'kunMorHarRett' ? antallUkerFellesperiode : antallUkerFellesperiodeSøker1;
+    const startdatoSøker1 =
+        erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR_OG_FAR
+            ? getUttaksdagFraOgMedDato(familiehendelsedato)
+            : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
+
+    const antallUker =
+        hvemHarRett === 'kunMorHarRett' ? totaltAntallUkerFellesperiode : antallUkerFellesperiodeForSøker1;
     const sluttdatoSøker1 = antallUker
-        ? dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').add(antallUker, 'weeks').format(ISO_DATE_FORMAT)
-        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT);
+        ? getUttaksdagFraOgMedDato(
+              dayjs(startdatoSøker1)
+                  .add(antallUkerMødrekvote, 'weeks')
+                  .add(antallUker, 'weeks')
+                  .format(ISO_DATE_FORMAT),
+          )
+        : getUttaksdagFraOgMedDato(dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT));
 
-    const startdatoSøker2 = sluttdatoSøker1 ? dayjs(sluttdatoSøker1).add(1, 'day').format(ISO_DATE_FORMAT) : undefined;
-    const sluttdatoSøker2 = antallUkerFellesperiodeSøker2
-        ? dayjs(startdatoSøker2)
-              .add(antallUkerFellesperiodeSøker2, 'weeks')
-              .add(antallUkerFedrekvote, 'weeks')
-              .format(ISO_DATE_FORMAT)
-        : dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks').format(ISO_DATE_FORMAT);
+    const startdatoSøker2 = getUttaksdagFraOgMedDato(dayjs(sluttdatoSøker1).add(1, 'day').format(ISO_DATE_FORMAT));
+    const sluttdatoSøker2 = antallUkerFellesperiodeForSøker2
+        ? getUttaksdagFraOgMedDato(
+              dayjs(startdatoSøker2)
+                  .add(antallUkerFellesperiodeForSøker2, 'weeks')
+                  .add(antallUkerFedrekvote, 'weeks')
+                  .format(ISO_DATE_FORMAT),
+          )
+        : getUttaksdagFraOgMedDato(dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks').format(ISO_DATE_FORMAT));
 
+    //TODO Må prøva å få vek denne. antallUkerFellesperiodeForSøker1 burde ikkje vera optional
     const sluttdatoForeldrepenger = startdatoSøker1
         ? dayjs(startdatoSøker1)
               .add(antallUkerMødrekvote, 'weeks')
               .add(antallUkerFedrekvote, 'weeks')
-              .add(antallUkerFellesperiode, 'weeks')
+              .add(totaltAntallUkerFellesperiode, 'weeks')
               .format(ISO_DATE_FORMAT)
         : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT);
 
     return {
         startdatoSøker1,
         startdatoSøker2,
+        familiehendelsedato,
         sluttdatoSøker1,
         sluttdatoSøker2,
         sluttdatoForeldrepenger,
     };
+};
+
+const finnUttaksdataIkkeDeltUttak = (
+    hvemHarRett: HvemHarRett,
+    hvemPlanlegger: HvemPlanlegger,
+    valgtStønadskonto: TilgjengeligStønadskonto[],
+    barnet: OmBarnet,
+) => {
+    const familiehendelsedato = getFamiliehendelsedato(barnet);
+    const startdatoSøker =
+        erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR
+            ? getUttaksdagFraOgMedDato(familiehendelsedato)
+            : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
+
+    const ukerForeldrepenger = getAntallUkerForeldrepenger(valgtStønadskonto);
+    const ukerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+
+    const sluttdatoSøker = getUttaksdagFraOgMedDato(
+        hvemHarRett === 'kunFarHarRett'
+            ? dayjs(startdatoSøker)
+                  .add(ukerForeldrepenger, 'weeks')
+                  .add(ukerAktivitetsfriKvote, 'weeks')
+                  .format(ISO_DATE_FORMAT)
+            : dayjs(startdatoSøker).add(ukerForeldrepenger, 'weeks').format(ISO_DATE_FORMAT),
+    );
+
+    return {
+        startdatoSøker1: startdatoSøker,
+        sluttdatoSøker1: sluttdatoSøker,
+        familiehendelsedato,
+        startdatoSøker2: undefined,
+        sluttdatoSøker2: undefined,
+        sluttdatoForeldrepenger: sluttdatoSøker,
+    };
+};
+
+export const finnUttaksdata = (
+    hvemHarRett: HvemHarRett,
+    hvemPlanlegger: HvemPlanlegger,
+    valgtStønadskonto: TilgjengeligStønadskonto[],
+    barnet: OmBarnet,
+    antallUkerFellesperiodeSøker1?: number,
+) => {
+    return hvemHarRett === 'beggeHarRett'
+        ? finnUttaksdataDeltUttak(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
+        : finnUttaksdataIkkeDeltUttak(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
 };

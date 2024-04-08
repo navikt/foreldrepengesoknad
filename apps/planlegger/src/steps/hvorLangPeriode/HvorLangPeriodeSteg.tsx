@@ -45,6 +45,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
 
     const oppdaterPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
+    const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
 
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
@@ -52,7 +53,16 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const lagre = (formValues: HvorLangPeriode) => {
         oppdaterPeriode(formValues);
-        return navigator.goToNextStep(erAlenesøker ? PlanleggerRoutes.OVERSIKT : PlanleggerRoutes.FORDELING);
+        const nextRoute =
+            arbeidssituasjon.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon.jobberAnnenPart
+                ? PlanleggerRoutes.FORDELING
+                : PlanleggerRoutes.OVERSIKT;
+
+        if (nextRoute === PlanleggerRoutes.OVERSIKT) {
+            oppdaterFordeling(undefined);
+        }
+
+        return navigator.goToNextStep(nextRoute);
     };
 
     const dekningsgrad = formMethods.watch('dekningsgrad');
@@ -73,7 +83,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const antallUkerAktivitetskravKvote = antallUker - antallUkerAktivitetsfriKvote;
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const { sluttdatoForeldrepenger } = finnUttaksdata(hvemHarRett, valgtStønadskonto, barnet);
+    const { sluttdatoForeldrepenger } = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
 
     return (
         <PlanleggerStepPage steps={stepConfig}>

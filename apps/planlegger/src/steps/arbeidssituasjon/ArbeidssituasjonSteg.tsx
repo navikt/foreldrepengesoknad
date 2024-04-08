@@ -27,9 +27,12 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
     const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
+    const oppdaterPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
+    const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
+        shouldUnregister: true,
     });
 
     const status = formMethods.watch('status');
@@ -40,9 +43,15 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
         oppdaterArbeidssituasjon(formValues);
 
         const nextStep =
-            formValues.status !== Arbeidsstatus.JOBBER && (erAlenesøker || formValues.jobberAnnenPart === false)
-                ? PlanleggerRoutes.OPPSUMMERING
-                : PlanleggerRoutes.HVOR_LANG_PERIODE;
+            formValues.status === Arbeidsstatus.JOBBER || formValues.jobberAnnenPart
+                ? PlanleggerRoutes.HVOR_LANG_PERIODE
+                : PlanleggerRoutes.OPPSUMMERING;
+
+        if (nextStep === PlanleggerRoutes.OPPSUMMERING) {
+            oppdaterPeriode(undefined);
+            oppdaterFordeling(undefined);
+        }
+
         navigator.goToNextStep(nextStep);
     };
 

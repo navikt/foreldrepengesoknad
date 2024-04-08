@@ -74,6 +74,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const { sluttdatoSøker1, startdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(
         hvemHarRett,
+        hvemPlanlegger,
         valgtStønadskonto,
         barnet,
         fordeling?.antallUkerSøker1,
