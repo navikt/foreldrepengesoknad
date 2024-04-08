@@ -65,6 +65,7 @@ const customRenderer = ({
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                     [ContextDataType.ARBEIDSSITUASJON]: {
                         status: Arbeidsstatus.JOBBER,
+                        jobberAnnenPart: true,
                     },
                     [ContextDataType.OM_BARNET]: omBarnet,
                     [ContextDataType.HVOR_LANG_PERIODE]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },

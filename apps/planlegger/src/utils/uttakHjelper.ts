@@ -102,12 +102,10 @@ const finnUttaksdataDeltUttak = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
-    antallUkerFellesperiodeForSøker1?: number,
+    antallUkerFellesperiodeForSøker1: number = 0,
 ) => {
     const totaltAntallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
-    const antallUkerFellesperiodeForSøker2 = antallUkerFellesperiodeForSøker1
-        ? totaltAntallUkerFellesperiode - antallUkerFellesperiodeForSøker1
-        : undefined;
+    const antallUkerFellesperiodeForSøker2 = totaltAntallUkerFellesperiode - antallUkerFellesperiodeForSøker1;
 
     const antallUkerMødrekvote = getAntallUkerMødrekvote(valgtStønadskonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(valgtStønadskonto);
@@ -140,22 +138,12 @@ const finnUttaksdataDeltUttak = (
           )
         : getUttaksdagFraOgMedDato(dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks').format(ISO_DATE_FORMAT));
 
-    //TODO Må prøva å få vek denne. antallUkerFellesperiodeForSøker1 burde ikkje vera optional
-    const sluttdatoForeldrepenger = startdatoSøker1
-        ? dayjs(startdatoSøker1)
-              .add(antallUkerMødrekvote, 'weeks')
-              .add(antallUkerFedrekvote, 'weeks')
-              .add(totaltAntallUkerFellesperiode, 'weeks')
-              .format(ISO_DATE_FORMAT)
-        : dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT);
-
     return {
+        familiehendelsedato,
         startdatoSøker1,
         startdatoSøker2,
-        familiehendelsedato,
         sluttdatoSøker1,
         sluttdatoSøker2,
-        sluttdatoForeldrepenger,
     };
 };
 
@@ -184,12 +172,11 @@ const finnUttaksdataIkkeDeltUttak = (
     );
 
     return {
+        familiehendelsedato,
         startdatoSøker1: startdatoSøker,
         sluttdatoSøker1: sluttdatoSøker,
-        familiehendelsedato,
         startdatoSøker2: undefined,
         sluttdatoSøker2: undefined,
-        sluttdatoForeldrepenger: sluttdatoSøker,
     };
 };
 

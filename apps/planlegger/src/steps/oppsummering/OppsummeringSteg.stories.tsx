@@ -109,8 +109,8 @@ export const OppsummeringFlereForsørgereHundreProsentTermin: Story = {
             antallBarn: '1',
         },
         arbeidssituasjon: {
-            status: Arbeidsstatus.INGEN,
-            jobberAnnenPart: false,
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
         },
     },
 };
@@ -135,7 +135,7 @@ export const OppsummeringAleneforsørgerÅttiProsentFødselToBarn: Story = {
             fødselsdato: '2022-08-10',
         },
         arbeidssituasjon: {
-            status: Arbeidsstatus.INGEN,
+            status: Arbeidsstatus.JOBBER,
         },
     },
 };
@@ -164,6 +164,28 @@ export const OppsummeringFlereForsørgereHundreProsentAdopsjon: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
+        },
+    },
+};
+
+export const HarIkkeRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        omBarnet: {
+            erFødsel: false,
+            erBarnetFødt: true,
+            erAdoptert: true,
+            fødselsdato: '2022-07-10',
+            antallBarn: '1',
+            overtakelsesdato: '2022-010-10',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: false,
         },
     },
 };
