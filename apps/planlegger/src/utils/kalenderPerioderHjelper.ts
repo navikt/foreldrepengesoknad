@@ -96,7 +96,7 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    if (hvemHarRett === 'kunFarHarRett') {
+    if (hvemHarRett === 'kunFarEllerMedmorHarRett') {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks');

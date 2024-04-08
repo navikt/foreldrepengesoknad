@@ -4,7 +4,7 @@ import { Situasjon } from 'types/Søkersituasjon';
 
 export type HvemHarRett =
     | 'beggeHarRett'
-    | 'kunFarHarRett'
+    | 'kunFarEllerMedmorHarRett'
     | 'kunFarHarRettAleneforsørger'
     | 'kunMorHarRett'
     | 'ingenHarRett';
@@ -17,8 +17,8 @@ export const utledHvemSomHarRett = (
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
         (arbeidssituasjon.status === Arbeidsstatus.JOBBER || arbeidssituasjon.jobberAnnenPart);
 
-    const kunFarHarRettMedsøker =
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR &&
+    const kunFarEllerMedmorHarRettMedsøker =
+        (hvemPlanlegger.type === Situasjon.MOR_OG_FAR || hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) &&
         arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart;
 
@@ -45,8 +45,8 @@ export const utledHvemSomHarRett = (
         return 'kunFarHarRettAleneforsørger';
     }
 
-    if (kunFarHarRettHovedsøker || kunFarHarRettMedsøker) {
-        return 'kunFarHarRett';
+    if (kunFarHarRettHovedsøker || kunFarEllerMedmorHarRettMedsøker) {
+        return 'kunFarEllerMedmorHarRett';
     }
 
     return 'ingenHarRett';
