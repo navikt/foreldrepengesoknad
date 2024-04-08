@@ -61,7 +61,6 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const søkerDeltUttakINorgeSomMorFørFar =
         erDeltUttak &&
         !erFarEllerMedmor &&
-        førsteDagEtterAnnenForelder === undefined &&
         isAnnenForelderOppgitt(annenForelder) &&
         !annenForelder.harRettPåForeldrepengerIEØS;
 
