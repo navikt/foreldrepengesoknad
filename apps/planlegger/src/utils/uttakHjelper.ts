@@ -163,7 +163,7 @@ const finnUttaksdataIkkeDeltUttak = (
     const ukerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
 
     const sluttdatoSøker = getUttaksdagFraOgMedDato(
-        hvemHarRett === 'kunFarHarRett'
+        hvemHarRett === 'kunFarEllerMedmorHarRett'
             ? dayjs(startdatoSøker)
                   .add(ukerForeldrepenger, 'weeks')
                   .add(ukerAktivitetsfriKvote, 'weeks')
