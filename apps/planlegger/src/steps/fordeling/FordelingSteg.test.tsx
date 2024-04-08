@@ -8,7 +8,7 @@ import * as stories from './FordelingSteg.stories';
 const { FlereForsørgereEttBarn } = composeStories(stories);
 
 describe('<FordelingSteg>', () => {
-    it('skal velge å fordele 8 uker til mor og 8 uker til far', async () => {
+    it('skal velge å fordele 9 uker til mor og 7 uker til far', async () => {
         const gåTilNesteSide = vi.fn();
 
         const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
@@ -22,9 +22,9 @@ describe('<FordelingSteg>', () => {
         await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele fellesperioden?'), '9');
 
         expect(screen.getByText('Klaras første dag: 11.12.23')).toBeInTheDocument();
-        expect(screen.getByText('Klaras siste dag: 15.07.24')).toBeInTheDocument();
-        expect(screen.getByText('Espens første dag: 16.07.24')).toBeInTheDocument();
-        expect(screen.getByText('Espens siste dag: 17.12.24')).toBeInTheDocument();
+        expect(screen.getByText('Klaras siste dag: 27.05.24')).toBeInTheDocument();
+        expect(screen.getByText('Espens første dag: 28.05.24')).toBeInTheDocument();
+        expect(screen.getByText('Espens siste dag: 29.10.24')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 

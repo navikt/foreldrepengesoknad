@@ -83,7 +83,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const antallUkerAktivitetskravKvote = antallUker - antallUkerAktivitetsfriKvote;
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const { sluttdatoForeldrepenger } = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
+    const { sluttdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
@@ -190,7 +190,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.Infoboks.SisteDagTittel"
                                     values={{
-                                        dato: dayjs(sluttdatoForeldrepenger).format('dddd DD. MMMM YYYY'),
+                                        dato: dayjs(sluttdatoSøker2 || sluttdatoSøker1).format('dddd DD. MMMM YYYY'),
                                     }}
                                 />
                             }
