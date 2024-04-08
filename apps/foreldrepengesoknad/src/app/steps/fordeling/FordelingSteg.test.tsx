@@ -87,6 +87,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal vise riktig informasjon når mor starter på fødselsdato og mister all periode før fødsel', async () => {
         const utils = render(
@@ -290,6 +291,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('kan ikke angi for sen oppstartsdato', async () => {
         const utils = render(
@@ -357,6 +359,7 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
         await userEvent.click(screen.getByText('På omsorgsovertakelsen, 21. februar 2024'));
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal ikke kunne starte før adopsjonsdatoen', async () => {
         const utils = render(
@@ -405,6 +408,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
         await userEvent.click(screen.getByText('På datoen jeg ble alene om omsorgen, 23. september 2023'));
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal ikke kunne starte før datoen for alenomsorg', async () => {
         const utils = render(
@@ -458,6 +462,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtFireBarnFør1Okt2021', () => {
         await userEvent.click(screen.getByText('På datoen jeg ble alene om omsorgen, 21. september 2021'));
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
 });
 
@@ -640,6 +645,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal ikke kunne gå videre med ikke utfylt informasjon', async () => {
         render(
@@ -824,6 +830,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal vise riktig informasjon til mor ønsker å starte dagen før termin', async () => {
         const utils = render(
@@ -857,6 +864,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getByText('1 dag tas fra fellesperioden.')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('kan ikke angi for sen oppstartsdato', async () => {
         const utils = render(
