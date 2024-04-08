@@ -148,7 +148,6 @@ const finnUttaksdataDeltUttak = (
 };
 
 const finnUttaksdataIkkeDeltUttak = (
-    hvemHarRett: HvemHarRett,
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
@@ -163,7 +162,7 @@ const finnUttaksdataIkkeDeltUttak = (
     const ukerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
 
     const sluttdatoSøker = getUttaksdagFraOgMedDato(
-        hvemHarRett === 'kunFarEllerMedmorHarRett'
+        hvemPlanlegger.type === Situasjon.FAR
             ? dayjs(startdatoSøker)
                   .add(ukerForeldrepenger, 'weeks')
                   .add(ukerAktivitetsfriKvote, 'weeks')
@@ -189,5 +188,5 @@ export const finnUttaksdata = (
 ) => {
     return hvemHarRett === 'beggeHarRett'
         ? finnUttaksdataDeltUttak(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
-        : finnUttaksdataIkkeDeltUttak(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
+        : finnUttaksdataIkkeDeltUttak(hvemPlanlegger, valgtStønadskonto, barnet);
 };
