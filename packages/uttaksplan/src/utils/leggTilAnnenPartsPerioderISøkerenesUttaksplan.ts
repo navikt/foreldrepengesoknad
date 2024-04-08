@@ -1,11 +1,4 @@
-import {
-    Periode,
-    Periodene,
-    getSamtidigUttakEllerGraderingsProsent,
-    getSamtidigUttaksprosent,
-    isUttakAnnenPart,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { Periode, Periodene, getSamtidigUttaksprosent, isUttakAnnenPart, isUttaksperiode } from '@navikt/fp-common';
 
 import { finnOgSettInnHull, normaliserPerioder, settInnAnnenPartsUttak } from './../builder/uttaksplanbuilderUtils';
 
@@ -33,7 +26,7 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
                 if (overlappendePeriodeAnnenPart !== undefined && isUttakAnnenPart(overlappendePeriodeAnnenPart)) {
                     if (!p.ønskerSamtidigUttak) {
                         p.ønskerSamtidigUttak = true;
-                        p.samtidigUttakProsent = getSamtidigUttakEllerGraderingsProsent(p)?.toString();
+                        p.samtidigUttakProsent = getSamtidigUttaksprosent(p.gradert, p.stillingsprosent);
                     }
                     if (!overlappendePeriodeAnnenPart.ønskerSamtidigUttak) {
                         overlappendePeriodeAnnenPart.ønskerSamtidigUttak = true;
