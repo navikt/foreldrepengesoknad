@@ -133,6 +133,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const { startdatoSøker1, sluttdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(
         hvemHarRett,
+        hvemPlanlegger,
         valgtStønadskonto,
         barnet,
         antallUkerSøker1,

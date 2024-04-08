@@ -1,17 +1,13 @@
 import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger, isAlene, isFlere } from 'types/HvemPlanlegger';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { isFlere } from 'types/HvemPlanlegger';
 
 import { ProgressStep } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './PlanleggerDataContext';
-
-const skalGåRettTilOppsummering = (hvemPlanlegger: HvemPlanlegger, arbeidssituasjon: Arbeidssituasjon) =>
-    arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
-    (isAlene(hvemPlanlegger) || arbeidssituasjon.jobberAnnenPart === false);
 
 const isAfterStep = (previousStepPath: PlanleggerRoutes, currentStepPath: PlanleggerRoutes): boolean => {
     return PATH_ORDER.indexOf(currentStepPath) > PATH_ORDER.indexOf(previousStepPath);
@@ -25,8 +21,7 @@ const showFordelingStep = (
     if (path === PlanleggerRoutes.FORDELING) {
         const hvemPlanlegger = getData(ContextDataType.HVEM_PLANLEGGER);
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
-        const skalVise =
-            hvemPlanlegger && arbeidssituasjon ? !skalGåRettTilOppsummering(hvemPlanlegger, arbeidssituasjon) : false;
+        const skalVise = arbeidssituasjon?.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon?.jobberAnnenPart;
         const erValgtOgEtterSteg =
             hvemPlanlegger &&
             isFlere(hvemPlanlegger) &&
@@ -43,10 +38,8 @@ const showHvorLangPeriodeEllerOversiktStep = (
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === PlanleggerRoutes.HVOR_LANG_PERIODE || path === PlanleggerRoutes.OVERSIKT) {
-        const hvemPlanlegger = getData(ContextDataType.HVEM_PLANLEGGER);
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
-        const skalVise =
-            hvemPlanlegger && arbeidssituasjon ? !skalGåRettTilOppsummering(hvemPlanlegger, arbeidssituasjon) : false;
+        const skalVise = arbeidssituasjon?.status === Arbeidsstatus.JOBBER || arbeidssituasjon?.jobberAnnenPart;
         const erValgtOgEtterSteg = skalVise && isAfterStep(PlanleggerRoutes.ARBEIDSSITUASJON, currentPath);
         return erValgtOgEtterSteg || !!getData(ContextDataType.HVOR_LANG_PERIODE);
     }

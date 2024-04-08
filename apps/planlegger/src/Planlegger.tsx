@@ -30,7 +30,7 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
         () => ({
             antallBarn: omBarnet?.antallBarn,
             morHarRett: arbeidssituasjon?.status === Arbeidsstatus.JOBBER,
-            farHarRett: arbeidssituasjon?.jobberAnnenPart,
+            farHarRett: arbeidssituasjon?.jobberAnnenPart || false,
             morHarAleneomsorg: søkersituasjon?.situasjon === Situasjon.MOR,
             farHarAleneomsorg: søkersituasjon?.situasjon === Situasjon.FAR,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
