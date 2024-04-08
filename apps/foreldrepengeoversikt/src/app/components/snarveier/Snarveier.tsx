@@ -25,7 +25,15 @@ const getLesMerLink = (stønadstype: Ytelse | undefined) => {
     return NavRoutes.LES_MER_OM_VÅRE_PENGESTØTTER;
 };
 
-const getKlageLinkMedSak = (sak: Sak) => {
+const getKlageLinkMedSak = (ytelse: Ytelse | undefined, sak: Sak) => {
+    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+        return `https://klage.nav.no/nb/klage/ENGANGSSTONAD?saksnummer=${sak.saksnummer}`;
+    }
+
+    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+        return `https://klage.nav.no/nb/klage/SVANGERSKAPSPENGER?saksnummer=${sak.saksnummer}`;
+    }
+
     return `https://klage.nav.no/nb/klage/FORELDREPENGER?saksnummer=${sak.saksnummer}`;
 };
 
@@ -101,7 +109,7 @@ const Snarveier: React.FunctionComponent = () => {
                     </LinkPanel>
                     {currentSak !== undefined ? (
                         <LinkPanel
-                            href={getKlageLinkMedSak(currentSak)}
+                            href={getKlageLinkMedSak(ytelse, currentSak)}
                             border={false}
                             className={bem.element('linkPanel')}
                         >
