@@ -20,7 +20,7 @@ const UforutsetteEndringer: React.FunctionComponent = () => {
                     </div>
                     <div>
                         <ExpansionCard.Title size="medium">
-                            <FormattedMessage id="oversikt.uforutsetteEndringer" />
+                            <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer" />
                         </ExpansionCard.Title>
                     </div>
                 </HStack>
@@ -49,17 +49,17 @@ const Innhold = () => {
                     <div>
                         <Heading size="small">
                             {erFar ? (
-                                <FormattedMessage id="oversikt.uforutsetteEndringer.hvisManBlirSyk.far" />
+                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Far" />
                             ) : (
-                                <FormattedMessage id="oversikt.uforutsetteEndringer.hvisManBlirSyk" />
+                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk" />
                             )}
                         </Heading>
 
                         <BodyLong>
                             {erFar ? (
-                                <FormattedMessage id="oversikt.uforutsetteEndringer.hvisManBlirSyk.tekstFar" />
+                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstFar" />
                             ) : (
-                                <FormattedMessage id="oversikt.uforutsetteEndringer.hvisManBlirSyk.tekst" />
+                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Tekst" />
                             )}
                         </BodyLong>
                     </div>
@@ -73,10 +73,10 @@ const Innhold = () => {
                         </div>
                         <div>
                             <Heading size="small">
-                                <FormattedMessage id="oversikt.uforutsetteEndringer.hvisMorBlirSyk" />
+                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk" />
                             </Heading>
                             <BodyLong>
-                                <FormattedMessage id="oversikt.uforutsetteEndringer.hvisMorBlirSyk.tekst" />
+                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst" />
                             </BodyLong>
                         </div>
                     </HStack>
@@ -90,10 +90,10 @@ const Innhold = () => {
                     </div>
                     <div>
                         <Heading size="small">
-                            <FormattedMessage id="oversikt.uforutsetteEndringer.hvisManFårNyttBarnFørTreÅr" />
+                            <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr" />
                         </Heading>
                         <BodyLong>
-                            <FormattedMessage id="oversikt.uforutsetteEndringer.hvisManFårNyttBarnFørTreÅr.tekst" />
+                            <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr.Tekst" />
                         </BodyLong>
                     </div>
                 </HStack>

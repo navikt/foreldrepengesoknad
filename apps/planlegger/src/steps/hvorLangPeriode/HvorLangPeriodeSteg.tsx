@@ -80,27 +80,29 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <Heading size="medium" spacing>
-                        <FormattedMessage id="periode.tittel" />
+                        <FormattedMessage id="HvorLangPeriodeSteg.Tittel" />
                     </Heading>
                     <Infobox
-                        header={<FormattedMessage id="periode.infoboks.hvorLangPeriodeTittel" />}
+                        header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
                         icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         isGray
                     >
                         {erAlenesøker ? (
                             <BodyLong>
                                 {erEttBarn(barnet) && (
-                                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekstDeg" />
+                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekstDeg" />
                                 )}
                                 {erToBarn(barnet) && (
-                                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
+                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst.ToBarn" />
                                 )}
                             </BodyLong>
                         ) : (
                             <BodyLong>
-                                {erEttBarn(barnet) && <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst" />}
+                                {erEttBarn(barnet) && (
+                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst" />
+                                )}
                                 {erToBarn(barnet) && (
-                                    <FormattedMessage id="periode.infoboks.hvorLangPeriodeTekst.toBarn" />
+                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst.ToBarn" />
                                 )}
                             </BodyLong>
                         )}
@@ -108,10 +110,10 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
                         <Infobox
                             header={
-                                <>
-                                    {farHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareMorHarRett" />}
-                                    {morHarIkkeRett && <FormattedMessage id="periode.infoboks.nårBareFarHarRett" />}
-                                </>
+                                <FormattedMessage
+                                    id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
+                                    values={{ farHarIkkeRett }}
+                                />
                             }
                             icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                             isGray
@@ -119,21 +121,21 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             {farHarIkkeRett && (
                                 <VStack gap="2">
                                     <BodyLong>
-                                        <FormattedMessage id="periode.infoboks.nårBareMorHarRett.fårHelePerioden" />
+                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden" />
                                     </BodyLong>
                                     <BodyLong>
-                                        <FormattedMessage id="periode.infoboks.nårBareMorHarRett.ingenKravTilFar" />
+                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar" />
                                     </BodyLong>
                                 </VStack>
                             )}
                             {morHarIkkeRett && (
                                 <VStack gap="2">
                                     <BodyLong>
-                                        <FormattedMessage id="periode.infoboks.nårBareFarHarRett.kanFåhelePerioden" />
+                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden" />
                                     </BodyLong>
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="periode.infoboks.nårBareFarHarRett.ingenKravTilMor"
+                                            id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor"
                                             values={{
                                                 a: (msg: any) => (
                                                     <Link
@@ -153,36 +155,30 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </Infobox>
                     )}
                     <GreenRadioGroup
-                        label={
-                            erAlenesøker ? (
-                                <FormattedMessage id="periode.hvorLangPeriodeDeg" />
-                            ) : (
-                                <FormattedMessage id="periode.hvorLangPeriode" />
-                            )
-                        }
+                        label={<FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ erAlenesøker }} />}
                         name="dekningsgrad"
                         validate={[
                             isRequired(
                                 intl.formatMessage({
-                                    id: 'validation.required',
+                                    id: 'ValidationMessage.Required',
                                 }),
                             ),
                         ]}
                     >
                         <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
-                            {erEttBarn(barnet) && <FormattedMessage id="periode.100" />}
-                            {erToBarn(barnet) && <FormattedMessage id="periode.100.toBarn" />}
+                            {erEttBarn(barnet) && <FormattedMessage id="HvorLangPeriodeSteg.100" />}
+                            {erToBarn(barnet) && <FormattedMessage id="HvorLangPeriodeSteg.100.toBarn" />}
                         </Radio>
                         <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
-                            {erEttBarn(barnet) && <FormattedMessage id="periode.80" />}
-                            {erToBarn(barnet) && <FormattedMessage id="periode.80.toBarn" />}{' '}
+                            {erEttBarn(barnet) && <FormattedMessage id="HvorLangPeriodeSteg.80" />}
+                            {erToBarn(barnet) && <FormattedMessage id="HvorLangPeriodeSteg.80.toBarn" />}{' '}
                         </Radio>
                     </GreenRadioGroup>
                     {dekningsgrad && (
                         <Infobox
                             header={
                                 <FormattedMessage
-                                    id="periode.infoboks.sisteDagTittel"
+                                    id="HvorLangPeriodeSteg.Infoboks.SisteDagTittel"
                                     values={{
                                         dato: dayjs(sluttdatoForeldrepenger).format('dddd DD. MMMM YYYY'),
                                     }}
@@ -191,13 +187,13 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         >
                             <BodyLong>
-                                <FormattedMessage id="periode.infoboks.sisteDagTekst" />
+                                <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.SisteDagTekst" />
                             </BodyLong>
                             {morHarIkkeRett && (
                                 <VStack gap="2">
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="periode.infoboks.sisteDagTekstFar.førsteUker"
+                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
                                             values={{
                                                 uker: antallUkerAktivitetsfriKvote,
                                                 uker2: antallUker,
@@ -207,7 +203,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     </BodyLong>
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="periode.infoboks.sisteDagTekstFar.andreUker"
+                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
                                             values={{
                                                 uker: antallUkerAktivitetskravKvote,
                                                 uker2: antallUker,

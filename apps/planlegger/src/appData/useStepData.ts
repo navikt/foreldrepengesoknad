@@ -1,10 +1,10 @@
 import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes';
-import { ProgressStep } from 'components/progressStepper/ProgressStepper';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, isAlene, isFlere } from 'types/HvemPlanlegger';
 
+import { ProgressStep } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './PlanleggerDataContext';

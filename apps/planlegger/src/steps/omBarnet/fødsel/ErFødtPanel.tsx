@@ -40,45 +40,39 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
             <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
                 <VStack gap="10">
                     <Datepicker
-                        label={
-                            antallBarn === '1' ? (
-                                <FormattedMessage id="barnet.fødselsdato" />
-                            ) : (
-                                <FormattedMessage id="barnet.fødselsdatoFlere" />
-                            )
-                        }
+                        label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
                         name="fødselsdato"
                         minDate={dayjs().subtract(6, 'month').toDate()}
                         maxDate={dayjs().toDate()}
                         autofocusWhenEmpty
                         validate={[
-                            isRequired(intl.formatMessage({ id: 'validation.required' })),
-                            isValidDate(intl.formatMessage({ id: 'validation.validDate' })),
+                            isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                            isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                             isBeforeTodayOrToday(
                                 intl.formatMessage({
-                                    id: 'validation.inFuture',
+                                    id: 'ValidationMessage.InFuture',
                                 }),
                             ),
                             isAfterOrSameAsSixMonthsAgo(
                                 intl.formatMessage({
-                                    id: 'validation.olderThan6months',
+                                    id: 'ValidationMessage.OlderThan6months',
                                 }),
                             ),
                         ]}
                         customErrorFormatter={formatError}
                     />
                     <Datepicker
-                        label={<FormattedMessage id="barnet.nårVarTermin" />}
+                        label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
                         name="termindato"
                         minDate={dayjs().subtract(3, 'week').toDate()}
                         maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                         validate={[
-                            isRequired(intl.formatMessage({ id: 'validation.required' })),
-                            isValidDate(intl.formatMessage({ id: 'validation.validDate' })),
+                            isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                            isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
 
                             erI22SvangerskapsukeEllerSenere(
                                 intl.formatMessage({
-                                    id: 'validation.duMåVæreIUke22',
+                                    id: 'ValidationMessage.DuMåVæreIUke22',
                                 }),
                             ),
                         ]}
@@ -88,24 +82,18 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
             </GreenPanel>
             {erFødselsdato !== undefined && dayjs(erFødselsdato).isAfter(DATO_3_ÅR_SIDEN) && (
                 <Infobox
-                    header={
-                        erAlenesøker ? (
-                            <FormattedMessage id="barnet.født.infoboksTittelDeg" />
-                        ) : (
-                            <FormattedMessage id="barnet.født.infoboksTittel" />
-                        )
-                    }
+                    header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
                     icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                 >
                     <BodyLong>
-                        <FormattedMessage id="barnet.født.infoboks.manKanSøkeTilbakeITid" />
+                        <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
                     </BodyLong>
                     <BodyLong>
-                        <FormattedMessage id="barnet.født.infoboksTekstDel2" />
+                        <FormattedMessage id="ErFødtPanel.Født.InfoboksTekstDel2" />
                     </BodyLong>
                     {!erAlenesøker && (
                         <BodyLong>
-                            <FormattedMessage id="barnet.født.infoboksTekstFar" />
+                            <FormattedMessage id="ErFødtPanel.Født.InfoboksTekstFar" />
                         </BodyLong>
                     )}
                 </Infobox>
@@ -113,19 +101,18 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
             {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATO_3_ÅR_SIDEN) && (
                 <Infobox
                     header={
-                        erAlenesøker ? (
-                            <FormattedMessage id="barnet.født.infoboksTittelDeg.eldreEnnTreÅr" />
-                        ) : (
-                            <FormattedMessage id="barnet.født.infoboksTittel.eldreEnnTreÅr" />
-                        )
+                        <FormattedMessage
+                            id="ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr"
+                            values={{ erAlenesøker }}
+                        />
                     }
                     icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                 >
                     <BodyLong>
-                        <FormattedMessage id="barnet.født.infoboksTekst.eldreEnnTreÅr" />
+                        <FormattedMessage id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr" />
                     </BodyLong>
                     <BodyLong>
-                        <FormattedMessage id="barnet.født.infoboks.manKanSøkeTilbakeITid" />
+                        <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
                     </BodyLong>
                 </Infobox>
             )}

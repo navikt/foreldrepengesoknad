@@ -35,15 +35,15 @@ import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';
 
 const finnPart1Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
     erMorDelAvSøknaden(hvemPlanlegger.type)
-        ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
-        : intl.formatMessage({ id: 'FlereForsørgere.Far' });
+        ? intl.formatMessage({ id: 'FordelingSteg.Mor' })
+        : intl.formatMessage({ id: 'FordelingSteg.Far' });
 
 const finnPart2Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
-        return intl.formatMessage({ id: 'FlereForsørgere.Medmor' });
+        return intl.formatMessage({ id: 'FordelingSteg.Medmor' });
     }
     if (erFarDelAvSøknaden(hvemPlanlegger.type)) {
-        return intl.formatMessage({ id: 'FlereForsørgere.Far' });
+        return intl.formatMessage({ id: 'FordelingSteg.Far' });
     }
     return undefined;
 };
@@ -72,7 +72,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
     if (value.antallUkerSøker1 === 0) {
         return (
             <FormattedMessage
-                id="fordeling.fordelingOptionAlt"
+                id="FordelingSteg.FordelingOptionAlt"
                 values={{ hvem: part2Tekst, uker: value.antallUkerSøker2 }}
             />
         );
@@ -80,14 +80,14 @@ export const finnFellesperiodeFordelingOptionTekst = (
     if (value.antallUkerSøker2 === 0) {
         return (
             <FormattedMessage
-                id="fordeling.fordelingOptionAlt"
+                id="FordelingSteg.FordelingOptionAlt"
                 values={{ hvem: part1Tekst, uker: value.antallUkerSøker1 }}
             />
         );
     }
     return (
         <FormattedMessage
-            id="fordeling.fordelingOptions"
+            id="FordelingSteg.FordelingOptions"
             values={{
                 hvem: part1Tekst,
                 hvem2: part2Tekst,
@@ -143,23 +143,23 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <Heading size="large" spacing>
-                        <FormattedMessage id="fordeling.tittel" />
+                        <FormattedMessage id="FordelingSteg.Tittel" />
                     </Heading>
                     <Infobox
-                        header={<FormattedMessage id="fordeling.infoboks.hvordanFordeleTittel" />}
+                        header={<FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTittel" />}
                         icon={<SectorChartIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         isGray
                     >
                         <BodyLong>
-                            <FormattedMessage id="fordeling.infoboks.hvordanFordeleTekst" />
+                            <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
                         </BodyLong>
                     </Infobox>
                     <GreenPanel isDarkGreen={fordeling === undefined}>
                         <Select
                             name="antallUkerSøker1"
-                            label={<FormattedMessage id="fordeling.fordelingTittel" />}
+                            label={<FormattedMessage id="FordelingSteg.FordelingTittel" />}
                             autofocusWhenEmpty
-                            validate={[isRequired(intl.formatMessage({ id: 'validation.required' }))]}
+                            validate={[isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' }))]}
                             customErrorFormatter={formatError}
                         >
                             {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (

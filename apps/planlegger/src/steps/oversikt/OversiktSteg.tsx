@@ -43,33 +43,29 @@ import BlåSirkel from './ikoner/BlåSirkel';
 import GrønnSirkel from './ikoner/GrønnSirkel';
 import styles from './oversiktSteg.module.css';
 
-dayjs.locale('nb');
-
 const termindatoEllerFødselsdato = (barnet: OmBarnet) => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
     if (erFødt || erAdoptert) {
-        const dato = barnet.fødselsdato;
-        return dayjs(dato).format('DD. MMM');
+        return dayjs(barnet.fødselsdato).format('DD. MMM');
     }
     if (erIkkeFødt) {
-        const dato = barnet.termindato;
-        return dayjs(dato).format('DD. MMM');
+        return dayjs(barnet.termindato).format('DD. MMM');
     }
     return undefined;
 };
 
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
-        return intl.formatMessage({ id: 'FlereForsørgere.Medmor' });
+        return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
     }
     if (
         hvemPlanlegger.type === Situasjon.FAR ||
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
         hvemPlanlegger.type === Situasjon.MOR_OG_FAR
     ) {
-        return intl.formatMessage({ id: 'FlereForsørgere.Far' });
+        return intl.formatMessage({ id: 'OversiktSteg.Far' });
     }
     return undefined;
 };
@@ -78,8 +74,8 @@ const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): strin
     hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
     hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
     hvemPlanlegger.type === Situasjon.MOR
-        ? intl.formatMessage({ id: 'FlereForsørgere.Mor' })
-        : intl.formatMessage({ id: 'FlereForsørgere.Far' });
+        ? intl.formatMessage({ id: 'OversiktSteg.Mor' })
+        : intl.formatMessage({ id: 'OversiktSteg.Far' });
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
@@ -143,20 +139,15 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
             <PlanleggerStepPage steps={stepConfig}>
                 <VStack gap="10">
                     <Heading size="large" spacing>
-                        {erAleneforsørger && <FormattedMessage id="oversikt.tittelDeg" />}
-                        {!erAleneforsørger && <FormattedMessage id="oversikt.tittel" />}
+                        <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
                     </Heading>
                     <Infobox
-                        header={<FormattedMessage id="oversikt.infoboks.utkast" />}
+                        header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" />}
                         isGray
                         icon={<InformationIcon height={24} width={24} fontSize="1-5rem" />}
                     >
                         <BodyLong>
-                            {erAleneforsørger ? (
-                                <FormattedMessage id="oversikt.infoboks.utkast.tekstDeg" />
-                            ) : (
-                                <FormattedMessage id="oversikt.infoboks.utkast.tekst" />
-                            )}
+                            <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" values={{ erAleneforsørger }} />
                         </BodyLong>
                     </Infobox>
                     <ToggleGroup
@@ -167,10 +158,10 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         style={{ width: '100%' }}
                     >
                         <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
-                            <FormattedMessage id="oversikt.100" />
+                            <FormattedMessage id="OversiktSteg.100" />
                         </ToggleGroup.Item>
                         <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
-                            <FormattedMessage id="oversikt.80" />
+                            <FormattedMessage id="OversiktSteg.80" />
                         </ToggleGroup.Item>
                     </ToggleGroup>
                     {!erAleneforsørger &&
@@ -178,7 +169,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         hvemHarRett !== 'kunFarHarRett' &&
                         hvemHarRett !== 'kunMorHarRett' && (
                             <Select
-                                label={<FormattedMessage id="oversikt.fellesperiodefordeling" />}
+                                label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}
                                 name="antallUkerSøker1"
                                 onChange={(e) => {
                                     lagreFordeling({ antallUkerSøker1: e.target.value });
@@ -199,7 +190,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         <BlåSirkel />
                                         <BodyShort>
                                             <FormattedMessage
-                                                id="ukerForeldrepenger"
+                                                id="OversiktSteg.UkerForeldrepenger"
                                                 values={{
                                                     hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
                                                     uker: dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks'),
@@ -217,7 +208,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 <GrønnSirkel />
                                                 <BodyShort>
                                                     <FormattedMessage
-                                                        id="ukerForeldrepenger"
+                                                        id="OversiktSteg.UkerForeldrepenger"
                                                         values={{
                                                             hvem: capitalizeFirstLetter(annenPartTekst),
                                                             uker: dayjs(sluttdatoSøker2).diff(
@@ -242,7 +233,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 <BlåSirkel />
                                                 <BodyShort>
                                                     <FormattedMessage
-                                                        id="ukerUtenAktivitetskrav"
+                                                        id="OversiktSteg.UkerUtenAktivitetskrav"
                                                         values={{
                                                             hvem: capitalizeFirstLetter(annenPartTekst),
                                                             uker: aktivitetsfriUker,
@@ -258,7 +249,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                     <GrønnSirkel />
                                                     <BodyShort>
                                                         <FormattedMessage
-                                                            id="ukerMedAktivitetskrav"
+                                                            id="OversiktSteg.UkerMedAktivitetskrav"
                                                             values={{
                                                                 hvem: capitalizeFirstLetter(annenPartTekst),
                                                                 uker: aktivitetskravUker,
@@ -278,7 +269,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <BodyShort>
                                     {(erFødt || erAdoptert) && (
                                         <FormattedMessage
-                                            id="fødselsdatoIkontekst"
+                                            id="OversiktSteg.TermindatoIkontekst"
                                             values={{
                                                 mnd: barnehagestartDato(barnet),
                                                 dato: termindatoEllerFødselsdato(barnet),
@@ -287,7 +278,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     )}
                                     {erIkkeFødt && (
                                         <FormattedMessage
-                                            id="termindatoIkontekst"
+                                            id="OversiktSteg.FødselsdatoIkontekst"
                                             values={{
                                                 mnd: barnehagestartDato(barnet),
                                                 dato: termindatoEllerFødselsdato(barnet),

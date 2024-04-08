@@ -1,9 +1,10 @@
 import { PlanleggerRoutes } from 'appData/routes';
 import GreenHeading from 'components/boxes/GreenHeading';
-import ProgressStepper, { ProgressStep } from 'components/progressStepper/ProgressStepper';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading, VStack } from '@navikt/ds-react';
+
+import { ProgressStep, ProgressStepper } from '@navikt/fp-ui';
 
 import PlanleggerPage from './PlanleggerPage';
 
@@ -18,7 +19,7 @@ const PlanleggerStepPage: React.FunctionComponent<Props> = ({ steps, children })
             <GreenHeading>
                 <VStack gap="4">
                     <Heading size="large">
-                        <FormattedMessage id="om.tittel" />
+                        <FormattedMessage id="PlanleggerStepPage.Tittel" />
                     </Heading>
                     <ProgressStepper steps={steps} hideExpandableStepInfo showGreenStatusBar />
                 </VStack>

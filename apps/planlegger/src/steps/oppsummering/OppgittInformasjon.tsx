@@ -88,11 +88,10 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                             <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" />
                         </IconCircleWrapper>
                         <ExpansionCard.Title size="medium">
-                            {erAleneforsørger ? (
-                                <FormattedMessage id="oppsummering.oppgittInformasjonDeg" />
-                            ) : (
-                                <FormattedMessage id="oppsummering.oppgittInformasjon" />
-                            )}
+                            <FormattedMessage
+                                id="OppgittInformasjon.OppgittInformasjon"
+                                values={{ erAleneforsørger }}
+                            />
                         </ExpansionCard.Title>
                     </HStack>
                 </ExpansionCard.Header>
@@ -100,42 +99,39 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                     <VStack gap="10">
                         <GreenPanel>
                             <Heading size="small">
-                                {erAleneforsørger ? (
-                                    <FormattedMessage id="oppsummering.forelder" />
-                                ) : (
-                                    <FormattedMessage id="oppsummering.foreldre" />
-                                )}
+                                <FormattedMessage id="OppgittInformasjon.Forelder" />
                             </Heading>
-
                             <BodyLong>
                                 {erAleneforsørger ? (
-                                    <FormattedMessage id="navn" values={{ navn: navn1 }} />
+                                    navn1
                                 ) : (
-                                    <FormattedMessage id="navnBegge" values={{ navn1: navn1, navn2: navn2 }} />
+                                    <FormattedMessage
+                                        id="OppgittInformasjon.NavnBegge"
+                                        values={{ navn1: navn1, navn2: navn2 }}
+                                    />
                                 )}
                             </BodyLong>
                         </GreenPanel>
                         <GreenPanel>
                             <>
                                 <Heading size="small">
-                                    <FormattedMessage id="barnet.tittel" />
+                                    <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" />
                                 </Heading>
-
                                 {erAdoptert && (
                                     <BodyLong>
-                                        <FormattedMessage id="barnet.adopsjon" />
+                                        <FormattedMessage id="OppgittInformasjon.Adopsjon.Tittel" />
                                     </BodyLong>
                                 )}
                                 <BodyLong>
                                     <FormattedMessage
-                                        id="oppsummering.antallBarn"
+                                        id="OppgittInformasjon.AntallBarn"
                                         values={{ antall: barnet.antallBarn }}
                                     />
                                 </BodyLong>
                                 {erFødt && (
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="oppsummering.fødselsdato"
+                                            id="OppgittInformasjon.Fødselsdato"
                                             values={{
                                                 dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
                                             }}
@@ -145,7 +141,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 {(erBarnetIkkeFødt(barnet) || (erFødt && !erAdoptert)) && (
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="oppsummering.termindato"
+                                            id="OppgittInformasjon.Termindato"
                                             values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
                                         />
                                     </BodyLong>
@@ -153,7 +149,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 {erAdoptert && (
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="oppsummering.overtakelsesdato"
+                                            id="OppgittInformasjon.Overtakelsesdato"
                                             values={{
                                                 dato: dayjs(barnet.overtakelsesdato).format(DDMMYYYY_DATE_FORMAT),
                                             }}
@@ -165,11 +161,11 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                         <GreenPanel>
                             <>
                                 <Heading size="small">
-                                    <FormattedMessage id="arbeid.tittel" />
+                                    <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
                                 <BodyLong>
                                     <FormattedMessage
-                                        id="arbeidssituasjon"
+                                        id="OppgittInformasjon.Arbeidssituasjon"
                                         values={{ navn: fornavn1, arbeidssituasjon: arbeidssituasjon.status }}
                                     />
                                 </BodyLong>
@@ -177,7 +173,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 {!erAleneforsørger && (
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="arbeidssituasjon"
+                                            id="OppgittInformasjon.Arbeidssituasjon"
                                             values={{
                                                 navn: fornavn2,
                                                 arbeidssituasjon:
@@ -194,27 +190,23 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                         <GreenPanel>
                             <>
                                 <Heading size="small">
-                                    <FormattedMessage id="periode" />
+                                    <FormattedMessage id="OppgittInformasjon.Periode" />
                                 </Heading>
 
                                 <BodyLong>
-                                    {erAdoptert ? (
-                                        <FormattedMessage
-                                            id="periode.perioder"
-                                            values={{ prosent: hvorLangPeriode.dekningsgrad, uker: antallUkerAdopsjon }}
-                                        />
-                                    ) : (
-                                        <FormattedMessage
-                                            id="periode.perioder"
-                                            values={{ prosent: hvorLangPeriode.dekningsgrad, uker: antallUker }}
-                                        />
-                                    )}
+                                    <FormattedMessage
+                                        id="OppgittInformasjon.Perioder"
+                                        values={{
+                                            prosent: hvorLangPeriode.dekningsgrad,
+                                            uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                        }}
+                                    />
                                 </BodyLong>
                                 {!erAleneforsørger && (
                                     <VStack gap="5">
                                         <BodyLong>
                                             <FormattedMessage
-                                                id="fordeling.fordelingOptionsMedUker"
+                                                id="OppgittInformasjon.FordelingOptionsMedUker"
                                                 values={{
                                                     uker: antallUkerFellesperiodeSøker1,
                                                     uker2: antallUkerFellesperiodeSøker2,
@@ -226,7 +218,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                         <div>
                                             <BodyLong>
                                                 <FormattedMessage
-                                                    id="fordeling.infoboksTekst.førsteDag"
+                                                    id="OppgittInformasjon.InfoboksTekst.FørsteDag"
                                                     values={{
                                                         hvem: fornavn1,
                                                         dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
@@ -235,7 +227,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             </BodyLong>
                                             <BodyLong>
                                                 <FormattedMessage
-                                                    id="fordeling.infoboksTekst.sisteDag"
+                                                    id="OppgittInformasjon.InfoboksTekst.SisteDag"
                                                     values={{
                                                         hvem: fornavn1,
                                                         dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
@@ -244,7 +236,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             </BodyLong>
                                             <BodyLong>
                                                 <FormattedMessage
-                                                    id="fordeling.infoboksTekst.førsteDag"
+                                                    id="OppgittInformasjon.InfoboksTekst.FørsteDag"
                                                     values={{
                                                         hvem: fornavn2,
                                                         dag: dayjs(sluttdatoSøker1).add(1, 'day').format('DD.MM.YY'),
@@ -253,7 +245,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             </BodyLong>
                                             <BodyLong>
                                                 <FormattedMessage
-                                                    id="fordeling.infoboksTekst.sisteDag"
+                                                    id="OppgittInformasjon.InfoboksTekst.SisteDag"
                                                     values={{
                                                         hvem: fornavn2,
                                                         dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),

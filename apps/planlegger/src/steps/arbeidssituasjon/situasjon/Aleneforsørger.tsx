@@ -14,20 +14,20 @@ interface Props {
 const Aleneforsørger: FunctionComponent<Props> = ({ status }) => (
     <>
         {status === Arbeidsstatus.JOBBER && (
-            <Infobox header={<FormattedMessage id="arbeid.jobber.infoboks.harRettTilForeldrepengerDeg" />}>
+            <Infobox header={<FormattedMessage id="Aleneforsørger.Jobber.Infoboks.HarRettTilForeldrepengerDeg" />}>
                 <BodyLong>
-                    <FormattedMessage id="arbeid.jobber.infoboks.harJobbetSeksAvTiMnd" />
+                    <FormattedMessage id="Aleneforsørger.Jobber.Infoboks.HarJobbetSeksAvTiMnd" />
                 </BodyLong>
             </Infobox>
         )}
         {status === Arbeidsstatus.UFØR && (
-            <Infobox header={<FormattedMessage id="arbeid.infoboks.harIkkeRettTilForeldrepengerDeg" />}>
+            <Infobox header={<FormattedMessage id="Aleneforsørger.Infoboks.HarIkkeRettTilForeldrepengerDeg" />}>
                 <BodyLong>
-                    <FormattedMessage id="arbeid.ufør.infoboks.erUførDeg" />
+                    <FormattedMessage id="Aleneforsørger.Ufør.Infoboks.ErUførDeg" />
                 </BodyLong>
                 <BodyLong>
                     <FormattedMessage
-                        id="arbeid.ufør.infoboks.lesMerDeg"
+                        id="Aleneforsørger.Ufør.Infoboks.LesMerDeg"
                         values={{
                             a: (msg: any) => (
                                 <Link href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
@@ -40,13 +40,13 @@ const Aleneforsørger: FunctionComponent<Props> = ({ status }) => (
             </Infobox>
         )}
         {status === Arbeidsstatus.INGEN && (
-            <Infobox header={<FormattedMessage id="arbeid.infoboks.harIkkeRettTilForeldrepengerDeg" />}>
+            <Infobox header={<FormattedMessage id="Aleneforsørger.Infoboks.HarIkkeRettTilForeldrepengerDeg" />}>
                 <BodyLong>
-                    <FormattedMessage id="arbeid.ingen.infoboks.manHarIkkeRett" />
+                    <FormattedMessage id="Aleneforsørger.Ingen.Infoboks.ManHarIkkeRett" />
                 </BodyLong>
                 <BodyLong>
                     <FormattedMessage
-                        id="arbeid.ingen.infoboks.engangsstønadDeg"
+                        id="Aleneforsørger.Ingen.Infoboks.EngangsstønadDeg"
                         values={{
                             a: (msg: any) => (
                                 <Link href={links.veiviser} className="lenke" rel="noreferrer" target="_blank">

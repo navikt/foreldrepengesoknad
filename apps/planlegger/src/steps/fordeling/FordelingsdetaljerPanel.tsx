@@ -24,12 +24,12 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
     sluttdatoPart2,
 }) => (
     <Infobox
-        header={<FormattedMessage id="fordeling.infoboksTittel" />}
+        header={<FormattedMessage id="FordelingsdetaljerPanel.InfoboksTittel" />}
         icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
     >
         <BodyLong>
             <FormattedMessage
-                id="fordeling.infoboksTekst.førsteDag"
+                id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
                 values={{
                     hvem: fornavnPart1,
                     dag: dayjs(startdatoPart1).format('DD.MM.YY'),
@@ -38,7 +38,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
         </BodyLong>
         <BodyLong spacing>
             <FormattedMessage
-                id="fordeling.infoboksTekst.sisteDag"
+                id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
                 values={{
                     hvem: fornavnPart1,
                     dag: dayjs(sluttdatoPart1).format('DD.MM.YY'),
@@ -49,7 +49,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
             <>
                 <BodyLong>
                     <FormattedMessage
-                        id="fordeling.infoboksTekst.førsteDag"
+                        id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
                         values={{
                             hvem: fornavnPart2,
                             dag: dayjs(startdatoPart2).add(1, 'day').format('DD.MM.YY'),
@@ -58,7 +58,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                 </BodyLong>
                 <BodyLong spacing>
                     <FormattedMessage
-                        id="fordeling.infoboksTekst.sisteDag"
+                        id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
                         values={{
                             hvem: fornavnPart2,
                             dag: dayjs(sluttdatoPart2).format('DD.MM.YY'),
@@ -68,7 +68,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
             </>
         )}
         <BodyLong size="small">
-            <FormattedMessage id="fordeling.infoboksTekst.hvis" />
+            <FormattedMessage id="FordelingsdetaljerPanel.InfoboksTekst.Hvis" />
         </BodyLong>
     </Infobox>
 );
