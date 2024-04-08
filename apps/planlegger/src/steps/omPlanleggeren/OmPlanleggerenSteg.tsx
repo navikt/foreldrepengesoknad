@@ -24,19 +24,19 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
         <PlanleggerForside locale={locale} changeLocale={changeLocale}>
             <VStack gap="10">
                 <BodyShort size="large">
-                    <FormattedMessage id="om.ingress" />
+                    <FormattedMessage id="OmPlanleggerenSteg.Ingress" />
                 </BodyShort>
                 <VStack gap="20">
                     <VStack gap="5">
                         <Heading level="2" size="xsmall">
-                            <FormattedMessage id="om.underoverskrift" />
+                            <FormattedMessage id="OmPlanleggerenSteg.Underoverskrift" />
                         </Heading>
                         <HStack gap="4" align="center" wrap={false}>
                             <IconCircleWrapper color="green" size="medium">
                                 <QuestionmarkIcon width="24" height="25" />
                             </IconCircleWrapper>
                             <BodyShort>
-                                <FormattedMessage id="om.trinn1" />
+                                <FormattedMessage id="OmPlanleggerenSteg.Trinn1" />
                             </BodyShort>
                         </HStack>
                         <HStack gap="4" align="center" wrap={false}>
@@ -44,7 +44,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                                 <CalendarIcon width="24" height="25" />
                             </IconCircleWrapper>
                             <BodyShort>
-                                <FormattedMessage id="om.trinn2" />
+                                <FormattedMessage id="OmPlanleggerenSteg.Trinn2" />
                             </BodyShort>
                         </HStack>
                     </VStack>
@@ -56,7 +56,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                             className={styles.button}
                             autoFocus
                         >
-                            <FormattedMessage id="om.start.planlegger" />
+                            <FormattedMessage id="OmPlanleggerenSteg.Start.Planlegger" />
                         </Button>
                     </HStack>
                 </VStack>

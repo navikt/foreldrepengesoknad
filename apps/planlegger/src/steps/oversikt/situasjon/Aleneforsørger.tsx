@@ -7,7 +7,7 @@ const Aleneforsørger: FunctionComponent = () => {
     return (
         <VStack gap="10">
             <Heading size="large" spacing>
-                <FormattedMessage id="oversikt.tittelDeg" />
+                <FormattedMessage id="Aleneforsørger.TittelDeg" />
             </Heading>
         </VStack>
     );

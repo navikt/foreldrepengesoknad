@@ -32,12 +32,12 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                             </IconCircleWrapper>
                             <VStack gap="1" align="center">
                                 <Heading size="large">
-                                    <FormattedMessage id="om.tittel" />
+                                    <FormattedMessage id="PlanleggerForside.Tittel" />
                                 </Heading>
                                 <HStack gap="2" align="center">
                                     <ClockIcon />
                                     <BodyShort>
-                                        <FormattedMessage id="om.label" />
+                                        <FormattedMessage id="PlanleggerForside.Label" />
                                     </BodyShort>
                                 </HStack>
                             </VStack>
@@ -52,12 +52,12 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                             </IconCircleWrapper>
                             <VStack gap="1">
                                 <Heading size="large">
-                                    <FormattedMessage id="om.tittel" />
+                                    <FormattedMessage id="PlanleggerForside.Tittel" />
                                 </Heading>
                                 <HStack gap="2" align="center">
                                     <ClockIcon />
                                     <BodyShort>
-                                        <FormattedMessage id="om.label" />
+                                        <FormattedMessage id="PlanleggerForside.Label" />
                                     </BodyShort>
                                 </HStack>
                             </VStack>

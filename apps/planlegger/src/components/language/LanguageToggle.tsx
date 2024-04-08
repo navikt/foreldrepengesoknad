@@ -19,7 +19,10 @@ const LanguageToggle: FunctionComponent<Props> = ({ locale, changeLocale }) => {
             defaultValue={locale}
         >
             <option value="nb">
-                <FormattedMessage id="LanguageToggle.Norsk" />
+                <FormattedMessage id="LanguageToggle.Bokmål" />
+            </option>
+            <option value="nn">
+                <FormattedMessage id="LanguageToggle.Nynorsk" />
             </option>
             <option value="en">
                 <FormattedMessage id="LanguageToggle.Engelsk" />

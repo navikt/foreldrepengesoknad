@@ -20,18 +20,10 @@ import Fødsel from './fødsel/Fødsel';
 
 const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     if (erFødsel) {
-        return erAlenesøker ? (
-            <FormattedMessage id="barnet.hvorMangeDeg" />
-        ) : (
-            <FormattedMessage id="barnet.hvorMange" />
-        );
+        <FormattedMessage id="OmBarnetSteg.HvorMange" values={{ erAlenesøker }} />;
     }
 
-    return erAlenesøker ? (
-        <FormattedMessage id="barnet.adopsjon.hvorMangeDeg" />
-    ) : (
-        <FormattedMessage id="barnet.adopsjon.hvorMange" />
-    );
+    return <FormattedMessage id="OmBarnetSteg.Adopsjon.HvorMange" values={{ erAlenesøker }} />;
 };
 
 const OmBarnetSteg: React.FunctionComponent = () => {
@@ -63,30 +55,24 @@ const OmBarnetSteg: React.FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <Heading level="2" size="medium">
-                        <FormattedMessage id="barnet.tittel" />
+                        <FormattedMessage id="OmBarnetSteg.Tittel" />
                     </Heading>
                     <GreenRadioGroup
                         name="erFødsel"
-                        label={
-                            erAlenesøker ? (
-                                <FormattedMessage id="barnet.hvaGjelderDeg" />
-                            ) : (
-                                <FormattedMessage id="barnet.hvaGjelder" />
-                            )
-                        }
+                        label={<FormattedMessage id="OmBarnetSteg.HvaGjelder" values={{ erAlenesøker }} />}
                         validate={[
                             isRequired(
                                 intl.formatMessage({
-                                    id: 'validation.required',
+                                    id: 'ValidationMessage.Required',
                                 }),
                             ),
                         ]}
                     >
                         <Radio value={true} autoFocus>
-                            <FormattedMessage id="barnet.fødsel" />
+                            <FormattedMessage id="OmBarnetSteg.Fødsel" />
                         </Radio>
                         <Radio value={false}>
-                            <FormattedMessage id="barnet.adopsjon" />
+                            <FormattedMessage id="OmBarnetSteg.Adopsjon" />
                         </Radio>
                     </GreenRadioGroup>
                     {erFødsel !== undefined && (
@@ -96,67 +82,61 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             validate={[
                                 isRequired(
                                     intl.formatMessage({
-                                        id: 'validation.required',
+                                        id: 'ValidationMessage.Required',
                                     }),
                                 ),
                             ]}
                         >
                             <Radio value="1" autoFocus={omBarnet === undefined}>
-                                <FormattedMessage id="barnet.ett" />
+                                <FormattedMessage id="OmBarnetSteg.Ett" />
                             </Radio>
                             <Radio value="2">
                                 {erFødsel ? (
-                                    <FormattedMessage id="barnet.tvillinger" />
+                                    <FormattedMessage id="OmBarnetSteg.Tvillinger" />
                                 ) : (
-                                    <FormattedMessage id="barnet.to" />
+                                    <FormattedMessage id="OmBarnetSteg.To" />
                                 )}
                             </Radio>
                             <Radio value="3">
-                                <FormattedMessage id="barnet.flereEnnTo" />
+                                <FormattedMessage id="OmBarnetSteg.FlereEnnTo" />
                             </Radio>
                         </GreenRadioGroup>
                     )}
-                    <>
-                        {erFødsel && antallBarn && (
-                            <Fødsel
-                                hvemPlanlegger={hvemPlanlegger}
+                    {erFødsel && antallBarn && (
+                        <Fødsel
+                            hvemPlanlegger={hvemPlanlegger}
+                            erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
+                            antallBarn={antallBarn}
+                        />
+                    )}
+                    {erFødsel === false && antallBarn && (
+                        <>
+                            <Adopsjon
+                                erAlenesøker={erAlenesøker}
                                 erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
                                 antallBarn={antallBarn}
                             />
-                        )}
-                        {erFødsel === false && antallBarn && (
-                            <>
-                                <Adopsjon
-                                    erAlenesøker={erAlenesøker}
-                                    erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
-                                    antallBarn={antallBarn}
-                                />
-                                <Infobox
-                                    header={
-                                        erAlenesøker ? (
-                                            <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoDeg" />
-                                        ) : (
-                                            <FormattedMessage id="barnet.adopsjon.foreldrepengerInfo" />
-                                        )
-                                    }
-                                    icon={
-                                        <TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />
-                                    }
-                                >
-                                    <BodyLong>
-                                        <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekst" />
-                                    </BodyLong>
-                                    <BodyLong>
-                                        {erAlenesøker ? (
-                                            <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2Deg" />
-                                        ) : (
-                                            <FormattedMessage id="barnet.adopsjon.foreldrepengerInfoTekstDel2" />
-                                        )}
-                                    </BodyLong>
-                                </Infobox>
-                            </>
-                        )}
-                    </>
+                            <Infobox
+                                header={
+                                    <FormattedMessage
+                                        id="OmBarnetSteg.Adopsjon.ForeldrepengerInfo"
+                                        values={{ erAlenesøker }}
+                                    />
+                                }
+                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                            >
+                                <BodyLong>
+                                    <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />
+                                </BodyLong>
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg"
+                                        values={{ erAlenesøker }}
+                                    />
+                                </BodyLong>
+                            </Infobox>
+                        </>
+                    )}
                     <Spacer />
                     <StepButtonsHookForm<OmBarnet>
                         saveDataOnPreviousClick={oppdaterOmBarnet}

@@ -48,25 +48,25 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         validate={[
                             isRequired(
                                 intl.formatMessage({
-                                    id: 'validation.required',
+                                    id: 'ValidationMessage.Required',
                                 }),
                             ),
                         ]}
                     >
                         <Radio value={Situasjon.MOR_OG_FAR} autoFocus>
-                            <FormattedMessage id="hvem.morOgFar" />
+                            <FormattedMessage id="HvemPlanleggerSteg.MorOgFar" />
                         </Radio>
                         <Radio value={Situasjon.MOR_OG_MEDMOR}>
-                            <FormattedMessage id="hvem.morOgMedmor" />
+                            <FormattedMessage id="HvemPlanleggerSteg.MorOgMedmor" />
                         </Radio>
                         <Radio value={Situasjon.FAR_OG_FAR}>
-                            <FormattedMessage id="hvem.farOgFar" />
+                            <FormattedMessage id="HvemPlanleggerSteg.FarOgFar" />
                         </Radio>
                         <Radio value={Situasjon.MOR}>
-                            <FormattedMessage id="hvem.bareMor" />
+                            <FormattedMessage id="HvemPlanleggerSteg.BareMor" />
                         </Radio>
                         <Radio value={Situasjon.FAR}>
-                            <FormattedMessage id="hvem.bareFar" />
+                            <FormattedMessage id="HvemPlanleggerSteg.BareFar" />
                         </Radio>
                     </GreenRadioGroup>
                     {type && (
@@ -74,7 +74,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                             <VStack gap="10">
                                 {erMorDelAvSøknaden(type) && (
                                     <TextField
-                                        label={intl.formatMessage({ id: 'navn.mor' })}
+                                        label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
                                         name="navnPåMor"
                                         autofocusWhenEmpty
                                         customErrorFormatter={formatError}
@@ -82,21 +82,21 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                 )}
                                 {erFarDelAvSøknaden(type) && (
                                     <TextField
-                                        label={intl.formatMessage({ id: 'navn.far' })}
+                                        label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                         name="navnPåFar"
                                         customErrorFormatter={formatError}
                                     />
                                 )}
                                 {type === Situasjon.MOR_OG_MEDMOR && (
                                     <TextField
-                                        label={intl.formatMessage({ id: 'navn.medmor' })}
+                                        label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
                                         name="navnPåMedmor"
                                         customErrorFormatter={formatError}
                                     />
                                 )}
                                 {type === Situasjon.FAR_OG_FAR && (
                                     <TextField
-                                        label={intl.formatMessage({ id: 'navn.far' })}
+                                        label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                         name="navnPåMedfar"
                                         customErrorFormatter={formatError}
                                     />

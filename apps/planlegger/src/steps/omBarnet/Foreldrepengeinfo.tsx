@@ -12,47 +12,53 @@ interface Props {
 
 const Foreldrepengeinfo: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
     const intl = useIntl();
-
+    const erAlenesøker = isAlene(hvemPlanlegger);
     return (
         <VStack gap="10">
             <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
                 <VStack gap="2">
-                    {isAlene(hvemPlanlegger) && (
+                    {erAlenesøker && (
                         <VStack gap="2">
                             <Heading size="small">
-                                <FormattedMessage id="barnet.foreldrepengerInfoDeg" />
+                                <FormattedMessage id="Foreldrepengeinfo.ForeldrepengerInfo" values={{ erAlenesøker }} />
                             </Heading>
 
                             <BodyLong>
-                                <FormattedMessage id="barnet.foreldrepengerInfoTekstDeg" />
+                                <FormattedMessage
+                                    id="Foreldrepengeinfo.ForeldrepengerInfoTekst"
+                                    values={{ erAlenesøker }}
+                                />
                             </BodyLong>
 
                             <BodyLong>
                                 {/* TODO Bytt ut tekst */}
-                                <FormattedMessage id="barnet.foreldrepengerInfoTekstDeg" />
+                                <FormattedMessage
+                                    id="Foreldrepengeinfo.ForeldrepengerInfoTekst"
+                                    values={{ erAlenesøker }}
+                                />
                             </BodyLong>
                         </VStack>
                     )}
-                    {!isAlene(hvemPlanlegger) && (
+                    {!erAlenesøker && (
                         <VStack gap="2">
                             <Heading size="small">
-                                <FormattedMessage id="barnet.foreldrepengerInfo" />
+                                <FormattedMessage id="Foreldrepengeinfo.ForeldrepengerInfo" values={{ erAlenesøker }} />
                             </Heading>
 
                             <BodyLong>
                                 <FormattedMessage
-                                    id="barnet.foreldrepengerInfoTekst"
-                                    values={{ navn: getNavnPåSøker(hvemPlanlegger, intl) }}
+                                    id="Foreldrepengeinfo.ForeldrepengerInfoTekst"
+                                    values={{ erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) }}
                                 />
                             </BodyLong>
                             <BodyLong>
                                 <FormattedMessage
-                                    id="barnet.foreldrepengerInfoTekstMor"
+                                    id="Foreldrepengeinfo.ForeldrepengerInfoTekstMor"
                                     values={{ navn: getNavnPåSøker(hvemPlanlegger, intl) }}
                                 />
                             </BodyLong>
                             <BodyLong>
-                                <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />
+                                <FormattedMessage id="Foreldrepengeinfo.ForeldrepengerInfoTekstFar" />
                             </BodyLong>
                         </VStack>
                     )}

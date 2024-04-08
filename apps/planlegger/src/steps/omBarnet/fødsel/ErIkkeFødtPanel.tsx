@@ -41,22 +41,22 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
         <VStack gap="5">
             <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
                 <Datepicker
-                    label={<FormattedMessage id="barnet.termin" />}
+                    label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
                     name="termindato"
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                     autofocusWhenEmpty
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'validation.required' })),
-                        isValidDate(intl.formatMessage({ id: 'validation.validDate' })),
+                        isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                        isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                         isLessThanThreeWeeksAgo(
                             intl.formatMessage({
-                                id: 'validation.kanIkkeVære3UkerFraIdag',
+                                id: 'ValidationMessage.KanIkkeVære3UkerFraIdag',
                             }),
                         ),
                         erI22SvangerskapsukeEllerSenere(
                             intl.formatMessage({
-                                id: 'validation.duMåVæreIUke22',
+                                id: 'ValidationMessage.DuMåVæreIUke22',
                             }),
                         ),
                     ]}
@@ -68,38 +68,34 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                     {hvemPlanlegger.type !== Situasjon.FAR && (
                         <Infobox
                             header={
-                                hvemPlanlegger.type === Situasjon.MOR ? (
-                                    <FormattedMessage
-                                        id="barnet.foreldrepengerInfoDeg"
-                                        values={{ dato: dayjs(datoTreMndFraTermin).format('DD.MM.YY') }}
-                                    />
-                                ) : (
-                                    <FormattedMessage
-                                        id="barnet.foreldrepengerInfo"
-                                        values={{ dato: dayjs(datoTreMndFraTermin).format('DD.MM.YY') }}
-                                    />
-                                )
+                                <FormattedMessage
+                                    id="ErIkkeFødtPanel.ForeldrepengerInfo"
+                                    values={{
+                                        erMor: hvemPlanlegger.type === Situasjon.MOR,
+                                        dato: dayjs(datoTreMndFraTermin).format('DD.MM.YY'),
+                                    }}
+                                />
                             }
                             icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                         >
                             <BodyLong>
+                                <FormattedMessage
+                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst"
+                                    values={{
+                                        erMor: hvemPlanlegger.type === Situasjon.MOR,
+                                    }}
+                                />
+                            </BodyLong>
+                            <BodyLong>
                                 {hvemPlanlegger.type === Situasjon.MOR ? (
-                                    <FormattedMessage id="barnet.foreldrepengerInfoTekstDeg" />
+                                    <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstMor" />
                                 ) : (
-                                    <FormattedMessage id="barnet.foreldrepengerInfoTekst" />
+                                    <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstFar" />
                                 )}
                             </BodyLong>
 
                             <BodyLong>
-                                {hvemPlanlegger.type === Situasjon.MOR ? (
-                                    <FormattedMessage id="barnet.foreldrepengerInfoTekstMor" />
-                                ) : (
-                                    <FormattedMessage id="barnet.foreldrepengerInfoTekstMor" />
-                                )}
-                            </BodyLong>
-
-                            <BodyLong>
-                                {!erAlenesøker && <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />}
+                                {!erAlenesøker && <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstFar" />}
                             </BodyLong>
                         </Infobox>
                     )}
@@ -110,29 +106,25 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                     <Infobox
                         header={
                             erAlenesøker ? (
-                                <FormattedMessage id="barnet.underTreMndTilTerminDeg" />
+                                <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTermin" values={{ erAlenesøker }} />
                             ) : (
-                                <FormattedMessage id="barnet.underTreMndTilTerminInfo" />
+                                <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" />
                             )
                         }
                         icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                     >
                         <BodyLong>
-                            {erAlenesøker ? (
-                                <FormattedMessage id="barnet.underTreMndTilTerminDeg" />
-                            ) : (
-                                <FormattedMessage
-                                    id="barnet.underTreMndTilTerminMor"
-                                    values={{ navn: getNavnPåSøker(hvemPlanlegger, intl) }}
-                                />
-                            )}
+                            <FormattedMessage
+                                id="ErIkkeFødtPanel.UnderTreMndTilTermin"
+                                values={{ erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) }}
+                            />
                         </BodyLong>
                         <BodyLong>
                             {hvemPlanlegger.type === Situasjon.MOR && (
-                                <FormattedMessage id="barnet.foreldrepengerInfoTekstMor" />
+                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstMor" />
                             )}
                             {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
-                                <FormattedMessage id="barnet.foreldrepengerInfoTekstFar" />
+                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstFar" />
                             )}
                         </BodyLong>
                     </Infobox>

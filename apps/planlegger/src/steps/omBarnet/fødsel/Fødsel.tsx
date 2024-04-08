@@ -26,27 +26,21 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
     return (
         <VStack gap="10">
             <GreenRadioGroup
-                label={
-                    antallBarn === '1' ? (
-                        <FormattedMessage id="barnet.erFødt" />
-                    ) : (
-                        <FormattedMessage id="barnet.erFødtFlere" />
-                    )
-                }
+                label={<FormattedMessage id="Fødsel.ErFødt" values={{ antallBarn }} />}
                 name="erBarnetFødt"
                 validate={[
                     isRequired(
                         intl.formatMessage({
-                            id: 'validation.required',
+                            id: 'ValidationMessage.Required',
                         }),
                     ),
                 ]}
             >
                 <Radio value={true} autoFocus={erOmBarnetIkkeOppgittFraFør}>
-                    <FormattedMessage id="ja" />
+                    <FormattedMessage id="DefaultMessage.Ja" />
                 </Radio>
                 <Radio value={false}>
-                    <FormattedMessage id="nei" />
+                    <FormattedMessage id="DefaultMessage.Nei" />
                 </Radio>
             </GreenRadioGroup>
             {erBarnetFødt && (

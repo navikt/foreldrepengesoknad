@@ -29,66 +29,42 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
         <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
             <VStack gap="10">
                 <Datepicker
-                    label={
-                        erAlenesøker ? (
-                            <>
-                                {flereBarn ? (
-                                    <FormattedMessage id="barnet.adopsjon.overtakelsesdatoDegFlere" />
-                                ) : (
-                                    <FormattedMessage id="barnet.adopsjon.overtakelsesdatoDeg" />
-                                )}
-                            </>
-                        ) : (
-                            <>
-                                {flereBarn ? (
-                                    <FormattedMessage id="barnet.adopsjon.overtakelsesdatoFlere" />
-                                ) : (
-                                    <FormattedMessage id="barnet.adopsjon.overtakelsesdato" />
-                                )}
-                            </>
-                        )
-                    }
+                    label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                     name="overtakelsesdato"
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     maxDate={dayjs().toDate()}
                     autofocusWhenEmpty
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'validation.required' })),
-                        isValidDate(intl.formatMessage({ id: 'validation.validDate' })),
+                        isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                        isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                         isBeforeTodayOrToday(
                             intl.formatMessage({
-                                id: 'validation.IdagEllerTidligere',
+                                id: 'ValidationMessage.IdagEllerTidligere',
                             }),
                         ),
                         isAfterOrSameAsSixMonthsAgo(
                             intl.formatMessage({
-                                id: 'validation.olderThan6months',
+                                id: 'ValidationMessage.OlderThan6months',
                             }),
                         ),
                     ]}
                 />
                 <Datepicker
-                    label={
-                        flereBarn ? (
-                            <FormattedMessage id="barnet.fødselsdatoFlere" />
-                        ) : (
-                            <FormattedMessage id="barnet.fødselsdato" />
-                        )
-                    }
+                    label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
                     name="fødselsdato"
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'validation.required' })),
-                        isValidDate(intl.formatMessage({ id: 'validation.validDate' })),
+                        isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                        isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                         isLessThanThreeWeeksAgo(
                             intl.formatMessage({
-                                id: 'validation.kanIkkeVære3UkerFraIdag',
+                                id: 'ValidationMessage.KanIkkeVære3UkerFraIdag',
                             }),
                         ),
                         erI22SvangerskapsukeEllerSenere(
                             intl.formatMessage({
-                                id: 'validation.duMåVæreIUke22',
+                                id: 'ValidationMessage.DuMåVæreIUke22',
                             }),
                         ),
                     ]}

@@ -62,23 +62,22 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <Infoboks
                                 header={
                                     erAleneforsørger ? (
-                                        <FormattedMessage id="oppsummering.infoboks.ingenHarRettDeg" />
+                                        <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRettDeg" />
                                     ) : (
-                                        <FormattedMessage id="oppsummering.infoboks.ingenHarRett" />
+                                        <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
                                     )
                                 }
                                 icon={<TasklistStartIcon height={28} width={28} color="#236B7D" />}
                             >
                                 <BodyLong>
-                                    {erAleneforsørger ? (
-                                        <FormattedMessage id="oppsummering.infoboks.basertPåSvareneDeg" />
-                                    ) : (
-                                        <FormattedMessage id="oppsummering.infoboks.basertPåSvarene" />
-                                    )}
+                                    <FormattedMessage
+                                        id="OppsummeringSteg.Infoboks.BasertPåSvarene"
+                                        values={{ erAleneforsørger }}
+                                    />
                                 </BodyLong>
                                 <BodyLong>
                                     <FormattedMessage
-                                        id="oppsummering.infoboks.engangsstønad"
+                                        id="OppsummeringSteg.Infoboks.Engangsstønad"
                                         values={{
                                             a: (msg: any) => (
                                                 <Link
@@ -98,10 +97,10 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     )}
                     <Alert variant="info">
                         {!harRett ? (
-                            <FormattedMessage id="oppsummering.informasjonPlanleggerErUnderUtviklingIkkeRett" />
+                            <FormattedMessage id="OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett" />
                         ) : (
                             <FormattedMessage
-                                id="oppsummering.informasjonPlanleggerErUnderUtvikling"
+                                id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
                                 values={{
                                     a: (msg: any) => (
                                         <Link
@@ -127,11 +126,10 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 <CalendarIcon height={28} width={28} fontSize="1.5rem" />
                                             </IconCircleWrapper>
                                             <ExpansionCard.Title size="medium">
-                                                {isAlene(hvemPlanlegger) ? (
-                                                    <FormattedMessage id="oppsummering.planenDin" />
-                                                ) : (
-                                                    <FormattedMessage id="oppsummering.planenDeres" />
-                                                )}
+                                                <FormattedMessage
+                                                    id="OppsummeringSteg.Planen"
+                                                    values={{ erAlenesøker: isAlene(hvemPlanlegger) }}
+                                                />
                                             </ExpansionCard.Title>
                                         </HStack>
                                     </ExpansionCard.Header>
@@ -157,7 +155,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 onClick={navigator.goToPreviousDefaultStep}
                                 icon={<ArrowLeftIcon />}
                             >
-                                <FormattedMessage id="oppsummering.tilbakeTil" />
+                                <FormattedMessage id="OppsummeringSteg.TilbakeTil" />
                             </Button>
                         </HStack>
                     </VStack>
@@ -166,7 +164,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
             <div className={styles.background}>
                 <VStack gap="4" className={styles.content}>
                     <Heading level="2" size="medium">
-                        <FormattedMessage id="oppsummering.andreVeivisere" />
+                        <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
                     </Heading>
                     <Link href={links.veiviser} target="_blank" rel="noreferrer" className={styles.lenkepanel}>
                         <Box
@@ -179,7 +177,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <HStack gap="5" align="center">
                                 <HvorMyeIkon />
                                 <Heading level="3" size="small">
-                                    <FormattedMessage id="oppsummering.veiviserHvorMye" />
+                                    <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
                                 </Heading>
                             </HStack>
                         </Box>
@@ -195,7 +193,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <HStack gap="5" align="center">
                                 <HvaSkjerNårIkon />
                                 <Heading level="3" size="small">
-                                    <FormattedMessage id="oppsummering.veiviserHvaSkjerNår" />
+                                    <FormattedMessage id="OppsummeringSteg.VeiviserHvaSkjerNår" />
                                 </Heading>
                             </HStack>
                         </Box>

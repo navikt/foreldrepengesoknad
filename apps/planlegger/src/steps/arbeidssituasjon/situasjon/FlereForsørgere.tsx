@@ -32,7 +32,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                 <Infobox
                     header={
                         <FormattedMessage
-                            id="arbeid.jobber.infoboks.harRettTilForeldrepenger"
+                            id="FlereForsørgere.Jobber.Infoboks.HarRettTilForeldrepenger"
                             values={{ navn: fornavnSøker }}
                         />
                     }
@@ -40,7 +40,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                 >
                     <BodyLong>
                         <FormattedMessage
-                            id="arbeid.jobber.infoboks.harJobbetSeksAvTiMnd"
+                            id="FlereForsørgere.Jobber.Infoboks.HarJobbetSeksAvTiMnd"
                             values={{ navn: fornavnSøker }}
                         />
                     </BodyLong>
@@ -50,18 +50,18 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                 <Infobox
                     header={
                         <FormattedMessage
-                            id="arbeid.infoboks.harIkkeRettTilForeldrepenger"
+                            id="FlereForsørgere.Infoboks.HarIkkeRettTilForeldrepenger"
                             values={{ navn: fornavnSøker }}
                         />
                     }
                     icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                 >
                     <BodyLong>
-                        <FormattedMessage id="arbeid.ufør.infoboks.erUfør" />
+                        <FormattedMessage id="FlereForsørgere.Ufør.Infoboks.ErUfør" />
                     </BodyLong>
                     <BodyLong>
                         <FormattedMessage
-                            id="arbeid.ufør.infoboks.lesMer"
+                            id="FlereForsørgere.Ufør.Infoboks.LesMer"
                             values={{
                                 a: (msg: any) => (
                                     <Link href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
@@ -78,18 +78,21 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                 <Infobox
                     header={
                         <FormattedMessage
-                            id="arbeid.infoboks.harIkkeRettTilForeldrepenger"
+                            id="FlereForsørgere.Infoboks.HarIkkeRettTilForeldrepenger"
                             values={{ navn: fornavnSøker }}
                         />
                     }
                     icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                 >
                     <BodyLong>
-                        <FormattedMessage id="arbeid.ingen.infoboks.manHarIkkeRett" values={{ navn: fornavnSøker }} />
+                        <FormattedMessage
+                            id="FlereForsørgere.Ingen.Infoboks.ManHarIkkeRett"
+                            values={{ navn: fornavnSøker }}
+                        />
                     </BodyLong>
                     <BodyLong>
                         <FormattedMessage
-                            id="arbeid.ingen.infoboks.engangsstønad"
+                            id="FlereForsørgere.Ingen.Infoboks.Engangsstønad"
                             values={{
                                 a: (msg: any) => (
                                     <Link href={links.veiviser} className="lenke" rel="noreferrer" target="_blank">
@@ -106,28 +109,30 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                 <VStack gap="5">
                     <GreenRadioGroup
                         name="jobberAnnenPart"
-                        label={<FormattedMessage id="arbeid.andreForelder" values={{ navn: fornavnAnnenPart }} />}
-                        validate={[isRequired(intl.formatMessage({ id: 'validation.required' }))]}
+                        label={
+                            <FormattedMessage id="FlereForsørgere.AndreForelder" values={{ navn: fornavnAnnenPart }} />
+                        }
+                        validate={[isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' }))]}
                     >
                         <Radio value={true} autoFocus>
-                            <FormattedMessage id="ja" />
+                            <FormattedMessage id="DefaultMessage.Ja" />
                         </Radio>
                         <Radio value={false}>
-                            <FormattedMessage id="nei" />
+                            <FormattedMessage id="DefaultMessage.Nei" />
                         </Radio>
                     </GreenRadioGroup>
                     {jobberAnnenPart === true && (
                         <Infobox
                             header={
                                 <FormattedMessage
-                                    id="arbeid.jobber.infoboks.harRettTilForeldrepenger"
+                                    id="FlereForsørgere.Jobber.Infoboks.HarRettTilForeldrepenger"
                                     values={{ navn: fornavnAnnenPart }}
                                 />
                             }
                             icon={<CheckmarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         >
                             <BodyLong>
-                                <FormattedMessage id="arbeid.jobber.infoboks.harJobbetSeksAvTiMnd" />
+                                <FormattedMessage id="FlereForsørgere.Jobber.Infoboks.HarJobbetSeksAvTiMnd" />
                             </BodyLong>
                         </Infobox>
                     )}
@@ -135,14 +140,14 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                         <Infobox
                             header={
                                 <FormattedMessage
-                                    id="arbeid.infoboks.harIkkeRettTilForeldrepenger"
+                                    id="FlereForsørgere.Infoboks.HarIkkeRettTilForeldrepenger"
                                     values={{ navn: fornavnAnnenPart }}
                                 />
                             }
                             icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         >
                             <BodyLong>
-                                <FormattedMessage id="arbeid.ingen.infoboks.manHarIkkeRett" />
+                                <FormattedMessage id="FlereForsørgere.Ingen.Infoboks.ManHarIkkeRett" />
                             </BodyLong>
                         </Infobox>
                     )}

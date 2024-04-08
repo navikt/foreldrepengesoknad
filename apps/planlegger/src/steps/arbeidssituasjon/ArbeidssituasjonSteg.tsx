@@ -51,36 +51,32 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <Heading level="2" size="medium">
-                        <FormattedMessage id="arbeid.tittel" />
+                        <FormattedMessage id="ArbeidssituasjonSteg.Tittel" />
                     </Heading>
                     <GreenRadioGroup
                         label={
-                            erAlenesøker ? (
-                                <FormattedMessage id="barnet.hvaGjelderDeg" />
-                            ) : (
-                                <FormattedMessage
-                                    id={'arbeid.hvaGjelder'}
-                                    values={{ navn: getNavnPåSøker(hvemPlanlegger, intl) }}
-                                />
-                            )
+                            <FormattedMessage
+                                id="ArbeidssituasjonSteg.HvaGjelder"
+                                values={{ erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) }}
+                            />
                         }
                         name="status"
                         validate={[
                             isRequired(
                                 intl.formatMessage({
-                                    id: 'validation.required',
+                                    id: 'ValidationMessage.Required',
                                 }),
                             ),
                         ]}
                     >
                         <Radio value={Arbeidsstatus.JOBBER} autoFocus>
-                            <FormattedMessage id="arbeid.jobber" />
+                            <FormattedMessage id="ArbeidssituasjonSteg.Jobber" />
                         </Radio>
                         <Radio value={Arbeidsstatus.UFØR}>
-                            <FormattedMessage id="arbeid.ufør" />
+                            <FormattedMessage id="ArbeidssituasjonSteg.Ufør" />
                         </Radio>
                         <Radio value={Arbeidsstatus.INGEN}>
-                            <FormattedMessage id="arbeid.ingen" />
+                            <FormattedMessage id="ArbeidssituasjonSteg.Ingen" />
                         </Radio>
                     </GreenRadioGroup>
                     {erAlenesøker && <Aleneforsørger status={status} />}

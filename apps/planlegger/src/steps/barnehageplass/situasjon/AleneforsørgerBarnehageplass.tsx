@@ -3,7 +3,7 @@ import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet, barnehagestartDato, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
@@ -13,20 +13,19 @@ interface Props {
     barnet: OmBarnet;
 }
 
-const FlereForsørgere: FunctionComponent<Props> = ({ barnet }) => {
+const AleneforsørgerBarnehageplass: FunctionComponent<Props> = ({ barnet }) => {
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
-    const erAdoptert = erBarnetAdoptert(barnet);
 
     return (
         <VStack gap="10">
             <BodyLong>
-                <FormattedMessage id="barnehageplass.kommuneTekst" />
+                <FormattedMessage id="AleneforsørgerBarnehageplass.KommuneTekstDeg" />
             </BodyLong>
             <Infobox
                 header={
                     <FormattedMessage
-                        id="barnehageplass.datoTittel"
+                        id="AleneforsørgerBarnehageplass.DatoTittel"
                         values={{
                             dato: barnehagestartDato(barnet),
                         }}
@@ -35,17 +34,12 @@ const FlereForsørgere: FunctionComponent<Props> = ({ barnet }) => {
                 icon={<BabyWrappedIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
             >
                 <BodyLong>
-                    {(erFødt || erAdoptert) && (
+                    {erFødt && (
                         <FormattedMessage
-                            id="barnehageplass.datoTekst"
+                            id="AleneforsørgerBarnehageplass.DatoTekst"
                             values={{
                                 a: (msg: any) => (
-                                    <Link
-                                        href={links.barnehageloven}
-                                        className="lenke"
-                                        rel="noreferrer"
-                                        target="_blank"
-                                    >
+                                    <Link href={links.barnehageloven} target="_blank" inlineText>
                                         {msg}
                                     </Link>
                                 ),
@@ -55,15 +49,10 @@ const FlereForsørgere: FunctionComponent<Props> = ({ barnet }) => {
                     )}
                     {erIkkeFødt && (
                         <FormattedMessage
-                            id="barnehageplass.datoTekstTermin"
+                            id="AleneforsørgerBarnehageplass.DatoTekstTermin"
                             values={{
                                 a: (msg: any) => (
-                                    <Link
-                                        href={links.barnehageloven}
-                                        className="lenke"
-                                        rel="noreferrer"
-                                        target="_blank"
-                                    >
+                                    <Link href={links.barnehageloven} target="_blank" inlineText>
                                         {msg}
                                     </Link>
                                 ),
@@ -74,16 +63,16 @@ const FlereForsørgere: FunctionComponent<Props> = ({ barnet }) => {
                 </BodyLong>
             </Infobox>
             <Infobox
-                header={<FormattedMessage id="barnehageplass.barnehageTittel" />}
+                header={<FormattedMessage id="AleneforsørgerBarnehageplass.BarnehageTittel" />}
                 icon={<InformationIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                 isGray
             >
                 <BodyLong>
-                    <FormattedMessage id="barnehageplass.barnehageTekst" />
+                    <FormattedMessage id="AleneforsørgerBarnehageplass.BarnehageTekst" />
                 </BodyLong>
             </Infobox>
         </VStack>
     );
 };
 
-export default FlereForsørgere;
+export default AleneforsørgerBarnehageplass;

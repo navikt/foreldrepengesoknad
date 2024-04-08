@@ -27,7 +27,7 @@ const OmÅTilpassePlanen: React.FunctionComponent = () => {
                     </div>
                     <div>
                         <ExpansionCard.Title size="medium">
-                            <FormattedMessage id="oversikt.omÅTilpassePlanen" />
+                            <FormattedMessage id="OmÅTilpassePlanen.Oversikt.OmÅTilpassePlanen" />
                         </ExpansionCard.Title>
                     </div>
                 </HStack>
@@ -47,7 +47,7 @@ const Innhold = () => {
         <>
             <VStack gap="5">
                 <BodyLong>
-                    <FormattedMessage id="oversikt.omÅTilpassePlanen.tekst" />
+                    <FormattedMessage id="OmÅTilpassePlanen.Tekst" />
                 </BodyLong>
 
                 {!erFar && (
@@ -60,10 +60,10 @@ const Innhold = () => {
                             </div>
                             <div>
                                 <Heading size="small">
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.førTermin" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.førTermin.tekst" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.FørTermin.Tekst" />
                                 </BodyLong>
                             </div>
                         </HStack>
@@ -75,10 +75,10 @@ const Innhold = () => {
                             </div>
                             <div>
                                 <Heading size="small">
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.deFørsteSeksUkene" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.deFørsteSeksUkene.tekst" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst" />
                                 </BodyLong>
                             </div>
                         </HStack>
@@ -90,10 +90,10 @@ const Innhold = () => {
                             </div>
                             <div>
                                 <Heading size="small">
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.leggeTilFerie" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.leggeTilFerie.tekst" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie.Tekst" />
                                 </BodyLong>
                             </div>
                         </HStack>
@@ -105,10 +105,10 @@ const Innhold = () => {
                             </div>
                             <div>
                                 <Heading size="small">
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.jobbeSamtidig" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.JobbeSamtidig" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.jobbeSamtidig.tekst" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.JobbeSamtidig.Tekst" />
                                 </BodyLong>
                             </div>
                         </HStack>
@@ -120,10 +120,10 @@ const Innhold = () => {
                             </div>
                             <div>
                                 <Heading size="small">
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.permisjonSamtidig" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.permisjonSamtidig.tekst" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig.Tekst" />
                                 </BodyLong>
                             </div>
                         </HStack>
@@ -139,10 +139,10 @@ const Innhold = () => {
                             </div>
                             <div>
                                 <Heading size="small">
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.toUkerRundtFødsel" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.ToUkerRundtFødsel" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.toUkerRundtFødsel.tekst" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst" />
                                 </BodyLong>
                             </div>
                         </HStack>
@@ -154,10 +154,10 @@ const Innhold = () => {
                             </div>
                             <div>
                                 <Heading size="small">
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.leggeTilFerie" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="oversikt.omÅTilpassePlanen.leggeTilFerie.tekstFar" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar" />
                                 </BodyLong>
                             </div>
                         </HStack>
