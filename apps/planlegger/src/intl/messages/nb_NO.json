@@ -158,7 +158,7 @@
     "OppsummeringSteg.VeiviserHvaSkjerNår": "Hva skjer når?",
     "OppsummeringHeader.Tittel": "Oppsummering",
     "OppgittInformasjon.OppgittInformasjon": "Dette svarte {erAleneforsørger, select, true {du} other {dere}}",
-    "OppgittInformasjon.Forelder": "Forelder",
+    "OppgittInformasjon.Forelder": "{erAleneforsørger, select, true {Forelder} other {Foreldre}}",
     "OppgittInformasjon.NavnBegge": "{navn1} og {navn2}",
     "OppgittInformasjon.AntallBarn": "Antall barn: {antall}",
     "OppgittInformasjon.Fødselsdato": "Fødselsdato: {dato}",

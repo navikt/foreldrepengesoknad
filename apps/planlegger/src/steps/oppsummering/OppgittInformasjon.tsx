@@ -99,7 +99,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                     <VStack gap="10">
                         <GreenPanel>
                             <Heading size="small">
-                                <FormattedMessage id="OppgittInformasjon.Forelder" />
+                                <FormattedMessage id="OppgittInformasjon.Forelder" values={{ erAleneforsørger }} />
                             </Heading>
                             <BodyLong>
                                 {erAleneforsørger ? (

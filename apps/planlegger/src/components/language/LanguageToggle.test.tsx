@@ -11,7 +11,7 @@ describe('<LanguageToggle>', () => {
         const changeLocale = vi.fn();
         const utils = render(<Default changeLocale={changeLocale} />);
 
-        expect(await screen.findByText('Norwegian')).toBeInTheDocument();
+        expect(await screen.findByText('Bokmål - norsk')).toBeInTheDocument();
 
         await userEvent.selectOptions(utils.getByRole('combobox'), 'en');
 
