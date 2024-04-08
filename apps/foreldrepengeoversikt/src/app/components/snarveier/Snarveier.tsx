@@ -5,10 +5,10 @@ import { Heading, LinkPanel } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { bemUtils } from '@navikt/fp-utils';
 
+import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import { NavRoutes } from 'app/routes/routes';
-import { SakOppslag } from 'app/types/SakOppslag';
+import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
-import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 import './snarveier.css';
 
@@ -25,9 +25,9 @@ const getLesMerLink = (stønadstype: Ytelse | undefined) => {
     return NavRoutes.LES_MER_OM_VÅRE_PENGESTØTTER;
 };
 
-interface Props {
-    saker: SakOppslag;
-}
+const getKlageLinkMedSak = (sak: Sak) => {
+    return `https://klage.nav.no/nb/klage/FORELDREPENGER?saksnummer=${sak.saksnummer}`;
+};
 
 const getKlageLink = (ytelse: Ytelse | undefined) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
@@ -61,12 +61,10 @@ const getSaksbehandlingstidLink = (ytelse: Ytelse | undefined) => {
     return NavRoutes.SAKSBEHANDLINGSTIDER;
 };
 
-const Snarveier: React.FunctionComponent<Props> = ({ saker }) => {
+const Snarveier: React.FunctionComponent = () => {
     const bem = bemUtils('snarveier');
     const intl = useIntl();
-    const path = location.pathname;
-    const alleSaker = getAlleYtelser(saker);
-    const currentSak = alleSaker.find((sak) => path.includes(sak.saksnummer));
+    const currentSak = useGetSelectedSak();
     const ytelse = currentSak ? currentSak.ytelse : undefined;
     const ytelseTekst =
         currentSak !== undefined ? currentSak.ytelse : intl.formatMessage({ id: 'snarveier.pengestøtter' });
@@ -101,11 +99,23 @@ const Snarveier: React.FunctionComponent<Props> = ({ saker }) => {
                             <div>{intl.formatMessage({ id: 'snarveier.endringerIDinSituasjon' })}</div>
                         </LinkPanel.Title>
                     </LinkPanel>
-                    <LinkPanel href={getKlageLink(ytelse)} border={false} className={bem.element('linkPanel')}>
-                        <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intl.formatMessage({ id: 'snarveier.slikKlagerDu' })}</div>
-                        </LinkPanel.Title>
-                    </LinkPanel>
+                    {currentSak !== undefined ? (
+                        <LinkPanel
+                            href={getKlageLinkMedSak(currentSak)}
+                            border={false}
+                            className={bem.element('linkPanel')}
+                        >
+                            <LinkPanel.Title className={bem.element('linkTitle')}>
+                                <div>{intl.formatMessage({ id: 'snarveier.jegVilKlage' })}</div>
+                            </LinkPanel.Title>
+                        </LinkPanel>
+                    ) : (
+                        <LinkPanel href={getKlageLink(ytelse)} border={false} className={bem.element('linkPanel')}>
+                            <LinkPanel.Title className={bem.element('linkTitle')}>
+                                <div>{intl.formatMessage({ id: 'snarveier.slikKlagerDu' })}</div>
+                            </LinkPanel.Title>
+                        </LinkPanel>
+                    )}
                     <LinkPanel href={links.brukerprofil} border={false} className={bem.element('linkPanel')}>
                         <LinkPanel.Title className={bem.element('linkTitle')}>
                             <div>{intl.formatMessage({ id: 'snarveier.kontonummer' })}</div>

@@ -11,6 +11,7 @@ import {
     useSetRedirectedFromSøknadsnummer,
 } from 'app/hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
 import Bankkonto from 'app/types/Bankkonto';
 import { GruppertSak } from 'app/types/GruppertSak';
@@ -41,6 +42,7 @@ const Forside: React.FunctionComponent<Props> = ({
     bankkonto,
 }) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
+    useSetSelectedSak(undefined);
 
     const params = useParams();
     useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
