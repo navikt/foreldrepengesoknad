@@ -98,7 +98,6 @@ const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnet): string 
 };
 
 const finnUttaksdataDeltUttak = (
-    hvemHarRett: HvemHarRett,
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
@@ -117,26 +116,21 @@ const finnUttaksdataDeltUttak = (
             ? getUttaksdagFraOgMedDato(familiehendelsedato)
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
-    const antallUker =
-        hvemHarRett === 'kunMorHarRett' ? totaltAntallUkerFellesperiode : antallUkerFellesperiodeForSøker1;
-    const sluttdatoSøker1 = antallUker
-        ? getUttaksdagFraOgMedDato(
-              dayjs(startdatoSøker1)
-                  .add(antallUkerMødrekvote, 'weeks')
-                  .add(antallUker, 'weeks')
-                  .format(ISO_DATE_FORMAT),
-          )
-        : getUttaksdagFraOgMedDato(dayjs(startdatoSøker1).add(antallUkerMødrekvote, 'weeks').format(ISO_DATE_FORMAT));
+    const sluttdatoSøker1 = getUttaksdagFraOgMedDato(
+        dayjs(startdatoSøker1)
+            .add(antallUkerMødrekvote, 'weeks')
+            .add(antallUkerFellesperiodeForSøker1, 'weeks')
+            .format(ISO_DATE_FORMAT),
+    );
 
     const startdatoSøker2 = getUttaksdagFraOgMedDato(dayjs(sluttdatoSøker1).add(1, 'day').format(ISO_DATE_FORMAT));
-    const sluttdatoSøker2 = antallUkerFellesperiodeForSøker2
-        ? getUttaksdagFraOgMedDato(
-              dayjs(startdatoSøker2)
-                  .add(antallUkerFellesperiodeForSøker2, 'weeks')
-                  .add(antallUkerFedrekvote, 'weeks')
-                  .format(ISO_DATE_FORMAT),
-          )
-        : getUttaksdagFraOgMedDato(dayjs(startdatoSøker2).add(antallUkerFedrekvote, 'weeks').format(ISO_DATE_FORMAT));
+
+    const sluttdatoSøker2 = getUttaksdagFraOgMedDato(
+        dayjs(startdatoSøker2)
+            .add(antallUkerFellesperiodeForSøker2, 'weeks')
+            .add(antallUkerFedrekvote, 'weeks')
+            .format(ISO_DATE_FORMAT),
+    );
 
     return {
         familiehendelsedato,
@@ -187,6 +181,6 @@ export const finnUttaksdata = (
     antallUkerFellesperiodeSøker1?: number,
 ) => {
     return hvemHarRett === 'beggeHarRett'
-        ? finnUttaksdataDeltUttak(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
+        ? finnUttaksdataDeltUttak(hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
         : finnUttaksdataIkkeDeltUttak(hvemPlanlegger, valgtStønadskonto, barnet);
 };
