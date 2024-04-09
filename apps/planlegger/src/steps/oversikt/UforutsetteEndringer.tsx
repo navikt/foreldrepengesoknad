@@ -2,6 +2,7 @@ import { ExclamationmarkIcon, PersonPregnantIcon, StethoscopeIcon } from '@navik
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 
@@ -37,9 +38,14 @@ const Innhold = () => {
     const intl = useIntl();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const erFar = hvemPlanlegger.type === Situasjon.FAR;
+    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const erFar = hvemPlanlegger.type === Situasjon.FAR;
     const antallBarn = barnet.antallBarn;
+
+    const morHarIkkeRett =
+        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     // TODO: endre fra erFar til kun far har rett
 
     return (
@@ -69,7 +75,7 @@ const Innhold = () => {
                         </BodyLong>
                     </div>
                 </HStack>
-                {!erFar && (
+                {!morHarIkkeRett && (
                     <HStack gap="5" align="start" wrap={false} justify="space-between">
                         <div>
                             <IconCircleWrapper color="lightBlue" size="medium">

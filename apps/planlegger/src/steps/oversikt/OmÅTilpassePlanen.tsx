@@ -9,6 +9,7 @@ import {
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 
@@ -44,6 +45,9 @@ const Innhold = () => {
     const intl = useIntl();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erFar = hvemPlanlegger.type === Situasjon.FAR;
+    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
+    const morHarIkkeRett =
+        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const antallBarn = barnet.antallBarn;
     // TODO: endre fra erFar til kun far har rett
@@ -54,7 +58,7 @@ const Innhold = () => {
                     <FormattedMessage id="OmÅTilpassePlanen.Tekst" />
                 </BodyLong>
 
-                {!erFar && (
+                {!morHarIkkeRett && (
                     <VStack gap="5">
                         <HStack gap="5" align="start" wrap={false} justify="space-between">
                             <div>
@@ -136,7 +140,7 @@ const Innhold = () => {
                         </HStack>
                     </VStack>
                 )}
-                {erFar && (
+                {morHarIkkeRett && (
                     <VStack gap="5">
                         <HStack gap="5" align="start" wrap={false} justify="space-between">
                             <div>

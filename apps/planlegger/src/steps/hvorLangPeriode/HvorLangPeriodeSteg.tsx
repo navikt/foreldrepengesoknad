@@ -14,6 +14,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
+import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {
@@ -62,6 +63,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
         return navigator.goToNextStep(nextRoute);
     };
+    const erMor = hvemPlanlegger.type === Situasjon.MOR;
     const antallBarn = barnet.antallBarn;
     const dekningsgrad = formMethods.watch('dekningsgrad');
 
@@ -108,14 +110,21 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
                         <Infobox
                             header={
-                                <FormattedMessage
-                                    id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
-                                    values={{
-                                        hvem:
-                                            finnSøkerTekst(intl, hvemPlanlegger) ||
-                                            finnAnnenPartTekst(intl, hvemPlanlegger),
-                                    }}
-                                />
+                                erMor ? (
+                                    <FormattedMessage
+                                        id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
+                                        values={{
+                                            hvem: finnSøkerTekst(intl, hvemPlanlegger),
+                                        }}
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
+                                        values={{
+                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                        }}
+                                    />
+                                )
                             }
                             icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                             isGray
