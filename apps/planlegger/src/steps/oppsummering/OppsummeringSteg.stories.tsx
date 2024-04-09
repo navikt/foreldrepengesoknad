@@ -156,7 +156,6 @@ export const OppsummeringFlereForsørgereHundreProsentAdopsjon: Story = {
         omBarnet: {
             erFødsel: false,
             erBarnetFødt: true,
-            erAdoptert: true,
             fødselsdato: '2022-07-10',
             antallBarn: '1',
             overtakelsesdato: '2022-010-10',
@@ -178,7 +177,6 @@ export const HarIkkeRett: Story = {
         omBarnet: {
             erFødsel: false,
             erBarnetFødt: true,
-            erAdoptert: true,
             fødselsdato: '2022-07-10',
             antallBarn: '1',
             overtakelsesdato: '2022-010-10',

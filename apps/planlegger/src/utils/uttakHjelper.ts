@@ -14,6 +14,7 @@ import {
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepenger,
+    getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
 } from './stønadskontoer';
 
@@ -106,6 +107,7 @@ const finnUttaksdataDeltUttak = (
     const totaltAntallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
     const antallUkerFellesperiodeForSøker2 = totaltAntallUkerFellesperiode - antallUkerFellesperiodeForSøker1;
 
+    const antallUkerForeldrepengerFørFødsel = getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto);
     const antallUkerMødrekvote = getAntallUkerMødrekvote(valgtStønadskonto);
     const antallUkerFedrekvote = getAntallUkerFedrekvote(valgtStønadskonto);
 
@@ -116,12 +118,21 @@ const finnUttaksdataDeltUttak = (
             ? getUttaksdagFraOgMedDato(familiehendelsedato)
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
-    const sluttdatoSøker1 = getUttaksdagFraOgMedDato(
-        dayjs(startdatoSøker1)
-            .add(antallUkerMødrekvote, 'weeks')
-            .add(antallUkerFellesperiodeForSøker1, 'weeks')
-            .format(ISO_DATE_FORMAT),
-    );
+    const sluttdatoSøker1 =
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR
+            ? getUttaksdagFraOgMedDato(
+                  dayjs(startdatoSøker1)
+                      .add(antallUkerMødrekvote, 'weeks')
+                      .add(antallUkerFellesperiodeForSøker1, 'weeks')
+                      .format(ISO_DATE_FORMAT),
+              )
+            : getUttaksdagFraOgMedDato(
+                  dayjs(startdatoSøker1)
+                      .add(antallUkerForeldrepengerFørFødsel, 'weeks')
+                      .add(antallUkerMødrekvote, 'weeks')
+                      .add(antallUkerFellesperiodeForSøker1, 'weeks')
+                      .format(ISO_DATE_FORMAT),
+              );
 
     const startdatoSøker2 = getUttaksdagFraOgMedDato(dayjs(sluttdatoSøker1).add(1, 'day').format(ISO_DATE_FORMAT));
 
@@ -154,14 +165,14 @@ const finnUttaksdataIkkeDeltUttak = (
 
     const ukerForeldrepenger = getAntallUkerForeldrepenger(valgtStønadskonto);
     const ukerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+    const antallUkerForeldrepengerFørFødsel = getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto);
 
     const sluttdatoSøker = getUttaksdagFraOgMedDato(
-        hvemPlanlegger.type === Situasjon.FAR
-            ? dayjs(startdatoSøker)
-                  .add(ukerForeldrepenger, 'weeks')
-                  .add(ukerAktivitetsfriKvote, 'weeks')
-                  .format(ISO_DATE_FORMAT)
-            : dayjs(startdatoSøker).add(ukerForeldrepenger, 'weeks').format(ISO_DATE_FORMAT),
+        dayjs(startdatoSøker)
+            .add(ukerForeldrepenger, 'weeks')
+            .add(ukerAktivitetsfriKvote, 'weeks')
+            .add(antallUkerForeldrepengerFørFødsel, 'weeks')
+            .format(ISO_DATE_FORMAT),
     );
 
     return {

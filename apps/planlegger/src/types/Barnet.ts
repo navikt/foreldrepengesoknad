@@ -16,7 +16,7 @@ export type BarnetErIkkeFødt = {
 };
 
 export type BarnetErAdoptert = {
-    erAdoptert: boolean;
+    erFødsel: boolean;
     antallBarn: string;
     adopsjonsdato: string;
     overtakelsesdato: string;
@@ -41,7 +41,7 @@ export const erBarnetFødt = (omBarnet: OmBarnet): omBarnet is BarnetErFødt => 
     return false;
 };
 export const erBarnetAdoptert = (omBarnet: OmBarnet): omBarnet is BarnetErAdoptert => {
-    if ((omBarnet as BarnetErAdoptert).erAdoptert === true) {
+    if ((omBarnet as BarnetErAdoptert).erFødsel === false) {
         return true;
     }
     return false;

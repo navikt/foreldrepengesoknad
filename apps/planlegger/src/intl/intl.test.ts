@@ -6,7 +6,7 @@ import nb from './messages/nb_NO.json';
 import nn from './messages/nn_NO.json';
 
 describe('intl messages', () => {
-    it.skip('Check that bokmål og nynorsk language files contain the same keys', () => {
+    it('Check that bokmål og nynorsk language files contain the same keys', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(nn).includes(key));
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(nb).includes(key));
 
@@ -17,7 +17,7 @@ describe('intl messages', () => {
         expect(missingKeysNynorsk.length).toBe(0);
     });
 
-    it.skip('Check that bokmål og english language files contain the same keys', () => {
+    it('Check that bokmål og english language files contain the same keys', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(en).includes(key));
         const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nb).includes(key));
 
@@ -28,7 +28,7 @@ describe('intl messages', () => {
         expect(missingKeysEnglish.length).toBe(0);
     });
 
-    it.skip('Check that nynorsk og english language files contain the same keys', () => {
+    it('Check that nynorsk og english language files contain the same keys', () => {
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(en).includes(key));
         const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nb).includes(key));
 
