@@ -62,7 +62,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
         return navigator.goToNextStep(nextRoute);
     };
-
+    const antallBarn = barnet.antallBarn;
     const dekningsgrad = formMethods.watch('dekningsgrad');
 
     const morHarIkkeRett =
@@ -194,7 +194,10 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         >
                             <BodyLong>
-                                <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.SisteDagTekst" />
+                                <FormattedMessage
+                                    id="HvorLangPeriodeSteg.Infoboks.SisteDagTekst"
+                                    values={{ antallBarn }}
+                                />
                             </BodyLong>
                             {morHarIkkeRett && (
                                 <VStack gap="2">

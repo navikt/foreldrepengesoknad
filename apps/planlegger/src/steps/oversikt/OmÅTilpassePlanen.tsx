@@ -8,7 +8,8 @@ import {
 } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -40,8 +41,11 @@ const OmÅTilpassePlanen: React.FunctionComponent = () => {
 };
 
 const Innhold = () => {
+    const intl = useIntl();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erFar = hvemPlanlegger.type === Situasjon.FAR;
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const antallBarn = barnet.antallBarn;
     // TODO: endre fra erFar til kun far har rett
     return (
         <>
@@ -63,7 +67,7 @@ const Innhold = () => {
                                     <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="OmÅTilpassePlanen.FørTermin.Tekst" />
+                                    <FormattedMessage id="OmÅTilpassePlanen.FørTermin.Tekst" values={{ antallBarn }} />
                                 </BodyLong>
                             </div>
                         </HStack>
@@ -78,7 +82,10 @@ const Innhold = () => {
                                     <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst" />
+                                    <FormattedMessage
+                                        id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst"
+                                        values={{ erFar, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                    />
                                 </BodyLong>
                             </div>
                         </HStack>
