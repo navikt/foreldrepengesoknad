@@ -49,9 +49,10 @@ const getSøkerensUttaksplanForslag = (
     const ankomstNorgeForAdoptertBarn =
         isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? dayjs(barn.ankomstdato).toDate() : undefined;
     const søkerErAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
-    const annenPartsSisteDag = annenPartsPerioder
-        ? Uttaksdagen(annenPartsPerioder[annenPartsPerioder.length - 1].tidsperiode.tom).denneEllerForrige()
-        : undefined;
+    const annenPartsSisteDag =
+        annenPartsPerioder && annenPartsPerioder.length > 0
+            ? Uttaksdagen(annenPartsPerioder[annenPartsPerioder.length - 1].tidsperiode.tom).denneEllerForrige()
+            : undefined;
     const startdatoPermisjon = getOppstartsdatoFromFordelingValg(
         fordeling.oppstartAvForeldrepengerValg,
         fordeling.oppstartDato,
