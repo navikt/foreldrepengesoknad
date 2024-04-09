@@ -1,5 +1,7 @@
-import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import dayjs from 'dayjs';
+
+import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+
 import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const samtidigUttakSkalBesvares = (
@@ -23,7 +25,7 @@ const samtidigUttakSkalBesvares = (
     if (erAleneOmsorg || !erDeltUttakINorge || søkerHarMidlertidigOmsorg) {
         return false;
     }
-    if (søkerErFarEllerMedmor && dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'd')) {
+    if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'd')) {
         return false;
     }
     if (
