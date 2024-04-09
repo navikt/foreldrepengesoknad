@@ -1003,7 +1003,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
         ).toBeInTheDocument();
 
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
-        expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument(); //TODO: Er det riktig tekst som ikke skal være der?
+        expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
         expect(
@@ -1065,7 +1065,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
         ).toBeInTheDocument();
 
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
-        expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument(); //TODO: Er det riktig tekst som ikke skal være der?
+        expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
     });
 
     it('skal ikke kunne begynne uttaket før fødsel', async () => {
