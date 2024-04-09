@@ -1,1 +1,0 @@
-const t={MØDREKVOTE:95,FEDREKVOTE:95,FELLESPERIODE:90},e={farRundtFødsel:0,generellMinsterett:0,toTette:0},s={kontoer:t,minsteretter:e},n={MØDREKVOTE:75,FEDREKVOTE:75,FELLESPERIODE:80},o={farRundtFødsel:0,generellMinsterett:0,toTette:0},r={kontoer:n,minsteretter:o};export{s as a,r as s};

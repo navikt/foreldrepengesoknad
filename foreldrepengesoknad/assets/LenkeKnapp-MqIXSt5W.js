@@ -1,1 +1,0 @@
-import{j as e}from"./jsx-runtime-DoxjgJx5.js";import{L as t,B as a}from"./Link-BqZ6CohM.js";const n=({text:o,onClick:s})=>e.jsx(t,{as:"button",className:"lenkeKnapp lenke",onClick:p=>{p.preventDefault(),s()},children:e.jsx(a,{children:o})}),c=n;n.__docgenInfo={description:"",methods:[],displayName:"LenkeKnapp"};export{c as L};
