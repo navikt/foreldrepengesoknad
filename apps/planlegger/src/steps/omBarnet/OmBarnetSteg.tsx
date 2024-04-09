@@ -5,9 +5,10 @@ import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { isAlene } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
+import { Situasjon } from 'types/Søkersituasjon';
 
 import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -25,7 +26,19 @@ const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
 
     return <FormattedMessage id="OmBarnetSteg.Adopsjon.HvorMange" values={{ erAlenesøker }} />;
 };
-
+const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
+        return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
+    }
+    if (
+        hvemPlanlegger.type === Situasjon.FAR ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR
+    ) {
+        return intl.formatMessage({ id: 'OversiktSteg.Far' });
+    }
+    return undefined;
+};
 const OmBarnetSteg: React.FunctionComponent = () => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
@@ -49,6 +62,8 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const antallBarn = formMethods.watch('antallBarn');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
+    const erFarEllerMedmor =
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR || hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
@@ -131,7 +146,11 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                 <BodyLong>
                                     <FormattedMessage
                                         id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg"
-                                        values={{ erAlenesøker }}
+                                        values={{
+                                            erAlenesøker,
+                                            erFarEllerMedmor,
+                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                        }}
                                     />
                                 </BodyLong>
                             </Infobox>

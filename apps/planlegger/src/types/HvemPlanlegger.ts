@@ -87,3 +87,24 @@ export const getFornavnPåAnnenPart = (hvemPlanlegger: HvemPlanlegger, intl: Int
     const navn = getNavnPåAnnenPart(hvemPlanlegger, intl);
     return navn ? navn.split(' ')[0] : undefined;
 };
+
+export const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
+    hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
+    hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
+    hvemPlanlegger.type === Situasjon.MOR
+        ? intl.formatMessage({ id: 'OversiktSteg.Mor' })
+        : intl.formatMessage({ id: 'OversiktSteg.Far' });
+
+export const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
+        return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
+    }
+    if (
+        hvemPlanlegger.type === Situasjon.FAR ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR
+    ) {
+        return intl.formatMessage({ id: 'OversiktSteg.Far' });
+    }
+    return undefined;
+};

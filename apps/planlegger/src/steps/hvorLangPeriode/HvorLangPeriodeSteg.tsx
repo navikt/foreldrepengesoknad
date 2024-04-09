@@ -11,9 +11,8 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erEttBarn, erToBarn } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { isAlene } from 'types/HvemPlanlegger';
+import { finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
@@ -50,7 +49,6 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
     const erAlenesøker = isAlene(hvemPlanlegger);
-
     const lagre = (formValues: HvorLangPeriode) => {
         oppdaterPeriode(formValues);
         const nextRoute =
@@ -70,7 +68,6 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
-
     const valgtStønadskonto =
         periode || dekningsgrad
             ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
@@ -97,32 +94,27 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         isGray
                     >
-                        {erAlenesøker ? (
-                            <BodyLong>
-                                {erEttBarn(barnet) && (
-                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekstDeg" />
-                                )}
-                                {erToBarn(barnet) && (
-                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst.ToBarn" />
-                                )}
-                            </BodyLong>
-                        ) : (
-                            <BodyLong>
-                                {erEttBarn(barnet) && (
-                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst" />
-                                )}
-                                {erToBarn(barnet) && (
-                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst.ToBarn" />
-                                )}
-                            </BodyLong>
-                        )}
+                        <BodyLong>
+                            <FormattedMessage
+                                id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
+                                values={{
+                                    erAlenesøker,
+                                    uker100: 'TODO',
+                                    uker80: 'TODO',
+                                }}
+                            />
+                        </BodyLong>
                     </Infobox>
                     {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
                         <Infobox
                             header={
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
-                                    values={{ farHarIkkeRett }}
+                                    values={{
+                                        hvem:
+                                            finnSøkerTekst(intl, hvemPlanlegger) ||
+                                            finnAnnenPartTekst(intl, hvemPlanlegger),
+                                    }}
                                 />
                             }
                             icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
@@ -134,14 +126,20 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden" />
                                     </BodyLong>
                                     <BodyLong>
-                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar" />
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar"
+                                            values={{ hvem: finnSøkerTekst(intl, hvemPlanlegger) }}
+                                        />
                                     </BodyLong>
                                 </VStack>
                             )}
                             {morHarIkkeRett && (
                                 <VStack gap="2">
                                     <BodyLong>
-                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden" />
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden"
+                                            values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                        />
                                     </BodyLong>
                                     <BodyLong>
                                         <FormattedMessage
@@ -157,6 +155,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                         {msg}
                                                     </Link>
                                                 ),
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                             }}
                                         />
                                     </BodyLong>
@@ -176,12 +175,10 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         ]}
                     >
                         <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
-                            {erEttBarn(barnet) && <FormattedMessage id="HvorLangPeriodeSteg.100" />}
-                            {erToBarn(barnet) && <FormattedMessage id="HvorLangPeriodeSteg.100.toBarn" />}
+                            <FormattedMessage id="HvorLangPeriodeSteg.100" values={{ uker100: 'TODO' }} />
                         </Radio>
                         <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
-                            {erEttBarn(barnet) && <FormattedMessage id="HvorLangPeriodeSteg.80" />}
-                            {erToBarn(barnet) && <FormattedMessage id="HvorLangPeriodeSteg.80.toBarn" />}{' '}
+                            <FormattedMessage id="HvorLangPeriodeSteg.80" values={{ uker80: 'TODO' }} />
                         </Radio>
                     </GreenRadioGroup>
                     {dekningsgrad && (
@@ -208,6 +205,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 uker: antallUkerAktivitetsfriKvote,
                                                 uker2: antallUker,
                                                 b: (msg: any) => <b>{msg}</b>,
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                             }}
                                         />
                                     </BodyLong>
@@ -228,6 +226,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                     </Link>
                                                 ),
                                                 b: (msg: any) => <b>{msg}</b>,
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                             }}
                                         />
                                     </BodyLong>

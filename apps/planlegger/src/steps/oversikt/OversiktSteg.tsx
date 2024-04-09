@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
     finnFellesperiodeFordelingOptionTekst,
     getFellesperiodefordelingSelectOptions,
@@ -17,8 +17,7 @@ import {
 import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
@@ -55,27 +54,6 @@ const termindatoEllerFødselsdato = (barnet: OmBarnet) => {
     }
     return undefined;
 };
-
-const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
-        return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
-    }
-    if (
-        hvemPlanlegger.type === Situasjon.FAR ||
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR
-    ) {
-        return intl.formatMessage({ id: 'OversiktSteg.Far' });
-    }
-    return undefined;
-};
-
-const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
-    hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
-    hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
-    hvemPlanlegger.type === Situasjon.MOR
-        ? intl.formatMessage({ id: 'OversiktSteg.Mor' })
-        : intl.formatMessage({ id: 'OversiktSteg.Far' });
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
@@ -159,10 +137,15 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         style={{ width: '100%' }}
                     >
                         <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
-                            <FormattedMessage id="OversiktSteg.100" />
+                            <FormattedMessage
+                                id="OversiktSteg.100"
+                                values={{
+                                    uker: 'TODO',
+                                }}
+                            />
                         </ToggleGroup.Item>
                         <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
-                            <FormattedMessage id="OversiktSteg.80" />
+                            <FormattedMessage id="OversiktSteg.80" values={{ uker: 'TODO' }} />
                         </ToggleGroup.Item>
                     </ToggleGroup>
                     {!erAleneforsørger &&

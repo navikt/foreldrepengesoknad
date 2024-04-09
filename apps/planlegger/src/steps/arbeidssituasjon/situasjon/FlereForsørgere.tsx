@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger, getFornavnPåAnnenPart, getFornavnPåSøker } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, Link, Radio, VStack } from '@navikt/ds-react';
 
@@ -23,6 +23,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
     const formMethods = useFormContext<Arbeidssituasjon>();
     const jobberAnnenPart = formMethods.watch('jobberAnnenPart');
 
+    const erAlenesøker = isAlene(hvemPlanlegger);
     const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 
@@ -57,7 +58,10 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                     icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                 >
                     <BodyLong>
-                        <FormattedMessage id="FlereForsørgere.Ufør.Infoboks.ErUfør" />
+                        <FormattedMessage
+                            id="FlereForsørgere.Ufør.Infoboks.ErUfør"
+                            values={{ erAlenesøker, navn: fornavnSøker }}
+                        />
                     </BodyLong>
                     <BodyLong>
                         <FormattedMessage
