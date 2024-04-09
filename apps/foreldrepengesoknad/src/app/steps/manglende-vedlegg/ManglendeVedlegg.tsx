@@ -198,6 +198,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
                 <MorForSykDokumentasjon
                     attachments={morForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
@@ -207,6 +208,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
                 <FarInnlagtDokumentasjon
                     attachments={farInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
@@ -216,6 +218,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
                 <FarForSykDokumentasjon
                     attachments={farForSykvedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
@@ -225,6 +228,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     situasjon={søkersituasjon.situasjon}
                     termindato={termindato}
                     updateAttachments={updateAttachments}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
                 <BarnInnlagtDokumentasjon
                     attachments={barnInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}

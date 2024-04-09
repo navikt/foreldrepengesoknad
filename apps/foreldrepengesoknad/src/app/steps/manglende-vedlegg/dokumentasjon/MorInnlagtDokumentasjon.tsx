@@ -17,6 +17,7 @@ interface Props {
     familiehendelsesdato: string;
     termindato: string | undefined;
     situasjon: Situasjon;
+    erFarEllerMedmor: boolean;
 }
 
 const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
@@ -27,6 +28,7 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     familiehendelsesdato,
     situasjon,
     termindato,
+    erFarEllerMedmor,
 }) => {
     const intl = useIntl();
 
@@ -45,8 +47,14 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
                 termindato={termindato}
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
-                labelText={intlUtils(intl, 'manglendeVedlegg.morInnlagt.label')}
-                description={intlUtils(intl, 'manglendeVedlegg.morInnlagt.description', { navn: navnPåForeldre.mor })}
+                labelText={intlUtils(intl, 'manglendeVedlegg.morInnlagt.label', {
+                    navn: navnPåForeldre.mor,
+                    erFarEllerMedmor,
+                })}
+                description={intlUtils(intl, 'manglendeVedlegg.morInnlagt.description', {
+                    navn: navnPåForeldre.mor,
+                    erFarEllerMedmor,
+                })}
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
             />
         </Block>
