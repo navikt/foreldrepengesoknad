@@ -3,9 +3,9 @@ import GreenPanel from 'components/boxes/GreenPanel';
 import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 import { formatError } from 'utils/customErrorFormatter';
 
@@ -20,7 +20,19 @@ import {
 } from '@navikt/fp-validation';
 
 const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
-
+const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
+        return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
+    }
+    if (
+        hvemPlanlegger.type === Situasjon.FAR ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR
+    ) {
+        return intl.formatMessage({ id: 'OversiktSteg.Far' });
+    }
+    return undefined;
+};
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
     erOmBarnetIkkeOppgittFraFør: boolean;
@@ -36,6 +48,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
     const datoTreMndFraTermin = termindato !== undefined ? dayjs(termindato).subtract(3, 'month').toDate() : undefined;
 
     const erAlenesøker = isAlene(hvemPlanlegger);
+    const erFar = hvemPlanlegger.type === Situasjon.MOR_OG_FAR;
 
     return (
         <VStack gap="5">
@@ -80,23 +93,32 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                         >
                             <BodyLong>
                                 <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst"
+                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
                                     values={{
                                         erMor: hvemPlanlegger.type === Situasjon.MOR,
                                     }}
                                 />
                             </BodyLong>
                             <BodyLong>
-                                {hvemPlanlegger.type === Situasjon.MOR ? (
-                                    <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstMor" />
-                                ) : (
-                                    <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstFar" />
-                                )}
+                                <FormattedMessage
+                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
+                                    values={{
+                                        erMor: hvemPlanlegger.type === Situasjon.MOR,
+                                    }}
+                                />
                             </BodyLong>
-
-                            <BodyLong>
-                                {!erAlenesøker && <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstFar" />}
-                            </BodyLong>
+                            {hvemPlanlegger.type !== Situasjon.MOR && (
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
+                                        values={{
+                                            erAlenesøker,
+                                            erFar,
+                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                        }}
+                                    />
+                                </BodyLong>
+                            )}
                         </Infobox>
                     )}
                 </>
@@ -105,28 +127,35 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                 <>
                     <Infobox
                         header={
-                            erAlenesøker ? (
-                                <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTermin" values={{ erAlenesøker }} />
-                            ) : (
-                                <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" />
-                            )
+                            <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" values={{ erAlenesøker }} />
                         }
                         icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                     >
                         <BodyLong>
-                            <FormattedMessage
-                                id="ErIkkeFødtPanel.UnderTreMndTilTermin"
-                                values={{ erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) }}
-                            />
-                        </BodyLong>
-                        <BodyLong>
                             {hvemPlanlegger.type === Situasjon.MOR && (
-                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstMor" />
-                            )}
-                            {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
-                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekstFar" />
+                                <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTermin" values={{ erAlenesøker }} />
                             )}
                         </BodyLong>
+                        {!erAlenesøker && (
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="ErIkkeFødtPanel.UnderTreMndTilTermin"
+                                    values={{ erAlenesøker, navn: getFornavnPåSøker(hvemPlanlegger, intl) }}
+                                />
+                            </BodyLong>
+                        )}
+                        {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
+                                    values={{
+                                        erAlenesøker,
+                                        erFar,
+                                        hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                    }}
+                                />
+                            </BodyLong>
+                        )}
                     </Infobox>
                 </>
             )}

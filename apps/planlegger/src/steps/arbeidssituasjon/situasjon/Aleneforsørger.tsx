@@ -23,11 +23,11 @@ const Aleneforsørger: FunctionComponent<Props> = ({ status }) => (
         {status === Arbeidsstatus.UFØR && (
             <Infobox header={<FormattedMessage id="Aleneforsørger.Infoboks.HarIkkeRettTilForeldrepengerDeg" />}>
                 <BodyLong>
-                    <FormattedMessage id="Aleneforsørger.Ufør.Infoboks.ErUførDeg" />
+                    <FormattedMessage id="Aleneforsørger.Ufør.Infoboks.ErUfør" />
                 </BodyLong>
                 <BodyLong>
                     <FormattedMessage
-                        id="Aleneforsørger.Ufør.Infoboks.LesMerDeg"
+                        id="Aleneforsørger.Ufør.Infoboks.LesMer"
                         values={{
                             a: (msg: any) => (
                                 <Link href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
