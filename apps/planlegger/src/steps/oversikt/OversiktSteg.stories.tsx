@@ -213,7 +213,6 @@ export const PeriodeFlereForsørgereAdoptertKunFarHarRett: Story = {
         omBarnet: {
             erBarnetFødt: true,
             erFødsel: false,
-            erAdoptert: true,
             fødselsdato: '2024-09-01',
             termindato: '2024-09-01',
             overtakelsesdato: '2024-09-01',

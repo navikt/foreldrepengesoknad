@@ -35,7 +35,7 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
             farHarAleneomsorg: søkersituasjon?.situasjon === Situasjon.FAR,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
             termindato: omBarnet && erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined,
-            omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.adopsjonsdato : undefined,
+            omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.overtakelsesdato : undefined,
             morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
             erMor: søkersituasjon?.situasjon !== Situasjon.FAR,
             minsterett: true,

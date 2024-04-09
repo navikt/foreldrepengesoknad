@@ -101,7 +101,7 @@ export const FlereForsørgereAdoptertBarnFødtJanuarStartAugust: Story = {
         },
         omBarnet: {
             antallBarn: '1',
-            erAdoptert: true,
+            erFødsel: false,
             erBarnetFødt: true,
             fødselsdato: '2026-01-11',
             overtakelsesdato: '2026-03-01',
