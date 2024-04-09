@@ -54,7 +54,6 @@ function getUttaksdagTilOgMedDato(dato: Date): Date {
             return dato;
     }
 }
-
 /**
  * Første gyldige uttaksdag etter dato
  * @param termin

@@ -37,7 +37,7 @@ const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder)
     return false;
 };
 
-const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
+export const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (!erFarMedmor) {
         return true;
     }
@@ -65,10 +65,10 @@ const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string)
     return undefined;
 };
 
-const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
+export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     termindatoSaksgrunnlag?: string,
     termindatoSaksgrunnlagAnnenPart?: string,
-) => {
+): string | undefined => {
     if (termindatoSaksgrunnlagAnnenPart) {
         return termindatoSaksgrunnlagAnnenPart;
     }

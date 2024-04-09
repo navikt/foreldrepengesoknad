@@ -1,12 +1,15 @@
-import { Radio } from '@navikt/ds-react';
-import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { RadioGroup } from '@navikt/fp-form-hooks';
-import { isRequired } from '@navikt/fp-validation';
-import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
-import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
 import dayjs from 'dayjs';
 import { FunctionComponent, ReactElement } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import { Radio } from '@navikt/ds-react';
+
+import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { RadioGroup } from '@navikt/fp-form-hooks';
+import { isRequired } from '@navikt/fp-validation';
+
+import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
+import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'app/utils/barnUtils';
 
 export enum SelectableBarnOptions {
     SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',

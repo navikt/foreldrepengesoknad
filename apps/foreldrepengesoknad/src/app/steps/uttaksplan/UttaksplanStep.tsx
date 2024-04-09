@@ -1,5 +1,10 @@
-import { Uttaksplan, getHarAktivitetskravIPeriodeUtenUttak, kreverUttaksplanVedlegg } from '@navikt/uttaksplan';
-import { finnOgSettInnHull, settInnAnnenPartsUttak } from '@navikt/uttaksplan/src/builder/uttaksplanbuilderUtils';
+import {
+    Uttaksplan,
+    finnOgSettInnHull,
+    getHarAktivitetskravIPeriodeUtenUttak,
+    kreverUttaksplanVedlegg,
+    settInnAnnenPartsUttak,
+} from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -17,6 +22,8 @@ import {
     Step,
     StepButtonWrapper,
     getAktiveArbeidsforhold,
+    getAntallUker,
+    getAntallUkerMinsterett,
     getErMorUfør,
     getFarMedmorErAleneOmOmsorg,
     getForeldreparSituasjon,
@@ -53,7 +60,7 @@ import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksp
 import { RequestStatus } from 'app/types/RequestState';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { getEndringstidspunkt, getMorsSisteDag } from 'app/utils/dateUtils';
+import { getEndringstidspunkt } from 'app/utils/dateUtils';
 import {
     getStartdatoFørstePeriodeAnnenPart,
     mapAnnenPartsEksisterendeSakFromDTO,
@@ -63,7 +70,6 @@ import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoU
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
-import { getAntallUker, getAntallUkerMinsterett } from '../uttaksplan-info/utils/stønadskontoer';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
 import {
@@ -71,6 +77,7 @@ import {
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
+import { lagUttaksplanForslag } from './lagUttaksplanForslag';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
@@ -103,14 +110,17 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const uttaksplanInfo = useContextGetData(ContextDataType.UTTAKSPLAN_INFO);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
 
+    const [harPlanForslagIFørstegangssøknad, setHarPlanForslagIFørstegangssøknad] = useState(
+        erEndringssøknad || uttaksplan.length > 0,
+    );
     const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterBarnFraNesteSak = useContextSaveData(ContextDataType.BARN_FRA_NESTE_SAK);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
@@ -119,9 +129,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
-    const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata.endringstidspunkt);
+    const [endringstidspunkt, setEndringstidspunkt] = useState(uttaksplanMetadata?.endringstidspunkt);
     const [perioderSomSkalSendesInn, setPerioderSomSkalSendesInn] = useState(
-        uttaksplanMetadata.perioderSomSkalSendesInn || [],
+        uttaksplanMetadata?.perioderSomSkalSendesInn || [],
     );
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -147,7 +157,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const opprinneligPlan = eksisterendeSak?.uttaksplan;
     const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
     const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
-    const morsSisteDag = getMorsSisteDag(uttaksplanInfo);
     const termindato = getTermindato(barn);
     const annenForelderFnr =
         isAnnenForelderOppgitt(annenForelder) && !!annenForelder.utenlandskFnr === false
@@ -236,7 +245,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         });
         oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
-        oppdaterAppRoute(SøknadRoutes.UTTAKSPLAN_INFO);
+        oppdaterAppRoute(SøknadRoutes.FORDELING);
         mellomlagreSøknadOgNaviger();
         navigator.goToPreviousDefaultStep();
     };
@@ -303,7 +312,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             eksisterendeSak !== undefined &&
             opprinneligPlan !== undefined &&
             eksisterendeVedtakAnnenPart !== undefined &&
-            !uttaksplanMetadata.annenPartsUttakErLagtTilIPlan
+            !uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan
         ) {
             //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
             opprinneligPlan.forEach((p) => {
@@ -537,6 +546,48 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         });
     };
 
+    const stønadskontoer = useMemo(() => {
+        if (stønadskontoer80 && stønadskontoer100) {
+            return getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
+        }
+        return undefined;
+    }, [stønadskontoer80, stønadskontoer100]);
+
+    const valgteStønadskontoer = useMemo(() => {
+        if (stønadskontoer) {
+            return periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                ? stønadskontoer[100]
+                : stønadskontoer[80];
+        }
+        return [];
+    }, [stønadskontoer, periodeMedForeldrepenger.dekningsgrad]);
+
+    useEffect(() => {
+        if (uttaksplan.length === 0) {
+            const uttaksplanForslag = lagUttaksplanForslag(
+                valgteStønadskontoer,
+                eksisterendeVedtakAnnenPart?.uttaksplan,
+                søkersituasjon,
+                barn,
+                barnFraNesteSak,
+                annenForelder,
+                fordeling,
+                uttaksplanMetadata,
+                oppdaterUttaksplanMetadata,
+            );
+            oppdaterUttaksplan(uttaksplanForslag);
+            setHarPlanForslagIFørstegangssøknad(true);
+            mellomlagreSøknadOgNaviger();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (!eksisterendeSak && !erEndringssøknad && eksisterendeVedtakAnnenPart !== undefined) {
+            oppdaterEksisterendeSak(eksisterendeVedtakAnnenPart);
+        }
+    }, [erEndringssøknad, eksisterendeVedtakAnnenPart, eksisterendeSak, oppdaterEksisterendeSak]);
+
     useEffect(() => {
         if (tilgjengeligeStønadskontoerError) {
             sendErrorMessageToSentry(tilgjengeligeStønadskontoerError);
@@ -560,6 +611,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);
 
     if (
+        !harPlanForslagIFørstegangssøknad ||
         !stønadskontoer100 ||
         !stønadskontoer80 ||
         (eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
@@ -573,13 +625,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         );
     }
 
-    const stønadskontoer = getValgtStønadskontoFor80Og100Prosent(stønadskontoer80, stønadskontoer100);
     const minsterettUkerToTette = getAntallUkerMinsterett(stønadskontoer100.minsteretter.toTette);
-
-    const valgteStønadskontoer =
-        periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? stønadskontoer[100]
-            : stønadskontoer[80];
 
     const erTomEndringssøknad =
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);
@@ -609,7 +655,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     return (
         <UttaksplanFormComponents.FormikWrapper
             initialValues={getUttaksplanFormInitialValues(
-                uttaksplanMetadata.ønskerJustertUttakVedFødsel,
+                uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
                 periodeRundtFødselKanAutomatiskJusteres,
             )}
             onSubmit={onSubmit}
@@ -666,9 +712,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             setUttaksplanErGyldig={setUttaksplanErGyldig}
                             eksisterendeSak={eksisterendeSak}
                             perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                            morsSisteDag={morsSisteDag}
                             harKomplettUttaksplan={harKomplettUttaksplan}
-                            opprinneligPlan={uttaksplanMetadata.harUttaksplanBlittSlettet ? undefined : opprinneligPlan}
+                            opprinneligPlan={
+                                uttaksplanMetadata?.harUttaksplanBlittSlettet ? undefined : opprinneligPlan
+                            }
                             handleSlettUttaksplan={handleSlettUttaksplan}
                             handleResetUttaksplan={handleResetUttaksplan}
                             termindato={termindato ? dayjs(termindato).toDate() : undefined}

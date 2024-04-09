@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import {
     Situasjon,
     TidsperiodeDate,
@@ -8,7 +10,6 @@ import {
     isValidTidsperiode,
     uttaksConstants,
 } from '@navikt/fp-common';
-import dayjs from 'dayjs';
 
 export interface Uttaksdatoer {
     førsteUttaksdag: Date;
@@ -63,10 +64,27 @@ export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Da
     return Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 }
 
-export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: Date): Date {
+export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: Date | undefined): Date {
+    if (!familiehendelsesdato) {
+        throw new Error('Mangler informasjon om familiehendelsesdato.');
+    }
     return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
         uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
     );
+}
+
+export function getFørsteUttaksdagAnkomstdatoNorge(anksomstdatoNorge: Date | undefined): Date {
+    if (!anksomstdatoNorge) {
+        throw new Error('Mangler informasjon om ankomstdato til Norge.');
+    }
+    return Uttaksdagen(anksomstdatoNorge).denneEllerNeste();
+}
+
+export function getFørsteUttaksdagDatoForAleneomsorg(datoFroAleneomsorg: Date | undefined): Date {
+    if (!datoFroAleneomsorg) {
+        throw new Error('Mangler informasjon om dato for aleneomsorg.');
+    }
+    return Uttaksdagen(datoFroAleneomsorg).denneEllerNeste();
 }
 
 export function getFørsteMuligeUttaksdag(

@@ -58,7 +58,6 @@ const NumericField: FunctionComponent<Props> = ({
             description={description}
             type="text"
             inputMode="numeric"
-            pattern="[0-9]*"
             error={getError(errors, name)}
             autoFocus={autoFocus}
             autoComplete="off"

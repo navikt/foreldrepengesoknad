@@ -1,3 +1,6 @@
+import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/uttaksplan';
+import dayjs from 'dayjs';
+
 import {
     Forelder,
     Periode,
@@ -6,7 +9,6 @@ import {
     StønadskontoType,
     Tidsperioden,
     TilgjengeligStønadskonto,
-    UtsettelseÅrsakType,
     Uttaksdagen,
     andreAugust2022ReglerGjelder,
     dateIsSameOrAfter,
@@ -19,11 +21,6 @@ import {
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import {
-    splittPeriodePåDato,
-    splittUttaksperiodePåFamiliehendelsesdato,
-} from '@navikt/uttaksplan/src/builder/leggTilPeriode';
-import { skalFarUtsetteEtterMorSinSisteUttaksdag } from '../dateUtils';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
@@ -99,22 +96,18 @@ const deltUttakAdopsjonSøktSist = (
     familiehendelsesdato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     erFarEllerMedmor: boolean,
-    antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
     farSinFørsteUttaksdag: Date,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
     if (erFarEllerMedmor) {
         // Oppfører seg identisk som fødselsscenario
         return deltUttakFødselFarMedmor(
             tilgjengeligeStønadskontoer,
-            antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
             farSinFørsteUttaksdag,
-            begrunnelseForUtsettelse,
             familiehendelsesdato,
             undefined,
             undefined,
@@ -124,11 +117,9 @@ const deltUttakAdopsjonSøktSist = (
     } else {
         const forslag = deltUttakFødselFarMedmor(
             tilgjengeligeStønadskontoer,
-            antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
             farSinFørsteUttaksdag,
-            begrunnelseForUtsettelse,
             familiehendelsesdato,
             undefined,
             undefined,
@@ -169,11 +160,9 @@ const deltUttakAdopsjon = (
     startdatoPermisjon: Date | undefined,
     fellesperiodeukerMor: number | undefined,
     harAnnenForelderSøktFP: boolean | undefined,
-    antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
     if (!harAnnenForelderSøktFP) {
@@ -191,11 +180,9 @@ const deltUttakAdopsjon = (
             famDato,
             tilgjengeligeStønadskontoer,
             erFarEllerMedmor,
-            antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag!,
             farSinFørsteUttaksdag!,
-            begrunnelseForUtsettelse,
             førsteUttaksdagNesteBarnsSak,
         );
     }
@@ -204,12 +191,12 @@ const deltUttakAdopsjon = (
 const deltUttakFødselMor = (
     famDato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    ønsketStartdatoPermisjon: Date | undefined,
+    ønsketStartdatoPermisjon: Date,
     fellesperiodeukerMor: number | undefined,
 ): Periode[] => {
     const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
-    const skalHaForeldrePengerFørFødsel = ønsketStartdatoPermisjon ? true : false;
+    const skalHaForeldrePengerFørFødsel = dayjs(ønsketStartdatoPermisjon).isBefore(dayjs(famDato), 'd');
     const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel,
     );
@@ -309,11 +296,9 @@ const deltUttakFødselMor = (
 
 const deltUttakFødselFarMedmor = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
     farSinFørsteUttaksdag: Date,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     morHarRettPåForeldrepengerIEØS: boolean | undefined,
@@ -339,24 +324,6 @@ const deltUttakFødselFarMedmor = (
     );
 
     const morHarRett = true;
-
-    if (
-        begrunnelseForUtsettelse &&
-        morSinSisteUttaksdag !== undefined &&
-        skalFarUtsetteEtterMorSinSisteUttaksdag(farSinFørsteUttaksdag, morSinSisteUttaksdag)
-    ) {
-        perioder.push({
-            id: guid(),
-            årsak: begrunnelseForUtsettelse,
-            type: Periodetype.Utsettelse,
-            forelder: Forelder.farMedmor,
-            erArbeidstaker: false, // TODO
-            tidsperiode: {
-                fom: Uttaksdagen(morSinSisteUttaksdag).neste(),
-                tom: Uttaksdagen(farSinFørsteUttaksdag).forrige(),
-            },
-        });
-    }
 
     if (fedrekvoteKonto !== undefined) {
         const erPeriodeWLBRundtFødsel =
@@ -415,10 +382,6 @@ const deltUttakFødselFarMedmor = (
             antallDagerFellesperiode = 5 * antallUkerFellesperiodeFarMedmor;
         }
 
-        if (antallDagerFellesperiodeFarMedmor !== undefined && antallDagerFellesperiodeFarMedmor !== 0) {
-            antallDagerFellesperiode = antallDagerFellesperiode + antallDagerFellesperiodeFarMedmor;
-        }
-
         if (antallDagerFellesperiode > 0) {
             const fellesPeriode: Periode = {
                 id: guid(),
@@ -441,13 +404,11 @@ const deltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: Date,
     fellesperiodeukerMor: number | undefined,
-    antallDagerFellesperiodeFarMedmor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date | undefined,
     farSinFørsteUttaksdag: Date | undefined,
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined,
     annenForelderHarRettPåForeldrepengerIEØS: boolean | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
     termindato?: Date | undefined,
@@ -461,11 +422,9 @@ const deltUttakFødsel = (
 
         return deltUttakFødselFarMedmor(
             tilgjengeligeStønadskontoerUtenFPP,
-            antallDagerFellesperiodeFarMedmor,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag!,
             farSinFørsteUttaksdag!,
-            begrunnelseForUtsettelse,
             famDato,
             termindato,
             annenForelderHarRettPåForeldrepengerIEØS,
@@ -479,14 +438,12 @@ export interface DeltUttakParams {
     famDato: Date;
     erFarEllerMedmor: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    startdatoPermisjon: Date | undefined;
-    fellesperiodeukerMor: number | undefined;
+    startdatoPermisjon: Date;
+    fellesperiodeUkerMor: number | undefined;
     harAnnenForelderSøktFP: boolean | undefined;
-    antallDagerFellesperiodeFarMedmor: number | undefined;
     antallUkerFellesperiodeFarMedmor: number | undefined;
     morSinSisteUttaksdag: Date | undefined;
     farSinFørsteUttaksdag: Date | undefined;
-    begrunnelseForUtsettelse: UtsettelseÅrsakType | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
     annenForelderHarRettPåForeldrepengerIEØS?: boolean;
     termindato?: Date;
@@ -499,13 +456,11 @@ export const deltUttak = (params: DeltUttakParams) => {
             params.erFarEllerMedmor,
             params.tilgjengeligeStønadskontoer,
             params.startdatoPermisjon,
-            params.fellesperiodeukerMor,
+            params.fellesperiodeUkerMor,
             params.harAnnenForelderSøktFP,
-            params.antallDagerFellesperiodeFarMedmor,
             params.antallUkerFellesperiodeFarMedmor,
             params.morSinSisteUttaksdag,
             params.farSinFørsteUttaksdag,
-            params.begrunnelseForUtsettelse,
             params.førsteUttaksdagNesteBarnsSak,
         );
     }
@@ -516,12 +471,10 @@ export const deltUttak = (params: DeltUttakParams) => {
             params.erFarEllerMedmor,
             params.tilgjengeligeStønadskontoer,
             params.startdatoPermisjon,
-            params.fellesperiodeukerMor,
-            params.antallDagerFellesperiodeFarMedmor,
+            params.fellesperiodeUkerMor,
             params.antallUkerFellesperiodeFarMedmor,
             params.morSinSisteUttaksdag,
             params.farSinFørsteUttaksdag,
-            params.begrunnelseForUtsettelse,
             params.annenForelderHarRettPåForeldrepengerIEØS,
             params.førsteUttaksdagNesteBarnsSak,
             params.termindato,

@@ -1,11 +1,14 @@
+import { action } from '@storybook/addon-actions';
+import { StoryFn } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
+
 import { Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
-import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
-import { MemoryRouter } from 'react-router-dom';
+
 import OmBarnetSteg from './OmBarnetSteg';
 
 const promiseAction =

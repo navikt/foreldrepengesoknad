@@ -14,7 +14,9 @@ import {
     Uttaksdagen,
     bemUtils,
     capitalizeFirstLetter,
+    getAntallUker,
     getFlerbarnsuker,
+    getVarighetString,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
@@ -25,7 +27,6 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
@@ -169,7 +170,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="uttaksplaninfo.49Uker"
                                 values={{
-                                    antallUker: getAntallUker(stønadskonto100),
+                                    varighetString: getVarighetString(getAntallUker(stønadskonto100) * 5, intl),
                                 }}
                             />
                         </Radio>
@@ -186,7 +187,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="uttaksplaninfo.59Uker"
                                 values={{
-                                    antallUker: getAntallUker(stønadskonto80),
+                                    varighetString: getVarighetString(getAntallUker(stønadskonto80) * 5, intl),
                                 }}
                             />
                         </Radio>

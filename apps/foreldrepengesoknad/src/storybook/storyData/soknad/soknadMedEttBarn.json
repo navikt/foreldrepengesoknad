@@ -26,6 +26,6 @@
         "erEndringssøknad": false
     },
     "version": 4,
-    "currentRoute": "/soknad/uttaksplan-info",
+    "currentRoute": "/soknad/fordeling",
     "søknadGjelderEtNyttBarn": true
 }

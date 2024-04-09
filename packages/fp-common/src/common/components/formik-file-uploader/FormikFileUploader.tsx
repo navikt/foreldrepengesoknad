@@ -50,7 +50,7 @@ const fileExtensionIsValid = (filename: string): boolean => {
 
 const fileSizeIsValid = (filesizeInB: number): boolean => {
     return filesizeInB <= MAX_FIL_STØRRELSE_BYTES;
-};  
+};
 
 const sjekkVedlegg = (
     alleNyeVedlegg: Attachment[],

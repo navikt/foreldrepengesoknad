@@ -27,6 +27,7 @@ export {
     formatDate,
     formatDateIso,
     formatDateExtended,
+    formatDateMedUkedag,
     formatTime,
     dagenFør,
     treUkerSiden,

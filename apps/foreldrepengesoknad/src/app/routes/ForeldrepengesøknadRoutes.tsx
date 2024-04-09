@@ -12,6 +12,7 @@ import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
 import useSendSøknad from 'app/context/useSendSøknad';
 import Velkommen from 'app/pages/velkommen/Velkommen';
 import AnnenForelderSteg from 'app/steps/annen-forelder/AnnenForelderSteg';
+import FordelingSteg from 'app/steps/fordeling/FordelingSteg';
 import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
 import ManglendeVedlegg from 'app/steps/manglende-vedlegg/ManglendeVedlegg';
 import OmBarnetSteg from 'app/steps/om-barnet/OmBarnetSteg';
@@ -21,7 +22,6 @@ import SøkersituasjonSteg from 'app/steps/søkersituasjon/SøkersituasjonSteg';
 import UtenlandsoppholdSteg from 'app/steps/utenlandsopphold/UtenlandsoppholdSteg';
 import SenereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
 import TidligereUtenlandsoppholdSteg from 'app/steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
-import UttaksplanInfo from 'app/steps/uttaksplan-info/UttaksplanInfo';
 import UttaksplanStep from 'app/steps/uttaksplan/UttaksplanStep';
 import { Kvittering } from 'app/types/Kvittering';
 
@@ -131,11 +131,11 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.UTTAKSPLAN_INFO}
+                path={SøknadRoutes.FORDELING}
                 element={
-                    <UttaksplanInfo
-                        søkerInfo={søkerInfo}
-                        erEndringssøknad={erEndringssøknad}
+                    <FordelingSteg
+                        søker={søkerInfo.søker}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

@@ -1,12 +1,14 @@
+import { CalendarIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { CalendarIcon } from '@navikt/aksel-icons';
-import { BodyShort, Heading, Box, VStack, HStack } from '@navikt/ds-react';
-import { Dekningsgrad, TilgjengeligStønadskonto, bemUtils, getVarighetString } from '@navikt/fp-common';
-import { StepButtons } from '@navikt/fp-ui';
+
+import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
+
+import { Dekningsgrad, TilgjengeligStønadskonto, bemUtils, getAntallUker, getVarighetString } from '@navikt/fp-common';
 import { Kjønn } from '@navikt/fp-types';
+import { StepButtons } from '@navikt/fp-ui';
+
 import { ContextDataType, useContextSaveData } from 'app/context/FpDataContext';
-import { getAntallUker } from '../uttaksplan-info/utils/stønadskontoer';
 
 import './dekningsgradValgtAvAnnenPartPanel.less';
 

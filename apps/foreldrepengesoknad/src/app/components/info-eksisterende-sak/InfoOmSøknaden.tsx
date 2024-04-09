@@ -15,6 +15,7 @@ import {
     bemUtils,
     formatDate,
     formaterDato,
+    getAntallUker,
     getFarMedmorErAleneOmOmsorg,
     getForeldreparSituasjon,
     getKjønnFromFnr,
@@ -37,7 +38,7 @@ import { Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { getAntallUker } from 'app/steps/uttaksplan-info/utils/stønadskontoer';
+import { getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
 import InfoEksisterendePerioder from './InfoEksisterendePerioder';
@@ -88,9 +89,8 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const annenForelderNavn = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
-        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
-        : false;
+    const erDeltUttak = getIsDeltUttak(annenForelder);
+
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerINorge;
     const erAleneOmOmsorg = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erAleneOmOmsorg : true;
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);

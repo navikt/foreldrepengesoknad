@@ -1,0 +1,46 @@
+.fordeling-påvirkninger {
+    margin: 1rem 0;
+}
+
+.fordeling-påvirkninger__heading {
+    font-size: 20px;
+}
+
+.fordeling-påvirkninger__påvirkning {
+    display: grid;
+    grid-template-columns: 7% 93%;
+    grid-template-rows: 100%;
+    padding-bottom: 1rem;
+}
+
+.fordeling-påvirkninger__undertittel {
+    font-weight: bold;
+}
+
+.fordeling-påvirkninger__ikon-frame {
+    grid-column: 1;
+    grid-row: 1;
+    background-color: var(--Global-Deepblue-500, #b1d9e9);
+    border-radius: 15px;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.fordeling-påvirkninger__ikon {
+    color: var(--Global-Deepblue-500, #005b82);
+    width: 25px;
+    height: 25px;
+    padding: 2px;
+}
+
+@media (max-width: 768px) {
+    .fordeling-påvirkninger__påvirkning {
+        display: grid;
+        grid-template-columns: 15% 85%;
+        grid-template-rows: 100%;
+        padding-bottom: 1rem;
+    }
+}

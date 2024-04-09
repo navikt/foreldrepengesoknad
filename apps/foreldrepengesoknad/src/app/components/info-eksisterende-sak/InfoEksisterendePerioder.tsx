@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -15,7 +16,6 @@ import {
 } from '@navikt/fp-common';
 
 import './infoEksisterendePerioder.less';
-import dayjs from 'dayjs';
 
 interface Props {
     oppgittePerioder: Periode[];

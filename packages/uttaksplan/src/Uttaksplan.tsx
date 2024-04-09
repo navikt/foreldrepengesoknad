@@ -84,7 +84,6 @@ interface Props {
     antallBarn: number;
     eksisterendeSak: EksisterendeSak | undefined;
     perioderSomSkalSendesInn: Periode[];
-    morsSisteDag: Date | undefined;
     harKomplettUttaksplan: boolean;
     opprinneligPlan: Periode[] | undefined;
     termindato: Date | undefined;

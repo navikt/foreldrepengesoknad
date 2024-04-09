@@ -6,7 +6,6 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import {
-    ISOStringToDate,
     Periode,
     Perioden,
     hasValue,
@@ -15,12 +14,10 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 import { dateToISOString } from '@navikt/fp-formik';
 import { SøkerBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 
-import UttaksplanInfo, { isFarMedmorFødselBeggeHarRettUttaksplanInfo } from 'app/context/types/UttaksplanInfo';
 import { Alder } from 'app/types/Alder';
 
 dayjs.extend(utc);
@@ -129,13 +126,6 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
         dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
         dayjs(new Date()).isSameOrAfter(andreAugust2022, 'day')
     );
-};
-
-export const skalFarUtsetteEtterMorSinSisteUttaksdag = (
-    farSinFørsteUttaksdag: Date,
-    morsSisteUttaksdag: Date,
-): boolean => {
-    return dayjs(farSinFørsteUttaksdag).isAfter(Uttaksdagen(morsSisteUttaksdag).neste(), 'day');
 };
 
 export const getEndringstidspunkt = (
@@ -252,16 +242,4 @@ const getOldestDate = (
     return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
         ? endringstidspunktNyPlan
         : endringstidspunktOpprinneligPlan;
-};
-
-export const getMorsSisteDag = (uttaksplanInfo: UttaksplanInfo | undefined): Date | undefined => {
-    if (!uttaksplanInfo) {
-        return undefined;
-    }
-
-    if (isFarMedmorFødselBeggeHarRettUttaksplanInfo(uttaksplanInfo)) {
-        return ISOStringToDate(uttaksplanInfo.morsSisteDag);
-    }
-
-    return undefined;
 };

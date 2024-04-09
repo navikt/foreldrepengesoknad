@@ -9,7 +9,9 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
+
 import { ContextDataType } from 'app/context/FpDataContext';
+
 import { cleanSøknad, getPeriodeVedTidspunkt, getUttaksplanMedFriUtsettelsesperiode } from './apiUtils';
 
 const getAnnenForelderUførMock = (

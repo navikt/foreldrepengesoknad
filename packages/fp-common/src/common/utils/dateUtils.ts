@@ -17,11 +17,13 @@ dayjs.extend(isBetween);
 
 dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';
-const dateFormatExtended = 'DD. MMM YYYY';
+const dateFormatExtended = 'DD. MMMM YYYY';
+const dateFormatMedUkedag = 'dddd DD. MMM YYYY';
 
 export const formatDate = (date: Date | string) => dayjs(date).format(dateFormat);
 export const formatDateUtc = (date: Date | string) => dayjs.utc(date).format(dateFormat);
 export const formatDateExtended = (date: Date | string) => dayjs(date).format(dateFormatExtended);
+export const formatDateMedUkedag = (date: Date | string) => dayjs(date).format(dateFormatMedUkedag);
 
 export const formatTidsperiode = (tidsperiode: Tidsperiode) => {
     return `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom)}`;
@@ -179,13 +181,13 @@ export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boole
     if (date && otherDate) {
         return dayjs(date).isSameOrBefore(otherDate, 'day');
     }
-    return true;
+    return false;
 };
 export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {
         return dayjs(date).isSameOrAfter(otherDate, 'day');
     }
-    return true;
+    return false;
 };
 
 export const dateIsBetween = (date: DateValue, fom: DateValue | string, tom: DateValue | string): boolean =>

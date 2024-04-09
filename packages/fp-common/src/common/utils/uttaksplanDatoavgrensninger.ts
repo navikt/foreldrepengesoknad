@@ -28,27 +28,32 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Datepi
     };
 };
 
+const getSisteDatoForForeldrepengeOppstart = (termindato: Date | undefined, familiehendelsesdato: Date) => {
+    if (!termindato || dayjs(familiehendelsesdato).isSameOrBefore(dayjs(termindato), 'd')) {
+        return familiehendelsesdato;
+    }
+    return termindato;
+};
+
 const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | undefined): DatepickerLimitationsString => {
+    const datoÅRegneFra = getSisteDatoForForeldrepengeOppstart(termindato, familiehendelsesdato);
     const termindatoMinus12Uker =
         termindato !== undefined
             ? dayjs(termindato).subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1, 'days')
             : undefined;
     const erFødselsdatoFørTermindatoMinus12Uker =
-        termindato !== undefined ? dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker) : false;
+        termindato !== undefined ? dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker, 'd') : false;
 
     if (erFødselsdatoFørTermindatoMinus12Uker) {
-        const maksDato = Uttaksdagen(dayjs(termindato).toDate()).forrige();
+        const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).denneEllerNeste();
         const minDato = Uttaksdagen(familiehendelsesdato).denneEllerForrige();
         return {
             ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
             weekendsNotSelectable: true,
         };
     } else {
-        const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
-        const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).forrige();
-        const minDato = Uttaksdagen(maksDato).trekkFra(
-            uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1,
-        );
+        const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).denneEllerNeste();
+        const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5);
         return {
             ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
             weekendsNotSelectable: true,
