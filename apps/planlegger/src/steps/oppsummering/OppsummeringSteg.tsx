@@ -133,7 +133,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             </ExpansionCard.Title>
                                         </HStack>
                                     </ExpansionCard.Header>
-                                    <ExpansionCard.Content className={styles.calendar}>
+                                    <ExpansionCard.Content>
                                         <Calendar periods={uttaksperioder} useSmallerWidth />
                                     </ExpansionCard.Content>
                                 </ExpansionCard>
