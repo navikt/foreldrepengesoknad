@@ -1,7 +1,8 @@
 import { ExclamationmarkIcon, PersonPregnantIcon, StethoscopeIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -33,8 +34,12 @@ const UforutsetteEndringer: React.FunctionComponent = () => {
 };
 
 const Innhold = () => {
+    const intl = useIntl();
+
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erFar = hvemPlanlegger.type === Situasjon.FAR;
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const antallBarn = barnet.antallBarn;
     // TODO: endre fra erFar til kun far har rett
 
     return (
@@ -76,7 +81,10 @@ const Innhold = () => {
                                 <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk" />
                             </Heading>
                             <BodyLong>
-                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst" />
+                                <FormattedMessage
+                                    id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
+                                    values={{ antallBarn, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                />
                             </BodyLong>
                         </div>
                     </HStack>

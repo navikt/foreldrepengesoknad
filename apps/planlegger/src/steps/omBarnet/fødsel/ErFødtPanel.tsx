@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
+import { Situasjon } from 'types/Søkersituasjon';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
@@ -34,7 +35,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
     const erFødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
-
+    const erFar = hvemPlanlegger.type === Situasjon.MOR_OG_FAR;
     return (
         <VStack gap="5">
             <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
@@ -93,7 +94,10 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                     </BodyLong>
                     {!erAlenesøker && (
                         <BodyLong>
-                            <FormattedMessage id="ErFødtPanel.Født.InfoboksTekstFar" />
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                values={{ erFar }}
+                            />
                         </BodyLong>
                     )}
                 </Infobox>
@@ -112,7 +116,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                         <FormattedMessage id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr" />
                     </BodyLong>
                     <BodyLong>
-                        <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
+                        <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" values={{ erFar }} />
                     </BodyLong>
                 </Infobox>
             )}

@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, erFarDelAvSøknaden, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 import { formatError } from 'utils/customErrorFormatter';
 
@@ -48,7 +48,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
     const datoTreMndFraTermin = termindato !== undefined ? dayjs(termindato).subtract(3, 'month').toDate() : undefined;
 
     const erAlenesøker = isAlene(hvemPlanlegger);
-    const erFar = hvemPlanlegger.type === Situasjon.MOR_OG_FAR;
+    const erFar = erFarDelAvSøknaden(hvemPlanlegger.type);
 
     return (
         <VStack gap="5">
@@ -126,9 +126,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
             {termindato !== undefined && dayjs(termindato).isBefore(DATO_3_MND_FRAM) && (
                 <>
                     <Infobox
-                        header={
-                            <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" values={{ erAlenesøker }} />
-                        }
+                        header={<FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" />}
                         icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                     >
                         <BodyLong>
