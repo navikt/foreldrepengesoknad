@@ -4,7 +4,7 @@
 
     "LanguageToggle.Bokmål": "Bokmål - Norwegian",
     "LanguageToggle.Nynorsk": "Nynorsk - Norwegian",
-    "LanguageToggle.Engelsk": "Norsk",
+    "LanguageToggle.Engelsk": "English",
 
     "ValidationMessage.Required": "You must remember to answer this question before you proceed.",
     "ValidationMessage.InFuture": "The date you chose is in the future.",
