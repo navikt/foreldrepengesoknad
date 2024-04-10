@@ -120,5 +120,25 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    return [];
+    if (hvemHarRett === 'kunFarHarRettMorHovedsøker' && startdatoSøker2 && sluttdatoSøker2) {
+        return [
+            {
+                fom: familiehendelsedato,
+                tom: familiehendelsedato,
+                color: DayColor.PINK,
+            },
+            {
+                fom: startdatoSøker1,
+                tom: sluttdatoSøker1,
+                color: DayColor.BLUE,
+            },
+            {
+                fom: startdatoSøker2,
+                tom: sluttdatoSøker2,
+                color: DayColor.GREEN,
+            },
+        ];
+    }
+
+    throw Error('Ingen perioder');
 };

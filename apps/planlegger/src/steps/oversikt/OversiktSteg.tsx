@@ -183,50 +183,58 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </Select>
                         )}
                     <VStack gap="5">
-                        {hvemHarRett !== 'kunMedfarEllerMedmorHarRett' ? (
-                            <HStack gap="1">
-                                <div className={styles.bluePanel}>
-                                    <HStack gap="2" align="center">
-                                        <BlåSirkel />
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="OversiktSteg.UkerForeldrepenger"
-                                                values={{
-                                                    hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
-                                                    uker: dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks'),
-                                                    dato: dayjs(startdatoSøker1).format('dddd D MMM'),
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    </HStack>
-                                </div>
-                                <Spacer />
-                                {!erAleneforsørger && annenPartTekst && hvemHarRett !== 'kunMorHarRett' && (
-                                    <HStack gap="3" wrap={false}>
-                                        <div className={styles.greenPanel}>
-                                            <HStack gap="2" align="center">
-                                                <GrønnSirkel />
-                                                <BodyShort>
-                                                    <FormattedMessage
-                                                        id="OversiktSteg.UkerForeldrepenger"
-                                                        values={{
-                                                            hvem: capitalizeFirstLetter(annenPartTekst),
-                                                            uker: dayjs(sluttdatoSøker2).diff(
-                                                                dayjs(startdatoSøker2),
-                                                                'weeks',
-                                                            ),
-                                                            dato: dayjs(startdatoSøker2).format('dddd D MMM'),
-                                                        }}
-                                                    />
-                                                </BodyShort>
-                                            </HStack>
-                                        </div>
-                                    </HStack>
-                                )}
-                            </HStack>
-                        ) : (
+                        {hvemHarRett !== 'kunMedfarEllerMedmorHarRett' &&
+                            hvemHarRett !== 'kunFarHarRettMorHovedsøker' && (
+                                <HStack gap="1">
+                                    <div className={styles.bluePanel}>
+                                        <HStack gap="2" align="center">
+                                            <BlåSirkel />
+                                            <BodyShort>
+                                                <FormattedMessage
+                                                    id="OversiktSteg.UkerForeldrepenger"
+                                                    values={{
+                                                        hvem: capitalizeFirstLetter(
+                                                            finnSøkerTekst(intl, hvemPlanlegger),
+                                                        ),
+                                                        uker: dayjs(sluttdatoSøker1).diff(
+                                                            dayjs(startdatoSøker1),
+                                                            'weeks',
+                                                        ),
+                                                        dato: dayjs(startdatoSøker1).format('dddd D MMM'),
+                                                    }}
+                                                />
+                                            </BodyShort>
+                                        </HStack>
+                                    </div>
+                                    <Spacer />
+                                    {!erAleneforsørger && annenPartTekst && hvemHarRett !== 'kunMorHarRett' && (
+                                        <HStack gap="3" wrap={false}>
+                                            <div className={styles.greenPanel}>
+                                                <HStack gap="2" align="center">
+                                                    <GrønnSirkel />
+                                                    <BodyShort>
+                                                        <FormattedMessage
+                                                            id="OversiktSteg.UkerForeldrepenger"
+                                                            values={{
+                                                                hvem: capitalizeFirstLetter(annenPartTekst),
+                                                                uker: dayjs(sluttdatoSøker2).diff(
+                                                                    dayjs(startdatoSøker2),
+                                                                    'weeks',
+                                                                ),
+                                                                dato: dayjs(startdatoSøker2).format('dddd D MMM'),
+                                                            }}
+                                                        />
+                                                    </BodyShort>
+                                                </HStack>
+                                            </div>
+                                        </HStack>
+                                    )}
+                                </HStack>
+                            )}
+                        {(hvemHarRett === 'kunMedfarEllerMedmorHarRett' ||
+                            hvemHarRett === 'kunFarHarRettMorHovedsøker') && (
                             <>
-                                {!erAleneforsørger && annenPartTekst && (
+                                {annenPartTekst && (
                                     <HStack gap="1">
                                         <div className={styles.bluePanel}>
                                             <HStack gap="2" align="center">

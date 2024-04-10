@@ -164,6 +164,7 @@ const finnEnsligUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
+    hvemHarRett: HvemHarRett,
 ): Uttaksdata => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
     const startdatoSøker =
@@ -183,6 +184,19 @@ const finnEnsligUttaksdata = (
             .format(ISO_DATE_FORMAT),
     );
 
+    if (!erBarnetAdoptert(barnet) && hvemHarRett === 'kunFarHarRettMorHovedsøker') {
+        const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+        const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
+        const sluttAktivitetsfri = dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks').add(6, 'weeks');
+        return {
+            familiehendelsedato,
+            startdatoSøker1: dayjs(familiehendelsedato).add(6, 'weeks').add(1, 'day').format(ISO_DATE_FORMAT),
+            sluttdatoSøker1: sluttAktivitetsfri.format(ISO_DATE_FORMAT),
+            startdatoSøker2: sluttAktivitetsfri.add(1, 'day').format(ISO_DATE_FORMAT),
+            sluttdatoSøker2: sluttAktivitetsfri.add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
+        };
+    }
+
     return {
         familiehendelsedato,
         startdatoSøker1: startdatoSøker,
@@ -201,7 +215,7 @@ export const finnUttaksdata = (
 ): Uttaksdata => {
     return hvemHarRett === 'beggeHarRett'
         ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
-        : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet);
+        : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
 
 export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata) => {
