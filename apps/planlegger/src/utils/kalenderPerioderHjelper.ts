@@ -53,8 +53,8 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    if (hvemHarRett === 'beggeHarRett' && startdatoSøker2) {
-        const perioder = [];
+    if (hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2) {
+        const perioder = [] as Period[];
         if (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) {
             perioder.push({
                 fom: startdatoSøker1,

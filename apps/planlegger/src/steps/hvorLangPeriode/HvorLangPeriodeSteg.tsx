@@ -20,6 +20,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {
     getAntallUker,
     getAntallUkerAktivitetsfriKvote,
+    getAntallUkerForeldrepenger,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 import { finnUttaksdata } from 'utils/uttakHjelper';
@@ -70,20 +71,37 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
-    const valgtStønadskonto =
-        periode || dekningsgrad
-            ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-                  stønadskontoer[dekningsgrad || periode?.dekningsgrad],
-              )
-            : [];
-
-    const antallUker = getAntallUker(valgtStønadskonto);
-    const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-    const antallUkerAktivitetskravKvote = antallUker - antallUkerAktivitetsfriKvote;
-
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const { sluttdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
 
+    const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
+    );
+    const stønadskonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
+    );
+    const valgtDekningsgrad = dekningsgrad || periode?.dekningsgrad;
+    const valgtStønadskonto = valgtDekningsgrad
+        ? valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? stønadskonto100
+            : stønadskonto80
+        : [];
+
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
+
+    const antallUker100 = getAntallUker(stønadskonto100);
+    const antallUker80 = getAntallUker(stønadskonto80);
+    const antallUker = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUker100 : antallUker80;
+
+    const sluttdatoSøker1 =
+        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? uttaksdata100.sluttdatoSøker1
+            : uttaksdata80.sluttdatoSøker1;
+
+    const sluttdatoSøker2 =
+        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? uttaksdata100.sluttdatoSøker2
+            : uttaksdata80.sluttdatoSøker2;
     return (
         <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
@@ -101,8 +119,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
                                 values={{
                                     erAlenesøker,
-                                    uker100: 'TODO',
-                                    uker80: 'TODO',
+                                    uker100: antallUker100,
+                                    uker80: antallUker80,
                                 }}
                             />
                         </BodyLong>
@@ -184,10 +202,10 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         ]}
                     >
                         <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
-                            <FormattedMessage id="HvorLangPeriodeSteg.100" values={{ uker100: 'TODO' }} />
+                            <FormattedMessage id="HvorLangPeriodeSteg.100" values={{ uker100: antallUker100 }} />
                         </Radio>
                         <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
-                            <FormattedMessage id="HvorLangPeriodeSteg.80" values={{ uker80: 'TODO' }} />
+                            <FormattedMessage id="HvorLangPeriodeSteg.80" values={{ uker80: antallUker80 }} />
                         </Radio>
                     </GreenRadioGroup>
                     {dekningsgrad && (
@@ -214,7 +232,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         <FormattedMessage
                                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
                                             values={{
-                                                uker: antallUkerAktivitetsfriKvote,
+                                                uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
                                                 uker2: antallUker,
                                                 b: (msg: any) => <b>{msg}</b>,
                                                 hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
@@ -225,7 +243,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         <FormattedMessage
                                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
                                             values={{
-                                                uker: antallUkerAktivitetskravKvote,
+                                                uker: getAntallUkerForeldrepenger(valgtStønadskonto),
                                                 uker2: antallUker,
                                                 a: (msg: any) => (
                                                     <Link
