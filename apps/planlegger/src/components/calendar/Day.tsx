@@ -35,6 +35,7 @@ const Day: React.FunctionComponent<Props> = ({ day, dayColor, dayType }) => {
     const isStartAndEnd = dayType === DayType.FIRST_AND_LAST_DAY;
     return (
         <div
+            data-testid={`day:${day};dayColor:${dayColor};dayType:${dayType}`}
             className={`${styles.days} ${DAY_STYLE[dayColor]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay}`}
         >
             {day}
