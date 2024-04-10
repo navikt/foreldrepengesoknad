@@ -17,18 +17,17 @@ import {
 import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
+import { erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
 import {
-    getAntallUker,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepenger,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
-import { finnUttaksdata } from 'utils/uttakHjelper';
+import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong, BodyShort, HStack, Heading, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -93,28 +92,34 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const valgtStønadskonto = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
 
-    const antallUker100 = getAntallUker(stønadskonto100);
-    const antallUker80 = getAntallUker(stønadskonto80);
-
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
 
-    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = finnUttaksdata(
+    const uttaksdata100 = finnUttaksdata(
         hvemHarRett,
         hvemPlanlegger,
-        valgtStønadskonto,
+        stønadskonto100,
+        barnet,
+        antallUkerFellesperiodeSøker1,
+    );
+    const uttaksdata80 = finnUttaksdata(
+        hvemHarRett,
+        hvemPlanlegger,
+        stønadskonto80,
         barnet,
         antallUkerFellesperiodeSøker1,
     );
 
+    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } =
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80;
+
+    const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
+    const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
+
     const annenPartTekst = finnAnnenPartTekst(intl, hvemPlanlegger);
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
-
-    const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-    const totalUker = getAntallUkerForeldrepenger(valgtStønadskonto);
-    const aktivitetskravUker = totalUker - aktivitetsfriUker;
 
     const uttaksperioder = lagKalenderPerioder(
         valgtStønadskonto,
@@ -210,6 +215,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                                 dayjs(startdatoSøker2),
                                                                 'weeks',
                                                             ),
+                                                            dato: dayjs(startdatoSøker2).format('dddd D MMM'),
                                                         }}
                                                     />
                                                 </BodyShort>
@@ -230,7 +236,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                         id="OversiktSteg.UkerUtenAktivitetskrav"
                                                         values={{
                                                             hvem: capitalizeFirstLetter(annenPartTekst),
-                                                            uker: aktivitetsfriUker,
+                                                            uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
                                                         }}
                                                     />
                                                 </BodyShort>
@@ -246,7 +253,10 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                             id="OversiktSteg.UkerMedAktivitetskrav"
                                                             values={{
                                                                 hvem: capitalizeFirstLetter(annenPartTekst),
-                                                                uker: aktivitetskravUker,
+                                                                uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                                                erMorHovedsøker: erMorDelAvSøknaden(
+                                                                    hvemPlanlegger.type,
+                                                                ),
                                                             }}
                                                         />
                                                     </BodyShort>
