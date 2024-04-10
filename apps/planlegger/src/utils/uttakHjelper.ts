@@ -203,3 +203,12 @@ export const finnUttaksdata = (
         ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet);
 };
+
+export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata) => {
+    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = uttaksdata;
+    let antallUker = dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'week');
+    if (startdatoSøker2 && sluttdatoSøker2) {
+        antallUker += dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'week');
+    }
+    return antallUker;
+};

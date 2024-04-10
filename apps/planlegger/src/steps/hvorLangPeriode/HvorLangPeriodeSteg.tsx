@@ -12,18 +12,17 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
+import { erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {
-    getAntallUker,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerForeldrepenger,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
-import { finnUttaksdata } from 'utils/uttakHjelper';
+import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -65,6 +64,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         return navigator.goToNextStep(nextRoute);
     };
     const erMor = hvemPlanlegger.type === Situasjon.MOR;
+
     const antallBarn = barnet.antallBarn;
     const dekningsgrad = formMethods.watch('dekningsgrad');
 
@@ -89,8 +89,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
-    const antallUker100 = getAntallUker(stønadskonto100);
-    const antallUker80 = getAntallUker(stønadskonto80);
+    const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
+    const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
     const antallUker = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUker100 : antallUker80;
 
     const sluttdatoSøker1 =
@@ -183,6 +183,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                     </Link>
                                                 ),
                                                 hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
                                             }}
                                         />
                                     </BodyLong>
@@ -236,6 +237,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 uker2: antallUker,
                                                 b: (msg: any) => <b>{msg}</b>,
                                                 hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
                                             }}
                                         />
                                     </BodyLong>
@@ -257,6 +259,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 ),
                                                 b: (msg: any) => <b>{msg}</b>,
                                                 hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
                                             }}
                                         />
                                     </BodyLong>
