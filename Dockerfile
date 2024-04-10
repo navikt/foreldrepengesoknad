@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_IMG=node:18.17-alpine
+ARG NODE_IMG=node:20.12-alpine
 ARG APP="foreldrepengesoknad"
 
 #########################################
