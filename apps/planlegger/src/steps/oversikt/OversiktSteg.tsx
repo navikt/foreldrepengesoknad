@@ -22,6 +22,7 @@ import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskont
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
 import {
+    getAntallUker,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepenger,
@@ -83,7 +84,17 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(periode.dekningsgrad);
 
-    const valgtStønadskonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
+    const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
+    );
+    const stønadskonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
+        stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
+    );
+
+    const valgtStønadskonto = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+
+    const antallUker100 = getAntallUker(stønadskonto100);
+    const antallUker80 = getAntallUker(stønadskonto80);
 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
@@ -140,12 +151,12 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <FormattedMessage
                                 id="OversiktSteg.100"
                                 values={{
-                                    uker: 'TODO',
+                                    uker: antallUker100,
                                 }}
                             />
                         </ToggleGroup.Item>
                         <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
-                            <FormattedMessage id="OversiktSteg.80" values={{ uker: 'TODO' }} />
+                            <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
                         </ToggleGroup.Item>
                     </ToggleGroup>
                     {!erAleneforsørger &&
@@ -199,7 +210,6 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                                 dayjs(startdatoSøker2),
                                                                 'weeks',
                                                             ),
-                                                            dato: dayjs(startdatoSøker2).format('dddd D MMM'),
                                                         }}
                                                     />
                                                 </BodyShort>

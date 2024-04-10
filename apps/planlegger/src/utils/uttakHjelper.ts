@@ -98,12 +98,20 @@ const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnet): string 
     );
 };
 
+export type Uttaksdata = {
+    familiehendelsedato: string;
+    startdatoSøker1: string;
+    sluttdatoSøker1: string;
+    startdatoSøker2?: string;
+    sluttdatoSøker2?: string;
+};
+
 const finnDeltUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
     antallUkerFellesperiodeForSøker1: number = 0,
-) => {
+): Uttaksdata => {
     const totaltAntallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
     const antallUkerFellesperiodeForSøker2 = totaltAntallUkerFellesperiode - antallUkerFellesperiodeForSøker1;
 
@@ -156,7 +164,7 @@ const finnEnsligUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
-) => {
+): Uttaksdata => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
     const startdatoSøker =
         erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR
@@ -190,7 +198,7 @@ export const finnUttaksdata = (
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
     antallUkerFellesperiodeSøker1?: number,
-) => {
+): Uttaksdata => {
     return hvemHarRett === 'beggeHarRett'
         ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet);
