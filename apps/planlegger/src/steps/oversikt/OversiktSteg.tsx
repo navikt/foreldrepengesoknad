@@ -166,7 +166,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </ToggleGroup>
                     {!erAleneforsørger &&
                         antallUkerFellesperiodeSøker1 &&
-                        hvemHarRett !== 'kunFarEllerMedmorHarRett' &&
+                        hvemHarRett !== 'kunMedfarEllerMedmorHarRett' &&
                         hvemHarRett !== 'kunMorHarRett' && (
                             <Select
                                 label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}
@@ -183,7 +183,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </Select>
                         )}
                     <VStack gap="5">
-                        {hvemHarRett !== 'kunFarEllerMedmorHarRett' ? (
+                        {hvemHarRett !== 'kunMedfarEllerMedmorHarRett' ? (
                             <HStack gap="1">
                                 <div className={styles.bluePanel}>
                                     <HStack gap="2" align="center">
