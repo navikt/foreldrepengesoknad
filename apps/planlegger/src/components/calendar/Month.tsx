@@ -28,7 +28,7 @@ const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children
     let arrayCounter = 0;
 
     return (
-        <Box className={styles.box}>
+        <Box className={styles.box} data-testid={`year:${year};month:${month}`}>
             <Heading size="small">{showYear ? `${monthNameUppercase} (${year})` : monthNameUppercase}</Heading>
             {nrOfWeeks.map((weeknr) => (
                 <HGrid key={weeknr} columns={7}>

@@ -98,7 +98,7 @@ const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnet): string 
     );
 };
 
-const finnUttaksdataDeltUttak = (
+const finnDeltUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
@@ -152,7 +152,7 @@ const finnUttaksdataDeltUttak = (
     };
 };
 
-const finnUttaksdataIkkeDeltUttak = (
+const finnEnsligUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligStønadskonto[],
     barnet: OmBarnet,
@@ -192,6 +192,6 @@ export const finnUttaksdata = (
     antallUkerFellesperiodeSøker1?: number,
 ) => {
     return hvemHarRett === 'beggeHarRett'
-        ? finnUttaksdataDeltUttak(hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
-        : finnUttaksdataIkkeDeltUttak(hvemPlanlegger, valgtStønadskonto, barnet);
+        ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
+        : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet);
 };
