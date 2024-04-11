@@ -18,8 +18,8 @@
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@types/bytes": "^3.1.4",
-        "@types/react": "^18.2.73",
+        "@types/react": "^18.2.75",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3"
+        "typescript": "^5.4.5"
     }
 }
