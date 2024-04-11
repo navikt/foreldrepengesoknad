@@ -399,6 +399,7 @@
     "manglendeVedlegg.aleneomsorg.description": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
     "manglendeVedlegg.terminbekreftelse.tittel": "Last opp bekreftelse på termindato",
     "manglendeVedlegg.terminbekreftelse.description": "Terminbekreftelsen får du hos jordmor eller legen din. Den må være datert i 22. svangerskapsuke eller senere.",
+    "manglendeVedlegg.terminbekreftelse.description.farMedmor": "Terminbekreftelsen får du hos jordmor eller legen. Den må være datert i 22. svangerskapsuke eller senere.",
     "manglendeVedlegg.omsorgsovertakelse.tittel": "Dokumentasjon om omsorgsovertakelse",
     "manglendeVedlegg.omsorgsovertakelse.description": "Du må legge ved dokumentasjon på dato du har omsorgsovertakelse",
     "oppsummering.barn.søknadenGjelder": "Søknaden gjelder",

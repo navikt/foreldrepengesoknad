@@ -399,6 +399,7 @@
     "manglendeVedlegg.aleneomsorg.description": "Du må legga ved ei stadfesting på datoen du vart åleine om omsorgen for barnet.",
     "manglendeVedlegg.terminbekreftelse.tittel": "Last opp stadfesting av termindato",
     "manglendeVedlegg.terminbekreftelse.description": "Terminstadfestinga får du hjå jordmor eller legen din. Den må vera datert i 22. svangerskapsveke eller seinare.",
+    "manglendeVedlegg.terminbekreftelse.description.farMedmor": "Terminstadfestinga får du hjå jordmor eller legen. Den må vera datert i 22. svangerskapsveke eller seinare.",
     "manglendeVedlegg.omsorgsovertakelse.tittel": "Dokumentasjon om omsorgsovertakelse",
     "manglendeVedlegg.omsorgsovertakelse.description": "Du må legga ved dokumentasjon på kva for dato du har omsorgsovertakelse",
     "oppsummering.barn.søknadenGjelder": "Søknaden gjeld",
@@ -1066,7 +1067,6 @@
     "fordeling.påvirkninger.barnSyk.info": "Hvis {antallBarn, plural, one {barnet} other {barna}} blir innlagt på sjukehus dei første 6 vekene etter fødsel, kan {morTekst} utsette foreldrepengane i denne perioden.",
     "fordeling.påvirkninger.utsettelse.tittel": "Hvis du blir sjuk, eller hvis du eller {antallBarn, plural, one {barnet} other {barna}} blir innlagt på helseinstitusjon",
     "fordeling.påvirkninger.utsettelse.info": "Du kan utsette foreldrepengane dine hvis du blir sjuk eller innlagt på helseinstitusjon. {navnAnnenForelder} kan også søke om overta foreldrepenger i denne perioden. Du kan også utsette foreldrepengane dine hvis barnet blir innlagt på helseinstitusjon.",
-
     "fordeling.fordelingvalg.spørsmål": "Korleis vil du fordele fellesperioden?",
     "fordeling.description.kanEndresSenere": "Dette kan du endre seinare, også etter at du har sendt søknaden.",
     "fordeling.fordelingsvalg.option.alt": "Eg vil ha heile fellesperioden",
