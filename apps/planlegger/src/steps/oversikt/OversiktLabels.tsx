@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { HvemPlanlegger, erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
 import { HvemHarRett } from 'utils/hvemHarRettHjelper';
 import {
@@ -20,19 +20,6 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import BlåSirkel from './ikoner/BlåSirkel';
 import GrønnSirkel from './ikoner/GrønnSirkel';
 import styles from './oversiktSteg.module.css';
-
-const termindatoEllerFødselsdato = (barnet: OmBarnet) => {
-    const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetIkkeFødt(barnet);
-    const erAdoptert = erBarnetAdoptert(barnet);
-    if (erFødt || erAdoptert) {
-        return dayjs(barnet.fødselsdato).format('DD. MMM');
-    }
-    if (erIkkeFødt) {
-        return dayjs(barnet.termindato).format('DD. MMM');
-    }
-    return undefined;
-};
 
 interface Props {
     barnet: OmBarnet;
@@ -59,7 +46,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
 
     const annenPartTekst = finnAnnenPartTekst(intl, hvemPlanlegger);
 
-    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = uttaksdata;
+    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2, familiehendelsedato } = uttaksdata;
 
     return (
         <VStack gap="5">
@@ -82,29 +69,27 @@ const OversiktLabels: FunctionComponent<Props> = ({
                     </div>
                     <Spacer />
                     {!erAleneforsørger && annenPartTekst && hvemHarRett !== 'kunMorHarRett' && (
-                        <HStack gap="3" wrap={false}>
-                            <div className={styles.greenPanel}>
-                                <HStack gap="2" align="center">
-                                    <GrønnSirkel />
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="OversiktSteg.UkerForeldrepenger"
-                                            values={{
-                                                hvem: capitalizeFirstLetter(annenPartTekst),
-                                                uker: dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'weeks'),
-                                                dato: dayjs(startdatoSøker2).format('dddd D MMM'),
-                                            }}
-                                        />
-                                    </BodyShort>
-                                </HStack>
-                            </div>
-                        </HStack>
+                        <div className={styles.greenPanel}>
+                            <HStack gap="2" align="center">
+                                <GrønnSirkel />
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="OversiktSteg.UkerForeldrepenger"
+                                        values={{
+                                            hvem: capitalizeFirstLetter(annenPartTekst),
+                                            uker: dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'weeks'),
+                                            dato: dayjs(startdatoSøker2).format('dddd D MMM'),
+                                        }}
+                                    />
+                                </BodyShort>
+                            </HStack>
+                        </div>
                     )}
                 </HStack>
             )}
-            {(hvemHarRett === 'kunMedfarEllerMedmorHarRett' || hvemHarRett === 'kunFarHarRettMorHovedsøker') && (
-                <>
-                    {annenPartTekst && (
+            {annenPartTekst &&
+                (hvemHarRett === 'kunMedfarEllerMedmorHarRett' || hvemHarRett === 'kunFarHarRettMorHovedsøker') && (
+                    <>
                         <HStack gap="1">
                             <div className={styles.bluePanel}>
                                 <HStack gap="2" align="center">
@@ -122,46 +107,50 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                 </HStack>
                             </div>
                             <Spacer />
-                            <HStack gap="3" wrap={false}>
-                                <div className={styles.greenPanel}>
-                                    <HStack gap="2" align="center">
-                                        <GrønnSirkel />
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="OversiktSteg.UkerMedAktivitetskrav"
-                                                values={{
-                                                    hvem: capitalizeFirstLetter(annenPartTekst),
-                                                    uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    </HStack>
-                                </div>
-                            </HStack>
+                            <div className={styles.greenPanel}>
+                                <HStack gap="2" align="center">
+                                    <GrønnSirkel />
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OversiktSteg.UkerMedAktivitetskrav"
+                                            values={{
+                                                hvem: capitalizeFirstLetter(annenPartTekst),
+                                                uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </HStack>
+                            </div>
                         </HStack>
-                    )}
-                </>
-            )}
+                    </>
+                )}
             <div className={styles.pinkPanel}>
                 <HStack gap="2" align="center">
                     <HeartFillIcon color="#F68282" />
                     <BodyShort>
-                        {(erFødt || erAdoptert) && (
+                        {erFødt && (
                             <FormattedMessage
-                                id="OversiktSteg.TermindatoIkontekst"
+                                id="OversiktSteg.Fødselsdato"
                                 values={{
-                                    mnd: barnehagestartDato(barnet),
-                                    dato: termindatoEllerFødselsdato(barnet),
+                                    mnd: familiehendelsedato,
+                                    dato: dayjs(barnet.fødselsdato).format('DD. MMM'),
                                 }}
                             />
                         )}
                         {erIkkeFødt && (
                             <FormattedMessage
-                                id="OversiktSteg.FødselsdatoIkontekst"
+                                id="OversiktSteg.Termindato"
                                 values={{
-                                    mnd: barnehagestartDato(barnet),
-                                    dato: termindatoEllerFødselsdato(barnet),
+                                    dato: dayjs(barnet.termindato).format('DD. MMM'),
+                                }}
+                            />
+                        )}
+                        {erAdoptert && (
+                            <FormattedMessage
+                                id="OversiktSteg.Omsorgsovertakelse"
+                                values={{
+                                    dato: dayjs(barnet.overtakelsesdato).format('DD. MMM'),
                                 }}
                             />
                         )}

@@ -32,8 +32,7 @@ describe('<OversiktSteg>', () => {
 
         expect(screen.getByText('Mor, 18 uker, starter Thursday 21 Mar')).toBeInTheDocument();
         expect(screen.getByText('Far, 31 uker, starter Friday 26 Jul')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -72,8 +71,7 @@ describe('<OversiktSteg>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Mor, 49 uker, starter Thursday 21 Mar')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -105,8 +103,7 @@ describe('<OversiktSteg>', () => {
 
         expect(screen.getByText('Far, 15 uker uten krav til mor')).toBeInTheDocument();
         expect(screen.getByText('Far, 25 uker med krav til mor')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -144,8 +141,7 @@ describe('<OversiktSteg>', () => {
 
         expect(screen.getByText('Mor, 18 uker, starter Thursday 21 Mar')).toBeInTheDocument();
         expect(screen.getByText('Medmor, 31 uker, starter Friday 26 Jul')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -181,8 +177,7 @@ describe('<OversiktSteg>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Mor, 49 uker, starter Thursday 21 Mar')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -214,8 +209,7 @@ describe('<OversiktSteg>', () => {
 
         expect(screen.getByText('Medmor, 15 uker uten krav til mor')).toBeInTheDocument();
         expect(screen.getByText('Medmor, 25 uker med krav til mor')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -252,8 +246,7 @@ describe('<OversiktSteg>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Mor, 49 uker, starter Thursday 21 Mar')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -284,8 +277,7 @@ describe('<OversiktSteg>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Far, 46 uker, starter Thursday 11 Apr')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -315,8 +307,7 @@ describe('<OversiktSteg>', () => {
 
         expect(screen.getByText('Far, 15 uker, starter Thursday 11 Apr')).toBeInTheDocument();
         expect(screen.getByText('Far, 31 uker, starter Friday 26 Jul')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -349,8 +340,7 @@ describe('<OversiktSteg>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Far, 40 uker, starter Thursday 21 Mar')).toBeInTheDocument();
-        // FIXME Skal vel stå termindato her?
-        expect(screen.getByText('Fødselsdato 11. Apr')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
