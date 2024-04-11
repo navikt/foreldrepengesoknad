@@ -84,7 +84,7 @@ export const lagKalenderPerioder = (
                 color: DayColor.PINK,
             },
             {
-                fom: startdatoSøker1,
+                fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
                 tom: sluttdatoSøker1,
                 color: DayColor.BLUE,
             },
