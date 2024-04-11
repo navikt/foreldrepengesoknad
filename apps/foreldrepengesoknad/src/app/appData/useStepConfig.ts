@@ -8,11 +8,11 @@ import {
     Søkerrolle,
     andreAugust2022ReglerGjelder,
     getFarMedmorErAleneOmOmsorg,
+    getMorHarRettPåForeldrepengerINorgeEllerEØS,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { getMorHarRettPåForeldrepengerINorgeEllerEØS } from '@navikt/fp-common';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
