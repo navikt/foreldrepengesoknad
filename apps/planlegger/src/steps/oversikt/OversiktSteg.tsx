@@ -1,11 +1,10 @@
-import { HeartFillIcon, InformationIcon } from '@navikt/aksel-icons';
+import { InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
 import Calendar from 'components/calendar/Calendar';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,46 +13,28 @@ import {
     finnFellesperiodeFordelingOptionTekst,
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
-import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
+import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
 import {
-    getAntallUkerAktivitetsfriKvote,
     getAntallUkerFellesperiode,
-    getAntallUkerForeldrepenger,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjelper';
 
-import { BodyLong, BodyShort, HStack, Heading, Spacer, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { Form, Select } from '@navikt/fp-form-hooks';
 import { StepButtons } from '@navikt/fp-ui';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import OmÅTilpassePlanen from './OmÅTilpassePlanen';
+import OversiktLabels from './OversiktLabels';
 import UforutsetteEndringer from './UforutsetteEndringer';
-import BlåSirkel from './ikoner/BlåSirkel';
-import GrønnSirkel from './ikoner/GrønnSirkel';
 import styles from './oversiktSteg.module.css';
-
-const termindatoEllerFødselsdato = (barnet: OmBarnet) => {
-    const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetIkkeFødt(barnet);
-    const erAdoptert = erBarnetAdoptert(barnet);
-    if (erFødt || erAdoptert) {
-        return dayjs(barnet.fødselsdato).format('DD. MMM');
-    }
-    if (erIkkeFødt) {
-        return dayjs(barnet.termindato).format('DD. MMM');
-    }
-    return undefined;
-};
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
@@ -76,10 +57,6 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     });
 
     const antallUkerFellesperiodeSøker1 = formMethods.watch('antallUkerSøker1');
-
-    const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetIkkeFødt(barnet);
-    const erAdoptert = erBarnetAdoptert(barnet);
 
     const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(periode.dekningsgrad);
 
@@ -111,13 +88,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         antallUkerFellesperiodeSøker1,
     );
 
-    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } =
-        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80;
-
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
-
-    const annenPartTekst = finnAnnenPartTekst(intl, hvemPlanlegger);
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
 
@@ -182,125 +154,13 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 ))}
                             </Select>
                         )}
-                    <VStack gap="5">
-                        {hvemHarRett !== 'kunMedfarEllerMedmorHarRett' &&
-                            hvemHarRett !== 'kunFarHarRettMorHovedsøker' && (
-                                <HStack gap="1">
-                                    <div className={styles.bluePanel}>
-                                        <HStack gap="2" align="center">
-                                            <BlåSirkel />
-                                            <BodyShort>
-                                                <FormattedMessage
-                                                    id="OversiktSteg.UkerForeldrepenger"
-                                                    values={{
-                                                        hvem: capitalizeFirstLetter(
-                                                            finnSøkerTekst(intl, hvemPlanlegger),
-                                                        ),
-                                                        uker: dayjs(sluttdatoSøker1).diff(
-                                                            dayjs(startdatoSøker1),
-                                                            'weeks',
-                                                        ),
-                                                        dato: dayjs(startdatoSøker1).format('dddd D MMM'),
-                                                    }}
-                                                />
-                                            </BodyShort>
-                                        </HStack>
-                                    </div>
-                                    <Spacer />
-                                    {!erAleneforsørger && annenPartTekst && hvemHarRett !== 'kunMorHarRett' && (
-                                        <HStack gap="3" wrap={false}>
-                                            <div className={styles.greenPanel}>
-                                                <HStack gap="2" align="center">
-                                                    <GrønnSirkel />
-                                                    <BodyShort>
-                                                        <FormattedMessage
-                                                            id="OversiktSteg.UkerForeldrepenger"
-                                                            values={{
-                                                                hvem: capitalizeFirstLetter(annenPartTekst),
-                                                                uker: dayjs(sluttdatoSøker2).diff(
-                                                                    dayjs(startdatoSøker2),
-                                                                    'weeks',
-                                                                ),
-                                                                dato: dayjs(startdatoSøker2).format('dddd D MMM'),
-                                                            }}
-                                                        />
-                                                    </BodyShort>
-                                                </HStack>
-                                            </div>
-                                        </HStack>
-                                    )}
-                                </HStack>
-                            )}
-                        {(hvemHarRett === 'kunMedfarEllerMedmorHarRett' ||
-                            hvemHarRett === 'kunFarHarRettMorHovedsøker') && (
-                            <>
-                                {annenPartTekst && (
-                                    <HStack gap="1">
-                                        <div className={styles.bluePanel}>
-                                            <HStack gap="2" align="center">
-                                                <BlåSirkel />
-                                                <BodyShort>
-                                                    <FormattedMessage
-                                                        id="OversiktSteg.UkerUtenAktivitetskrav"
-                                                        values={{
-                                                            hvem: capitalizeFirstLetter(annenPartTekst),
-                                                            uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                                        }}
-                                                    />
-                                                </BodyShort>
-                                            </HStack>
-                                        </div>
-                                        <Spacer />
-                                        <HStack gap="3" wrap={false}>
-                                            <div className={styles.greenPanel}>
-                                                <HStack gap="2" align="center">
-                                                    <GrønnSirkel />
-                                                    <BodyShort>
-                                                        <FormattedMessage
-                                                            id="OversiktSteg.UkerMedAktivitetskrav"
-                                                            values={{
-                                                                hvem: capitalizeFirstLetter(annenPartTekst),
-                                                                uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                                                                erMorHovedsøker: erMorDelAvSøknaden(
-                                                                    hvemPlanlegger.type,
-                                                                ),
-                                                            }}
-                                                        />
-                                                    </BodyShort>
-                                                </HStack>
-                                            </div>
-                                        </HStack>
-                                    </HStack>
-                                )}
-                            </>
-                        )}
-                        <div className={styles.pinkPanel}>
-                            <HStack gap="2" align="center">
-                                <HeartFillIcon color="#F68282" />
-                                <BodyShort>
-                                    {(erFødt || erAdoptert) && (
-                                        <FormattedMessage
-                                            id="OversiktSteg.TermindatoIkontekst"
-                                            values={{
-                                                mnd: barnehagestartDato(barnet),
-                                                dato: termindatoEllerFødselsdato(barnet),
-                                            }}
-                                        />
-                                    )}
-                                    {erIkkeFødt && (
-                                        <FormattedMessage
-                                            id="OversiktSteg.FødselsdatoIkontekst"
-                                            values={{
-                                                mnd: barnehagestartDato(barnet),
-                                                dato: termindatoEllerFødselsdato(barnet),
-                                            }}
-                                        />
-                                    )}
-                                </BodyShort>
-                            </HStack>
-                        </div>
-                    </VStack>
+                    <OversiktLabels
+                        uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
+                        hvemPlanlegger={hvemPlanlegger}
+                        barnet={barnet}
+                        valgtStønadskonto={valgtStønadskonto}
+                        hvemHarRett={hvemHarRett}
+                    />
                     <div className={styles.calendar}>
                         <Calendar periods={uttaksperioder} />
                     </div>
