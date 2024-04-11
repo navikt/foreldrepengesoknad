@@ -136,24 +136,21 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
                         </ToggleGroup.Item>
                     </ToggleGroup>
-                    {!erAleneforsørger &&
-                        antallUkerFellesperiodeSøker1 !== undefined &&
-                        hvemHarRett !== 'kunMedfarEllerMedmorHarRett' &&
-                        hvemHarRett !== 'kunMorHarRett' && (
-                            <Select
-                                label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}
-                                name="antallUkerSøker1"
-                                onChange={(e) => {
-                                    lagreFordeling({ antallUkerSøker1: e.target.value });
-                                }}
-                            >
-                                {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
-                                    <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                        {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
-                                    </option>
-                                ))}
-                            </Select>
-                        )}
+                    {hvemHarRett === 'beggeHarRett' && (
+                        <Select
+                            label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}
+                            name="antallUkerSøker1"
+                            onChange={(e) => {
+                                lagreFordeling({ antallUkerSøker1: e.target.value });
+                            }}
+                        >
+                            {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
+                                <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
+                                    {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
+                                </option>
+                            ))}
+                        </Select>
+                    )}
                     <OversiktLabels
                         uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
                         hvemPlanlegger={hvemPlanlegger}
