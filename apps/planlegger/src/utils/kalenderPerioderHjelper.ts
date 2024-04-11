@@ -3,8 +3,7 @@ import { DayColor } from 'components/calendar/Day';
 import dayjs from 'dayjs';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 

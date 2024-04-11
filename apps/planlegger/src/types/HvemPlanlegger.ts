@@ -1,7 +1,13 @@
 import { IntlShape } from 'react-intl';
 import HvemPlanlegger from 'steps/hvemPlanlegger/HvemPlanleggerSteg';
 
-import { Situasjon } from './Søkersituasjon';
+export enum Situasjon {
+    MOR_OG_FAR = 'morOgFar',
+    MOR_OG_MEDMOR = 'morOgMedmor',
+    FAR_OG_FAR = 'farOgFar',
+    MOR = 'mor',
+    FAR = 'far',
+}
 
 export type HvemPlanlegger = MorOgFar | MorOgMedmor | FarOgFar | Mor | Far;
 

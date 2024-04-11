@@ -7,8 +7,7 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { HvemPlanlegger, Situasjon, isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 

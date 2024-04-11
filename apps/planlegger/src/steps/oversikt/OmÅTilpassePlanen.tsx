@@ -10,8 +10,7 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { Situasjon, finnAnnenPartTekst } from 'types/HvemPlanlegger';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 

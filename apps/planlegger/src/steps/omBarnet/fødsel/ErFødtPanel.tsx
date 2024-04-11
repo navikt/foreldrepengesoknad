@@ -5,8 +5,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, getFornavnPåAnnenPart, isAlene } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { HvemPlanlegger, Situasjon, getFornavnPåAnnenPart, isAlene } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, VStack } from '@navikt/ds-react';

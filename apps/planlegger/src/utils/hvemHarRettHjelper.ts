@@ -1,6 +1,5 @@
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 export type HvemHarRett =
     | 'beggeHarRett'

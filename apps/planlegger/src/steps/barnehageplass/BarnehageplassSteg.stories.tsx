@@ -4,8 +4,7 @@ import { Action, ContextDataType, PlanleggerDataContext } from 'appData/Planlegg
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
