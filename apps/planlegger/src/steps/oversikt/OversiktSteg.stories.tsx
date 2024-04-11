@@ -21,31 +21,6 @@ const MINSTERETTER = {
     toTette: 0,
 };
 
-const DEFAULT_STØNADSKONTOER = {
-    '100': {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 80,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-            AKTIVITETSFRI_KVOTE: 40,
-            FORELDREPENGER: 200,
-        },
-        minsteretter: MINSTERETTER,
-    },
-    '80': {
-        kontoer: {
-            MØDREKVOTE: 95,
-            FEDREKVOTE: 95,
-            FELLESPERIODE: 90,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-            AKTIVITETSFRI_KVOTE: 40,
-            FORELDREPENGER: 250,
-        },
-        minsteretter: MINSTERETTER,
-    },
-};
-
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     hvorLangPeriode: HvorLangPeriode;
@@ -64,7 +39,7 @@ const customRenderer = ({
     hvorLangPeriode,
     omBarnet,
     arbeidssituasjon,
-    stønadskontoer = DEFAULT_STØNADSKONTOER,
+    stønadskontoer,
 }: StoryArgs) => {
     initAmplitude();
     return (
@@ -271,6 +246,50 @@ export const FødselBareFarSøkerOgHarRett: Story = {
                     FORELDREPENGER: 230,
                 },
                 minsteretter: MINSTERETTER,
+            },
+        },
+    },
+};
+
+export const FødselFarOgFarBeggeHarRett: Story = {
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Anders Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+    },
+};
+
+export const FødselFarOgFarKunFarHarRett: Story = {
+    args: {
+        ...FødselFarOgFarBeggeHarRett.args,
+        fordeling: undefined,
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 250,
+                },
+                minsteretter: {
+                    generellMinsterett: 40,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 200,
+                },
+                minsteretter: {
+                    generellMinsterett: 40,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
             },
         },
     },
