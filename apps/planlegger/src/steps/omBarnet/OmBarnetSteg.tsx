@@ -20,7 +20,7 @@ import Fødsel from './fødsel/Fødsel';
 
 const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     if (erFødsel) {
-        <FormattedMessage id="OmBarnetSteg.HvorMange" values={{ erAlenesøker }} />;
+        return <FormattedMessage id="OmBarnetSteg.HvorMange" values={{ erAlenesøker }} />;
     }
 
     return <FormattedMessage id="OmBarnetSteg.Adopsjon.HvorMange" values={{ erAlenesøker }} />;
