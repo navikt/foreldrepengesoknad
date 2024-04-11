@@ -3,7 +3,7 @@
         "fnr": "13410550312",
         "fornavn": "Ullen",
         "etternavn": "Brosme",
-        "kjønn": "K",
+        "kjønn": "M",
         "fødselsdato": "2005-01-13",
         "bankkonto": {
             "kontonummer": "",
@@ -28,5 +28,13 @@
             "type": "GIFT"
         }
     },
-    "arbeidsforhold": []
+    "arbeidsforhold": [
+        {
+            "arbeidsgiverId": "896929119",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "SAUEFABRIKK",
+            "stillingsprosent": 100,
+            "fom": "2017-03-24"
+        }
+    ]
 }

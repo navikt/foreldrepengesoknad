@@ -22,6 +22,7 @@ interface Props {
     barn: Barn;
     arbeidsforhold: Arbeidsforhold[];
     rolle: Søkerrolle;
+    erFarEllerMedmor: boolean;
 }
 
 const TerminbekreftelseDokumentasjon: React.FunctionComponent<Props> = ({
@@ -30,10 +31,15 @@ const TerminbekreftelseDokumentasjon: React.FunctionComponent<Props> = ({
     barn,
     rolle,
     arbeidsforhold,
+    erFarEllerMedmor,
 }) => {
     const intl = useIntl();
 
-    if (!isUfødtBarn(barn) || arbeidsforhold.length > 0 || !getKanSøkePåTermin(rolle, barn.termindato)) {
+    if (
+        !isUfødtBarn(barn) ||
+        (arbeidsforhold.length > 0 && !erFarEllerMedmor) ||
+        !getKanSøkePåTermin(rolle, barn.termindato)
+    ) {
         return null;
     }
 
