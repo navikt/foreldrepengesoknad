@@ -29,8 +29,8 @@ describe('<OmBarnetSteg>', () => {
         fireEvent.blur(termindato);
 
         expect(
-            screen.getAllByText('Du kan søke om foreldrepenger nå for å ta permisjon tre uker før termin.'),
-        ).toHaveLength(2);
+            screen.getByText('Siden det er under 3 måneder til termin kan dere søke om foreldrepenger hos NAV'),
+        ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 

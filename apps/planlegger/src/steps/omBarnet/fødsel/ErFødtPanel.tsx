@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, isAlene } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, getFornavnPåAnnenPart, isAlene } from 'types/HvemPlanlegger';
 import { Situasjon } from 'types/Søkersituasjon';
 import { formatError } from 'utils/customErrorFormatter';
 
@@ -96,7 +96,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                         <BodyLong>
                             <FormattedMessage
                                 id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                values={{ erFar }}
+                                values={{ erFar, hvem: getFornavnPåAnnenPart(hvemPlanlegger, intl) }}
                             />
                         </BodyLong>
                     )}

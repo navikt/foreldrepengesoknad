@@ -187,13 +187,19 @@ const finnEnsligUttaksdata = (
     if (!erBarnetAdoptert(barnet) && hvemHarRett === 'kunFarHarRettMorHovedsøker') {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks').add(6, 'weeks');
+        const sluttAktivitetsfri = getUttaksdagFraOgMedDato(
+            dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks').add(6, 'weeks').format(ISO_DATE_FORMAT),
+        );
         return {
             familiehendelsedato,
-            startdatoSøker1: dayjs(familiehendelsedato).add(6, 'weeks').add(1, 'day').format(ISO_DATE_FORMAT),
-            sluttdatoSøker1: sluttAktivitetsfri.format(ISO_DATE_FORMAT),
-            startdatoSøker2: sluttAktivitetsfri.add(1, 'day').format(ISO_DATE_FORMAT),
-            sluttdatoSøker2: sluttAktivitetsfri.add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
+            startdatoSøker1: getUttaksdagFraOgMedDato(
+                dayjs(familiehendelsedato).add(6, 'weeks').add(1, 'day').format(ISO_DATE_FORMAT),
+            ),
+            sluttdatoSøker1: sluttAktivitetsfri,
+            startdatoSøker2: getUttaksdagFraOgMedDato(dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT)),
+            sluttdatoSøker2: getUttaksdagFraOgMedDato(
+                dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
+            ),
         };
     }
 
@@ -218,11 +224,20 @@ export const finnUttaksdata = (
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
 
+const weeksBetween = (date1: string, date2: string): number => {
+    const d1 = dayjs(date1).toDate();
+    const d2 = dayjs(date2).toDate();
+
+    const oneWeek = 7 * 24 * 60 * 60 * 1000; // milliseconds in one week
+    const diffInMilliseconds = Math.abs(d1.getTime() - d2.getTime());
+    return Math.round(diffInMilliseconds / oneWeek);
+};
+
 export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata) => {
     const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = uttaksdata;
-    let antallUker = dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'week');
+    let antallUker = weeksBetween(sluttdatoSøker1, startdatoSøker1);
     if (startdatoSøker2 && sluttdatoSøker2) {
-        antallUker += dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'week');
+        antallUker += weeksBetween(sluttdatoSøker2, startdatoSøker2);
     }
     return antallUker;
 };
