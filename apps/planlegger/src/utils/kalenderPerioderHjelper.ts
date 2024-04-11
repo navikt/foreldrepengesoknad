@@ -2,7 +2,7 @@ import { Period } from 'components/calendar/Calendar';
 import { DayColor } from 'components/calendar/Day';
 import dayjs from 'dayjs';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnet, erBarnetAdoptert } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -50,7 +50,7 @@ export const lagKalenderPerioder = (
 
     if (hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2) {
         const perioder = [] as Period[];
-        if (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) {
+        if (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
             perioder.push({
                 fom: startdatoSøker1,
                 tom: dayjs(familiehendelsedato).subtract(1, 'day').format(ISO_DATE_FORMAT),
