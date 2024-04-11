@@ -9,11 +9,7 @@ import { Situasjon } from 'types/Søkersituasjon';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import { utledHvemSomHarRett } from './hvemHarRettHjelper';
-import {
-    TilgjengeligStønadskonto,
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerForeldrepenger,
-} from './stønadskontoer';
+import { TilgjengeligStønadskonto } from './stønadskontoer';
 import { finnUttaksdata } from './uttakHjelper';
 
 export const lagKalenderPerioder = (
@@ -96,31 +92,11 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    if (hvemHarRett === 'kunMedfarEllerMedmorHarRett') {
-        const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-        const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks');
-
-        return [
-            {
-                fom: familiehendelsedato,
-                tom: familiehendelsedato,
-                color: DayColor.PINK,
-            },
-            {
-                fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
-                tom: sluttAktivitetsfri.format(ISO_DATE_FORMAT),
-                color: DayColor.BLUE,
-            },
-            {
-                fom: sluttAktivitetsfri.add(1, 'day').format(ISO_DATE_FORMAT),
-                tom: sluttAktivitetsfri.add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
-                color: DayColor.GREEN,
-            },
-        ];
-    }
-
-    if (hvemHarRett === 'kunFarHarRettMorHovedsøker' && startdatoSøker2 && sluttdatoSøker2) {
+    if (
+        (hvemHarRett === 'kunFarHarRettMorHovedsøker' || hvemHarRett === 'kunMedfarEllerMedmorHarRett') &&
+        startdatoSøker2 &&
+        sluttdatoSøker2
+    ) {
         return [
             {
                 fom: familiehendelsedato,

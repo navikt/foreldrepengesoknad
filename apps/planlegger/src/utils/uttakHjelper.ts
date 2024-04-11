@@ -184,7 +184,10 @@ const finnEnsligUttaksdata = (
             .format(ISO_DATE_FORMAT),
     );
 
-    if (!erBarnetAdoptert(barnet) && hvemHarRett === 'kunFarHarRettMorHovedsøker') {
+    if (
+        !erBarnetAdoptert(barnet) &&
+        (hvemHarRett === 'kunFarHarRettMorHovedsøker' || hvemHarRett === 'kunMedfarEllerMedmorHarRett')
+    ) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = getUttaksdagFraOgMedDato(
