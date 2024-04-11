@@ -11,12 +11,12 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Fordeling } from 'types/Fordeling';
 import {
     HvemPlanlegger,
+    Situasjon,
     erFarDelAvSøknaden,
     erMorDelAvSøknaden,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
 } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { formatError } from 'utils/customErrorFormatter';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';

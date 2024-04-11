@@ -4,11 +4,9 @@ import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { Søkersituasjon } from 'types/Søkersituasjon';
 
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
-    SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
     ARBEIDSSITUASJON = 'ARBEIDSSITUASJON',
     HVOR_LANG_PERIODE = 'HVOR_LANG_PERIODE',
@@ -17,7 +15,6 @@ export enum ContextDataType {
 
 export type ContextDataMap = {
     [ContextDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
-    [ContextDataType.SØKERSITUASJON]?: Søkersituasjon;
     [ContextDataType.OM_BARNET]?: OmBarnet;
     [ContextDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;

@@ -1,7 +1,6 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { HvemPlanlegger, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { HvemPlanlegger, Situasjon, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react';
 

@@ -3,8 +3,9 @@ import { FunctionComponent, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
-import { Situasjon } from 'types/Søkersituasjon';
+import { Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import { decodeBase64 } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
@@ -24,24 +25,31 @@ interface Props {
 const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
-    const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
+    const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
+
+    const hvemHarRett =
+        hvemPlanlegger && arbeidssituasjon ? utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon) : undefined;
 
     const params = useMemo(
         () => ({
             antallBarn: omBarnet?.antallBarn,
-            morHarRett: arbeidssituasjon?.status === Arbeidsstatus.JOBBER,
-            farHarRett: arbeidssituasjon?.jobberAnnenPart || false,
-            morHarAleneomsorg: søkersituasjon?.situasjon === Situasjon.MOR,
-            farHarAleneomsorg: søkersituasjon?.situasjon === Situasjon.FAR,
+            morHarRett: hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunMorHarRett',
+            farHarRett:
+                hvemHarRett === 'beggeHarRett' ||
+                hvemHarRett === 'kunFarHarRett' ||
+                hvemHarRett === 'kunFarHarRettMorHovedsøker' ||
+                hvemHarRett === 'kunMedfarEllerMedmorHarRett',
+            morHarAleneomsorg: hvemPlanlegger?.type === Situasjon.MOR,
+            farHarAleneomsorg: hvemPlanlegger?.type === Situasjon.FAR,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
             termindato: omBarnet && erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined,
             omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.overtakelsesdato : undefined,
             morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-            erMor: søkersituasjon?.situasjon !== Situasjon.FAR,
+            erMor: hvemPlanlegger?.type !== Situasjon.FAR && hvemPlanlegger?.type !== Situasjon.FAR_OG_FAR,
             minsterett: true,
             harAnnenForelderTilsvarendeRettEØS: false,
         }),
-        [omBarnet, arbeidssituasjon, søkersituasjon],
+        [omBarnet, arbeidssituasjon, hvemPlanlegger, hvemHarRett],
     );
 
     const options = useMemo(

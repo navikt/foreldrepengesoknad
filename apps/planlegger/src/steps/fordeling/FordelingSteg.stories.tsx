@@ -7,8 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { Situasjon } from 'types/Søkersituasjon';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 

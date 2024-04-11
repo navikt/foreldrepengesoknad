@@ -6,7 +6,7 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvemPlanlegger, erFarDelAvSøknaden, erMorDelAvSøknaden } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, Situasjon, erFarDelAvSøknaden, erMorDelAvSøknaden } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { Radio, Spacer, VStack } from '@navikt/ds-react';
@@ -15,7 +15,6 @@ import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
-import { Situasjon } from '../../types/Søkersituasjon';
 
 const HvemPlanleggerSteg: FunctionComponent = () => {
     const intl = useIntl();
