@@ -4,13 +4,16 @@ import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
 import {
+    AnnenForelder,
     Søkerrolle,
     andreAugust2022ReglerGjelder,
+    getFarMedmorErAleneOmOmsorg,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { getMorHarRettPåForeldrepengerINorgeEllerEØS } from '@navikt/fp-common';
+import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from 'app/context/FpDataContext';
@@ -65,6 +68,30 @@ const showUtenlandsoppholdStep = (
     return false;
 };
 
+const getBareFarMedmorHarRett = (
+    annenForelder: AnnenForelder | undefined,
+    søkersituasjon: SøkersituasjonFp | undefined,
+    erFarEllerMedmor: boolean,
+) => {
+    if (annenForelder === undefined || søkersituasjon === undefined) {
+        return false;
+    }
+
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
+
+    const farMedmorErAleneOmOmsorg =
+        annenForelder !== undefined
+            ? getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder)
+            : false;
+
+    const bareFarMedmorHarRett =
+        !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
+        !farMedmorErAleneOmOmsorg;
+
+    return bareFarMedmorHarRett;
+};
+
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
@@ -74,22 +101,24 @@ const showManglendeDokumentasjonSteg = (
     if (path === SøknadRoutes.DOKUMENTASJON) {
         const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
         const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
-        const omBarnet = getData(ContextDataType.OM_BARNET);
+        const barn = getData(ContextDataType.OM_BARNET);
         const uttaksplan = getData(ContextDataType.UTTAKSPLAN);
         const uttaksplanMetadata = getData(ContextDataType.UTTAKSPLAN_METADATA);
+
+        const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
 
         const skalHaAnnenForelderDok =
             annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : false;
 
         const skalHaOmBarnetDok =
             søkersituasjon?.situasjon === 'adopsjon' ||
-            (omBarnet &&
+            (barn &&
                 søkersituasjon &&
-                isUfødtBarn(omBarnet) &&
-                arbeidsforhold.length === 0 &&
-                getKanSøkePåTermin(søkersituasjon.rolle, omBarnet.termindato));
+                isUfødtBarn(barn) &&
+                (arbeidsforhold.length === 0 ||
+                    getBareFarMedmorHarRett(annenForelder, søkersituasjon, erFarEllerMedmor)) &&
+                getKanSøkePåTermin(søkersituasjon.rolle, barn.termindato));
 
-        const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
         const skalHaUttakDok =
             annenForelder && uttaksplan
                 ? kreverUttaksplanVedlegg(

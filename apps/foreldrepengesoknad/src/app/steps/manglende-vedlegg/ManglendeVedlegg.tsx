@@ -295,6 +295,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     barn={barn}
                     arbeidsforhold={søkerInfo.arbeidsforhold}
                     rolle={søkersituasjon.rolle}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
                 <OmsorgsovertakelseDokumentasjon
                     attachments={adopsjonVedlegg}
