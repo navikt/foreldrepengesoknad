@@ -61,7 +61,7 @@ const customRenderer = ({
 };
 
 const meta = {
-    title: 'OversiktSteg',
+    title: 'OversiktSteg - Fødsel',
     component: OversiktSteg,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;

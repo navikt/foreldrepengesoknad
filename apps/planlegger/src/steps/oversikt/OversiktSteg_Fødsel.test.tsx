@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/react';
 import { render, screen, within } from '@testing-library/react';
 
-import * as stories from './OversiktSteg.stories';
+import * as stories from './OversiktSteg_Fødsel.stories';
 
 const {
     FødselMorOgFarBeggeHarRett,
