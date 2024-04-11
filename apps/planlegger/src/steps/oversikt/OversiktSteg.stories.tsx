@@ -15,6 +15,12 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import OversiktSteg from './OversiktSteg';
 
+const MINSTERETTER = {
+    generellMinsterett: 0,
+    farRundtFødsel: 10,
+    toTette: 0,
+};
+
 const DEFAULT_STØNADSKONTOER = {
     '100': {
         kontoer: {
@@ -25,11 +31,7 @@ const DEFAULT_STØNADSKONTOER = {
             AKTIVITETSFRI_KVOTE: 40,
             FORELDREPENGER: 200,
         },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
+        minsteretter: MINSTERETTER,
     },
     '80': {
         kontoer: {
@@ -40,11 +42,7 @@ const DEFAULT_STØNADSKONTOER = {
             AKTIVITETSFRI_KVOTE: 40,
             FORELDREPENGER: 250,
         },
-        minsteretter: {
-            farRundtFødsel: 0,
-            generellMinsterett: 0,
-            toTette: 0,
-        },
+        minsteretter: MINSTERETTER,
     },
 };
 
@@ -94,133 +92,186 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
-export const PeriodeFlereForsørgereTerminBeggeHarRett: Story = {
+export const FødselMorOgFarBeggeHarRett: Story = {
     args: {
-        fordeling: {
-            antallUkerSøker1: 5,
-        },
-        hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        hvemPlanlegger: {
+            navnPåMor: 'Olga Utvikler',
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.MOR_OG_FAR,
         },
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2022-10-24',
+            termindato: '2024-04-11',
             antallBarn: '1',
+        },
+        fordeling: {
+            antallUkerSøker1: 0,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        hvemPlanlegger: {
-            navnPåMor: 'Olga',
-            navnPåFar: 'Espen Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    MØDREKVOTE: 95,
+                    FEDREKVOTE: 95,
+                    FELLESPERIODE: 90,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: {
+                    MØDREKVOTE: 75,
+                    FEDREKVOTE: 75,
+                    FELLESPERIODE: 80,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };
 
-export const PeriodeAleneforsørgerFarTermin: Story = {
+export const FødselMorOgFarKunMorHarRett: Story = {
     args: {
-        hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
-            type: Situasjon.FAR,
-        },
-        fordeling: {
-            antallUkerSøker1: 5,
-        },
-        hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-        },
-        omBarnet: {
-            erFødsel: true,
-            erBarnetFødt: false,
-            termindato: '2022-10-24',
-            antallBarn: '1',
-        },
-        arbeidssituasjon: {
-            status: Arbeidsstatus.JOBBER,
-        },
-    },
-};
-
-export const PeriodeAleneforsørgerMorFødt: Story = {
-    args: {
-        hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR,
-        },
-        fordeling: {
-            antallUkerSøker1: 6,
-        },
-        hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-        },
-        omBarnet: {
-            erBarnetFødt: true,
-            erFødsel: true,
-            fødselsdato: '2024-09-01',
-            termindato: '2024-09-01',
-            antallBarn: '1',
-        },
-        arbeidssituasjon: {
-            status: Arbeidsstatus.JOBBER,
-        },
-    },
-};
-
-export const PeriodeFlereForsørgereToBarnFødtKunMorHarRett: Story = {
-    args: {
-        hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
-            navnPåMedmor: 'Kari Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
-        },
-        fordeling: {
-            antallUkerSøker1: 8,
-        },
-        hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-        },
-        omBarnet: {
-            erBarnetFødt: true,
-            erFødsel: true,
-            fødselsdato: '2024-10-01',
-            termindato: '2024-10-03',
-            antallBarn: '2',
-        },
+        ...FødselMorOgFarBeggeHarRett.args,
+        fordeling: undefined,
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 280,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 230,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
+        },
     },
 };
 
-export const PeriodeFlereForsørgereAdoptertKunFarHarRett: Story = {
+export const FødselMorOgFarKunFarHarRett: Story = {
     args: {
-        hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
-            navnPåFar: 'Espen Utvikler',
-            type: Situasjon.MOR_OG_FAR,
-        },
-        fordeling: {
-            antallUkerSøker1: 8,
-        },
-        hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-        },
-        omBarnet: {
-            erBarnetFødt: true,
-            erFødsel: false,
-            fødselsdato: '2024-09-01',
-            termindato: '2024-09-01',
-            overtakelsesdato: '2024-09-01',
-            adopsjonsdato: '2024-09-01',
-            antallBarn: '1',
-        },
+        ...FødselMorOgFarBeggeHarRett.args,
+        fordeling: undefined,
         arbeidssituasjon: {
-            status: Arbeidsstatus.INGEN,
+            status: Arbeidsstatus.UFØR,
             jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 250,
+                },
+                minsteretter: {
+                    generellMinsterett: 95,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 200,
+                },
+                minsteretter: {
+                    generellMinsterett: 75,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
+    },
+};
+
+export const FødselMorOgMedmorBeggeHarRett: Story = {
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        hvemPlanlegger: {
+            navnPåMor: 'Olga Utvikler',
+            navnPåMedmor: 'Helga Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+    },
+};
+
+export const FødselMorOgMedmorKunMorHarRett: Story = {
+    args: {
+        ...FødselMorOgFarKunMorHarRett.args,
+        hvemPlanlegger: {
+            navnPåMor: 'Olga Utvikler',
+            navnPåMedmor: 'Helga Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+    },
+};
+
+export const FødselMorOgMedmorKunMedmorHarRett: Story = {
+    args: {
+        ...FødselMorOgFarKunFarHarRett.args,
+        hvemPlanlegger: {
+            navnPåMor: 'Olga Utvikler',
+            navnPåMedmor: 'Helga Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+    },
+};
+
+export const FødselBareMorSøkerOgHarRett: Story = {
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        hvemPlanlegger: {
+            navnPåMor: 'Olga Utvikler',
+            type: Situasjon.MOR,
+        },
+        fordeling: undefined,
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: undefined,
+        },
+        stønadskontoer: FødselMorOgFarKunMorHarRett.args?.stønadskontoer,
+    },
+};
+
+export const FødselBareFarSøkerOgHarRett: Story = {
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.FAR,
+        },
+        fordeling: undefined,
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: undefined,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 280,
+                },
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 230,
+                },
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };

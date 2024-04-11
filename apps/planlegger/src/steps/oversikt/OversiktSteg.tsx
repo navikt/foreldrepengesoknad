@@ -165,7 +165,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </ToggleGroup.Item>
                     </ToggleGroup>
                     {!erAleneforsørger &&
-                        antallUkerFellesperiodeSøker1 &&
+                        antallUkerFellesperiodeSøker1 !== undefined &&
                         hvemHarRett !== 'kunMedfarEllerMedmorHarRett' &&
                         hvemHarRett !== 'kunMorHarRett' && (
                             <Select
