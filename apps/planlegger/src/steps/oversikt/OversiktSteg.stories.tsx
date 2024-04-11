@@ -294,3 +294,16 @@ export const FødselFarOgFarKunFarHarRett: Story = {
         },
     },
 };
+
+export const BarnetErFødtDagenEtterTermindato: Story = {
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: true,
+            termindato: '2024-04-11',
+            fødselsdato: '2024-04-12',
+            antallBarn: '1',
+        },
+    },
+};
