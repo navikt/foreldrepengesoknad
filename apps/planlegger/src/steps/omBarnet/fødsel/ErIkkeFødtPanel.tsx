@@ -58,6 +58,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                     autofocusWhenEmpty
+                    useStrategyAbsolute
                     validate={[
                         isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
                         isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
@@ -94,7 +95,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                                 <FormattedMessage
                                     id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
                                     values={{
-                                        erMor: hvemPlanlegger.type === Situasjon.MOR,
+                                        erAlenesøker,
                                     }}
                                 />
                             </BodyLong>

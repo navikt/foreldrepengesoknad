@@ -44,6 +44,7 @@ export interface Props {
     disableWeekends?: boolean;
     autofocusWhenEmpty?: boolean;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
+    useStrategyAbsolute?: boolean;
 }
 
 const Datepicker: FunctionComponent<Props> = ({
@@ -59,6 +60,7 @@ const Datepicker: FunctionComponent<Props> = ({
     disableWeekends,
     autofocusWhenEmpty,
     customErrorFormatter,
+    useStrategyAbsolute = false,
 }): JSX.Element => {
     const {
         formState: { errors },
@@ -117,7 +119,7 @@ const Datepicker: FunctionComponent<Props> = ({
         <DatePicker
             {...datepickerProps}
             disabled={disabledDays}
-            strategy="fixed"
+            strategy={useStrategyAbsolute ? 'absolute' : 'fixed'}
             dropdownCaption={showMonthAndYearDropdowns}
             fromDate={fromDate}
             toDate={toDate}

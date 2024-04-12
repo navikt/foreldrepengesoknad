@@ -28,13 +28,18 @@ export const lagKalenderPerioder = (
         antallUkerFellesperiodeSøker1,
     );
 
+    const erAdoptert = erBarnetAdoptert(barnet);
+
     if (hvemHarRett === 'kunMorHarRett') {
-        return [
-            {
+        const perioder = [] as Period[];
+        if (!erAdoptert) {
+            perioder.push({
                 fom: startdatoSøker1,
                 tom: dayjs(familiehendelsedato).subtract(1, 'day').format(ISO_DATE_FORMAT),
                 color: DayColor.BLUE,
-            },
+            });
+        }
+        return perioder.concat([
             {
                 fom: familiehendelsedato,
                 tom: familiehendelsedato,
@@ -45,7 +50,7 @@ export const lagKalenderPerioder = (
                 tom: sluttdatoSøker1,
                 color: DayColor.BLUE,
             },
-        ];
+        ]);
     }
 
     if (hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2) {
@@ -93,6 +98,7 @@ export const lagKalenderPerioder = (
 
     if (
         (hvemHarRett === 'kunFarHarRettMorHovedsøker' || hvemHarRett === 'kunMedfarEllerMedmorHarRett') &&
+        !erAdoptert &&
         startdatoSøker2 &&
         sluttdatoSøker2
     ) {
@@ -111,6 +117,21 @@ export const lagKalenderPerioder = (
                 fom: startdatoSøker2,
                 tom: sluttdatoSøker2,
                 color: DayColor.GREEN,
+            },
+        ];
+    }
+
+    if ((hvemHarRett === 'kunFarHarRettMorHovedsøker' || hvemHarRett === 'kunMedfarEllerMedmorHarRett') && erAdoptert) {
+        return [
+            {
+                fom: familiehendelsedato,
+                tom: familiehendelsedato,
+                color: DayColor.PINK,
+            },
+            {
+                fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
+                tom: sluttdatoSøker1,
+                color: DayColor.BLUE,
             },
         ];
     }

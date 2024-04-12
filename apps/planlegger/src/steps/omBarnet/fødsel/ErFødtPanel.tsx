@@ -45,6 +45,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                         minDate={dayjs().subtract(6, 'month').toDate()}
                         maxDate={dayjs().toDate()}
                         autofocusWhenEmpty
+                        useStrategyAbsolute
                         validate={[
                             isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
@@ -77,6 +78,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                             ),
                         ]}
                         customErrorFormatter={formatError}
+                        useStrategyAbsolute
                     />
                 </VStack>
             </GreenPanel>
