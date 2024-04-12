@@ -67,7 +67,7 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
-export const FødselMorOgFarBeggeHarRett: Story = {
+export const MorOgFarBeggeHarRett: Story = {
     args: {
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
@@ -113,9 +113,9 @@ export const FødselMorOgFarBeggeHarRett: Story = {
     },
 };
 
-export const FødselMorOgFarKunMorHarRett: Story = {
+export const MorOgFarKunMorHarRett: Story = {
     args: {
-        ...FødselMorOgFarBeggeHarRett.args,
+        ...MorOgFarBeggeHarRett.args,
         fordeling: undefined,
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
@@ -140,9 +140,9 @@ export const FødselMorOgFarKunMorHarRett: Story = {
     },
 };
 
-export const FødselMorOgFarKunFarHarRett: Story = {
+export const MorOgFarKunFarHarRett: Story = {
     args: {
-        ...FødselMorOgFarBeggeHarRett.args,
+        ...MorOgFarBeggeHarRett.args,
         fordeling: undefined,
         arbeidssituasjon: {
             status: Arbeidsstatus.UFØR,
@@ -173,9 +173,9 @@ export const FødselMorOgFarKunFarHarRett: Story = {
     },
 };
 
-export const FødselMorOgMedmorBeggeHarRett: Story = {
+export const MorOgMedmorBeggeHarRett: Story = {
     args: {
-        ...FødselMorOgFarBeggeHarRett.args,
+        ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
@@ -184,9 +184,9 @@ export const FødselMorOgMedmorBeggeHarRett: Story = {
     },
 };
 
-export const FødselMorOgMedmorKunMorHarRett: Story = {
+export const MorOgMedmorKunMorHarRett: Story = {
     args: {
-        ...FødselMorOgFarKunMorHarRett.args,
+        ...MorOgFarKunMorHarRett.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
@@ -195,9 +195,9 @@ export const FødselMorOgMedmorKunMorHarRett: Story = {
     },
 };
 
-export const FødselMorOgMedmorKunMedmorHarRett: Story = {
+export const MorOgMedmorKunMedmorHarRett: Story = {
     args: {
-        ...FødselMorOgFarKunFarHarRett.args,
+        ...MorOgFarKunFarHarRett.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
@@ -206,9 +206,9 @@ export const FødselMorOgMedmorKunMedmorHarRett: Story = {
     },
 };
 
-export const FødselBareMorSøkerOgHarRett: Story = {
+export const BareMorSøkerOgHarRett: Story = {
     args: {
-        ...FødselMorOgFarBeggeHarRett.args,
+        ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             type: Situasjon.MOR,
@@ -218,13 +218,13 @@ export const FødselBareMorSøkerOgHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
         },
-        stønadskontoer: FødselMorOgFarKunMorHarRett.args?.stønadskontoer,
+        stønadskontoer: MorOgFarKunMorHarRett.args?.stønadskontoer,
     },
 };
 
-export const FødselBareFarSøkerOgHarRett: Story = {
+export const BareFarSøkerOgHarRett: Story = {
     args: {
-        ...FødselMorOgFarBeggeHarRett.args,
+        ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             type: Situasjon.FAR,
@@ -251,9 +251,9 @@ export const FødselBareFarSøkerOgHarRett: Story = {
     },
 };
 
-export const FødselFarOgFarBeggeHarRett: Story = {
+export const FarOgFarBeggeHarRett: Story = {
     args: {
-        ...FødselMorOgFarBeggeHarRett.args,
+        ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
@@ -262,9 +262,9 @@ export const FødselFarOgFarBeggeHarRett: Story = {
     },
 };
 
-export const FødselFarOgFarKunFarHarRett: Story = {
+export const FarOgFarKunFarHarRett: Story = {
     args: {
-        ...FødselFarOgFarBeggeHarRett.args,
+        ...FarOgFarBeggeHarRett.args,
         fordeling: undefined,
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
@@ -297,7 +297,7 @@ export const FødselFarOgFarKunFarHarRett: Story = {
 
 export const BarnetErFødtDagenEtterTermindato: Story = {
     args: {
-        ...FødselMorOgFarBeggeHarRett.args,
+        ...MorOgFarBeggeHarRett.args,
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: true,

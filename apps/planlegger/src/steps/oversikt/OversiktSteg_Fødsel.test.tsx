@@ -4,22 +4,22 @@ import { render, screen, within } from '@testing-library/react';
 import * as stories from './OversiktSteg_Fødsel.stories';
 
 const {
-    FødselMorOgFarBeggeHarRett,
-    FødselMorOgFarKunMorHarRett,
-    FødselMorOgFarKunFarHarRett,
-    FødselMorOgMedmorBeggeHarRett,
-    FødselMorOgMedmorKunMorHarRett,
-    FødselMorOgMedmorKunMedmorHarRett,
-    FødselBareMorSøkerOgHarRett,
-    FødselBareFarSøkerOgHarRett,
-    FødselFarOgFarBeggeHarRett,
-    FødselFarOgFarKunFarHarRett,
+    MorOgFarBeggeHarRett,
+    MorOgFarKunMorHarRett,
+    MorOgFarKunFarHarRett,
+    MorOgMedmorBeggeHarRett,
+    MorOgMedmorKunMorHarRett,
+    MorOgMedmorKunMedmorHarRett,
+    BareMorSøkerOgHarRett,
+    BareFarSøkerOgHarRett,
+    FarOgFarBeggeHarRett,
+    FarOgFarKunFarHarRett,
     BarnetErFødtDagenEtterTermindato,
 } = composeStories(stories);
 
 describe('<OversiktSteg>', () => {
     it('skal vise korrekt data for fødsel - mor og far - begge har rett', async () => {
-        render(<FødselMorOgFarBeggeHarRett />);
+        render(<MorOgFarBeggeHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -59,7 +59,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - mor og far - kun mor har rett', async () => {
-        render(<FødselMorOgFarKunMorHarRett />);
+        <MorOgFarKunMorHarRett />;
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -90,7 +90,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - mor og far - kun far har rett', async () => {
-        render(<FødselMorOgFarKunFarHarRett />);
+        <MorOgFarKunFarHarRett />;
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -128,7 +128,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - mor og medmor - begge har rett', async () => {
-        render(<FødselMorOgMedmorBeggeHarRett />);
+        render(<MorOgMedmorBeggeHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -165,7 +165,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - mor og medmor - kun mor har rett', async () => {
-        render(<FødselMorOgMedmorKunMorHarRett />);
+        render(<MorOgMedmorKunMorHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -196,7 +196,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - mor og medmor - kun medmor har rett', async () => {
-        render(<FødselMorOgMedmorKunMedmorHarRett />);
+        render(<MorOgMedmorKunMedmorHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -234,7 +234,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - mor søker og har rett', async () => {
-        render(<FødselBareMorSøkerOgHarRett />);
+        render(<BareMorSøkerOgHarRett />);
 
         expect(await screen.findByText('Planen din')).toBeInTheDocument();
 
@@ -265,7 +265,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - far søker og har rett', async () => {
-        render(<FødselBareFarSøkerOgHarRett />);
+        render(<BareFarSøkerOgHarRett />);
 
         expect(await screen.findByText('Planen din')).toBeInTheDocument();
 
@@ -292,7 +292,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - begge har rett', async () => {
-        render(<FødselFarOgFarBeggeHarRett />);
+        render(<FarOgFarBeggeHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -328,7 +328,7 @@ describe('<OversiktSteg>', () => {
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun biologisk far har rett', async () => {
-        render(<FødselFarOgFarKunFarHarRett />);
+        render(<FarOgFarKunFarHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
