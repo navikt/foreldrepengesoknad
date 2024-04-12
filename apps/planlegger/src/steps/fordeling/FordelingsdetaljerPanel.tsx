@@ -4,30 +4,24 @@ import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Uttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong } from '@navikt/ds-react';
 
 import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
+    uttaksdata: Uttaksdata;
     fornavnPart1: string;
-    startdatoPart1: string;
-    sluttdatoPart1: string;
     fornavnPart2?: string;
-    startdatoPart2: string;
-    sluttdatoPart2?: string;
 }
 
-const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
-    fornavnPart1,
-    startdatoPart1,
-    sluttdatoPart1,
-    fornavnPart2,
-    startdatoPart2,
-    sluttdatoPart2,
-}) => {
+const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavnPart1, fornavnPart2 }) => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const antallBarn = barnet.antallBarn;
+
+    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = uttaksdata;
+
     return (
         <Infobox
             header={<FormattedMessage id="FordelingsdetaljerPanel.InfoboksTittel" />}
@@ -38,7 +32,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                     id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
                     values={{
                         hvem: fornavnPart1,
-                        dag: dayjs(startdatoPart1).format('DD.MM.YY'),
+                        dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
                     }}
                 />
             </BodyLong>
@@ -47,18 +41,18 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                     id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
                     values={{
                         hvem: fornavnPart1,
-                        dag: dayjs(sluttdatoPart1).format('DD.MM.YY'),
+                        dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
                     }}
                 />
             </BodyLong>
-            {fornavnPart2 && sluttdatoPart2 && (
+            {fornavnPart2 && sluttdatoSøker2 && (
                 <>
                     <BodyLong>
                         <FormattedMessage
                             id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
                             values={{
                                 hvem: fornavnPart2,
-                                dag: dayjs(startdatoPart2).add(1, 'day').format('DD.MM.YY'),
+                                dag: dayjs(startdatoSøker2).format('DD.MM.YY'),
                             }}
                         />
                     </BodyLong>
@@ -67,7 +61,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                             id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
                             values={{
                                 hvem: fornavnPart2,
-                                dag: dayjs(sluttdatoPart2).format('DD.MM.YY'),
+                                dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
                             }}
                         />
                     </BodyLong>
