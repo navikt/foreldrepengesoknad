@@ -28,7 +28,7 @@
     "FlereForsørgere.Jobber.Infoboks.HarJobbetSeksAvTiMnd": "Når man har jobbet 6 av de siste 10 månedene og har tjent mer enn 59 310 kr det siste året har man i utgangspunktet rett til foreldrepenger.",
     "FlereForsørgere.Jobber.Infoboks.HarRettTilForeldrepenger": "{navn} vil ha rett til foreldrepenger",
     "FlereForsørgere.Infoboks.HarIkkeRettTilForeldrepenger": "{navn} har ikke rett til foreldrepenger",
-    "FlereForsørgere.Ufør.Infoboks.ErUfør": "Siden {navn} er ufør vil hun/han ikke ha rett til foreldrepenger.",
+    "FlereForsørgere.Ufør.Infoboks.ErUfør": "Siden {navn} er ufør vil hun ikke ha rett til foreldrepenger.",
     "FlereForsørgere.Ufør.Infoboks.LesMer": "På NAVs nettsider kan dere lese mer om <a>reglene som gjelder</a> hvis {navn} har uføretrygd.",
     "FlereForsørgere.Ingen.Infoboks.ManHarIkkeRett": "Når man ikke har jobbet 6 av de siste 10 månedene og ikke har tjent mer enn 59 310 kr har ikke man rett til foreldrepenger.",
     "FlereForsørgere.Ingen.Infoboks.Engangsstønad": "{navn} kan ha rett til engangsstønad i stedet. Dere kan bruke <a>NAVs veiviser for engangsstønad eller foreldrepenger</a> for å lære mer.",
