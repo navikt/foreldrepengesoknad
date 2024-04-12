@@ -140,7 +140,7 @@ export const MorOgFarKunMorHarRett: Story = {
     },
 };
 
-export const MorOgFarKunFarHarRett: Story = {
+export const MorOgFarKunFarHarRettMorUfør: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         fordeling: undefined,
@@ -173,6 +173,39 @@ export const MorOgFarKunFarHarRett: Story = {
     },
 };
 
+export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
+    args: {
+        ...MorOgFarBeggeHarRett.args,
+        fordeling: undefined,
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 250,
+                },
+                minsteretter: {
+                    generellMinsterett: 40,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 200,
+                },
+                minsteretter: {
+                    generellMinsterett: 40,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
+    },
+};
+
 export const MorOgMedmorBeggeHarRett: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
@@ -195,9 +228,20 @@ export const MorOgMedmorKunMorHarRett: Story = {
     },
 };
 
-export const MorOgMedmorKunMedmorHarRett: Story = {
+export const MorOgMedmorKunMedmorHarRettMorUfør: Story = {
     args: {
-        ...MorOgFarKunFarHarRett.args,
+        ...MorOgFarKunFarHarRettMorUfør.args,
+        hvemPlanlegger: {
+            navnPåMor: 'Olga Utvikler',
+            navnPåMedmor: 'Helga Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+    },
+};
+
+export const MorOgMedmorKunMedmorHarRettMorIngenAvDisse: Story = {
+    args: {
+        ...MorOgFarKunFarHarRettMorIngenAvDisse.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
