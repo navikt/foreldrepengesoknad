@@ -31,6 +31,7 @@ import { BodyLong, Heading, Spacer, VStack } from '@navikt/ds-react';
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import { Dekningsgrad } from '../../../../../packages/fp-common/src/common';
 import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';
 
 const finnPart1Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
@@ -131,13 +132,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const { startdatoSøker1, sluttdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        valgtStønadskonto,
-        barnet,
-        antallUkerSøker1,
-    );
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
 
     return (
         <PlanleggerStepPage steps={stepConfig}>
@@ -173,11 +169,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     {antallUkerSøker1 > 0 && (
                         <FordelingsdetaljerPanel
                             fornavnPart1={getFornavnPåSøker(hvemPlanlegger, intl)}
-                            startdatoPart1={startdatoSøker1}
-                            sluttdatoPart1={sluttdatoSøker1}
                             fornavnPart2={getFornavnPåAnnenPart(hvemPlanlegger, intl)}
-                            startdatoPart2={sluttdatoSøker1}
-                            sluttdatoPart2={sluttdatoSøker2}
+                            uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
                         />
                     )}
                     <Spacer />
