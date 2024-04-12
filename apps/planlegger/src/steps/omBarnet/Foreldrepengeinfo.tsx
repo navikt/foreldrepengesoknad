@@ -37,14 +37,12 @@ const Foreldrepengeinfo: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             <Heading size="small">
                                 <FormattedMessage id="Foreldrepengeinfo.ForeldrepengerInfo" values={{ erAlenesøker }} />
                             </Heading>
-
                             <BodyLong>
                                 <FormattedMessage
                                     id="Foreldrepengeinfo.ForeldrepengerInfoTekst"
                                     values={{ erAlenesøker }}
                                 />
                             </BodyLong>
-
                             <BodyLong>
                                 {/* TODO Bytt ut tekst */}
                                 <FormattedMessage
@@ -59,7 +57,6 @@ const Foreldrepengeinfo: FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                             <Heading size="small">
                                 <FormattedMessage id="Foreldrepengeinfo.ForeldrepengerInfo" values={{ erAlenesøker }} />
                             </Heading>
-
                             <BodyLong>
                                 <FormattedMessage
                                     id="Foreldrepengeinfo.ForeldrepengerInfoTekst"
