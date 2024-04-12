@@ -18,7 +18,6 @@ export type BarnetErIkkeFødt = {
 export type BarnetErAdoptert = {
     erFødsel: boolean;
     antallBarn: string;
-    adopsjonsdato: string;
     overtakelsesdato: string;
     fødselsdato: string;
 };
