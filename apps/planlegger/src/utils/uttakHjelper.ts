@@ -204,6 +204,25 @@ const finnEnsligUttaksdata = (
             ),
         };
     }
+    if (
+        erBarnetAdoptert(barnet) &&
+        (hvemHarRett === 'kunFarHarRettMorHovedsøker' || hvemHarRett === 'kunMedfarEllerMedmorHarRett')
+    ) {
+        const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+        const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
+        const sluttAktivitetsfri = getUttaksdagFraOgMedDato(
+            dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks').add(6, 'weeks').format(ISO_DATE_FORMAT),
+        );
+        return {
+            familiehendelsedato,
+            startdatoSøker1: getUttaksdagFraOgMedDato(dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT)),
+            sluttdatoSøker1: sluttAktivitetsfri,
+            startdatoSøker2: getUttaksdagFraOgMedDato(dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT)),
+            sluttdatoSøker2: getUttaksdagFraOgMedDato(
+                dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
+            ),
+        };
+    }
 
     return {
         familiehendelsedato,
