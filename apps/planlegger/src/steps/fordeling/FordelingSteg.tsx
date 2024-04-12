@@ -8,6 +8,7 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import {
     HvemPlanlegger,
@@ -31,7 +32,6 @@ import { BodyLong, Heading, Spacer, VStack } from '@navikt/ds-react';
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import { Dekningsgrad } from '../../../../../packages/fp-common/src/common';
 import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';
 
 const finnPart1Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
