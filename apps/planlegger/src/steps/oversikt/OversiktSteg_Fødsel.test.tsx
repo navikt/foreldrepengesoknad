@@ -91,7 +91,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(within(feb2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(19);
     });
 
-    it('skal vise korrekt data for fødsel - mor og far - kun far har rett og mor er ufør', async () => {
+    it('skal vise korrekt data for fødsel - mor og far - kun far har rett fordi mor er ufør', async () => {
         render(<MorOgFarKunFarHarRettMorUfør />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
@@ -235,7 +235,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(within(feb2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(19);
     });
 
-    it('skal vise korrekt data for fødsel - mor og medmor - kun medmor har rett og mor er ufør', async () => {
+    it('skal vise korrekt data for fødsel - mor og medmor - kun medmor har rett fordi mor er ufør', async () => {
         render(<MorOgMedmorKunMedmorHarRettMorUfør />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();

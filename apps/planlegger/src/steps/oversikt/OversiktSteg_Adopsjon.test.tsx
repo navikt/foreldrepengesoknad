@@ -6,10 +6,12 @@ import * as stories from './OversiktSteg_Adopsjon.stories';
 const {
     MorOgFarBeggeHarRett,
     MorOgFarKunMorHarRett,
-    MorOgFarKunFarHarRett,
+    MorOgFarKunFarHarRettMorErUfør,
+    MorOgFarKunFarHarRettMorIngenAvDisse,
     MorOgMedmorBeggeHarRett,
     MorOgMedmorKunMorHarRett,
-    MorOgMedmorKunMedmorHarRett,
+    MorOgMedmorKunMedmorHarRettMorErUfør,
+    MorOgMedmorKunMedmorHarRettMorIngenAvDisse,
     BareMorSøkerOgHarRett,
     BareFarSøkerOgHarRett,
     FarOgFarBeggeHarRett,
@@ -79,7 +81,7 @@ describe('<OversiktSteg - adopsjon>', () => {
     });
 
     it('skal vise korrekt data for adopsjon - mor og far - kun far har rett', async () => {
-        render(<MorOgFarKunFarHarRett />);
+        render(<MorOgFarKunFarHarRettMorErUfør />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -106,6 +108,74 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(within(september).getByTestId('day:6;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(september).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(4);
         expect(within(september).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
+
+        const feb2025 = screen.getByTestId('year:2025;month:1');
+        expect(within(feb2025).getByTestId('day:27;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(19);
+    });
+
+    it('skal vise korrekt data for adopsjon - mor og far - kun far har rett fordi mor er ufør', async () => {
+        render(<MorOgFarKunFarHarRettMorErUfør />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(screen.getByText('100% foreldrepenger i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'true',
+        );
+        expect(screen.getByText('80% foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'false',
+        );
+        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Far, 15 uker uten krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Far, 25 uker med krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelsesdato 11. Apr')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
+
+        const september = screen.getByTestId('year:2024;month:8');
+        expect(within(september).getByTestId('day:5;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:6;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(september).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(4);
+        expect(within(september).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
+
+        const feb2025 = screen.getByTestId('year:2025;month:1');
+        expect(within(feb2025).getByTestId('day:27;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(19);
+    });
+
+    it('skal vise korrekt data for adopsjon - mor og far - kun far har rett', async () => {
+        render(<MorOgFarKunFarHarRettMorIngenAvDisse />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(screen.getByText('100% foreldrepenger i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'true',
+        );
+        expect(screen.getByText('80% foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'false',
+        );
+        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Far, 8 uker uten krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Far, 32 uker med krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelsesdato 11. Apr')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
+
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:18;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:19;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(juli).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(14);
+        expect(within(juli).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(9);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
         expect(within(feb2025).getByTestId('day:27;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
@@ -172,8 +242,8 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(within(feb2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(19);
     });
 
-    it('skal vise korrekt data for adopsjon - mor og medmor - kun medmor har rett', async () => {
-        render(<MorOgMedmorKunMedmorHarRett />);
+    it('skal vise korrekt data for adopsjon - mor og medmor - kun medmor har rett fordi mor er ufør', async () => {
+        render(<MorOgMedmorKunMedmorHarRettMorErUfør />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -200,6 +270,40 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(within(september).getByTestId('day:6;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(september).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(4);
         expect(within(september).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
+
+        const feb2025 = screen.getByTestId('year:2025;month:1');
+        expect(within(feb2025).getByTestId('day:27;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(19);
+    });
+
+    it('skal vise korrekt data for adopsjon - mor og medmor - kun medmor har rett', async () => {
+        render(<MorOgMedmorKunMedmorHarRettMorIngenAvDisse />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(screen.getByText('100% foreldrepenger i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'true',
+        );
+        expect(screen.getByText('80% foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'false',
+        );
+        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Medmor, 8 uker uten krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Medmor, 32 uker med krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelsesdato 11. Apr')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
+
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:18;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:19;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(14);
+        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(9);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
         expect(within(feb2025).getByTestId('day:27;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
