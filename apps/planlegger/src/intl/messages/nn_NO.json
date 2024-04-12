@@ -28,7 +28,7 @@
     "FlereForsørgere.Jobber.Infoboks.HarJobbetSeksAvTiMnd": "Når ein har jobba 6 av dei siste 10 månadene og har tent meir enn 59 310 kr det siste året, har ein i utgangspunktet rett til foreldrepengar.",
     "FlereForsørgere.Jobber.Infoboks.HarRettTilForeldrepenger": "{navn} vil ha rett til foreldrepengar",
     "FlereForsørgere.Infoboks.HarIkkeRettTilForeldrepenger": "{navn} har ikkje rett til foreldrepengar",
-    "FlereForsørgere.Ufør.Infoboks.ErUfør": "Sidan {navn} er ufør, vil hun/han ikkje ha rett til foreldrepengar.",
+    "FlereForsørgere.Ufør.Infoboks.ErUfør": "Sidan {navn} er ufør, vil ho ikkje ha rett til foreldrepengar.",
     "FlereForsørgere.Ufør.Infoboks.LesMer": "På NAV sine nettsider kan de lese meir om <a>reglane som gjeld</a> dersom {navn} har uføretrygd.",
     "FlereForsørgere.Ingen.Infoboks.ManHarIkkeRett": "Når ein ikkje har jobba 6 av dei siste 10 månadene og ikkje har tent meir enn 59 310 kr, har ein ikkje rett til foreldrepengar.",
     "FlereForsørgere.Ingen.Infoboks.Engangsstønad": "{navn} kan ha rett til eingongsstønad i staden. De kan bruke <a>NAV sin vegvisar for eingongsstønad eller foreldrepengar</a> for å lære meir.",

@@ -28,7 +28,7 @@
     "FlereForsørgere.Jobber.Infoboks.HarJobbetSeksAvTiMnd": "If you have worked 6 of the last 10 months and have earned more than 59,310 kr last year, you are typically entitled to parental benefits.",
     "FlereForsørgere.Jobber.Infoboks.HarRettTilForeldrepenger": "{navn} will be entitled to parental benefits",
     "FlereForsørgere.Infoboks.HarIkkeRettTilForeldrepenger": "{navn} is not entitled to parental benefits",
-    "FlereForsørgere.Ufør.Infoboks.ErUfør": "Since {navn} are disabled, she/he will not be entitled to parental benefits.",
+    "FlereForsørgere.Ufør.Infoboks.ErUfør": "Since {navn} are disabled, she will not be entitled to parental benefits.",
     "FlereForsørgere.Ufør.Infoboks.LesMer": "On NAV's website, you can read more about <a>the rules that apply</a> if {navn} is receiving disability benefits.",
     "FlereForsørgere.Ingen.Infoboks.ManHarIkkeRett": "If you have not worked 6 of the last 10 months and have not earned more than 59,310 kr, you are not entitled to parental benefits.",
     "FlereForsørgere.Ingen.Infoboks.Engangsstønad": "{navn} might be entitled to a lump-sum grant instead. You can use <a>NAV's guide for lump-sum grant or parental benefits</a> to learn more.",
