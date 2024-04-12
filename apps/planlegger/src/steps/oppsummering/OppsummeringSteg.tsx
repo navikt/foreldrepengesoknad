@@ -76,21 +76,10 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     />
                                 </BodyLong>
                                 <BodyLong>
-                                    <FormattedMessage
-                                        id="OppsummeringSteg.Infoboks.Engangsstønad"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <Link
-                                                    href={links.veiviser}
-                                                    target="_blank"
-                                                    className="lenke"
-                                                    rel="noreferrer"
-                                                >
-                                                    {msg}
-                                                </Link>
-                                            ),
-                                        }}
-                                    />
+                                    <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad" />
+                                    <Link inlineText href={links.veiviser}>
+                                        <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad.Link" />
+                                    </Link>
                                 </BodyLong>
                             </Infoboks>
                         </VStack>
