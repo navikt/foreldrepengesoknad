@@ -1,5 +1,6 @@
 import { composeStories } from '@storybook/react';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import * as stories from './OversiktSteg_Fødsel.stories';
 
@@ -468,5 +469,79 @@ describe('<OversiktSteg - fødsel>', () => {
         const mars2025 = screen.getByTestId('year:2025;month:2');
         expect(within(mars2025).getByTestId('day:3;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(mars2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(1);
+    });
+
+    it('skal endre dekningsgrad til 80%', async () => {
+        render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('80% foreldrepenger i 59 uker'));
+
+        expect(screen.getByText('100% foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'false',
+        );
+        expect(screen.getByText('80% foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'true',
+        );
+
+        expect((screen.getByRole('option', { name: '18 uker til far' }) as HTMLOptionElement).selected).toBe(true);
+
+        expect(screen.getByText('Mor, 22 uker, starter Thursday 21 Mar')).toBeInTheDocument();
+        expect(screen.getByText('Far, 37 uker, starter Friday 23 Aug')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
+
+        const mars = screen.getByTestId('year:2024;month:2');
+        expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(7);
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:10;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(21);
+
+        const august = screen.getByTestId('year:2024;month:7');
+        expect(within(august).getByTestId('day:22;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:23;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(august).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(16);
+        expect(within(august).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(6);
+
+        const mai2025 = screen.getByTestId('year:2025;month:4');
+        expect(within(mai2025).getByTestId('day:9;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(7);
+    });
+
+    it('skal endre fordeling av fellesperiode sånn at de får 8 uker hver', async () => {
+        const utils = render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        await userEvent.selectOptions(utils.getByLabelText('Fordeling av fellesperioden'), '8');
+
+        expect((screen.getByRole('option', { name: '8 til mor, 8 til far' }) as HTMLOptionElement).selected).toBe(true);
+
+        expect(screen.getByText('Mor, 26 uker, starter Thursday 21 Mar')).toBeInTheDocument();
+        expect(screen.getByText('Far, 23 uker, starter Friday 20 Sep')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
+
+        const mars = screen.getByTestId('year:2024;month:2');
+        expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(7);
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:10;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(21);
+
+        const september = screen.getByTestId('year:2024;month:8');
+        expect(within(september).getByTestId('day:19;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:20;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(september).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(14);
+        expect(within(september).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(7);
+
+        const feb2025 = screen.getByTestId('year:2025;month:1');
+        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(20);
     });
 });
