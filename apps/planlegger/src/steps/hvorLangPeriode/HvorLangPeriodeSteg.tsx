@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { Situasjon, erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
+import { erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
@@ -62,13 +62,13 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
         return navigator.goToNextStep(nextRoute);
     };
-    const erMor = hvemPlanlegger.type === Situasjon.MOR;
 
     const antallBarn = barnet.antallBarn;
     const dekningsgrad = formMethods.watch('dekningsgrad');
 
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
+
     const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
 
@@ -127,18 +127,18 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
                         <Infobox
                             header={
-                                erMor ? (
+                                morHarIkkeRett ? (
                                     <FormattedMessage
                                         id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
                                         values={{
-                                            hvem: finnSøkerTekst(intl, hvemPlanlegger),
+                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                         }}
                                     />
                                 ) : (
                                     <FormattedMessage
                                         id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
                                         values={{
-                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                            hvem: finnSøkerTekst(intl, hvemPlanlegger),
                                         }}
                                     />
                                 )
@@ -149,12 +149,18 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             {farHarIkkeRett && (
                                 <VStack gap="2">
                                     <BodyLong>
-                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden" />
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden"
+                                            values={{ hvem: finnSøkerTekst(intl, hvemPlanlegger) }}
+                                        />
                                     </BodyLong>
                                     <BodyLong>
                                         <FormattedMessage
                                             id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar"
-                                            values={{ hvem: finnSøkerTekst(intl, hvemPlanlegger) }}
+                                            values={{
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                hvem2: finnSøkerTekst(intl, hvemPlanlegger),
+                                            }}
                                         />
                                     </BodyLong>
                                 </VStack>
@@ -164,7 +170,10 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     <BodyLong>
                                         <FormattedMessage
                                             id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden"
-                                            values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                            values={{
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                hvem2: finnSøkerTekst(intl, hvemPlanlegger),
+                                            }}
                                         />
                                     </BodyLong>
                                     <BodyLong>
