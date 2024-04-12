@@ -6,6 +6,7 @@ import '@navikt/ds-css';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
+import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
 import '../src/styles/global.css';
@@ -23,6 +24,7 @@ document.head.appendChild(scriptTag);
 const withIntlProvider = getIntlDecorator({
     nb: { ...nbMessages, ...uiMessages.nb },
     nn: { ...nnMessages, ...uiMessages.nn },
+    en: { ...enMessages, ...uiMessages.en },
 });
 
 export const globalTypes = {

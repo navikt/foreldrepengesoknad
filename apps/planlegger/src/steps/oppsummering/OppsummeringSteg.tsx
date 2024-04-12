@@ -110,7 +110,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             {harRett && (
                                 <ExpansionCard aria-label="">
                                     <ExpansionCard.Header>
-                                        <HStack gap="5" align="center">
+                                        <HStack gap="5" align="center" wrap={false}>
                                             <IconCircleWrapper size="large" color="green">
                                                 <CalendarIcon height={28} width={28} fontSize="1.5rem" />
                                             </IconCircleWrapper>
