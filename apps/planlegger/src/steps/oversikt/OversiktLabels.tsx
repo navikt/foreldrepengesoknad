@@ -4,7 +4,7 @@ import 'dayjs/locale/nb';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
-import { HvemPlanlegger, erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst } from 'types/HvemPlanlegger';
 import { HvemHarRett } from 'utils/hvemHarRettHjelper';
 import {
     TilgjengeligStønadskonto,
@@ -38,8 +38,6 @@ const OversiktLabels: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const erAleneforsørger = isAlene(hvemPlanlegger);
-
     const erFødt = erBarnetFødt(barnet);
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -50,7 +48,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
 
     return (
         <VStack gap="5">
-            {hvemHarRett !== 'kunMedfarEllerMedmorHarRett' && hvemHarRett !== 'kunFarHarRettMorHovedsøker' && (
+            {(hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarHarRett' || hvemHarRett === 'kunMorHarRett') && (
                 <HStack gap="1">
                     <div className={styles.bluePanel}>
                         <HStack gap="2" align="center">
@@ -68,7 +66,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                         </HStack>
                     </div>
                     <Spacer />
-                    {!erAleneforsørger && annenPartTekst && hvemHarRett !== 'kunMorHarRett' && (
+                    {annenPartTekst && hvemHarRett === 'beggeHarRett' && (
                         <div className={styles.greenPanel}>
                             <HStack gap="2" align="center">
                                 <GrønnSirkel />
