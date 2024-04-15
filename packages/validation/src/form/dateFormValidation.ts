@@ -14,6 +14,7 @@ dayjs.extend(isBetween);
 
 const ATTEN_UKER_TRE_DAGER = dayjs().add(18, 'week').add(3, 'day').startOf('day').toDate();
 const DATO_FOR_3_UKER_SIDEN = dayjs().startOf('day').subtract(21, 'days');
+const DATO_FOR_15_ÅR_SIDEN = dayjs().startOf('day').subtract(15, 'years');
 const ONE_YEAR_AFTER_TODAY = dayjs().add(1, 'year').startOf('day').toDate();
 
 export const isValidDate =
@@ -65,6 +66,12 @@ export const isLessThanThreeWeeksAgo =
     (i18nText: string) =>
     (date: string): FormValidationResult => {
         return dayjs(date).isBefore(DATO_FOR_3_UKER_SIDEN) ? i18nText : null;
+    };
+
+export const isLessThan15yearsAgo =
+    (i18nText: string) =>
+    (date: string): FormValidationResult => {
+        return dayjs(date).isBefore(DATO_FOR_15_ÅR_SIDEN) ? i18nText : null;
     };
 
 export const erI22SvangerskapsukeEllerSenere =

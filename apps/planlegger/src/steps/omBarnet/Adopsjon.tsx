@@ -5,14 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
-import {
-    erI22SvangerskapsukeEllerSenere,
-    isAfterOrSameAsSixMonthsAgo,
-    isBeforeTodayOrToday,
-    isLessThanThreeWeeksAgo,
-    isRequired,
-    isValidDate,
-} from '@navikt/fp-validation';
+import { isAfterOrSameAsSixMonthsAgo, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isLessThan15yearsAgo } from '@navikt/fp-validation/src/form/dateFormValidation';
 
 type Props = {
     erAlenesøker: boolean;
@@ -32,16 +26,10 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                     label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                     name="overtakelsesdato"
                     minDate={dayjs().subtract(6, 'month').toDate()}
-                    maxDate={dayjs().toDate()}
                     autofocusWhenEmpty
                     validate={[
                         isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
                         isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
-                        isBeforeTodayOrToday(
-                            intl.formatMessage({
-                                id: 'ValidationMessage.IdagEllerTidligere',
-                            }),
-                        ),
                         isAfterOrSameAsSixMonthsAgo(
                             intl.formatMessage({
                                 id: 'ValidationMessage.OlderThan6months',
@@ -52,19 +40,19 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                 <Datepicker
                     label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
                     name="fødselsdato"
-                    minDate={dayjs().subtract(3, 'week').toDate()}
-                    maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                    minDate={dayjs().subtract(15, 'years').toDate()}
+                    maxDate={dayjs().toDate()}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
                         isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
-                        isLessThanThreeWeeksAgo(
+                        isBeforeTodayOrToday(
                             intl.formatMessage({
-                                id: 'ValidationMessage.KanIkkeVære3UkerFraIdag',
+                                id: 'ValidationMessage.IdagEllerTidligere',
                             }),
                         ),
-                        erI22SvangerskapsukeEllerSenere(
+                        isLessThan15yearsAgo(
                             intl.formatMessage({
-                                id: 'ValidationMessage.DuMåVæreIUke22',
+                                id: 'ValidationMessage.KanIkkeVære3UkerFraIdag',
                             }),
                         ),
                     ]}

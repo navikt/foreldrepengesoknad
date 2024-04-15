@@ -13,8 +13,8 @@ import { BodyLong, VStack } from '@navikt/ds-react';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import {
     erI22SvangerskapsukeEllerSenere,
-    isAfterOrSameAsSixMonthsAgo,
     isBeforeTodayOrToday,
+    isLessThanThreeWeeksAgo,
     isRequired,
     isValidDate,
 } from '@navikt/fp-validation';
@@ -35,6 +35,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
 
     const erAlenesøker = isAlene(hvemPlanlegger);
     const erFar = hvemPlanlegger.type === Situasjon.MOR_OG_FAR;
+
     return (
         <VStack gap="5">
             <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
@@ -42,7 +43,6 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                     <Datepicker
                         label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
                         name="fødselsdato"
-                        minDate={dayjs().subtract(6, 'month').toDate()}
                         maxDate={dayjs().toDate()}
                         autofocusWhenEmpty
                         useStrategyAbsolute
@@ -52,11 +52,6 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                             isBeforeTodayOrToday(
                                 intl.formatMessage({
                                     id: 'ValidationMessage.InFuture',
-                                }),
-                            ),
-                            isAfterOrSameAsSixMonthsAgo(
-                                intl.formatMessage({
-                                    id: 'ValidationMessage.OlderThan6months',
                                 }),
                             ),
                         ]}
@@ -70,7 +65,11 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                         validate={[
                             isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
-
+                            isLessThanThreeWeeksAgo(
+                                intl.formatMessage({
+                                    id: 'ValidationMessage.KanIkkeVære3UkerFraIdag',
+                                }),
+                            ),
                             erI22SvangerskapsukeEllerSenere(
                                 intl.formatMessage({
                                     id: 'ValidationMessage.DuMåVæreIUke22',
