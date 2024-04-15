@@ -48,7 +48,7 @@ describe('<AppContainer>', () => {
 
         expect(screen.getByText('Hvor lenge')).toBeInTheDocument();
         expect(screen.getByText('Steg 4 av 6')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('100% utbetaling over 49 uker'));
+        await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
         await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getByText('Fordeling')).toBeInTheDocument();

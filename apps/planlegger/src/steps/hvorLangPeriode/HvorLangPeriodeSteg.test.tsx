@@ -18,7 +18,7 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('100% utbetaling over 49 uker'));
+        await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
 
         expect(screen.getByText('Siste dag med foreldrepenger kan bli mandag 28. oktober 2024')).toBeInTheDocument();
 

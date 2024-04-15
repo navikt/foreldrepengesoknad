@@ -26,10 +26,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
@@ -66,10 +66,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
@@ -97,16 +97,16 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Far, 15 uker uten krav til mor')).toBeInTheDocument();
-        expect(screen.getByText('Far, 25 uker med krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Far, 15 uker uten aktivitetskrav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Far, 25 uker med aktivitetskrav til mor')).toBeInTheDocument();
         expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -135,16 +135,16 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Far, 8 uker uten krav til mor')).toBeInTheDocument();
-        expect(screen.getByText('Far, 32 uker med krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Far, 8 uker uten aktivitetskrav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Far, 32 uker med aktivitetskrav til mor')).toBeInTheDocument();
         expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -173,10 +173,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect((screen.getByRole('option', { name: '16 uker til medmor' }) as HTMLOptionElement).selected).toBe(true);
@@ -210,10 +210,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
@@ -241,16 +241,16 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Medmor, 15 uker uten krav til mor')).toBeInTheDocument();
-        expect(screen.getByText('Medmor, 25 uker med krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Medmor, 15 uker uten aktivitetskrav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Medmor, 25 uker med aktivitetskrav til mor')).toBeInTheDocument();
         expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -279,16 +279,16 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Medmor, 8 uker uten krav til mor')).toBeInTheDocument();
-        expect(screen.getByText('Medmor, 32 uker med krav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Medmor, 8 uker uten aktivitetskrav til mor')).toBeInTheDocument();
+        expect(screen.getByText('Medmor, 32 uker med aktivitetskrav til mor')).toBeInTheDocument();
         expect(screen.getByText('Termindato 11. Apr')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -317,10 +317,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen din')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
@@ -348,10 +348,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen din')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
@@ -375,10 +375,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect((screen.getAllByRole('option', { name: '16 uker til far' })[0] as HTMLOptionElement).selected).toBe(
@@ -411,10 +411,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
@@ -438,10 +438,10 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100% foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
-        expect(screen.getByText('80% foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
         expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
@@ -476,12 +476,12 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('80% foreldrepenger i 59 uker'));
+        await userEvent.click(screen.getByText('80 % foreldrepenger i 59 uker'));
 
-        expect(screen.getByText('100% foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % foreldrepenger i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.getByText('80% foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
         );
 
