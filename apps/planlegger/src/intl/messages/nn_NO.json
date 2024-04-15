@@ -11,6 +11,7 @@
     "ValidationMessage.KanIkkeVære3UkerFraIdag": "Datoen kan ikkje vere tidlegare enn 3 veker frå i dag.",
     "ValidationMessage.DuMåVæreIUke22": "Du kan tidlegast søke når du er i 22. svangerskapsveke.",
     "ValidationMessage.IdagEllerTidligere": "Datoen må vere i dag eller tidlegare.",
+    "ValidationMessage.FødselsdatoMåVæreFørOmsorgovertakelse": "Datoen må vere før omsorgsovertakelse.",
     "PlanleggerStepPage.Tittel": "Planlegg foreldrepengar",
     "HvorforSpørNAVOmDette.Info.Tittel": "Kvifor spør NAV om dette?",
     "ArbeidssituasjonSteg.Tittel": "Arbeidssituasjon",
