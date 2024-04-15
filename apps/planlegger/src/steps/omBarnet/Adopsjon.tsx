@@ -1,12 +1,14 @@
 import GreenPanel from 'components/boxes/GreenPanel';
 import dayjs from 'dayjs';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { OmBarnet } from 'types/Barnet';
 
 import { VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { isAfterOrSameAsSixMonthsAgo, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
-import { isLessThan15yearsAgo } from '@navikt/fp-validation/src/form/dateFormValidation';
+import { isBeforeDate, isLessThan15yearsAgo } from '@navikt/fp-validation/src/form/dateFormValidation';
 
 type Props = {
     erAlenesøker: boolean;
@@ -18,6 +20,9 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
     const intl = useIntl();
 
     const flereBarn = antallBarn === '3' || antallBarn === '2';
+
+    const formMethods = useFormContext<OmBarnet>();
+    const overtakelsesdato = formMethods.watch('overtakelsesdato');
 
     return (
         <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
@@ -45,6 +50,10 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                     validate={[
                         isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
                         isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
+                        isBeforeDate(
+                            intl.formatMessage({ id: 'ValidationMessage.FødselsdatoMåVæreFørOmsorgovertakelse' }),
+                            overtakelsesdato,
+                        ),
                         isBeforeTodayOrToday(
                             intl.formatMessage({
                                 id: 'ValidationMessage.IdagEllerTidligere',

@@ -11,6 +11,7 @@
     "ValidationMessage.KanIkkeVære3UkerFraIdag": "The date cannot be earlier than 3 weeks from today.",
     "ValidationMessage.DuMåVæreIUke22": "You can apply at the earliest when you are in the 22nd week of pregnancy.",
     "ValidationMessage.IdagEllerTidligere": "The date must be today or earlier.",
+    "ValidationMessage.FødselsdatoMåVæreFørOmsorgovertakelse": "The date must be before taking over care.",
     "PlanleggerStepPage.Tittel": "Plan parental leave",
     "HvorforSpørNAVOmDette.Info.Tittel": "Why does NAV ask about this?",
     "ArbeidssituasjonSteg.Tittel": "Work situation",
