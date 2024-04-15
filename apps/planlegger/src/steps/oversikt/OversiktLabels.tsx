@@ -11,7 +11,7 @@ import {
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerForeldrepenger,
 } from 'utils/stønadskontoer';
-import { Uttaksdata } from 'utils/uttakHjelper';
+import { Uttaksdata, weeksBetween } from 'utils/uttakHjelper';
 
 import { BodyShort, HStack, Spacer, VStack } from '@navikt/ds-react';
 
@@ -58,7 +58,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                     id="OversiktSteg.UkerForeldrepenger"
                                     values={{
                                         hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
-                                        uker: dayjs(sluttdatoSøker1).diff(dayjs(startdatoSøker1), 'weeks'),
+                                        uker: weeksBetween(startdatoSøker1, sluttdatoSøker1),
                                         dato: dayjs(startdatoSøker1).format('dddd D MMM'),
                                     }}
                                 />
@@ -66,7 +66,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                         </HStack>
                     </div>
                     <Spacer />
-                    {annenPartTekst && hvemHarRett === 'beggeHarRett' && (
+                    {annenPartTekst && hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2 && (
                         <div className={styles.greenPanel}>
                             <HStack gap="2" align="center">
                                 <GrønnSirkel />
@@ -75,7 +75,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                         id="OversiktSteg.UkerForeldrepenger"
                                         values={{
                                             hvem: capitalizeFirstLetter(annenPartTekst),
-                                            uker: dayjs(sluttdatoSøker2).diff(dayjs(startdatoSøker2), 'weeks'),
+                                            uker: weeksBetween(startdatoSøker2, sluttdatoSøker2),
                                             dato: dayjs(startdatoSøker2).format('dddd D MMM'),
                                         }}
                                     />
