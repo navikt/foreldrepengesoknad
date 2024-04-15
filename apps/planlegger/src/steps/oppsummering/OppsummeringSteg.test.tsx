@@ -30,6 +30,6 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Klaras første dag: 03.10.22')).toBeInTheDocument();
         expect(screen.getByText('Klaras siste dag: 13.03.23')).toBeInTheDocument();
         expect(screen.getByText('Espens første dag: 14.03.23')).toBeInTheDocument();
-        expect(screen.getByText('Espens siste dag: 12.09.23')).toBeInTheDocument();
+        expect(screen.getByText('Espens siste dag: 11.09.23')).toBeInTheDocument();
     });
 });
