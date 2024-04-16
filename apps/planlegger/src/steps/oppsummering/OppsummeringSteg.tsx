@@ -39,7 +39,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const erAleneforsørger = isAlene(hvemPlanlegger);
     const harRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN ||
-        (arbeidssituasjon.status === Arbeidsstatus.UFØR && arbeidssituasjon.jobberAnnenPart === false)
+        (arbeidssituasjon.status === Arbeidsstatus.UFØR && arbeidssituasjon.jobberAnnenPart !== true)
             ? false
             : true;
 

@@ -2,7 +2,7 @@ import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { isFlere } from 'types/HvemPlanlegger';
+import { Situasjon, isFlere } from 'types/HvemPlanlegger';
 
 import { ProgressStep } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -38,8 +38,11 @@ const showHvorLangPeriodeEllerOversiktStep = (
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === PlanleggerRoutes.HVOR_LANG_PERIODE || path === PlanleggerRoutes.OVERSIKT) {
+        const hvemPlanlegger = getData(ContextDataType.HVEM_PLANLEGGER);
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
-        const skalVise = arbeidssituasjon?.status === Arbeidsstatus.JOBBER || arbeidssituasjon?.jobberAnnenPart;
+        const skalVise =
+            arbeidssituasjon?.status === Arbeidsstatus.JOBBER ||
+            (hvemPlanlegger?.type !== Situasjon.FAR_OG_FAR && arbeidssituasjon?.jobberAnnenPart);
         const erValgtOgEtterSteg = skalVise && isAfterStep(PlanleggerRoutes.ARBEIDSSITUASJON, currentPath);
         return erValgtOgEtterSteg || !!getData(ContextDataType.HVOR_LANG_PERIODE);
     }

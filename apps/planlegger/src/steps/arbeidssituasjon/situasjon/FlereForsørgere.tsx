@@ -110,7 +110,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                 </Infobox>
             )}
             {status && (
-                <VStack gap="5">
+                <>
                     <GreenRadioGroup
                         name="jobberAnnenPart"
                         label={
@@ -155,7 +155,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                             </BodyLong>
                         </Infobox>
                     )}
-                </VStack>
+                </>
             )}
         </VStack>
     );

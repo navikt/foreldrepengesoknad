@@ -8,7 +8,7 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import { Situasjon, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -43,7 +43,8 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
         oppdaterArbeidssituasjon(formValues);
 
         const nextStep =
-            formValues.status === Arbeidsstatus.JOBBER || formValues.jobberAnnenPart
+            formValues.status === Arbeidsstatus.JOBBER ||
+            (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && formValues.jobberAnnenPart)
                 ? PlanleggerRoutes.HVOR_LANG_PERIODE
                 : PlanleggerRoutes.OPPSUMMERING;
 
