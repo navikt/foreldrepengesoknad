@@ -28,8 +28,8 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('100 % utbetaling over 49 uker')).toBeInTheDocument();
         expect(screen.getByText('5 uker til Klara, 11 uker til Espen')).toBeInTheDocument();
         expect(screen.getByText('Klaras første dag: 03.10.22')).toBeInTheDocument();
-        expect(screen.getByText('Klaras siste dag: 13.03.23')).toBeInTheDocument();
-        expect(screen.getByText('Espens første dag: 14.03.23')).toBeInTheDocument();
-        expect(screen.getByText('Espens siste dag: 11.09.23')).toBeInTheDocument();
+        expect(screen.getByText('Klaras siste dag: 10.03.23')).toBeInTheDocument();
+        expect(screen.getByText('Espens første dag: 11.03.23')).toBeInTheDocument();
+        expect(screen.getByText('Espens siste dag: 08.09.23')).toBeInTheDocument();
     });
 });

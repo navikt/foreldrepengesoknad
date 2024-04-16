@@ -45,6 +45,24 @@ const getUttaksdagFraOgMedDato = (dato: string): string => {
 };
 
 /**
+ * Sjekker om dato er en ukedag, dersom ikke finner den foregående fredag.
+ * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
+ * @param dato
+ */
+const getUttaksdagTilOgMedDato = (dato: string): string => {
+    const d = dayjs(dato).toDate();
+    const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
+    switch (getUkedag(dato)) {
+        case 6:
+            return dayjs.utc(newDate).subtract(24, 'hours').format(ISO_DATE_FORMAT);
+        case 7:
+            return dayjs.utc(newDate).subtract(48, 'hours').format(ISO_DATE_FORMAT);
+        default:
+            return dato;
+    }
+};
+
+/**
  * Trekker uttaksdager fra en dato og returnerer ny dato
  * @param dato
  * @param uttaksdager
@@ -127,14 +145,14 @@ const finnDeltUttaksdata = (
 
     const sluttdatoSøker1 =
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR
-            ? getUttaksdagFraOgMedDato(
+            ? getUttaksdagTilOgMedDato(
                   dayjs(startdatoSøker1)
                       .add(antallUkerMødrekvote, 'weeks')
                       .add(antallUkerFellesperiodeForSøker1, 'weeks')
                       .subtract(1, 'day')
                       .format(ISO_DATE_FORMAT),
               )
-            : getUttaksdagFraOgMedDato(
+            : getUttaksdagTilOgMedDato(
                   dayjs(startdatoSøker1)
                       .add(antallUkerForeldrepengerFørFødsel, 'weeks')
                       .add(antallUkerMødrekvote, 'weeks')
@@ -145,7 +163,7 @@ const finnDeltUttaksdata = (
 
     const startdatoSøker2 = getUttaksdagFraOgMedDato(dayjs(sluttdatoSøker1).add(1, 'day').format(ISO_DATE_FORMAT));
 
-    const sluttdatoSøker2 = getUttaksdagFraOgMedDato(
+    const sluttdatoSøker2 = getUttaksdagTilOgMedDato(
         dayjs(startdatoSøker2)
             .add(antallUkerFellesperiodeForSøker2, 'weeks')
             .add(antallUkerFedrekvote, 'weeks')
@@ -180,7 +198,7 @@ const finnEnsligUttaksdata = (
     ) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = getUttaksdagFraOgMedDato(
+        const sluttAktivitetsfri = getUttaksdagTilOgMedDato(
             dayjs(familiehendelsedato)
                 .add(aktivitetsfriUker, 'weeks')
                 .add(6, 'weeks')
@@ -194,7 +212,7 @@ const finnEnsligUttaksdata = (
             ),
             sluttdatoSøker1: sluttAktivitetsfri,
             startdatoSøker2: getUttaksdagFraOgMedDato(dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT)),
-            sluttdatoSøker2: getUttaksdagFraOgMedDato(
+            sluttdatoSøker2: getUttaksdagTilOgMedDato(
                 dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
             ),
         };
@@ -205,7 +223,7 @@ const finnEnsligUttaksdata = (
     ) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = getUttaksdagFraOgMedDato(
+        const sluttAktivitetsfri = getUttaksdagTilOgMedDato(
             dayjs(familiehendelsedato)
                 .add(aktivitetsfriUker, 'weeks')
                 .add(6, 'weeks')
@@ -217,7 +235,7 @@ const finnEnsligUttaksdata = (
             startdatoSøker1: getUttaksdagFraOgMedDato(dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT)),
             sluttdatoSøker1: sluttAktivitetsfri,
             startdatoSøker2: getUttaksdagFraOgMedDato(dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT)),
-            sluttdatoSøker2: getUttaksdagFraOgMedDato(
+            sluttdatoSøker2: getUttaksdagTilOgMedDato(
                 dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
             ),
         };
@@ -227,7 +245,7 @@ const finnEnsligUttaksdata = (
     const ukerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
     const antallUkerForeldrepengerFørFødsel = getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto);
 
-    const sluttdatoSøker = getUttaksdagFraOgMedDato(
+    const sluttdatoSøker = getUttaksdagTilOgMedDato(
         dayjs(startdatoSøker)
             .add(ukerForeldrepenger, 'weeks')
             .add(ukerAktivitetsfriKvote, 'weeks')

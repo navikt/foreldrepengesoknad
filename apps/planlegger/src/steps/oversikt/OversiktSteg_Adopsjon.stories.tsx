@@ -354,3 +354,20 @@ export const FarOgFarKunMedfarHarRett: Story = {
         },
     },
 };
+
+export const MorOgMedmorKunMorHarRettOmsorgsovertakelseIHelgen: Story = {
+    args: {
+        ...MorOgFarKunMorHarRett.args,
+        hvemPlanlegger: {
+            navnPåMor: 'Olga Utvikler',
+            navnPåMedmor: 'Helga Utvikler',
+            type: Situasjon.MOR_OG_MEDMOR,
+        },
+        omBarnet: {
+            erFødsel: false,
+            overtakelsesdato: '2024-05-12',
+            fødselsdato: '2020-04-11',
+            antallBarn: '1',
+        },
+    },
+};
