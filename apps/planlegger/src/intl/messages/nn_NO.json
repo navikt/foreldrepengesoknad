@@ -95,7 +95,7 @@
     "OmBarnetSteg.HvorMange": "Kor mange barn ventar {erAlenesøker, select, true {du} other {de}}?",
     "OmBarnetSteg.Adopsjon.HvorMange": "Kor mange barn skal {erAlenesøker, select, true {du} other {de}} overta omsorga for?",
     "OmBarnetSteg.Tittel": "Barnet",
-    "OmBarnetSteg.HvaGjelder": "Kva gjeld for {erAlenesøker, select, true {du} other {de}}?",
+    "OmBarnetSteg.HvaGjelder": "Kva gjeld for {erAlenesøker, select, true {deg} other {de}}?",
     "OmBarnetSteg.Fødsel": "Fødsel",
     "OmBarnetSteg.Adopsjon": "Adopsjon",
     "OmBarnetSteg.Ett": "Eitt",
