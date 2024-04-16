@@ -118,6 +118,7 @@
     "ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler": "NAV recommends applying about 4 weeks before you plan to start the leave, which is often three weeks before the due date for mothers.",
     "ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket": "{erFar, select, true {Fathers} other {Co-mothers}} often have leave covered for the first two weeks after birth by their employer. If not, the {hvem} can apply for parental benefits from NAV for these two weeks.",
     "ErIkkeFødtPanel.UnderTreMndTilTerminInfo": "Since it's less than 3 months to the due date, you can apply for parental benefits at NAV",
+    "ErIkkeFødtPanel.TerminErForbi": "Since it's passed the due date, you can apply for parental benefits at NAV",
     "ErIkkeFødtPanel.UnderTreMndTilTermin": "{erAlenesøker, select, true {You} other {{navn}}} can apply for parental benefits now to take leave three weeks before the due date.",
     "ErFødtPanel.Fødselsdato": "When was {antallBarn, select, 1 {the child} other {the oldest child}} born?",
     "ErFødtPanel.NårVarTermin": "When was the due date?",
