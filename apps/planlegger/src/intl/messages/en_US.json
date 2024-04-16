@@ -191,7 +191,7 @@
     "OmÅTilpassePlanen.Oversikt.OmÅTilpassePlanen": "About adapting the plan",
     "OmÅTilpassePlanen.Tekst": "There's a lot one can change in the plan. When applying for parental benefits, one will set up their own plan, adapted to holidays and other needs.",
     "OmÅTilpassePlanen.FørTermin": "Before the due date",
-    "OmÅTilpassePlanen.FørTermin.Tekst": "The mother has three weeks that can only be used before birth. If the {antallBarn, select, 1 {the child} other {the children}} is born before the due date, the remaining part of these three weeks is erased, and the time up to the original due date is taken from the mother's quota. If the child is born after the due date, the joint period starts being used until birth.",
+    "OmÅTilpassePlanen.FørTermin.Tekst": "The mother has three weeks that can only be used before birth. If the {antallBarn, select, 1 {child} other {children}} is born before the due date, the mother starts using weeks from her quota. The remaining part of these three weeks is erased. If the {antallBarn, select, 1 {child} other {children}} is born after the due date, the joint period is being used until birth when the mother starts on her quota.",
     "OmÅTilpassePlanen.DeFørsteSeksUkene": "The first six weeks",
     "OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst": "The first six weeks after birth are reserved for the mother and locked to this time. {erFar, select, true {Fathers} other {Co-mothers}} often have leave covered for the first two weeks after birth by their employer. If not, the {erFar, select, true {father} other {co-mother}} can use parental benefits in these two weeks.",
     "OmÅTilpassePlanen.LeggeTilFerie": "Adding a holiday",

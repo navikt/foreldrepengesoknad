@@ -11,12 +11,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyLong, VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
-import {
-    erI22SvangerskapsukeEllerSenere,
-    isLessThanThreeWeeksAgo,
-    isRequired,
-    isValidDate,
-} from '@navikt/fp-validation';
+import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
 const TODAY = dayjs().startOf('days');
@@ -45,7 +40,8 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
     const formMethods = useFormContext<OmBarnet>();
     const termindato = formMethods.watch('termindato');
 
-    const datoTreMndFraTermin = termindato !== undefined ? dayjs(termindato).subtract(3, 'month').toDate() : undefined;
+    const dato22UkerFraTermin =
+        termindato !== undefined ? dayjs(termindato).subtract(22, 'weeks').add(1, 'day').toDate() : undefined;
 
     const erAlenesøker = isAlene(hvemPlanlegger);
     const erFar = erFarDelAvSøknaden(hvemPlanlegger.type);
@@ -57,7 +53,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                     label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
                     name="termindato"
                     minDate={dayjs().subtract(3, 'week').toDate()}
-                    maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                    maxDate={dayjs().add(1, 'year').toDate()}
                     autofocusWhenEmpty
                     useStrategyAbsolute
                     validate={[
@@ -66,11 +62,6 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                         isLessThanThreeWeeksAgo(
                             intl.formatMessage({
                                 id: 'ValidationMessage.KanIkkeVære3UkerFraIdag',
-                            }),
-                        ),
-                        erI22SvangerskapsukeEllerSenere(
-                            intl.formatMessage({
-                                id: 'ValidationMessage.DuMåVæreIUke22',
                             }),
                         ),
                     ]}
@@ -86,7 +77,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                                     id="ErIkkeFødtPanel.ForeldrepengerInfo"
                                     values={{
                                         erMor: hvemPlanlegger.type === Situasjon.MOR,
-                                        dato: dayjs(datoTreMndFraTermin).format('DD.MM.YY'),
+                                        dato: dayjs(dato22UkerFraTermin).format('DD.MM.YY'),
                                     }}
                                 />
                             }
