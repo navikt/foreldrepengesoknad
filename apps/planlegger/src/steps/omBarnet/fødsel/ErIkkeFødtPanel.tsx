@@ -130,9 +130,12 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                         header={
                             <>
                                 {dayjs(termindato).isAfter(TODAY) ? (
-                                    <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" />
+                                    <FormattedMessage
+                                        id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo"
+                                        values={{ erAlenesøker }}
+                                    />
                                 ) : (
-                                    <FormattedMessage id="ErIkkeFødtPanel.TerminErForbi" />
+                                    <FormattedMessage id="ErIkkeFødtPanel.TerminErForbi" values={{ erAlenesøker }} />
                                 )}
                             </>
                         }
