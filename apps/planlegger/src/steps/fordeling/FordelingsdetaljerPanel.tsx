@@ -4,6 +4,9 @@ import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { erBarnetFødt } from 'types/Barnet';
+import { erMorDelAvSøknaden } from 'types/HvemPlanlegger';
 import { Uttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong } from '@navikt/ds-react';
@@ -18,9 +21,19 @@ interface Props {
 
 const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavnPart1, fornavnPart2 }) => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const antallBarn = barnet.antallBarn;
+    const erFødsel = barnet.erFødsel;
+    const erFødt = erBarnetFødt(barnet);
+    const morHarIkkeRett =
+        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
 
-    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = uttaksdata;
+    const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
+    const kunEnPartSkalHa = !morHarIkkeRett && farHarIkkeRett;
+
+    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2, familiehendelsedato } = uttaksdata;
+    const dato = dayjs(familiehendelsedato).format('D. MMMM');
 
     return (
         <Infobox
@@ -68,7 +81,44 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                 </>
             )}
             <BodyLong size="small">
-                <FormattedMessage id="FordelingsdetaljerPanel.InfoboksTekst.Hvis" values={{ antallBarn }} />
+                {erFødsel ? (
+                    <>
+                        {erFødt ? (
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.InfoboksTekst.HvisFødt"
+                                values={{
+                                    antallBarn,
+                                    kunEnPartSkalHa,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                    erFødsel,
+                                    dato: dato,
+                                }}
+                            />
+                        ) : (
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.InfoboksTekst.HvisTermin"
+                                values={{
+                                    antallBarn,
+                                    kunEnPartSkalHa,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                    erFødsel,
+                                    dato: dato,
+                                }}
+                            />
+                        )}
+                    </>
+                ) : (
+                    <FormattedMessage
+                        id="FordelingsdetaljerPanel.InfoboksTekst.HvisAdopsjon"
+                        values={{
+                            antallBarn,
+                            kunEnPartSkalHa,
+                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                            erFødsel,
+                            dato: dato,
+                        }}
+                    />
+                )}
             </BodyLong>
         </Infobox>
     );

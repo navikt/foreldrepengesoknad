@@ -11,6 +11,7 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { erBarnetAdoptert, erBarnetFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
@@ -71,6 +72,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const kunEnPartSkalHa = erAlenesøker || morHarIkkeRett || farHarIkkeRett;
 
     const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
         stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
@@ -91,6 +93,11 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
     const antallUker = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUker100 : antallUker80;
+
+    const erAdopsjon = erBarnetAdoptert(barnet);
+    const erFødt = erBarnetFødt(barnet);
+    const uttaksdata = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
+    const familiehendelsedato = dayjs(uttaksdata.familiehendelsedato).format('D. MMMM');
 
     const sluttdatoSøker1 =
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
@@ -230,10 +237,33 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                         >
                             <BodyLong>
-                                <FormattedMessage
-                                    id="HvorLangPeriodeSteg.Infoboks.SisteDagTekst"
-                                    values={{ antallBarn }}
-                                />
+                                {erAdopsjon && (
+                                    <FormattedMessage
+                                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon"
+                                        values={{ antallBarn, kunEnPartSkalHa, dato: familiehendelsedato }}
+                                    />
+                                )}
+                                {!erAdopsjon && erFødt && (
+                                    <FormattedMessage
+                                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel"
+                                        values={{
+                                            antallBarn,
+                                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                            dato: familiehendelsedato,
+                                            kunEnPartSkalHa,
+                                        }}
+                                    />
+                                )}
+                                {!erAdopsjon && !erFødt && (
+                                    <FormattedMessage
+                                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin"
+                                        values={{
+                                            antallBarn,
+                                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                            kunEnPartSkalHa,
+                                        }}
+                                    />
+                                )}
                             </BodyLong>
                             {morHarIkkeRett && (
                                 <VStack gap="2">
