@@ -8,7 +8,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { isAfterOrSameAsSixMonthsAgo, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
-import { isBeforeDate, isLessThan15yearsAgo } from '@navikt/fp-validation/src/form/dateFormValidation';
+import { isAfterOrSame, isBeforeOrSame } from '@navikt/fp-validation/src/form/dateFormValidation';
 
 type Props = {
     erAlenesøker: boolean;
@@ -22,7 +22,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
     const flereBarn = antallBarn === '3' || antallBarn === '2';
 
     const formMethods = useFormContext<OmBarnet>();
-    const overtakelsesdato = formMethods.watch('overtakelsesdato');
+    const fødselsdato = formMethods.watch('fødselsdato');
 
     return (
         <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
@@ -40,6 +40,16 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                                 id: 'ValidationMessage.OlderThan6months',
                             }),
                         ),
+                        isAfterOrSame(
+                            intl.formatMessage({ id: 'ValidationMessage.FødselsdatoMåVæreFørOmsorgovertakelse' }),
+                            fødselsdato,
+                        ),
+                        isBeforeOrSame(
+                            intl.formatMessage({
+                                id: 'ValidationMessage.OmsorgsovertakelseKanIkkeVæreLengerEnn15ÅrEtterFødsel',
+                            }),
+                            fødselsdato ? dayjs(fødselsdato).add(15, 'years') : fødselsdato,
+                        ),
                     ]}
                 />
                 <Datepicker
@@ -50,18 +60,9 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                     validate={[
                         isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
                         isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
-                        isBeforeDate(
-                            intl.formatMessage({ id: 'ValidationMessage.FødselsdatoMåVæreFørOmsorgovertakelse' }),
-                            overtakelsesdato,
-                        ),
                         isBeforeTodayOrToday(
                             intl.formatMessage({
                                 id: 'ValidationMessage.IdagEllerTidligere',
-                            }),
-                        ),
-                        isLessThan15yearsAgo(
-                            intl.formatMessage({
-                                id: 'ValidationMessage.KanIkkeVære3UkerFraIdag',
                             }),
                         ),
                     ]}

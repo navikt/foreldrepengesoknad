@@ -11,13 +11,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyLong, VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
-import {
-    erI22SvangerskapsukeEllerSenere,
-    isBeforeTodayOrToday,
-    isLessThanThreeWeeksAgo,
-    isRequired,
-    isValidDate,
-} from '@navikt/fp-validation';
+import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const DATO_3_ÅR_SIDEN = dayjs().startOf('days').subtract(3, 'years').add(1, 'day');
 
@@ -65,11 +59,6 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                         validate={[
                             isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
-                            isLessThanThreeWeeksAgo(
-                                intl.formatMessage({
-                                    id: 'ValidationMessage.KanIkkeVære3UkerFraIdag',
-                                }),
-                            ),
                             erI22SvangerskapsukeEllerSenere(
                                 intl.formatMessage({
                                     id: 'ValidationMessage.DuMåVæreIUke22',
