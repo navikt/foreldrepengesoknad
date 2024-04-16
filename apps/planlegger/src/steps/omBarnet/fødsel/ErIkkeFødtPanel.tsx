@@ -19,6 +19,7 @@ import {
 } from '@navikt/fp-validation';
 
 const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
+const TODAY = dayjs().startOf('days');
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
@@ -126,7 +127,15 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
             {termindato !== undefined && dayjs(termindato).isBefore(DATO_3_MND_FRAM) && (
                 <>
                     <Infobox
-                        header={<FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" />}
+                        header={
+                            <>
+                                {dayjs(termindato).isAfter(TODAY) ? (
+                                    <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" />
+                                ) : (
+                                    <FormattedMessage id="ErIkkeFødtPanel.TerminErForbi" />
+                                )}
+                            </>
+                        }
                         icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                     >
                         <BodyLong>
@@ -134,7 +143,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                                 <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTermin" values={{ erAlenesøker }} />
                             )}
                         </BodyLong>
-                        {!erAlenesøker && (
+                        {!erAlenesøker && hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && (
                             <BodyLong>
                                 <FormattedMessage
                                     id="ErIkkeFødtPanel.UnderTreMndTilTermin"
