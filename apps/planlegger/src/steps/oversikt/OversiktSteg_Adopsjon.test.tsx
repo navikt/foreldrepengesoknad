@@ -15,6 +15,7 @@ const {
     BareMorSøkerOgHarRett,
     BareFarSøkerOgHarRett,
     FarOgFarBeggeHarRett,
+    MorOgMedmorKunMorHarRettOmsorgsovertakelseIHelgen,
 } = composeStories(stories);
 
 //TODO Skriv testar for farOgFar-bareFarHarRett og farOgFar-bareMedfarHarRett
@@ -364,5 +365,33 @@ describe('<OversiktSteg - adopsjon>', () => {
         const feb2025 = screen.getByTestId('year:2025;month:1');
         expect(within(feb2025).getByTestId('day:26;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+    });
+
+    it('skal vise korrekt data for adopsjon - mor og medmor - kun mor har rett', async () => {
+        render(<MorOgMedmorKunMorHarRettOmsorgsovertakelseIHelgen />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(screen.getByText('100 % foreldrepenger i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'true',
+        );
+        expect(screen.getByText('80 % foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'false',
+        );
+        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Mor, 46 uker, starter Monday 13 May')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelsesdato 12. May')).toBeInTheDocument();
+
+        const mai = screen.getByTestId('year:2024;month:4');
+        expect(within(mai).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mai).getByTestId('day:12;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(mai).getByTestId('day:13;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(mai).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
+
+        const mars2025 = screen.getByTestId('year:2025;month:2');
+        expect(within(mars2025).getByTestId('day:28;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mars2025).getByTestId('day:31;dayColor:NONE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(mars2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(20);
     });
 });
