@@ -11,7 +11,7 @@ import * as stories from './OmBarnetSteg.stories';
 const { AleneforsørgerFar } = composeStories(stories);
 
 describe('<OmBarnetSteg>', () => {
-    it.skip('skal velge at barnet ikke er født for far som aleneforsørger', async () => {
+    it('skal velge at barnet ikke er født for far som aleneforsørger', async () => {
         const gåTilNesteSide = vi.fn();
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
@@ -29,7 +29,7 @@ describe('<OmBarnetSteg>', () => {
         fireEvent.blur(termindato);
 
         expect(
-            screen.getByText('Siden det er under 3 måneder til termin kan dere søke om foreldrepenger hos NAV'),
+            screen.getByText('Siden det er under 3 måneder til termin kan du søke om foreldrepenger hos NAV'),
         ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
@@ -40,6 +40,38 @@ describe('<OmBarnetSteg>', () => {
                 erBarnetFødt: false,
                 erFødsel: true,
                 termindato: dayjs().format(ISO_DATE_FORMAT),
+            },
+            key: ContextDataType.OM_BARNET,
+            type: 'update',
+        });
+    });
+    it('skal velge at barnet ikke er født for far som aleneforsørger, termindato har vært', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Barnet')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Fødsel'));
+
+        await userEvent.click(screen.getByText('Ett'));
+
+        await userEvent.click(screen.getByText('Nei'));
+
+        const termindato = utils.getByLabelText('Når er termindato?');
+        await userEvent.type(termindato, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(termindato);
+
+        expect(screen.getByText('Siden termindato har vært kan du søke om foreldrepenger hos NAV')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                antallBarn: '1',
+                erBarnetFødt: false,
+                erFødsel: true,
+                termindato: dayjs().subtract(10, 'days').format(ISO_DATE_FORMAT),
             },
             key: ContextDataType.OM_BARNET,
             type: 'update',

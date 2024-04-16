@@ -120,7 +120,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                     <Infobox
                         header={
                             <>
-                                {dayjs(termindato).isAfter(TODAY) ? (
+                                {dayjs(termindato).isSameOrAfter(TODAY) ? (
                                     <FormattedMessage
                                         id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo"
                                         values={{ erAlenesøker }}
