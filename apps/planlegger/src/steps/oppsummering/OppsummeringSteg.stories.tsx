@@ -186,3 +186,21 @@ export const HarIkkeRett: Story = {
         },
     },
 };
+
+export const OppsummeringAleneforsørgerMorErUfør: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR,
+        },
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: false,
+            termindato: '2022-10-24',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.UFØR,
+        },
+    },
+};
