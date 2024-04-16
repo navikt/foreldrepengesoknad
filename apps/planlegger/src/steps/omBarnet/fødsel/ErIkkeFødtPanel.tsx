@@ -40,8 +40,8 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
     const formMethods = useFormContext<OmBarnet>();
     const termindato = formMethods.watch('termindato');
 
-    const dato22UkerFraTermin =
-        termindato !== undefined ? dayjs(termindato).subtract(22, 'weeks').add(1, 'day').toDate() : undefined;
+    const datoSvangerskapsuke22 =
+        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(2, 'days').toDate() : undefined;
 
     const erAlenesøker = isAlene(hvemPlanlegger);
     const erFar = erFarDelAvSøknaden(hvemPlanlegger.type);
@@ -77,7 +77,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                                     id="ErIkkeFødtPanel.ForeldrepengerInfo"
                                     values={{
                                         erMor: hvemPlanlegger.type === Situasjon.MOR,
-                                        dato: dayjs(dato22UkerFraTermin).format('DD.MM.YY'),
+                                        dato: dayjs(datoSvangerskapsuke22).format('DD.MM.YY'),
                                     }}
                                 />
                             }
