@@ -11,7 +11,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert } from 'types/Barnet';
-import { Situasjon, finnAnnenPartTekst } from 'types/HvemPlanlegger';
+import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -44,14 +44,12 @@ const OmÅTilpassePlanen: React.FunctionComponent = () => {
 const Innhold = () => {
     const intl = useIntl();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const erFar = hvemPlanlegger.type === Situasjon.FAR;
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const antallBarn = barnet.antallBarn;
 
-    // TODO: endre fra erFar til kun far har rett
     return (
         <>
             <VStack gap="5">
@@ -100,7 +98,9 @@ const Innhold = () => {
                                         <BodyLong>
                                             <FormattedMessage
                                                 id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst"
-                                                values={{ erFar, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                                values={{
+                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                }}
                                             />
                                         </BodyLong>
                                     </div>
