@@ -3,6 +3,7 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { erBarnetAdoptert } from 'types/Barnet';
 import { Situasjon, finnAnnenPartTekst } from 'types/HvemPlanlegger';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -75,24 +76,28 @@ const Innhold = () => {
                     </div>
                 </HStack>
                 {!morHarIkkeRett && (
-                    <HStack gap="5" align="start" wrap={false} justify="space-between">
-                        <div>
-                            <IconCircleWrapper color="lightBlue" size="medium">
-                                <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
-                            </IconCircleWrapper>
-                        </div>
-                        <div>
-                            <Heading size="small">
-                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk" />
-                            </Heading>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
-                                    values={{ antallBarn, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
-                                />
-                            </BodyLong>
-                        </div>
-                    </HStack>
+                    <>
+                        {!erBarnetAdoptert(barnet) && (
+                            <HStack gap="5" align="start" wrap={false} justify="space-between">
+                                <div>
+                                    <IconCircleWrapper color="lightBlue" size="medium">
+                                        <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                    </IconCircleWrapper>
+                                </div>
+                                <div>
+                                    <Heading size="small">
+                                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk" />
+                                    </Heading>
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
+                                            values={{ antallBarn, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                        />
+                                    </BodyLong>
+                                </div>
+                            </HStack>
+                        )}
+                    </>
                 )}
 
                 <HStack gap="5" align="start" wrap={false} justify="space-between">

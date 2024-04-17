@@ -10,6 +10,7 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { erBarnetAdoptert } from 'types/Barnet';
 import { Situasjon, finnAnnenPartTekst } from 'types/HvemPlanlegger';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -49,6 +50,7 @@ const Innhold = () => {
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const antallBarn = barnet.antallBarn;
+
     // TODO: endre fra erFar til kun far har rett
     return (
         <>
@@ -59,39 +61,53 @@ const Innhold = () => {
 
                 {!morHarIkkeRett && (
                     <VStack gap="5">
-                        <HStack gap="5" align="start" wrap={false} justify="space-between">
-                            <div>
-                                <IconCircleWrapper color="lightBlue" size="medium">
-                                    <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
-                                </IconCircleWrapper>
-                            </div>
-                            <div>
-                                <Heading size="small">
-                                    <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage id="OmÅTilpassePlanen.FørTermin.Tekst" values={{ antallBarn }} />
-                                </BodyLong>
-                            </div>
-                        </HStack>
-                        <HStack gap="5" align="start" wrap={false} justify="space-between">
-                            <div>
-                                <IconCircleWrapper color="lightBlue" size="medium">
-                                    <BabyWrappedIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
-                                </IconCircleWrapper>
-                            </div>
-                            <div>
-                                <Heading size="small">
-                                    <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst"
-                                        values={{ erFar, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
-                                    />
-                                </BodyLong>
-                            </div>
-                        </HStack>
+                        {!erBarnetAdoptert(barnet) && (
+                            <>
+                                <HStack gap="5" align="start" wrap={false} justify="space-between">
+                                    <div>
+                                        <IconCircleWrapper color="lightBlue" size="medium">
+                                            <PersonPregnantIcon
+                                                height={22}
+                                                width={22}
+                                                fontSize="1.5rem"
+                                                color="#0067C5"
+                                            />
+                                        </IconCircleWrapper>
+                                    </div>
+                                    <div>
+                                        <Heading size="small">
+                                            <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
+                                        </Heading>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="OmÅTilpassePlanen.FørTermin.Tekst"
+                                                values={{ antallBarn }}
+                                            />
+                                        </BodyLong>
+                                    </div>
+                                </HStack>
+
+                                <HStack gap="5" align="start" wrap={false} justify="space-between">
+                                    <div>
+                                        <IconCircleWrapper color="lightBlue" size="medium">
+                                            <BabyWrappedIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                        </IconCircleWrapper>
+                                    </div>
+                                    <div>
+                                        <Heading size="small">
+                                            <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
+                                        </Heading>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst"
+                                                values={{ erFar, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                            />
+                                        </BodyLong>
+                                    </div>
+                                </HStack>
+                            </>
+                        )}
+
                         <HStack gap="5" align="start" wrap={false} justify="space-between">
                             <div>
                                 <IconCircleWrapper color="lightBlue" size="medium">
