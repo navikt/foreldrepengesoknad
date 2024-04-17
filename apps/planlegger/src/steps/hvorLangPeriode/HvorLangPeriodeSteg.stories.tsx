@@ -12,31 +12,10 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import HvorLangPeriodeSteg from './HvorLangPeriodeSteg';
 
-const defaultKonto80 = {
-    kontoer: {
-        MØDREKVOTE: 95,
-        FEDREKVOTE: 95,
-        FELLESPERIODE: 90,
-        FORELDREPENGER_FØR_FØDSEL: 15,
-    },
-    minsteretter: {
-        farRundtFødsel: 0,
-        generellMinsterett: 0,
-        toTette: 0,
-    },
-};
-const defaultKonto100 = {
-    kontoer: {
-        MØDREKVOTE: 75,
-        FEDREKVOTE: 75,
-        FELLESPERIODE: 80,
-        FORELDREPENGER_FØR_FØDSEL: 15,
-    },
-    minsteretter: {
-        farRundtFødsel: 0,
-        generellMinsterett: 0,
-        toTette: 0,
-    },
+const MINSTERETTER = {
+    generellMinsterett: 0,
+    farRundtFødsel: 10,
+    toTette: 0,
 };
 
 type StoryArgs = {
@@ -52,10 +31,7 @@ const customRenderer = ({
     hvemPlanlegger,
     omBarnet,
     arbeidssituasjon,
-    stønadskontoer = {
-        '80': defaultKonto80,
-        '100': defaultKonto100,
-    },
+    stønadskontoer,
     gåTilNesteSide = action('button-click'),
 }: StoryArgs) => {
     initAmplitude();
@@ -99,25 +75,56 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 280,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 230,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
+        },
     },
 };
 
 export const FlereForsørgereToBarn: Story = {
     args: {
+        ...FlereForsørgereEttBarnKunMorHarRett.args,
         hvemPlanlegger: {
             navnPåMedmor: 'Esther Utvikler',
             navnPåMor: 'Klara Utvikler',
             type: Situasjon.MOR_OG_MEDMOR,
         },
-        omBarnet: {
-            erBarnetFødt: false,
-            erFødsel: true,
-            termindato: '2024-01-01',
-            antallBarn: '2',
-        },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    MØDREKVOTE: 95,
+                    FEDREKVOTE: 95,
+                    FELLESPERIODE: 90,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: {
+                    MØDREKVOTE: 75,
+                    FEDREKVOTE: 75,
+                    FELLESPERIODE: 80,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };
@@ -136,6 +143,22 @@ export const AleneforsørgerMorEttBarn: Story = {
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 280,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 230,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };
@@ -163,8 +186,8 @@ export const FlereForsørgereKunFarHarRett: Story = {
                     FORELDREPENGER: 250,
                 },
                 minsteretter: {
-                    farRundtFødsel: 0,
                     generellMinsterett: 40,
+                    farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
@@ -173,8 +196,8 @@ export const FlereForsørgereKunFarHarRett: Story = {
                     FORELDREPENGER: 200,
                 },
                 minsteretter: {
-                    farRundtFødsel: 0,
                     generellMinsterett: 40,
+                    farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
@@ -196,6 +219,20 @@ export const AleneforsørgerFarToBarn: Story = {
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 280,
+                },
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 230,
+                },
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };
