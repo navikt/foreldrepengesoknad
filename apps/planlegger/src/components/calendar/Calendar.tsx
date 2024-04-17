@@ -74,7 +74,6 @@ const findDayType = (year: number, month: number, day: number, periods: Period[]
     return DayType.BETWEEN_DAY;
 };
 
-//TODO Prøv å bruk Dayjs.diff i staden for (Eg fekk feil resultat da eg testa)
 const monthDiff = (d1: Date, d2: Date) => {
     let months;
     months = (d2.getFullYear() - d1.getFullYear()) * 12;
