@@ -154,7 +154,7 @@
     "OppgittInformasjon.Barnet.Tittel": "The child",
     "OppgittInformasjon.Adopsjon.Tittel": "Adoption",
     "OppgittInformasjon.Arbeid.Tittel": "Work situation",
-    "OppgittInformasjon.Arbeidssituasjon": "{navn}: {arbeidssituasjon}",
+    "OppgittInformasjon.Arbeidssituasjon": "{navn}: {arbeidssituasjon, select, jobber {working} jobberIkke {not working} other {is disabled}}",
     "OppgittInformasjon.Perioder": "{prosent} % payment over {uker} weeks",
     "OppgittInformasjon.Periode": "Period",
     "OppgittInformasjon.FordelingOptionsMedUker": "{uker} weeks to {hvem}, {uker2} weeks to {hvem2}",
