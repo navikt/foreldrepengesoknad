@@ -72,7 +72,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const { sluttdatoSøker1, startdatoSøker1, sluttdatoSøker2 } = finnUttaksdata(
+    const { sluttdatoSøker1, startdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = finnUttaksdata(
         hvemHarRett,
         hvemPlanlegger,
         valgtStønadskonto,
@@ -240,7 +240,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                     id="OppgittInformasjon.InfoboksTekst.FørsteDag"
                                                     values={{
                                                         hvem: fornavn2,
-                                                        dag: dayjs(sluttdatoSøker1).add(1, 'day').format('DD.MM.YY'),
+                                                        dag: dayjs(startdatoSøker2).format('DD.MM.YY'),
                                                     }}
                                                 />
                                             </BodyLong>
