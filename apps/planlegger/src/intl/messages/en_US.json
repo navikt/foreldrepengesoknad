@@ -81,7 +81,7 @@
     "HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett": "When only the {hvem} shall have parental benefits",
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden": "When only the {hvem} is entitled to parental benefits, the {hvem} gets the entire parental benefit period.",
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar": "There are no requirements for what the {hvem} does when the {hvem2} takes out parental benefits.",
-    "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden": "When only the {erFar, select, true {father} other {co-mother}} is entitled to parental benefits, he can get the entire period of parental benefits, except for 9 weeks reserved for the mother around the birth.",
+    "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden": "When only the {hvem, select, true {father} other {co-mother}} is entitled to parental benefits, he can get the entire period of parental benefits, except for 9 weeks reserved for the mother around the birth.",
     "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor": "As a {hvem}, you have a part of the parental benefits you can use without any requirements for the mother, and a part where it is required that the mother is in <a>approved activity</a> while you are at home with the child.",
     "HvorLangPeriodeSteg.HvorLangPeriode": "How long a period of parental benefits do {erAlenesøker, select, true {you} other {you both}} want?",
     "HvorLangPeriodeSteg.100": "100 % payment over {uker100} weeks",
