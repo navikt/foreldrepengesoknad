@@ -13,6 +13,6 @@ describe('<BarnehageplassSteg>', () => {
 
         expect(await screen.findByText('Barnehageplass')).toBeInTheDocument();
 
-        expect(screen.getByText('Dere har rett på barnehageplass i August 2026')).toBeInTheDocument();
+        expect(screen.getByText('Dere har rett på barnehageplass i august 2026')).toBeInTheDocument();
     });
 });

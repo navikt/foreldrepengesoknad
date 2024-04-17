@@ -1,5 +1,7 @@
 import { Preview } from '@storybook/react';
 import dayjs from 'dayjs';
+import 'dayjs/locale/nb.js';
+import 'dayjs/locale/nn.js';
 
 import '@navikt/ds-css';
 

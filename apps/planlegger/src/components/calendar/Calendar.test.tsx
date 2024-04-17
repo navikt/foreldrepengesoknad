@@ -35,18 +35,18 @@ describe('<Calendar>', () => {
     it('skal vise korrekt navn på måneder når perioden går over to år', async () => {
         render(<PeriodsThatSpanOverAYear />);
 
-        expect(await screen.findByText('Jan')).toBeInTheDocument();
-        expect(screen.getAllByText('Feb')).toHaveLength(2);
-        expect(screen.getAllByText('Mar')).toHaveLength(2);
-        expect(screen.getAllByText('Apr')).toHaveLength(2);
-        expect(screen.getAllByText('May')).toHaveLength(2);
-        expect(screen.getAllByText('Jun')).toHaveLength(2);
-        expect(screen.getAllByText('Jul')).toHaveLength(2);
-        expect(screen.getAllByText('Aug')).toHaveLength(2);
-        expect(screen.getAllByText('Sep')).toHaveLength(2);
-        expect(screen.getByText('Oct')).toBeInTheDocument();
-        expect(screen.getByText('Nov')).toBeInTheDocument();
-        expect(screen.getByText('Dec')).toBeInTheDocument();
-        expect(screen.getByText('Jan (2025)')).toBeInTheDocument();
+        expect(await screen.findByText('Jan.')).toBeInTheDocument();
+        expect(screen.getAllByText('Feb.')).toHaveLength(2);
+        expect(screen.getAllByText('Mars')).toHaveLength(2);
+        expect(screen.getAllByText('April')).toHaveLength(2);
+        expect(screen.getAllByText('Mai')).toHaveLength(2);
+        expect(screen.getAllByText('Juni')).toHaveLength(2);
+        expect(screen.getAllByText('Juli')).toHaveLength(2);
+        expect(screen.getAllByText('Aug.')).toHaveLength(2);
+        expect(screen.getAllByText('Sep.')).toHaveLength(2);
+        expect(screen.getByText('Okt.')).toBeInTheDocument();
+        expect(screen.getByText('Nov.')).toBeInTheDocument();
+        expect(screen.getByText('Des.')).toBeInTheDocument();
+        expect(screen.getByText('Jan. (2025)')).toBeInTheDocument();
     });
 });
