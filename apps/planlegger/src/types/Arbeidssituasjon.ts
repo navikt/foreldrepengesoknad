@@ -1,7 +1,7 @@
 export enum Arbeidsstatus {
-    JOBBER = 'Jobber',
-    UFØR = 'Ufør',
-    INGEN = 'Jobber ikke',
+    JOBBER = 'jobber',
+    UFØR = 'ufør',
+    INGEN = 'jobberIkke',
 }
 
 export type Arbeidssituasjon = {

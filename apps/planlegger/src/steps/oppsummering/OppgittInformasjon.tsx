@@ -4,7 +4,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import {
@@ -167,7 +167,10 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 <BodyLong>
                                     <FormattedMessage
                                         id="OppgittInformasjon.Arbeidssituasjon"
-                                        values={{ navn: fornavn1, arbeidssituasjon: arbeidssituasjon.status }}
+                                        values={{
+                                            navn: fornavn1,
+                                            arbeidssituasjon: arbeidssituasjon.status,
+                                        }}
                                     />
                                 </BodyLong>
 
@@ -178,10 +181,9 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 navn: fornavn2,
                                                 arbeidssituasjon:
-                                                    //TODO Hardkoda tekstar
                                                     arbeidssituasjon.jobberAnnenPart === true
-                                                        ? 'Jobber'
-                                                        : 'Jobber ikke',
+                                                        ? Arbeidsstatus.JOBBER
+                                                        : Arbeidsstatus.INGEN,
                                             }}
                                         />
                                     </BodyLong>
@@ -203,59 +205,73 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                         }}
                                     />
                                 </BodyLong>
-                                {!erAleneforsørger && (
-                                    <VStack gap="5">
+                                <VStack gap="5">
+                                    <div>
+                                        {hvemHarRett === 'beggeHarRett' && (
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="OppgittInformasjon.FordelingOptionsMedUker"
+                                                    values={{
+                                                        uker: antallUkerFellesperiodeSøker1,
+                                                        uker2: antallUkerFellesperiodeSøker2,
+                                                        hvem: fornavn1,
+                                                        hvem2: fornavn2,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        )}
+                                    </div>
+                                    <div>
                                         <BodyLong>
                                             <FormattedMessage
-                                                id="OppgittInformasjon.FordelingOptionsMedUker"
+                                                id="OppgittInformasjon.InfoboksTekst.FørsteDag"
                                                 values={{
-                                                    uker: antallUkerFellesperiodeSøker1,
-                                                    uker2: antallUkerFellesperiodeSøker2,
-                                                    hvem: fornavn1,
-                                                    hvem2: fornavn2,
+                                                    hvem:
+                                                        hvemHarRett === 'kunFarHarRettMorHovedsøker' ||
+                                                        hvemHarRett === 'kunMedfarEllerMedmorHarRett'
+                                                            ? fornavn2
+                                                            : fornavn1,
+                                                    dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
                                                 }}
                                             />
                                         </BodyLong>
-                                        <div>
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="OppgittInformasjon.InfoboksTekst.FørsteDag"
-                                                    values={{
-                                                        hvem: fornavn1,
-                                                        dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="OppgittInformasjon.InfoboksTekst.SisteDag"
-                                                    values={{
-                                                        hvem: fornavn1,
-                                                        dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="OppgittInformasjon.InfoboksTekst.FørsteDag"
-                                                    values={{
-                                                        hvem: fornavn2,
-                                                        dag: dayjs(startdatoSøker2).format('DD.MM.YY'),
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="OppgittInformasjon.InfoboksTekst.SisteDag"
-                                                    values={{
-                                                        hvem: fornavn2,
-                                                        dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                        </div>
-                                    </VStack>
-                                )}
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="OppgittInformasjon.InfoboksTekst.SisteDag"
+                                                values={{
+                                                    hvem:
+                                                        hvemHarRett === 'kunFarHarRettMorHovedsøker' ||
+                                                        hvemHarRett === 'kunMedfarEllerMedmorHarRett'
+                                                            ? fornavn2
+                                                            : fornavn1,
+                                                    dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
+                                                }}
+                                            />
+                                        </BodyLong>
+                                        {hvemHarRett === 'beggeHarRett' && (
+                                            <div>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="OppgittInformasjon.InfoboksTekst.FørsteDag"
+                                                        values={{
+                                                            hvem: fornavn2,
+                                                            dag: dayjs(startdatoSøker2).format('DD.MM.YY'),
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="OppgittInformasjon.InfoboksTekst.SisteDag"
+                                                        values={{
+                                                            hvem: fornavn2,
+                                                            dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                            </div>
+                                        )}
+                                    </div>
+                                </VStack>
                             </>
                         </GreenPanel>
                     </VStack>
