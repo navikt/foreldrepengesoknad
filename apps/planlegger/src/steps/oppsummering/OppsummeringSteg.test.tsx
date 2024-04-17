@@ -21,8 +21,8 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Termindato: 24.10.2022')).toBeInTheDocument();
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
-        expect(screen.getByText('Klara: Jobber')).toBeInTheDocument();
-        expect(screen.getByText('Espen: Jobber')).toBeInTheDocument();
+        expect(screen.getByText('Klara: jobber')).toBeInTheDocument();
+        expect(screen.getByText('Espen: jobber')).toBeInTheDocument();
 
         expect(screen.getByText('Periode')).toBeInTheDocument();
         expect(screen.getByText('100 % utbetaling over 49 uker')).toBeInTheDocument();

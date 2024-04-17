@@ -30,7 +30,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: true,
-                status: 'Jobber',
+                status: 'jobber',
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -57,7 +57,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
-                status: 'Jobber',
+                status: 'jobber',
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -80,7 +80,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
-                status: 'Ufør',
+                status: 'ufør',
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -103,7 +103,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
-                status: 'Jobber ikke',
+                status: 'jobberIkke',
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -127,7 +127,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                status: 'Jobber',
+                status: 'jobber',
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -149,7 +149,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                status: 'Ufør',
+                status: 'ufør',
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -171,7 +171,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                status: 'Jobber ikke',
+                status: 'jobberIkke',
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
