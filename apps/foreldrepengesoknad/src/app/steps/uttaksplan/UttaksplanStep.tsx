@@ -5,6 +5,7 @@ import {
     kreverUttaksplanVedlegg,
     settInnAnnenPartsUttak,
 } from '@navikt/uttaksplan';
+import { UttaksplanNy } from '@navikt/uttaksplan-ny';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -682,6 +683,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                 søker={søkerInfo.søker}
                             />
                         </Block>
+                        <UttaksplanNy />
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}
                             forelderVedAleneomsorg={forelderVedAleneomsorg}

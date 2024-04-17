@@ -1,0 +1,27 @@
+{
+    "name": "@navikt/uttaksplan-ny",
+    "version": "1.0.0",
+    "private": true,
+    "license": "MIT",
+    "type": "module",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}"
+    },
+    "dependencies": {
+        "@types/react": "^18.2.73",
+        "react": "^18.2.0",
+        "react-intl": "^6.6.4",
+        "typescript": "^5.4.3"
+    },
+    "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@vitejs/plugin-react": "^4.2.1",
+        "path": "^0.12.7",
+        "tsconfig": "workspace:*",
+        "vite": "^5.1.6",
+        "vite-plugin-checker": "^0.6.4",
+        "vitest": "^1.4.0"
+    }
+}
