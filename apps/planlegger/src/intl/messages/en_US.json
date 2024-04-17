@@ -105,10 +105,6 @@
     "OmBarnetSteg.Adopsjon.ForeldrepengerInfo": "You can apply for parental benefits now.",
     "OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst": "In the case of adoption, you can apply for parental benefits once you have the date of care transfer.",
     "OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg": "You can start the parental benefits period from the care transfer.",
-    "Foreldrepengeinfo.ForeldrepengerInfo": "You can apply for parental benefits from the {dato}.",
-    "Foreldrepengeinfo.ForeldrepengerInfoTekst": "{erAlenesøker, select, true {You} other {{navn}}} can apply for parental benefits three months before the due date.",
-    "Foreldrepengeinfo.ForeldrepengerInfoTekst.NAVanbefaler": "NAV recommends applying about 4 weeks before you plan to start the leave, which is often three weeks before the due date for mothers.",
-    "Foreldrepengeinfo.ForeldrepengerInfoTekst.toFørsteUkerDekket": "{erFar, select, true {Fathers} other {Co-mothers}} often have leave covered for the first two weeks after birth by their employer. If not, the {hvem} can apply for parental benefits from NAV for these two weeks.",
     "Adopsjon.Overtakelsesdato": "When do you take over care for {flereBarn, select, true {the children} other {the child}}?",
     "Adopsjon.Fødselsdato": "When was {flereBarn, select, true {the oldest child} other {the child}} born?",
     "Fødsel.ErFødt": "Have {antallBarn, select, 1 {the child} other {the children}} been born?",
@@ -202,6 +198,5 @@
     "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Both parents can be at home simultaneously with up to 150 % parental benefits. This is possible from week 7 after birth, if one parent uses the joint period while the other uses their own quota.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "Two weeks around birth",
     "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "{erFar, select, true {Fathers} other {Co-mothers}} often have leave covered for the first two weeks after birth by their employer. If not, the {erFar, select, true {father} other {co-mother}} can use parental benefits in these two weeks.",
-    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {erFar, select, true {father} other {co-mother}} is not taking parental benefits, one can add a period without parental benefits, where one, for example, receives holiday pay from the employer.",
-    "Aleneforsørger.TittelDeg": "Your plan"
+    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {erFar, select, true {father} other {co-mother}} is not taking parental benefits, one can add a period without parental benefits, where one, for example, receives holiday pay from the employer."
 }

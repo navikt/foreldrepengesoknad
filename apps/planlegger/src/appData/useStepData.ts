@@ -40,9 +40,16 @@ const showHvorLangPeriodeEllerOversiktStep = (
     if (path === PlanleggerRoutes.HVOR_LANG_PERIODE || path === PlanleggerRoutes.OVERSIKT) {
         const hvemPlanlegger = getData(ContextDataType.HVEM_PLANLEGGER);
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
+        const omBarnet = getData(ContextDataType.OM_BARNET);
+
+        const kunFar2HarRettForFødsel =
+            hvemPlanlegger?.type === Situasjon.FAR_OG_FAR &&
+            arbeidssituasjon?.status !== Arbeidsstatus.JOBBER &&
+            omBarnet?.erFødsel;
+
         const skalVise =
             arbeidssituasjon?.status === Arbeidsstatus.JOBBER ||
-            (hvemPlanlegger?.type !== Situasjon.FAR_OG_FAR && arbeidssituasjon?.jobberAnnenPart);
+            (!kunFar2HarRettForFødsel && arbeidssituasjon?.jobberAnnenPart);
         const erValgtOgEtterSteg = skalVise && isAfterStep(PlanleggerRoutes.ARBEIDSSITUASJON, currentPath);
         return erValgtOgEtterSteg || !!getData(ContextDataType.HVOR_LANG_PERIODE);
     }

@@ -51,8 +51,6 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         ? lagKalenderPerioder(valgtStønadskonto, barnet, hvemPlanlegger, arbeidssituasjon, fordeling?.antallUkerSøker1)
         : [];
 
-    //TODO: dra ut expansioncards til egne komponenter
-    //TODO: bruk input data til å vise riktig i kalenderen
     return (
         <>
             <OppsummeringHeader>

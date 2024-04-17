@@ -105,10 +105,6 @@
     "OmBarnetSteg.Adopsjon.ForeldrepengerInfo": "{erAlenesøker, select, true {Du} other {Dere}} kan søke om foreldrepenger allerede nå.",
     "OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst": "Ved adopsjon kan man søke om foreldrepenger når man har datoen for omsorgsovertakelse.",
     "OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg": "{erAlenesøker, select, true {Du} other {Dere}} kan starte perioden med foreldrepenger fra omsorgsovertakelsen.",
-    "Foreldrepengeinfo.ForeldrepengerInfo": "{erAlenesøker, select, true {Du} other {Dere}} kan søke om foreldrepenger fra den {dato}.",
-    "Foreldrepengeinfo.ForeldrepengerInfoTekst": "{erAlenesøker, select, true {Du} other {{navn}}} kan søke om foreldrepenger tre måneder før termin.",
-    "Foreldrepengeinfo.ForeldrepengerInfoTekst.NAVanbefaler": "NAV anbefaler å søke rundt 4 uker før man tenker å gå ut i permisjon, som ofte er tre uker før termin for mor.",
-    "Foreldrepengeinfo.ForeldrepengerInfoTekst.toFørsteUkerDekket": "Ofte får {erFar, select, true {fedre} other {medmødre}} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette kan far søke om foreldrepenger fra NAV i disse to ukene.",
     "Adopsjon.Overtakelsesdato": "Når tar {erAlenesøker, select, true {du} other {dere}} over omsorgen for {flereBarn, select, true {barna} other {barnet}}?",
     "Adopsjon.Fødselsdato": "Når ble {flereBarn, select, true {det eldste barnet} other {barnet}} født?",
     "Fødsel.ErFødt": "Er {antallBarn, select, 1 {barnet} other {barna}} født?",
@@ -202,6 +198,5 @@
     "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Man kan være hjemme samtidig med opp til 150 % foreldrepenger. Dette er mulig fra uke 7 etter fødsel, hvis en forelder bruker fellesperioden mens den andre bruker egen kvote.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "To uker rundt fødsel",
     "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Ofte får fedre permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette far bruke foreldrepenger i disse to ukene.",
-    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "Hvis far ikke skal ha foreldrepenger kan man legge til periode uten foreldrepenger, hvor man for eksempel får feriepenger fra arbeidsgiver.",
-    "Aleneforsørger.TittelDeg": "Planen din"
+    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "Hvis far ikke skal ha foreldrepenger kan man legge til periode uten foreldrepenger, hvor man for eksempel får feriepenger fra arbeidsgiver."
 }

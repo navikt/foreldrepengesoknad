@@ -22,6 +22,12 @@ const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click
         <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
             <PlanleggerDataContext
                 initialState={{
+                    [ContextDataType.OM_BARNET]: {
+                        erFødsel: true,
+                        erBarnetFødt: false,
+                        antallBarn: '1',
+                        termindato: '2024-01-01',
+                    },
                     [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                 }}
                 onDispatch={gåTilNesteSide}

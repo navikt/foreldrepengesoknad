@@ -25,6 +25,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
 
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
     const oppdaterPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
@@ -42,11 +43,16 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
     const lagre = (formValues: Arbeidssituasjon) => {
         oppdaterArbeidssituasjon(formValues);
 
+        const kunFar2HarRettForFødsel =
+            hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
+            formValues.status !== Arbeidsstatus.JOBBER &&
+            omBarnet.erFødsel;
+
         const nextStep =
-            formValues.status === Arbeidsstatus.JOBBER ||
-            (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && formValues.jobberAnnenPart)
-                ? PlanleggerRoutes.HVOR_LANG_PERIODE
-                : PlanleggerRoutes.OPPSUMMERING;
+            (formValues.status !== Arbeidsstatus.JOBBER && formValues.jobberAnnenPart !== true) ||
+            kunFar2HarRettForFødsel
+                ? PlanleggerRoutes.OPPSUMMERING
+                : PlanleggerRoutes.HVOR_LANG_PERIODE;
 
         if (nextStep === PlanleggerRoutes.OPPSUMMERING) {
             oppdaterPeriode(undefined);
