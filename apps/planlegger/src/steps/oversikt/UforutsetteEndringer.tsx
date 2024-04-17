@@ -4,7 +4,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert } from 'types/Barnet';
-import { Situasjon, finnAnnenPartTekst } from 'types/HvemPlanlegger';
+import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -41,12 +41,10 @@ const Innhold = () => {
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const erFar = hvemPlanlegger.type === Situasjon.FAR;
     const antallBarn = barnet.antallBarn;
 
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-    // TODO: endre fra erFar til kun far har rett
 
     return (
         <>
@@ -59,7 +57,7 @@ const Innhold = () => {
                     </div>
                     <div>
                         <Heading size="small">
-                            {erFar ? (
+                            {morHarIkkeRett ? (
                                 <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Far" />
                             ) : (
                                 <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk" />
@@ -67,7 +65,7 @@ const Innhold = () => {
                         </Heading>
 
                         <BodyLong>
-                            {erFar ? (
+                            {morHarIkkeRett ? (
                                 <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstFar" />
                             ) : (
                                 <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Tekst" />
