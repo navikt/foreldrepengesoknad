@@ -193,37 +193,34 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 <Heading size="small">
                                     <FormattedMessage id="OppgittInformasjon.Periode" />
                                 </Heading>
-
-                                <BodyLong spacing>
-                                    <FormattedMessage
-                                        id="OppgittInformasjon.Perioder"
-                                        values={{
-                                            prosent: hvorLangPeriode.dekningsgrad,
-                                            uker: erAdoptert ? antallUkerAdopsjon : antallUker,
-                                        }}
-                                    />
-                                </BodyLong>
                                 <VStack gap="5">
-                                    <div>
-                                        {hvemHarRett === 'beggeHarRett' && (
-                                            <>
-                                                <BodyLong>
-                                                    <FormattedMessage id="OppgittInformasjon.Fordeling" />
-                                                </BodyLong>
-                                                <BodyLong>
-                                                    <FormattedMessage
-                                                        id="OppgittInformasjon.FordelingOptionsMedUker"
-                                                        values={{
-                                                            uker: antallUkerFellesperiodeSøker1,
-                                                            uker2: antallUkerFellesperiodeSøker2,
-                                                            hvem: fornavn1,
-                                                            hvem2: fornavn2,
-                                                        }}
-                                                    />
-                                                </BodyLong>
-                                            </>
-                                        )}
-                                    </div>
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="OppgittInformasjon.Perioder"
+                                            values={{
+                                                prosent: hvorLangPeriode.dekningsgrad,
+                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                            }}
+                                        />
+                                    </BodyLong>
+                                    {hvemHarRett === 'beggeHarRett' && (
+                                        <div>
+                                            <BodyLong>
+                                                <FormattedMessage id="OppgittInformasjon.Fordeling" />
+                                            </BodyLong>
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="OppgittInformasjon.FordelingOptionsMedUker"
+                                                    values={{
+                                                        uker: antallUkerFellesperiodeSøker1,
+                                                        uker2: antallUkerFellesperiodeSøker2,
+                                                        hvem: fornavn1,
+                                                        hvem2: fornavn2,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        </div>
+                                    )}
                                     <div>
                                         <BodyLong>
                                             <FormattedMessage
