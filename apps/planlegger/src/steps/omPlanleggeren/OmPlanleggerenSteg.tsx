@@ -22,12 +22,12 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
 
     return (
         <PlanleggerForside locale={locale} changeLocale={changeLocale}>
-            <VStack gap="10">
+            <VStack gap={{ xs: '3', sm: '10' }}>
                 <BodyShort size="large">
                     <FormattedMessage id="OmPlanleggerenSteg.Ingress" />
                 </BodyShort>
-                <VStack gap="20">
-                    <VStack gap="5">
+                <VStack gap={{ xs: '8', sm: '20' }}>
+                    <VStack gap={{ xs: '2', sm: '5' }}>
                         <Heading level="2" size="xsmall">
                             <FormattedMessage id="OmPlanleggerenSteg.Underoverskrift" />
                         </Heading>
