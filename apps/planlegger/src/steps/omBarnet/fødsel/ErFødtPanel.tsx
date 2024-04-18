@@ -32,7 +32,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
 
     return (
         <VStack gap="5">
-            <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
+            <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="10">
                     <Datepicker
                         label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
@@ -74,6 +74,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
                     icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                    shouldFadeIn
                 >
                     <BodyLong>
                         <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
@@ -100,6 +101,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                         />
                     }
                     icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                    shouldFadeIn
                 >
                     <BodyLong>
                         <FormattedMessage id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr" />

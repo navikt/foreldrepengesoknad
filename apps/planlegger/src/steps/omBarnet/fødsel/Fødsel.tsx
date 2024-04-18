@@ -28,6 +28,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
             <GreenRadioGroup
                 label={<FormattedMessage id="Fødsel.ErFødt" values={{ antallBarn }} />}
                 name="erBarnetFødt"
+                shouldFadeIn
                 validate={[
                     isRequired(
                         intl.formatMessage({
