@@ -38,6 +38,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                         />
                     }
                     icon={<CheckmarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                    shouldFadeIn
                 >
                     <BodyLong>
                         <FormattedMessage
@@ -56,6 +57,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                         />
                     }
                     icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                    shouldFadeIn
                 >
                     <BodyLong>
                         <FormattedMessage
@@ -93,6 +95,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                         />
                     }
                     icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                    shouldFadeIn
                 >
                     <BodyLong>
                         <FormattedMessage
@@ -129,6 +132,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                             <FormattedMessage id="FlereForsørgere.AndreForelder" values={{ navn: fornavnAnnenPart }} />
                         }
                         validate={[isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' }))]}
+                        shouldFadeIn
                     >
                         <Radio value={true} autoFocus>
                             <FormattedMessage id="DefaultMessage.Ja" />
@@ -146,6 +150,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                                 />
                             }
                             icon={<CheckmarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                            shouldFadeIn
                         >
                             <BodyLong>
                                 <FormattedMessage id="FlereForsørgere.Jobber.Infoboks.HarJobbetSeksAvTiMnd" />
@@ -161,6 +166,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                                 />
                             }
                             icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                            shouldFadeIn
                         >
                             <BodyLong>
                                 <FormattedMessage id="FlereForsørgere.Ingen.Infoboks.ManHarIkkeRett" />

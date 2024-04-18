@@ -48,7 +48,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
 
     return (
         <VStack gap="5">
-            <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
+            <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <Datepicker
                     label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
                     name="termindato"
@@ -81,6 +81,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                             />
                         }
                         icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                        shouldFadeIn
                     >
                         <BodyLong>
                             <FormattedMessage
@@ -129,6 +130,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                             </>
                         }
                         icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                        shouldFadeIn
                     >
                         <BodyLong>
                             {hvemPlanlegger.type === Situasjon.MOR && (

@@ -93,6 +93,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         <GreenRadioGroup
                             name="antallBarn"
                             label={finnHvorMangeBarnLabel(erAlenesøker, erFødsel)}
+                            shouldFadeIn
                             validate={[
                                 isRequired(
                                     intl.formatMessage({
@@ -138,6 +139,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     />
                                 }
                                 icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                                shouldFadeIn
                             >
                                 <BodyLong>
                                     <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />

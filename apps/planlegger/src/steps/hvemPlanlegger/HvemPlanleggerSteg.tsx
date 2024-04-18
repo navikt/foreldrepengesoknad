@@ -69,7 +69,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         </Radio>
                     </GreenRadioGroup>
                     {type && (
-                        <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør}>
+                        <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                             <VStack gap="10">
                                 {erMorDelAvSøknaden(type) && (
                                     <TextField

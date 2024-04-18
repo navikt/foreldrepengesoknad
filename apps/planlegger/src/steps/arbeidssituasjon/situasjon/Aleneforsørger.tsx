@@ -14,14 +14,20 @@ interface Props {
 const Aleneforsørger: FunctionComponent<Props> = ({ status }) => (
     <>
         {status === Arbeidsstatus.JOBBER && (
-            <Infobox header={<FormattedMessage id="Aleneforsørger.Jobber.Infoboks.HarRettTilForeldrepengerDeg" />}>
+            <Infobox
+                header={<FormattedMessage id="Aleneforsørger.Jobber.Infoboks.HarRettTilForeldrepengerDeg" />}
+                shouldFadeIn
+            >
                 <BodyLong>
                     <FormattedMessage id="Aleneforsørger.Jobber.Infoboks.HarJobbetSeksAvTiMnd" />
                 </BodyLong>
             </Infobox>
         )}
         {status === Arbeidsstatus.UFØR && (
-            <Infobox header={<FormattedMessage id="Aleneforsørger.Infoboks.HarIkkeRettTilForeldrepengerDeg" />}>
+            <Infobox
+                header={<FormattedMessage id="Aleneforsørger.Infoboks.HarIkkeRettTilForeldrepengerDeg" />}
+                shouldFadeIn
+            >
                 <BodyLong>
                     <FormattedMessage id="Aleneforsørger.Ufør.Infoboks.ErUfør" />
                 </BodyLong>
@@ -46,7 +52,10 @@ const Aleneforsørger: FunctionComponent<Props> = ({ status }) => (
             </Infobox>
         )}
         {status === Arbeidsstatus.INGEN && (
-            <Infobox header={<FormattedMessage id="Aleneforsørger.Infoboks.HarIkkeRettTilForeldrepengerDeg" />}>
+            <Infobox
+                header={<FormattedMessage id="Aleneforsørger.Infoboks.HarIkkeRettTilForeldrepengerDeg" />}
+                shouldFadeIn
+            >
                 <BodyLong>
                     <FormattedMessage id="Aleneforsørger.Ingen.Infoboks.ManHarIkkeRett" />
                 </BodyLong>

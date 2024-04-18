@@ -25,7 +25,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
     const fødselsdato = formMethods.watch('fødselsdato');
 
     return (
-        <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør}>
+        <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
             <VStack gap="10">
                 <Datepicker
                     label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
