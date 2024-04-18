@@ -14,7 +14,7 @@ const UforutsetteEndringer: React.FunctionComponent = () => {
     return (
         <ExpansionCard aria-label=".">
             <ExpansionCard.Header>
-                <HStack gap="10" align="center">
+                <HStack gap="10" align="center" wrap={false}>
                     <div>
                         <IconCircleWrapper color="green" size="large">
                             <ExclamationmarkIcon height={22} width={22} fontSize="1.5rem" />
