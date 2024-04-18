@@ -1,7 +1,9 @@
+import { CheckmarkIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
+import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
@@ -11,13 +13,11 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
-
-import Aleneforsørger from './situasjon/Aleneforsørger';
-import FlereForsørgere from './situasjon/FlereForsørgere';
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
     const intl = useIntl();
@@ -38,8 +38,11 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
     });
 
     const status = formMethods.watch('status');
+    const jobberAnnenPart = formMethods.watch('jobberAnnenPart');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
+    const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
+    const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 
     const lagre = (formValues: Arbeidssituasjon) => {
         oppdaterArbeidssituasjon(formValues);
