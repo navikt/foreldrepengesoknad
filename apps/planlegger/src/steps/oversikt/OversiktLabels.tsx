@@ -19,7 +19,7 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import BlåSirkel from './ikoner/BlåSirkel';
 import GrønnSirkel from './ikoner/GrønnSirkel';
-import styles from './oversiktSteg.module.css';
+import styles from './oversiktLabels.module.css';
 
 interface Props {
     barnet: OmBarnet;
@@ -51,8 +51,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
             {(hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarHarRett' || hvemHarRett === 'kunMorHarRett') && (
                 <HStack gap="1">
                     <div className={styles.bluePanel}>
-                        <HStack gap="2" align="center">
-                            <BlåSirkel />
+                        <HStack gap="2" align="end" wrap={false}>
                             <BodyShort>
                                 <FormattedMessage
                                     id="OversiktSteg.UkerForeldrepenger"
@@ -63,13 +62,15 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                     }}
                                 />
                             </BodyShort>
+                            <div className={styles.margin}>
+                                <BlåSirkel />
+                            </div>
                         </HStack>
                     </div>
                     <Spacer />
                     {annenPartTekst && hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2 && (
                         <div className={styles.greenPanel}>
-                            <HStack gap="2" align="center">
-                                <GrønnSirkel />
+                            <HStack gap="2" align="end" wrap={false}>
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OversiktSteg.UkerForeldrepenger"
@@ -80,6 +81,9 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                         }}
                                     />
                                 </BodyShort>
+                                <div className={styles.margin}>
+                                    <GrønnSirkel />
+                                </div>
                             </HStack>
                         </div>
                     )}
@@ -90,8 +94,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                     <>
                         <HStack gap="1">
                             <div className={styles.bluePanel}>
-                                <HStack gap="2" align="center">
-                                    <BlåSirkel />
+                                <HStack gap="2" align="end" wrap={false}>
                                     <BodyShort>
                                         <FormattedMessage
                                             id="OversiktSteg.UkerUtenAktivitetskrav"
@@ -102,12 +105,14 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                             }}
                                         />
                                     </BodyShort>
+                                    <div className={styles.margin}>
+                                        <BlåSirkel />
+                                    </div>
                                 </HStack>
                             </div>
                             <Spacer />
                             <div className={styles.greenPanel}>
-                                <HStack gap="2" align="center">
-                                    <GrønnSirkel />
+                                <HStack gap="2" align="end" wrap={false}>
                                     <BodyShort>
                                         <FormattedMessage
                                             id="OversiktSteg.UkerMedAktivitetskrav"
@@ -118,14 +123,16 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                             }}
                                         />
                                     </BodyShort>
+                                    <div className={styles.margin}>
+                                        <GrønnSirkel />
+                                    </div>
                                 </HStack>
                             </div>
                         </HStack>
                     </>
                 )}
             <div className={styles.pinkPanel}>
-                <HStack gap="2" align="center">
-                    <HeartFillIcon color="#F68282" />
+                <HStack gap="2" align="center" wrap={false}>
                     <BodyShort>
                         {erFødt && (
                             <FormattedMessage
@@ -153,6 +160,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                             />
                         )}
                     </BodyShort>
+                    <HeartFillIcon color="#F68282" />
                 </HStack>
             </div>
         </VStack>
