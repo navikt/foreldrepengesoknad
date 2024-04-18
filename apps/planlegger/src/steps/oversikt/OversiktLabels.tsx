@@ -49,28 +49,6 @@ const OversiktLabels: FunctionComponent<Props> = ({
     return (
         <VStack gap="2">
             {(hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarHarRett' || hvemHarRett === 'kunMorHarRett') && (
-                <HStack gap="1">
-                    <div className={styles.bluePanel}>
-                        <HStack gap="2" align="end" wrap={false}>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="OversiktSteg.UkerForeldrepenger"
-                                    values={{
-                                        hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
-                                        uker: weeksBetween(startdatoSøker1, sluttdatoSøker1),
-                                        dato: dayjs(startdatoSøker1).format('dddd D MMM'),
-                                    }}
-                                />
-                            </BodyShort>
-                            <div className={styles.margin}>
-                                <BlåSirkel />
-                            </div>
-                        </HStack>
-                    </div>
-                    <Spacer />
-                    {annenPartTekst && hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2 && (
-                        <div className={styles.greenPanel}>
-                            <HStack gap="2" align="end" wrap={false}>
                 <VStack gap="2">
                     <HStack gap="1">
                         <div className={styles.bluePanel}>
