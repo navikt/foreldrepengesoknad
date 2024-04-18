@@ -28,7 +28,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
     const erFødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
-    const erFar = hvemPlanlegger.type === Situasjon.MOR_OG_FAR;
+    const erFar = hvemPlanlegger.type !== Situasjon.MOR;
 
     return (
         <VStack gap="5">
@@ -81,7 +81,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                     <BodyLong>
                         <FormattedMessage id="ErFødtPanel.Født.InfoboksTekstDel2" />
                     </BodyLong>
-                    {!erAlenesøker && (
+                    {erAlenesøker && erFar && (
                         <BodyLong>
                             <FormattedMessage
                                 id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"

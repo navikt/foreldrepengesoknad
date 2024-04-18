@@ -70,49 +70,47 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
             </GreenPanel>
             {termindato !== undefined && dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
                 <>
-                    {hvemPlanlegger.type !== Situasjon.FAR && (
-                        <Infobox
-                            header={
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfo"
-                                    values={{
-                                        erMor: hvemPlanlegger.type === Situasjon.MOR,
-                                        dato: dayjs(datoSvangerskapsuke22).format('DD.MM.YY'),
-                                    }}
-                                />
-                            }
-                            icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
-                        >
+                    <Infobox
+                        header={
+                            <FormattedMessage
+                                id="ErIkkeFødtPanel.ForeldrepengerInfo"
+                                values={{
+                                    erAlenesøker,
+                                    dato: dayjs(datoSvangerskapsuke22).format('DD.MM.YY'),
+                                }}
+                            />
+                        }
+                        icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                    >
+                        <BodyLong>
+                            <FormattedMessage
+                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
+                                values={{
+                                    erAlenesøker,
+                                }}
+                            />
+                        </BodyLong>
+                        <BodyLong>
+                            <FormattedMessage
+                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
+                                values={{
+                                    erMor: hvemPlanlegger.type === Situasjon.MOR,
+                                }}
+                            />
+                        </BodyLong>
+                        {hvemPlanlegger.type !== Situasjon.MOR && (
                             <BodyLong>
                                 <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
+                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
                                     values={{
                                         erAlenesøker,
+                                        erFar,
+                                        hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                     }}
                                 />
                             </BodyLong>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
-                                    values={{
-                                        erMor: hvemPlanlegger.type === Situasjon.MOR,
-                                    }}
-                                />
-                            </BodyLong>
-                            {hvemPlanlegger.type !== Situasjon.MOR && (
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
-                                        values={{
-                                            erAlenesøker,
-                                            erFar,
-                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                        }}
-                                    />
-                                </BodyLong>
-                            )}
-                        </Infobox>
-                    )}
+                        )}
+                    </Infobox>
                 </>
             )}
             {termindato !== undefined && dayjs(termindato).isBefore(DATO_3_MND_FRAM) && (
