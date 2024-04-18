@@ -157,6 +157,7 @@
     "OppgittInformasjon.Arbeidssituasjon": "{navn}: {arbeidssituasjon, select, jobber {jobber} jobberIkke {jobber ikke} other {ufør}}",
     "OppgittInformasjon.Perioder": "{prosent} % utbetaling over {uker} uker",
     "OppgittInformasjon.Periode": "Periode",
+    "OppgittInformasjon.Fordeling": "Fordeling av fellesperioden:",
     "OppgittInformasjon.FordelingOptionsMedUker": "{uker} uker til {hvem}, {uker2} uker til {hvem2}",
     "OppgittInformasjon.InfoboksTekst.FørsteDag": "{hvem}s første dag: {dag}",
     "OppgittInformasjon.InfoboksTekst.SisteDag": "{hvem}s siste dag: {dag}",

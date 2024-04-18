@@ -18,7 +18,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
         expect(screen.getByText('Antall barn: 1')).toBeInTheDocument();
-        expect(screen.getByText('Termindato: 24.10.2022')).toBeInTheDocument();
+        expect(screen.getByText('Termindato: 24.10.22')).toBeInTheDocument();
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(screen.getByText('Klara: jobber')).toBeInTheDocument();
@@ -26,6 +26,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Periode')).toBeInTheDocument();
         expect(screen.getByText('100 % utbetaling over 49 uker')).toBeInTheDocument();
+        expect(screen.getByText('Fordeling av fellesperioden:')).toBeInTheDocument();
         expect(screen.getByText('5 uker til Klara, 11 uker til Espen')).toBeInTheDocument();
         expect(screen.getByText('Klaras første dag: 03.10.22')).toBeInTheDocument();
         expect(screen.getByText('Klaras siste dag: 10.03.23')).toBeInTheDocument();
