@@ -112,202 +112,208 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
-                    <Heading size="medium" spacing>
-                        <FormattedMessage id="HvorLangPeriodeSteg.Tittel" />
-                    </Heading>
-                    <Infobox
-                        header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
-                        icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                        isGray
-                    >
-                        <BodyLong>
-                            <FormattedMessage
-                                id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
-                                values={{
-                                    erAlenesøker,
-                                    uker100: antallUker100,
-                                    uker80: antallUker80,
-                                }}
-                            />
-                        </BodyLong>
-                    </Infobox>
-                    {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
+                    <VStack gap="8">
+                        <Heading size="medium" spacing>
+                            <FormattedMessage id="HvorLangPeriodeSteg.Tittel" />
+                        </Heading>
                         <Infobox
-                            header={
-                                morHarIkkeRett ? (
-                                    <FormattedMessage
-                                        id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
-                                        values={{
-                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                        }}
-                                    />
-                                ) : (
-                                    <FormattedMessage
-                                        id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
-                                        values={{
-                                            hvem: finnSøkerTekst(intl, hvemPlanlegger),
-                                        }}
-                                    />
-                                )
-                            }
-                            icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                            header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
+                            icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
                             isGray
                         >
-                            {farHarIkkeRett && (
-                                <VStack gap="2">
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden"
-                                            values={{ hvem: finnSøkerTekst(intl, hvemPlanlegger) }}
-                                        />
-                                    </BodyLong>
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar"
-                                            values={{
-                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                hvem2: finnSøkerTekst(intl, hvemPlanlegger),
-                                            }}
-                                        />
-                                    </BodyLong>
-                                </VStack>
-                            )}
-                            {morHarIkkeRett && (
-                                <VStack gap="2">
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden"
-                                            values={{
-                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                hvem2: finnSøkerTekst(intl, hvemPlanlegger),
-                                            }}
-                                        />
-                                    </BodyLong>
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor"
-                                            values={{
-                                                a: (msg: any) => (
-                                                    <Link
-                                                        inlineText
-                                                        href={links.godkjentAktivitet}
-                                                        className="lenke"
-                                                        rel="noreferrer"
-                                                        target="_blank"
-                                                    >
-                                                        {msg}
-                                                    </Link>
-                                                ),
-                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                            }}
-                                        />
-                                    </BodyLong>
-                                </VStack>
-                            )}
-                        </Infobox>
-                    )}
-                    <GreenRadioGroup
-                        label={<FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ erAlenesøker }} />}
-                        name="dekningsgrad"
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({
-                                    id: 'ValidationMessage.Required',
-                                }),
-                            ),
-                        ]}
-                    >
-                        <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
-                            <FormattedMessage id="HvorLangPeriodeSteg.100" values={{ uker100: antallUker100 }} />
-                        </Radio>
-                        <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
-                            <FormattedMessage id="HvorLangPeriodeSteg.80" values={{ uker80: antallUker80 }} />
-                        </Radio>
-                    </GreenRadioGroup>
-                    {dekningsgrad && (
-                        <Infobox
-                            header={
+                            <BodyLong>
                                 <FormattedMessage
-                                    id="HvorLangPeriodeSteg.Infoboks.SisteDagTittel"
+                                    id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
                                     values={{
-                                        dato: dayjs(sluttdatoSøker2 || sluttdatoSøker1).format('dddd DD. MMMM YYYY'),
+                                        erAlenesøker,
+                                        uker100: antallUker100,
+                                        uker80: antallUker80,
                                     }}
                                 />
-                            }
-                            icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                            shouldFadeIn
-                        >
-                            <BodyLong>
-                                {erAdopsjon && (
-                                    <FormattedMessage
-                                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon"
-                                        values={{ antallBarn, kunEnPartSkalHa, dato: familiehendelsedato }}
-                                    />
-                                )}
-                                {!erAdopsjon && erFødt && (
-                                    <FormattedMessage
-                                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel"
-                                        values={{
-                                            antallBarn,
-                                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                            dato: familiehendelsedato,
-                                            kunEnPartSkalHa,
-                                        }}
-                                    />
-                                )}
-                                {!erAdopsjon && !erFødt && (
-                                    <FormattedMessage
-                                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin"
-                                        values={{
-                                            antallBarn,
-                                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                            kunEnPartSkalHa,
-                                        }}
-                                    />
-                                )}
                             </BodyLong>
-                            {morHarIkkeRett && (
-                                <VStack gap="2">
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
-                                            values={{
-                                                uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                                                uker2: antallUker,
-                                                b: (msg: any) => <b>{msg}</b>,
-                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                            }}
-                                        />
-                                    </BodyLong>
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
-                                            values={{
-                                                uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                                                uker2: antallUker,
-                                                a: (msg: any) => (
-                                                    <Link
-                                                        inlineText
-                                                        href={links.godkjentAktivitet}
-                                                        className="lenke"
-                                                        rel="noreferrer"
-                                                        target="_blank"
-                                                    >
-                                                        {msg}
-                                                    </Link>
-                                                ),
-                                                b: (msg: any) => <b>{msg}</b>,
-                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                            }}
-                                        />
-                                    </BodyLong>
-                                </VStack>
-                            )}
                         </Infobox>
-                    )}
+                        {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
+                            <Infobox
+                                header={
+                                    morHarIkkeRett ? (
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
+                                            values={{
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                            }}
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
+                                            values={{
+                                                hvem: finnSøkerTekst(intl, hvemPlanlegger),
+                                            }}
+                                        />
+                                    )
+                                }
+                                icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                                isGray
+                            >
+                                {farHarIkkeRett && (
+                                    <VStack gap="2">
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden"
+                                                values={{ hvem: finnSøkerTekst(intl, hvemPlanlegger) }}
+                                            />
+                                        </BodyLong>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar"
+                                                values={{
+                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                    hvem2: finnSøkerTekst(intl, hvemPlanlegger),
+                                                }}
+                                            />
+                                        </BodyLong>
+                                    </VStack>
+                                )}
+                                {morHarIkkeRett && (
+                                    <VStack gap="2">
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden"
+                                                values={{
+                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                    hvem2: finnSøkerTekst(intl, hvemPlanlegger),
+                                                }}
+                                            />
+                                        </BodyLong>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor"
+                                                values={{
+                                                    a: (msg: any) => (
+                                                        <Link
+                                                            inlineText
+                                                            href={links.godkjentAktivitet}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </Link>
+                                                    ),
+                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                }}
+                                            />
+                                        </BodyLong>
+                                    </VStack>
+                                )}
+                            </Infobox>
+                        )}
+                        <GreenRadioGroup
+                            label={
+                                <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ erAlenesøker }} />
+                            }
+                            name="dekningsgrad"
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'ValidationMessage.Required',
+                                    }),
+                                ),
+                            ]}
+                        >
+                            <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
+                                <FormattedMessage id="HvorLangPeriodeSteg.100" values={{ uker100: antallUker100 }} />
+                            </Radio>
+                            <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
+                                <FormattedMessage id="HvorLangPeriodeSteg.80" values={{ uker80: antallUker80 }} />
+                            </Radio>
+                        </GreenRadioGroup>
+                        {dekningsgrad && (
+                            <Infobox
+                                header={
+                                    <FormattedMessage
+                                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTittel"
+                                        values={{
+                                            dato: dayjs(sluttdatoSøker2 || sluttdatoSøker1).format(
+                                                'dddd DD. MMMM YYYY',
+                                            ),
+                                        }}
+                                    />
+                                }
+                                icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                                shouldFadeIn
+                            >
+                                <BodyLong>
+                                    {erAdopsjon && (
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon"
+                                            values={{ antallBarn, kunEnPartSkalHa, dato: familiehendelsedato }}
+                                        />
+                                    )}
+                                    {!erAdopsjon && erFødt && (
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel"
+                                            values={{
+                                                antallBarn,
+                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                dato: familiehendelsedato,
+                                                kunEnPartSkalHa,
+                                            }}
+                                        />
+                                    )}
+                                    {!erAdopsjon && !erFødt && (
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin"
+                                            values={{
+                                                antallBarn,
+                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                kunEnPartSkalHa,
+                                            }}
+                                        />
+                                    )}
+                                </BodyLong>
+                                {morHarIkkeRett && (
+                                    <VStack gap="2">
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
+                                                values={{
+                                                    uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                                    uker2: antallUker,
+                                                    b: (msg: any) => <b>{msg}</b>,
+                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                }}
+                                            />
+                                        </BodyLong>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
+                                                values={{
+                                                    uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                                    uker2: antallUker,
+                                                    a: (msg: any) => (
+                                                        <Link
+                                                            inlineText
+                                                            href={links.godkjentAktivitet}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </Link>
+                                                    ),
+                                                    b: (msg: any) => <b>{msg}</b>,
+                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                }}
+                                            />
+                                        </BodyLong>
+                                    </VStack>
+                                )}
+                            </Infobox>
+                        )}
+                    </VStack>
                     <Spacer />
                     <StepButtonsHookForm<HvorLangPeriode>
                         saveDataOnPreviousClick={oppdaterPeriode}

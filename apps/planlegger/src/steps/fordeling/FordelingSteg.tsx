@@ -139,40 +139,45 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
-                    <Heading size="large" spacing>
-                        <FormattedMessage id="FordelingSteg.Tittel" />
-                    </Heading>
-                    <Infobox
-                        header={<FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTittel" />}
-                        icon={<SectorChartIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                        isGray
-                    >
-                        <BodyLong>
-                            <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
-                        </BodyLong>
-                    </Infobox>
-                    <GreenPanel isDarkGreen={fordeling === undefined}>
-                        <Select
-                            name="antallUkerSøker1"
-                            label={<FormattedMessage id="FordelingSteg.FordelingTittel" />}
-                            autofocusWhenEmpty
-                            validate={[isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' }))]}
-                            customErrorFormatter={formatError}
+                    <VStack gap="8">
+                        <Heading size="large" spacing>
+                            <FormattedMessage id="FordelingSteg.Tittel" />
+                        </Heading>
+
+                        <Infobox
+                            header={<FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTittel" />}
+                            icon={<SectorChartIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                            isGray
                         >
-                            {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
-                                <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                    {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
-                                </option>
-                            ))}
-                        </Select>
-                    </GreenPanel>
-                    {antallUkerSøker1 > 0 && (
-                        <FordelingsdetaljerPanel
-                            fornavnPart1={getFornavnPåSøker(hvemPlanlegger, intl)}
-                            fornavnPart2={getFornavnPåAnnenPart(hvemPlanlegger, intl)}
-                            uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
-                        />
-                    )}
+                            <BodyLong>
+                                <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
+                            </BodyLong>
+                        </Infobox>
+
+                        <GreenPanel isDarkGreen={fordeling === undefined}>
+                            <Select
+                                name="antallUkerSøker1"
+                                label={<FormattedMessage id="FordelingSteg.FordelingTittel" />}
+                                autofocusWhenEmpty
+                                validate={[isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' }))]}
+                                customErrorFormatter={formatError}
+                            >
+                                {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
+                                    <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
+                                        {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
+                                    </option>
+                                ))}
+                            </Select>
+                        </GreenPanel>
+
+                        {antallUkerSøker1 > 0 && (
+                            <FordelingsdetaljerPanel
+                                fornavnPart1={getFornavnPåSøker(hvemPlanlegger, intl)}
+                                fornavnPart2={getFornavnPåAnnenPart(hvemPlanlegger, intl)}
+                                uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
+                            />
+                        )}
+                    </VStack>
                     <Spacer />
                     <StepButtonsHookForm<Fordeling>
                         saveDataOnPreviousClick={oppdaterFordeling}
