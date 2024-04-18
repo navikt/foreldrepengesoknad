@@ -28,8 +28,6 @@ import { finnUttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
     barnet: OmBarnet;
@@ -134,7 +132,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                         <FormattedMessage
                                             id="OppgittInformasjon.Fødselsdato"
                                             values={{
-                                                dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
+                                                dato: dayjs(barnet.fødselsdato).format('DD.MM.YY'),
                                             }}
                                         />
                                     </BodyLong>
@@ -143,7 +141,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     <BodyLong>
                                         <FormattedMessage
                                             id="OppgittInformasjon.Termindato"
-                                            values={{ dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT) }}
+                                            values={{ dato: dayjs(barnet.termindato).format('DD.MM.YY') }}
                                         />
                                     </BodyLong>
                                 )}
@@ -152,7 +150,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                         <FormattedMessage
                                             id="OppgittInformasjon.Overtakelsesdato"
                                             values={{
-                                                dato: dayjs(barnet.overtakelsesdato).format(DDMMYYYY_DATE_FORMAT),
+                                                dato: dayjs(barnet.overtakelsesdato).format('DD.MM.YY'),
                                             }}
                                         />
                                     </BodyLong>
@@ -196,7 +194,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     <FormattedMessage id="OppgittInformasjon.Periode" />
                                 </Heading>
 
-                                <BodyLong>
+                                <BodyLong spacing>
                                     <FormattedMessage
                                         id="OppgittInformasjon.Perioder"
                                         values={{
@@ -208,17 +206,22 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 <VStack gap="5">
                                     <div>
                                         {hvemHarRett === 'beggeHarRett' && (
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="OppgittInformasjon.FordelingOptionsMedUker"
-                                                    values={{
-                                                        uker: antallUkerFellesperiodeSøker1,
-                                                        uker2: antallUkerFellesperiodeSøker2,
-                                                        hvem: fornavn1,
-                                                        hvem2: fornavn2,
-                                                    }}
-                                                />
-                                            </BodyLong>
+                                            <>
+                                                <BodyLong>
+                                                    <FormattedMessage id="OppgittInformasjon.Fordeling" />
+                                                </BodyLong>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="OppgittInformasjon.FordelingOptionsMedUker"
+                                                        values={{
+                                                            uker: antallUkerFellesperiodeSøker1,
+                                                            uker2: antallUkerFellesperiodeSøker2,
+                                                            hvem: fornavn1,
+                                                            hvem2: fornavn2,
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                            </>
                                         )}
                                     </div>
                                     <div>
