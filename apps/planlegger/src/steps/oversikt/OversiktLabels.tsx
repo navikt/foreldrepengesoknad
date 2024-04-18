@@ -13,7 +13,7 @@ import {
 } from 'utils/stønadskontoer';
 import { Uttaksdata, weeksBetween } from 'utils/uttakHjelper';
 
-import { BodyShort, HStack, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
@@ -49,28 +49,10 @@ const OversiktLabels: FunctionComponent<Props> = ({
     return (
         <VStack gap="2">
             {(hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarHarRett' || hvemHarRett === 'kunMorHarRett') && (
-                <HStack gap="1">
-                    <div className={styles.bluePanel}>
-                        <HStack gap="2" align="end" wrap={false}>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="OversiktSteg.UkerForeldrepenger"
-                                    values={{
-                                        hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
-                                        uker: weeksBetween(startdatoSøker1, sluttdatoSøker1),
-                                        dato: dayjs(startdatoSøker1).format('dddd D MMM'),
-                                    }}
-                                />
-                            </BodyShort>
-                            <div className={styles.margin}>
-                                <BlåSirkel />
-                            </div>
-                        </HStack>
-                    </div>
-                    <Spacer />
-                    {annenPartTekst && hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2 && (
-                        <div className={styles.greenPanel}>
-                            <HStack gap="2" align="end" wrap={false}>
+                <VStack gap="2">
+                    <HStack gap="1">
+                        <div className={styles.bluePanel}>
+                            <HStack gap="2" align="center">
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OversiktSteg.UkerForeldrepenger"
@@ -81,87 +63,98 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                         }}
                                     />
                                 </BodyShort>
-                                <div className={styles.margin}>
-                                    <GrønnSirkel />
-                                </div>
+                                <BlåSirkel />
                             </HStack>
                         </div>
-                    )}
-                </HStack>
+
+                        {annenPartTekst && hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2 && (
+                            <div className={styles.greenPanel}>
+                                <HStack gap="2" align="center">
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OversiktSteg.UkerForeldrepenger"
+                                            values={{
+                                                hvem: capitalizeFirstLetter(annenPartTekst),
+                                                uker: weeksBetween(startdatoSøker2, sluttdatoSøker2),
+                                                dato: dayjs(startdatoSøker2).format('dddd D MMM'),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                    <GrønnSirkel />
+                                </HStack>
+                            </div>
+                        )}
+                    </HStack>
+                </VStack>
             )}
             {annenPartTekst &&
                 (hvemHarRett === 'kunMedfarEllerMedmorHarRett' || hvemHarRett === 'kunFarHarRettMorHovedsøker') && (
-                    <>
-                        <HStack gap="1">
-                            <div className={styles.bluePanel}>
-                                <HStack gap="2" align="end" wrap={false}>
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="OversiktSteg.UkerUtenAktivitetskrav"
-                                            values={{
-                                                hvem: capitalizeFirstLetter(annenPartTekst),
-                                                uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                            }}
-                                        />
-                                    </BodyShort>
-                                    <div className={styles.margin}>
-                                        <BlåSirkel />
-                                    </div>
-                                </HStack>
-                            </div>
-                            <Spacer />
-                            <div className={styles.greenPanel}>
-                                <HStack gap="2" align="end" wrap={false}>
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="OversiktSteg.UkerMedAktivitetskrav"
-                                            values={{
-                                                hvem: capitalizeFirstLetter(annenPartTekst),
-                                                uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                                                erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                            }}
-                                        />
-                                    </BodyShort>
-                                    <div className={styles.margin}>
-                                        <GrønnSirkel />
-                                    </div>
-                                </HStack>
-                            </div>
-                        </HStack>
-                    </>
+                    <VStack gap="2">
+                        <div className={styles.bluePanel}>
+                            <HStack gap="2" align="center">
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="OversiktSteg.UkerUtenAktivitetskrav"
+                                        values={{
+                                            hvem: capitalizeFirstLetter(annenPartTekst),
+                                            uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                        }}
+                                    />
+                                </BodyShort>
+                                <BlåSirkel />
+                            </HStack>
+                        </div>
+                        <div className={styles.greenPanel}>
+                            <HStack gap="2" align="center">
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="OversiktSteg.UkerMedAktivitetskrav"
+                                        values={{
+                                            hvem: capitalizeFirstLetter(annenPartTekst),
+                                            uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                        }}
+                                    />
+                                </BodyShort>
+                                <GrønnSirkel />
+                            </HStack>
+                        </div>
+                    </VStack>
                 )}
             <div className={styles.pinkPanel}>
-                <HStack gap="2" align="center" wrap={false}>
-                    <BodyShort>
-                        {erFødt && (
-                            <FormattedMessage
-                                id="OversiktSteg.Fødselsdato"
-                                values={{
-                                    mnd: familiehendelsedato,
-                                    dato: dayjs(barnet.fødselsdato).format('DD. MMM'),
-                                }}
-                            />
-                        )}
-                        {erIkkeFødt && (
-                            <FormattedMessage
-                                id="OversiktSteg.Termindato"
-                                values={{
-                                    dato: dayjs(barnet.termindato).format('DD. MMM'),
-                                }}
-                            />
-                        )}
-                        {erAdoptert && (
-                            <FormattedMessage
-                                id="OversiktSteg.Omsorgsovertakelse"
-                                values={{
-                                    dato: dayjs(barnet.overtakelsesdato).format('DD. MMM'),
-                                }}
-                            />
-                        )}
-                    </BodyShort>
-                    <HeartFillIcon color="#F68282" />
-                </HStack>
+                <VStack gap="2">
+                    <HStack gap="2" align="center">
+                        <BodyShort>
+                            {erFødt && (
+                                <FormattedMessage
+                                    id="OversiktSteg.Fødselsdato"
+                                    values={{
+                                        mnd: familiehendelsedato,
+                                        dato: dayjs(barnet.fødselsdato).format('DD. MMM'),
+                                    }}
+                                />
+                            )}
+                            {erIkkeFødt && (
+                                <FormattedMessage
+                                    id="OversiktSteg.Termindato"
+                                    values={{
+                                        dato: dayjs(barnet.termindato).format('DD. MMM'),
+                                    }}
+                                />
+                            )}
+                            {erAdoptert && (
+                                <FormattedMessage
+                                    id="OversiktSteg.Omsorgsovertakelse"
+                                    values={{
+                                        dato: dayjs(barnet.overtakelsesdato).format('DD. MMM'),
+                                    }}
+                                />
+                            )}
+                        </BodyShort>
+                        <HeartFillIcon color="#F68282" />
+                    </HStack>
+                </VStack>
             </div>
         </VStack>
     );
