@@ -39,70 +39,72 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
         <PlanleggerStepPage steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
-                    <GreenRadioGroup
-                        name="type"
-                        label={intl.formatMessage({
-                            id: 'HvemPlanleggerSteg.HvemPlanlegger',
-                        })}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({
-                                    id: 'ValidationMessage.Required',
-                                }),
-                            ),
-                        ]}
-                    >
-                        <Radio value={Situasjon.MOR_OG_FAR} autoFocus>
-                            <FormattedMessage id="HvemPlanleggerSteg.MorOgFar" />
-                        </Radio>
-                        <Radio value={Situasjon.MOR_OG_MEDMOR}>
-                            <FormattedMessage id="HvemPlanleggerSteg.MorOgMedmor" />
-                        </Radio>
-                        <Radio value={Situasjon.FAR_OG_FAR}>
-                            <FormattedMessage id="HvemPlanleggerSteg.FarOgFar" />
-                        </Radio>
-                        <Radio value={Situasjon.MOR}>
-                            <FormattedMessage id="HvemPlanleggerSteg.BareMor" />
-                        </Radio>
-                        <Radio value={Situasjon.FAR}>
-                            <FormattedMessage id="HvemPlanleggerSteg.BareFar" />
-                        </Radio>
-                    </GreenRadioGroup>
-                    {type && (
-                        <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
-                            <VStack gap="10">
-                                {erMorDelAvSøknaden(type) && (
-                                    <TextField
-                                        label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
-                                        name="navnPåMor"
-                                        autofocusWhenEmpty
-                                        customErrorFormatter={formatError}
-                                    />
-                                )}
-                                {erFarDelAvSøknaden(type) && (
-                                    <TextField
-                                        label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
-                                        name="navnPåFar"
-                                        customErrorFormatter={formatError}
-                                    />
-                                )}
-                                {type === Situasjon.MOR_OG_MEDMOR && (
-                                    <TextField
-                                        label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
-                                        name="navnPåMedmor"
-                                        customErrorFormatter={formatError}
-                                    />
-                                )}
-                                {type === Situasjon.FAR_OG_FAR && (
-                                    <TextField
-                                        label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
-                                        name="navnPåMedfar"
-                                        customErrorFormatter={formatError}
-                                    />
-                                )}
-                            </VStack>
-                        </GreenPanel>
-                    )}
+                    <VStack gap="8">
+                        <GreenRadioGroup
+                            name="type"
+                            label={intl.formatMessage({
+                                id: 'HvemPlanleggerSteg.HvemPlanlegger',
+                            })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'ValidationMessage.Required',
+                                    }),
+                                ),
+                            ]}
+                        >
+                            <Radio value={Situasjon.MOR_OG_FAR} autoFocus>
+                                <FormattedMessage id="HvemPlanleggerSteg.MorOgFar" />
+                            </Radio>
+                            <Radio value={Situasjon.MOR_OG_MEDMOR}>
+                                <FormattedMessage id="HvemPlanleggerSteg.MorOgMedmor" />
+                            </Radio>
+                            <Radio value={Situasjon.FAR_OG_FAR}>
+                                <FormattedMessage id="HvemPlanleggerSteg.FarOgFar" />
+                            </Radio>
+                            <Radio value={Situasjon.MOR}>
+                                <FormattedMessage id="HvemPlanleggerSteg.BareMor" />
+                            </Radio>
+                            <Radio value={Situasjon.FAR}>
+                                <FormattedMessage id="HvemPlanleggerSteg.BareFar" />
+                            </Radio>
+                        </GreenRadioGroup>
+                        {type && (
+                            <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
+                                <VStack gap="10">
+                                    {erMorDelAvSøknaden(type) && (
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
+                                            name="navnPåMor"
+                                            autofocusWhenEmpty
+                                            customErrorFormatter={formatError}
+                                        />
+                                    )}
+                                    {erFarDelAvSøknaden(type) && (
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
+                                            name="navnPåFar"
+                                            customErrorFormatter={formatError}
+                                        />
+                                    )}
+                                    {type === Situasjon.MOR_OG_MEDMOR && (
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
+                                            name="navnPåMedmor"
+                                            customErrorFormatter={formatError}
+                                        />
+                                    )}
+                                    {type === Situasjon.FAR_OG_FAR && (
+                                        <TextField
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
+                                            name="navnPåMedfar"
+                                            customErrorFormatter={formatError}
+                                        />
+                                    )}
+                                </VStack>
+                            </GreenPanel>
+                        )}
+                    </VStack>
                     <Spacer />
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} useSimplifiedTexts />
                 </VStack>

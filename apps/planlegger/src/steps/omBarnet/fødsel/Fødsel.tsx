@@ -24,7 +24,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
     const erBarnetFødt = formMethods.watch('erBarnetFødt');
 
     return (
-        <VStack gap="10">
+        <VStack gap="8">
             <GreenRadioGroup
                 label={<FormattedMessage id="Fødsel.ErFødt" values={{ antallBarn }} />}
                 name="erBarnetFødt"
