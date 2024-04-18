@@ -41,6 +41,7 @@ const FlereForsørgereBarnehageplass: FunctionComponent<Props> = ({ barnet }) =>
                             values={{
                                 a: (msg: any) => (
                                     <Link
+                                        inlineText
                                         href={links.barnehageloven}
                                         className="lenke"
                                         rel="noreferrer"
@@ -59,6 +60,7 @@ const FlereForsørgereBarnehageplass: FunctionComponent<Props> = ({ barnet }) =>
                             values={{
                                 a: (msg: any) => (
                                     <Link
+                                        inlineText
                                         href={links.barnehageloven}
                                         className="lenke"
                                         rel="noreferrer"

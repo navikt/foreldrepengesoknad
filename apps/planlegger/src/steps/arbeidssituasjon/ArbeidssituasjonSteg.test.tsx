@@ -2,6 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 
 import * as stories from './ArbeidssituasjonSteg.stories';
 
@@ -30,7 +31,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: true,
-                status: 'jobber',
+                status: Arbeidsstatus.JOBBER,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -57,7 +58,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
-                status: 'jobber',
+                status: Arbeidsstatus.JOBBER,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -80,7 +81,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
-                status: 'ufør',
+                status: Arbeidsstatus.UFØR,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -103,7 +104,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
-                status: 'jobberIkke',
+                status: Arbeidsstatus.INGEN,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -127,7 +128,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                status: 'jobber',
+                status: Arbeidsstatus.JOBBER,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -149,7 +150,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                status: 'ufør',
+                status: Arbeidsstatus.UFØR,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
@@ -171,7 +172,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                status: 'jobberIkke',
+                status: Arbeidsstatus.INGEN,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',

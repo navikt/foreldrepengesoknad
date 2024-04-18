@@ -189,6 +189,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                             values={{
                                                 a: (msg: any) => (
                                                     <Link
+                                                        inlineText
                                                         href={links.godkjentAktivitet}
                                                         className="lenke"
                                                         rel="noreferrer"
@@ -287,6 +288,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                                 uker2: antallUker,
                                                 a: (msg: any) => (
                                                     <Link
+                                                        inlineText
                                                         href={links.godkjentAktivitet}
                                                         className="lenke"
                                                         rel="noreferrer"

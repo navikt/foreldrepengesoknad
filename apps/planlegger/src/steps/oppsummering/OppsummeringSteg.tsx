@@ -91,6 +91,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 values={{
                                     a: (msg: any) => (
                                         <Link
+                                            inlineText
                                             href={links.søknadForeldrepenger}
                                             target="_blank"
                                             className="lenke"
@@ -153,7 +154,13 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     <Heading level="2" size="medium">
                         <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
                     </Heading>
-                    <Link href={links.veiviser} target="_blank" rel="noreferrer" className={styles.lenkepanel}>
+                    <Link
+                        inlineText
+                        href={links.veiviser}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={styles.lenkepanel}
+                    >
                         <Box
                             padding="4"
                             background="surface-default"
@@ -169,7 +176,13 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </HStack>
                         </Box>
                     </Link>
-                    <Link href={links.veiviser} target="_blank" rel="noreferrer" className={styles.lenkepanel}>
+                    <Link
+                        inlineText
+                        href={links.veiviser}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={styles.lenkepanel}
+                    >
                         <Box
                             padding="4"
                             background="surface-default"

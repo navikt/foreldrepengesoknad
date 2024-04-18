@@ -30,7 +30,13 @@ const Aleneforsørger: FunctionComponent<Props> = ({ status }) => (
                         id="Aleneforsørger.Ufør.Infoboks.LesMer"
                         values={{
                             a: (msg: any) => (
-                                <Link href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                                <Link
+                                    inlineText
+                                    href={links.hvorLenge}
+                                    className="lenke"
+                                    rel="noreferrer"
+                                    target="_blank"
+                                >
                                     {msg}
                                 </Link>
                             ),
@@ -49,7 +55,13 @@ const Aleneforsørger: FunctionComponent<Props> = ({ status }) => (
                         id="Aleneforsørger.Ingen.Infoboks.EngangsstønadDeg"
                         values={{
                             a: (msg: any) => (
-                                <Link href={links.veiviser} className="lenke" rel="noreferrer" target="_blank">
+                                <Link
+                                    inlineText
+                                    href={links.veiviser}
+                                    className="lenke"
+                                    rel="noreferrer"
+                                    target="_blank"
+                                >
                                     {msg}
                                 </Link>
                             ),

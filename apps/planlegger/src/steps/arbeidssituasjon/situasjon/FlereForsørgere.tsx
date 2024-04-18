@@ -68,7 +68,13 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                             id="FlereForsørgere.Ufør.Infoboks.LesMer"
                             values={{
                                 a: (msg: any) => (
-                                    <Link href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                                    <Link
+                                        inlineText
+                                        href={links.hvorLenge}
+                                        className="lenke"
+                                        rel="noreferrer"
+                                        target="_blank"
+                                    >
                                         {msg}
                                     </Link>
                                 ),
@@ -99,7 +105,13 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                             id="FlereForsørgere.Ingen.Infoboks.Engangsstønad"
                             values={{
                                 a: (msg: any) => (
-                                    <Link href={links.veiviser} className="lenke" rel="noreferrer" target="_blank">
+                                    <Link
+                                        inlineText
+                                        href={links.veiviser}
+                                        className="lenke"
+                                        rel="noreferrer"
+                                        target="_blank"
+                                    >
                                         {msg}
                                     </Link>
                                 ),
