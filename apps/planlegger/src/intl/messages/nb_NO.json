@@ -122,7 +122,7 @@
     "ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid": "Man kan søke om foreldrepenger opp til tre måneder tilbake i tid.",
     "ErFødtPanel.Født.InfoboksTekstDel2": "NAV anbefaler å søke rundt 4 uker før man tenker å gå ut i permisjon, som ofte er tre uker før termin for mor.",
     "ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket": "Ofte får {erFar, select, true {fedre} other {medmødre}} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette kan {hvem} søke om foreldrepenger fra NAV i disse to ukene.",
-    "ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr": "Siden barnet er eldre enn tre år, kan {erAlenesøker, select, true {du} other {dere}} ikke søke om foreldrepenger.",
+    "ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr": "Siden barnet er eldre enn tre år kan {erAlenesøker, select, true {du} other {dere}} ikke søke om foreldrepenger",
     "ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr": "Foreldrepenger må brukes før barnet fyller 3 år.",
     "OmPlanleggerenSteg.Ingress": "Planleggeren er både for de som er i permisjon, venter barn og for de som planlegger å få barn.",
     "OmPlanleggerenSteg.Underoverskrift": "Planleggeren består av to deler:",
