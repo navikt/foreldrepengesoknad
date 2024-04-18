@@ -47,7 +47,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
     const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2, familiehendelsedato } = uttaksdata;
 
     return (
-        <VStack gap="5">
+        <VStack gap="2">
             {(hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarHarRett' || hvemHarRett === 'kunMorHarRett') && (
                 <HStack gap="1">
                     <div className={styles.bluePanel}>
@@ -75,9 +75,9 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="OversiktSteg.UkerForeldrepenger"
                                         values={{
-                                            hvem: capitalizeFirstLetter(annenPartTekst),
-                                            uker: weeksBetween(startdatoSøker2, sluttdatoSøker2),
-                                            dato: dayjs(startdatoSøker2).format('dddd D MMM'),
+                                            hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
+                                            uker: weeksBetween(startdatoSøker1, sluttdatoSøker1),
+                                            dato: dayjs(startdatoSøker1).format('dddd D MMM'),
                                         }}
                                     />
                                 </BodyShort>
