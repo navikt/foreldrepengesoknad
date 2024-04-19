@@ -101,7 +101,7 @@
     "OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg": "You can start the parental benefits period from the care transfer.",
     "Adopsjon.Overtakelsesdato": "When do you take over care for the {flereBarn, select, true {children} other {child}}?",
     "Adopsjon.Fødselsdato": "When was the{flereBarn, select, true {oldest child} other {child}} born?",
-    "Fødsel.ErFødt": "{antallBarn, select, 1 {Have the child} other {Has the children}} been born?",
+    "Fødsel.ErFødt": "{antallBarn, select, 1 {Has the child} other {Have the children}} been born?",
     "ErIkkeFødtPanel.Termin": "What is the due date?",
     "ErIkkeFødtPanel.ForeldrepengerInfo": "You can apply for parental benefits from {dato}",
     "ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke": "You can apply for parental benefits three months before the due date.",
