@@ -45,7 +45,7 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={stønadskontoer ? <OppsummeringSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={<OppsummeringSteg stønadskontoer={stønadskontoer} />}
             />
             <Route path="*" element={<Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} />} />
         </Routes>

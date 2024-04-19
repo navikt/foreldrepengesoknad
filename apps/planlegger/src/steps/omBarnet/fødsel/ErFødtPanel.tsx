@@ -10,10 +10,9 @@ import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
+import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
-
-const DATO_3_ÅR_SIDEN = dayjs().startOf('days').subtract(3, 'years').add(1, 'day');
 
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
@@ -78,7 +77,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     />
                 </VStack>
             </GreenPanel>
-            {erFødselsdato !== undefined && dayjs(erFødselsdato).isAfter(DATO_3_ÅR_SIDEN) && (
+            {erFødselsdato !== undefined && dayjs(erFødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
                     icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
@@ -100,7 +99,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     )}
                 </Infobox>
             )}
-            {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATO_3_ÅR_SIDEN) && (
+            {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={
                         <FormattedMessage

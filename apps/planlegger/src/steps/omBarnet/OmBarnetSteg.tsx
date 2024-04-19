@@ -1,17 +1,20 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
+import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnet, erBarnetFødt } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon, isAlene } from 'types/HvemPlanlegger';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
+import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -50,7 +53,12 @@ const OmBarnetSteg: React.FunctionComponent = () => {
 
     const lagre = (formValues: OmBarnet) => {
         oppdaterOmBarnet(formValues);
-        navigator.goToNextDefaultStep();
+
+        if (erBarnetFødt(formValues) && dayjs(formValues.fødselsdato).isBefore(DATE_3_YEARS_AGO)) {
+            navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
+        } else {
+            navigator.goToNextStep(PlanleggerRoutes.ARBEIDSSITUASJON);
+        }
     };
 
     const formMethods = useForm<OmBarnet>({

@@ -1,9 +1,12 @@
 import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes';
+import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { erBarnetFødt } from 'types/Barnet';
 import { Situasjon, isFlere } from 'types/HvemPlanlegger';
 
+import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { ProgressStep } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -56,6 +59,21 @@ const showHvorLangPeriodeEllerOversiktStep = (
     return false;
 };
 
+const showArbeidssituasjonStep = (
+    path: PlanleggerRoutes,
+    currentPath: PlanleggerRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+) => {
+    if (path === PlanleggerRoutes.ARBEIDSSITUASJON) {
+        const omBarnet = getData(ContextDataType.OM_BARNET);
+        const skalVise =
+            omBarnet && !(erBarnetFødt(omBarnet) && dayjs(omBarnet.fødselsdato).isBefore(DATE_3_YEARS_AGO));
+        const erValgtOgEtterSteg = skalVise && isAfterStep(PlanleggerRoutes.OM_BARNET, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.ARBEIDSSITUASJON);
+    }
+    return false;
+};
+
 const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
     const location = useLocation();
     const getStateData = useContextGetAnyData();
@@ -69,6 +87,7 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
         () =>
             PATH_ORDER.flatMap((path) =>
                 REQUIRED_APP_STEPS.includes(path) ||
+                showArbeidssituasjonStep(path, currentPath, getStateData) ||
                 showFordelingStep(path, currentPath, getStateData) ||
                 showHvorLangPeriodeEllerOversiktStep(path, currentPath, getStateData)
                     ? [path]
