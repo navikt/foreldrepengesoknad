@@ -6,7 +6,7 @@
     "LanguageToggle.Engelsk": "English",
     "ValidationMessage.Required": "You must remember to answer this question before you proceed.",
     "ValidationMessage.InFuture": "The date you chose is in the future.",
-    "ValidationMessage.ValidDate": "You have entered something that is not a date. Click on the icon to choose in the calendar.",
+    "ValidationMessage.ValidDate": "Date must be a valid date in the format dd.mm.yyyy. Click on the icon to choose in the calendar.",
     "ValidationMessage.OlderThan6months": "The date you chose is older than 6 months.",
     "ValidationMessage.KanIkkeVære3UkerFraIdag": "The date cannot be earlier than 3 weeks from today.",
     "ValidationMessage.DuMåVæreIUke22": "You can apply at the earliest when you are in the 22nd week of pregnancy.",
