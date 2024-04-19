@@ -180,18 +180,18 @@
     "UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr": "If one has a new child before three years have passed",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr.Tekst": "If one has a new child before three years have passed, one must use up the parental benefits before starting with parental benefits for the next child.",
     "OmÅTilpassePlanen.Oversikt.OmÅTilpassePlanen": "About adapting the plan",
-    "OmÅTilpassePlanen.Tekst": "There's a lot one can change in the plan. When applying for parental benefits, one will set up their own plan, adapted to holidays and other needs.",
+    "OmÅTilpassePlanen.Tekst": "There's a lot you can change in the plan. When applying for parental benefits, one will set up their own plan, adapted to holidays and other needs.",
     "OmÅTilpassePlanen.FørTermin": "Before the due date",
     "OmÅTilpassePlanen.FørTermin.Tekst": "The mother has three weeks that can only be used before birth. If the {antallBarn, select, 1 {child} other {children}} is born before the due date, the mother starts using weeks from her quota. The remaining part of these three weeks is erased. If the {antallBarn, select, 1 {child} other {children}} is born after the due date, the joint period is being used until birth when the mother starts on her quota.",
     "OmÅTilpassePlanen.DeFørsteSeksUkene": "The first six weeks",
     "OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst": "The first six weeks after birth are reserved for the mother and locked to this time. {erFar, select, true {Fathers} other {Co-mothers}} often have leave covered for the first two weeks after birth by their employer. If not, the {erFar, select, true {father} other {co-mother}} can use parental benefits in these two weeks.",
     "OmÅTilpassePlanen.LeggeTilFerie": "Adding a holiday",
-    "OmÅTilpassePlanen.LeggeTilFerie.Tekst": "If neither of the parents are taking parental benefits, one can add periods without parental benefits, where one, for example, receives holiday pay from the employer.",
+    "OmÅTilpassePlanen.LeggeTilFerie.Tekst": "If neither of the parents are taking parental benefits, you can add periods without parental benefits, where one, for example, receives holiday pay from the employer.",
     "OmÅTilpassePlanen.JobbeSamtidig": "Work simultaneously",
-    "OmÅTilpassePlanen.JobbeSamtidig.Tekst": "One can work part-time while receiving partial parental benefits, and the period with parental benefits will then last longer.",
+    "OmÅTilpassePlanen.JobbeSamtidig.Tekst": "You can work part-time while receiving partial parental benefits, and the period with parental benefits will then last longer.",
     "OmÅTilpassePlanen.PermisjonSamtidig": "Leave at the same time",
     "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Both parents can be at home simultaneously with up to 150 % parental benefits. This is possible from week 7 after birth, if one parent uses the joint period while the other uses their own quota.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "Two weeks around birth",
     "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "{erFar, select, true {Fathers} other {Co-mothers}} often have leave covered for the first two weeks after birth by their employer. If not, the {erFar, select, true {father} other {co-mother}} can use parental benefits in these two weeks.",
-    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {erFar, select, true {father} other {co-mother}} is not taking parental benefits, one can add a period without parental benefits, where one, for example, receives holiday pay from the employer."
+    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {erFar, select, true {father} other {co-mother}} is not taking parental benefits, you can add a period without parental benefits, where one, for example, receives holiday pay from the employer."
 }
