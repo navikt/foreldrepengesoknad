@@ -25,6 +25,7 @@ import {
     getAntallUkerFellesperiode,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
+import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnUttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong, Heading, Spacer, VStack } from '@navikt/ds-react';
@@ -135,15 +136,16 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
 
+    const { ref, scrollToBottom } = useScrollBehaviour();
+
     return (
-        <PlanleggerStepPage steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading size="large" spacing>
                             <FormattedMessage id="FordelingSteg.Tittel" />
                         </Heading>
-
                         <Infobox
                             header={<FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTittel" />}
                             icon={<SectorChartIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
@@ -153,7 +155,6 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
                             </BodyLong>
                         </Infobox>
-
                         <GreenPanel isDarkGreen={fordeling === undefined}>
                             <Select
                                 name="antallUkerSøker1"
@@ -161,6 +162,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 autofocusWhenEmpty
                                 validate={[isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' }))]}
                                 customErrorFormatter={formatError}
+                                onChange={scrollToBottom}
                             >
                                 {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
                                     <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
@@ -169,7 +171,6 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 ))}
                             </Select>
                         </GreenPanel>
-
                         {antallUkerSøker1 > 0 && (
                             <FordelingsdetaljerPanel
                                 fornavnPart1={getFornavnPåSøker(hvemPlanlegger, intl)}

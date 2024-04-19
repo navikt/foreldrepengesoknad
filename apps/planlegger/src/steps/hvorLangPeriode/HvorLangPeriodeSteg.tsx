@@ -22,6 +22,7 @@ import {
     getAntallUkerForeldrepenger,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
+import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
@@ -108,8 +109,11 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? uttaksdata100.sluttdatoSøker2
             : uttaksdata80.sluttdatoSøker2;
+
+    const { ref, scrollToBottom } = useScrollBehaviour();
+
     return (
-        <PlanleggerStepPage steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
@@ -220,6 +224,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     }),
                                 ),
                             ]}
+                            onChange={scrollToBottom}
                         >
                             <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
                                 <FormattedMessage id="HvorLangPeriodeSteg.100" values={{ uker100: antallUker100 }} />

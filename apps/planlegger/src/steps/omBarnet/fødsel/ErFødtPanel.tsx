@@ -19,9 +19,15 @@ type Props = {
     hvemPlanlegger: HvemPlanlegger;
     erOmBarnetIkkeOppgittFraFør: boolean;
     antallBarn?: string;
+    scrollToBottom: () => void;
 };
 
-const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBarn }) => {
+const ErFødtPanel: React.FunctionComponent<Props> = ({
+    hvemPlanlegger,
+    erOmBarnetIkkeOppgittFraFør,
+    antallBarn,
+    scrollToBottom,
+}) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnet>();
@@ -50,6 +56,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                             ),
                         ]}
                         customErrorFormatter={formatError}
+                        onChange={scrollToBottom}
                     />
                     <Datepicker
                         label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
@@ -67,6 +74,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarn
                         ]}
                         customErrorFormatter={formatError}
                         useStrategyAbsolute
+                        onChange={scrollToBottom}
                     />
                 </VStack>
             </GreenPanel>

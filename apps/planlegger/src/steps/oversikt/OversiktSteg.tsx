@@ -23,6 +23,7 @@ import {
     getAntallUkerFellesperiode,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
+import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong, Heading, ToggleGroup, VStack } from '@navikt/ds-react';
@@ -44,6 +45,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
+
+    useScrollBehaviour();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

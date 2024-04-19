@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon, isAlene } from 'types/HvemPlanlegger';
+import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -64,8 +65,10 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const erFarEllerMedmor =
         hvemPlanlegger.type === Situasjon.MOR_OG_FAR || hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
 
+    const { ref, scrollToBottom } = useScrollBehaviour();
+
     return (
-        <PlanleggerStepPage steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
@@ -82,6 +85,10 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     }),
                                 ),
                             ]}
+                            onChange={() => {
+                                formMethods.resetField('antallBarn');
+                                scrollToBottom();
+                            }}
                         >
                             <Radio value={true} autoFocus>
                                 <FormattedMessage id="OmBarnetSteg.Fødsel" />
@@ -102,6 +109,10 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                         }),
                                     ),
                                 ]}
+                                onChange={() => {
+                                    formMethods.resetField('erBarnetFødt');
+                                    scrollToBottom();
+                                }}
                             >
                                 <Radio value="1" autoFocus={omBarnet === undefined}>
                                     <FormattedMessage id="OmBarnetSteg.Ett" />
@@ -123,6 +134,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                 hvemPlanlegger={hvemPlanlegger}
                                 erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
                                 antallBarn={antallBarn}
+                                scrollToBottom={scrollToBottom}
                             />
                         )}
                         {erFødsel === false && antallBarn && (

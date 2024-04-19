@@ -15,9 +15,15 @@ type Props = {
     hvemPlanlegger: HvemPlanlegger;
     erOmBarnetIkkeOppgittFraFør: boolean;
     antallBarn?: string;
+    scrollToBottom: () => void;
 };
 
-const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBarn }) => {
+const Fødsel: React.FunctionComponent<Props> = ({
+    hvemPlanlegger,
+    erOmBarnetIkkeOppgittFraFør,
+    antallBarn,
+    scrollToBottom,
+}) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnet>();
@@ -36,6 +42,11 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                         }),
                     ),
                 ]}
+                onChange={() => {
+                    formMethods.resetField('fødselsdato');
+                    formMethods.resetField('termindato');
+                    scrollToBottom();
+                }}
             >
                 <Radio value={true} autoFocus={erOmBarnetIkkeOppgittFraFør}>
                     <FormattedMessage id="DefaultMessage.Ja" />
@@ -49,6 +60,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                     hvemPlanlegger={hvemPlanlegger}
                     erOmBarnetIkkeOppgittFraFør={erOmBarnetIkkeOppgittFraFør}
                     antallBarn={antallBarn}
+                    scrollToBottom={scrollToBottom}
                 />
             )}
             {erBarnetFødt === false && (
@@ -56,6 +68,7 @@ const Fødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkk
                     hvemPlanlegger={hvemPlanlegger}
                     erOmBarnetIkkeOppgittFraFør={erOmBarnetIkkeOppgittFraFør}
                     antallBarn={antallBarn}
+                    scrollToBottom={scrollToBottom}
                 />
             )}
         </VStack>
