@@ -24,7 +24,7 @@
     "Arbeidssituasjon.Jobber.Infoboks.HarRettTilForeldrepenger": "{erAlenesøker, select, true {Du} other {{navn}}} vil ha rett til foreldrepenger",
     "Arbeidssituasjon.Infoboks.HarIkkeRettTilForeldrepenger": "{erAlenesøker, select, true {Du} other {{navn}}} har ikke rett til foreldrepenger",
     "Arbeidssituasjon.Ufør.Infoboks.ErUfør": "Siden {erAlenesøker, select, true {du} other {{navn}}} er ufør vil {erAlenesøker, select, true {du} other {{navn}}} ikke ha rett til foreldrepenger.",
-    "Arbeidssituasjon.Ufør.Infoboks.LesMer": "På NAVs nettsider kan {erAlenesøker, select, true {du} other {dere}} lese mer om <a>reglene som gjelder</a> hvis {erAlenesøker, select, true {du} other {{navn}}} har uføretrygd.",
+    "Arbeidssituasjon.Ufør.Infoboks.LesMer": "På NAVs nettsider kan {erAlenesøker, select, true {du} other {dere}} lese mer om reglene som gjelder <a>hvis {erAlenesøker, select, true {du} other {{navn}}} har uføretrygd</a>.",
     "Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett": "Når man ikke har jobbet 6 av de siste 10 månedene og ikke har tjent mer enn 59 310 kr har ikke man rett til foreldrepenger.",
     "Arbeidssituasjon.Ingen.Infoboks.Engangsstønad": "{erAlenesøker, select, true {Du} other {{navn}}} kan ha rett til engangsstønad i stedet. Dere kan bruke <a>NAVs veiviser for engangsstønad eller foreldrepenger</a> for å lære mer.",
     "Arbeidssituasjon.AndreForelder": "Har {navn} jobbet 6 av de siste 10 månedene og tjent mer enn 59 310 kr det siste året?",
