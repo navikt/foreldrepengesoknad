@@ -32,9 +32,14 @@ type Props = {
     hvemPlanlegger: HvemPlanlegger;
     erOmBarnetIkkeOppgittFraFør: boolean;
     antallBarn?: string;
+    scrollToBottom: () => void;
 };
 
-const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør }) => {
+const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
+    hvemPlanlegger,
+    erOmBarnetIkkeOppgittFraFør,
+    scrollToBottom,
+}) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnet>();
@@ -66,6 +71,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({ hvemPlanlegger, erOm
                         ),
                     ]}
                     customErrorFormatter={formatError}
+                    onChange={scrollToBottom}
                 />
             </GreenPanel>
             {termindato !== undefined && dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (

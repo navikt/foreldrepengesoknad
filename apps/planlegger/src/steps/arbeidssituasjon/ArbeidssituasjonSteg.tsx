@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -62,8 +63,10 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
         navigator.goToNextStep(nextStep);
     };
 
+    const { ref, scrollToBottom } = useScrollBehaviour();
+
     return (
-        <PlanleggerStepPage steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <Heading level="2" size="medium">
@@ -84,6 +87,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 }),
                             ),
                         ]}
+                        onChange={scrollToBottom}
                     >
                         <Radio value={Arbeidsstatus.JOBBER} autoFocus>
                             <FormattedMessage id="ArbeidssituasjonSteg.Jobber" />
@@ -96,7 +100,13 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         </Radio>
                     </GreenRadioGroup>
                     {erAlenesøker && <Aleneforsørger status={status} />}
-                    {!erAlenesøker && <FlereForsørgere status={status} hvemPlanlegger={hvemPlanlegger} />}
+                    {!erAlenesøker && (
+                        <FlereForsørgere
+                            status={status}
+                            hvemPlanlegger={hvemPlanlegger}
+                            scrollToBottom={scrollToBottom}
+                        />
+                    )}
                     <Spacer />
                     <StepButtonsHookForm
                         saveDataOnPreviousClick={oppdaterArbeidssituasjon}

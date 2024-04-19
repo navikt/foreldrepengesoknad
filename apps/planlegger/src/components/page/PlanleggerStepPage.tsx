@@ -1,5 +1,6 @@
 import { PlanleggerRoutes } from 'appData/routes';
 import GreenHeading from 'components/boxes/GreenHeading';
+import { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading, VStack } from '@navikt/ds-react';
@@ -13,21 +14,24 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const PlanleggerStepPage: React.FunctionComponent<Props> = ({ steps, children }) => (
-    <PlanleggerPage
-        header={
-            <GreenHeading>
-                <VStack gap="4">
-                    <Heading size="large">
-                        <FormattedMessage id="PlanleggerStepPage.Tittel" />
-                    </Heading>
-                    <ProgressStepper steps={steps} hideExpandableStepInfo showGreenStatusBar />
-                </VStack>
-            </GreenHeading>
-        }
-    >
-        {children}
-    </PlanleggerPage>
-);
+const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children }, ref) => (
+    <>
+        <PlanleggerPage
+            header={
+                <GreenHeading>
+                    <VStack gap="4">
+                        <Heading size="large">
+                            <FormattedMessage id="PlanleggerStepPage.Tittel" />
+                        </Heading>
+                        <ProgressStepper steps={steps} hideExpandableStepInfo showGreenStatusBar />
+                    </VStack>
+                </GreenHeading>
+            }
+        >
+            {children}
+        </PlanleggerPage>
+        <div ref={ref} />
+    </>
+));
 
 export default PlanleggerStepPage;

@@ -15,9 +15,10 @@ import { isRequired } from '@navikt/fp-validation';
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
     status?: Arbeidsstatus;
+    scrollToBottom: () => void;
 };
 
-const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) => {
+const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status, scrollToBottom }) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<Arbeidssituasjon>();
@@ -133,6 +134,7 @@ const FlereForsørgere: FunctionComponent<Props> = ({ hvemPlanlegger, status }) 
                         }
                         validate={[isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' }))]}
                         shouldFadeIn
+                        onChange={scrollToBottom}
                     >
                         <Radio value={true} autoFocus>
                             <FormattedMessage id="DefaultMessage.Ja" />

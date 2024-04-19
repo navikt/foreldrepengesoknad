@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, Situasjon, erFarDelAvSøknaden, erMorDelAvSøknaden } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
+import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -35,8 +36,10 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
 
     const erHvemPlanleggerIkkeOppgittFraFør = hvemPlanlegger === undefined;
 
+    const { ref, scrollToBottom } = useScrollBehaviour();
+
     return (
-        <PlanleggerStepPage steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
@@ -52,6 +55,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                     }),
                                 ),
                             ]}
+                            onChange={scrollToBottom}
                         >
                             <Radio value={Situasjon.MOR_OG_FAR} autoFocus>
                                 <FormattedMessage id="HvemPlanleggerSteg.MorOgFar" />

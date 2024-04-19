@@ -11,6 +11,7 @@ import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
 import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoer';
+import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Alert, BodyLong, Box, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
@@ -29,6 +30,8 @@ interface Props {
 
 const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const navigator = usePlanleggerNavigator();
+
+    useScrollBehaviour();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

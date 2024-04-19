@@ -5,6 +5,7 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import 'dayjs/locale/nb';
 import { FormattedMessage } from 'react-intl';
 import { isAlene } from 'types/HvemPlanlegger';
+import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
@@ -17,6 +18,8 @@ import FlereForsørgereBarnehageplass from './situasjon/FlereForsørgereBarnehag
 const BarnehageplassSteg: React.FunctionComponent = () => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
+
+    useScrollBehaviour();
 
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
