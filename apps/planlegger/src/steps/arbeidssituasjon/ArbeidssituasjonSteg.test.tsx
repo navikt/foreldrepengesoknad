@@ -111,16 +111,14 @@ describe('<ArbeidssituasjonSteg>', () => {
         });
     });
 
-    it('skal vise arbeidssituasjon for aleneforsørger og velge at har rett', async () => {
+    it('skal vise arbeidssituasjon for aleneforsørger og at en har jobbet', async () => {
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
 
-        await userEvent.click(
-            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 59 310 kr det siste året'),
-        );
+        await userEvent.click(screen.getByText('Ja'));
 
         expect(screen.getByText('Du vil ha rett til foreldrepenger')).toBeInTheDocument();
 
@@ -135,36 +133,14 @@ describe('<ArbeidssituasjonSteg>', () => {
         });
     });
 
-    it('skal vise arbeidssituasjon for aleneforsørger og velge at er ufør', async () => {
+    it('skal vise arbeidssituasjon for aleneforsørger og velge at en ikke har jobbet', async () => {
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Er ufør'));
-
-        expect(screen.getByText('Du har ikke rett til foreldrepenger')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste'));
-
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                status: Arbeidsstatus.UFØR,
-            },
-            key: ContextDataType.ARBEIDSSITUASJON,
-            type: 'update',
-        });
-    });
-
-    it('skal vise arbeidssituasjon for aleneforsørger og velge Ingen av disse', async () => {
-        const gåTilNesteSide = vi.fn();
-
-        render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
-
-        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Ingen av disse'));
+        await userEvent.click(screen.getByText('Nei'));
 
         expect(screen.getByText('Du har ikke rett til foreldrepenger')).toBeInTheDocument();
 

@@ -1,9 +1,7 @@
-import { CheckmarkIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
@@ -13,11 +11,14 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+import AnnetInfoboks from './info/AnnetInfoboks';
+import JobberInfoboks from './info/JobberInfoboks';
+import UførInfoboks from './info/UførInfoboks';
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
     const intl = useIntl();
