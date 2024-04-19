@@ -158,7 +158,7 @@
     "OversiktSteg.Mor": "mother",
     "OversiktSteg.Far": "father",
     "OversiktSteg.Medmor": "co-mother",
-    "OversiktSteg.Tittel": "The plan of {erAleneforsørger, select, true {yours} other {yours}}",
+    "OversiktSteg.Tittel": "Your plan",
     "OversiktSteg.Infoboks.Utkast.Tekst": "Here is a draft of what the leave can look like. When you apply, you can customize the plan to {erAleneforsørger, select, true {your} other {your}} needs.",
     "OversiktSteg.100": "100 % parental benefits for {uker} weeks",
     "OversiktSteg.80": "80 % parental benefits for {uker} weeks",
