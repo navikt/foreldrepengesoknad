@@ -1,5 +1,5 @@
 const HvaSkjerNårIkon = () => (
-    <svg width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
         <g clipPath="url(#clip0_2436_45092)">
             <path
                 fillRule="evenodd"

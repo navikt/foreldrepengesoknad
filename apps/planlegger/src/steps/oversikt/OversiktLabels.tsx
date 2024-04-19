@@ -157,7 +157,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                             />
                         )}
                     </BodyShort>
-                    <HeartFillIcon color="#F68282" />
+                    <HeartFillIcon color="#F68282" aria-hidden />
                 </HStack>
             </div>
         </VStack>

@@ -80,7 +80,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
                                     )
                                 }
-                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" />}
+                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" aria-hidden />}
                             >
                                 <BodyLong>
                                     <FormattedMessage
@@ -126,7 +126,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     <ExpansionCard.Header>
                                         <HStack gap="5" align="center" wrap={false}>
                                             <IconCircleWrapper size="large" color="green">
-                                                <CalendarIcon height={28} width={28} fontSize="1.5rem" />
+                                                <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
                                             </IconCircleWrapper>
                                             <ExpansionCard.Title size="medium">
                                                 <FormattedMessage
@@ -156,7 +156,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <Button
                                 variant="secondary"
                                 onClick={navigator.goToPreviousDefaultStep}
-                                icon={<ArrowLeftIcon />}
+                                icon={<ArrowLeftIcon aria-hidden />}
                             >
                                 <FormattedMessage id="OppsummeringSteg.TilbakeTil" />
                             </Button>

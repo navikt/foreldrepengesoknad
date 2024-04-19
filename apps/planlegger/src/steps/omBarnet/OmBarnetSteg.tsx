@@ -160,7 +160,13 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                         />
                                     }
                                     icon={
-                                        <TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />
+                                        <TasklistStartIcon
+                                            height={28}
+                                            width={28}
+                                            color="#236B7D"
+                                            fontSize="1.5rem"
+                                            aria-hidden
+                                        />
                                     }
                                     shouldFadeIn
                                 >

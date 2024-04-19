@@ -80,7 +80,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
             {erFødselsdato !== undefined && dayjs(erFødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
-                    icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                    icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
                 >
                     <BodyLong>

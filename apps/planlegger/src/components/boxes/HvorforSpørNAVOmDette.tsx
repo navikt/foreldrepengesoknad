@@ -12,7 +12,7 @@ const HvorforSpørNAVOmDette: React.FunctionComponent<Props> = ({ text }) => (
         <ExpansionCard.Header>
             <HStack gap="10" align="center">
                 <IconCircleWrapper size="xl" color="green">
-                    <InformationIcon height={25} width={25} />
+                    <InformationIcon height={25} width={25} aria-hidden />
                 </IconCircleWrapper>
                 <ExpansionCard.Title size="medium">
                     <FormattedMessage id="HvorforSpørNAVOmDette.Info.Tittel" />

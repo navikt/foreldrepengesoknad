@@ -86,7 +86,9 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                                 }}
                             />
                         }
-                        icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                        icon={
+                            <TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                        }
                         shouldFadeIn
                     >
                         <BodyLong>
@@ -135,7 +137,9 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                                 )}
                             </>
                         }
-                        icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
+                        icon={
+                            <TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                        }
                         shouldFadeIn
                     >
                         <BodyLong>

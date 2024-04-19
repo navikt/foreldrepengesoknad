@@ -122,7 +122,9 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </Heading>
                         <Infobox
                             header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
-                            icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                            icon={
+                                <CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                            }
                             isGray
                         >
                             <BodyLong>
@@ -155,7 +157,15 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         />
                                     )
                                 }
-                                icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                                icon={
+                                    <PersonGroupIcon
+                                        height={28}
+                                        width={28}
+                                        color="#020C1CAD"
+                                        fontSize="1.5rem"
+                                        aria-hidden
+                                    />
+                                }
                                 isGray
                             >
                                 {farHarIkkeRett && (
@@ -248,7 +258,15 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         }}
                                     />
                                 }
-                                icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+                                icon={
+                                    <CalendarIcon
+                                        height={28}
+                                        width={28}
+                                        color="#020C1CAD"
+                                        fontSize="1.5rem"
+                                        aria-hidden
+                                    />
+                                }
                                 shouldFadeIn
                             >
                                 <BodyLong>

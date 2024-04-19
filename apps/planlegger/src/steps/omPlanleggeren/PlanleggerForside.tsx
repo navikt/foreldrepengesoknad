@@ -28,14 +28,14 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                                 <LanguageToggle locale={locale} changeLocale={changeLocale} />
                             </div>
                             <IconCircleWrapper color="darkGreen" size="xl">
-                                <CalendarIcon height={28} width={28} fontSize="1.5rem" />
+                                <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <VStack gap="1" align="center">
                                 <Heading size="large">
                                     <FormattedMessage id="PlanleggerForside.Tittel" />
                                 </Heading>
                                 <HStack gap="2" align="center">
-                                    <ClockIcon />
+                                    <ClockIcon aria-hidden />
                                     <BodyShort>
                                         <FormattedMessage id="PlanleggerForside.Label" />
                                     </BodyShort>
@@ -48,14 +48,14 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                     <GreenHeading>
                         <VStack gap="4">
                             <IconCircleWrapper color="darkGreen" size="xl">
-                                <CalendarIcon height={35} width={35} fontSize="1.5rem" />
+                                <CalendarIcon height={35} width={35} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <VStack gap="1">
                                 <Heading size="large">
                                     <FormattedMessage id="PlanleggerForside.Tittel" />
                                 </Heading>
                                 <HStack gap="2" align="center">
-                                    <ClockIcon />
+                                    <ClockIcon aria-hidden />
                                     <BodyShort>
                                         <FormattedMessage id="PlanleggerForside.Label" />
                                     </BodyShort>

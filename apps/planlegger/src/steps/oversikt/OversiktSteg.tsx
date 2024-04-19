@@ -114,7 +114,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     <Infobox
                         header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" />}
                         isGray
-                        icon={<InformationIcon height={24} width={24} fontSize="1-5rem" />}
+                        icon={<InformationIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
                     >
                         <BodyLong>
                             <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" values={{ erAleneforsørger }} />

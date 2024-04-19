@@ -30,6 +30,6 @@ export const MedIkon: Story = {
     args: {
         header: <div>Dette er en header</div>,
         children: <div>Dette er et barn</div>,
-        icon: <TasklistStartIcon height={28} width={28} color="#236B7D" />,
+        icon: <TasklistStartIcon height={28} width={28} color="#236B7D" aria-hidden />,
     },
 };

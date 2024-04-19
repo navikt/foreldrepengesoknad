@@ -24,7 +24,7 @@ const OmÅTilpassePlanen: React.FunctionComponent = () => {
                 <HStack gap="10" align="center" wrap={false}>
                     <div>
                         <IconCircleWrapper color="green" size="large">
-                            <PencilWritingIcon height={22} width={22} fontSize="1.5rem" />
+                            <PencilWritingIcon height={22} width={22} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                     </div>
                     <div>
@@ -71,6 +71,7 @@ const Innhold = () => {
                                                 width={22}
                                                 fontSize="1.5rem"
                                                 color="#0067C5"
+                                                aria-hidden
                                             />
                                         </IconCircleWrapper>
                                     </div>
@@ -90,7 +91,13 @@ const Innhold = () => {
                                 <HStack gap="5" align="start" wrap={false} justify="space-between">
                                     <div>
                                         <IconCircleWrapper color="lightBlue" size="medium">
-                                            <BabyWrappedIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                            <BabyWrappedIcon
+                                                height={22}
+                                                width={22}
+                                                fontSize="1.5rem"
+                                                color="#0067C5"
+                                                aria-hidden
+                                            />
                                         </IconCircleWrapper>
                                     </div>
                                     <div>
@@ -113,7 +120,13 @@ const Innhold = () => {
                         <HStack gap="5" align="start" wrap={false} justify="space-between">
                             <div>
                                 <IconCircleWrapper color="lightBlue" size="medium">
-                                    <ParasolBeachIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                    <ParasolBeachIcon
+                                        height={22}
+                                        width={22}
+                                        fontSize="1.5rem"
+                                        color="#0067C5"
+                                        aria-hidden
+                                    />
                                 </IconCircleWrapper>
                             </div>
                             <div>
@@ -128,7 +141,13 @@ const Innhold = () => {
                         <HStack gap="5" align="start" wrap={false} justify="space-between">
                             <div>
                                 <IconCircleWrapper color="lightBlue" size="medium">
-                                    <BriefcaseIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                    <BriefcaseIcon
+                                        height={22}
+                                        width={22}
+                                        fontSize="1.5rem"
+                                        color="#0067C5"
+                                        aria-hidden
+                                    />
                                 </IconCircleWrapper>
                             </div>
                             <div>
@@ -144,7 +163,13 @@ const Innhold = () => {
                             <HStack gap="5" align="start" wrap={false} justify="space-between">
                                 <div>
                                     <IconCircleWrapper color="lightBlue" size="medium">
-                                        <PersonGroupIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                        <PersonGroupIcon
+                                            height={22}
+                                            width={22}
+                                            fontSize="1.5rem"
+                                            color="#0067C5"
+                                            aria-hidden
+                                        />
                                     </IconCircleWrapper>
                                 </div>
                                 <div>
@@ -164,7 +189,13 @@ const Innhold = () => {
                         <HStack gap="5" align="start" wrap={false} justify="space-between">
                             <div>
                                 <IconCircleWrapper color="lightBlue" size="medium">
-                                    <BabyWrappedIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                    <BabyWrappedIcon
+                                        height={22}
+                                        width={22}
+                                        fontSize="1.5rem"
+                                        color="#0067C5"
+                                        aria-hidden
+                                    />
                                 </IconCircleWrapper>
                             </div>
                             <div>
@@ -179,7 +210,13 @@ const Innhold = () => {
                         <HStack gap="5" align="start" wrap={false} justify="space-between">
                             <div>
                                 <IconCircleWrapper color="lightBlue" size="medium">
-                                    <ParasolBeachIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                    <ParasolBeachIcon
+                                        height={22}
+                                        width={22}
+                                        fontSize="1.5rem"
+                                        color="#0067C5"
+                                        aria-hidden
+                                    />
                                 </IconCircleWrapper>
                             </div>
                             <div>

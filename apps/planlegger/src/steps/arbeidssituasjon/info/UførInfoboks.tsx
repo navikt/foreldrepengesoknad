@@ -21,7 +21,7 @@ const UførInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) => 
                     values={{ erAlenesøker, navn: fornavn }}
                 />
             }
-            icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+            icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
             <BodyLong>
