@@ -21,7 +21,7 @@ const Infoboks: React.FC<Props> = ({ header, children, icon, isGray = false, sho
     >
         <VStack gap="2">
             <HStack justify="space-between" wrap={false}>
-                <Heading size="small" className={styles.header}>
+                <Heading size="small" className={styles.header} level="3">
                     {header}
                 </Heading>
                 {icon && (

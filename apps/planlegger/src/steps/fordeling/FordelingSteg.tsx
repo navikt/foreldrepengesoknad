@@ -143,7 +143,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
-                        <Heading size="large" spacing>
+                        <Heading size="large" spacing level="2">
                             <FormattedMessage id="FordelingSteg.Tittel" />
                         </Heading>
                         <Infobox
