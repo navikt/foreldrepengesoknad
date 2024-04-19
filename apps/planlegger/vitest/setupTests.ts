@@ -9,3 +9,4 @@ setProjectAnnotations(globalStorybookConfig);
 expect.extend(matchers);
 
 window.scrollTo = () => undefined;
+window.HTMLElement.prototype.scrollIntoView = function () {};
