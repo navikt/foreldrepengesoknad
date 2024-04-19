@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
 import { Box, HGrid, Heading } from '@navikt/ds-react';
@@ -6,6 +6,11 @@ import { Box, HGrid, Heading } from '@navikt/ds-react';
 import styles from './month.module.css';
 
 dayjs.extend(isoWeek);
+
+const getMonthName = (monthDate: Dayjs, template: string = 'MMMM') => {
+    const monthName = monthDate.format(template);
+    return monthName.charAt(0).toUpperCase() + monthName.slice(1);
+};
 
 type Props = {
     year: number;
@@ -16,8 +21,6 @@ type Props = {
 
 const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children }) => {
     const monthDate = dayjs().year(year).month(month).startOf('month');
-    const monthName = monthDate.format('MMM');
-    const monthNameUppercase = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
     const startWeekDay = monthDate.isoWeekday();
     const endWeekday = monthDate.endOf('month').isoWeekday();
@@ -29,7 +32,9 @@ const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children
 
     return (
         <Box className={styles.box} data-testid={`year:${year};month:${month}`}>
-            <Heading size="small">{showYear ? `${monthNameUppercase} (${year})` : monthNameUppercase}</Heading>
+            <Heading size="small">
+                {showYear ? `${getMonthName(monthDate, 'MMM')} (${year})` : getMonthName(monthDate)}
+            </Heading>
             {nrOfWeeks.map((weeknr) => (
                 <HGrid key={weeknr} columns={7}>
                     {[...Array(7).keys()].map((day) => {
