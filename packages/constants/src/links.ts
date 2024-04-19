@@ -48,6 +48,6 @@ export const links = {
     farskapsportal: 'https://farskapsportal.nav.no/',
     barnehageloven:
         'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/',
-    godkjentAktivitet: 'https://www.nav.no/foreldrepenger#aktivitetskrav',
+    godkjentAktivitet: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     søknadForeldrepenger: 'https://www.nav.no/start/soknad-foreldrepenger',
 };
