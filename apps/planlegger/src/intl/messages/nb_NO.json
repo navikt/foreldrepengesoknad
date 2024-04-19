@@ -28,6 +28,7 @@
     "Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett": "Når man ikke har jobbet 6 av de siste 10 månedene og ikke har tjent mer enn 59 310 kr har ikke man rett til foreldrepenger.",
     "Arbeidssituasjon.Ingen.Infoboks.Engangsstønad": "{erAlenesøker, select, true {Du} other {{navn}}} kan ha rett til engangsstønad i stedet. Dere kan bruke <a>NAVs veiviser for engangsstønad eller foreldrepenger</a> for å lære mer.",
     "Arbeidssituasjon.AndreForelder": "Har {navn} jobbet 6 av de siste 10 månedene og tjent mer enn 59 310 kr det siste året?",
+    "Arbeidssituasjon.Forelder": "Har du jobbet 6 av de siste 10 månedene og tjent mer enn 59 310 kr det siste året?",
     "BarnehageplassSteg.Tittel": "Barnehageplass",
     "FlereForsørgereBarnehageplass.KommuneTekstDeg": "Det er ikke hos NAV man søker om barnehageplass, men kommunen man bor i. Datoen blir brukt for din egen del, for å se hvor mange dager man potensielt står uten foreldrepenger før barnet er i barnehagen.",
     "FlereForsørgereBarnehageplass.DatoTekst": "Beregnet ut fra <a>barnehageloven</a>. Basert på at barnet ble født {dato}, og at dere søker om barnehageplass det året barnet fyller 1 år.",

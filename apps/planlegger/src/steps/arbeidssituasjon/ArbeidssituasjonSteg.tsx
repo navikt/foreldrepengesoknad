@@ -1,9 +1,7 @@
-import { CheckmarkIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
@@ -13,11 +11,14 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon, getFornavnPåAnnenPart, getFornavnPåSøker, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+import AnnetInfoboks from './info/AnnetInfoboks';
+import JobberInfoboks from './info/JobberInfoboks';
+import UførInfoboks from './info/UførInfoboks';
 
 const ArbeidssituasjonSteg: FunctionComponent = () => {
     const intl = useIntl();
@@ -76,134 +77,78 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         <Heading level="2" size="medium">
                             <FormattedMessage id="ArbeidssituasjonSteg.Tittel" />
                         </Heading>
-                        <GreenRadioGroup
-                            label={
-                                <FormattedMessage
-                                    id="ArbeidssituasjonSteg.HvaGjelder"
-                                    values={{ erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) }}
-                                />
-                            }
-                            name="status"
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({
-                                        id: 'ValidationMessage.Required',
-                                    }),
-                                ),
-                            ]}
-                            onChange={scrollToBottom}
-                        >
-                            <Radio value={Arbeidsstatus.JOBBER} autoFocus>
-                                <FormattedMessage id="ArbeidssituasjonSteg.Jobber" />
-                            </Radio>
-                            <Radio value={Arbeidsstatus.UFØR}>
-                                <FormattedMessage id="ArbeidssituasjonSteg.Ufør" />
-                            </Radio>
-                            <Radio value={Arbeidsstatus.INGEN}>
-                                <FormattedMessage id="ArbeidssituasjonSteg.Ingen" />
-                            </Radio>
-                        </GreenRadioGroup>
-
-                        {status === Arbeidsstatus.JOBBER && (
-                            <Infobox
-                                header={
-                                    <FormattedMessage
-                                        id="Arbeidssituasjon.Jobber.Infoboks.HarRettTilForeldrepenger"
-                                        values={{ erAlenesøker, navn: fornavnSøker }}
-                                    />
-                                }
-                                icon={<CheckmarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                                shouldFadeIn
-                            >
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="Arbeidssituasjon.Jobber.Infoboks.HarJobbetSeksAvTiMnd"
-                                        values={{ erAlenesøker, navn: fornavnSøker }}
-                                    />
-                                </BodyLong>
-                            </Infobox>
-                        )}
-                        {status === Arbeidsstatus.UFØR && (
-                            <Infobox
-                                header={
-                                    <FormattedMessage
-                                        id="Arbeidssituasjon.Infoboks.HarIkkeRettTilForeldrepenger"
-                                        values={{ erAlenesøker, navn: fornavnSøker }}
-                                    />
-                                }
-                                icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                                shouldFadeIn
-                            >
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="Arbeidssituasjon.Ufør.Infoboks.ErUfør"
-                                        values={{ erAlenesøker, navn: fornavnSøker }}
-                                    />
-                                </BodyLong>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="Arbeidssituasjon.Ufør.Infoboks.LesMer"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <Link
-                                                    inlineText
-                                                    href={links.hvorLenge}
-                                                    className="lenke"
-                                                    rel="noreferrer"
-                                                    target="_blank"
-                                                >
-                                                    {msg}
-                                                </Link>
-                                            ),
-                                            navn: fornavnSøker,
-                                            erAlenesøker,
-                                        }}
-                                    />
-                                </BodyLong>
-                            </Infobox>
-                        )}
-                        <></>
-                        {status === Arbeidsstatus.INGEN && (
-                            <Infobox
-                                header={
-                                    <FormattedMessage
-                                        id="Arbeidssituasjon.Infoboks.HarIkkeRettTilForeldrepenger"
-                                        values={{ erAlenesøker, navn: fornavnSøker }}
-                                    />
-                                }
-                                icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
-                                shouldFadeIn
-                            >
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
-                                        values={{ erAlenesøker, navn: fornavnSøker }}
-                                    />
-                                </BodyLong>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <Link
-                                                    inlineText
-                                                    href={links.veiviser}
-                                                    className="lenke"
-                                                    rel="noreferrer"
-                                                    target="_blank"
-                                                >
-                                                    {msg}
-                                                </Link>
-                                            ),
-                                            navn: fornavnSøker,
-                                            erAlenesøker,
-                                        }}
-                                    />
-                                </BodyLong>
-                            </Infobox>
-                        )}
-                        {!isAlene(hvemPlanlegger) && (
+                        {erAlenesøker && (
                             <>
+                                <GreenRadioGroup
+                                    label={
+                                        <FormattedMessage
+                                            id="Arbeidssituasjon.Forelder"
+                                            values={{ navn: fornavnSøker }}
+                                        />
+                                    }
+                                    name="status"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'ValidationMessage.Required',
+                                            }),
+                                        ),
+                                    ]}
+                                    onChange={scrollToBottom}
+                                >
+                                    <Radio value={Arbeidsstatus.JOBBER} autoFocus>
+                                        <FormattedMessage id="DefaultMessage.Ja" />
+                                    </Radio>
+                                    <Radio value={Arbeidsstatus.INGEN}>
+                                        <FormattedMessage id="DefaultMessage.Nei" />
+                                    </Radio>
+                                </GreenRadioGroup>
+                                {status === Arbeidsstatus.JOBBER && (
+                                    <JobberInfoboks erAlenesøker fornavn={fornavnSøker} />
+                                )}
+                                {status === Arbeidsstatus.INGEN && (
+                                    <AnnetInfoboks erAlenesøker fornavn={fornavnSøker} />
+                                )}
+                            </>
+                        )}
+                        {!erAlenesøker && (
+                            <>
+                                <GreenRadioGroup
+                                    label={
+                                        <FormattedMessage
+                                            id="ArbeidssituasjonSteg.HvaGjelder"
+                                            values={{ erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) }}
+                                        />
+                                    }
+                                    name="status"
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'ValidationMessage.Required',
+                                            }),
+                                        ),
+                                    ]}
+                                    onChange={scrollToBottom}
+                                >
+                                    <Radio value={Arbeidsstatus.JOBBER} autoFocus>
+                                        <FormattedMessage id="ArbeidssituasjonSteg.Jobber" />
+                                    </Radio>
+                                    <Radio value={Arbeidsstatus.UFØR}>
+                                        <FormattedMessage id="ArbeidssituasjonSteg.Ufør" />
+                                    </Radio>
+                                    <Radio value={Arbeidsstatus.INGEN}>
+                                        <FormattedMessage id="ArbeidssituasjonSteg.Ingen" />
+                                    </Radio>
+                                </GreenRadioGroup>
+                                {status === Arbeidsstatus.JOBBER && (
+                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker} />
+                                )}
+                                {status === Arbeidsstatus.UFØR && (
+                                    <UførInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker} />
+                                )}
+                                {status === Arbeidsstatus.INGEN && (
+                                    <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker} />
+                                )}
                                 {status && (
                                     <>
                                         <GreenRadioGroup
@@ -227,51 +172,15 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                                 <FormattedMessage id="DefaultMessage.Nei" />
                                             </Radio>
                                         </GreenRadioGroup>
-                                        {jobberAnnenPart === true && (
-                                            <Infobox
-                                                header={
-                                                    <FormattedMessage
-                                                        id="Arbeidssituasjon.Jobber.Infoboks.HarRettTilForeldrepenger"
-                                                        values={{ erAlenesøker, navn: fornavnAnnenPart }}
-                                                    />
-                                                }
-                                                icon={
-                                                    <CheckmarkIcon
-                                                        height={28}
-                                                        width={28}
-                                                        color="#020C1CAD"
-                                                        fontSize="1.5rem"
-                                                    />
-                                                }
-                                                shouldFadeIn
-                                            >
-                                                <BodyLong>
-                                                    <FormattedMessage id="Arbeidssituasjon.Jobber.Infoboks.HarJobbetSeksAvTiMnd" />
-                                                </BodyLong>
-                                            </Infobox>
+                                        {jobberAnnenPart === true && fornavnAnnenPart && (
+                                            <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnAnnenPart} />
                                         )}
-                                        {jobberAnnenPart === false && (
-                                            <Infobox
-                                                header={
-                                                    <FormattedMessage
-                                                        id="Arbeidssituasjon.Infoboks.HarIkkeRettTilForeldrepenger"
-                                                        values={{ erAlenesøker, navn: fornavnAnnenPart }}
-                                                    />
-                                                }
-                                                icon={
-                                                    <XMarkIcon
-                                                        height={28}
-                                                        width={28}
-                                                        color="#020C1CAD"
-                                                        fontSize="1.5rem"
-                                                    />
-                                                }
-                                                shouldFadeIn
-                                            >
-                                                <BodyLong>
-                                                    <FormattedMessage id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett" />
-                                                </BodyLong>
-                                            </Infobox>
+                                        {jobberAnnenPart === false && fornavnAnnenPart && (
+                                            <AnnetInfoboks
+                                                erAlenesøker={erAlenesøker}
+                                                fornavn={fornavnAnnenPart}
+                                                erAnnenPart
+                                            />
                                         )}
                                     </>
                                 )}
