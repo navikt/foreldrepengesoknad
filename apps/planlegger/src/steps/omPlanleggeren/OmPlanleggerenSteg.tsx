@@ -33,7 +33,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                         </Heading>
                         <HStack gap="4" align="center" wrap={false}>
                             <IconCircleWrapper color="green" size="medium">
-                                <QuestionmarkIcon width="24" height="25" />
+                                <QuestionmarkIcon width="24" height="25" aria-hidden />
                             </IconCircleWrapper>
                             <BodyShort>
                                 <FormattedMessage id="OmPlanleggerenSteg.Trinn1" />
@@ -41,7 +41,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                         </HStack>
                         <HStack gap="4" align="center" wrap={false}>
                             <IconCircleWrapper color="green" size="medium">
-                                <CalendarIcon width="24" height="25" />
+                                <CalendarIcon width="24" height="25" aria-hidden />
                             </IconCircleWrapper>
                             <BodyShort>
                                 <FormattedMessage id="OmPlanleggerenSteg.Trinn2" />
@@ -55,6 +55,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                             iconPosition="right"
                             className={styles.button}
                             autoFocus
+                            aria-hidden
                         >
                             <FormattedMessage id="OmPlanleggerenSteg.Start.Planlegger" />
                         </Button>

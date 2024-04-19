@@ -38,7 +38,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
     return (
         <Infobox
             header={<FormattedMessage id="FordelingsdetaljerPanel.InfoboksTittel" />}
-            icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" />}
+            icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
             <BodyLong>

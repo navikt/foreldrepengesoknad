@@ -1,5 +1,5 @@
 const HvorMyeIkon = () => (
-    <svg width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
         <g clipPath="url(#clip0_2436_45089)">
             <rect x="19.5898" y="1.77783" width="3.09791" height="10.2924" fill="#FFECCC" />
             <rect x="19.5898" y="30.5967" width="3.09791" height="10.2924" fill="#FFECCC" />

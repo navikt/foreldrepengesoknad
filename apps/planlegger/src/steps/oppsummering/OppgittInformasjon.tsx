@@ -84,7 +84,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                 <ExpansionCard.Header>
                     <HStack gap="5" align="center" wrap={false}>
                         <IconCircleWrapper size="large" color="green">
-                            <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" />
+                            <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                         <ExpansionCard.Title size="medium">
                             <FormattedMessage

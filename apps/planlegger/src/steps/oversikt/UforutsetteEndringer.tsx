@@ -17,7 +17,7 @@ const UforutsetteEndringer: React.FunctionComponent = () => {
                 <HStack gap="10" align="center" wrap={false}>
                     <div>
                         <IconCircleWrapper color="green" size="large">
-                            <ExclamationmarkIcon height={22} width={22} fontSize="1.5rem" />
+                            <ExclamationmarkIcon height={22} width={22} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                     </div>
                     <div>
@@ -52,7 +52,7 @@ const Innhold = () => {
                 <HStack gap="5" align="start" wrap={false} justify="space-between">
                     <div>
                         <IconCircleWrapper color="lightBlue" size="medium">
-                            <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                            <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
                         </IconCircleWrapper>
                     </div>
                     <div>
@@ -79,7 +79,13 @@ const Innhold = () => {
                             <HStack gap="5" align="start" wrap={false} justify="space-between">
                                 <div>
                                     <IconCircleWrapper color="lightBlue" size="medium">
-                                        <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                        <StethoscopeIcon
+                                            height={22}
+                                            width={22}
+                                            fontSize="1.5rem"
+                                            color="#0067C5"
+                                            aria-hidden
+                                        />
                                     </IconCircleWrapper>
                                 </div>
                                 <div>
@@ -101,7 +107,7 @@ const Innhold = () => {
                 <HStack gap="5" align="start" wrap={false} justify="space-between">
                     <div>
                         <IconCircleWrapper color="lightBlue" size="medium">
-                            <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                            <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
                         </IconCircleWrapper>
                     </div>
                     <div>
