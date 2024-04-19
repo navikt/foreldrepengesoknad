@@ -32,7 +32,7 @@ const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children
 
     return (
         <Box className={styles.box} data-testid={`year:${year};month:${month}`}>
-            <Heading size="small">
+            <Heading size="small" level="5">
                 {showYear ? `${getMonthName(monthDate, 'MMM')} (${year})` : getMonthName(monthDate)}
             </Heading>
             {nrOfWeeks.map((weeknr) => (

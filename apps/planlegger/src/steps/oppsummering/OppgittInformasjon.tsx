@@ -87,7 +87,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                     <VStack gap="10">
                         <GreenPanel>
                             <>
-                                <Heading size="small">
+                                <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" />
                                 </Heading>
 
@@ -132,7 +132,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                         </GreenPanel>
                         <GreenPanel>
                             <>
-                                <Heading size="small">
+                                <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
                                 {!erAlenesøker ? (
@@ -175,7 +175,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                         </GreenPanel>
                         <GreenPanel>
                             <>
-                                <Heading size="small">
+                                <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.LengdeOgFordeling" />
                                 </Heading>
                                 <VStack gap="5">
