@@ -26,6 +26,5 @@ export const REQUIRED_APP_STEPS = [
     PlanleggerRoutes.HVEM_PLANLEGGER,
     PlanleggerRoutes.OM_BARNET,
     // PlanleggerRoutes.BARNEHAGEPLASS,
-    PlanleggerRoutes.ARBEIDSSITUASJON,
     PlanleggerRoutes.OPPSUMMERING,
 ];

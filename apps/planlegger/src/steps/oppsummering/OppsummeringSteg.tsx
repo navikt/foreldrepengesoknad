@@ -4,9 +4,11 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import Infoboks from 'components/boxes/Infobox';
 import Calendar from 'components/calendar/Calendar';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { erBarnetFødt } from 'types/Barnet';
 import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
@@ -16,6 +18,7 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { Alert, BodyLong, Box, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { notEmpty } from '@navikt/fp-validation';
 
 import OppgittInformasjon from './OppgittInformasjon';
@@ -25,7 +28,7 @@ import HvorMyeIkon from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
 }
 
 const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
@@ -37,22 +40,31 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const hvorLangPeriode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
-    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
+    const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
 
     const erAleneforsørger = isAlene(hvemPlanlegger);
     const harRett =
-        (arbeidssituasjon.status === Arbeidsstatus.INGEN && arbeidssituasjon.jobberAnnenPart !== true) ||
-        (arbeidssituasjon.status === Arbeidsstatus.UFØR && arbeidssituasjon.jobberAnnenPart !== true)
+        (erBarnetFødt(barnet) && dayjs(barnet.fødselsdato).isBefore(DATE_3_YEARS_AGO)) ||
+        (arbeidssituasjon?.status === Arbeidsstatus.INGEN && arbeidssituasjon?.jobberAnnenPart !== true) ||
+        (arbeidssituasjon?.status === Arbeidsstatus.UFØR && arbeidssituasjon?.jobberAnnenPart !== true)
             ? false
             : true;
 
-    const valgtStønadskonto = hvorLangPeriode
-        ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[hvorLangPeriode.dekningsgrad])
-        : undefined;
+    const valgtStønadskonto =
+        hvorLangPeriode && stønadskontoer
+            ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[hvorLangPeriode.dekningsgrad])
+            : undefined;
 
-    const uttaksperioder = valgtStønadskonto
-        ? lagKalenderPerioder(valgtStønadskonto, barnet, hvemPlanlegger, arbeidssituasjon, fordeling?.antallUkerSøker1)
-        : [];
+    const uttaksperioder =
+        valgtStønadskonto && arbeidssituasjon
+            ? lagKalenderPerioder(
+                  valgtStønadskonto,
+                  barnet,
+                  hvemPlanlegger,
+                  arbeidssituasjon,
+                  fordeling?.antallUkerSøker1,
+              )
+            : [];
 
     return (
         <>
@@ -107,7 +119,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             />
                         )}
                     </Alert>
-                    {valgtStønadskonto && hvorLangPeriode && (
+                    {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
                         <VStack gap="5">
                             {harRett && (
                                 <ExpansionCard aria-label="">
