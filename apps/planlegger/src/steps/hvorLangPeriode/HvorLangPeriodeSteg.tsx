@@ -239,9 +239,12 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     <FormattedMessage
                                         id="HvorLangPeriodeSteg.Infoboks.SisteDagTittel"
                                         values={{
-                                            dato: dayjs(sluttdatoSøker2 || sluttdatoSøker1).format(
-                                                'dddd DD. MMMM YYYY',
-                                            ),
+                                            dato: intl.formatDate(sluttdatoSøker2 || sluttdatoSøker1, {
+                                                day: '2-digit',
+                                                month: 'long',
+                                                year: 'numeric',
+                                                weekday: 'long',
+                                            }),
                                         }}
                                     />
                                 }
