@@ -5,14 +5,14 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet, erBarnetAdoptert, erBarnetFødt } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import {
     HvemPlanlegger,
+    finnAnnenPartTekst,
+    finnSøkerTekst,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
-    getNavnPåAnnenPart,
-    getNavnPåSøker,
     isAlene,
 } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
@@ -24,7 +24,6 @@ import {
     getAntallUkerForeldrepengerFørFødsel,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoer';
-import { finnUttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -49,10 +48,9 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     const erFødt = erBarnetFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
+    const antallBarn = barnet.antallBarn;
 
-    const erAleneforsørger = isAlene(hvemPlanlegger);
-    const navn1 = getNavnPåSøker(hvemPlanlegger, intl);
-    const navn2 = getNavnPåAnnenPart(hvemPlanlegger, intl);
+    const erAlenesøker = isAlene(hvemPlanlegger);
     const fornavn1 = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavn2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 
@@ -70,13 +68,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const { sluttdatoSøker1, startdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        valgtStønadskonto,
-        barnet,
-        fordeling?.antallUkerSøker1,
-    );
+    const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
 
     return (
         <VStack gap="10">
@@ -87,70 +79,51 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                             <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                         <ExpansionCard.Title size="medium">
-                            <FormattedMessage
-                                id="OppgittInformasjon.OppgittInformasjon"
-                                values={{ erAleneforsørger }}
-                            />
+                            <FormattedMessage id="OppgittInformasjon.OppgittInformasjon" values={{ erAlenesøker }} />
                         </ExpansionCard.Title>
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <VStack gap="10">
                         <GreenPanel>
-                            <Heading size="small">
-                                <FormattedMessage id="OppgittInformasjon.Forelder" values={{ erAleneforsørger }} />
-                            </Heading>
-                            <BodyLong>
-                                {erAleneforsørger ? (
-                                    navn1
-                                ) : (
-                                    <FormattedMessage
-                                        id="OppgittInformasjon.NavnBegge"
-                                        values={{ navn1: navn1, navn2: navn2 }}
-                                    />
-                                )}
-                            </BodyLong>
-                        </GreenPanel>
-                        <GreenPanel>
                             <>
                                 <Heading size="small">
                                     <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" />
                                 </Heading>
-                                {erAdoptert && (
-                                    <BodyLong>
-                                        <FormattedMessage id="OppgittInformasjon.Adopsjon.Tittel" />
-                                    </BodyLong>
-                                )}
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OppgittInformasjon.AntallBarn"
-                                        values={{ antall: barnet.antallBarn }}
-                                    />
-                                </BodyLong>
+
                                 {erFødt && (
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="OppgittInformasjon.Fødselsdato"
+                                            id="OppgittInformasjon.InformasjonOmBarn"
                                             values={{
-                                                dato: dayjs(barnet.fødselsdato).format('DD.MM.YY'),
+                                                antallBarn,
+                                                erFødt,
+                                                dato: dayjs(barnet.fødselsdato).format('D. MMM YY'),
+                                                dato2: dayjs(barnet.termindato).format('D. MMM YY'),
                                             }}
                                         />
                                     </BodyLong>
                                 )}
-                                {(erBarnetIkkeFødt(barnet) || (erFødt && !erAdoptert)) && (
+                                {!erFødt && !erAdoptert && (
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="OppgittInformasjon.Termindato"
-                                            values={{ dato: dayjs(barnet.termindato).format('DD.MM.YY') }}
+                                            id="OppgittInformasjon.InformasjonOmBarn"
+                                            values={{
+                                                antallBarn,
+                                                erFødt,
+                                                dato: dayjs(barnet.termindato).format('D. MMM YY'),
+                                            }}
                                         />
                                     </BodyLong>
                                 )}
                                 {erAdoptert && (
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="OppgittInformasjon.Overtakelsesdato"
+                                            id="OppgittInformasjon.InformasjonOmBarnAdopsjon"
                                             values={{
-                                                dato: dayjs(barnet.overtakelsesdato).format('DD.MM.YY'),
+                                                antallBarn,
+                                                dato2: dayjs(barnet.fødselsdato).format('D. MMM YY'),
+                                                dato: dayjs(barnet.overtakelsesdato).format('D. MMM YY'),
                                             }}
                                         />
                                     </BodyLong>
@@ -162,26 +135,38 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 <Heading size="small">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OppgittInformasjon.Arbeidssituasjon"
-                                        values={{
-                                            navn: fornavn1,
-                                            arbeidssituasjon: arbeidssituasjon.status,
-                                        }}
-                                    />
-                                </BodyLong>
-
-                                {!erAleneforsørger && (
+                                {!erAlenesøker ? (
+                                    <>
+                                        {Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart ? (
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="OppgittInformasjon.ArbeidssituasjonBeggeJobber"
+                                                    values={{
+                                                        navn: fornavn1,
+                                                        navn2: fornavn2,
+                                                        arbeidssituasjon: arbeidssituasjon.status,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        ) : (
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="OppgittInformasjon.Arbeidssituasjon"
+                                                    values={{
+                                                        navn: fornavn1,
+                                                        arbeidssituasjon: arbeidssituasjon.status,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        )}
+                                    </>
+                                ) : (
                                     <BodyLong>
                                         <FormattedMessage
                                             id="OppgittInformasjon.Arbeidssituasjon"
                                             values={{
                                                 navn: fornavn2,
-                                                arbeidssituasjon:
-                                                    arbeidssituasjon.jobberAnnenPart === true
-                                                        ? Arbeidsstatus.JOBBER
-                                                        : Arbeidsstatus.INGEN,
+                                                arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
                                             }}
                                         />
                                     </BodyLong>
@@ -191,86 +176,24 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                         <GreenPanel>
                             <>
                                 <Heading size="small">
-                                    <FormattedMessage id="OppgittInformasjon.Periode" />
+                                    <FormattedMessage id="OppgittInformasjon.LengdeOgFordeling" />
                                 </Heading>
                                 <VStack gap="5">
                                     <BodyLong>
                                         <FormattedMessage
-                                            id="OppgittInformasjon.Perioder"
+                                            id="OppgittInformasjon.FordelingOptionsMedUker"
                                             values={{
+                                                erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
                                                 uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                                fellesuker: antallUkerFellesperiodeSøker1,
+                                                fellesuker2: antallUkerFellesperiodeSøker2,
+                                                hvem: finnSøkerTekst(intl, hvemPlanlegger),
+                                                hvem2: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                kunEnPartSkalHa,
                                             }}
                                         />
                                     </BodyLong>
-                                    {hvemHarRett === 'beggeHarRett' && (
-                                        <div>
-                                            <BodyLong>
-                                                <FormattedMessage id="OppgittInformasjon.Fordeling" />
-                                            </BodyLong>
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="OppgittInformasjon.FordelingOptionsMedUker"
-                                                    values={{
-                                                        uker: antallUkerFellesperiodeSøker1,
-                                                        uker2: antallUkerFellesperiodeSøker2,
-                                                        hvem: fornavn1,
-                                                        hvem2: fornavn2,
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                        </div>
-                                    )}
-                                    <div>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="OppgittInformasjon.InfoboksTekst.FørsteDag"
-                                                values={{
-                                                    hvem:
-                                                        hvemHarRett === 'kunFarHarRettMorHovedsøker' ||
-                                                        hvemHarRett === 'kunMedfarEllerMedmorHarRett'
-                                                            ? fornavn2
-                                                            : fornavn1,
-                                                    dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="OppgittInformasjon.InfoboksTekst.SisteDag"
-                                                values={{
-                                                    hvem:
-                                                        hvemHarRett === 'kunFarHarRettMorHovedsøker' ||
-                                                        hvemHarRett === 'kunMedfarEllerMedmorHarRett'
-                                                            ? fornavn2
-                                                            : fornavn1,
-                                                    dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                        {hvemHarRett === 'beggeHarRett' && (
-                                            <div>
-                                                <BodyLong>
-                                                    <FormattedMessage
-                                                        id="OppgittInformasjon.InfoboksTekst.FørsteDag"
-                                                        values={{
-                                                            hvem: fornavn2,
-                                                            dag: dayjs(startdatoSøker2).format('DD.MM.YY'),
-                                                        }}
-                                                    />
-                                                </BodyLong>
-                                                <BodyLong>
-                                                    <FormattedMessage
-                                                        id="OppgittInformasjon.InfoboksTekst.SisteDag"
-                                                        values={{
-                                                            hvem: fornavn2,
-                                                            dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
-                                                        }}
-                                                    />
-                                                </BodyLong>
-                                            </div>
-                                        )}
-                                    </div>
                                 </VStack>
                             </>
                         </GreenPanel>
