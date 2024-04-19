@@ -11,7 +11,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert } from 'types/Barnet';
-import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
+import { finnAnnenPartTekst, isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -49,6 +49,8 @@ const Innhold = () => {
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const antallBarn = barnet.antallBarn;
+
+    const erAlenesøker = isAlene(hvemPlanlegger);
 
     return (
         <>
@@ -138,21 +140,23 @@ const Innhold = () => {
                                 </BodyLong>
                             </div>
                         </HStack>
-                        <HStack gap="5" align="start" wrap={false} justify="space-between">
-                            <div>
-                                <IconCircleWrapper color="lightBlue" size="medium">
-                                    <PersonGroupIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
-                                </IconCircleWrapper>
-                            </div>
-                            <div>
-                                <Heading size="small">
-                                    <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig.Tekst" />
-                                </BodyLong>
-                            </div>
-                        </HStack>
+                        {!erAlenesøker && (
+                            <HStack gap="5" align="start" wrap={false} justify="space-between">
+                                <div>
+                                    <IconCircleWrapper color="lightBlue" size="medium">
+                                        <PersonGroupIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" />
+                                    </IconCircleWrapper>
+                                </div>
+                                <div>
+                                    <Heading size="small">
+                                        <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig" />
+                                    </Heading>
+                                    <BodyLong>
+                                        <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig.Tekst" />
+                                    </BodyLong>
+                                </div>
+                            </HStack>
+                        )}
                     </VStack>
                 )}
                 {morHarIkkeRett && (
