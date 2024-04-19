@@ -85,7 +85,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                     <VStack gap="5">
                         {hvemHarRett === 'beggeHarRett' && (
                             <GreenPanel>
-                                <Heading level="3" size="small">
+                                <Heading level="4" size="small">
                                     <FormattedMessage id="OppsummeringSteg.Perioden" />
                                 </Heading>
                                 <BodyLong>
