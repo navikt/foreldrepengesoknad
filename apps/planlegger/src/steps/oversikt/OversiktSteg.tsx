@@ -108,7 +108,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         <Form formMethods={formMethods}>
             <PlanleggerStepPage steps={stepConfig}>
                 <VStack gap="10">
-                    <Heading size="large" spacing>
+                    <Heading size="large" spacing level="2">
                         <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
                     </Heading>
                     <Infobox

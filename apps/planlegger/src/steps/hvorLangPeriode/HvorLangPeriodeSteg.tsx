@@ -117,7 +117,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
-                        <Heading size="medium" spacing>
+                        <Heading size="medium" spacing level="2">
                             <FormattedMessage id="HvorLangPeriodeSteg.Tittel" />
                         </Heading>
                         <Infobox

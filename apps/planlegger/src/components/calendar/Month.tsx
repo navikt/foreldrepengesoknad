@@ -17,9 +17,10 @@ type Props = {
     month: number;
     showYear: boolean;
     children: React.ReactNode[];
+    headerLevel: '4' | '5';
 };
 
-const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children }) => {
+const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children, headerLevel }) => {
     const monthDate = dayjs().year(year).month(month).startOf('month');
 
     const startWeekDay = monthDate.isoWeekday();
@@ -32,7 +33,7 @@ const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children
 
     return (
         <Box className={styles.box} data-testid={`year:${year};month:${month}`}>
-            <Heading size="small" level="5">
+            <Heading size="small" level={headerLevel}>
                 {showYear ? `${getMonthName(monthDate, 'MMM')} (${year})` : getMonthName(monthDate)}
             </Heading>
             {nrOfWeeks.map((weeknr) => (

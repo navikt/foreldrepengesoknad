@@ -116,6 +116,7 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
                     year={monthData.year}
                     month={monthData.month}
                     showYear={index > 0 && months[index - 1].year !== monthData.year}
+                    headerLevel={useSmallerWidth ? '5' : '4'}
                 >
                     {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map((day) => (
                         <Day
