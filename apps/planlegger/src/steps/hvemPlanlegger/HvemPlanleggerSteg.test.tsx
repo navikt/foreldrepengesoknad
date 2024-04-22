@@ -17,10 +17,10 @@ describe('<HvemPlanleggerSteg>', () => {
 
         await userEvent.click(screen.getByText('Mor og far'));
 
-        const morNavn = utils.getByLabelText('Hva heter mor?');
+        const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
         await userEvent.type(morNavn, 'Helga');
 
-        const farNavn = utils.getByLabelText('Hva heter far?');
+        const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
         await userEvent.type(farNavn, 'Espen');
 
         await userEvent.click(screen.getByText('Neste'));
@@ -45,10 +45,10 @@ describe('<HvemPlanleggerSteg>', () => {
 
         await userEvent.click(screen.getByText('Mor og medmor'));
 
-        const morNavn = utils.getByLabelText('Hva heter mor?');
+        const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
         await userEvent.type(morNavn, 'Helga');
 
-        const farNavn = utils.getByLabelText('Hva heter medmor?');
+        const farNavn = utils.getByLabelText('Hva heter medmor? (valgfritt)');
         await userEvent.type(farNavn, 'Olga');
 
         await userEvent.click(screen.getByText('Neste'));
@@ -73,10 +73,10 @@ describe('<HvemPlanleggerSteg>', () => {
 
         await userEvent.click(screen.getByText('Far og far'));
 
-        const far1Navn = utils.getAllByLabelText('Hva heter far?')[0];
+        const far1Navn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[0];
         await userEvent.type(far1Navn, 'Espen');
 
-        const far2Navn = utils.getAllByLabelText('Hva heter far?')[1];
+        const far2Navn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[1];
         await userEvent.type(far2Navn, 'Peder');
 
         await userEvent.click(screen.getByText('Neste'));
@@ -101,7 +101,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         await userEvent.click(screen.getByText('Bare mor, aleneomsorg'));
 
-        const morNavn = utils.getByLabelText('Hva heter mor?');
+        const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
         await userEvent.type(morNavn, 'Olga');
 
         await userEvent.click(screen.getByText('Neste'));
@@ -125,7 +125,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         await userEvent.click(screen.getByText('Bare far, aleneomsorg'));
 
-        const farNavn = utils.getByLabelText('Hva heter far?');
+        const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
         await userEvent.type(farNavn, 'Espen');
 
         await userEvent.click(screen.getByText('Neste'));
