@@ -32,7 +32,7 @@ const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children
     let arrayCounter = 0;
 
     return (
-        <Box className={styles.box} data-testid={`year:${year};month:${month}`}>
+        <Box className={styles.box} data-testid={`year:${year};month:${month}`} aria-hidden>
             <Heading size="small" level={headerLevel}>
                 {showYear ? `${getMonthName(monthDate, 'MMM')} (${year})` : getMonthName(monthDate)}
             </Heading>
