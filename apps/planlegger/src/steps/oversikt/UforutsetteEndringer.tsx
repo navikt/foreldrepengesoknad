@@ -49,7 +49,7 @@ const Innhold = () => {
     return (
         <>
             <VStack gap="5">
-                <HStack gap="5" align="start" wrap={false} justify="space-between">
+                <HStack gap="5" wrap={false}>
                     <div>
                         <IconCircleWrapper color="lightBlue" size="medium">
                             <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
@@ -76,7 +76,7 @@ const Innhold = () => {
                 {!morHarIkkeRett && (
                     <>
                         {!erBarnetAdoptert(barnet) && (
-                            <HStack gap="5" align="start" wrap={false} justify="space-between">
+                            <HStack gap="5" wrap={false}>
                                 <div>
                                     <IconCircleWrapper color="lightBlue" size="medium">
                                         <StethoscopeIcon
@@ -104,7 +104,7 @@ const Innhold = () => {
                     </>
                 )}
 
-                <HStack gap="5" align="start" wrap={false} justify="space-between">
+                <HStack gap="5" wrap={false}>
                     <div>
                         <IconCircleWrapper color="lightBlue" size="medium">
                             <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
