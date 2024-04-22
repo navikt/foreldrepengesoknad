@@ -8,7 +8,7 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Situasjon, getFornavnPåAnnenPart, getFornavnPåSøker, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import { Situasjon, getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
@@ -122,7 +122,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     label={
                                         <FormattedMessage
                                             id="ArbeidssituasjonSteg.HvaGjelder"
-                                            values={{ erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) }}
+                                            values={{ erAlenesøker, navn: fornavnSøker }}
                                         />
                                     }
                                     name="status"
