@@ -55,7 +55,6 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                             iconPosition="right"
                             className={styles.button}
                             autoFocus
-                            aria-hidden
                         >
                             <FormattedMessage id="OmPlanleggerenSteg.Start.Planlegger" />
                         </Button>
