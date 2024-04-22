@@ -231,9 +231,12 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                             name="dekningsgrad"
                             validate={[
                                 isRequired(
-                                    intl.formatMessage({
-                                        id: 'ValidationMessage.Required',
-                                    }),
+                                    intl.formatMessage(
+                                        {
+                                            id: 'HvorLangPeriodeSteg.HvorLangPeriode.Required',
+                                        },
+                                        { erAlenesøker },
+                                    ),
                                 ),
                             ]}
                             onChange={scrollToBottom}

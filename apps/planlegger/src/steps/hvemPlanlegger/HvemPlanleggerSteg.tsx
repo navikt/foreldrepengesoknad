@@ -59,7 +59,7 @@ const HvemPlanleggerSteg: FunctionComponent<Props> = ({ locale }) => {
                             validate={[
                                 isRequired(
                                     intl.formatMessage({
-                                        id: 'ValidationMessage.Required',
+                                        id: 'HvemPlanleggerSteg.HvemPlanlegger.Required',
                                     }),
                                 ),
                             ]}

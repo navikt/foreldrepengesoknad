@@ -170,7 +170,9 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                                 name="antallUkerSøker1"
                                 label={<FormattedMessage id="FordelingSteg.FordelingTittel" />}
                                 autofocusWhenEmpty
-                                validate={[isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' }))]}
+                                validate={[
+                                    isRequired(intl.formatMessage({ id: 'FordelingSteg.FordelingTittel.Required' })),
+                                ]}
                                 customErrorFormatter={formatError}
                                 onChange={scrollToBottom}
                             >

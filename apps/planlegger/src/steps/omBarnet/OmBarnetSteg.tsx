@@ -94,9 +94,12 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
                             label={<FormattedMessage id="OmBarnetSteg.HvaGjelder" values={{ erAlenesøker }} />}
                             validate={[
                                 isRequired(
-                                    intl.formatMessage({
-                                        id: 'ValidationMessage.Required',
-                                    }),
+                                    intl.formatMessage(
+                                        {
+                                            id: 'OmBarnetSteg.HvaGjelder.Required',
+                                        },
+                                        { erAlenesøker },
+                                    ),
                                 ),
                             ]}
                             onChange={() => {
@@ -119,7 +122,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
                                 validate={[
                                     isRequired(
                                         intl.formatMessage({
-                                            id: 'ValidationMessage.Required',
+                                            id: 'OmBarnetSteg.HvorMange.Required',
                                         }),
                                     ),
                                 ]}

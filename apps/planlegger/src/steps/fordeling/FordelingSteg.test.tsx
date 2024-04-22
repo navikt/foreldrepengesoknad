@@ -17,7 +17,7 @@ describe('<FordelingSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(screen.getByText('Du må huske å svare på dette spørsmålet før du går videre.')).toBeInTheDocument();
+        expect(screen.getByText('Du må oppgi hvordan dere vil fordele fellesperioden.')).toBeInTheDocument();
 
         await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele fellesperioden?'), '9');
 
