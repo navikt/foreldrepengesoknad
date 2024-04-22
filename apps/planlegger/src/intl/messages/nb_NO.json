@@ -134,7 +134,7 @@
     "OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling": "Planleggeren er under utvikling og vil få mer funksjonalitet snart! Dersom man ønsker å planlegge mer i detalj og flytte og endre på perioder, kan man bruke <a>søknaden om foreldrepenger</a>.",
     "OppsummeringSteg.Planen": "Planen {erAlenesøker, select, true {din} other {deres}}",
     "OppsummeringSteg.Perioden": "Perioden med foreldrepenger",
-    "OppsummeringSteg.DereValgte": "Dere valgte {prosent} prosent i {antallUker} uker og fordeler fellesperioden med {uker} uker til {hvem} og {uker2} uker til {hvem2}.",
+    "OppsummeringSteg.DereValgte": "Dere valgte {prosent} % i {antallUker} uker og fordeler fellesperioden med {uker} uker til {hvem} og {uker2} uker til {hvem2}.",
     "OppsummeringSteg.Periodene": "<b>{hvem}s periode:</b> {fom} – {tom}",
     "OppsummeringSteg.TilbakeTil": "Tilbake til spørsmålene",
     "OppsummeringSteg.AndreVeivisere": "Andre veivisere:",
