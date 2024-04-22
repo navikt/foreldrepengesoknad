@@ -10,7 +10,7 @@ import { HvemPlanlegger, Situasjon, erFarDelAvSøknaden, erMorDelAvSøknaden } f
 import { formatError } from 'utils/customErrorFormatter';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
@@ -48,6 +48,9 @@ const HvemPlanleggerSteg: FunctionComponent<Props> = ({ locale }) => {
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
+                        <BodyShort>
+                            <FormattedMessage id="HarValgfrieFelt" />
+                        </BodyShort>
                         <GreenRadioGroup
                             name="type"
                             label={intl.formatMessage({
