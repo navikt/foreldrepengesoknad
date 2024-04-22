@@ -16,6 +16,7 @@ import { Alert, BodyLong, Box, Button, HStack, Heading, Link, VStack } from '@na
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { LocaleAll } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import OppgittInformasjon from './OppgittInformasjon';
@@ -27,10 +28,11 @@ import styles from './oppsummeringSteg.module.css';
 
 interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+    locale: LocaleAll;
 }
 
-const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
-    const navigator = usePlanleggerNavigator();
+const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer }) => {
+    const navigator = usePlanleggerNavigator(locale);
 
     useScrollBehaviour();
 

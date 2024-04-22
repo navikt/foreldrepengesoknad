@@ -71,7 +71,7 @@ const customRenderer = ({
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <FordelingSteg stønadskontoer={stønadskontoer} />
+                <FordelingSteg stønadskontoer={stønadskontoer} locale="nb" />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

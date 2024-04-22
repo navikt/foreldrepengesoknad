@@ -31,6 +31,7 @@ import { finnUttaksdata } from 'utils/uttakHjelper';
 import { BodyLong, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';
@@ -102,11 +103,12 @@ export const finnFellesperiodeFordelingOptionTekst = (
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    locale: LocaleAll;
 }
 
-const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const fordeling = useContextGetData(ContextDataType.FORDELING);

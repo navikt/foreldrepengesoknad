@@ -26,6 +26,7 @@ import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjel
 
 import { BodyLong, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
+import { LocaleAll } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -36,11 +37,12 @@ import styles from './oversiktSteg.module.css';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    locale: LocaleAll;
 }
 
-const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     useScrollBehaviour();

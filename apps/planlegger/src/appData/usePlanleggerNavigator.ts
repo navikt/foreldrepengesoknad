@@ -8,7 +8,7 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { useContextComplete } from './PlanleggerDataContext';
 import useStepData from './useStepData';
 
-const usePlanleggerNavigator = () => {
+const usePlanleggerNavigator = (locale: string) => {
     const navigate = useNavigate();
     const stepConfig = useStepData();
     const context = useContextComplete();
@@ -27,7 +27,7 @@ const usePlanleggerNavigator = () => {
 
     useEffect(() => {
         if (path) {
-            navigate(`${path}?data=${encodeToBase64(JSON.stringify(context))}`);
+            navigate(`${path}?language=${locale}&data=${encodeToBase64(JSON.stringify(context))}`);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [path]);

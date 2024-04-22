@@ -3,14 +3,11 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-utils';
 
 import PlanleggerDataInit from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
-
-const localeFromSessionStorage = getLocaleFromSessionStorage();
 
 const allNbMessages = { ...nbMessages, ...uiMessages.nb };
 
@@ -29,11 +26,16 @@ const MESSAGES_GROUPED_BY_LOCALE = {
     en: { ...enMessages, ...uiMessages.en },
 };
 
+const getLocale = (): LocaleAll => {
+    const queryString = window.location.search;
+    const languageParam = new URLSearchParams(queryString).get('language');
+    return languageParam ? (languageParam as LocaleAll) : 'nb';
+};
+
 const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(localeFromSessionStorage);
+    const [locale, setLocale] = useState<LocaleAll>(getLocale());
 
     const changeLocale = useCallback((activeLocale: LocaleAll) => {
-        setLocaleInSessionStorage(activeLocale);
         setLocale(activeLocale);
         document.documentElement.setAttribute('lang', activeLocale);
     }, []);

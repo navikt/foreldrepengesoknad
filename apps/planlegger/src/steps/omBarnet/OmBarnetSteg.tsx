@@ -16,6 +16,7 @@ import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import GreenRadioGroup from '../../components/formWrappers/GreenRadioGroup';
@@ -42,9 +43,14 @@ const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): st
     }
     return undefined;
 };
-const OmBarnetSteg: React.FunctionComponent = () => {
+
+interface Props {
+    locale: LocaleAll;
+}
+
+const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);

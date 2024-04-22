@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -10,11 +11,11 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import BarnehageplassSteg from './BarnehageplassSteg';
 
-interface StoryArgs {
+type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
     gåTilNesteSide?: (action: Action) => void;
-}
+} & ComponentProps<typeof BarnehageplassSteg>;
 
 type Story = StoryObj<StoryArgs>;
 
@@ -29,7 +30,7 @@ const customRenderer = ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('bu
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <BarnehageplassSteg />
+                <BarnehageplassSteg locale="nb" />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

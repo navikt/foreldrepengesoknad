@@ -9,14 +9,19 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
+import { LocaleAll } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import AleneforsørgerBarnehageplass from './situasjon/AleneforsørgerBarnehageplass';
 import FlereForsørgereBarnehageplass from './situasjon/FlereForsørgereBarnehageplass';
 
-const BarnehageplassSteg: React.FunctionComponent = () => {
-    const navigator = usePlanleggerNavigator();
+interface Props {
+    locale: LocaleAll;
+}
+
+const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     useScrollBehaviour();
