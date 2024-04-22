@@ -34,9 +34,9 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
 
-        expect(screen.getByText('Mor, 18 uker, starter torsdag 21 mars')).toBeInTheDocument();
-        expect(screen.getByText('Far, 31 uker, starter torsdag 25 juli')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Mor, 18 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Far, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -71,8 +71,8 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Mor, 49 uker, starter torsdag 21 mars')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Mor, 49 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -104,7 +104,7 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(screen.getByText('Far, 15 uker uten aktivitetskrav til mor')).toBeInTheDocument();
         expect(screen.getByText('Far, 25 uker med aktivitetskrav til mor')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -142,7 +142,7 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(screen.getByText('Far, 8 uker uten aktivitetskrav til mor')).toBeInTheDocument();
         expect(screen.getByText('Far, 32 uker med aktivitetskrav til mor')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -178,9 +178,9 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect((screen.getByRole('option', { name: '16 uker til medmor' }) as HTMLOptionElement).selected).toBe(true);
 
-        expect(screen.getByText('Mor, 18 uker, starter torsdag 21 mars')).toBeInTheDocument();
-        expect(screen.getByText('Medmor, 31 uker, starter torsdag 25 juli')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Mor, 18 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Medmor, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -215,8 +215,8 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Mor, 49 uker, starter torsdag 21 mars')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Mor, 49 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -248,7 +248,7 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(screen.getByText('Medmor, 15 uker uten aktivitetskrav til mor')).toBeInTheDocument();
         expect(screen.getByText('Medmor, 25 uker med aktivitetskrav til mor')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -286,7 +286,7 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect(screen.getByText('Medmor, 8 uker uten aktivitetskrav til mor')).toBeInTheDocument();
         expect(screen.getByText('Medmor, 32 uker med aktivitetskrav til mor')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -322,8 +322,8 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Mor, 49 uker, starter torsdag 21 mars')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Mor, 49 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -353,8 +353,8 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Far, 46 uker, starter torsdag 11 april')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Far, 46 uker, starter torsdag 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -382,9 +382,9 @@ describe('<OversiktSteg - fødsel>', () => {
             true,
         );
 
-        expect(screen.getByText('Far, 15 uker, starter torsdag 11 april')).toBeInTheDocument();
-        expect(screen.getByText('Far, 31 uker, starter torsdag 25 juli')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Far, 15 uker, starter torsdag 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Far, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -416,8 +416,8 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Far, 40 uker, starter torsdag 21 mars')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Far, 40 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -443,9 +443,9 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
 
-        expect(screen.getByText('Mor, 18 uker, starter fredag 22 mars')).toBeInTheDocument();
-        expect(screen.getByText('Far, 31 uker, starter fredag 26 juli')).toBeInTheDocument();
-        expect(screen.getByText('Fødselsdato 12. april')).toBeInTheDocument();
+        expect(screen.getByText('Mor, 18 uker, starter fredag 22. mars')).toBeInTheDocument();
+        expect(screen.getByText('Far, 31 uker, starter fredag 26. juli')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsdato 12. apr.')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:22;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
@@ -484,9 +484,9 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect((screen.getByRole('option', { name: '18 uker til far' }) as HTMLOptionElement).selected).toBe(true);
 
-        expect(screen.getByText('Mor, 22 uker, starter torsdag 21 mars')).toBeInTheDocument();
-        expect(screen.getByText('Far, 37 uker, starter torsdag 22 aug.')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Mor, 22 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Far, 37 uker, starter torsdag 22. aug.')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
@@ -518,9 +518,9 @@ describe('<OversiktSteg - fødsel>', () => {
 
         expect((screen.getByRole('option', { name: '8 til mor, 8 til far' }) as HTMLOptionElement).selected).toBe(true);
 
-        expect(screen.getByText('Mor, 26 uker, starter torsdag 21 mars')).toBeInTheDocument();
-        expect(screen.getByText('Far, 23 uker, starter torsdag 19 sep.')).toBeInTheDocument();
-        expect(screen.getByText('Termindato 11. april')).toBeInTheDocument();
+        expect(screen.getByText('Mor, 26 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Far, 23 uker, starter torsdag 19. sep.')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:21;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();

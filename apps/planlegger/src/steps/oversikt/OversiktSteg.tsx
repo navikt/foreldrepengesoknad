@@ -5,7 +5,6 @@ import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
 import Calendar from 'components/calendar/Calendar';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import 'dayjs/locale/nb';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
