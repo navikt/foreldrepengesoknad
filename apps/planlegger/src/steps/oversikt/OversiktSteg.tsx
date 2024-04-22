@@ -6,15 +6,13 @@ import Infobox from 'components/boxes/Infobox';
 import Calendar from 'components/calendar/Calendar';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import 'dayjs/locale/nb';
-import { FunctionComponent, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     finnFellesperiodeFordelingOptionTekst,
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { Fordeling } from 'types/Fordeling';
 import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
@@ -26,9 +24,8 @@ import {
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjelper';
 
-import { BodyLong, Heading, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { Form, Select } from '@navikt/fp-form-hooks';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -50,18 +47,12 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const fordeling = useContextGetData(ContextDataType.FORDELING);
-    const periode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
-    const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
 
-    const formMethods = useForm<Fordeling>({
-        defaultValues: fordeling,
-    });
-
-    const antallUkerFellesperiodeSøker1 = formMethods.watch('antallUkerSøker1');
-
-    const [dekningsgrad, setDekningsgrad] = useState<Dekningsgrad>(periode.dekningsgrad);
+    const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
     const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
         stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
@@ -70,7 +61,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
     );
 
-    const valgtStønadskonto = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+    const valgtStønadskonto =
+        hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
@@ -81,14 +73,14 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         hvemPlanlegger,
         stønadskonto100,
         barnet,
-        antallUkerFellesperiodeSøker1,
+        fordeling?.antallUkerSøker1,
     );
     const uttaksdata80 = finnUttaksdata(
         hvemHarRett,
         hvemPlanlegger,
         stønadskonto80,
         barnet,
-        antallUkerFellesperiodeSøker1,
+        fordeling?.antallUkerSøker1,
     );
 
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
@@ -101,11 +93,11 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         barnet,
         hvemPlanlegger,
         arbeidssituasjon,
-        antallUkerFellesperiodeSøker1,
+        fordeling?.antallUkerSøker1,
     );
 
     return (
-        <Form formMethods={formMethods}>
+        <form>
             <PlanleggerStepPage steps={stepConfig}>
                 <VStack gap="10">
                     <Heading size="large" spacing level="2">
@@ -121,10 +113,10 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </BodyLong>
                     </Infobox>
                     <ToggleGroup
-                        defaultValue={periode?.dekningsgrad}
+                        defaultValue={hvorLangPeriode?.dekningsgrad}
                         size="medium"
                         variant="neutral"
-                        onChange={(value) => setDekningsgrad(value as Dekningsgrad)}
+                        onChange={(value) => lagreHvorLangPeriode({ dekningsgrad: value as Dekningsgrad })}
                         style={{ width: '100%' }}
                     >
                         <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
@@ -141,10 +133,11 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </ToggleGroup>
                     {hvemHarRett === 'beggeHarRett' && (
                         <Select
+                            defaultValue={fordeling?.antallUkerSøker1}
                             label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}
                             name="antallUkerSøker1"
                             onChange={(e) => {
-                                lagreFordeling({ antallUkerSøker1: e.target.value });
+                                lagreFordeling({ antallUkerSøker1: parseInt(e.target.value, 10) });
                             }}
                         >
                             {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
@@ -155,7 +148,9 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </Select>
                     )}
                     <OversiktLabels
-                        uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
+                        uttaksdata={
+                            hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80
+                        }
                         hvemPlanlegger={hvemPlanlegger}
                         barnet={barnet}
                         valgtStønadskonto={valgtStønadskonto}
@@ -175,7 +170,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     />
                 </VStack>
             </PlanleggerStepPage>
-        </Form>
+        </form>
     );
 };
 
