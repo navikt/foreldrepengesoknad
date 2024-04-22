@@ -11,7 +11,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert } from 'types/Barnet';
-import { finnAnnenPartTekst, isAlene } from 'types/HvemPlanlegger';
+import { erFarDelAvSøknaden, finnAnnenPartTekst, isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -203,7 +203,10 @@ const Innhold = () => {
                                     <FormattedMessage id="OmÅTilpassePlanen.ToUkerRundtFødsel" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst" />
+                                    <FormattedMessage
+                                        id="OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst"
+                                        values={{ erFar: erFarDelAvSøknaden(hvemPlanlegger.type) }}
+                                    />
                                 </BodyLong>
                             </div>
                         </HStack>

@@ -188,6 +188,6 @@
     "OmÅTilpassePlanen.PermisjonSamtidig": "Permisjon samtidig",
     "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Ein kan vere heime samtidig med opp til 150 % foreldrepengar. Dette er mogleg frå veke 7 etter fødsel, om ein forelder bruker fellesperioden medan den andre bruker eigen kvote.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "To veker rundt fødsel",
-    "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Ofte får fedre permisjon dekt dei første to vekene etter fødsel frå arbeidsgjevaren sin. Om ein ikkje får dette, kan far bruke foreldrepengar i desse to vekene.",
+    "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Ofte får {erFar, select, true {fedre} other {medmødre}}  permisjon dekt dei første to vekene etter fødsel frå arbeidsgjevaren sin. Om ein ikkje får dette, kan ein bruke foreldrepengar i desse to vekene.",
     "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "Om far ikkje skal ha foreldrepengar, kan ein leggje til periode utan foreldrepengar, der ein til dømes får feriepengar frå arbeidsgjevaren."
 }
