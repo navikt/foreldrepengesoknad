@@ -88,7 +88,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                         <GreenPanel>
                             <>
                                 <Heading size="small" level="4">
-                                    <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" />
+                                    <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" values={{ antallBarn }} />
                                 </Heading>
 
                                 {erFødt && (
@@ -135,38 +135,50 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
-                                {!erAlenesøker ? (
-                                    <>
-                                        {Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart ? (
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="OppgittInformasjon.ArbeidssituasjonBeggeJobber"
-                                                    values={{
-                                                        navn: fornavn1,
-                                                        navn2: fornavn2,
-                                                        arbeidssituasjon: arbeidssituasjon.status,
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                        ) : (
-                                            <BodyLong>
-                                                <FormattedMessage
-                                                    id="OppgittInformasjon.Arbeidssituasjon"
-                                                    values={{
-                                                        navn: fornavn1,
-                                                        arbeidssituasjon: arbeidssituasjon.status,
-                                                    }}
-                                                />
-                                            </BodyLong>
-                                        )}
-                                    </>
+
+                                {!kunEnPartSkalHa ? (
+                                    arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
+                                    arbeidssituasjon.jobberAnnenPart === true && (
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="OppgittInformasjon.ArbeidssituasjonBeggeJobber"
+                                                values={{
+                                                    navn: fornavn1,
+                                                    navn2: fornavn2,
+                                                    arbeidssituasjon: arbeidssituasjon.status,
+                                                }}
+                                            />
+                                        </BodyLong>
+                                    )
                                 ) : (
+                                    <>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="OppgittInformasjon.Arbeidssituasjon"
+                                                values={{
+                                                    navn: fornavn1,
+                                                    arbeidssituasjon: arbeidssituasjon.status,
+                                                }}
+                                            />
+                                        </BodyLong>
+                                        <BodyLong>
+                                            <FormattedMessage
+                                                id="OppgittInformasjon.ArbeidssituasjonAnnenPart"
+                                                values={{
+                                                    navn: fornavn2,
+                                                    arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
+                                                }}
+                                            />
+                                        </BodyLong>
+                                    </>
+                                )}
+                                {erAlenesøker && (
                                     <BodyLong>
                                         <FormattedMessage
                                             id="OppgittInformasjon.Arbeidssituasjon"
                                             values={{
-                                                navn: fornavn2,
-                                                arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
+                                                navn: fornavn1,
+                                                arbeidssituasjon: arbeidssituasjon.status,
                                             }}
                                         />
                                     </BodyLong>
@@ -176,7 +188,10 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                         <GreenPanel>
                             <>
                                 <Heading size="small" level="4">
-                                    <FormattedMessage id="OppgittInformasjon.LengdeOgFordeling" />
+                                    <FormattedMessage
+                                        id="OppgittInformasjon.LengdeOgFordeling"
+                                        values={{ kunEnPartSkalHa }}
+                                    />
                                 </Heading>
                                 <VStack gap="5">
                                     <BodyLong>
