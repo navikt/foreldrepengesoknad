@@ -37,9 +37,12 @@ const Fødsel: React.FunctionComponent<Props> = ({
                 shouldFadeIn
                 validate={[
                     isRequired(
-                        intl.formatMessage({
-                            id: 'ValidationMessage.Required',
-                        }),
+                        intl.formatMessage(
+                            {
+                                id: 'Fødsel.ErFødt.Required',
+                            },
+                            { antallBarn },
+                        ),
                     ),
                 ]}
                 onChange={() => {

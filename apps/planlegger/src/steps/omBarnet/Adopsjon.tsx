@@ -33,7 +33,9 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     autofocusWhenEmpty
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                        isRequired(
+                            intl.formatMessage({ id: 'Overtakelsesdato.Required' }, { erAlenesøker, flereBarn }),
+                        ),
                         isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                         isAfterOrSameAsSixMonthsAgo(
                             intl.formatMessage({
@@ -58,7 +60,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({ erAlenesøker, erOmBarnetIkk
                     minDate={dayjs().subtract(15, 'years').toDate()}
                     maxDate={dayjs().toDate()}
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                        isRequired(intl.formatMessage({ id: 'Fødselsdato.Required' })),
                         isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                         isBeforeTodayOrToday(
                             intl.formatMessage({

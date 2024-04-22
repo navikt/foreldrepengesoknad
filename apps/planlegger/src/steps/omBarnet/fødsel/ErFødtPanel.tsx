@@ -46,7 +46,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                         autofocusWhenEmpty
                         useStrategyAbsolute
                         validate={[
-                            isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                            isRequired(intl.formatMessage({ id: 'Fødselsdato.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                             isBeforeTodayOrToday(
                                 intl.formatMessage({
@@ -62,7 +62,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                         name="termindato"
                         maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                         validate={[
-                            isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                            isRequired(intl.formatMessage({ id: 'Termindato.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                             erI22SvangerskapsukeEllerSenere(
                                 intl.formatMessage({

@@ -62,7 +62,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     autofocusWhenEmpty
                     useStrategyAbsolute
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                        isRequired(intl.formatMessage({ id: 'Termindato.Required' })),
                         isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                         isLessThanThreeWeeksAgo(
                             intl.formatMessage({

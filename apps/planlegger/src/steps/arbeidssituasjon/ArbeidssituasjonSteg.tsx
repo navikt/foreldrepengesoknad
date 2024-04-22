@@ -95,7 +95,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     validate={[
                                         isRequired(
                                             intl.formatMessage({
-                                                id: 'ValidationMessage.Required',
+                                                id: 'Arbeidssituasjon.Forelder.Required',
                                             }),
                                         ),
                                     ]}
@@ -128,9 +128,12 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     name="status"
                                     validate={[
                                         isRequired(
-                                            intl.formatMessage({
-                                                id: 'ValidationMessage.Required',
-                                            }),
+                                            intl.formatMessage(
+                                                {
+                                                    id: 'ArbeidssituasjonSteg.HvaGjelder.Required',
+                                                },
+                                                { erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) },
+                                            ),
                                         ),
                                     ]}
                                     onChange={scrollToBottom}
@@ -165,7 +168,12 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                                 />
                                             }
                                             validate={[
-                                                isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
+                                                isRequired(
+                                                    intl.formatMessage(
+                                                        { id: 'Arbeidssituasjon.AndreForelder.Required' },
+                                                        { navn: fornavnAnnenPart },
+                                                    ),
+                                                ),
                                             ]}
                                             shouldFadeIn
                                             onChange={scrollToBottom}
