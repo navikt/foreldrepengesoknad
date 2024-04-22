@@ -2,7 +2,6 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import GreenPanel from 'components/boxes/GreenPanel';
 import Calendar from 'components/calendar/Calendar';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -106,8 +105,16 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         id="OppsummeringSteg.Periodene"
                                         values={{
                                             hvem: getFornavnPåSøker(hvemPlanlegger, intl),
-                                            fom: dayjs(startdatoSøker1).format('DD MMM YY'),
-                                            tom: dayjs(sluttdatoSøker1).format('DD MMM YY'),
+                                            fom: intl.formatDate(startdatoSøker1, {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
+                                            tom: intl.formatDate(sluttdatoSøker1, {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
                                             b: (msg: any) => <b>{msg}</b>,
                                         }}
                                     />
@@ -117,9 +124,16 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         id="OppsummeringSteg.Periodene"
                                         values={{
                                             hvem: getFornavnPåAnnenPart(hvemPlanlegger, intl),
-
-                                            fom: dayjs(startdatoSøker2).format('DD MMM YY'),
-                                            tom: dayjs(sluttdatoSøker2).format('DD MMM YY'),
+                                            fom: intl.formatDate(startdatoSøker2, {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
+                                            tom: intl.formatDate(sluttdatoSøker2, {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
                                             b: (msg: any) => <b>{msg}</b>,
                                         }}
                                     />
