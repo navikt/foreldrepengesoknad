@@ -1,4 +1,5 @@
 {
+    "HarValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
     "DefaultMessage.Ja": "Ja",
     "DefaultMessage.Nei": "Nei",
     "LanguageToggle.Bokmål": "Bokmål - norsk",
@@ -63,9 +64,9 @@
     "HvemPlanleggerSteg.FarOgFar": "Far og far",
     "HvemPlanleggerSteg.BareMor": "Bare mor, aleneomsorg",
     "HvemPlanleggerSteg.BareFar": "Bare far, aleneomsorg",
-    "HvemPlanleggerSteg.Mor": "Hva heter mor?",
-    "HvemPlanleggerSteg.Far": "Hva heter far?",
-    "HvemPlanleggerSteg.Medmor": "Hva heter medmor?",
+    "HvemPlanleggerSteg.Mor": "Hva heter mor? (valgfritt)",
+    "HvemPlanleggerSteg.Far": "Hva heter far? (valgfritt)",
+    "HvemPlanleggerSteg.Medmor": "Hva heter medmor? (valgfritt)",
     "HvemPlanlegger.DefaultMorNavn": "Mor",
     "HvemPlanlegger.DefaultFarNavn": "Far",
     "HvemPlanlegger.DefaultMedMorNavn": "Medmor",

@@ -1,4 +1,5 @@
 {
+    "HarValgfrieFelt": "All fields must be filled in, except fields marked with (optional).",
     "DefaultMessage.Ja": "Yes",
     "DefaultMessage.Nei": "No",
     "LanguageToggle.Bokmål": "Bokmål - Norwegian",
@@ -63,9 +64,9 @@
     "HvemPlanleggerSteg.FarOgFar": "Father and father",
     "HvemPlanleggerSteg.BareMor": "Only mother, sole care",
     "HvemPlanleggerSteg.BareFar": "Only father, sole care",
-    "HvemPlanleggerSteg.Mor": "What is the mother's name?",
-    "HvemPlanleggerSteg.Far": "What is the father's name?",
-    "HvemPlanleggerSteg.Medmor": "What is the co-mother's name?",
+    "HvemPlanleggerSteg.Mor": "What is the mother's name? (optional)",
+    "HvemPlanleggerSteg.Far": "What is the father's name? (optional)",
+    "HvemPlanleggerSteg.Medmor": "What is the co-mother's name? (optional)",
     "HvemPlanlegger.DefaultMorNavn": "Mother",
     "HvemPlanlegger.DefaultFarNavn": "Father",
     "HvemPlanlegger.DefaultMedMorNavn": "Co-mother",
