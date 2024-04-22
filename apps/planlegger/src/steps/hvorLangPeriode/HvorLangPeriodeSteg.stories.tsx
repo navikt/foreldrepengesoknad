@@ -45,7 +45,7 @@ const customRenderer = ({
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />
+                <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} locale="nb" />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

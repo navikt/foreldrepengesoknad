@@ -28,24 +28,32 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
                 path={PlanleggerRoutes.OM_PLANLEGGEREN}
                 element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />}
             />
-            <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
-            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
-            <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg />} />
+            <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg locale={locale} />} />
+            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg locale={locale} />} />
+            <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg locale={locale} />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={stønadskontoer ? <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={
+                    stønadskontoer ? (
+                        <HvorLangPeriodeSteg locale={locale} stønadskontoer={stønadskontoer} />
+                    ) : (
+                        <Loader />
+                    )
+                }
             />
             <Route
                 path={PlanleggerRoutes.FORDELING}
-                element={stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={
+                    stønadskontoer ? <FordelingSteg locale={locale} stønadskontoer={stønadskontoer} /> : <Loader />
+                }
             />
             <Route
                 path={PlanleggerRoutes.OVERSIKT}
-                element={stønadskontoer ? <OversiktSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskontoer ? <OversiktSteg locale={locale} stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg stønadskontoer={stønadskontoer} />}
+                element={<OppsummeringSteg locale={locale} stønadskontoer={stønadskontoer} />}
             />
             <Route path="*" element={<Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} />} />
         </Routes>

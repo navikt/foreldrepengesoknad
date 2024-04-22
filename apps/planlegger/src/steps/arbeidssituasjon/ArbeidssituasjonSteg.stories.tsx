@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
@@ -9,10 +10,10 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import ArbeidssituasjonSteg from './ArbeidssituasjonSteg';
 
-interface StoryArgs {
+type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     gåTilNesteSide?: (action: Action) => void;
-}
+} & ComponentProps<typeof ArbeidssituasjonSteg>;
 
 type Story = StoryObj<StoryArgs>;
 
@@ -32,7 +33,7 @@ const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <ArbeidssituasjonSteg />
+                <ArbeidssituasjonSteg locale="nb" />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

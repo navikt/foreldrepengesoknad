@@ -14,15 +14,20 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import AnnetInfoboks from './info/AnnetInfoboks';
 import JobberInfoboks from './info/JobberInfoboks';
 import UførInfoboks from './info/UførInfoboks';
 
-const ArbeidssituasjonSteg: FunctionComponent = () => {
+interface Props {
+    locale: LocaleAll;
+}
+
+const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);

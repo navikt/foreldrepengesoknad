@@ -29,15 +29,17 @@ import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react
 
 import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    locale: LocaleAll;
 }
 
-const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const periode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
