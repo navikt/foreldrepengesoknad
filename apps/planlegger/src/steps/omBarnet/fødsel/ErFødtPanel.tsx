@@ -60,7 +60,6 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     <Datepicker
                         label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
                         name="termindato"
-                        minDate={dayjs().subtract(3, 'week').toDate()}
                         maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'ValidationMessage.Required' })),
