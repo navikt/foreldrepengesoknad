@@ -173,7 +173,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                     </Link>
                     <Link
                         inlineText
-                        href={links.veiviser}
+                        href={links.hvaSkjerNår}
                         target="_blank"
                         rel="noreferrer"
                         className={styles.lenkepanel}
