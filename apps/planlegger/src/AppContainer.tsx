@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react';
+import dayjs from 'dayjs';
+import { useCallback, useMemo, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { LocaleAll } from '@navikt/fp-types';
@@ -26,17 +27,24 @@ const MESSAGES_GROUPED_BY_LOCALE = {
     en: { ...enMessages, ...uiMessages.en },
 };
 
-const getLocale = (): LocaleAll => {
+const initLocale = (): LocaleAll => {
     const queryString = window.location.search;
     const languageParam = new URLSearchParams(queryString).get('language');
-    return languageParam ? (languageParam as LocaleAll) : 'nb';
+    const locale = languageParam ? (languageParam as LocaleAll) : 'nb';
+
+    dayjs.locale(locale);
+    document.documentElement.setAttribute('lang', locale);
+
+    return locale;
 };
 
 const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(getLocale());
+    const origLocale = useMemo(() => initLocale(), []);
+    const [locale, setLocale] = useState<LocaleAll>(origLocale);
 
     const changeLocale = useCallback((activeLocale: LocaleAll) => {
         setLocale(activeLocale);
+        dayjs.locale(activeLocale);
         document.documentElement.setAttribute('lang', activeLocale);
     }, []);
 

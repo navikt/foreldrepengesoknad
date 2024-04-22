@@ -1,6 +1,4 @@
 import { HeartFillIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
-import 'dayjs/locale/nb';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
@@ -58,7 +56,11 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                     values={{
                                         hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
                                         uker: weeksBetween(startdatoSøker1, sluttdatoSøker1),
-                                        dato: dayjs(startdatoSøker1).format('dddd D MMM'),
+                                        dato: intl.formatDate(startdatoSøker1, {
+                                            day: '2-digit',
+                                            month: 'short',
+                                            weekday: 'long',
+                                        }),
                                     }}
                                 />
                             </BodyShort>
@@ -77,7 +79,11 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                         values={{
                                             hvem: capitalizeFirstLetter(annenPartTekst),
                                             uker: weeksBetween(startdatoSøker2, sluttdatoSøker2),
-                                            dato: dayjs(startdatoSøker2).format('dddd D MMM'),
+                                            dato: intl.formatDate(startdatoSøker2, {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                weekday: 'long',
+                                            }),
                                         }}
                                     />
                                 </BodyShort>
@@ -136,7 +142,10 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                 id="OversiktSteg.Fødselsdato"
                                 values={{
                                     mnd: familiehendelsedato,
-                                    dato: dayjs(barnet.fødselsdato).format('DD. MMM'),
+                                    dato: intl.formatDate(barnet.fødselsdato, {
+                                        day: '2-digit',
+                                        month: 'short',
+                                    }),
                                 }}
                             />
                         )}
@@ -144,7 +153,10 @@ const OversiktLabels: FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="OversiktSteg.Termindato"
                                 values={{
-                                    dato: dayjs(barnet.termindato).format('DD. MMM'),
+                                    dato: intl.formatDate(barnet.termindato, {
+                                        day: '2-digit',
+                                        month: 'short',
+                                    }),
                                 }}
                             />
                         )}
@@ -152,7 +164,10 @@ const OversiktLabels: FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="OversiktSteg.Omsorgsovertakelse"
                                 values={{
-                                    dato: dayjs(barnet.overtakelsesdato).format('DD. MMM'),
+                                    dato: intl.formatDate(barnet.overtakelsesdato, {
+                                        day: '2-digit',
+                                        month: 'short',
+                                    }),
                                 }}
                             />
                         )}

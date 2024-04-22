@@ -3,7 +3,7 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetFødt } from 'types/Barnet';
 import { erMorDelAvSøknaden } from 'types/HvemPlanlegger';
@@ -20,6 +20,7 @@ interface Props {
 }
 
 const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavnPart1, fornavnPart2 }) => {
+    const intl = useIntl();
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
@@ -46,7 +47,11 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                     id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
                     values={{
                         hvem: fornavnPart1,
-                        dag: dayjs(startdatoSøker1).format('DD.MM.YY'),
+                        dag: intl.formatDate(startdatoSøker1, {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: '2-digit',
+                        }),
                     }}
                 />
             </BodyLong>
@@ -55,7 +60,11 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                     id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
                     values={{
                         hvem: fornavnPart1,
-                        dag: dayjs(sluttdatoSøker1).format('DD.MM.YY'),
+                        dag: intl.formatDate(sluttdatoSøker1, {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: '2-digit',
+                        }),
                     }}
                 />
             </BodyLong>
@@ -66,7 +75,11 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                             id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
                             values={{
                                 hvem: fornavnPart2,
-                                dag: dayjs(startdatoSøker2).format('DD.MM.YY'),
+                                dag: intl.formatDate(startdatoSøker2, {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: '2-digit',
+                                }),
                             }}
                         />
                     </BodyLong>
@@ -75,7 +88,11 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                             id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
                             values={{
                                 hvem: fornavnPart2,
-                                dag: dayjs(sluttdatoSøker2).format('DD.MM.YY'),
+                                dag: intl.formatDate(sluttdatoSøker2, {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: '2-digit',
+                                }),
                             }}
                         />
                     </BodyLong>
