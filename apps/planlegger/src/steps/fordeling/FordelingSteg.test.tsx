@@ -21,10 +21,8 @@ describe('<FordelingSteg>', () => {
 
         await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele fellesperioden?'), '9');
 
-        expect(screen.getByText('Klaras første dag: 11.12.23')).toBeInTheDocument();
-        expect(screen.getByText('Klaras siste dag: 14.06.24')).toBeInTheDocument();
-        expect(screen.getByText('Espens første dag: 17.06.24')).toBeInTheDocument();
-        expect(screen.getByText('Espens siste dag: 15.11.24')).toBeInTheDocument();
+        expect(screen.getByText('Klara: 11. des. 2023 – 14. juni 2024')).toBeInTheDocument();
+        expect(screen.getByText('Espen: 17. juni 2024 – 15. nov. 2024')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
