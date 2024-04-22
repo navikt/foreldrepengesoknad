@@ -227,7 +227,10 @@ const Innhold = () => {
                                     <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar" />
+                                    <FormattedMessage
+                                        id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
+                                        values={{ erFar: erFarDelAvSøknaden(hvemPlanlegger.type) }}
+                                    />
                                 </BodyLong>
                             </div>
                         </HStack>
