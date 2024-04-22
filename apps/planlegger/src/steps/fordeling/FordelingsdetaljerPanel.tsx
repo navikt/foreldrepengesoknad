@@ -1,10 +1,8 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import Infobox from 'components/boxes/Infobox';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetFødt } from 'types/Barnet';
 import { erMorDelAvSøknaden } from 'types/HvemPlanlegger';
 import { Uttaksdata } from 'utils/uttakHjelper';
@@ -22,19 +20,13 @@ interface Props {
 const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavnPart1, fornavnPart2 }) => {
     const intl = useIntl();
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const antallBarn = barnet.antallBarn;
     const erFødsel = barnet.erFødsel;
     const erFødt = erBarnetFødt(barnet);
-    const morHarIkkeRett =
-        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-
-    const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
-    const kunEnPartSkalHa = !morHarIkkeRett && farHarIkkeRett;
 
     const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2, familiehendelsedato } = uttaksdata;
-    const dato = dayjs(familiehendelsedato).format('D. MMMM');
+    const dato = intl.formatDate(familiehendelsedato, { day: 'numeric', month: 'short', year: 'numeric' });
 
     return (
         <Infobox
@@ -43,101 +35,63 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
             shouldFadeIn
         >
             <BodyLong>
-                <FormattedMessage
-                    id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
-                    values={{
-                        hvem: fornavnPart1,
-                        dag: intl.formatDate(startdatoSøker1, {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: '2-digit',
-                        }),
-                    }}
-                />
-            </BodyLong>
-            <BodyLong spacing>
-                <FormattedMessage
-                    id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
-                    values={{
-                        hvem: fornavnPart1,
-                        dag: intl.formatDate(sluttdatoSøker1, {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: '2-digit',
-                        }),
-                    }}
-                />
-            </BodyLong>
-            {fornavnPart2 && sluttdatoSøker2 && (
-                <>
-                    <BodyLong>
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
-                            values={{
-                                hvem: fornavnPart2,
-                                dag: intl.formatDate(startdatoSøker2, {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: '2-digit',
-                                }),
-                            }}
-                        />
-                    </BodyLong>
-                    <BodyLong spacing>
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
-                            values={{
-                                hvem: fornavnPart2,
-                                dag: intl.formatDate(sluttdatoSøker2, {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: '2-digit',
-                                }),
-                            }}
-                        />
-                    </BodyLong>
-                </>
-            )}
-            <BodyLong size="small">
                 {erFødsel ? (
                     <>
-                        {erFødt ? (
+                        {antallBarn !== '1' ? (
                             <FormattedMessage
-                                id="FordelingsdetaljerPanel.InfoboksTekst.HvisFødt"
+                                id="FordelingsdetaljerPanel.Infoboks.HvisBarnetFlereBarn"
                                 values={{
-                                    antallBarn,
-                                    kunEnPartSkalHa,
-                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                    erFødsel,
+                                    erFødt,
                                     dato: dato,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
                                 }}
                             />
                         ) : (
                             <FormattedMessage
-                                id="FordelingsdetaljerPanel.InfoboksTekst.HvisTermin"
+                                id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
                                 values={{
-                                    antallBarn,
-                                    kunEnPartSkalHa,
-                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
-                                    erFødsel,
+                                    erFødt,
                                     dato: dato,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
                                 }}
                             />
                         )}
                     </>
                 ) : (
                     <FormattedMessage
-                        id="FordelingsdetaljerPanel.InfoboksTekst.HvisAdopsjon"
+                        id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
                         values={{
                             antallBarn,
-                            kunEnPartSkalHa,
-                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
-                            erFødsel,
                             dato: dato,
+                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
                         }}
                     />
                 )}
             </BodyLong>
+            <BodyLong>
+                <FormattedMessage
+                    id="FordelingsdetaljerPanel.Infoboks.Periode"
+                    values={{
+                        hvem: fornavnPart1,
+                        fom: intl.formatDate(startdatoSøker1, { day: 'numeric', month: 'short', year: 'numeric' }),
+                        tom: intl.formatDate(sluttdatoSøker1, { day: 'numeric', month: 'short', year: 'numeric' }),
+                        b: (b) => <b>{b}</b>,
+                    }}
+                />
+            </BodyLong>
+            {fornavnPart2 && sluttdatoSøker2 && (
+                <BodyLong>
+                    <FormattedMessage
+                        id="FordelingsdetaljerPanel.Infoboks.Periode"
+                        values={{
+                            hvem: fornavnPart2,
+                            fom: intl.formatDate(startdatoSøker2, { day: 'numeric', month: 'short', year: 'numeric' }),
+                            tom: intl.formatDate(sluttdatoSøker2, { day: 'numeric', month: 'short', year: 'numeric' }),
+                            b: (b) => <b>{b}</b>,
+                        }}
+                    />
+                </BodyLong>
+            )}
         </Infobox>
     );
 };
