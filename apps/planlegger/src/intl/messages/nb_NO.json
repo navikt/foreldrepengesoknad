@@ -1,4 +1,5 @@
 {
+    "Du": "du",
     "HarValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
     "DefaultMessage.Ja": "Ja",
     "DefaultMessage.Nei": "Nei",
@@ -81,8 +82,8 @@
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar": "Det er ingen krav til hva {hvem} gjør når {hvem2} tar ut foreldrepenger.",
     "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden": "Når bare {hvem} har rett til foreldrepenger, kan du få hele perioden med foreldrepenger, utenom 9 uker som er satt av til mor rundt fødsel.",
     "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor": "Som {hvem} har man en del av foreldrepengene du kan bruke uten at det er noen krav til {erMorHovedsøker, select, true {mor} other {far}}, og en del hvor det er krav til at {erMorHovedsøker, select, true {mor} other {far}} er i <a>godkjent aktivitet</a> mens du er hjemme med barnet.",
-    "HvorLangPeriodeSteg.HvorLangPeriode": "Hvor lang periode med foreldrepenger ønsker {erAlenesøker, select, true {du} other {dere}}?",
-    "HvorLangPeriodeSteg.HvorLangPeriode.Required": "Du må oppgi hvor lang periode med foreldrepenger {erAlenesøker, select, true {du} other {dere}} ønsker.",
+    "HvorLangPeriodeSteg.HvorLangPeriode": "Hvor lang periode med foreldrepenger ønsker {kunEnPartSkalHa, select, true {{denSomHarRett}} other {dere}}?",
+    "HvorLangPeriodeSteg.HvorLangPeriode.Required": "Du må oppgi hvor lang periode med foreldrepenger {kunEnPartSkalHa, select, true {{denSomHarRett}} other {dere}} ønsker.",
     "HvorLangPeriodeSteg.100": "100 % utbetaling over {uker100} uker",
     "HvorLangPeriodeSteg.80": "80 % utbetaling over {uker80} uker",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTittel": "Siste dag med foreldrepenger kan bli {dato}",
