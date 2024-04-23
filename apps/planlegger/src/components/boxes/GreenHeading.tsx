@@ -11,7 +11,7 @@ const GreenHeading: React.FunctionComponent<Props> = ({ children, isDarkGreen = 
         borderRadius="medium medium 0 0"
         padding="6"
         borderWidth="0 0 2"
-        borderColor="border-alt-2"
+        style={{ borderStyle: 'solid', borderColor: 'var(--a-surface-alt-2)' }}
     >
         {children}
     </Box>
