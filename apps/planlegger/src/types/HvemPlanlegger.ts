@@ -50,12 +50,20 @@ export const isAlene = (hvemPlanlegger: HvemPlanlegger) => {
     return isFlere(hvemPlanlegger) === false;
 };
 
-export const erMorDelAvSøknaden = (type: Situasjon) => {
-    return type === Situasjon.MOR_OG_FAR || type === Situasjon.MOR_OG_MEDMOR || type === Situasjon.MOR;
+export const erMorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | MorOgMedmor | Mor => {
+    return (
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
+        hvemPlanlegger.type === Situasjon.MOR
+    );
 };
 
-export const erFarDelAvSøknaden = (type: Situasjon) => {
-    return type === Situasjon.MOR_OG_FAR || type === Situasjon.FAR_OG_FAR || type === Situasjon.FAR;
+export const erFarDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | FarOgFar | Far => {
+    return (
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.FAR
+    );
 };
 
 export const getNavnPåSøker = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {

@@ -205,7 +205,7 @@ const Innhold = () => {
                                 <BodyLong>
                                     <FormattedMessage
                                         id="OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst"
-                                        values={{ erFar: erFarDelAvSøknaden(hvemPlanlegger.type) }}
+                                        values={{ erFar: erFarDelAvSøknaden(hvemPlanlegger) }}
                                     />
                                 </BodyLong>
                             </div>
@@ -229,7 +229,7 @@ const Innhold = () => {
                                 <BodyLong>
                                     <FormattedMessage
                                         id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
-                                        values={{ erFar: erFarDelAvSøknaden(hvemPlanlegger.type) }}
+                                        values={{ erFar: erFarDelAvSøknaden(hvemPlanlegger) }}
                                     />
                                 </BodyLong>
                             </div>

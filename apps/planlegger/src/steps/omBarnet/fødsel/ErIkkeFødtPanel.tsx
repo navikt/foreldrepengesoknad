@@ -49,7 +49,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
         termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(2, 'days').toDate() : undefined;
 
     const erAlenesøker = isAlene(hvemPlanlegger);
-    const erFar = erFarDelAvSøknaden(hvemPlanlegger.type);
+    const erFar = erFarDelAvSøknaden(hvemPlanlegger);
 
     return (
         <VStack gap="5">

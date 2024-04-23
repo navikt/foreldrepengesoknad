@@ -216,7 +216,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                                         </Link>
                                                     ),
                                                     hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                                                 }}
                                             />
                                         </BodyLong>
@@ -286,7 +286,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel"
                                             values={{
                                                 antallBarn,
-                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                                                 dato: familiehendelsedato,
                                                 kunEnPartSkalHa,
                                             }}
@@ -297,7 +297,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin"
                                             values={{
                                                 antallBarn,
-                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                                                 kunEnPartSkalHa,
                                             }}
                                         />
@@ -313,7 +313,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                                     uker2: antallUker,
                                                     b: (msg: any) => <b>{msg}</b>,
                                                     hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                                                 }}
                                             />
                                         </BodyLong>
@@ -336,7 +336,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                                     ),
                                                     b: (msg: any) => <b>{msg}</b>,
                                                     hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                                                 }}
                                             />
                                         </BodyLong>

@@ -6,7 +6,7 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvemPlanlegger, Situasjon, erFarDelAvSøknaden, erMorDelAvSøknaden } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
@@ -17,6 +17,14 @@ import { LocaleAll } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
+
+const erMorDelAvSøknadenGittType = (type: Situasjon) => {
+    return type === Situasjon.MOR_OG_FAR || type === Situasjon.MOR_OG_MEDMOR || type === Situasjon.MOR;
+};
+
+const erFarDelAvSøknadenGittType = (type: Situasjon) => {
+    return type === Situasjon.MOR_OG_FAR || type === Situasjon.FAR_OG_FAR || type === Situasjon.FAR;
+};
 
 interface Props {
     locale: LocaleAll;
@@ -84,7 +92,7 @@ const HvemPlanleggerSteg: FunctionComponent<Props> = ({ locale }) => {
                         {type && (
                             <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                                 <VStack gap="10">
-                                    {erMorDelAvSøknaden(type) && (
+                                    {erMorDelAvSøknadenGittType(type) && (
                                         <TextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
                                             name="navnPåMor"
@@ -92,7 +100,7 @@ const HvemPlanleggerSteg: FunctionComponent<Props> = ({ locale }) => {
                                             customErrorFormatter={formatError}
                                         />
                                     )}
-                                    {erFarDelAvSøknaden(type) && (
+                                    {erFarDelAvSøknadenGittType(type) && (
                                         <TextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             name="navnPåFar"
