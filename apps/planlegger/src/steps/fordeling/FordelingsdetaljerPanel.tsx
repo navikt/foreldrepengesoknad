@@ -43,7 +43,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                                 values={{
                                     erFødt,
                                     dato: dato,
-                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                                 }}
                             />
                         ) : (
@@ -52,7 +52,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                                 values={{
                                     erFødt,
                                     dato: dato,
-                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                                 }}
                             />
                         )}
@@ -63,7 +63,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                         values={{
                             antallBarn,
                             dato: dato,
-                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger.type),
+                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                         }}
                     />
                 )}

@@ -122,7 +122,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                         values={{
                                             hvem: capitalizeFirstLetter(annenPartTekst),
                                             uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                                         }}
                                     />
                                 </BodyShort>
@@ -139,7 +139,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                         values={{
                                             hvem: capitalizeFirstLetter(annenPartTekst),
                                             uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger.type),
+                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                                         }}
                                     />
                                 </BodyShort>

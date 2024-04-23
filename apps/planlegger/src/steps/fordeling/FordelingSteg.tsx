@@ -37,7 +37,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';
 
 const finnPart1Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
-    erMorDelAvSøknaden(hvemPlanlegger.type)
+    erMorDelAvSøknaden(hvemPlanlegger)
         ? intl.formatMessage({ id: 'FordelingSteg.Mor' })
         : intl.formatMessage({ id: 'FordelingSteg.Far' });
 
@@ -45,7 +45,7 @@ const finnPart2Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'FordelingSteg.Medmor' });
     }
-    if (erFarDelAvSøknaden(hvemPlanlegger.type)) {
+    if (erFarDelAvSøknaden(hvemPlanlegger)) {
         return intl.formatMessage({ id: 'FordelingSteg.Far' });
     }
     return undefined;
