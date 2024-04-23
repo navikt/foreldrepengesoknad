@@ -115,3 +115,19 @@ export const FlereForsørgereToBarn: Story = {
         },
     },
 };
+
+export const FarOgFar: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Petter Pjokk',
+            navnPåMedfar: 'Espen Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '2',
+        },
+    },
+};
