@@ -195,7 +195,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                                 ))}
                             </Select>
                         </GreenPanel>
-                        {antallUkerSøker1 > 0 && (
+                        {antallUkerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
                                 fornavnPart1={fornavnPart1}
                                 fornavnPart2={fornavnPart2}
