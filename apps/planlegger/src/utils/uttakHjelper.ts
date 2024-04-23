@@ -224,11 +224,7 @@ const finnEnsligUttaksdata = (
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = getUttaksdagTilOgMedDato(
-            dayjs(familiehendelsedato)
-                .add(aktivitetsfriUker, 'weeks')
-                .add(6, 'weeks')
-                .subtract(1, 'day')
-                .format(ISO_DATE_FORMAT),
+            dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks').subtract(1, 'day').format(ISO_DATE_FORMAT),
         );
         return {
             familiehendelsedato,
