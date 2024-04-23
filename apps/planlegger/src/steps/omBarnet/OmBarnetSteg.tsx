@@ -1,18 +1,16 @@
-import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet, erBarnetFødt } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon, isAlene } from 'types/HvemPlanlegger';
+import { isAlene } from 'types/HvemPlanlegger';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -29,19 +27,6 @@ const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     }
 
     return <FormattedMessage id="OmBarnetSteg.Adopsjon.HvorMange" values={{ erAlenesøker }} />;
-};
-const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
-        return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
-    }
-    if (
-        hvemPlanlegger.type === Situasjon.FAR ||
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR
-    ) {
-        return intl.formatMessage({ id: 'OversiktSteg.Far' });
-    }
-    return undefined;
 };
 
 interface Props {
@@ -76,8 +61,6 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
     const antallBarn = formMethods.watch('antallBarn');
 
     const erAlenesøker = isAlene(hvemPlanlegger);
-    const erFarEllerMedmor =
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR || hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -158,45 +141,12 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
                             />
                         )}
                         {erFødsel === false && antallBarn && (
-                            <>
-                                <Adopsjon
-                                    erAlenesøker={erAlenesøker}
-                                    erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
-                                    antallBarn={antallBarn}
-                                />
-                                <Infobox
-                                    header={
-                                        <FormattedMessage
-                                            id="OmBarnetSteg.Adopsjon.ForeldrepengerInfo"
-                                            values={{ erAlenesøker }}
-                                        />
-                                    }
-                                    icon={
-                                        <TasklistStartIcon
-                                            height={28}
-                                            width={28}
-                                            color="#236B7D"
-                                            fontSize="1.5rem"
-                                            aria-hidden
-                                        />
-                                    }
-                                    shouldFadeIn
-                                >
-                                    <BodyLong>
-                                        <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />
-                                    </BodyLong>
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg"
-                                            values={{
-                                                erAlenesøker,
-                                                erFarEllerMedmor,
-                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                            }}
-                                        />
-                                    </BodyLong>
-                                </Infobox>
-                            </>
+                            <Adopsjon
+                                erAlenesøker={erAlenesøker}
+                                erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
+                                antallBarn={antallBarn}
+                                hvemPlanlegger={hvemPlanlegger}
+                            />
                         )}
                     </VStack>
                     <Spacer />
