@@ -1,7 +1,8 @@
-import { ArrowLeftIcon, TasklistStartIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, LinkIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import Infoboks from 'components/boxes/Infobox';
+import ShareDataInfobox from 'components/boxes/ShareDataInfobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -25,6 +26,14 @@ import OppsummeringHeader from './OppsummeringHeader';
 import HvaSkjerNårIkon from './ikoner/HvaSkjerNårIkon';
 import HvorMyeIkon from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
+
+const copyUrlToClipboard = async () => {
+    try {
+        await navigator.clipboard.writeText(window.location.href);
+    } catch (err) {
+        console.error('Failed to copy: ', err);
+    }
+};
 
 interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoerDTO;
@@ -131,6 +140,19 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                             />
                         </VStack>
                     )}
+                    <VStack gap="4">
+                        <ShareDataInfobox />
+                        <HStack justify="center">
+                            <Button
+                                className={styles.button}
+                                variant="primary"
+                                icon={<LinkIcon aria-hidden />}
+                                onClick={copyUrlToClipboard}
+                            >
+                                <FormattedMessage id="OppsummeringSteg.KopierUrl" />
+                            </Button>
+                        </HStack>
+                    </VStack>
                     <VStack gap="10">
                         <HStack>
                             <Button
