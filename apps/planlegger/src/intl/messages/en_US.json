@@ -8,7 +8,7 @@
     "LanguageToggle.Nynorsk": "Nynorsk - Norwegian",
     "LanguageToggle.Engelsk": "English",
     "ValidationMessage.InFuture": "The date you chose is in the future.",
-    "ValidationMessage.ValidDate": "Date must be a valid date in the format dd.mm.yyyy. Click on the icon to choose in the calendar.",
+    "ValidationMessage.ValidDate": "You have entered a text that is not a date, the date must be entered in the format dd.mm.yyyy",
     "ValidationMessage.OlderThan6months": "The date you chose is older than 6 months.",
     "ValidationMessage.KanIkkeVære3UkerFraIdag": "The date cannot be earlier than 3 weeks from today.",
     "ValidationMessage.DuMåVæreIUke22": "You can apply at the earliest when you are in the 22nd week of pregnancy.",

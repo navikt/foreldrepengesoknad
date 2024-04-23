@@ -8,7 +8,7 @@
     "LanguageToggle.Nynorsk": "Nynorsk - norsk",
     "LanguageToggle.Engelsk": "English",
     "ValidationMessage.InFuture": "Datoen du valde er i framtida.",
-    "ValidationMessage.ValidDate": "Dato må være ein gyldig dato på formatet dd.mm.åååå. Klikk på ikonet for å velje i kalenderen.",
+    "ValidationMessage.ValidDate": "Du har skrive inn noe som ikkje er ein dato, datoen må skrivast på formatet dd.mm.åååå.",
     "ValidationMessage.OlderThan6months": "Datoen du valde er eldre enn 6 månader.",
     "ValidationMessage.KanIkkeVære3UkerFraIdag": "Datoen kan ikkje vere tidlegare enn 3 veker frå i dag.",
     "ValidationMessage.DuMåVæreIUke22": "Du kan tidlegast søke når du er i 22. svangerskapsveke.",
