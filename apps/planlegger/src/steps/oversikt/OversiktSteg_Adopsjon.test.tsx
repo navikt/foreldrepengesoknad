@@ -32,7 +32,7 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
+        expect((screen.getByRole('option', { name: '16 uker til Espen' }) as HTMLOptionElement).selected).toBe(true);
 
         expect(screen.getByText('Mor, 15 uker, starter torsdag 11. apr.')).toBeInTheDocument();
         expect(screen.getByText('Far, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
@@ -160,7 +160,7 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect((screen.getByRole('option', { name: '16 uker til medmor' }) as HTMLOptionElement).selected).toBe(true);
+        expect((screen.getByRole('option', { name: '16 uker til Helga' }) as HTMLOptionElement).selected).toBe(true);
 
         expect(screen.getByText('Mor, 15 uker, starter torsdag 11. apr.')).toBeInTheDocument();
         expect(screen.getByText('Medmor, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
@@ -342,7 +342,7 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect((screen.getAllByRole('option', { name: '16 uker til far' })[0] as HTMLOptionElement).selected).toBe(
+        expect((screen.getAllByRole('option', { name: '16 uker til Anders' })[0] as HTMLOptionElement).selected).toBe(
             true,
         );
 

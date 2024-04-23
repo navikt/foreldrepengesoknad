@@ -59,7 +59,7 @@ type Fellesperiodefordeling = {
 export const getFellesperiodefordelingSelectOptions = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
     const values = [];
     for (let i = 0; i <= antallUkerFellesperiode; i++) {
-        values.push({ antallUkerSøker2: antallUkerFellesperiode - i, antallUkerSøker1: i });
+        values.push({ antallUkerSøker2: i, antallUkerSøker1: antallUkerFellesperiode - i });
     }
     return values;
 };
@@ -68,9 +68,11 @@ export const finnFellesperiodeFordelingOptionTekst = (
     intl: IntlShape,
     value: Fellesperiodefordeling,
     hvemPlanlegger: HvemPlanlegger,
+    fornavnPart1?: string,
+    fornavnPart2?: string,
 ) => {
-    const part1Tekst = finnPart1Tekst(intl, hvemPlanlegger);
-    const part2Tekst = finnPart2Tekst(intl, hvemPlanlegger);
+    const part1Tekst = fornavnPart1 || finnPart1Tekst(intl, hvemPlanlegger);
+    const part2Tekst = fornavnPart2 || finnPart2Tekst(intl, hvemPlanlegger);
 
     if (value.antallUkerSøker1 === 0) {
         return (
@@ -138,6 +140,9 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
 
+    const fornavnPart1 = getFornavnPåSøker(hvemPlanlegger, intl);
+    const fornavnPart2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
+
     const { ref, scrollToBottom } = useScrollBehaviour();
 
     return (
@@ -178,15 +183,21 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                             >
                                 {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
                                     <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                        {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
+                                        {finnFellesperiodeFordelingOptionTekst(
+                                            intl,
+                                            value,
+                                            hvemPlanlegger,
+                                            fornavnPart1,
+                                            fornavnPart2,
+                                        )}
                                     </option>
                                 ))}
                             </Select>
                         </GreenPanel>
                         {antallUkerSøker1 > 0 && (
                             <FordelingsdetaljerPanel
-                                fornavnPart1={getFornavnPåSøker(hvemPlanlegger, intl)}
-                                fornavnPart2={getFornavnPåAnnenPart(hvemPlanlegger, intl)}
+                                fornavnPart1={fornavnPart1}
+                                fornavnPart2={fornavnPart2}
                                 uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
                             />
                         )}

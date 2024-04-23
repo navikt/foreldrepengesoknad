@@ -32,7 +32,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
+        expect((screen.getByRole('option', { name: '16 uker til Espen' }) as HTMLOptionElement).selected).toBe(true);
 
         expect(screen.getByText('Mor, 18 uker, starter torsdag 21. mars')).toBeInTheDocument();
         expect(screen.getByText('Far, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
@@ -176,7 +176,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect((screen.getByRole('option', { name: '16 uker til medmor' }) as HTMLOptionElement).selected).toBe(true);
+        expect((screen.getByRole('option', { name: '16 uker til Helga' }) as HTMLOptionElement).selected).toBe(true);
 
         expect(screen.getByText('Mor, 18 uker, starter torsdag 21. mars')).toBeInTheDocument();
         expect(screen.getByText('Medmor, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
@@ -378,7 +378,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('80 % foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect((screen.getAllByRole('option', { name: '16 uker til far' })[0] as HTMLOptionElement).selected).toBe(
+        expect((screen.getAllByRole('option', { name: '16 uker til Anders' })[0] as HTMLOptionElement).selected).toBe(
             true,
         );
 
@@ -441,7 +441,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('80 % foreldrepenger i 59 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
+        expect((screen.getByRole('option', { name: '16 uker til Espen' }) as HTMLOptionElement).selected).toBe(true);
 
         expect(screen.getByText('Mor, 18 uker, starter fredag 22. mars')).toBeInTheDocument();
         expect(screen.getByText('Far, 31 uker, starter fredag 26. juli')).toBeInTheDocument();
@@ -482,7 +482,7 @@ describe('<OversiktSteg - fødsel>', () => {
             'true',
         );
 
-        expect((screen.getByRole('option', { name: '18 uker til far' }) as HTMLOptionElement).selected).toBe(true);
+        expect((screen.getByRole('option', { name: '18 uker til Espen' }) as HTMLOptionElement).selected).toBe(true);
 
         expect(screen.getByText('Mor, 22 uker, starter torsdag 21. mars')).toBeInTheDocument();
         expect(screen.getByText('Far, 37 uker, starter torsdag 22. aug.')).toBeInTheDocument();
@@ -516,7 +516,9 @@ describe('<OversiktSteg - fødsel>', () => {
 
         await userEvent.selectOptions(utils.getByLabelText('Fordeling av fellesperioden'), '8');
 
-        expect((screen.getByRole('option', { name: '8 til mor, 8 til far' }) as HTMLOptionElement).selected).toBe(true);
+        expect((screen.getByRole('option', { name: '8 til Olga, 8 til Espen' }) as HTMLOptionElement).selected).toBe(
+            true,
+        );
 
         expect(screen.getByText('Mor, 26 uker, starter torsdag 21. mars')).toBeInTheDocument();
         expect(screen.getByText('Far, 23 uker, starter torsdag 19. sep.')).toBeInTheDocument();
