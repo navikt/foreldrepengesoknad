@@ -200,6 +200,6 @@
     "OmÅTilpassePlanen.PermisjonSamtidig": "Permisjon samtidig",
     "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Man kan være hjemme samtidig med opp til 150 % foreldrepenger. Dette er mulig fra uke 7 etter fødsel, hvis en forelder bruker fellesperioden mens den andre bruker egen kvote.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "To uker rundt fødsel",
-    "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Ofte får {hvem, select, true {medmødre} other {fedre}} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette kan en bruke foreldrepenger i disse to ukene.",
+    "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Ofte får {hvem, select, true {fedre} other {medmor}} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette kan en bruke foreldrepenger i disse to ukene.",
     "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "Hvis {hvem} ikke skal ha foreldrepenger kan man legge til periode uten foreldrepenger, hvor man for eksempel får feriepenger fra arbeidsgiver."
 }
