@@ -6,9 +6,10 @@ export const formatError = (error?: string) => {
                 marginLeft: -13,
                 paddingLeft: 5,
                 paddingRight: 5,
-                paddingBottom: 2,
-                paddingTop: 2,
+                paddingBottom: 5,
+                paddingTop: 5,
                 borderRadius: 4,
+                width: '100%',
             }}
         >
             {error}

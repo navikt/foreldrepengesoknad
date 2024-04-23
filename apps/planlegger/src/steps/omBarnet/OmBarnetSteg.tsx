@@ -121,9 +121,12 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
                                 shouldFadeIn
                                 validate={[
                                     isRequired(
-                                        intl.formatMessage({
-                                            id: 'OmBarnetSteg.HvorMange.Required',
-                                        }),
+                                        intl.formatMessage(
+                                            {
+                                                id: 'OmBarnetSteg.HvorMange.Required',
+                                            },
+                                            { erAlenesøker, erFødsel },
+                                        ),
                                     ),
                                 ]}
                                 onChange={() => {
