@@ -73,11 +73,15 @@ export const erMedmorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlan
     return hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
 };
 
-export const getNavnPåDenSomHarRett = (
+export const getTekstForDeSomHarRett = (
     hvemPlanlegger: HvemPlanlegger,
     arbeidssituasjon: Arbeidssituasjon,
     intl: IntlShape,
 ): string | undefined => {
+    const erAlenesøker = isAlene(hvemPlanlegger);
+    if (erAlenesøker) {
+        return intl.formatMessage({ id: 'Du' });
+    }
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     switch (hvemHarRett) {
         case 'kunMedfarEllerMedmorHarRett':
@@ -100,6 +104,7 @@ export const getNavnPåDenSomHarRett = (
             }
             throw new Error('Mor er ikke en del av planleggingen.');
         case 'beggeHarRett':
+            return intl.formatMessage({ id: 'Dere' });
         case 'ingenHarRett':
             return undefined;
     }

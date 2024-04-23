@@ -17,7 +17,7 @@ import {
     erMorDelAvSøknaden,
     finnAnnenPartTekst,
     finnSøkerTekst,
-    getNavnPåDenSomHarRett,
+    getTekstForDeSomHarRett,
     isAlene,
 } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
@@ -82,9 +82,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
     const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const kunEnPartSkalHa = erAlenesøker || morHarIkkeRett || farHarIkkeRett;
-    const denSomHarRett = erAlenesøker
-        ? intl.formatMessage({ id: 'Du' })
-        : getNavnPåDenSomHarRett(hvemPlanlegger, arbeidssituasjon, intl);
+    const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, arbeidssituasjon, intl);
 
     const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
         stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
@@ -235,10 +233,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                         )}
                         <GreenRadioGroup
                             label={
-                                <FormattedMessage
-                                    id="HvorLangPeriodeSteg.HvorLangPeriode"
-                                    values={{ kunEnPartSkalHa, denSomHarRett }}
-                                />
+                                <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ deSomHarRett }} />
                             }
                             name="dekningsgrad"
                             validate={[
@@ -247,7 +242,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                         {
                                             id: 'HvorLangPeriodeSteg.HvorLangPeriode.Required',
                                         },
-                                        { kunEnPartSkalHa, denSomHarRett },
+                                        { deSomHarRett },
                                     ),
                                 ),
                             ]}
