@@ -72,6 +72,9 @@ export const erFarDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanleg
 export const erMedmorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgMedmor => {
     return hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
 };
+export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar => {
+    return hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+};
 
 export const getTekstForDeSomHarRett = (
     hvemPlanlegger: HvemPlanlegger,

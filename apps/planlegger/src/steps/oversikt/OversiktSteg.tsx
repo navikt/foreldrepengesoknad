@@ -170,7 +170,11 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                         <Calendar periods={uttaksperioder} />
                     </div>
                     <VStack gap="5">
-                        <OmÅTilpassePlanen />
+                        <OmÅTilpassePlanen
+                            arbeidssituasjon={arbeidssituasjon}
+                            barnet={barnet}
+                            hvemPlanlegger={hvemPlanlegger}
+                        />
                         <UforutsetteEndringer />
                     </VStack>
                     <StepButtons
