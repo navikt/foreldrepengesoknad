@@ -13,7 +13,7 @@ interface Props {
 const LanguageToggle: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     return (
         <Select
-            label=""
+            label="Velg språk"
             hideLabel
             onChange={(evt) => changeLocale(evt.target.value as LocaleAll)}
             defaultValue={locale}
