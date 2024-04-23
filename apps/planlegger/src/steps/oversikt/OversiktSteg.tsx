@@ -12,7 +12,7 @@ import {
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { isAlene } from 'types/HvemPlanlegger';
+import { getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
@@ -97,6 +97,9 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
         fordeling?.antallUkerSøker1,
     );
 
+    const fornavnPart1 = getFornavnPåSøker(hvemPlanlegger, intl);
+    const fornavnPart2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
+
     return (
         <form>
             <PlanleggerStepPage steps={stepConfig}>
@@ -143,7 +146,13 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                         >
                             {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
                                 <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                    {finnFellesperiodeFordelingOptionTekst(intl, value, hvemPlanlegger)}
+                                    {finnFellesperiodeFordelingOptionTekst(
+                                        intl,
+                                        value,
+                                        hvemPlanlegger,
+                                        fornavnPart1,
+                                        fornavnPart2,
+                                    )}
                                 </option>
                             ))}
                         </Select>
