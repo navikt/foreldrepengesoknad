@@ -2,7 +2,15 @@ import { HeartFillIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
-import { HvemPlanlegger, erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst } from 'types/HvemPlanlegger';
+import {
+    HvemPlanlegger,
+    Situasjon,
+    erMorDelAvSøknaden,
+    finnAnnenPartTekst,
+    finnSøkerTekst,
+    getFornavnPåAnnenPart,
+    getFornavnPåSøker,
+} from 'types/HvemPlanlegger';
 import { HvemHarRett } from 'utils/hvemHarRettHjelper';
 import {
     TilgjengeligStønadskonto,
@@ -40,7 +48,15 @@ const OversiktLabels: FunctionComponent<Props> = ({
     const erIkkeFødt = erBarnetIkkeFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
 
-    const annenPartTekst = finnAnnenPartTekst(intl, hvemPlanlegger);
+    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+    const søkerTekst =
+        erFarOgFar && hvemPlanlegger.navnPåMedfar
+            ? getFornavnPåSøker(hvemPlanlegger, intl)
+            : finnSøkerTekst(intl, hvemPlanlegger);
+    const annenPartTekst =
+        erFarOgFar && hvemPlanlegger.navnPåMedfar
+            ? getFornavnPåAnnenPart(hvemPlanlegger, intl)
+            : finnAnnenPartTekst(intl, hvemPlanlegger);
 
     const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2, familiehendelsedato } = uttaksdata;
 
@@ -54,7 +70,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                                 <FormattedMessage
                                     id="OversiktSteg.UkerForeldrepenger"
                                     values={{
-                                        hvem: capitalizeFirstLetter(finnSøkerTekst(intl, hvemPlanlegger)),
+                                        hvem: capitalizeFirstLetter(søkerTekst),
                                         uker: weeksBetween(startdatoSøker1, sluttdatoSøker1),
                                         dato: intl.formatDate(startdatoSøker1, {
                                             day: '2-digit',

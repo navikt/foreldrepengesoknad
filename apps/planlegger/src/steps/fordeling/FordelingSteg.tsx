@@ -71,8 +71,9 @@ export const finnFellesperiodeFordelingOptionTekst = (
     fornavnPart1?: string,
     fornavnPart2?: string,
 ) => {
-    const part1Tekst = fornavnPart1 || finnPart1Tekst(intl, hvemPlanlegger);
-    const part2Tekst = fornavnPart2 || finnPart2Tekst(intl, hvemPlanlegger);
+    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+    const part1Tekst = erFarOgFar && fornavnPart1 ? fornavnPart1 : finnPart1Tekst(intl, hvemPlanlegger);
+    const part2Tekst = erFarOgFar && fornavnPart2 ? fornavnPart2 : finnPart2Tekst(intl, hvemPlanlegger);
 
     if (value.antallUkerSøker1 === 0) {
         return (
