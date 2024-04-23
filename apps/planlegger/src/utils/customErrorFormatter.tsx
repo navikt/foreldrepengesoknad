@@ -1,6 +1,7 @@
 export const formatError = (error?: string) => {
     return error ? (
         <span
+            role="alert"
             style={{
                 background: 'white',
                 marginLeft: -13,
