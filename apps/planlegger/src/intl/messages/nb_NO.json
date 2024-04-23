@@ -1,4 +1,6 @@
 {
+    "Du": "du",
+    "Dere": "dere",
     "HarValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
     "DefaultMessage.Ja": "Ja",
     "DefaultMessage.Nei": "Nei",
@@ -81,8 +83,8 @@
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar": "Det er ingen krav til hva {hvem} gjør når {hvem2} tar ut foreldrepenger.",
     "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden": "Når bare {hvem} har rett til foreldrepenger, kan du få hele perioden med foreldrepenger, utenom 9 uker som er satt av til mor rundt fødsel.",
     "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor": "Som {hvem} har man en del av foreldrepengene du kan bruke uten at det er noen krav til {erMorHovedsøker, select, true {mor} other {far}}, og en del hvor det er krav til at {erMorHovedsøker, select, true {mor} other {far}} er i <a>godkjent aktivitet</a> mens du er hjemme med barnet.",
-    "HvorLangPeriodeSteg.HvorLangPeriode": "Hvor lang periode med foreldrepenger ønsker {erAlenesøker, select, true {du} other {dere}}?",
-    "HvorLangPeriodeSteg.HvorLangPeriode.Required": "Du må oppgi hvor lang periode med foreldrepenger {erAlenesøker, select, true {du} other {dere}} ønsker.",
+    "HvorLangPeriodeSteg.HvorLangPeriode": "Hvor lang periode med foreldrepenger ønsker {deSomHarRett}?",
+    "HvorLangPeriodeSteg.HvorLangPeriode.Required": "Du må oppgi hvor lang periode med foreldrepenger {deSomHarRett} ønsker.",
     "HvorLangPeriodeSteg.100": "100 % utbetaling over {uker100} uker",
     "HvorLangPeriodeSteg.80": "80 % utbetaling over {uker80} uker",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTittel": "Siste dag med foreldrepenger kan bli {dato}",
@@ -202,6 +204,6 @@
     "OmÅTilpassePlanen.PermisjonSamtidig": "Permisjon samtidig",
     "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Man kan være hjemme samtidig med opp til 150 % foreldrepenger. Dette er mulig fra uke 7 etter fødsel, hvis en forelder bruker fellesperioden mens den andre bruker egen kvote.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "To uker rundt fødsel",
-    "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Ofte får {erFar, select, true {fedre} other {medmødre}} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette kan en bruke foreldrepenger i disse to ukene.",
-    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "Hvis {erFar, select, true {far} other {medmor}} ikke skal ha foreldrepenger kan man legge til periode uten foreldrepenger, hvor man for eksempel får feriepenger fra arbeidsgiver."
+    "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Ofte får {hvem, select, true {fedre} other {medmor}} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette kan en bruke foreldrepenger i disse to ukene.",
+    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "Hvis {hvem} ikke skal ha foreldrepenger kan man legge til periode uten foreldrepenger, hvor man for eksempel får feriepenger fra arbeidsgiver."
 }

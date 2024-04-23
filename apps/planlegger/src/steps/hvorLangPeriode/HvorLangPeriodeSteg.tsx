@@ -13,7 +13,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert, erBarnetFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst, isAlene } from 'types/HvemPlanlegger';
+import {
+    erMorDelAvSøknaden,
+    finnAnnenPartTekst,
+    finnSøkerTekst,
+    getTekstForDeSomHarRett,
+    isAlene,
+} from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
@@ -76,6 +82,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
     const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const kunEnPartSkalHa = erAlenesøker || morHarIkkeRett || farHarIkkeRett;
+    const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, arbeidssituasjon, intl);
 
     const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
         stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
@@ -226,7 +233,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                         )}
                         <GreenRadioGroup
                             label={
-                                <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ erAlenesøker }} />
+                                <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ deSomHarRett }} />
                             }
                             name="dekningsgrad"
                             validate={[
@@ -235,7 +242,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                         {
                                             id: 'HvorLangPeriodeSteg.HvorLangPeriode.Required',
                                         },
-                                        { erAlenesøker },
+                                        { deSomHarRett },
                                     ),
                                 ),
                             ]}

@@ -1,4 +1,6 @@
 {
+    "Du": "you",
+    "Dere": "you",
     "HarValgfrieFelt": "All fields must be filled in, except fields marked with (optional).",
     "DefaultMessage.Ja": "Yes",
     "DefaultMessage.Nei": "No",
@@ -75,14 +77,14 @@
     "HvemPlanlegger.DefaultMedMorNavn": "Co-mother",
     "HvorLangPeriodeSteg.Tittel": "How long",
     "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel": "80 % or 100 %?",
-    "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "You can choose between 49 weeks and 59 weeks of parental benefits, and both must choose the same. If you choose 49 weeks, you get 100 % parental benefits, while if you choose 59 weeks, the payment is reduced to 80 %.",
+    "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "You can choose between 49 weeks and 59 weeks of parental benefits, which will apply for both. If you choose 49 weeks, you get 100 % parental benefits, while if you choose 59 weeks, the payment is reduced to 80 %.",
     "HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett": "When only the {hvem} is entitled to parental benefits",
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden": "When only the {hvem} is entitled to parental benefits, the {hvem} gets the entire parental benefit period.",
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar": "There are no requirements for what the {hvem} does when the {hvem2} takes out parental benefits.",
     "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden": "When only the {hvem, select, true {father} other {co-mother}} is entitled to parental benefits, he can get the entire period of parental benefits, except for 9 weeks reserved for the mother around the birth.",
     "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor": "As a {hvem}, you have a part of the parental benefits you can use without any requirements for the mother, and a part where it is required that the mother is in <a>approved activity</a> while you are at home with the child.",
-    "HvorLangPeriodeSteg.HvorLangPeriode": "How long a period of parental benefits do {erAlenesøker, select, true {you} other {you both}} want?",
-    "HvorLangPeriodeSteg.HvorLangPeriode.Required": "You must answer how long period of parental benefits {erAlenesøker, select, true {you} other {you both}} want before proceeding.",
+    "HvorLangPeriodeSteg.HvorLangPeriode": "How long period of parental benefits do you want?",
+    "HvorLangPeriodeSteg.HvorLangPeriode.Required": "You must answer how long period of parental benefits you want before proceeding.",
     "HvorLangPeriodeSteg.100": "100 % payment over {uker100} weeks",
     "HvorLangPeriodeSteg.80": "80 % payment over {uker80} weeks",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTittel": "The last day with parental benefits can be {dato}",
@@ -194,7 +196,7 @@
     "OmÅTilpassePlanen.FørTermin": "Before the due date",
     "OmÅTilpassePlanen.FørTermin.Tekst": "The mother has three weeks that can only be used before birth. If the {antallBarn, select, 1 {child} other {children}} is born before the due date, the mother starts using weeks from her quota. The remaining part of these three weeks is erased. If the {antallBarn, select, 1 {child} other {children}} is born after the due date, the joint period is being used until birth when the mother starts on her quota.",
     "OmÅTilpassePlanen.DeFørsteSeksUkene": "The first six weeks",
-    "OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst": "The first six weeks after birth are reserved for the mother and locked to this time. {erFar, select, true {Fathers} other {Co-mothers}} often have leave covered for the first two weeks after birth by their employer. If not, the {erFar, select, true {father} other {co-mother}} can use parental benefits in these two weeks.",
+    "OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst": "The first six weeks after birth are reserved for the mother and locked to this time. {hvem} often have leave covered for the first two weeks after birth by their employer. If not, the {hvem} other {co-mother}} can use parental benefits in these two weeks.",
     "OmÅTilpassePlanen.LeggeTilFerie": "Adding a holiday",
     "OmÅTilpassePlanen.LeggeTilFerie.Tekst": "If neither of the parents are taking parental benefits, you can add periods without parental benefits, where one, for example, receives holiday pay from the employer.",
     "OmÅTilpassePlanen.JobbeSamtidig": "Work simultaneously",
@@ -202,6 +204,6 @@
     "OmÅTilpassePlanen.PermisjonSamtidig": "Leave at the same time",
     "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Both parents can be at home simultaneously with up to 150 % parental benefits. This is possible from week 7 after birth, if one parent uses the joint period while the other uses their own quota.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "Two weeks around birth",
-    "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "{erFar, select, true {Fathers} other {Co-mothers}} often have leave covered for the first two weeks after birth by their employer. If not, the {erFar, select, true {father} other {co-mother}} can use parental benefits in these two weeks.",
-    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {erFar, select, true {father} other {co-mother}} is not taking parental benefits, you can add a period without parental benefits, where one, for example, receives holiday pay from the employer."
+    "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Often {hvem}s have leave covered for the first two weeks after birth by their employer. If not, the {hvem} can use parental benefits in these two weeks.",
+    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {hvem} is not taking parental benefits, you can add a period without parental benefits, where one, for example, receives holiday pay from the employer."
 }

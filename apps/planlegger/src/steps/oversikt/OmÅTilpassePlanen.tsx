@@ -11,7 +11,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { erBarnetAdoptert } from 'types/Barnet';
-import { erFarDelAvSøknaden, finnAnnenPartTekst, isAlene } from 'types/HvemPlanlegger';
+import { finnAnnenPartTekst, isAlene } from 'types/HvemPlanlegger';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -134,7 +134,16 @@ const Innhold = () => {
                                     <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
                                 </Heading>
                                 <BodyLong>
-                                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie.Tekst" />
+                                    <FormattedMessage
+                                        id="OmÅTilpassePlanen.LeggeTilFerie.Tekst"
+                                        values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                    />
+                                </BodyLong>
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
+                                        values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                    />
                                 </BodyLong>
                             </div>
                         </HStack>
@@ -205,7 +214,9 @@ const Innhold = () => {
                                 <BodyLong>
                                     <FormattedMessage
                                         id="OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst"
-                                        values={{ erFar: erFarDelAvSøknaden(hvemPlanlegger) }}
+                                        values={{
+                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                        }}
                                     />
                                 </BodyLong>
                             </div>
@@ -229,7 +240,7 @@ const Innhold = () => {
                                 <BodyLong>
                                     <FormattedMessage
                                         id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
-                                        values={{ erFar: erFarDelAvSøknaden(hvemPlanlegger) }}
+                                        values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
                                     />
                                 </BodyLong>
                             </div>
