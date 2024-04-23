@@ -132,7 +132,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                                 {
                                                     id: 'ArbeidssituasjonSteg.HvaGjelder.Required',
                                                 },
-                                                { erAlenesøker, navn: getNavnPåSøker(hvemPlanlegger, intl) },
+                                                { erAlenesøker, navn: fornavnSøker },
                                             ),
                                         ),
                                     ]}
