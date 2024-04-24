@@ -20,11 +20,7 @@ const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): st
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
     }
-    if (
-        hvemPlanlegger.type === Situasjon.FAR ||
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR
-    ) {
+    if (erFarDelAvSøknaden(hvemPlanlegger)) {
         return intl.formatMessage({ id: 'OversiktSteg.Far' });
     }
     return undefined;

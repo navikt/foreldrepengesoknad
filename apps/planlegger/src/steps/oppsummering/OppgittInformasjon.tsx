@@ -4,7 +4,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -69,7 +69,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
 
     return (
         <VStack gap="10">
@@ -137,7 +136,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
 
-                                {erAlenesøker ? (
+                                {erAlenesøker && (
                                     <BodyLong>
                                         <FormattedMessage
                                             id="OppgittInformasjon.Arbeidssituasjon"
@@ -147,23 +146,22 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             }}
                                         />
                                     </BodyLong>
-                                ) : (
+                                )}
+                                {!erAlenesøker && (
                                     <>
-                                        {!kunEnPartSkalHa ? (
-                                            arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
-                                            arbeidssituasjon.jobberAnnenPart === true && (
-                                                <BodyLong>
-                                                    <FormattedMessage
-                                                        id="OppgittInformasjon.ArbeidssituasjonBeggeJobber"
-                                                        values={{
-                                                            navn: fornavn1,
-                                                            navn2: fornavn2,
-                                                            arbeidssituasjon: arbeidssituasjon.status,
-                                                        }}
-                                                    />
-                                                </BodyLong>
-                                            )
-                                        ) : (
+                                        {hvemHarRett === 'beggeHarRett' && (
+                                            <BodyLong>
+                                                <FormattedMessage
+                                                    id="OppgittInformasjon.ArbeidssituasjonBeggeJobber"
+                                                    values={{
+                                                        navn: fornavn1,
+                                                        navn2: fornavn2,
+                                                        arbeidssituasjon: arbeidssituasjon.status,
+                                                    }}
+                                                />
+                                            </BodyLong>
+                                        )}
+                                        {hvemHarRett !== 'beggeHarRett' && (
                                             <>
                                                 <BodyLong>
                                                     <FormattedMessage
@@ -190,31 +188,29 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                             </>
                         </GreenPanel>
                         <GreenPanel>
-                            <>
-                                <Heading size="small" level="4">
+                            <Heading size="small" level="4">
+                                <FormattedMessage
+                                    id="OppgittInformasjon.LengdeOgFordeling"
+                                    values={{ kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett' }}
+                                />
+                            </Heading>
+                            <VStack gap="5">
+                                <BodyLong>
                                     <FormattedMessage
-                                        id="OppgittInformasjon.LengdeOgFordeling"
-                                        values={{ kunEnPartSkalHa }}
+                                        id="OppgittInformasjon.FordelingOptionsMedUker"
+                                        values={{
+                                            erAlenesøker,
+                                            prosent: hvorLangPeriode.dekningsgrad,
+                                            uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                            fellesuker: antallUkerFellesperiodeSøker1,
+                                            fellesuker2: antallUkerFellesperiodeSøker2,
+                                            hvem: finnSøkerTekst(intl, hvemPlanlegger),
+                                            hvem2: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                            kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett',
+                                        }}
                                     />
-                                </Heading>
-                                <VStack gap="5">
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="OppgittInformasjon.FordelingOptionsMedUker"
-                                            values={{
-                                                erAlenesøker,
-                                                prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
-                                                fellesuker: antallUkerFellesperiodeSøker1,
-                                                fellesuker2: antallUkerFellesperiodeSøker2,
-                                                hvem: finnSøkerTekst(intl, hvemPlanlegger),
-                                                hvem2: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                kunEnPartSkalHa,
-                                            }}
-                                        />
-                                    </BodyLong>
-                                </VStack>
-                            </>
+                                </BodyLong>
+                            </VStack>
                         </GreenPanel>
                     </VStack>
                 </ExpansionCard.Content>
