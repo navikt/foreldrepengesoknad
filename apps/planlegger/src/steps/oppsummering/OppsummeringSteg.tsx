@@ -7,9 +7,9 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetFødt } from 'types/Barnet';
-import { isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { isAlene } from 'utils/HvemPlanleggerUtils';
+import { erBarnetFødt } from 'utils/barnetUtils';
 import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoer';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 

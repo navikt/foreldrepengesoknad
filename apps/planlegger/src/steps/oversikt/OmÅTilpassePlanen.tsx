@@ -2,8 +2,10 @@ import { PencilWritingIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet, erBarnetAdoptert } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon, erFarOgFar, isAlene } from 'types/HvemPlanlegger';
+import { OmBarnet } from 'types/Barnet';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { erFarOgFar, isAlene } from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 
 import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';

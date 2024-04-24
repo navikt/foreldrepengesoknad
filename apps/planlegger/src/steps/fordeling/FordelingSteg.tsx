@@ -10,15 +10,14 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
-    HvemPlanlegger,
-    Situasjon,
     erFarDelAvSøknaden,
     erMorDelAvSøknaden,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
-} from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+} from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {

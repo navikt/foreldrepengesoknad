@@ -3,11 +3,14 @@ import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, barnehagestartDato, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'utils/barnetUtils';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
+
+import { barnehagestartDato } from './AleneforsørgerBarnehageplass';
 
 interface Props {
     barnet: OmBarnet;

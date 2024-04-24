@@ -1,11 +1,12 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { treUkerSiden } from '@navikt/fp-utils';
 
+import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from './barnetUtils';
 import { HvemHarRett } from './hvemHarRettHjelper';
 import {
     TilgjengeligStønadskonto,

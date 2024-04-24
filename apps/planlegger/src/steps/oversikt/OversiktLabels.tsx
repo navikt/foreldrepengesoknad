@@ -1,16 +1,16 @@
 import { HeartFillIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import {
-    HvemPlanlegger,
-    Situasjon,
     erMorDelAvSøknaden,
     finnAnnenPartTekst,
     finnSøkerTekst,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
-} from 'types/HvemPlanlegger';
+} from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'utils/barnetUtils';
 import { HvemHarRett } from 'utils/hvemHarRettHjelper';
 import {
     TilgjengeligStønadskonto,

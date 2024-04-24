@@ -3,8 +3,8 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetAdoptert } from 'types/Barnet';
-import { finnAnnenPartTekst } from 'types/HvemPlanlegger';
+import { finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert } from 'utils/barnetUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 

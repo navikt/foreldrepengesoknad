@@ -6,8 +6,9 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet, erBarnetFødt } from 'types/Barnet';
-import { isAlene } from 'types/HvemPlanlegger';
+import { OmBarnet } from 'types/Barnet';
+import { isAlene } from 'utils/HvemPlanleggerUtils';
+import { erBarnetFødt } from 'utils/barnetUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
