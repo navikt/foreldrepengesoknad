@@ -1,4 +1,4 @@
-import { CalendarIcon, PersonGroupIcon } from '@navikt/aksel-icons';
+import { CalendarIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
@@ -6,7 +6,6 @@ import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -14,29 +13,20 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import {
-    erAlenesøker as erAlene,
-    erMorDelAvSøknaden,
-    finnAnnenPartTekst,
-    finnSøkerTekst,
-    getTekstForDeSomHarRett,
-} from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
+import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import {
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerForeldrepenger,
-    mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
-} from 'utils/stønadskontoerUtils';
+import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+import NårBareEnPartHarRettInfoboks from './infoboks/NårBareEnPartHarRettInfoboks';
+import ValgtDekningsgradInfoboks from './infoboks/ValgtDekningsgradInfoboks';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
@@ -73,8 +63,9 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
         return navigator.goToNextStep(nextRoute);
     };
 
-    const antallBarn = barnet.antallBarn;
     const dekningsgrad = formMethods.watch('dekningsgrad');
+
+    const valgtDekningsgrad = dekningsgrad || periode?.dekningsgrad;
 
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
@@ -90,34 +81,12 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
     const stønadskonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
         stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
     );
-    const valgtDekningsgrad = dekningsgrad || periode?.dekningsgrad;
-    const valgtStønadskonto = valgtDekningsgrad
-        ? valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? stønadskonto100
-            : stønadskonto80
-        : [];
 
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
-    const antallUker = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUker100 : antallUker80;
-
-    const erAdopsjon = erBarnetAdoptert(barnet);
-    const erFødt = erBarnetFødt(barnet);
-    const uttaksdata = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
-    const familiehendelsedato = dayjs(uttaksdata.familiehendelsedato).format('D. MMMM');
-
-    const sluttdatoSøker1 =
-        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? uttaksdata100.sluttdatoSøker1
-            : uttaksdata80.sluttdatoSøker1;
-
-    const sluttdatoSøker2 =
-        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? uttaksdata100.sluttdatoSøker2
-            : uttaksdata80.sluttdatoSøker2;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -147,89 +116,11 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 />
                             </BodyLong>
                         </Infobox>
-                        {!erAlenesøker && (morHarIkkeRett || farHarIkkeRett) && (
-                            <Infobox
-                                header={
-                                    morHarIkkeRett ? (
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
-                                            values={{
-                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                            }}
-                                        />
-                                    ) : (
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
-                                            values={{
-                                                hvem: finnSøkerTekst(intl, hvemPlanlegger),
-                                            }}
-                                        />
-                                    )
-                                }
-                                icon={
-                                    <PersonGroupIcon
-                                        height={28}
-                                        width={28}
-                                        color="#020C1CAD"
-                                        fontSize="1.5rem"
-                                        aria-hidden
-                                    />
-                                }
-                                isGray
-                            >
-                                {farHarIkkeRett && (
-                                    <VStack gap="2">
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden"
-                                                values={{ hvem: finnSøkerTekst(intl, hvemPlanlegger) }}
-                                            />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar"
-                                                values={{
-                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                    hvem2: finnSøkerTekst(intl, hvemPlanlegger),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                    </VStack>
-                                )}
-                                {morHarIkkeRett && (
-                                    <VStack gap="2">
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden"
-                                                values={{
-                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                    hvem2: finnSøkerTekst(intl, hvemPlanlegger),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor"
-                                                values={{
-                                                    a: (msg: any) => (
-                                                        <Link
-                                                            inlineText
-                                                            href={links.godkjentAktivitet}
-                                                            className="lenke"
-                                                            rel="noreferrer"
-                                                            target="_blank"
-                                                        >
-                                                            {msg}
-                                                        </Link>
-                                                    ),
-                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                    </VStack>
-                                )}
-                            </Infobox>
+                        {!erAlenesøker && hvemHarRett !== 'beggeHarRett' && (
+                            <NårBareEnPartHarRettInfoboks
+                                hvemPlanlegger={hvemPlanlegger}
+                                arbeidssituasjon={arbeidssituasjon}
+                            />
                         )}
                         <GreenRadioGroup
                             label={
@@ -256,100 +147,15 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                             </Radio>
                         </GreenRadioGroup>
                         {dekningsgrad && (
-                            <Infobox
-                                header={
-                                    <FormattedMessage
-                                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTittel"
-                                        values={{
-                                            dato: intl.formatDate(sluttdatoSøker2 || sluttdatoSøker1, {
-                                                day: '2-digit',
-                                                month: 'long',
-                                                year: 'numeric',
-                                                weekday: 'long',
-                                            }),
-                                        }}
-                                    />
-                                }
-                                icon={
-                                    <CalendarIcon
-                                        height={28}
-                                        width={28}
-                                        color="#020C1CAD"
-                                        fontSize="1.5rem"
-                                        aria-hidden
-                                    />
-                                }
-                                shouldFadeIn
-                            >
-                                <BodyLong>
-                                    {erAdopsjon && (
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon"
-                                            values={{ antallBarn, kunEnPartSkalHa, dato: familiehendelsedato }}
-                                        />
-                                    )}
-                                    {!erAdopsjon && erFødt && (
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel"
-                                            values={{
-                                                antallBarn,
-                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                                dato: familiehendelsedato,
-                                                kunEnPartSkalHa,
-                                            }}
-                                        />
-                                    )}
-                                    {!erAdopsjon && !erFødt && (
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin"
-                                            values={{
-                                                antallBarn,
-                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                                kunEnPartSkalHa,
-                                            }}
-                                        />
-                                    )}
-                                </BodyLong>
-                                {morHarIkkeRett && (
-                                    <VStack gap="2">
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
-                                                values={{
-                                                    uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                                                    uker2: antallUker,
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
-                                                values={{
-                                                    uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                                                    uker2: antallUker,
-                                                    a: (msg: any) => (
-                                                        <Link
-                                                            inlineText
-                                                            href={links.godkjentAktivitet}
-                                                            className="lenke"
-                                                            rel="noreferrer"
-                                                            target="_blank"
-                                                        >
-                                                            {msg}
-                                                        </Link>
-                                                    ),
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                    </VStack>
-                                )}
-                            </Infobox>
+                            <ValgtDekningsgradInfoboks
+                                barnet={barnet}
+                                hvemPlanlegger={hvemPlanlegger}
+                                arbeidssituasjon={arbeidssituasjon}
+                                stønadskontoer={stønadskontoer}
+                                uttaksdata100={uttaksdata100}
+                                uttaksdata80={uttaksdata80}
+                                valgtDekningsgrad={valgtDekningsgrad}
+                            />
                         )}
                     </VStack>
                     <Spacer />
