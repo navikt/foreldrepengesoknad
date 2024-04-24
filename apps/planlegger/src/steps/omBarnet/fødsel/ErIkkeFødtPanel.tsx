@@ -6,7 +6,12 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { erAlenesøker as erAlene, erFarDelAvSøknaden, getFornavnPåSøker } from 'utils/HvemPlanleggerUtils';
+import {
+    erAlenesøker as erAlene,
+    erFarDelAvSøknaden,
+    erMorDelAvSøknaden,
+    getFornavnPåSøker,
+} from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
@@ -100,16 +105,15 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
                                 values={{
-                                    erMor: hvemPlanlegger.type === Situasjon.MOR,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                                 }}
                             />
                         </BodyLong>
-                        {hvemPlanlegger.type !== Situasjon.MOR && (
+                        {erFarDelAvSøknaden(hvemPlanlegger) && (
                             <BodyLong>
                                 <FormattedMessage
                                     id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
                                     values={{
-                                        erAlenesøker,
                                         erFar,
                                         hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                     }}

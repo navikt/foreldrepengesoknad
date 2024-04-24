@@ -50,7 +50,7 @@ export const FlereForsørgere: Story = {
     },
 };
 
-export const AleneforsørgerMorFlereForsørgere: Story = {
+export const AleneforsørgerMor: Story = {
     args: {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
