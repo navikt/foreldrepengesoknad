@@ -77,7 +77,7 @@
     "HvemPlanlegger.DefaultMedMorNavn": "Medmor",
     "HvorLangPeriodeSteg.Tittel": "Kor lenge",
     "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel": "80 % eller 100 %?",
-    "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "{erAlenesøker, select, true {Du} other {De}} kan velje mellom {uker100} veker og {uker80} veker med foreldrepengar. Om {erAlenesøker, select, true {du} other {de}} vel {uker100} veker, får du 100 % foreldrepengar, medan om {erAlenesøker, select, true {du} other {de}} vel {uker80} veker, vert utbetalinga redusert til 80 %.",
+    "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "{kunEnPartSkalHa, select, true {Ein} other {De}} kan velje mellom {uker100} veker og {uker80} veker med foreldrepengar{kunEnPartSkalHa, select, true {} other {, og valet gjeld for begge}}. Om {kunEnPartSkalHa, select, true {ein} other {de}} vel {uker100} veker, får {kunEnPartSkalHa, select, true {ein} other {de}} 100 % foreldrepengar, medan om {kunEnPartSkalHa, select, true {ein} other {de}} vel {uker80} veker, vert utbetalinga redusert til 80 %.",
     "HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett": "Når berre {hvem} skal ha foreldrepengar",
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden": "Når berre {hvem} har rett til foreldrepengar, får {hvem} heile perioden med foreldrepengar.",
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar": "Det er ingen krav til kva {hvem} gjer når {hvem2} tar ut foreldrepengar.",
