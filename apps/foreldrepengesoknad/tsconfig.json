@@ -5,11 +5,11 @@
         "jsx": "react-jsx",
         "paths": {
             "utils-test/*": ["./utils-test/*"],
-            "app/*": ["./app/*"],
+            "app/*": ["./app/*"]
         },
         "rootDir": "src",
-        "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"],
+        "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/storybook"],
-    "exclude": ["src/common/**/*", "node_modules"],
+    "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/uttaksplan-ny/**/*", "src/storybook"],
+    "exclude": ["src/common/**/*", "node_modules"]
 }

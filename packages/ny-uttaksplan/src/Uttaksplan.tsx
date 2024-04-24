@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import '@navikt/ds-css';
 
-import PeriodeListe from './periode-liste/PeriodeListe';
+import PeriodeListe from './components/periode-liste/PeriodeListe';
 
 const UttaksplanNy: FunctionComponent = () => {
     return (
