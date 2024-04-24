@@ -1,12 +1,14 @@
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
+import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
+
 export type HvemHarRett =
     | 'beggeHarRett'
     | 'kunMorHarRett'
-    | 'kunFarHarRettErHovedsøker'
+    | 'kunFarSøker1HarRett'
     | 'kunMedfarHarRett'
-    | 'kunMedmorEllerFarHarRett'
+    | 'kunMedmorEllerFarSøker2HarRett'
     | 'ingenHarRett';
 
 export const utledHvemSomHarRett = (
@@ -14,52 +16,31 @@ export const utledHvemSomHarRett = (
     arbeidssituasjon: Arbeidssituasjon,
 ): HvemHarRett => {
     const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
+    const kunSøker1HarRett =
+        arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart !== true;
+    const kunSøker2HarRett =
+        arbeidssituasjon.status !== Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
 
     if (beggeHarRett) {
         return 'beggeHarRett';
     }
 
-    const kunMorHarRett =
-        (hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
-            hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
-            hvemPlanlegger.type === Situasjon.MOR) &&
-        arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
-        arbeidssituasjon.jobberAnnenPart !== true;
-
-    if (kunMorHarRett) {
-        return 'kunMorHarRett';
+    if (kunSøker1HarRett) {
+        if (erMorDelAvSøknaden(hvemPlanlegger)) {
+            return 'kunMorHarRett';
+        }
+        if (hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+            return 'kunFarSøker1HarRett';
+        }
     }
 
-    const kunFarHarRettHovedsøker =
-        (hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.FAR_OG_FAR) &&
-        arbeidssituasjon.status === Arbeidsstatus.JOBBER &&
-        arbeidssituasjon.jobberAnnenPart !== true;
-
-    if (kunFarHarRettHovedsøker) {
-        return 'kunFarHarRettErHovedsøker';
-    }
-
-    const kunMedfarHarRett =
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
-        arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
-        arbeidssituasjon.jobberAnnenPart;
-
-    if (kunMedfarHarRett) {
-        return 'kunMedfarHarRett';
-    }
-
-    const kunMedmorHarRett =
-        hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR &&
-        arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
-        arbeidssituasjon.jobberAnnenPart;
-
-    const kunFarHarRettMorHovedsøker =
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR &&
-        arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
-        arbeidssituasjon.jobberAnnenPart;
-
-    if (kunMedmorHarRett || kunFarHarRettMorHovedsøker) {
-        return 'kunMedmorEllerFarHarRett';
+    if (kunSøker2HarRett) {
+        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+            return 'kunMedfarHarRett';
+        }
+        if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) {
+            return 'kunMedmorEllerFarSøker2HarRett';
+        }
     }
 
     return 'ingenHarRett';

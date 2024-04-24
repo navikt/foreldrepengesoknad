@@ -63,7 +63,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
     return (
         <VStack gap={{ sm: '1', md: '2' }}>
             {(hvemHarRett === 'beggeHarRett' ||
-                hvemHarRett === 'kunFarHarRettErHovedsøker' ||
+                hvemHarRett === 'kunFarSøker1HarRett' ||
                 hvemHarRett === 'kunMorHarRett') && (
                 <HStack gap="1">
                     <div className={styles.bluePanel}>
@@ -113,44 +113,45 @@ const OversiktLabels: FunctionComponent<Props> = ({
                     )}
                 </HStack>
             )}
-            {annenPartTekst && (hvemHarRett === 'kunMedmorEllerFarHarRett' || hvemHarRett === 'kunMedfarHarRett') && (
-                <>
-                    <div className={styles.bluePanel}>
-                        <HStack gap="2" align="end" wrap={false}>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="OversiktSteg.UkerUtenAktivitetskrav"
-                                    values={{
-                                        hvem: capitalizeFirstLetter(annenPartTekst),
-                                        uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                                        erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                            <div className={styles.margin}>
-                                <BlåSirkel />
-                            </div>
-                        </HStack>
-                    </div>
-                    <div className={styles.greenPanel}>
-                        <HStack gap="2" align="end" wrap={false}>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="OversiktSteg.UkerMedAktivitetskrav"
-                                    values={{
-                                        hvem: capitalizeFirstLetter(annenPartTekst),
-                                        uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                                        erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                            <div className={styles.margin}>
-                                <GrønnSirkel />
-                            </div>
-                        </HStack>
-                    </div>
-                </>
-            )}
+            {annenPartTekst &&
+                (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') && (
+                    <>
+                        <div className={styles.bluePanel}>
+                            <HStack gap="2" align="end" wrap={false}>
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="OversiktSteg.UkerUtenAktivitetskrav"
+                                        values={{
+                                            hvem: capitalizeFirstLetter(annenPartTekst),
+                                            uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                                        }}
+                                    />
+                                </BodyShort>
+                                <div className={styles.margin}>
+                                    <BlåSirkel />
+                                </div>
+                            </HStack>
+                        </div>
+                        <div className={styles.greenPanel}>
+                            <HStack gap="2" align="end" wrap={false}>
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="OversiktSteg.UkerMedAktivitetskrav"
+                                        values={{
+                                            hvem: capitalizeFirstLetter(annenPartTekst),
+                                            uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                                        }}
+                                    />
+                                </BodyShort>
+                                <div className={styles.margin}>
+                                    <GrønnSirkel />
+                                </div>
+                            </HStack>
+                        </div>
+                    </>
+                )}
             <div className={styles.pinkPanel}>
                 <HStack gap="2" align="center">
                     <BodyShort>

@@ -43,8 +43,8 @@ export const getTekstForDeSomHarRett = (
                 return hvemPlanlegger.navnPåMedfar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
             }
             throw new Error('Medfar er ikke en del av planleggingen.');
-        case 'kunMedmorEllerFarHarRett':
-        case 'kunFarHarRettErHovedsøker':
+        case 'kunMedmorEllerFarSøker2HarRett':
+        case 'kunFarSøker1HarRett':
             if (erFarDelAvSøknaden(hvemPlanlegger)) {
                 return hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
             }
