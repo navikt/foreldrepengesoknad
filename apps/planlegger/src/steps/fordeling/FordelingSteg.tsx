@@ -13,8 +13,8 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
-    erFarDelAvSøknaden,
-    erMorDelAvSøknaden,
+    finnAnnenPartTekst,
+    finnSøkerTekst,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
 } from 'utils/HvemPlanleggerUtils';
@@ -34,21 +34,6 @@ import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';
-
-const finnPart1Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
-    erMorDelAvSøknaden(hvemPlanlegger)
-        ? intl.formatMessage({ id: 'FordelingSteg.Mor' })
-        : intl.formatMessage({ id: 'FordelingSteg.Far' });
-
-const finnPart2Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
-        return intl.formatMessage({ id: 'FordelingSteg.Medmor' });
-    }
-    if (erFarDelAvSøknaden(hvemPlanlegger)) {
-        return intl.formatMessage({ id: 'FordelingSteg.Far' });
-    }
-    return undefined;
-};
 
 type Fellesperiodefordeling = {
     antallUkerSøker1: number;
@@ -71,8 +56,8 @@ export const finnFellesperiodeFordelingOptionTekst = (
     fornavnPart2?: string,
 ) => {
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
-    const part1Tekst = erFarOgFar && fornavnPart1 ? fornavnPart1 : finnPart1Tekst(intl, hvemPlanlegger);
-    const part2Tekst = erFarOgFar && fornavnPart2 ? fornavnPart2 : finnPart2Tekst(intl, hvemPlanlegger);
+    const part1Tekst = erFarOgFar && fornavnPart1 ? fornavnPart1 : finnSøkerTekst(intl, hvemPlanlegger);
+    const part2Tekst = erFarOgFar && fornavnPart2 ? fornavnPart2 : finnAnnenPartTekst(intl, hvemPlanlegger);
 
     if (value.antallUkerSøker1 === 0) {
         return (
@@ -196,6 +181,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                         </GreenPanel>
                         {antallUkerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
+                                barnet={barnet}
+                                hvemPlanlegger={hvemPlanlegger}
                                 fornavnPart1={fornavnPart1}
                                 fornavnPart2={fornavnPart2}
                                 uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}

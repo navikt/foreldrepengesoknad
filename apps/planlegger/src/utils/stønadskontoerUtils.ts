@@ -24,6 +24,7 @@ const opprettAktivitetsFriKonto = (
     nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: generellMinsterett });
     return nyeKontoer;
 };
+
 export const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
     stønadskontoerDTO: TilgjengeligStønadskontoForDekningsgrad,
 ): TilgjengeligStønadskonto[] => {

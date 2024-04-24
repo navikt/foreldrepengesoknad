@@ -5,7 +5,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { harFarEllerMedmorRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { decodeBase64 } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
@@ -33,12 +33,8 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
     const params = useMemo(
         () => ({
             antallBarn: omBarnet?.antallBarn,
-            morHarRett: hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunMorHarRett',
-            farHarRett:
-                hvemHarRett === 'beggeHarRett' ||
-                hvemHarRett === 'kunFarSøker1HarRett' ||
-                hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' ||
-                hvemHarRett === 'kunMedfarHarRett',
+            morHarRett: harMorRett(hvemHarRett),
+            farHarRett: harFarEllerMedmorRett(hvemHarRett),
             morHarAleneomsorg: hvemPlanlegger?.type === Situasjon.MOR,
             farHarAleneomsorg: hvemPlanlegger?.type === Situasjon.FAR,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
