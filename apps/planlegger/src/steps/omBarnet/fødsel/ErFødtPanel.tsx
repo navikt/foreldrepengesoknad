@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { erAlenesøker as erAlene, getFornavnPåAnnenPart } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
@@ -86,17 +86,15 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     <BodyLong>
                         <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
                     </BodyLong>
+
                     <BodyLong>
-                        <FormattedMessage id="ErFødtPanel.Født.InfoboksTekstDel2" />
+                        <FormattedMessage
+                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                            values={{
+                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                            }}
+                        />
                     </BodyLong>
-                    {erAlenesøker && erFar && (
-                        <BodyLong>
-                            <FormattedMessage
-                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                values={{ erFar, hvem: getFornavnPåAnnenPart(hvemPlanlegger, intl) }}
-                            />
-                        </BodyLong>
-                    )}
                 </Infobox>
             )}
             {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATE_3_YEARS_AGO) && (
@@ -104,14 +102,14 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     header={
                         <FormattedMessage
                             id="ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr"
-                            values={{ erAlenesøker }}
+                            values={{ erAlenesøker, antallBarn }}
                         />
                     }
                     icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                     shouldFadeIn
                 >
                     <BodyLong>
-                        <FormattedMessage id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr" />
+                        <FormattedMessage id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr" values={{ antallBarn }} />
                     </BodyLong>
                     <BodyLong>
                         <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" values={{ erFar }} />
