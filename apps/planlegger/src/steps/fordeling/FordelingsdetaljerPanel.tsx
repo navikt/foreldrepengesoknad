@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -10,18 +9,22 @@ import { Uttaksdata } from 'utils/uttakHjelper';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { notEmpty } from '@navikt/fp-validation';
-
 interface Props {
+    barnet: OmBarnet;
+    hvemPlanlegger: HvemPlanlegger;
     uttaksdata: Uttaksdata;
     fornavnPart1: string;
     fornavnPart2?: string;
 }
 
-const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavnPart1, fornavnPart2 }) => {
+const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
+    barnet,
+    hvemPlanlegger,
+    uttaksdata,
+    fornavnPart1,
+    fornavnPart2,
+}) => {
     const intl = useIntl();
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const antallBarn = barnet.antallBarn;
     const erFødsel = barnet.erFødsel;
     const erFødt = erBarnetFødt(barnet);
@@ -114,7 +117,8 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({ uttaksdata, fornavn
                             />
                         )}
                     </>
-                ) : (
+                )}
+                {!erFødsel && (
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
                         values={{

@@ -45,3 +45,12 @@ export const utledHvemSomHarRett = (
 
     return 'ingenHarRett';
 };
+
+export const harFarEllerMedmorRett = (hvemHarRett?: HvemHarRett): boolean =>
+    hvemHarRett === 'beggeHarRett' ||
+    hvemHarRett === 'kunFarSøker1HarRett' ||
+    hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' ||
+    hvemHarRett === 'kunMedfarHarRett';
+
+export const harMorRett = (hvemHarRett?: HvemHarRett): boolean =>
+    hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunMorHarRett';
