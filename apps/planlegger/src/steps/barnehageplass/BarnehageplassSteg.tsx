@@ -3,7 +3,7 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FormattedMessage } from 'react-intl';
-import { isAlene } from 'types/HvemPlanlegger';
+import { isAlene } from 'utils/HvemPlanleggerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, VStack } from '@navikt/ds-react';

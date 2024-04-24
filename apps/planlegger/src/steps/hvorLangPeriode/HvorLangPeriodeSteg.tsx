@@ -11,17 +11,17 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetAdoptert, erBarnetFødt } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
+import { HvorLangPeriode } from 'types/HvorLangPeriode';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
     erMorDelAvSøknaden,
     finnAnnenPartTekst,
     finnSøkerTekst,
     getTekstForDeSomHarRett,
     isAlene,
-} from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+} from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import {
     getAntallUkerAktivitetsfriKvote,

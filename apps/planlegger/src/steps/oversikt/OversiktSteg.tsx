@@ -12,8 +12,8 @@ import {
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
 import {

@@ -3,8 +3,9 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetFødt } from 'types/Barnet';
-import { Situasjon, isFlere } from 'types/HvemPlanlegger';
+import { Situasjon } from 'types/HvemPlanlegger';
+import { isFlere } from 'utils/HvemPlanleggerUtils';
+import { erBarnetFødt } from 'utils/barnetUtils';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { ProgressStep } from '@navikt/fp-ui';

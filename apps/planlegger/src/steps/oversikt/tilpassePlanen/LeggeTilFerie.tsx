@@ -1,7 +1,8 @@
 import { ParasolBeachIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvemPlanlegger, erFarDelAvSøknaden, finnAnnenPartTekst } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { erFarDelAvSøknaden, finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 

@@ -2,9 +2,9 @@ import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appDa
 import { FunctionComponent, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
 import { decodeBase64 } from 'utils/urlEncodingUtils';
 
