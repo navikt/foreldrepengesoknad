@@ -36,8 +36,8 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
             morHarRett: hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunMorHarRett',
             farHarRett:
                 hvemHarRett === 'beggeHarRett' ||
-                hvemHarRett === 'kunFarHarRettErHovedsøker' ||
-                hvemHarRett === 'kunMedmorEllerFarHarRett' ||
+                hvemHarRett === 'kunFarSøker1HarRett' ||
+                hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' ||
                 hvemHarRett === 'kunMedfarHarRett',
             morHarAleneomsorg: hvemPlanlegger?.type === Situasjon.MOR,
             farHarAleneomsorg: hvemPlanlegger?.type === Situasjon.FAR,

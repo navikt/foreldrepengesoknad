@@ -195,7 +195,7 @@ const finnEnsligUttaksdata = (
 
     if (
         !erBarnetAdoptert(barnet) &&
-        (hvemHarRett === 'kunMedmorEllerFarHarRett' || hvemHarRett === 'kunMedfarHarRett')
+        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett')
     ) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
@@ -220,7 +220,7 @@ const finnEnsligUttaksdata = (
     }
     if (
         erBarnetAdoptert(barnet) &&
-        (hvemHarRett === 'kunMedmorEllerFarHarRett' || hvemHarRett === 'kunMedfarHarRett')
+        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett')
     ) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
