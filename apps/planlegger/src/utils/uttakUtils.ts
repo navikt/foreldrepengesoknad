@@ -193,7 +193,10 @@ const finnEnsligUttaksdata = (
             ? getUttaksdagFraOgMedDato(familiehendelsedato)
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
-    if (!erBarnetAdoptert(barnet) && hvemHarRett === 'kunFarEllerFar2EllerMedmorHarRett') {
+    if (
+        !erBarnetAdoptert(barnet) &&
+        (hvemHarRett === 'kunMedmorEllerFarHarRett' || hvemHarRett === 'kunMedfarHarRett')
+    ) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = getUttaksdagTilOgMedDato(
@@ -215,7 +218,10 @@ const finnEnsligUttaksdata = (
             ),
         };
     }
-    if (erBarnetAdoptert(barnet) && hvemHarRett === 'kunFarEllerFar2EllerMedmorHarRett') {
+    if (
+        erBarnetAdoptert(barnet) &&
+        (hvemHarRett === 'kunMedmorEllerFarHarRett' || hvemHarRett === 'kunMedfarHarRett')
+    ) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = getUttaksdagTilOgMedDato(

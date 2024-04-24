@@ -38,7 +38,12 @@ export const getTekstForDeSomHarRett = (
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     switch (hvemHarRett) {
-        case 'kunFarEllerFar2EllerMedmorHarRett':
+        case 'kunMedfarHarRett':
+            if (erFarOgFar(hvemPlanlegger)) {
+                return hvemPlanlegger.navnPåMedfar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+            }
+            throw new Error('Medfar er ikke en del av planleggingen.');
+        case 'kunMedmorEllerFarHarRett':
         case 'kunFarHarRettErHovedsøker':
             if (erFarDelAvSøknaden(hvemPlanlegger)) {
                 return hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
