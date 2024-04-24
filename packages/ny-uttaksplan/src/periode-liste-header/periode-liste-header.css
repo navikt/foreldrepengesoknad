@@ -1,0 +1,21 @@
+.periode-liste-header {
+    display: grid;
+    grid-template-columns: 5fr 2fr 6fr;
+    column-gap: 1rem;
+}
+
+.periode-liste-header__dato {
+    padding: 0.5rem 1rem;
+}
+
+.periode-liste-header__uker {
+    padding: 0.5rem 1rem;
+    font-weight: 400;
+}
+
+.periode-liste-header__ikon {
+    padding: 0.5rem 1rem;
+    font-weight: 400;
+    border-radius: 1.25rem;
+    background-color: var(--a-surface-action-subtle-hover);
+}

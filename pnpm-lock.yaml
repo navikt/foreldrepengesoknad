@@ -1574,6 +1574,15 @@ importers:
 
   packages/ny-uttaksplan:
     dependencies:
+      '@navikt/ds-css':
+        specifier: ^6.6.0
+        version: 6.6.0
+      '@navikt/ds-react':
+        specifier: ^6.6.0
+        version: 6.6.0(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/fp-common':
+        specifier: workspace:*
+        version: link:../fp-common
       '@types/react':
         specifier: ^18.2.73
         version: 18.2.73
@@ -4582,8 +4591,16 @@ packages:
   /@navikt/aksel-icons@6.3.3:
     resolution: {integrity: sha512-DRWDvqJCPc1kYTjJwzv6sw5Bxf6DfHortkYDUtFSriwvXRaL1DM1/LxPtpu+fkMlCIBBioGps8CHZzRpg7Q8UQ==}
 
+  /@navikt/aksel-icons@6.6.0:
+    resolution: {integrity: sha512-Kp/UjFdq5/6qkTgoEklzAYZcg4eXDgz4wP3HOnW1a997ZEW8SmWM4naYwTVcr9AdAii0dfPI+1Cfat/WFrsmdg==}
+    dev: false
+
   /@navikt/ds-css@6.3.3:
     resolution: {integrity: sha512-Rpm71ivCpJ5CQuItrIKCe7h/tSnjqnZh9+DS1Mq3LUXaAEdBa1wIg1wF8Eqximy3QcObcO/tRwEkMcFxKe4xLQ==}
+
+  /@navikt/ds-css@6.6.0:
+    resolution: {integrity: sha512-hYdkbrDZbMKBNobhKCzGsH2XYSEj3IKo1YFKJ7y4/FmgQfnUoZ1rQmX0fSOGkY6/VTawFbont9KK6p8uUbQ6CQ==}
+    dev: false
 
   /@navikt/ds-datepicker@4.2.0(@navikt/ds-css@6.3.3)(@navikt/ds-react@6.3.3)(classnames@2.3.3)(date-fns@2.30.0)(dayjs@1.11.10)(react-day-picker@8.10.0)(react-dom@18.2.0)(react@18.2.0)(uuid@9.0.1):
     resolution: {integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A==}
@@ -4672,8 +4689,33 @@ packages:
     transitivePeerDependencies:
       - react-dom
 
+  /@navikt/ds-react@6.6.0(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-z/9x+aOVvP+CJX6/YR5ob+bMyUcYknk+J6TKj4ZUWzii65OYiOHaLHHk5yq5Ybn9/NRATPmhDbXwwq7ruRv67g==}
+    peerDependencies:
+      '@types/react': ^17.0.30 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@floating-ui/react': 0.25.4(react-dom@18.2.0)(react@18.2.0)
+      '@navikt/aksel-icons': 6.6.0
+      '@navikt/ds-tokens': 6.6.0
+      '@types/react': 18.2.73
+      clsx: 2.1.0
+      date-fns: 3.6.0
+      react: 18.2.0
+      react-day-picker: 8.10.0(date-fns@3.6.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - react-dom
+    dev: false
+
   /@navikt/ds-tokens@6.3.3:
     resolution: {integrity: sha512-EArixE4zSCbkqAYh2iQarsWtTl80yhcKrkAyPlQHrUr19EeRLJIRBQW+lnSiGFMXe+jh7ZUqsHeY1mDOr693Eg==}
+
+  /@navikt/ds-tokens@6.6.0:
+    resolution: {integrity: sha512-d6lTSDUv7wF0QIettXHjnu9gRCVwbv6JzLSNQlZyKiUE1QdmNkUX8LgeV6wcg9PqwgjMA2+2ZUMLMxOwlLklwA==}
+    dev: false
 
   /@navikt/fnrvalidator@1.3.0:
     resolution: {integrity: sha512-FEcjhR/i5vfIrKHZ9C/fzfM/R5uoWsouktQHBEqMY4yqUNuqSdF9k6fUassxMIhLLUKsiJy10LA9NQ3z89Iltw==}

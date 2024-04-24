@@ -10,6 +10,9 @@
         "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}"
     },
     "dependencies": {
+        "@navikt/ds-css": "^6.6.0",
+        "@navikt/ds-react": "^6.6.0",
+        "@navikt/fp-common": "workspace:*",
         "@types/react": "^18.2.73",
         "react": "^18.2.0",
         "react-intl": "^6.6.4",
