@@ -77,7 +77,7 @@
     "HvemPlanlegger.DefaultMedMorNavn": "Co-mother",
     "HvorLangPeriodeSteg.Tittel": "How long",
     "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel": "80 % or 100 %?",
-    "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "You can choose between 49 weeks and 59 weeks of parental benefits, which will apply for both. If you choose 49 weeks, you get 100 % parental benefits, while if you choose 59 weeks, the payment is reduced to 80 %.",
+    "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "You can choose between 49 weeks and 59 weeks of parental benefits{kunEnPartSkalHa, select, true {} other {, and the choice applies for both}}. If you choose 49 weeks, you get 100 % parental benefits, while if you choose 59 weeks, the payment is reduced to 80 %.",
     "HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett": "When only the {hvem} is entitled to parental benefits",
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden": "When only the {hvem} is entitled to parental benefits, the {hvem} gets the entire parental benefit period.",
     "HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar": "There are no requirements for what the {hvem} does when the {hvem2} takes out parental benefits.",
