@@ -62,7 +62,9 @@ const OversiktLabels: FunctionComponent<Props> = ({
 
     return (
         <VStack gap={{ sm: '1', md: '2' }}>
-            {(hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarHarRett' || hvemHarRett === 'kunMorHarRett') && (
+            {(hvemHarRett === 'beggeHarRett' ||
+                hvemHarRett === 'kunFarHarRettErHovedsøker' ||
+                hvemHarRett === 'kunMorHarRett') && (
                 <HStack gap="1">
                     <div className={styles.bluePanel}>
                         <HStack gap="2" align="end" wrap={false}>
@@ -111,45 +113,44 @@ const OversiktLabels: FunctionComponent<Props> = ({
                     )}
                 </HStack>
             )}
-            {annenPartTekst &&
-                (hvemHarRett === 'kunMedfarEllerMedmorHarRett' || hvemHarRett === 'kunFarHarRettMorHovedsøker') && (
-                    <>
-                        <div className={styles.bluePanel}>
-                            <HStack gap="2" align="end" wrap={false}>
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="OversiktSteg.UkerUtenAktivitetskrav"
-                                        values={{
-                                            hvem: capitalizeFirstLetter(annenPartTekst),
-                                            uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                        }}
-                                    />
-                                </BodyShort>
-                                <div className={styles.margin}>
-                                    <BlåSirkel />
-                                </div>
-                            </HStack>
-                        </div>
-                        <div className={styles.greenPanel}>
-                            <HStack gap="2" align="end" wrap={false}>
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="OversiktSteg.UkerMedAktivitetskrav"
-                                        values={{
-                                            hvem: capitalizeFirstLetter(annenPartTekst),
-                                            uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                        }}
-                                    />
-                                </BodyShort>
-                                <div className={styles.margin}>
-                                    <GrønnSirkel />
-                                </div>
-                            </HStack>
-                        </div>
-                    </>
-                )}
+            {annenPartTekst && hvemHarRett === 'kunFarEllerFar2EllerMedmorHarRett' && (
+                <>
+                    <div className={styles.bluePanel}>
+                        <HStack gap="2" align="end" wrap={false}>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="OversiktSteg.UkerUtenAktivitetskrav"
+                                    values={{
+                                        hvem: capitalizeFirstLetter(annenPartTekst),
+                                        uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                        erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                                    }}
+                                />
+                            </BodyShort>
+                            <div className={styles.margin}>
+                                <BlåSirkel />
+                            </div>
+                        </HStack>
+                    </div>
+                    <div className={styles.greenPanel}>
+                        <HStack gap="2" align="end" wrap={false}>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="OversiktSteg.UkerMedAktivitetskrav"
+                                    values={{
+                                        hvem: capitalizeFirstLetter(annenPartTekst),
+                                        uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                        erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                                    }}
+                                />
+                            </BodyShort>
+                            <div className={styles.margin}>
+                                <GrønnSirkel />
+                            </div>
+                        </HStack>
+                    </div>
+                </>
+            )}
             <div className={styles.pinkPanel}>
                 <HStack gap="2" align="center">
                     <BodyShort>

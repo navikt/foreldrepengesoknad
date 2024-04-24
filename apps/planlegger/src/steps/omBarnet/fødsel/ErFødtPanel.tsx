@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { getFornavnPåAnnenPart, isAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, getFornavnPåAnnenPart } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
@@ -33,7 +33,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
     const formMethods = useFormContext<OmBarnet>();
     const erFødselsdato = formMethods.watch('fødselsdato');
 
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erAlenesøker = erAlene(hvemPlanlegger);
     const erFar = hvemPlanlegger.type !== Situasjon.MOR;
 
     return (

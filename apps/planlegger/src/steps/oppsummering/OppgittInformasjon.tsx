@@ -11,11 +11,11 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
+    erAlenesøker as erAlene,
     finnAnnenPartTekst,
     finnSøkerTekst,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
-    isAlene,
 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -51,7 +51,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const erAdoptert = erBarnetAdoptert(barnet);
     const antallBarn = barnet.antallBarn;
 
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erAlenesøker = erAlene(hvemPlanlegger);
     const fornavn1 = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavn2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 

@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { erFarOgFar, isAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, erFarOgFar } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
@@ -25,7 +25,7 @@ interface Props {
 const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon, barnet }) => {
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erAlene = erAlenesøker(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
@@ -66,8 +66,8 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                             <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
                         ))}
                     {erFedre || (morHarIkkeRett && <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />)}
-                    {!erAlenesøker && !morHarIkkeRett && !erBarnetAdoptert(barnet) && <JobbeSamtidig />}
-                    {(!erAlenesøker || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
+                    {!erAlene && !morHarIkkeRett && !erBarnetAdoptert(barnet) && <JobbeSamtidig />}
+                    {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>

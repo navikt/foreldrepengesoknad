@@ -10,11 +10,11 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
+    erAlenesøker,
     finnAnnenPartTekst,
     finnSøkerTekst,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
-    isAlene,
 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
@@ -75,7 +75,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                         <ExpansionCard.Title size="medium">
                             <FormattedMessage
                                 id="OppsummeringSteg.Planen"
-                                values={{ erAlenesøker: isAlene(hvemPlanlegger) }}
+                                values={{ erAlenesøker: erAlenesøker(hvemPlanlegger) }}
                             />
                         </ExpansionCard.Title>
                     </HStack>

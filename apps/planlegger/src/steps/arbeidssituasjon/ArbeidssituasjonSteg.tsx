@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
-import { getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, getFornavnPåAnnenPart, getFornavnPåSøker } from 'utils/HvemPlanleggerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
@@ -47,7 +47,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
     const status = formMethods.watch('status');
     const jobberAnnenPart = formMethods.watch('jobberAnnenPart');
 
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erAlenesøker = erAlene(hvemPlanlegger);
     const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 

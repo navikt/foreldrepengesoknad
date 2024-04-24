@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
-import { isFlere } from 'utils/HvemPlanleggerUtils';
+import { erFlereSøkere } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
@@ -28,7 +28,7 @@ const showFordelingStep = (
         const skalVise = arbeidssituasjon?.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon?.jobberAnnenPart;
         const erValgtOgEtterSteg =
             hvemPlanlegger &&
-            isFlere(hvemPlanlegger) &&
+            erFlereSøkere(hvemPlanlegger) &&
             skalVise &&
             isAfterStep(PlanleggerRoutes.HVOR_LANG_PERIODE, currentPath);
         return erValgtOgEtterSteg || !!getData(ContextDataType.FORDELING);

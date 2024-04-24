@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { erFarDelAvSøknaden, getFornavnPåSøker, isAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erFarDelAvSøknaden, getFornavnPåSøker } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
@@ -49,7 +49,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
     const datoSvangerskapsuke22 =
         termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(2, 'days').toDate() : undefined;
 
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erAlenesøker = erAlene(hvemPlanlegger);
     const erFar = erFarDelAvSøknaden(hvemPlanlegger);
 
     return (

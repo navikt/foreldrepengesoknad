@@ -15,11 +15,11 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
+    erAlenesøker as erAlene,
     erMorDelAvSøknaden,
     finnAnnenPartTekst,
     finnSøkerTekst,
     getTekstForDeSomHarRett,
-    isAlene,
 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -58,7 +58,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
 
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erAlenesøker = erAlene(hvemPlanlegger);
     const lagre = (formValues: HvorLangPeriode) => {
         oppdaterPeriode(formValues);
         const nextRoute =

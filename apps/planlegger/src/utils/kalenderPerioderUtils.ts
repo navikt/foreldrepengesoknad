@@ -82,7 +82,7 @@ export const lagKalenderPerioder = (
         );
     }
 
-    if (hvemHarRett === 'kunFarHarRett') {
+    if (hvemHarRett === 'kunFarHarRettErHovedsøker') {
         return [
             {
                 fom: familiehendelsedato,
@@ -97,13 +97,7 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    if (
-        (hvemHarRett === 'kunFarHarRettMorHovedsøker' ||
-            !erAdoptert ||
-            hvemHarRett === 'kunMedfarEllerMedmorHarRett') &&
-        startdatoSøker2 &&
-        sluttdatoSøker2
-    ) {
+    if ((hvemHarRett === 'kunFarEllerFar2EllerMedmorHarRett' || !erAdoptert) && startdatoSøker2 && sluttdatoSøker2) {
         return [
             {
                 fom: familiehendelsedato,
@@ -123,7 +117,7 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    if (hvemHarRett === 'kunMedfarEllerMedmorHarRett' && erAdoptert) {
+    if (hvemHarRett === 'kunFarEllerFar2EllerMedmorHarRett' && erAdoptert) {
         return [
             {
                 fom: familiehendelsedato,
