@@ -1,23 +1,23 @@
 import { HeartFillIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet, erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import {
-    HvemPlanlegger,
-    Situasjon,
     erMorDelAvSøknaden,
     finnAnnenPartTekst,
     finnSøkerTekst,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
-} from 'types/HvemPlanlegger';
-import { HvemHarRett } from 'utils/hvemHarRettHjelper';
+} from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
+import { HvemHarRett } from 'utils/hvemHarRettUtils';
 import {
     TilgjengeligStønadskonto,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerForeldrepenger,
-} from 'utils/stønadskontoer';
-import { Uttaksdata, weeksBetween } from 'utils/uttakHjelper';
+} from 'utils/stønadskontoerUtils';
+import { Uttaksdata, weeksBetween } from 'utils/uttakUtils';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
@@ -45,7 +45,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
     const intl = useIntl();
 
     const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetIkkeFødt(barnet);
+    const erIkkeFødt = erBarnetUFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;

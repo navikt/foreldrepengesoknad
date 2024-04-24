@@ -7,19 +7,19 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
-    HvemPlanlegger,
     finnAnnenPartTekst,
     finnSøkerTekst,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
     isAlene,
-} from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
-import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
-import { TilgjengeligStønadskonto, getAntallUker, getAntallUkerFellesperiode } from 'utils/stønadskontoer';
-import { finnUttaksdata } from 'utils/uttakHjelper';
+} from 'utils/HvemPlanleggerUtils';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
+import { TilgjengeligStønadskonto, getAntallUker, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
+import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 

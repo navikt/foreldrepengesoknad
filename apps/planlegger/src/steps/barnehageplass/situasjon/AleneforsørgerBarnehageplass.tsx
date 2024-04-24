@@ -3,11 +3,29 @@ import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, barnehagestartDato, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
+
+export const barnehagestartDato = (barnet: OmBarnet) => {
+    const erFødt = erBarnetFødt(barnet);
+    const erIkkeFødt = erBarnetUFødt(barnet);
+    const erAdoptert = erBarnetAdoptert(barnet);
+    if (erFødt || erIkkeFødt || erAdoptert) {
+        const dato = erAdoptert || erFødt ? barnet.fødselsdato : barnet.termindato;
+
+        if (dayjs(dato).month() < 8) return dayjs(dato).month(7).add(1, 'year').format('MMMM YYYY');
+
+        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM YYYY');
+
+        if (dayjs(dato).month() === 11)
+            return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format('MMMM YYYY');
+    }
+    return undefined;
+};
 
 interface Props {
     barnet: OmBarnet;
@@ -15,7 +33,7 @@ interface Props {
 
 const AleneforsørgerBarnehageplass: FunctionComponent<Props> = ({ barnet }) => {
     const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetIkkeFødt(barnet);
+    const erIkkeFødt = erBarnetUFødt(barnet);
 
     return (
         <VStack gap="10">

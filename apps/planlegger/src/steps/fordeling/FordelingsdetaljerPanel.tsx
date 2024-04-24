@@ -3,9 +3,9 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { erBarnetFødt } from 'types/Barnet';
-import { erMorDelAvSøknaden } from 'types/HvemPlanlegger';
-import { Uttaksdata } from 'utils/uttakHjelper';
+import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
+import { erBarnetFødt } from 'utils/barnetUtils';
+import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong } from '@navikt/ds-react';
 

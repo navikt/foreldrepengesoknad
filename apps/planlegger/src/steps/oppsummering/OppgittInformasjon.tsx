@@ -5,25 +5,26 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet, erBarnetAdoptert, erBarnetFødt } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvorLangPeriode } from 'types/HvorLangPeriode';
+import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
-    HvemPlanlegger,
     finnAnnenPartTekst,
     finnSøkerTekst,
     getFornavnPåAnnenPart,
     getFornavnPåSøker,
     isAlene,
-} from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
+} from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
     getAntallUker,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepengerFørFødsel,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
-} from 'utils/stønadskontoer';
+} from 'utils/stønadskontoerUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 

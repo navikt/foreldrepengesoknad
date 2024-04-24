@@ -2,14 +2,15 @@ import { Period } from 'components/calendar/Calendar';
 import { DayColor } from 'components/calendar/Day';
 import dayjs from 'dayjs';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet, erBarnetAdoptert } from 'types/Barnet';
+import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
-import { utledHvemSomHarRett } from './hvemHarRettHjelper';
-import { TilgjengeligStønadskonto } from './stønadskontoer';
-import { finnUttaksdata } from './uttakHjelper';
+import { erBarnetAdoptert } from './barnetUtils';
+import { utledHvemSomHarRett } from './hvemHarRettUtils';
+import { TilgjengeligStønadskonto } from './stønadskontoerUtils';
+import { finnUttaksdata } from './uttakUtils';
 
 export const lagKalenderPerioder = (
     valgtStønadskonto: TilgjengeligStønadskonto[],

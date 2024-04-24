@@ -12,16 +12,16 @@ import {
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
-import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
+import { getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'utils/HvemPlanleggerUtils';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import {
     getAntallUkerFellesperiode,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
-} from 'utils/stønadskontoer';
+} from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
-import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjelper';
+import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -170,7 +170,11 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                         <Calendar periods={uttaksperioder} />
                     </div>
                     <VStack gap="5">
-                        <OmÅTilpassePlanen />
+                        <OmÅTilpassePlanen
+                            arbeidssituasjon={arbeidssituasjon}
+                            barnet={barnet}
+                            hvemPlanlegger={hvemPlanlegger}
+                        />
                         <UforutsetteEndringer />
                     </VStack>
                     <StepButtons

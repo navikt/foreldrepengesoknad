@@ -1,23 +1,35 @@
-import {
-    BabyWrappedIcon,
-    BriefcaseIcon,
-    ParasolBeachIcon,
-    PencilWritingIcon,
-    PersonGroupIcon,
-    PersonPregnantIcon,
-} from '@navikt/aksel-icons';
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { PencilWritingIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetAdoptert } from 'types/Barnet';
-import { finnAnnenPartTekst, isAlene } from 'types/HvemPlanlegger';
+import { FormattedMessage } from 'react-intl';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { OmBarnet } from 'types/Barnet';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { erFarOgFar, isAlene } from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert } from 'utils/barnetUtils';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { notEmpty } from '@navikt/fp-validation';
+import DeFørsteSeksUkene from './tilpassePlanen/DeFørsteSeksUkene';
+import FørTermin from './tilpassePlanen/FørTermin';
+import JobbeSamtidig from './tilpassePlanen/JobbeSamtidig';
+import LeggeTilFerie from './tilpassePlanen/LeggeTilFerie';
+import PermisjonSamtidig from './tilpassePlanen/PermisjonSamtidig';
+import ToUkerRundtFødsel from './tilpassePlanen/ToUkerRundtFødsel';
 
-const OmÅTilpassePlanen: React.FunctionComponent = () => {
+interface Props {
+    hvemPlanlegger: HvemPlanlegger;
+    arbeidssituasjon: Arbeidssituasjon;
+    barnet: OmBarnet;
+}
+const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon, barnet }) => {
+    const morHarIkkeRett =
+        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
+    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erFedre = erFarOgFar(hvemPlanlegger);
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
+
     return (
         <ExpansionCard aria-label="Expansion card">
             <ExpansionCard.Header>
@@ -35,220 +47,31 @@ const OmÅTilpassePlanen: React.FunctionComponent = () => {
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <Innhold />
+                <VStack gap="5">
+                    <BodyLong>
+                        <FormattedMessage id="OmÅTilpassePlanen.Tekst" />
+                    </BodyLong>
+
+                    {!morHarIkkeRett &&
+                        !erBarnetAdoptert(barnet) &&
+                        !erFedre &&
+                        hvemPlanlegger.type !== Situasjon.FAR && <FørTermin barnet={barnet} />}
+                    {!morHarIkkeRett &&
+                        !erBarnetAdoptert(barnet) &&
+                        !erFedre &&
+                        hvemPlanlegger.type !== Situasjon.FAR && <DeFørsteSeksUkene hvemPlanlegger={hvemPlanlegger} />}
+                    {!morHarIkkeRett && <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />}
+                    {erFedre ||
+                        (morHarIkkeRett && !erBarnetAdoptert(barnet) && (
+                            <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
+                        ))}
+                    {erFedre || (morHarIkkeRett && <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />)}
+                    {!erAlenesøker && !morHarIkkeRett && !erBarnetAdoptert(barnet) && <JobbeSamtidig />}
+                    {(!erAlenesøker || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
+                </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
     );
 };
 
-const Innhold = () => {
-    const intl = useIntl();
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
-    const morHarIkkeRett =
-        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const antallBarn = barnet.antallBarn;
-
-    const erAlenesøker = isAlene(hvemPlanlegger);
-
-    return (
-        <>
-            <VStack gap="5">
-                <BodyLong>
-                    <FormattedMessage id="OmÅTilpassePlanen.Tekst" />
-                </BodyLong>
-
-                {!morHarIkkeRett && (
-                    <VStack gap="5">
-                        {!erBarnetAdoptert(barnet) && (
-                            <>
-                                <HStack gap="5" align="start" wrap={false} justify="space-between">
-                                    <div>
-                                        <IconCircleWrapper color="lightBlue" size="medium">
-                                            <PersonPregnantIcon
-                                                height={22}
-                                                width={22}
-                                                fontSize="1.5rem"
-                                                color="#0067C5"
-                                                aria-hidden
-                                            />
-                                        </IconCircleWrapper>
-                                    </div>
-                                    <div>
-                                        <Heading size="small">
-                                            <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
-                                        </Heading>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="OmÅTilpassePlanen.FørTermin.Tekst"
-                                                values={{ antallBarn }}
-                                            />
-                                        </BodyLong>
-                                    </div>
-                                </HStack>
-
-                                <HStack gap="5" align="start" wrap={false} justify="space-between">
-                                    <div>
-                                        <IconCircleWrapper color="lightBlue" size="medium">
-                                            <BabyWrappedIcon
-                                                height={22}
-                                                width={22}
-                                                fontSize="1.5rem"
-                                                color="#0067C5"
-                                                aria-hidden
-                                            />
-                                        </IconCircleWrapper>
-                                    </div>
-                                    <div>
-                                        <Heading size="small">
-                                            <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
-                                        </Heading>
-                                        <BodyLong>
-                                            <FormattedMessage
-                                                id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst"
-                                                values={{
-                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                }}
-                                            />
-                                        </BodyLong>
-                                    </div>
-                                </HStack>
-                            </>
-                        )}
-
-                        <HStack gap="5" align="start" wrap={false} justify="space-between">
-                            <div>
-                                <IconCircleWrapper color="lightBlue" size="medium">
-                                    <ParasolBeachIcon
-                                        height={22}
-                                        width={22}
-                                        fontSize="1.5rem"
-                                        color="#0067C5"
-                                        aria-hidden
-                                    />
-                                </IconCircleWrapper>
-                            </div>
-                            <div>
-                                <Heading size="small">
-                                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OmÅTilpassePlanen.LeggeTilFerie.Tekst"
-                                        values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
-                                    />
-                                </BodyLong>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
-                                        values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
-                                    />
-                                </BodyLong>
-                            </div>
-                        </HStack>
-                        <HStack gap="5" align="start" wrap={false} justify="space-between">
-                            <div>
-                                <IconCircleWrapper color="lightBlue" size="medium">
-                                    <BriefcaseIcon
-                                        height={22}
-                                        width={22}
-                                        fontSize="1.5rem"
-                                        color="#0067C5"
-                                        aria-hidden
-                                    />
-                                </IconCircleWrapper>
-                            </div>
-                            <div>
-                                <Heading size="small">
-                                    <FormattedMessage id="OmÅTilpassePlanen.JobbeSamtidig" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage id="OmÅTilpassePlanen.JobbeSamtidig.Tekst" />
-                                </BodyLong>
-                            </div>
-                        </HStack>
-                        {!erAlenesøker && (
-                            <HStack gap="5" align="start" wrap={false} justify="space-between">
-                                <div>
-                                    <IconCircleWrapper color="lightBlue" size="medium">
-                                        <PersonGroupIcon
-                                            height={22}
-                                            width={22}
-                                            fontSize="1.5rem"
-                                            color="#0067C5"
-                                            aria-hidden
-                                        />
-                                    </IconCircleWrapper>
-                                </div>
-                                <div>
-                                    <Heading size="small">
-                                        <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig" />
-                                    </Heading>
-                                    <BodyLong>
-                                        <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig.Tekst" />
-                                    </BodyLong>
-                                </div>
-                            </HStack>
-                        )}
-                    </VStack>
-                )}
-                {morHarIkkeRett && (
-                    <VStack gap="5">
-                        <HStack gap="5" align="start" wrap={false} justify="space-between">
-                            <div>
-                                <IconCircleWrapper color="lightBlue" size="medium">
-                                    <BabyWrappedIcon
-                                        height={22}
-                                        width={22}
-                                        fontSize="1.5rem"
-                                        color="#0067C5"
-                                        aria-hidden
-                                    />
-                                </IconCircleWrapper>
-                            </div>
-                            <div>
-                                <Heading size="small">
-                                    <FormattedMessage id="OmÅTilpassePlanen.ToUkerRundtFødsel" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst"
-                                        values={{
-                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                        }}
-                                    />
-                                </BodyLong>
-                            </div>
-                        </HStack>
-                        <HStack gap="5" align="start" wrap={false} justify="space-between">
-                            <div>
-                                <IconCircleWrapper color="lightBlue" size="medium">
-                                    <ParasolBeachIcon
-                                        height={22}
-                                        width={22}
-                                        fontSize="1.5rem"
-                                        color="#0067C5"
-                                        aria-hidden
-                                    />
-                                </IconCircleWrapper>
-                            </div>
-                            <div>
-                                <Heading size="small">
-                                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
-                                        values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
-                                    />
-                                </BodyLong>
-                            </div>
-                        </HStack>
-                    </VStack>
-                )}
-            </VStack>
-        </>
-    );
-};
 export default OmÅTilpassePlanen;

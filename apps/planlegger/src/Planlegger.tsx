@@ -2,10 +2,10 @@ import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appDa
 import { FunctionComponent, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'types/Barnet';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { decodeBase64 } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
@@ -42,7 +42,7 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
             morHarAleneomsorg: hvemPlanlegger?.type === Situasjon.MOR,
             farHarAleneomsorg: hvemPlanlegger?.type === Situasjon.FAR,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
-            termindato: omBarnet && erBarnetIkkeFødt(omBarnet) ? omBarnet.termindato : undefined,
+            termindato: omBarnet && erBarnetUFødt(omBarnet) ? omBarnet.termindato : undefined,
             omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.overtakelsesdato : undefined,
             morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
             erMor: hvemPlanlegger?.type !== Situasjon.FAR && hvemPlanlegger?.type !== Situasjon.FAR_OG_FAR,
