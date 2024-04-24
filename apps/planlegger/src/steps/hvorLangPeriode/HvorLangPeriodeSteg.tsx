@@ -140,7 +140,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
                                     values={{
-                                        erAlenesøker,
+                                        kunEnPartSkalHa,
                                         uker100: antallUker100,
                                         uker80: antallUker80,
                                     }}
