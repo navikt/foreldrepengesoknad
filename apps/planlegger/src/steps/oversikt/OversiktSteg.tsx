@@ -175,7 +175,11 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                             barnet={barnet}
                             hvemPlanlegger={hvemPlanlegger}
                         />
-                        <UforutsetteEndringer />
+                        <UforutsetteEndringer
+                            arbeidssituasjon={arbeidssituasjon}
+                            hvemPlanlegger={hvemPlanlegger}
+                            barnet={barnet}
+                        />
                     </VStack>
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}

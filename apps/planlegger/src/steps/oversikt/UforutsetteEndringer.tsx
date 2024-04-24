@@ -1,16 +1,26 @@
-import { ExclamationmarkIcon, PersonPregnantIcon, StethoscopeIcon } from '@navikt/aksel-icons';
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { ExclamationmarkIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert } from 'utils/barnetUtils';
+import { FormattedMessage } from 'react-intl';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
+import { OmBarnet } from 'types/Barnet';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
+import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { notEmpty } from '@navikt/fp-validation';
+import HvisManBlirSyk from './uforutsetteEndringer/HvisManBlirSyk';
+import HvisMorBlirSyk from './uforutsetteEndringer/HvisMorBlirSyk';
+import NyttBarnFørTreÅr from './uforutsetteEndringer/NyttBarnFørTreÅr';
 
-const UforutsetteEndringer: React.FunctionComponent = () => {
+interface Props {
+    hvemPlanlegger: HvemPlanlegger;
+    barnet: OmBarnet;
+    arbeidssituasjon: Arbeidssituasjon;
+}
+const UforutsetteEndringer: React.FunctionComponent<Props> = ({ hvemPlanlegger, barnet, arbeidssituasjon }) => {
+    const hvemHarRett =
+        hvemPlanlegger && arbeidssituasjon ? utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon) : undefined;
+
     return (
         <ExpansionCard aria-label=".">
             <ExpansionCard.Header>
@@ -28,99 +38,17 @@ const UforutsetteEndringer: React.FunctionComponent = () => {
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <Innhold />
+                <VStack gap="5">
+                    <HvisManBlirSyk arbeidssituasjon={arbeidssituasjon} />
+                    {hvemHarRett === 'beggeHarRett' && (
+                        <HvisMorBlirSyk barnet={barnet} hvemPlanlegger={hvemPlanlegger} />
+                    )}
+
+                    <NyttBarnFørTreÅr />
+                </VStack>{' '}
             </ExpansionCard.Content>
         </ExpansionCard>
     );
 };
 
-const Innhold = () => {
-    const intl = useIntl();
-
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-
-    const antallBarn = barnet.antallBarn;
-
-    const morHarIkkeRett =
-        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-
-    return (
-        <>
-            <VStack gap="5">
-                <HStack gap="5" wrap={false}>
-                    <div>
-                        <IconCircleWrapper color="lightBlue" size="medium">
-                            <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
-                        </IconCircleWrapper>
-                    </div>
-                    <div>
-                        <Heading size="small">
-                            {morHarIkkeRett ? (
-                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Far" />
-                            ) : (
-                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk" />
-                            )}
-                        </Heading>
-
-                        <BodyLong>
-                            {morHarIkkeRett ? (
-                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstFar" />
-                            ) : (
-                                <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Tekst" />
-                            )}
-                        </BodyLong>
-                    </div>
-                </HStack>
-                {!morHarIkkeRett && (
-                    <>
-                        {!erBarnetAdoptert(barnet) && (
-                            <HStack gap="5" wrap={false}>
-                                <div>
-                                    <IconCircleWrapper color="lightBlue" size="medium">
-                                        <StethoscopeIcon
-                                            height={22}
-                                            width={22}
-                                            fontSize="1.5rem"
-                                            color="#0067C5"
-                                            aria-hidden
-                                        />
-                                    </IconCircleWrapper>
-                                </div>
-                                <div>
-                                    <Heading size="small">
-                                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk" />
-                                    </Heading>
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
-                                            values={{ antallBarn, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
-                                        />
-                                    </BodyLong>
-                                </div>
-                            </HStack>
-                        )}
-                    </>
-                )}
-
-                <HStack gap="5" wrap={false}>
-                    <div>
-                        <IconCircleWrapper color="lightBlue" size="medium">
-                            <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
-                        </IconCircleWrapper>
-                    </div>
-                    <div>
-                        <Heading size="small">
-                            <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr" />
-                        </Heading>
-                        <BodyLong>
-                            <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr.Tekst" />
-                        </BodyLong>
-                    </div>
-                </HStack>
-            </VStack>
-        </>
-    );
-};
 export default UforutsetteEndringer;
