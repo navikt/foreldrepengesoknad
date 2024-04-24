@@ -16,10 +16,10 @@ import {
     getFornavnPåSøker,
     isAlene,
 } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
-import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
-import { TilgjengeligStønadskonto, getAntallUker, getAntallUkerFellesperiode } from 'utils/stønadskontoer';
-import { finnUttaksdata } from 'utils/uttakHjelper';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
+import { TilgjengeligStønadskonto, getAntallUker, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
+import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 

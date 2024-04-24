@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
-import { Uttaksdata } from 'utils/uttakHjelper';
+import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong } from '@navikt/ds-react';
 

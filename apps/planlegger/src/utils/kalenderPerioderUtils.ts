@@ -8,9 +8,9 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import { erBarnetAdoptert } from './barnetUtils';
-import { utledHvemSomHarRett } from './hvemHarRettHjelper';
-import { TilgjengeligStønadskonto } from './stønadskontoer';
-import { finnUttaksdata } from './uttakHjelper';
+import { utledHvemSomHarRett } from './hvemHarRettUtils';
+import { TilgjengeligStønadskonto } from './stønadskontoerUtils';
+import { finnUttaksdata } from './uttakUtils';
 
 export const lagKalenderPerioder = (
     valgtStønadskonto: TilgjengeligStønadskonto[],

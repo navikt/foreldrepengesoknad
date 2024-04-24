@@ -1,6 +1,6 @@
 import { BarnetErAdoptert, BarnetErFødt, BarnetErIkkeFødt, OmBarnet } from 'types/Barnet';
 
-export const erBarnetIkkeFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
+export const erBarnetUFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
     if ((omBarnet as BarnetErIkkeFødt).erBarnetFødt === false) {
         return true;
     }

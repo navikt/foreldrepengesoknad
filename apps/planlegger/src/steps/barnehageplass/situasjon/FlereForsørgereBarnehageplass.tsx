@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
@@ -18,7 +18,7 @@ interface Props {
 
 const FlereForsørgereBarnehageplass: FunctionComponent<Props> = ({ barnet }) => {
     const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetIkkeFødt(barnet);
+    const erIkkeFødt = erBarnetUFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
 
     return (

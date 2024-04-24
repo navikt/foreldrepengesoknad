@@ -18,13 +18,13 @@ import {
     isAlene,
 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
     getAntallUker,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepengerFørFødsel,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
-} from 'utils/stønadskontoer';
+} from 'utils/stønadskontoerUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
