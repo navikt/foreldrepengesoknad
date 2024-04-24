@@ -13,7 +13,7 @@ import {
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import { getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, getFornavnPåAnnenPart, getFornavnPåSøker } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import {
@@ -87,7 +87,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
 
-    const erAleneforsørger = isAlene(hvemPlanlegger);
+    const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
     const uttaksperioder = lagKalenderPerioder(
         valgtStønadskonto,

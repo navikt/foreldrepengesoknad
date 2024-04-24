@@ -46,7 +46,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
     const status = formMethods.watch('status');
     const jobberAnnenPart = formMethods.watch('jobberAnnenPart');
 
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erAlenesøker = erAlene(hvemPlanlegger);
     const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 

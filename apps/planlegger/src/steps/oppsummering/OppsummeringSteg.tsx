@@ -8,7 +8,7 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import { isAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
@@ -51,7 +51,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
-    const erAleneforsørger = isAlene(hvemPlanlegger);
+    const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
     const valgtStønadskonto =
         stønadskontoer && hvorLangPeriode

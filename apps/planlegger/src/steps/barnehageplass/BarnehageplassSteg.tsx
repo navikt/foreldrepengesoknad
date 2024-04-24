@@ -3,7 +3,7 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FormattedMessage } from 'react-intl';
-import { isAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, VStack } from '@navikt/ds-react';
@@ -37,8 +37,8 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
                 <VStack gap="10">
-                    {!isAlene(hvemPlanlegger) && <FlereForsørgereBarnehageplass barnet={barnet} />}
-                    {isAlene(hvemPlanlegger) && <AleneforsørgerBarnehageplass barnet={barnet} />}
+                    {!erAlenesøker(hvemPlanlegger) && <FlereForsørgereBarnehageplass barnet={barnet} />}
+                    {erAlenesøker(hvemPlanlegger) && <AleneforsørgerBarnehageplass barnet={barnet} />}
                 </VStack>
                 <VStack gap="20">
                     <VStack>

@@ -4,12 +4,12 @@ import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor, Situasjon } 
 
 import { utledHvemSomHarRett } from './hvemHarRettUtils';
 
-export const isFlere = (hvemPlanlegger: HvemPlanlegger) =>
+export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
     hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
     hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
     hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
 
-export const isAlene = (hvemPlanlegger: HvemPlanlegger) => isFlere(hvemPlanlegger) === false;
+export const erAlenesøker = (hvemPlanlegger: HvemPlanlegger) => erFlereSøkere(hvemPlanlegger) === false;
 
 export const erMorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | MorOgMedmor | Mor =>
     hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
@@ -32,13 +32,14 @@ export const getTekstForDeSomHarRett = (
     arbeidssituasjon: Arbeidssituasjon,
     intl: IntlShape,
 ): string | undefined => {
-    const erAlenesøker = isAlene(hvemPlanlegger);
-    if (erAlenesøker) {
+    if (erAlenesøker(hvemPlanlegger)) {
         return intl.formatMessage({ id: 'Du' });
     }
+
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     switch (hvemHarRett) {
-        case 'kunMedfarEllerMedmorHarRett':
+        case 'kunFarEllerFar2EllerMedmorHarRett':
+        case 'kunFarHarRettErHovedsøker':
             if (erFarDelAvSøknaden(hvemPlanlegger)) {
                 return hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
             }
@@ -46,12 +47,6 @@ export const getTekstForDeSomHarRett = (
                 return hvemPlanlegger.navnPåMedmor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
             }
             throw new Error('Far eller medmor er ikke en del av planleggingen.');
-        case 'kunFarHarRettMorHovedsøker':
-        case 'kunFarHarRett':
-            if (erFarDelAvSøknaden(hvemPlanlegger)) {
-                return hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
-            }
-            throw new Error('Far er ikke en del av planleggingen.');
         case 'kunMorHarRett':
             if (erMorDelAvSøknaden(hvemPlanlegger)) {
                 return hvemPlanlegger.navnPåMor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });

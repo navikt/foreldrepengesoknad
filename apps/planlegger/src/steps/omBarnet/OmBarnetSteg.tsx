@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { isAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
@@ -61,7 +61,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
     const erFødsel = formMethods.watch('erFødsel');
     const antallBarn = formMethods.watch('antallBarn');
 
-    const erAlenesøker = isAlene(hvemPlanlegger);
+    const erAlenesøker = erAlene(hvemPlanlegger);
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
