@@ -7,16 +7,15 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { erAlenesøker, erMorDelAvSøknaden, finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
+    TilgjengeligStønadskonto,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerForeldrepenger,
-    mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoerUtils';
-import { Uttaksdata, finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
@@ -26,51 +25,37 @@ interface Props {
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    valgtStønadskonto: TilgjengeligStønadskonto[];
     uttaksdata100: Uttaksdata;
     uttaksdata80: Uttaksdata;
     valgtDekningsgrad: Dekningsgrad;
+    antallUker: number;
 }
 
 const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
     barnet,
     hvemPlanlegger,
     arbeidssituasjon,
-    stønadskontoer,
+    valgtStønadskonto,
     uttaksdata100,
     uttaksdata80,
     valgtDekningsgrad,
+    antallUker,
 }) => {
     const intl = useIntl();
 
     const antallBarn = barnet.antallBarn;
-
-    const morHarIkkeRett =
-        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-    const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
-
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const kunEnPartSkalHa = erAlenesøker(hvemPlanlegger) || morHarIkkeRett || farHarIkkeRett;
-
-    const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
-    );
-    const stønadskonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
-    );
-    const valgtStønadskonto = valgtDekningsgrad
-        ? valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? stønadskonto100
-            : stønadskonto80
-        : [];
-
-    const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
-    const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
-    const antallUker = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUker100 : antallUker80;
-
     const erAdopsjon = erBarnetAdoptert(barnet);
     const erFødt = erBarnetFødt(barnet);
+
+    const søker1HarIkkeRett =
+        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
+    const søker2HarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
+    const kunEnPartSkalHa = erAlenesøker(hvemPlanlegger) || søker1HarIkkeRett || søker2HarIkkeRett;
+
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const uttaksdata = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
+
     const familiehendelsedato = dayjs(uttaksdata.familiehendelsedato).format('D. MMMM');
 
     const sluttdatoSøker1 =
@@ -130,7 +115,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                     />
                 )}
             </BodyLong>
-            {morHarIkkeRett && (
+            {søker1HarIkkeRett && (
                 <VStack gap="2">
                     <BodyLong>
                         <FormattedMessage
