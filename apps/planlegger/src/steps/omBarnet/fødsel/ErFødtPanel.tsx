@@ -103,7 +103,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     {erFarDelAvSøknaden(hvemPlanlegger) && (
                         <BodyLong>
                             <FormattedMessage
-                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
                                 values={{
                                     erFar,
                                     hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
