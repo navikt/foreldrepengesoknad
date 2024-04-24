@@ -64,15 +64,12 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
     };
 
     const dekningsgrad = formMethods.watch('dekningsgrad');
-
     const valgtDekningsgrad = dekningsgrad || periode?.dekningsgrad;
 
-    const morHarIkkeRett =
+    const søker1HarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-
-    const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const kunEnPartSkalHa = erAlenesøker || morHarIkkeRett || farHarIkkeRett;
+    const søker2HarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
+    const kunEnPartSkalHa = erAlenesøker || søker1HarIkkeRett || søker2HarIkkeRett;
     const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, arbeidssituasjon, intl);
 
     const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
@@ -82,11 +79,19 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
         stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
     );
 
+    const valgtStønadskonto = valgtDekningsgrad
+        ? valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? stønadskonto100
+            : stønadskonto80
+        : [];
+
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
+    const antallUker = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUker100 : antallUker80;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -151,10 +156,11 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 barnet={barnet}
                                 hvemPlanlegger={hvemPlanlegger}
                                 arbeidssituasjon={arbeidssituasjon}
-                                stønadskontoer={stønadskontoer}
+                                valgtStønadskonto={valgtStønadskonto}
                                 uttaksdata100={uttaksdata100}
                                 uttaksdata80={uttaksdata80}
                                 valgtDekningsgrad={valgtDekningsgrad}
+                                antallUker={antallUker}
                             />
                         )}
                     </VStack>

@@ -18,10 +18,10 @@ interface Props {
 const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon }) => {
     const intl = useIntl();
 
-    const morHarIkkeRett =
+    const søker1HarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
 
-    const farHarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
+    const søker2HarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
 
     return (
         <Infobox
@@ -29,7 +29,7 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
                 <FormattedMessage
                     id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
                     values={{
-                        hvem: morHarIkkeRett
+                        hvem: søker1HarIkkeRett
                             ? finnAnnenPartTekst(intl, hvemPlanlegger)
                             : finnSøkerTekst(intl, hvemPlanlegger),
                     }}
@@ -38,7 +38,7 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
             icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             isGray
         >
-            {farHarIkkeRett && (
+            {søker2HarIkkeRett && (
                 <VStack gap="2">
                     <BodyLong>
                         <FormattedMessage
@@ -57,7 +57,7 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
                     </BodyLong>
                 </VStack>
             )}
-            {morHarIkkeRett && (
+            {søker1HarIkkeRett && (
                 <VStack gap="2">
                     <BodyLong>
                         <FormattedMessage
