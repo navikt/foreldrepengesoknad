@@ -30,8 +30,8 @@ import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import OmÅTilpassePlanen from './OmÅTilpassePlanen';
-import OversiktLabels from './OversiktLabels';
 import UforutsetteEndringer from './UforutsetteEndringer';
+import OversiktLabels from './labels/OversiktLabels';
 import styles from './oversiktSteg.module.css';
 
 interface Props {
