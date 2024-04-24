@@ -174,6 +174,8 @@
     "OversiktSteg.Infoboks.Utkast": "This is a draft",
     "OversiktSteg.Fellesperiodefordeling": "Distribution of the joint period",
     "OversiktSteg.UkerForeldrepenger": "{hvem}, {uker} weeks, starting {dato}",
+    "OversiktSteg.UkerForeldrepengerSlutter": "{hvem}, {uker} weeks, ending {dato}",
+    "OversiktSteg.PeriodeSrOnly": "{hvem}, starts {startdato}, ends {sluttdato} ",
     "OversiktSteg.UkerUtenAktivitetskrav": "{hvem}, {uker} weeks without requirements for the mother",
     "OversiktSteg.UkerMedAktivitetskrav": "{hvem}, {uker} weeks with requirements for the mother",
     "OversiktSteg.Termindato": "Due date {dato}",
