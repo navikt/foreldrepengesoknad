@@ -113,7 +113,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                     )}
                 </HStack>
             )}
-            {annenPartTekst && hvemHarRett === 'kunFarEllerFar2EllerMedmorHarRett' && (
+            {annenPartTekst && (hvemHarRett === 'kunMedmorEllerFarHarRett' || hvemHarRett === 'kunMedfarHarRett') && (
                 <>
                     <div className={styles.bluePanel}>
                         <HStack gap="2" align="end" wrap={false}>

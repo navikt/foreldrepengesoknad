@@ -5,7 +5,8 @@ export type HvemHarRett =
     | 'beggeHarRett'
     | 'kunMorHarRett'
     | 'kunFarHarRettErHovedsøker'
-    | 'kunFarEllerFar2EllerMedmorHarRett'
+    | 'kunMedfarHarRett'
+    | 'kunMedmorEllerFarHarRett'
     | 'ingenHarRett';
 
 export const utledHvemSomHarRett = (
@@ -38,13 +39,17 @@ export const utledHvemSomHarRett = (
         return 'kunFarHarRettErHovedsøker';
     }
 
-    const kunMedmorHarRett =
-        hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR &&
+    const kunMedfarHarRett =
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
         arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart;
 
-    const kunMedfarHarRett =
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
+    if (kunMedfarHarRett) {
+        return 'kunMedfarHarRett';
+    }
+
+    const kunMedmorHarRett =
+        hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR &&
         arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart;
 
@@ -53,8 +58,8 @@ export const utledHvemSomHarRett = (
         arbeidssituasjon.status !== Arbeidsstatus.JOBBER &&
         arbeidssituasjon.jobberAnnenPart;
 
-    if (kunMedfarHarRett || kunMedmorHarRett || kunFarHarRettMorHovedsøker) {
-        return 'kunFarEllerFar2EllerMedmorHarRett';
+    if (kunMedmorHarRett || kunFarHarRettMorHovedsøker) {
+        return 'kunMedmorEllerFarHarRett';
     }
 
     return 'ingenHarRett';
