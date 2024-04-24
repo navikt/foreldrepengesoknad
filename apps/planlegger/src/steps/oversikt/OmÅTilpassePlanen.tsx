@@ -6,7 +6,7 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erFarOgFar, isAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 

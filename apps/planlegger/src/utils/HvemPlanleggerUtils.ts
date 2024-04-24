@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor, Situasjon } from 'types/HvemPlanlegger';
 
-import { utledHvemSomHarRett } from './hvemHarRettHjelper';
+import { utledHvemSomHarRett } from './hvemHarRettUtils';
 
 export const isFlere = (hvemPlanlegger: HvemPlanlegger) =>
     hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||

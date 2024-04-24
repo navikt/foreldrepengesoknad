@@ -19,13 +19,13 @@ import {
     getFornavnPåSøker,
 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerFellesperiode,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
-} from 'utils/stønadskontoer';
+} from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
-import { finnUttaksdata } from 'utils/uttakHjelper';
+import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Spacer, VStack } from '@navikt/ds-react';
 

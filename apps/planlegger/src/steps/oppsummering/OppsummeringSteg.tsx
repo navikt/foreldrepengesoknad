@@ -10,7 +10,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { isAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
-import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoer';
+import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Alert, BodyLong, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';

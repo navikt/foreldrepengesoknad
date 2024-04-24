@@ -14,14 +14,14 @@ import {
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { getFornavnPåAnnenPart, getFornavnPåSøker, isAlene } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettHjelper';
-import { lagKalenderPerioder } from 'utils/kalenderPerioderHjelper';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import {
     getAntallUkerFellesperiode,
     mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
-} from 'utils/stønadskontoer';
+} from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
-import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakHjelper';
+import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 

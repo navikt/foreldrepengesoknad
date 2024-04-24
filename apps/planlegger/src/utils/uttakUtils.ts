@@ -6,8 +6,8 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { treUkerSiden } from '@navikt/fp-utils';
 
-import { erBarnetAdoptert, erBarnetFødt, erBarnetIkkeFødt } from './barnetUtils';
-import { HvemHarRett } from './hvemHarRettHjelper';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
+import { HvemHarRett } from './hvemHarRettUtils';
 import {
     TilgjengeligStønadskonto,
     getAntallUkerAktivitetsfriKvote,
@@ -16,7 +16,7 @@ import {
     getAntallUkerForeldrepenger,
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
-} from './stønadskontoer';
+} from './stønadskontoerUtils';
 
 dayjs.extend(isoWeek);
 
@@ -92,7 +92,7 @@ const getFamiliehendelsedato = (barnet: OmBarnet) => {
     if (erBarnetAdoptert(barnet)) {
         return barnet.overtakelsesdato;
     }
-    return erBarnetIkkeFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
+    return erBarnetUFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
 };
 
 const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnet): string => {
