@@ -188,49 +188,23 @@ const finnEnsligUttaksdata = (
     hvemHarRett: HvemHarRett,
 ): Uttaksdata => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
-    const startdatoSøker =
-        erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR
-            ? getUttaksdagFraOgMedDato(familiehendelsedato)
-            : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
-    if (
-        !erBarnetAdoptert(barnet) &&
-        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett')
-    ) {
+    if (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = getUttaksdagTilOgMedDato(
-            dayjs(familiehendelsedato)
-                .add(aktivitetsfriUker, 'weeks')
-                .add(6, 'weeks')
-                .subtract(1, 'day')
-                .format(ISO_DATE_FORMAT),
-        );
+        const sluttAktivitetsfri = dayjs(familiehendelsedato)
+            .add(aktivitetsfriUker, 'weeks')
+            .add(erBarnetAdoptert(barnet) ? 0 : 6, 'weeks')
+            .subtract(1, 'day');
+
+        const startdatoSøker1 = erBarnetAdoptert(barnet)
+            ? dayjs(familiehendelsedato).add(1, 'day')
+            : dayjs(familiehendelsedato).add(6, 'weeks');
+
         return {
             familiehendelsedato,
-            startdatoSøker1: getUttaksdagFraOgMedDato(
-                dayjs(familiehendelsedato).add(6, 'weeks').format(ISO_DATE_FORMAT),
-            ),
-            sluttdatoSøker1: sluttAktivitetsfri,
-            startdatoSøker2: getUttaksdagFraOgMedDato(dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT)),
-            sluttdatoSøker2: getUttaksdagTilOgMedDato(
-                dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
-            ),
-        };
-    }
-    if (
-        erBarnetAdoptert(barnet) &&
-        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett')
-    ) {
-        const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-        const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = getUttaksdagTilOgMedDato(
-            dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks').subtract(1, 'day').format(ISO_DATE_FORMAT),
-        );
-        return {
-            familiehendelsedato,
-            startdatoSøker1: getUttaksdagFraOgMedDato(dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT)),
-            sluttdatoSøker1: sluttAktivitetsfri,
+            startdatoSøker1: getUttaksdagFraOgMedDato(startdatoSøker1.format(ISO_DATE_FORMAT)),
+            sluttdatoSøker1: getUttaksdagTilOgMedDato(sluttAktivitetsfri.format(ISO_DATE_FORMAT)),
             startdatoSøker2: getUttaksdagFraOgMedDato(dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT)),
             sluttdatoSøker2: getUttaksdagTilOgMedDato(
                 dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
@@ -241,6 +215,11 @@ const finnEnsligUttaksdata = (
     const ukerForeldrepenger = getAntallUkerForeldrepenger(valgtStønadskonto);
     const ukerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
     const antallUkerForeldrepengerFørFødsel = getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto);
+
+    const startdatoSøker =
+        erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR
+            ? getUttaksdagFraOgMedDato(familiehendelsedato)
+            : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
     const sluttdatoSøker = getUttaksdagTilOgMedDato(
         dayjs(startdatoSøker)
