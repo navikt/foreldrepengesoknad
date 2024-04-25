@@ -29,7 +29,6 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
     const erFedre = erFarOgFar(hvemPlanlegger);
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
-    const kunFar1HarRett = hvemHarRett === 'kunFarSøker1HarRett';
     const kunFarEllerMedmorHarRett = hvemHarRett === 'kunMedmorEllerFarSøker2HarRett';
 
     return (
@@ -67,7 +66,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />
 
-                            {(!morHarIkkeRett || kunFar1HarRett) && !kunEnPartSkalHa && <JobbeSamtidig />}
+                            {<JobbeSamtidig />}
 
                             {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
                         </>
@@ -76,7 +75,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                         <>
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />
 
-                            {(!morHarIkkeRett || kunFar1HarRett) && !kunEnPartSkalHa && <JobbeSamtidig />}
+                            <JobbeSamtidig />
 
                             {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
                         </>
