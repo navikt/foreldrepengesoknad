@@ -12,7 +12,7 @@ interface Props {
 const ToUkerRundtFødsel: React.FunctionComponent<Props> = ({ hvemPlanlegger }) => {
     const intl = useIntl();
     return (
-        <HStack gap="5" align="start" wrap={false} justify="space-between">
+        <HStack gap="5" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
                     <BabyWrappedIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
