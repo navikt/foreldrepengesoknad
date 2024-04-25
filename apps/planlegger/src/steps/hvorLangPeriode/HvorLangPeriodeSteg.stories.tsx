@@ -73,19 +73,23 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
-            jobberAnnenPart: false,
+            jobberAnnenPart: true,
         },
         stønadskontoer: {
             '80': {
                 kontoer: {
-                    FORELDREPENGER: 280,
+                    MØDREKVOTE: 95,
+                    FEDREKVOTE: 95,
+                    FELLESPERIODE: 90,
                     FORELDREPENGER_FØR_FØDSEL: 15,
                 },
                 minsteretter: MINSTERETTER,
             },
             '100': {
                 kontoer: {
-                    FORELDREPENGER: 230,
+                    MØDREKVOTE: 75,
+                    FEDREKVOTE: 75,
+                    FELLESPERIODE: 80,
                     FORELDREPENGER_FØR_FØDSEL: 15,
                 },
                 minsteretter: MINSTERETTER,
@@ -230,6 +234,46 @@ export const AleneforsørgerFarToBarn: Story = {
             '100': {
                 kontoer: {
                     FORELDREPENGER: 230,
+                },
+                minsteretter: MINSTERETTER,
+            },
+        },
+    },
+};
+
+export const FarOgFarBeggeHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Anders Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    MØDREKVOTE: 95,
+                    FEDREKVOTE: 95,
+                    FELLESPERIODE: 90,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
+                },
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: {
+                    MØDREKVOTE: 75,
+                    FEDREKVOTE: 75,
+                    FELLESPERIODE: 80,
+                    FORELDREPENGER_FØR_FØDSEL: 15,
                 },
                 minsteretter: MINSTERETTER,
             },

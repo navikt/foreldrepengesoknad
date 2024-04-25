@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Dekningsgrad } from 'types/Dekningsgrad';
+import { Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
@@ -49,12 +50,13 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const lagre = (formValues: HvorLangPeriode) => {
+
+    const onSubmit = (formValues: HvorLangPeriode) => {
         oppdaterPeriode(formValues);
+        const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+        const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon.jobberAnnenPart;
         const nextRoute =
-            arbeidssituasjon.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon.jobberAnnenPart
-                ? PlanleggerRoutes.FORDELING
-                : PlanleggerRoutes.OVERSIKT;
+            beggeHarRett && !(erFarOgFar && barnet.erFødsel) ? PlanleggerRoutes.FORDELING : PlanleggerRoutes.OVERSIKT;
 
         if (nextRoute === PlanleggerRoutes.OVERSIKT) {
             oppdaterFordeling(undefined);
@@ -97,7 +99,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig}>
-            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading size="medium" spacing level="2">
