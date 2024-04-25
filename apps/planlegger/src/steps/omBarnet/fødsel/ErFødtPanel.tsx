@@ -6,7 +6,12 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { erAlenesøker as erAlene, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
+import {
+    erAlenesøker as erAlene,
+    erFarDelAvSøknaden,
+    erMorDelAvSøknaden,
+    finnAnnenPartTekst,
+} from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
@@ -95,6 +100,17 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                             }}
                         />
                     </BodyLong>
+                    {erFarDelAvSøknaden(hvemPlanlegger) && (
+                        <BodyLong>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                values={{
+                                    erFar,
+                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                }}
+                            />
+                        </BodyLong>
+                    )}
                 </Infobox>
             )}
             {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATE_3_YEARS_AGO) && (
