@@ -280,6 +280,58 @@ describe('useStepData', () => {
         );
     });
 
+    it('skal ikke vise steget fordeling ved fødsel for far og far', async () => {
+        const barnet = {
+            antallBarn: '1',
+            erBarnetFødt: true,
+            erFødsel: true,
+            termindato: dayjs().format(ISO_DATE_FORMAT),
+            fødselsdato: dayjs().format(ISO_DATE_FORMAT),
+        };
+        const hvemPlanlegger = {
+            type: Situasjon.FAR_OG_FAR,
+            navnPåFar: 'Anders Utvikler',
+            navnPåMedfar: 'Espen Utvikler',
+        };
+        const arbeidssituasjon = {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        };
+
+        const { result } = renderHook(() => useStepData(), {
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet, hvemPlanlegger, arbeidssituasjon),
+        });
+
+        await waitFor(() =>
+            expect(result.current).toEqual([
+                {
+                    id: '/hvem-planlegger',
+                    isSelected: false,
+                },
+                {
+                    id: '/om-barnet',
+                    isSelected: false,
+                },
+                {
+                    id: '/arbeidssituasjon',
+                    isSelected: false,
+                },
+                {
+                    id: '/hvor-lenge',
+                    isSelected: false,
+                },
+                {
+                    id: '/oversikt',
+                    isSelected: false,
+                },
+                {
+                    id: '/oppsummering',
+                    isSelected: true,
+                },
+            ]),
+        );
+    });
+
     it('skal ikke vise stegene hvor-lenge og oversikt når ingen har rett', async () => {
         const barnet = {
             antallBarn: '1',

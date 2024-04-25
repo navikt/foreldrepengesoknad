@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { Situasjon } from 'types/HvemPlanlegger';
 import { erFlereSøkere } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 
@@ -24,7 +25,12 @@ const showFordelingStep = (
     if (path === PlanleggerRoutes.FORDELING) {
         const hvemPlanlegger = getData(ContextDataType.HVEM_PLANLEGGER);
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
-        const skalVise = arbeidssituasjon?.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon?.jobberAnnenPart;
+        const barnet = getData(ContextDataType.OM_BARNET);
+
+        const erFarOgFar = hvemPlanlegger?.type === Situasjon.FAR_OG_FAR;
+        const beggeHarRett = arbeidssituasjon?.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon?.jobberAnnenPart;
+        const skalVise = beggeHarRett && !(erFarOgFar && barnet?.erFødsel);
+
         const erValgtOgEtterSteg =
             hvemPlanlegger &&
             erFlereSøkere(hvemPlanlegger) &&
