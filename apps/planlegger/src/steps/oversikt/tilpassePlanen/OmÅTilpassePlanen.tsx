@@ -67,7 +67,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />
 
-                            {(!morHarIkkeRett || kunFar1HarRett) && !kunEnPartSkalHa && <JobbeSamtidig />}
+                            {<JobbeSamtidig />}
 
                             {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
                         </>
