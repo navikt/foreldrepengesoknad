@@ -51,7 +51,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
     const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
     const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
 
-    const lagre = (formValues: Arbeidssituasjon) => {
+    const onSubmit = (formValues: Arbeidssituasjon) => {
         oppdaterArbeidssituasjon(formValues);
 
         const kunFar2HarRettForFødsel =
@@ -77,7 +77,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig}>
-            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading level="2" size="medium">
