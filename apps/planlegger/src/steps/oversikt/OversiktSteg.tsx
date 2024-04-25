@@ -29,10 +29,10 @@ import { LocaleAll } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import OmÅTilpassePlanen from './OmÅTilpassePlanen';
-import UforutsetteEndringer from './UforutsetteEndringer';
 import OversiktLabels from './labels/OversiktLabels';
 import styles from './oversiktSteg.module.css';
+import OmÅTilpassePlanen from './tilpassePlanen/OmÅTilpassePlanen';
+import UforutsetteEndringer from './uforutsetteEndringer/UforutsetteEndringer';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerDTO;
