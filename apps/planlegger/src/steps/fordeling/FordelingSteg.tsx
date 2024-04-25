@@ -47,18 +47,18 @@ export const finnFellesperiodeFordelingOptionTekst = (
     intl: IntlShape,
     value: Fellesperiodefordeling,
     hvemPlanlegger: HvemPlanlegger,
-    fornavnPart1?: string,
-    fornavnPart2?: string,
+    fornavnSøker1?: string,
+    fornavnSøker2?: string,
 ) => {
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
-    const part1Tekst = erFarOgFar && fornavnPart1 ? fornavnPart1 : finnSøker1Tekst(intl, hvemPlanlegger);
-    const part2Tekst = erFarOgFar && fornavnPart2 ? fornavnPart2 : finnSøker2Tekst(intl, hvemPlanlegger);
+    const søker1Tekst = erFarOgFar && fornavnSøker1 ? fornavnSøker1 : finnSøker1Tekst(intl, hvemPlanlegger);
+    const søker2Tekst = erFarOgFar && fornavnSøker2 ? fornavnSøker2 : finnSøker2Tekst(intl, hvemPlanlegger);
 
     if (value.antallUkerSøker1 === 0) {
         return (
             <FormattedMessage
                 id="FordelingSteg.FordelingOptionAlt"
-                values={{ hvem: part2Tekst, uker: value.antallUkerSøker2 }}
+                values={{ hvem: søker2Tekst, uker: value.antallUkerSøker2 }}
             />
         );
     }
@@ -66,7 +66,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
         return (
             <FormattedMessage
                 id="FordelingSteg.FordelingOptionAlt"
-                values={{ hvem: part1Tekst, uker: value.antallUkerSøker1 }}
+                values={{ hvem: søker1Tekst, uker: value.antallUkerSøker1 }}
             />
         );
     }
@@ -74,8 +74,8 @@ export const finnFellesperiodeFordelingOptionTekst = (
         <FormattedMessage
             id="FordelingSteg.FordelingOptions"
             values={{
-                hvem: part1Tekst,
-                hvem2: part2Tekst,
+                hvem: søker1Tekst,
+                hvem2: søker2Tekst,
                 uker: value.antallUkerSøker1,
                 uker2: value.antallUkerSøker2,
             }}
@@ -120,8 +120,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
 
-    const fornavnPart1 = getFornavnPåSøker1(hvemPlanlegger, intl);
-    const fornavnPart2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+    const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -167,8 +167,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                                             intl,
                                             value,
                                             hvemPlanlegger,
-                                            fornavnPart1,
-                                            fornavnPart2,
+                                            fornavnSøker1,
+                                            fornavnSøker2,
                                         )}
                                     </option>
                                 ))}
@@ -178,8 +178,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                             <FordelingsdetaljerPanel
                                 barnet={barnet}
                                 hvemPlanlegger={hvemPlanlegger}
-                                fornavnPart1={fornavnPart1}
-                                fornavnPart2={fornavnPart2}
+                                fornavnSøker1={fornavnSøker1}
+                                fornavnSøker2={fornavnSøker2}
                                 uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
                             />
                         )}

@@ -13,16 +13,16 @@ interface Props {
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     uttaksdata: Uttaksdata;
-    fornavnPart1: string;
-    fornavnPart2?: string;
+    fornavnSøker1: string;
+    fornavnSøker2?: string;
 }
 
 const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
     barnet,
     hvemPlanlegger,
     uttaksdata,
-    fornavnPart1,
-    fornavnPart2,
+    fornavnSøker1,
+    fornavnSøker2,
 }) => {
     const intl = useIntl();
     const antallBarn = barnet.antallBarn;
@@ -134,19 +134,19 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                 <FormattedMessage
                     id="FordelingsdetaljerPanel.Infoboks.Periode"
                     values={{
-                        hvem: fornavnPart1,
+                        hvem: fornavnSøker1,
                         fom: intl.formatDate(startdatoPeriode1, { day: 'numeric', month: 'short', year: 'numeric' }),
                         tom: intl.formatDate(sluttdatoPeriode1, { day: 'numeric', month: 'short', year: 'numeric' }),
                         b: (b) => <b>{b}</b>,
                     }}
                 />
             </BodyLong>
-            {fornavnPart2 && sluttdatoPeriode2 && (
+            {fornavnSøker2 && sluttdatoPeriode2 && (
                 <BodyLong>
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.Periode"
                         values={{
-                            hvem: fornavnPart2,
+                            hvem: fornavnSøker2,
                             fom: intl.formatDate(startdatoPeriode2, {
                                 day: 'numeric',
                                 month: 'short',
