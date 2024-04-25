@@ -67,3 +67,12 @@ export const AleneforsørgerFar: Story = {
         },
     },
 };
+export const FlereForsørgereFarOgFar: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Hugo Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+    },
+};
