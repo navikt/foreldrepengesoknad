@@ -2,17 +2,19 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
+import Infoboks from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
@@ -62,6 +64,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
     const antallBarn = formMethods.watch('antallBarn');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
+    const erFedre = erFarOgFar(hvemPlanlegger);
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -98,6 +101,25 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
                                 <FormattedMessage id="OmBarnetSteg.Adopsjon" />
                             </Radio>
                         </GreenRadioGroup>
+                        {erFødsel !== undefined && erFødsel === true && erFedre && (
+                            <Infoboks header={<FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks" />}>
+                                <BodyLong>
+                                    <FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks.DenSomErBiologiskFar" />
+                                </BodyLong>
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="OmBarnetSteg.Fødsel.Infoboks.LesMer"
+                                        values={{
+                                            a: (msg: any) => (
+                                                <Link href={links.foreldrepenger} target="_blank" inlineText>
+                                                    {msg}
+                                                </Link>
+                                            ),
+                                        }}
+                                    />
+                                </BodyLong>
+                            </Infoboks>
+                        )}
                         {erFødsel !== undefined && (
                             <GreenRadioGroup
                                 name="antallBarn"

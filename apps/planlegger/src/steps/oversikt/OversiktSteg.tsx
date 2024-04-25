@@ -68,6 +68,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const farOgFarKunEnPartHarRett = hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMedfarHarRett';
 
     const uttaksdata100 = finnUttaksdata(
         hvemHarRett,
@@ -116,6 +117,16 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                             <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" values={{ erAleneforsørger }} />
                         </BodyLong>
                     </Infobox>
+                    {farOgFarKunEnPartHarRett && barnet.erFødsel && (
+                        <Infobox header="">
+                            <BodyLong>
+                                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />
+                            </BodyLong>
+                            <BodyLong>
+                                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon" />
+                            </BodyLong>
+                        </Infobox>
+                    )}
                     <ToggleGroup
                         defaultValue={hvorLangPeriode?.dekningsgrad}
                         size="medium"
