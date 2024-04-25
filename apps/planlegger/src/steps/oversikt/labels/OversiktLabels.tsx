@@ -37,11 +37,11 @@ const OversiktLabels: FunctionComponent<Props> = ({
     const erAdoptert = erBarnetAdoptert(barnet);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
-    const søkerTekst =
+    const søker1Tekst =
         erFarOgFar && hvemPlanlegger.navnPåMedfar
             ? getFornavnPåSøker1(hvemPlanlegger, intl)
             : finnSøker1Tekst(intl, hvemPlanlegger);
-    const annenPartTekst =
+    const søker2Tekst =
         erFarOgFar && hvemPlanlegger.navnPåMedfar
             ? getFornavnPåSøker2(hvemPlanlegger, intl)
             : finnSøker2Tekst(intl, hvemPlanlegger);
@@ -56,21 +56,21 @@ const OversiktLabels: FunctionComponent<Props> = ({
                 hvemHarRett === 'kunMorHarRett') && (
                 <HStack gap="1">
                     <AntallUkerFpLabel
-                        søkerTekst={søkerTekst}
+                        søkerTekst={søker1Tekst}
                         startdato={startdatoPeriode1}
                         sluttdato={sluttdatoPeriode1}
+                        isBluePanel
                     />
-                    {annenPartTekst && hvemHarRett === 'beggeHarRett' && startdatoPeriode2 && sluttdatoPeriode2 && (
+                    {søker2Tekst && hvemHarRett === 'beggeHarRett' && startdatoPeriode2 && sluttdatoPeriode2 && (
                         <AntallUkerFpLabel
-                            søkerTekst={annenPartTekst}
+                            søkerTekst={søker2Tekst}
                             startdato={startdatoPeriode2}
                             sluttdato={sluttdatoPeriode2}
-                            isBluePanel={false}
                         />
                     )}
                 </HStack>
             )}
-            {annenPartTekst &&
+            {søker2Tekst &&
                 startdatoPeriode2 &&
                 sluttdatoPeriode2 &&
                 (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') && (
@@ -79,7 +79,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                             utenAktivitetskrav
                             valgtStønadskonto={valgtStønadskonto}
                             hvemPlanlegger={hvemPlanlegger}
-                            annenPartTekst={annenPartTekst}
+                            annenPartTekst={søker2Tekst}
                             startdato={startdatoPeriode1}
                             sluttdato={sluttdatoPeriode1}
                             isBluePanel
@@ -87,10 +87,9 @@ const OversiktLabels: FunctionComponent<Props> = ({
                         <AktivitetskravLabel
                             valgtStønadskonto={valgtStønadskonto}
                             hvemPlanlegger={hvemPlanlegger}
-                            annenPartTekst={annenPartTekst}
+                            annenPartTekst={søker2Tekst}
                             startdato={startdatoPeriode2}
                             sluttdato={sluttdatoPeriode2}
-                            isBluePanel={false}
                         />
                     </>
                 )}
