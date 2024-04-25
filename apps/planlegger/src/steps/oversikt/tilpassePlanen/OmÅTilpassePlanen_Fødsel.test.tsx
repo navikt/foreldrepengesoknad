@@ -35,8 +35,8 @@ describe('<OmÅTilpassePlanen>', () => {
         expect(screen.getByText('Før termin')).toBeInTheDocument();
         expect(screen.getByText('De første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     it('skal vise info for mor og far fødsel hvor kun far har rett', async () => {
@@ -46,10 +46,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     //MorOgMedmor
@@ -69,8 +69,8 @@ describe('<OmÅTilpassePlanen>', () => {
         expect(screen.getByText('Før termin')).toBeInTheDocument();
         expect(screen.getByText('De første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     it('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
@@ -78,10 +78,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     //FarOgFar
@@ -106,11 +106,11 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(screen.getByText('De første ukene etter termin')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
         expect(screen.queryByText('To uker rundt fødsel')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     it.skip('skal vise info for far og far fødsel hvor kun far2 har rett', async () => {});
@@ -123,8 +123,8 @@ describe('<OmÅTilpassePlanen>', () => {
         expect(screen.getByText('Før termin')).toBeInTheDocument();
         expect(screen.getByText('De første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     // har denne riktig info?
@@ -135,9 +135,9 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(screen.getByText('De første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('To uker rundt fødsel')).not.toBeInTheDocument();
     });
