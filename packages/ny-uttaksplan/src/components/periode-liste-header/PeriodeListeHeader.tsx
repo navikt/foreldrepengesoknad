@@ -1,15 +1,23 @@
 import { BabyWrappedFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
+import { FunctionComponent } from 'react';
 
-import { bemUtils, formatDateShortMonth } from '@navikt/fp-common';
+import { Periode, bemUtils, formatDateShortMonth } from '@navikt/fp-common';
 
 import './periode-liste-header.css';
 
-const PeriodeListeHeader = () => {
-    const bem = bemUtils('periode-liste-header');
+interface Props {
+    periode: Periode;
+    termindato: string;
+}
 
-    const getIkon = (førTermindato: boolean) => {
-        if (førTermindato) {
+const PeriodeListeHeader: FunctionComponent<Props> = ({ periode, termindato }) => {
+    const bem = bemUtils('periode-liste-header');
+    const periodeFørTermindato = dayjs(termindato).isAfter(periode.tidsperiode.tom);
+
+    const getIkon = () => {
+        if (periodeFørTermindato) {
             return <PersonPregnantFillIcon className={bem.modifier('farge-blaa')} width={24} height={24} />;
         }
 
@@ -19,7 +27,7 @@ const PeriodeListeHeader = () => {
     return (
         <div className={bem.block}>
             <div className={bem.element('dato')}>
-                {formatDateShortMonth(new Date('2024-11-01'))} - {formatDateShortMonth(new Date('2024-12-05'))}
+                {formatDateShortMonth(periode.tidsperiode.fom)} - {formatDateShortMonth(periode.tidsperiode.tom)}
             </div>
             <div className={bem.element('uker')}>3 uker</div>
             <div
@@ -29,7 +37,7 @@ const PeriodeListeHeader = () => {
                 )}
             >
                 <div>Du i permisjon</div>
-                {getIkon(true)}
+                {getIkon()}
             </div>
         </div>
     );
