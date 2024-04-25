@@ -29,6 +29,8 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
     const erFedre = erFarOgFar(hvemPlanlegger);
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
+    const kunFar1HarRett = hvemHarRett === 'kunFarSøker1HarRett';
+    const kunFarEllerMedmorHarRett = hvemHarRett === 'kunMedmorEllerFarSøker2HarRett';
 
     return (
         <ExpansionCard aria-label="Expansion card">
@@ -51,23 +53,34 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                     <BodyLong>
                         <FormattedMessage id="OmÅTilpassePlanen.Tekst" />
                     </BodyLong>
+                    {!erBarnetAdoptert(barnet) && (
+                        <>
+                            {!morHarIkkeRett && !erFedre && hvemPlanlegger.type !== Situasjon.FAR && (
+                                <FørTermin hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
+                            )}
 
-                    {!morHarIkkeRett &&
-                        !erBarnetAdoptert(barnet) &&
-                        !erFedre &&
-                        hvemPlanlegger.type !== Situasjon.FAR && <FørTermin barnet={barnet} />}
-                    {!morHarIkkeRett &&
-                        !erBarnetAdoptert(barnet) &&
-                        !erFedre &&
-                        hvemPlanlegger.type !== Situasjon.FAR && <DeFørsteSeksUkene hvemPlanlegger={hvemPlanlegger} />}
-                    {!morHarIkkeRett && <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />}
-                    {erFedre ||
-                        (morHarIkkeRett && !erBarnetAdoptert(barnet) && (
-                            <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
-                        ))}
-                    {erFedre || (morHarIkkeRett && <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />)}
-                    {!erAlene && !morHarIkkeRett && !erBarnetAdoptert(barnet) && <JobbeSamtidig />}
-                    {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
+                            {!morHarIkkeRett && !erFedre && <DeFørsteSeksUkene hvemPlanlegger={hvemPlanlegger} />}
+
+                            {(kunFarEllerMedmorHarRett || erFedre) && (
+                                <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
+                            )}
+
+                            <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />
+
+                            {(!morHarIkkeRett || kunFar1HarRett) && !kunEnPartSkalHa && <JobbeSamtidig />}
+
+                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
+                        </>
+                    )}
+                    {erBarnetAdoptert(barnet) && (
+                        <>
+                            <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />
+
+                            {(!morHarIkkeRett || kunFar1HarRett) && !kunEnPartSkalHa && <JobbeSamtidig />}
+
+                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
+                        </>
+                    )}
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
