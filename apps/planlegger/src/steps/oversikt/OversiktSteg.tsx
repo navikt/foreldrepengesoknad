@@ -1,8 +1,9 @@
-import { InformationIcon } from '@navikt/aksel-icons';
+import { InformationIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import Infobox from 'components/boxes/Infobox';
+import Infoboks from 'components/boxes/Infobox';
 import Calendar from 'components/calendar/Calendar';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
@@ -87,6 +88,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
 
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
+    const ukerFødsel = antallUker100 + 6;
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
@@ -118,14 +120,25 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                         </BodyLong>
                     </Infobox>
                     {farOgFarKunEnPartHarRett && barnet.erFødsel && (
-                        <Infobox header="">
-                            <BodyLong>
-                                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />
-                            </BodyLong>
-                            <BodyLong>
-                                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon" />
-                            </BodyLong>
-                        </Infobox>
+                        <Infoboks
+                            header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />}
+                            icon={
+                                <PersonGroupIcon height={28} width={28} fontSize="1.5rem" color="#0067C5" aria-hidden />
+                            }
+                        >
+                            <div>
+                                <BodyLong>
+                                    <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk" />
+                                </BodyLong>
+
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon"
+                                        values={{ uker: antallUker100, ukerFødsel: ukerFødsel, uker2: antallUker80 }}
+                                    />
+                                </BodyLong>
+                            </div>
+                        </Infoboks>
                     )}
                     <ToggleGroup
                         defaultValue={hvorLangPeriode?.dekningsgrad}

@@ -20,7 +20,7 @@ import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'util
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
@@ -72,6 +72,9 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const søker2HarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
     const kunEnPartSkalHa = erAlenesøker || søker1HarIkkeRett || søker2HarIkkeRett;
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const farOgFarKunEnPartHarRett = hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMedfarHarRett';
+
     const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, arbeidssituasjon, intl);
 
     const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
@@ -87,7 +90,6 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
             : stønadskonto80
         : [];
 
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
@@ -123,11 +125,27 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 />
                             </BodyLong>
                         </Infobox>
-                        {!erAlenesøker && hvemHarRett !== 'beggeHarRett' && (
+                        {!erAlenesøker && hvemHarRett !== 'beggeHarRett' && !farOgFarKunEnPartHarRett && (
                             <NårBareEnPartHarRettInfoboks
                                 hvemPlanlegger={hvemPlanlegger}
                                 arbeidssituasjon={arbeidssituasjon}
                             />
+                        )}
+                        {farOgFarKunEnPartHarRett && (
+                            <Infobox
+                                header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett" />}
+                                isGray
+                            >
+                                <BodyLong>
+                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
+                                </BodyLong>
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
+                                        values={{ a: (msg: any) => <Link>{msg}</Link> }}
+                                    />
+                                </BodyLong>
+                            </Infobox>
                         )}
                         <GreenRadioGroup
                             label={

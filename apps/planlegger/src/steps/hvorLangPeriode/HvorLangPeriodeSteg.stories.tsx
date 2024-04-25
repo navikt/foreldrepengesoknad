@@ -208,6 +208,47 @@ export const FlereForsørgereKunFarHarRett: Story = {
         },
     },
 };
+export const FlereForsørgereFarOgFarKunFar1HarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Hugo Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 250,
+                },
+                minsteretter: {
+                    generellMinsterett: 40,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 200,
+                },
+                minsteretter: {
+                    generellMinsterett: 40,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
+    },
+};
 
 export const AleneforsørgerFarToBarn: Story = {
     args: {
