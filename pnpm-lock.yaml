@@ -848,9 +848,6 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@navikt/uttaksplan':
-        specifier: workspace:*
-        version: link:../../packages/uttaksplan
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.109.0
@@ -1276,7 +1273,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.4.2
-        version: 6.4.2
+        version: 6.4.2(vitest@1.4.0)
       '@types/react':
         specifier: ^18.2.73
         version: 18.2.73
@@ -2110,7 +2107,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.4.2
-        version: 6.4.2
+        version: 6.4.2(vitest@1.4.0)
       '@types/react':
         specifier: ^18.2.73
         version: 18.2.73
@@ -6373,37 +6370,6 @@ packages:
       dom-accessibility-api: 0.5.16
       lz-string: 1.5.0
       pretty-format: 27.5.1
-    dev: true
-
-  /@testing-library/jest-dom@6.4.2:
-    resolution: {integrity: sha512-CzqH0AFymEMG48CpzXFriYYkOjk6ZGPCLMhW9e9jg3KMCn5OfJecF8GtGW7yGfR/IgCe3SX8BSwjdzI6BBbZLw==}
-    engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
-    peerDependencies:
-      '@jest/globals': '>= 28'
-      '@types/bun': latest
-      '@types/jest': '>= 28'
-      jest: '>= 28'
-      vitest: '>= 0.32'
-    peerDependenciesMeta:
-      '@jest/globals':
-        optional: true
-      '@types/bun':
-        optional: true
-      '@types/jest':
-        optional: true
-      jest:
-        optional: true
-      vitest:
-        optional: true
-    dependencies:
-      '@adobe/css-tools': 4.3.3
-      '@babel/runtime': 7.24.4
-      aria-query: 5.3.0
-      chalk: 3.0.0
-      css.escape: 1.5.1
-      dom-accessibility-api: 0.6.3
-      lodash: 4.17.21
-      redent: 3.0.0
     dev: true
 
   /@testing-library/jest-dom@6.4.2(vitest@1.4.0):
