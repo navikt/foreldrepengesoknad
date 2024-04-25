@@ -14,6 +14,7 @@
         "@navikt/ds-react": "^6.6.0",
         "@navikt/fp-common": "workspace:*",
         "@types/react": "^18.2.73",
+        "classnames": "^2.5.1",
         "react": "^18.2.0",
         "react-intl": "^6.6.4",
         "typescript": "^5.4.3"
