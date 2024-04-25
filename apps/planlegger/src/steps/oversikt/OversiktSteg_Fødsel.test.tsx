@@ -407,6 +407,7 @@ describe('<OversiktSteg - fødsel>', () => {
         render(<FarOgFarKunFarHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+        expect(screen.getByText(/Dere har oppgitt at kun/)).toBeInTheDocument();
 
         expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'true',
