@@ -10,10 +10,10 @@ import { links } from '@navikt/fp-constants';
 interface Props {
     erAlenesøker: boolean;
     fornavn: string;
-    erAnnenPart?: boolean;
+    erSøker2?: boolean;
 }
 
-const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erAnnenPart = false }) => {
+const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSøker2 = false }) => {
     return (
         <Infobox
             header={
@@ -31,7 +31,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erAnn
                     values={{ erAlenesøker, navn: fornavn }}
                 />
             </BodyLong>
-            {!erAnnenPart && (
+            {!erSøker2 && (
                 <BodyLong>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"

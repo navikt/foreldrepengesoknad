@@ -3,7 +3,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
+import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
@@ -29,7 +29,7 @@ const HvisMorBlirSyk: React.FunctionComponent<Props> = ({ barnet, hvemPlanlegger
                 <BodyLong>
                     <FormattedMessage
                         id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
-                        values={{ antallBarn, hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                        values={{ antallBarn, hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
                     />
                 </BodyLong>
             </div>

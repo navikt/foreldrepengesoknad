@@ -3,12 +3,7 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import {
-    finnAnnenPartTekst,
-    finnSøkerTekst,
-    getFornavnPåAnnenPart,
-    getFornavnPåSøker,
-} from 'utils/HvemPlanleggerUtils';
+import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett } from 'utils/hvemHarRettUtils';
 import { TilgjengeligStønadskonto } from 'utils/stønadskontoerUtils';
@@ -44,12 +39,12 @@ const OversiktLabels: FunctionComponent<Props> = ({
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const søkerTekst =
         erFarOgFar && hvemPlanlegger.navnPåMedfar
-            ? getFornavnPåSøker(hvemPlanlegger, intl)
-            : finnSøkerTekst(intl, hvemPlanlegger);
+            ? getFornavnPåSøker1(hvemPlanlegger, intl)
+            : finnSøker1Tekst(intl, hvemPlanlegger);
     const annenPartTekst =
         erFarOgFar && hvemPlanlegger.navnPåMedfar
-            ? getFornavnPåAnnenPart(hvemPlanlegger, intl)
-            : finnAnnenPartTekst(intl, hvemPlanlegger);
+            ? getFornavnPåSøker2(hvemPlanlegger, intl)
+            : finnSøker2Tekst(intl, hvemPlanlegger);
 
     const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2, familiehendelsedato } =
         uttaksdata;

@@ -64,7 +64,7 @@ export const getTekstForDeSomHarRett = (
     }
 };
 
-export const getNavnPåSøker = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
         return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
     }
@@ -74,7 +74,7 @@ export const getNavnPåSøker = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape
     throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
 };
 
-export const getNavnPåAnnenPart = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
+export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
     }
@@ -87,21 +87,21 @@ export const getNavnPåAnnenPart = (hvemPlanlegger: HvemPlanlegger, intl: IntlSh
     return undefined;
 };
 
-export const getFornavnPåSøker = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
-    return getNavnPåSøker(hvemPlanlegger, intl).split(' ')[0];
+export const getFornavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+    return getNavnPåSøker1(hvemPlanlegger, intl).split(' ')[0];
 };
 
-export const getFornavnPåAnnenPart = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
-    const navn = getNavnPåAnnenPart(hvemPlanlegger, intl);
+export const getFornavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
+    const navn = getNavnPåSøker2(hvemPlanlegger, intl);
     return navn ? navn.split(' ')[0] : undefined;
 };
 
-export const finnSøkerTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
+export const finnSøker1Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
     erMorDelAvSøknaden(hvemPlanlegger)
         ? intl.formatMessage({ id: 'OversiktSteg.Mor' })
         : intl.formatMessage({ id: 'OversiktSteg.Far' });
 
-export const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
+export const finnSøker2Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
     }

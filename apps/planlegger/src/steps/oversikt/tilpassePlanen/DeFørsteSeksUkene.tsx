@@ -2,7 +2,7 @@ import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
+import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
@@ -27,7 +27,7 @@ const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger }) 
                         <FormattedMessage
                             id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst"
                             values={{
-                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                             }}
                         />
                     </BodyLong>

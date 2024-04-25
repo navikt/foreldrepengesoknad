@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
-import { erAlenesøker as erAlene, getFornavnPåAnnenPart, getFornavnPåSøker } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
@@ -36,7 +36,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
-    const oppdaterPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
+    const oppdaterHvorLangPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
 
     const formMethods = useForm<Arbeidssituasjon>({
@@ -45,11 +45,11 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
     });
 
     const status = formMethods.watch('status');
-    const jobberAnnenPart = formMethods.watch('jobberAnnenPart');
+    const jobberSøker2 = formMethods.watch('jobberAnnenPart');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const fornavnSøker = getFornavnPåSøker(hvemPlanlegger, intl);
-    const fornavnAnnenPart = getFornavnPåAnnenPart(hvemPlanlegger, intl);
+    const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     const onSubmit = (formValues: Arbeidssituasjon) => {
         oppdaterArbeidssituasjon(formValues);
@@ -66,7 +66,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                 : PlanleggerRoutes.HVOR_LANG_PERIODE;
 
         if (nextStep === PlanleggerRoutes.OPPSUMMERING) {
-            oppdaterPeriode(undefined);
+            oppdaterHvorLangPeriode(undefined);
             oppdaterFordeling(undefined);
         }
 
@@ -89,7 +89,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     label={
                                         <FormattedMessage
                                             id="Arbeidssituasjon.Forelder"
-                                            values={{ navn: fornavnSøker }}
+                                            values={{ navn: fornavnSøker1 }}
                                         />
                                     }
                                     name="status"
@@ -110,10 +110,10 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     </Radio>
                                 </GreenRadioGroup>
                                 {status === Arbeidsstatus.JOBBER && (
-                                    <JobberInfoboks erAlenesøker fornavn={fornavnSøker} />
+                                    <JobberInfoboks erAlenesøker fornavn={fornavnSøker1} />
                                 )}
                                 {status === Arbeidsstatus.INGEN && (
-                                    <AnnetInfoboks erAlenesøker fornavn={fornavnSøker} />
+                                    <AnnetInfoboks erAlenesøker fornavn={fornavnSøker1} />
                                 )}
                             </>
                         )}
@@ -123,7 +123,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     label={
                                         <FormattedMessage
                                             id="ArbeidssituasjonSteg.HvaGjelder"
-                                            values={{ erAlenesøker, navn: fornavnSøker }}
+                                            values={{ erAlenesøker, navn: fornavnSøker1 }}
                                         />
                                     }
                                     name="status"
@@ -133,7 +133,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                                 {
                                                     id: 'ArbeidssituasjonSteg.HvaGjelder.Required',
                                                 },
-                                                { erAlenesøker, navn: fornavnSøker },
+                                                { erAlenesøker, navn: fornavnSøker1 },
                                             ),
                                         ),
                                     ]}
@@ -150,13 +150,13 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     </Radio>
                                 </GreenRadioGroup>
                                 {status === Arbeidsstatus.JOBBER && (
-                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker} />
+                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
                                 )}
                                 {status === Arbeidsstatus.UFØR && (
-                                    <UførInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker} />
+                                    <UførInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
                                 )}
                                 {status === Arbeidsstatus.INGEN && (
-                                    <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker} />
+                                    <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
                                 )}
                                 {status && (
                                     <>
@@ -165,14 +165,14 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                             label={
                                                 <FormattedMessage
                                                     id="Arbeidssituasjon.AndreForelder"
-                                                    values={{ navn: fornavnAnnenPart }}
+                                                    values={{ navn: fornavnSøker2 }}
                                                 />
                                             }
                                             validate={[
                                                 isRequired(
                                                     intl.formatMessage(
                                                         { id: 'Arbeidssituasjon.AndreForelder.Required' },
-                                                        { navn: fornavnAnnenPart },
+                                                        { navn: fornavnSøker2 },
                                                     ),
                                                 ),
                                             ]}
@@ -186,14 +186,14 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                                 <FormattedMessage id="DefaultMessage.Nei" />
                                             </Radio>
                                         </GreenRadioGroup>
-                                        {jobberAnnenPart === true && fornavnAnnenPart && (
-                                            <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnAnnenPart} />
+                                        {jobberSøker2 === true && fornavnSøker2 && (
+                                            <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} />
                                         )}
-                                        {jobberAnnenPart === false && fornavnAnnenPart && (
+                                        {jobberSøker2 === false && fornavnSøker2 && (
                                             <AnnetInfoboks
                                                 erAlenesøker={erAlenesøker}
-                                                fornavn={fornavnAnnenPart}
-                                                erAnnenPart
+                                                fornavn={fornavnSøker2}
+                                                erSøker2
                                             />
                                         )}
                                     </>

@@ -11,10 +11,10 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
     erAlenesøker,
-    finnAnnenPartTekst,
-    finnSøkerTekst,
-    getFornavnPåAnnenPart,
-    getFornavnPåSøker,
+    finnSøker1Tekst,
+    finnSøker2Tekst,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
@@ -93,8 +93,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         values={{
                                             prosent: hvorLangPeriode.dekningsgrad,
                                             antallUker: getAntallUker(valgtStønadskonto),
-                                            hvem: finnSøkerTekst(intl, hvemPlanlegger),
-                                            hvem2: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                            hvem: finnSøker1Tekst(intl, hvemPlanlegger),
+                                            hvem2: finnSøker2Tekst(intl, hvemPlanlegger),
                                             uker: antallUkerFellesperiodeSøker1,
                                             uker2: antallUkerFellesperiodeSøker2,
                                         }}
@@ -104,7 +104,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="OppsummeringSteg.Periodene"
                                         values={{
-                                            hvem: getFornavnPåSøker(hvemPlanlegger, intl),
+                                            hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                             fom: intl.formatDate(startdatoPeriode1, {
                                                 day: '2-digit',
                                                 month: 'short',
@@ -123,7 +123,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="OppsummeringSteg.Periodene"
                                         values={{
-                                            hvem: getFornavnPåAnnenPart(hvemPlanlegger, intl),
+                                            hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
                                             fom: intl.formatDate(startdatoPeriode2, {
                                                 day: '2-digit',
                                                 month: 'short',

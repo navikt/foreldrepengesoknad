@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
+import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
@@ -103,7 +103,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({
                             values={{
                                 erAlenesøker,
                                 erFarEllerMedmor,
-                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                             }}
                         />
                     </BodyLong>

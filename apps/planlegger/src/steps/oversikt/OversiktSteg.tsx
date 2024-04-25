@@ -13,7 +13,7 @@ import {
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import { erAlenesøker, getFornavnPåAnnenPart, getFornavnPåSøker } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import {
@@ -97,8 +97,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
         fordeling?.antallUkerSøker1,
     );
 
-    const fornavnPart1 = getFornavnPåSøker(hvemPlanlegger, intl);
-    const fornavnPart2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
+    const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     return (
         <form>
@@ -150,8 +150,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                                         intl,
                                         value,
                                         hvemPlanlegger,
-                                        fornavnPart1,
-                                        fornavnPart2,
+                                        fornavnSøker1,
+                                        fornavnSøker2,
                                     )}
                                 </option>
                             ))}

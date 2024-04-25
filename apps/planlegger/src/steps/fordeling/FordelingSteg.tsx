@@ -12,12 +12,7 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
-import {
-    finnAnnenPartTekst,
-    finnSøkerTekst,
-    getFornavnPåAnnenPart,
-    getFornavnPåSøker,
-} from 'utils/HvemPlanleggerUtils';
+import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
@@ -56,8 +51,8 @@ export const finnFellesperiodeFordelingOptionTekst = (
     fornavnPart2?: string,
 ) => {
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
-    const part1Tekst = erFarOgFar && fornavnPart1 ? fornavnPart1 : finnSøkerTekst(intl, hvemPlanlegger);
-    const part2Tekst = erFarOgFar && fornavnPart2 ? fornavnPart2 : finnAnnenPartTekst(intl, hvemPlanlegger);
+    const part1Tekst = erFarOgFar && fornavnPart1 ? fornavnPart1 : finnSøker1Tekst(intl, hvemPlanlegger);
+    const part2Tekst = erFarOgFar && fornavnPart2 ? fornavnPart2 : finnSøker2Tekst(intl, hvemPlanlegger);
 
     if (value.antallUkerSøker1 === 0) {
         return (
@@ -125,8 +120,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
 
-    const fornavnPart1 = getFornavnPåSøker(hvemPlanlegger, intl);
-    const fornavnPart2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
+    const fornavnPart1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const fornavnPart2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
