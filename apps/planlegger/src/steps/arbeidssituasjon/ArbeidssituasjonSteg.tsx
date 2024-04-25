@@ -33,11 +33,8 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
 
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
-    const oppdaterHvorLangPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
-    const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
@@ -53,25 +50,10 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
 
     const onSubmit = (formValues: Arbeidssituasjon) => {
         oppdaterArbeidssituasjon(formValues);
-
-        const kunFar2HarRettForFødsel =
-            hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
-            formValues.status !== Arbeidsstatus.JOBBER &&
-            omBarnet.erFødsel;
-
-        const nextStep =
-            (formValues.status !== Arbeidsstatus.JOBBER && formValues.jobberAnnenPart !== true) ||
-            kunFar2HarRettForFødsel
-                ? PlanleggerRoutes.OPPSUMMERING
-                : PlanleggerRoutes.HVOR_LANG_PERIODE;
-
-        if (nextStep === PlanleggerRoutes.OPPSUMMERING) {
-            oppdaterHvorLangPeriode(undefined);
-            oppdaterFordeling(undefined);
-        }
-
-        navigator.goToNextStep(nextStep);
+        navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
     };
+
+    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -83,120 +65,103 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                         <Heading level="2" size="medium">
                             <FormattedMessage id="ArbeidssituasjonSteg.Tittel" />
                         </Heading>
-                        {erAlenesøker && (
-                            <>
-                                <GreenRadioGroup
-                                    label={
-                                        <FormattedMessage
-                                            id="Arbeidssituasjon.Forelder"
-                                            values={{ navn: fornavnSøker1 }}
-                                        />
-                                    }
-                                    name="status"
-                                    validate={[
-                                        isRequired(
-                                            intl.formatMessage({
-                                                id: 'Arbeidssituasjon.Forelder.Required',
-                                            }),
-                                        ),
-                                    ]}
-                                    onChange={scrollToBottom}
-                                >
-                                    <Radio value={Arbeidsstatus.JOBBER} autoFocus>
-                                        <FormattedMessage id="DefaultMessage.Ja" />
-                                    </Radio>
-                                    <Radio value={Arbeidsstatus.INGEN}>
-                                        <FormattedMessage id="DefaultMessage.Nei" />
-                                    </Radio>
-                                </GreenRadioGroup>
-                                {status === Arbeidsstatus.JOBBER && (
-                                    <JobberInfoboks erAlenesøker fornavn={fornavnSøker1} />
-                                )}
-                                {status === Arbeidsstatus.INGEN && (
-                                    <AnnetInfoboks erAlenesøker fornavn={fornavnSøker1} />
-                                )}
-                            </>
+                        {(erAlenesøker || erFarOgFar) && (
+                            <GreenRadioGroup
+                                label={
+                                    <FormattedMessage id="Arbeidssituasjon.Forelder" values={{ navn: fornavnSøker1 }} />
+                                }
+                                name="status"
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'Arbeidssituasjon.Forelder.Required',
+                                        }),
+                                    ),
+                                ]}
+                                onChange={scrollToBottom}
+                            >
+                                <Radio value={Arbeidsstatus.JOBBER} autoFocus>
+                                    <FormattedMessage id="DefaultMessage.Ja" />
+                                </Radio>
+                                <Radio value={Arbeidsstatus.INGEN}>
+                                    <FormattedMessage id="DefaultMessage.Nei" />
+                                </Radio>
+                            </GreenRadioGroup>
                         )}
-                        {!erAlenesøker && (
+                        {!erAlenesøker && !erFarOgFar && (
+                            <GreenRadioGroup
+                                label={
+                                    <FormattedMessage
+                                        id="ArbeidssituasjonSteg.HvaGjelder"
+                                        values={{ erAlenesøker, navn: fornavnSøker1 }}
+                                    />
+                                }
+                                name="status"
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage(
+                                            {
+                                                id: 'ArbeidssituasjonSteg.HvaGjelder.Required',
+                                            },
+                                            { erAlenesøker, navn: fornavnSøker1 },
+                                        ),
+                                    ),
+                                ]}
+                                onChange={scrollToBottom}
+                            >
+                                <Radio value={Arbeidsstatus.JOBBER} autoFocus>
+                                    <FormattedMessage id="ArbeidssituasjonSteg.Jobber" />
+                                </Radio>
+                                <Radio value={Arbeidsstatus.UFØR}>
+                                    <FormattedMessage id="ArbeidssituasjonSteg.Ufør" />
+                                </Radio>
+                                <Radio value={Arbeidsstatus.INGEN}>
+                                    <FormattedMessage id="ArbeidssituasjonSteg.Ingen" />
+                                </Radio>
+                            </GreenRadioGroup>
+                        )}
+                        {status === Arbeidsstatus.JOBBER && (
+                            <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
+                        )}
+                        {status === Arbeidsstatus.UFØR && (
+                            <UførInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
+                        )}
+                        {status === Arbeidsstatus.INGEN && (
+                            <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
+                        )}
+                        {!erAlenesøker && status && (
                             <>
                                 <GreenRadioGroup
+                                    name="jobberAnnenPart"
                                     label={
                                         <FormattedMessage
-                                            id="ArbeidssituasjonSteg.HvaGjelder"
-                                            values={{ erAlenesøker, navn: fornavnSøker1 }}
+                                            id="Arbeidssituasjon.AndreForelder"
+                                            values={{ navn: fornavnSøker2 }}
                                         />
                                     }
-                                    name="status"
                                     validate={[
                                         isRequired(
                                             intl.formatMessage(
-                                                {
-                                                    id: 'ArbeidssituasjonSteg.HvaGjelder.Required',
-                                                },
-                                                { erAlenesøker, navn: fornavnSøker1 },
+                                                { id: 'Arbeidssituasjon.AndreForelder.Required' },
+                                                { navn: fornavnSøker2 },
                                             ),
                                         ),
                                     ]}
+                                    shouldFadeIn
                                     onChange={scrollToBottom}
                                 >
-                                    <Radio value={Arbeidsstatus.JOBBER} autoFocus>
-                                        <FormattedMessage id="ArbeidssituasjonSteg.Jobber" />
+                                    <Radio value={true} autoFocus>
+                                        <FormattedMessage id="DefaultMessage.Ja" />
                                     </Radio>
-                                    <Radio value={Arbeidsstatus.UFØR}>
-                                        <FormattedMessage id="ArbeidssituasjonSteg.Ufør" />
-                                    </Radio>
-                                    <Radio value={Arbeidsstatus.INGEN}>
-                                        <FormattedMessage id="ArbeidssituasjonSteg.Ingen" />
+                                    <Radio value={false}>
+                                        <FormattedMessage id="DefaultMessage.Nei" />
                                     </Radio>
                                 </GreenRadioGroup>
-                                {status === Arbeidsstatus.JOBBER && (
-                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
+                                {jobberSøker2 === true && fornavnSøker2 && (
+                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} />
                                 )}
-                                {status === Arbeidsstatus.UFØR && (
-                                    <UførInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
-                                )}
-                                {status === Arbeidsstatus.INGEN && (
-                                    <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
-                                )}
-                                {status && (
-                                    <>
-                                        <GreenRadioGroup
-                                            name="jobberAnnenPart"
-                                            label={
-                                                <FormattedMessage
-                                                    id="Arbeidssituasjon.AndreForelder"
-                                                    values={{ navn: fornavnSøker2 }}
-                                                />
-                                            }
-                                            validate={[
-                                                isRequired(
-                                                    intl.formatMessage(
-                                                        { id: 'Arbeidssituasjon.AndreForelder.Required' },
-                                                        { navn: fornavnSøker2 },
-                                                    ),
-                                                ),
-                                            ]}
-                                            shouldFadeIn
-                                            onChange={scrollToBottom}
-                                        >
-                                            <Radio value={true} autoFocus>
-                                                <FormattedMessage id="DefaultMessage.Ja" />
-                                            </Radio>
-                                            <Radio value={false}>
-                                                <FormattedMessage id="DefaultMessage.Nei" />
-                                            </Radio>
-                                        </GreenRadioGroup>
-                                        {jobberSøker2 === true && fornavnSøker2 && (
-                                            <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} />
-                                        )}
-                                        {jobberSøker2 === false && fornavnSøker2 && (
-                                            <AnnetInfoboks
-                                                erAlenesøker={erAlenesøker}
-                                                fornavn={fornavnSøker2}
-                                                erSøker2
-                                            />
-                                        )}
-                                    </>
+                                {jobberSøker2 === false && fornavnSøker2 && (
+                                    <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} erSøker2 />
                                 )}
                             </>
                         )}
