@@ -29,7 +29,8 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
     const erFødsel = barnet.erFødsel;
     const erFødt = erBarnetFødt(barnet);
 
-    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2, familiehendelsedato } = uttaksdata;
+    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2, familiehendelsedato } =
+        uttaksdata;
     const dato = intl.formatDate(familiehendelsedato, { day: 'numeric', month: 'short', year: 'numeric' });
 
     return (
@@ -134,20 +135,28 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                     id="FordelingsdetaljerPanel.Infoboks.Periode"
                     values={{
                         hvem: fornavnPart1,
-                        fom: intl.formatDate(startdatoSøker1, { day: 'numeric', month: 'short', year: 'numeric' }),
-                        tom: intl.formatDate(sluttdatoSøker1, { day: 'numeric', month: 'short', year: 'numeric' }),
+                        fom: intl.formatDate(startdatoPeriode1, { day: 'numeric', month: 'short', year: 'numeric' }),
+                        tom: intl.formatDate(sluttdatoPeriode1, { day: 'numeric', month: 'short', year: 'numeric' }),
                         b: (b) => <b>{b}</b>,
                     }}
                 />
             </BodyLong>
-            {fornavnPart2 && sluttdatoSøker2 && (
+            {fornavnPart2 && sluttdatoPeriode2 && (
                 <BodyLong>
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.Periode"
                         values={{
                             hvem: fornavnPart2,
-                            fom: intl.formatDate(startdatoSøker2, { day: 'numeric', month: 'short', year: 'numeric' }),
-                            tom: intl.formatDate(sluttdatoSøker2, { day: 'numeric', month: 'short', year: 'numeric' }),
+                            fom: intl.formatDate(startdatoPeriode2, {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                            }),
+                            tom: intl.formatDate(sluttdatoPeriode2, {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                            }),
                             b: (b) => <b>{b}</b>,
                         }}
                     />
