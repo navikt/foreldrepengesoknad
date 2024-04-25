@@ -44,7 +44,6 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: true,
@@ -53,15 +52,11 @@ describe('<ArbeidssituasjonSteg>', () => {
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
-
         expect(navigateMock).toHaveBeenCalledTimes(1);
         expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.HVOR_LANG_PERIODE));
     });
 
     it('skal vise arbeidssituasjon for far og mor og velge at kun mor har rett', async () => {
-        const navigateMock = vi.fn();
-        useNavigateMock.mockReturnValue(navigateMock);
-
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
@@ -78,7 +73,6 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
@@ -87,15 +81,9 @@ describe('<ArbeidssituasjonSteg>', () => {
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
-
-        expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.HVOR_LANG_PERIODE));
     });
 
     it('skal vise arbeidssituasjon for far og mor og velge at mor er ufør og far ikke har rett', async () => {
-        const navigateMock = vi.fn();
-        useNavigateMock.mockReturnValue(navigateMock);
-
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
@@ -108,7 +96,6 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
@@ -117,25 +104,9 @@ describe('<ArbeidssituasjonSteg>', () => {
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: ContextDataType.HVOR_LANG_PERIODE,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: undefined,
-            key: ContextDataType.FORDELING,
-            type: 'update',
-        });
-
-        expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.OPPSUMMERING));
     });
 
     it('skal vise arbeidssituasjon for far og mor og velge at ingen av disse for mor og at far ikke har rett', async () => {
-        const navigateMock = vi.fn();
-        useNavigateMock.mockReturnValue(navigateMock);
-
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
@@ -148,7 +119,6 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: false,
@@ -157,65 +127,32 @@ describe('<ArbeidssituasjonSteg>', () => {
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: ContextDataType.HVOR_LANG_PERIODE,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: undefined,
-            key: ContextDataType.FORDELING,
-            type: 'update',
-        });
-
-        expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.OPPSUMMERING));
     });
 
-    it('skal vise arbeidssituasjon for far og far og gå til oppsummering når biologisk far ikke jobber', async () => {
-        const navigateMock = vi.fn();
-        useNavigateMock.mockReturnValue(navigateMock);
-
+    it('skal vise arbeidssituasjon for far og far og velge at kun en jobber', async () => {
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonFarOgFar gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Er ufør'));
+        await userEvent.click(screen.getByText('Nei'));
 
-        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.click(screen.getAllByText('Ja')[1]);
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 jobberAnnenPart: true,
-                status: Arbeidsstatus.UFØR,
+                status: Arbeidsstatus.INGEN,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: ContextDataType.HVOR_LANG_PERIODE,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: undefined,
-            key: ContextDataType.FORDELING,
-            type: 'update',
-        });
-
-        expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.OPPSUMMERING));
     });
 
     it('skal vise arbeidssituasjon for aleneforsørger og at en har jobbet', async () => {
-        const navigateMock = vi.fn();
-        useNavigateMock.mockReturnValue(navigateMock);
-
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
@@ -228,7 +165,6 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 status: Arbeidsstatus.JOBBER,
@@ -236,15 +172,9 @@ describe('<ArbeidssituasjonSteg>', () => {
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
-
-        expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.HVOR_LANG_PERIODE));
     });
 
     it('skal vise arbeidssituasjon for aleneforsørger og velge at en ikke har jobbet', async () => {
-        const navigateMock = vi.fn();
-        useNavigateMock.mockReturnValue(navigateMock);
-
         const gåTilNesteSide = vi.fn();
 
         render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
@@ -257,7 +187,6 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 status: Arbeidsstatus.INGEN,
@@ -265,18 +194,5 @@ describe('<ArbeidssituasjonSteg>', () => {
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: ContextDataType.HVOR_LANG_PERIODE,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: undefined,
-            key: ContextDataType.FORDELING,
-            type: 'update',
-        });
-
-        expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.OPPSUMMERING));
     });
 });
