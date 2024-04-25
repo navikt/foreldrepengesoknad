@@ -13,21 +13,21 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^6.3.3",
-        "@navikt/ds-css": "^6.3.3",
-        "@navikt/ds-react": "6.3.3",
+        "@navikt/aksel-icons": "^6.6.1",
+        "@navikt/ds-css": "^6.6.1",
+        "@navikt/ds-react": "6.6.1",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@sentry/browser": "^7.109.0",
+        "@sentry/browser": "^7.112.2",
         "bytes": "^3.1.2",
         "classnames": "^2.5.1",
         "intl-messageformat": "^10.5.11",
         "react": "^18.2.0",
         "react-aria-menubutton": "^7.0.3",
         "react-dom": "^18.2.0",
-        "react-intl": "^6.6.4"
+        "react-intl": "^6.6.5"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.3.6",
@@ -42,13 +42,13 @@
         "@testing-library/react": "^14.2.1",
         "@testing-library/user-event": "^14.5.2",
         "@types/bytes": "^3.1.4",
-        "@types/react": "^18.2.73",
+        "@types/react": "^18.2.79",
         "@types/react-aria-menubutton": "^6.2.14",
         "@vitejs/plugin-react": "^4.2.1",
         "fast-glob": "^3.3.2",
         "storybook": "8.0.0",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3",
+        "typescript": "^5.4.5",
         "vite": "^5.1.6",
         "vite-plugin-checker": "^0.6.4",
         "vitest": "^1.4.0"
