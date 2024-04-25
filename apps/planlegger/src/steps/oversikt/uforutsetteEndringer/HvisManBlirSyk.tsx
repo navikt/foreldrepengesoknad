@@ -1,17 +1,19 @@
 import { StethoscopeIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
+    hvemPlanlegger: HvemPlanlegger;
 }
-const HvisManBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon }) => {
-    const morHarIkkeRett =
-        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-
+const HvisManBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon, hvemPlanlegger }) => {
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
     return (
         <HStack gap="5" wrap={false}>
             <div>
@@ -21,16 +23,16 @@ const HvisManBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon }) =>
             </div>
             <div>
                 <Heading size="small">
-                    {morHarIkkeRett ? (
-                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Far" />
+                    {kunEnPartSkalHa ? (
+                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene" />
                     ) : (
                         <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk" />
                     )}
                 </Heading>
 
                 <BodyLong>
-                    {morHarIkkeRett ? (
-                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstFar" />
+                    {kunEnPartSkalHa ? (
+                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstAlene" />
                     ) : (
                         <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Tekst" />
                     )}
