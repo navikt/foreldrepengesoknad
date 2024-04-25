@@ -37,10 +37,10 @@ describe('<OmÅTilpassePlanen>', () => {
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     it('skal vise info for mor og far adopsjon hvor kun far har rett', async () => {
@@ -49,10 +49,10 @@ describe('<OmÅTilpassePlanen>', () => {
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     //MorOgMedmor
@@ -73,10 +73,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     it('skal vise info for mor og medmor adopsjon hvor kun medmor har rett', async () => {
@@ -84,10 +84,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     //FarOgFar
@@ -107,10 +107,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     it('skal vise info for far og far adopsjon hvor kun far2 har rett', async () => {
@@ -118,10 +118,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
 
@@ -131,10 +131,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     it('skal vise info for far aleneforsørger adopsjon', async () => {
@@ -142,10 +142,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
 });
