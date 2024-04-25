@@ -51,7 +51,8 @@ const OversiktLabels: FunctionComponent<Props> = ({
             ? getFornavnPåAnnenPart(hvemPlanlegger, intl)
             : finnAnnenPartTekst(intl, hvemPlanlegger);
 
-    const { startdatoSøker1, sluttdatoSøker1, startdatoSøker2, sluttdatoSøker2, familiehendelsedato } = uttaksdata;
+    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2, familiehendelsedato } =
+        uttaksdata;
 
     return (
         <VStack gap={{ sm: '1', md: '2' }}>
@@ -61,22 +62,22 @@ const OversiktLabels: FunctionComponent<Props> = ({
                 <HStack gap="1">
                     <AntallUkerFpLabel
                         søkerTekst={søkerTekst}
-                        startdato={startdatoSøker1}
-                        sluttdato={sluttdatoSøker1}
+                        startdato={startdatoPeriode1}
+                        sluttdato={sluttdatoPeriode1}
                     />
-                    {annenPartTekst && hvemHarRett === 'beggeHarRett' && startdatoSøker2 && sluttdatoSøker2 && (
+                    {annenPartTekst && hvemHarRett === 'beggeHarRett' && startdatoPeriode2 && sluttdatoPeriode2 && (
                         <AntallUkerFpLabel
                             søkerTekst={annenPartTekst}
-                            startdato={startdatoSøker2}
-                            sluttdato={sluttdatoSøker2}
+                            startdato={startdatoPeriode2}
+                            sluttdato={sluttdatoPeriode2}
                             isBluePanel={false}
                         />
                     )}
                 </HStack>
             )}
             {annenPartTekst &&
-                startdatoSøker2 &&
-                sluttdatoSøker2 &&
+                startdatoPeriode2 &&
+                sluttdatoPeriode2 &&
                 (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') && (
                     <>
                         <AktivitetskravLabel
@@ -84,16 +85,16 @@ const OversiktLabels: FunctionComponent<Props> = ({
                             valgtStønadskonto={valgtStønadskonto}
                             hvemPlanlegger={hvemPlanlegger}
                             annenPartTekst={annenPartTekst}
-                            startdato={startdatoSøker1}
-                            sluttdato={sluttdatoSøker1}
+                            startdato={startdatoPeriode1}
+                            sluttdato={sluttdatoPeriode1}
                             isBluePanel
                         />
                         <AktivitetskravLabel
                             valgtStønadskonto={valgtStønadskonto}
                             hvemPlanlegger={hvemPlanlegger}
                             annenPartTekst={annenPartTekst}
-                            startdato={startdatoSøker2}
-                            sluttdato={sluttdatoSøker2}
+                            startdato={startdatoPeriode2}
+                            sluttdato={sluttdatoPeriode2}
                             isBluePanel={false}
                         />
                     </>

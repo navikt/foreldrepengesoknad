@@ -60,13 +60,13 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
 
     const sluttdatoSøker1 =
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? uttaksdata100.sluttdatoSøker1
-            : uttaksdata80.sluttdatoSøker1;
+            ? uttaksdata100.sluttdatoPeriode1
+            : uttaksdata80.sluttdatoPeriode1;
 
     const sluttdatoSøker2 =
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? uttaksdata100.sluttdatoSøker2
-            : uttaksdata80.sluttdatoSøker2;
+            ? uttaksdata100.sluttdatoPeriode2
+            : uttaksdata80.sluttdatoPeriode2;
 
     return (
         <Infobox

@@ -33,7 +33,6 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "@navikt/uttaksplan": "workspace:*",
         "@sentry/browser": "^7.109.0",
         "axios": "^1.6.8",
         "classnames": "^2.5.1",

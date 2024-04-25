@@ -44,7 +44,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
 
-    const { sluttdatoSøker1, startdatoSøker1, startdatoSøker2, sluttdatoSøker2 } = finnUttaksdata(
+    const { sluttdatoPeriode1, startdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = finnUttaksdata(
         hvemHarRett,
         hvemPlanlegger,
         valgtStønadskonto,
@@ -105,12 +105,12 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         id="OppsummeringSteg.Periodene"
                                         values={{
                                             hvem: getFornavnPåSøker(hvemPlanlegger, intl),
-                                            fom: intl.formatDate(startdatoSøker1, {
+                                            fom: intl.formatDate(startdatoPeriode1, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(sluttdatoSøker1, {
+                                            tom: intl.formatDate(sluttdatoPeriode1, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
@@ -124,12 +124,12 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         id="OppsummeringSteg.Periodene"
                                         values={{
                                             hvem: getFornavnPåAnnenPart(hvemPlanlegger, intl),
-                                            fom: intl.formatDate(startdatoSøker2, {
+                                            fom: intl.formatDate(startdatoPeriode2, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(sluttdatoSøker2, {
+                                            tom: intl.formatDate(sluttdatoPeriode2, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
