@@ -101,7 +101,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
                                 <FormattedMessage id="OmBarnetSteg.Adopsjon" />
                             </Radio>
                         </GreenRadioGroup>
-                        {erFødsel !== undefined && erFedre && (
+                        {erFødsel !== undefined && erFødsel === true && erFedre && (
                             <Infoboks header={<FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks" />}>
                                 <BodyLong>
                                     <FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks.DenSomErBiologiskFar" />

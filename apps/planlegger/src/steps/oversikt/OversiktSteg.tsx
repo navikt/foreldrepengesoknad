@@ -117,7 +117,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                             <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" values={{ erAleneforsørger }} />
                         </BodyLong>
                     </Infobox>
-                    {farOgFarKunEnPartHarRett && (
+                    {farOgFarKunEnPartHarRett && barnet.erFødsel && (
                         <Infobox header="">
                             <BodyLong>
                                 <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />
