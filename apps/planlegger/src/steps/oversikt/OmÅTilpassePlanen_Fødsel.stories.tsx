@@ -14,7 +14,7 @@ const customRenderer = ({ hvemPlanlegger, barnet, arbeidssituasjon }: StoryArgs)
 };
 
 const meta = {
-    title: 'OmÅTilpassePlanen',
+    title: 'OmÅTilpassePlanen - Fødsel',
     component: OmÅTilpassePlanen,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;
@@ -212,69 +212,6 @@ export const FødselAleneforsørgerFar: Story = {
             termindato: '2022-01-01',
             fødselsdato: '2022-01-01',
             erFødsel: true,
-            erBarnetFødt: true,
-        },
-    },
-};
-
-export const AdopsjonFarOgFarBeggeHarRett: Story = {
-    args: {
-        hvemPlanlegger: {
-            type: Situasjon.FAR_OG_FAR,
-            navnPåMedfar: 'Medfar',
-            navnPåFar: 'Far',
-        },
-        arbeidssituasjon: {
-            status: Arbeidsstatus.JOBBER,
-            jobberAnnenPart: true,
-        },
-        barnet: {
-            antallBarn: '1',
-            overtakelsesdato: '2022-01-01',
-            fødselsdato: '2022-01-01',
-            erFødsel: false,
-            erBarnetFødt: true,
-        },
-    },
-};
-
-export const AdopsjonFarOgFarKunFar1HarRett: Story = {
-    args: {
-        hvemPlanlegger: {
-            type: Situasjon.FAR_OG_FAR,
-            navnPåMedfar: 'Medfar',
-            navnPåFar: 'Far',
-        },
-        arbeidssituasjon: {
-            status: Arbeidsstatus.JOBBER,
-            jobberAnnenPart: false,
-        },
-        barnet: {
-            antallBarn: '1',
-            overtakelsesdato: '2022-01-01',
-            fødselsdato: '2022-01-01',
-            erFødsel: false,
-            erBarnetFødt: true,
-        },
-    },
-};
-
-export const AdopsjonFarOgFarKunFar2HarRett: Story = {
-    args: {
-        hvemPlanlegger: {
-            type: Situasjon.FAR_OG_FAR,
-            navnPåMedfar: 'Medfar',
-            navnPåFar: 'Far',
-        },
-        arbeidssituasjon: {
-            status: Arbeidsstatus.INGEN,
-            jobberAnnenPart: true,
-        },
-        barnet: {
-            antallBarn: '1',
-            overtakelsesdato: '2022-01-01',
-            fødselsdato: '2022-01-01',
-            erFødsel: false,
             erBarnetFødt: true,
         },
     },
