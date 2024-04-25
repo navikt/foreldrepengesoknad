@@ -74,3 +74,13 @@ export const ArbeidssituasjonMorOgMedmor: Story = {
         },
     },
 };
+
+export const ArbeidssituasjonFarOgFar: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Anders Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+    },
+};

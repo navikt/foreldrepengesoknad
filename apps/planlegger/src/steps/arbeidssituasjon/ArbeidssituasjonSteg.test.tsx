@@ -8,7 +8,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 
 import * as stories from './ArbeidssituasjonSteg.stories';
 
-const { ArbeidssituasjonMorOgFar, ArbeidssituasjonAleneforsørger } = composeStories(stories);
+const { ArbeidssituasjonMorOgFar, ArbeidssituasjonFarOgFar, ArbeidssituasjonAleneforsørger } = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
@@ -153,6 +153,46 @@ describe('<ArbeidssituasjonSteg>', () => {
             data: {
                 jobberAnnenPart: false,
                 status: Arbeidsstatus.INGEN,
+            },
+            key: ContextDataType.ARBEIDSSITUASJON,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.HVOR_LANG_PERIODE,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: undefined,
+            key: ContextDataType.FORDELING,
+            type: 'update',
+        });
+
+        expect(navigateMock).toHaveBeenCalledTimes(1);
+        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.OPPSUMMERING));
+    });
+
+    it('skal vise arbeidssituasjon for far og far og gå til oppsummering når biologisk far ikke jobber', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+
+        const gåTilNesteSide = vi.fn();
+
+        render(<ArbeidssituasjonFarOgFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Er ufør'));
+
+        await userEvent.click(screen.getByText('Ja'));
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                jobberAnnenPart: true,
+                status: Arbeidsstatus.UFØR,
             },
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
