@@ -10,7 +10,7 @@ import {
     erAlenesøker as erAlene,
     erFarDelAvSøknaden,
     erMorDelAvSøknaden,
-    getFornavnPåSøker,
+    getFornavnPåSøker1,
 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
@@ -152,7 +152,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             <BodyLong>
                                 <FormattedMessage
                                     id="ErIkkeFødtPanel.UnderTreMndTilTermin"
-                                    values={{ erAlenesøker, navn: getFornavnPåSøker(hvemPlanlegger, intl) }}
+                                    values={{ erAlenesøker, navn: getFornavnPåSøker1(hvemPlanlegger, intl) }}
                                 />
                             </BodyLong>
                         )}

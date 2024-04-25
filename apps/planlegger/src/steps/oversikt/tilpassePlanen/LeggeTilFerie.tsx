@@ -2,7 +2,7 @@ import { ParasolBeachIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erAlenesøker, finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
@@ -27,12 +27,12 @@ const LeggeTilFerie: React.FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                         {!erAlenesøker(hvemPlanlegger) ? (
                             <FormattedMessage
                                 id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
-                                values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
                             />
                         ) : (
                             <FormattedMessage
                                 id="OmÅTilpassePlanen.LeggeTilFerie.Tekst"
-                                values={{ hvem: finnAnnenPartTekst(intl, hvemPlanlegger) }}
+                                values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
                             />
                         )}
                     </BodyLong>

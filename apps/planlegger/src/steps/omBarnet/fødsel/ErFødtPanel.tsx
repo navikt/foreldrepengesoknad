@@ -10,7 +10,7 @@ import {
     erAlenesøker as erAlene,
     erFarDelAvSøknaden,
     erMorDelAvSøknaden,
-    finnAnnenPartTekst,
+    finnSøker2Tekst,
 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
@@ -106,7 +106,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                                 id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
                                 values={{
                                     erFar,
-                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                    hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                                 }}
                             />
                         </BodyLong>

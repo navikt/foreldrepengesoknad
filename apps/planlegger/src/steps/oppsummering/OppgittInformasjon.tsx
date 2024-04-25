@@ -12,10 +12,10 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import {
     erAlenesøker as erAlene,
-    finnAnnenPartTekst,
-    finnSøkerTekst,
-    getFornavnPåAnnenPart,
-    getFornavnPåSøker,
+    finnSøker1Tekst,
+    finnSøker2Tekst,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -52,8 +52,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallBarn = barnet.antallBarn;
 
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const fornavn1 = getFornavnPåSøker(hvemPlanlegger, intl);
-    const fornavn2 = getFornavnPåAnnenPart(hvemPlanlegger, intl);
+    const fornavn1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const fornavn2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     const valgtStønadskonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
         stønadskontoer[hvorLangPeriode.dekningsgrad],
@@ -204,8 +204,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             uker: erAdoptert ? antallUkerAdopsjon : antallUker,
                                             fellesuker: antallUkerFellesperiodeSøker1,
                                             fellesuker2: antallUkerFellesperiodeSøker2,
-                                            hvem: finnSøkerTekst(intl, hvemPlanlegger),
-                                            hvem2: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                            hvem: finnSøker1Tekst(intl, hvemPlanlegger),
+                                            hvem2: finnSøker2Tekst(intl, hvemPlanlegger),
                                             kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett',
                                         }}
                                     />

@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erMorDelAvSøknaden, finnAnnenPartTekst, finnSøkerTekst } from 'utils/HvemPlanleggerUtils';
+import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
@@ -30,8 +30,8 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
                     id="HvorLangPeriodeSteg.Infoboks.NårBareEnPartHarRett"
                     values={{
                         hvem: søker1HarIkkeRett
-                            ? finnAnnenPartTekst(intl, hvemPlanlegger)
-                            : finnSøkerTekst(intl, hvemPlanlegger),
+                            ? finnSøker2Tekst(intl, hvemPlanlegger)
+                            : finnSøker1Tekst(intl, hvemPlanlegger),
                     }}
                 />
             }
@@ -43,15 +43,15 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
                     <BodyLong>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden"
-                            values={{ hvem: finnSøkerTekst(intl, hvemPlanlegger) }}
+                            values={{ hvem: finnSøker1Tekst(intl, hvemPlanlegger) }}
                         />
                     </BodyLong>
                     <BodyLong>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.IngenKravTilFar"
                             values={{
-                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                hvem2: finnSøkerTekst(intl, hvemPlanlegger),
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                hvem2: finnSøker1Tekst(intl, hvemPlanlegger),
                             }}
                         />
                     </BodyLong>
@@ -63,8 +63,8 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden"
                             values={{
-                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                hvem2: finnSøkerTekst(intl, hvemPlanlegger),
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                hvem2: finnSøker1Tekst(intl, hvemPlanlegger),
                             }}
                         />
                     </BodyLong>
@@ -83,7 +83,7 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
                                         {msg}
                                     </Link>
                                 ),
-                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                                 erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                             }}
                         />

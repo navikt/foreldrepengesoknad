@@ -7,7 +7,7 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erAlenesøker, erMorDelAvSøknaden, finnAnnenPartTekst } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, erMorDelAvSøknaden, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
@@ -124,7 +124,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                 uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
                                 uker2: antallUker,
                                 b: (msg: any) => <b>{msg}</b>,
-                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                                 erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                             }}
                         />
@@ -147,7 +147,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                     </Link>
                                 ),
                                 b: (msg: any) => <b>{msg}</b>,
-                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                                 erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                             }}
                         />
