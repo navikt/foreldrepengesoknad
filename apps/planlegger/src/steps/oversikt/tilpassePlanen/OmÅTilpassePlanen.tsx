@@ -10,12 +10,12 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import DeFørsteSeksUkene from './tilpassePlanen/DeFørsteSeksUkene';
-import FørTermin from './tilpassePlanen/FørTermin';
-import JobbeSamtidig from './tilpassePlanen/JobbeSamtidig';
-import LeggeTilFerie from './tilpassePlanen/LeggeTilFerie';
-import PermisjonSamtidig from './tilpassePlanen/PermisjonSamtidig';
-import ToUkerRundtFødsel from './tilpassePlanen/ToUkerRundtFødsel';
+import DeFørsteSeksUkene from './DeFørsteSeksUkene';
+import FørTermin from './FørTermin';
+import JobbeSamtidig from './JobbeSamtidig';
+import LeggeTilFerie from './LeggeTilFerie';
+import PermisjonSamtidig from './PermisjonSamtidig';
+import ToUkerRundtFødsel from './ToUkerRundtFødsel';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
