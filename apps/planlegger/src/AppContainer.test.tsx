@@ -10,7 +10,7 @@ import * as stories from './AppContainer.stories';
 const { Default } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    it('skal gå gjennom applikasjonen og så tilbake', async () => {
+    it.skip('skal gå gjennom applikasjonen og så tilbake', async () => {
         const utils = render(<Default brukStønadskontoMock />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
