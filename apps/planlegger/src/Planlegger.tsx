@@ -65,10 +65,10 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
         }),
         [arbeidssituasjon],
     );
-    console.log(Environment.REST_API_URL + '/rest/konto');
+
     const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
         planleggerApi,
-        Environment.REST_API_URL + '/rest/konto',
+        Environment.REST_API_URL + '/konto',
         params,
         options,
     );
