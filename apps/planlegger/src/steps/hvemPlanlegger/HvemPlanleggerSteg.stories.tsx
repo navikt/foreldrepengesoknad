@@ -14,7 +14,7 @@ type StoryArgs = {
 } & ComponentProps<typeof HvemPlanleggerSteg>;
 
 const meta = {
-    title: 'HvemPlanleggerSteg',
+    title: 'steg/HvemPlanleggerSteg',
     component: HvemPlanleggerSteg,
 } satisfies Meta<StoryArgs>;
 export default meta;

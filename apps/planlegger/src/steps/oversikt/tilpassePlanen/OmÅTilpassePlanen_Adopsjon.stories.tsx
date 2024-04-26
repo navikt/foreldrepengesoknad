@@ -14,7 +14,7 @@ const customRenderer = ({ hvemPlanlegger, barnet, arbeidssituasjon }: StoryArgs)
 };
 
 const meta = {
-    title: 'OmÅTilpassePlanen - Adopsjon',
+    title: 'steg/OversiktSteg/components/OmÅTilpassePlanen - Adopsjon',
     component: OmÅTilpassePlanen,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;

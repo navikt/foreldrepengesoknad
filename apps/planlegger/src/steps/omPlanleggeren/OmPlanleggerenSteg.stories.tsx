@@ -13,7 +13,7 @@ interface StoryArgs {
 }
 
 const meta = {
-    title: 'OmPlanleggerenSteg',
+    title: 'steg/OmPlanleggerenSteg',
     component: OmPlanleggerenSteg,
 } satisfies Meta<typeof OmPlanleggerenSteg & StoryArgs>;
 export default meta;

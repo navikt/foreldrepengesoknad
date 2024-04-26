@@ -37,7 +37,7 @@ const customRenderer = ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('bu
 };
 
 const meta = {
-    title: 'BarnehageplassSteg',
+    title: 'steg/BarnehageplassSteg',
     component: BarnehageplassSteg,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;

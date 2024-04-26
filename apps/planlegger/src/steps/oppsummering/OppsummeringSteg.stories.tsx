@@ -80,7 +80,7 @@ const customRenderer = ({
 };
 
 const meta = {
-    title: 'OppsummeringSteg',
+    title: 'steg/OppsummeringSteg',
     component: OppsummeringSteg,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;

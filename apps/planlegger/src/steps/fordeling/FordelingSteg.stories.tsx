@@ -77,7 +77,7 @@ const customRenderer = ({
 };
 
 const meta = {
-    title: 'FordelingSteg',
+    title: 'steg/FordelingSteg',
     component: FordelingSteg,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;

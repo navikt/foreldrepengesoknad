@@ -40,7 +40,7 @@ const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click
 };
 
 const meta = {
-    title: 'ArbeidssituasjonSteg',
+    title: 'steg/ArbeidssituasjonSteg',
     component: ArbeidssituasjonSteg,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;

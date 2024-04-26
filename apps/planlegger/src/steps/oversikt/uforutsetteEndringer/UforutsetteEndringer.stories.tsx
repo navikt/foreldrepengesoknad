@@ -14,7 +14,7 @@ const customRenderer = ({ hvemPlanlegger, barnet, arbeidssituasjon }: StoryArgs)
 };
 
 const meta = {
-    title: 'UforutsetteEndringer',
+    title: 'steg/OversiktSteg/components/UforutsetteEndringer',
     component: UforutsetteEndringer,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;

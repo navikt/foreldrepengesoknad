@@ -52,7 +52,7 @@ const customRenderer = ({
 };
 
 const meta = {
-    title: 'HvorLangPeriodeSteg',
+    title: 'steg/HvorLangPeriodeSteg',
     component: HvorLangPeriodeSteg,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;
