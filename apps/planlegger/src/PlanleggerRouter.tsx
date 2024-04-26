@@ -9,7 +9,7 @@ import OmBarnetSteg from 'steps/omBarnet/OmBarnetSteg';
 import OmPlanleggerenSteg from 'steps/omPlanleggeren/OmPlanleggerenSteg';
 import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
 import OversiktSteg from 'steps/oversikt/OversiktSteg';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 
 import { Loader } from '@navikt/ds-react';
 
@@ -18,7 +18,7 @@ import { LocaleAll } from '@navikt/fp-types';
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoer;
 }
 
 const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer }) => {

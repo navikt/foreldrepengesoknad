@@ -1,85 +1,31 @@
-import { TilgjengeligStønadskontoForDekningsgrad } from 'types/TilgjengeligeStønadskontoerDTO';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 
-export enum StønadskontoType {
-    Mødrekvote = 'MØDREKVOTE',
-    Fedrekvote = 'FEDREKVOTE',
-    Fellesperiode = 'FELLESPERIODE',
-    Foreldrepenger = 'FORELDREPENGER',
-    ForeldrepengerFørFødsel = 'FORELDREPENGER_FØR_FØDSEL',
-    Flerbarnsdager = 'FLERBARNSDAGER', // Ikke brukt som egen type i periodene
-    AktivitetsfriKvote = 'AKTIVITETSFRI_KVOTE', // Foreldrepenger
-}
-
-export interface TilgjengeligStønadskonto {
-    konto: StønadskontoType;
-    dager: number;
-}
-
-const opprettAktivitetsFriKonto = (
-    kontoer: TilgjengeligStønadskonto[],
-    generellMinsterett: number,
-): TilgjengeligStønadskonto[] => {
-    const nyeKontoer: TilgjengeligStønadskonto[] = [];
-    nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - generellMinsterett });
-    nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: generellMinsterett });
-    return nyeKontoer;
+export const getAntallUker = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
+    return Object.values(stønadskontoer.kontoer).reduce((sum: number, dager) => sum + dager / 5, 0);
 };
 
-export const mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto = (
-    stønadskontoerDTO: TilgjengeligStønadskontoForDekningsgrad,
-): TilgjengeligStønadskonto[] => {
-    let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
-    Object.keys(stønadskontoerDTO.kontoer)
-        .filter((konto: string) => konto !== StønadskontoType.Flerbarnsdager)
-        .forEach((konto) => {
-            tilgjengeligeStønadskontoer.push({
-                konto: konto as StønadskontoType,
-                dager: stønadskontoerDTO.kontoer[konto],
-            });
-        });
-    const generellMinsterett = stønadskontoerDTO.minsteretter.generellMinsterett;
-    if (generellMinsterett > 0) {
-        tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(tilgjengeligeStønadskontoer, generellMinsterett);
-    }
-    return tilgjengeligeStønadskontoer;
+export const getAntallUkerForeldrepengerFørFødsel = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+): number => {
+    return stønadskontoer.kontoer.FORELDREPENGER_FØR_FØDSEL ? stønadskontoer.kontoer.FORELDREPENGER_FØR_FØDSEL / 5 : 0;
 };
 
-export const getAntallUker = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer.reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+export const getAntallUkerMødrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
+    return stønadskontoer.kontoer.MØDREKVOTE ? stønadskontoer.kontoer.MØDREKVOTE / 5 : 0;
 };
 
-export const getAntallUkerForeldrepengerFørFødsel = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+export const getAntallUkerFedrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
+    return stønadskontoer.kontoer.FEDREKVOTE ? stønadskontoer.kontoer.FEDREKVOTE / 5 : 0;
 };
 
-export const getAntallUkerMødrekvote = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Mødrekvote)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+export const getAntallUkerFellesperiode = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
+    return stønadskontoer.kontoer.FELLESPERIODE ? stønadskontoer.kontoer.FELLESPERIODE / 5 : 0;
 };
 
-export const getAntallUkerFedrekvote = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Fedrekvote)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+export const getAntallUkerForeldrepenger = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
+    return stønadskontoer.kontoer.FORELDREPENGER ? stønadskontoer.kontoer.FORELDREPENGER / 5 : 0;
 };
 
-export const getAntallUkerFellesperiode = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Fellesperiode)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
-};
-
-export const getAntallUkerForeldrepenger = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Foreldrepenger)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
-};
-
-export const getAntallUkerAktivitetsfriKvote = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.AktivitetsfriKvote)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
+    return stønadskontoer.kontoer.AKTIVITETSFRI_KVOTE ? stønadskontoer.kontoer.AKTIVITETSFRI_KVOTE / 5 : 0;
 };

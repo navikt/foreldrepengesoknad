@@ -9,7 +9,7 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -25,7 +25,6 @@ const kontoer = {
         },
         minsteretter: {
             farRundtFødsel: 0,
-            generellMinsterett: 0,
             toTette: 0,
         },
     },
@@ -38,7 +37,6 @@ const kontoer = {
         },
         minsteretter: {
             farRundtFødsel: 0,
-            generellMinsterett: 0,
             toTette: 0,
         },
     },
@@ -50,7 +48,7 @@ type StoryArgs = {
     hvorLangPeriode: HvorLangPeriode;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoer;
 } & ComponentProps<typeof OppsummeringSteg>;
 
 type Story = StoryObj<StoryArgs>;

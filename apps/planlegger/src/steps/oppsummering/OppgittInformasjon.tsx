@@ -9,7 +9,7 @@ import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import {
     erAlenesøker as erAlene,
     finnSøker1Tekst,
@@ -23,13 +23,12 @@ import {
     getAntallUker,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepengerFørFødsel,
-    mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
 } from 'utils/stønadskontoerUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer: TilgjengeligeStønadskontoer;
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
@@ -55,9 +54,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const fornavn1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavn2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
-    const valgtStønadskonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        stønadskontoer[hvorLangPeriode.dekningsgrad],
-    );
+    const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
     const antallUker = getAntallUker(valgtStønadskonto);
 

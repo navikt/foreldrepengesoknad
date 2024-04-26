@@ -3,10 +3,10 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett } from 'utils/hvemHarRettUtils';
-import { TilgjengeligStønadskonto } from 'utils/stønadskontoerUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
@@ -21,7 +21,7 @@ interface Props {
     uttaksdata: Uttaksdata;
     hvemPlanlegger: HvemPlanlegger;
     hvemHarRett: HvemHarRett;
-    valgtStønadskonto: TilgjengeligStønadskonto[];
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 }
 
 const OversiktLabels: FunctionComponent<Props> = ({

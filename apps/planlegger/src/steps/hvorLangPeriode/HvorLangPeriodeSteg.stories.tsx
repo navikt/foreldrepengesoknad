@@ -13,7 +13,6 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import HvorLangPeriodeSteg from './HvorLangPeriodeSteg';
 
 const MINSTERETTER = {
-    generellMinsterett: 0,
     farRundtFødsel: 10,
     toTette: 0,
 };
@@ -190,7 +189,6 @@ export const FlereForsørgereKunFarHarRett: Story = {
                     FORELDREPENGER: 250,
                 },
                 minsteretter: {
-                    generellMinsterett: 40,
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
@@ -200,7 +198,6 @@ export const FlereForsørgereKunFarHarRett: Story = {
                     FORELDREPENGER: 200,
                 },
                 minsteretter: {
-                    generellMinsterett: 40,
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
@@ -231,7 +228,6 @@ export const FlereForsørgereFarOgFarKunFar1HarRett: Story = {
                     FORELDREPENGER: 250,
                 },
                 minsteretter: {
-                    generellMinsterett: 40,
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
@@ -241,7 +237,6 @@ export const FlereForsørgereFarOgFarKunFar1HarRett: Story = {
                     FORELDREPENGER: 200,
                 },
                 minsteretter: {
-                    generellMinsterett: 40,
                     farRundtFødsel: 10,
                     toTette: 0,
                 },

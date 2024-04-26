@@ -13,14 +13,11 @@ import {
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Situasjon } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
-import {
-    getAntallUkerFellesperiode,
-    mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
-} from 'utils/stønadskontoerUtils';
+import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
@@ -36,7 +33,7 @@ import OmÅTilpassePlanen from './tilpassePlanen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsetteEndringer/UforutsetteEndringer';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer: TilgjengeligeStønadskontoer;
     locale: LocaleAll;
 }
 
@@ -56,12 +53,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
-    const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
-    );
-    const stønadskonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
-    );
+    const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
+    const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
 
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;

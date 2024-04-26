@@ -9,6 +9,7 @@ import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import {
     erAlenesøker,
     finnSøker1Tekst,
@@ -18,13 +19,13 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
-import { TilgjengeligStønadskonto, getAntallUker, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
+import { getAntallUker, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 interface Props {
-    valgtStønadskonto: TilgjengeligStønadskonto[];
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     hvorLangPeriode: HvorLangPeriode;
     hvemPlanlegger: HvemPlanlegger;
     barnet: OmBarnet;

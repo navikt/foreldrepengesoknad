@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { treUkerSiden } from '@navikt/fp-utils';
@@ -9,7 +10,6 @@ import { treUkerSiden } from '@navikt/fp-utils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
 import { HvemHarRett } from './hvemHarRettUtils';
 import {
-    TilgjengeligStønadskonto,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
@@ -126,7 +126,7 @@ export type Uttaksdata = {
 
 const finnDeltUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: TilgjengeligStønadskonto[],
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     barnet: OmBarnet,
     antallUkerFellesperiodeForSøker1: number = 0,
 ): Uttaksdata => {
@@ -193,7 +193,7 @@ const finnDeltUttaksdata = (
 
 const finnEnsligUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: TilgjengeligStønadskonto[],
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     barnet: OmBarnet,
     hvemHarRett: HvemHarRett,
 ): Uttaksdata => {
@@ -272,7 +272,7 @@ const finnEnsligUttaksdata = (
 export const finnUttaksdata = (
     hvemHarRett: HvemHarRett,
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: TilgjengeligStønadskonto[],
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     barnet: OmBarnet,
     antallUkerFellesperiodeSøker1?: number,
 ): Uttaksdata => {

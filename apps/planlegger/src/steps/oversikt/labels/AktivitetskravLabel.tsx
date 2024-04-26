@@ -1,12 +1,9 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
-import {
-    TilgjengeligStønadskonto,
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerForeldrepenger,
-} from 'utils/stønadskontoerUtils';
+import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, HStack } from '@navikt/ds-react';
 
@@ -18,7 +15,7 @@ import styles from './oversiktLabels.module.css';
 
 interface Props {
     utenAktivitetskrav?: boolean;
-    valgtStønadskonto: TilgjengeligStønadskonto[];
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     hvemPlanlegger: HvemPlanlegger;
     annenPartTekst: string;
     startdato: string;

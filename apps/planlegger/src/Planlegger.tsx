@@ -2,10 +2,11 @@ import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appDa
 import { FunctionComponent, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Situasjon } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
+import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
-import { harFarEllerMedmorRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { HvemHarRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { decodeBase64 } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
@@ -16,6 +17,20 @@ import PlanleggerRouter from './PlanleggerRouter';
 import Environment from './appData/Environment';
 
 export const planleggerApi = createApi(Environment.REST_API_URL);
+
+const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger) => {
+    return erMorDelAvSøknaden(hvemPlanlegger) ? 'MOR' : 'FAR';
+};
+
+const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
+    if (hvemPlanlegger.type === Situasjon.MOR || hvemPlanlegger.type === Situasjon.FAR) {
+        return 'ALENEOMSORG';
+    }
+    if (hvemHarRett === 'beggeHarRett') {
+        return 'BEGGE_RETT';
+    }
+    return 'BARE_SØKER_RETT';
+};
 
 interface Props {
     locale: LocaleAll;
@@ -32,18 +47,13 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
 
     const params = useMemo(
         () => ({
+            rettighetstype: hvemPlanlegger && hvemHarRett ? finnRettighetstype(hvemPlanlegger, hvemHarRett) : undefined,
+            brukerrolle: hvemPlanlegger ? finnBrukerRolle(hvemPlanlegger) : undefined,
             antallBarn: omBarnet?.antallBarn,
-            morHarRett: harMorRett(hvemHarRett),
-            farHarRett: harFarEllerMedmorRett(hvemHarRett),
-            morHarAleneomsorg: hvemPlanlegger?.type === Situasjon.MOR,
-            farHarAleneomsorg: hvemPlanlegger?.type === Situasjon.FAR,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
             termindato: omBarnet && erBarnetUFødt(omBarnet) ? omBarnet.termindato : undefined,
             omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.overtakelsesdato : undefined,
             morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-            erMor: hvemPlanlegger?.type !== Situasjon.FAR && hvemPlanlegger?.type !== Situasjon.FAR_OG_FAR,
-            minsterett: true,
-            harAnnenForelderTilsvarendeRettEØS: false,
         }),
         [omBarnet, arbeidssituasjon, hvemPlanlegger, hvemHarRett],
     );
@@ -56,7 +66,7 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
         [arbeidssituasjon],
     );
 
-    const requestData = usePostRequest<TilgjengeligeStønadskontoerDTO>(
+    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
         planleggerApi,
         'https://foreldrepengesoknad-api.nav.no/rest/konto',
         params,

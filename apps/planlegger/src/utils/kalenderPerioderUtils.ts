@@ -4,16 +4,16 @@ import dayjs from 'dayjs';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import { erBarnetAdoptert } from './barnetUtils';
 import { utledHvemSomHarRett } from './hvemHarRettUtils';
-import { TilgjengeligStønadskonto } from './stønadskontoerUtils';
 import { finnUttaksdata } from './uttakUtils';
 
 export const lagKalenderPerioder = (
-    valgtStønadskonto: TilgjengeligStønadskonto[],
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     barnet: OmBarnet,
     hvemPlanlegger: HvemPlanlegger,
     arbeidssituasjon: Arbeidssituasjon,
