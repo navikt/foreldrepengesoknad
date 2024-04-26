@@ -30,7 +30,10 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const initLocale = (): LocaleAll => {
     const queryString = window.location.search;
     const languageParam = new URLSearchParams(queryString).get('language');
-    const locale = languageParam ? (languageParam as LocaleAll) : 'nb';
+    const locale =
+        languageParam === 'nb' || languageParam === 'nn' || languageParam === 'en'
+            ? (languageParam as LocaleAll)
+            : 'nb';
 
     dayjs.locale(locale);
     document.documentElement.setAttribute('lang', locale);
@@ -39,7 +42,7 @@ const initLocale = (): LocaleAll => {
 };
 
 const retryCallback = async () => {
-    window.location.href = window.location.href.split('?')[0];
+    window.location.href = window.location.origin;
 };
 
 const AppContainer = () => {
