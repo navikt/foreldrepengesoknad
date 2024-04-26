@@ -17,6 +17,7 @@ const {
     BareFarSøkerOgHarRett,
     FarOgFarBeggeHarRett,
     FarOgFarKunFarHarRett,
+    FarOgFarKunMedfarHarRett,
     BarnetErFødtDagenEtterTermindato,
 } = composeStories(stories);
 
@@ -378,12 +379,9 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('80 % foreldrepenger i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect((screen.getAllByRole('option', { name: '16 uker til Anders' })[0] as HTMLOptionElement).selected).toBe(
-            true,
-        );
+        expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espen, 15 uker, starter torsdag 11. apr.')).toBeInTheDocument();
-        expect(screen.getByText('Anders, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
+        expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -392,15 +390,9 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
 
-        const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:24;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:25;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(18);
-        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(5);
-
         const feb2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(feb2025).getByTestId('day:26;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(feb2025).getByTestId('day:26;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(18);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun biologisk far har rett', async () => {
@@ -417,7 +409,7 @@ describe('<OversiktSteg - fødsel>', () => {
         );
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espen, 40 uker, starter torsdag 21. mars')).toBeInTheDocument();
+        expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -426,9 +418,37 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
 
-        const desember = screen.getByTestId('year:2024;month:11');
-        expect(within(desember).getByTestId('day:25;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(desember).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(18);
+        const jan2005 = screen.getByTestId('year:2025;month:0');
+        expect(within(jan2005).getByTestId('day:15;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(jan2005).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(11);
+    });
+
+    it('skal vise korrekt data for fødsel - far og far søker - kun medfar har rett', async () => {
+        render(<FarOgFarKunMedfarHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+        expect(screen.getByText(/Dere har oppgitt at kun/)).toBeInTheDocument();
+
+        expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'true',
+        );
+        expect(screen.getByText('80 % foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'false',
+        );
+        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Termindato 11. apr.')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
+
+        const jan2005 = screen.getByTestId('year:2025;month:0');
+        expect(within(jan2005).getByTestId('day:15;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(jan2005).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(11);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun biologisk far har rett', async () => {

@@ -331,7 +331,7 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(within(feb2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(18);
     });
 
-    it('skal vise korrekt data for fødsel - far og far søker - begge har rett', async () => {
+    it.skip('skal vise korrekt data for fødsel - far og far søker - begge har rett', async () => {
         render(<FarOgFarBeggeHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();

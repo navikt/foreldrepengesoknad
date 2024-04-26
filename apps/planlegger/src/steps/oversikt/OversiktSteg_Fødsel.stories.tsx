@@ -339,6 +339,39 @@ export const FarOgFarKunFarHarRett: Story = {
     },
 };
 
+export const FarOgFarKunMedfarHarRett: Story = {
+    args: {
+        ...FarOgFarBeggeHarRett.args,
+        fordeling: undefined,
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: {
+                    FORELDREPENGER: 250,
+                },
+                minsteretter: {
+                    generellMinsterett: 40,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: {
+                    FORELDREPENGER: 200,
+                },
+                minsteretter: {
+                    generellMinsterett: 40,
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
+    },
+};
+
 export const BarnetErFødtDagenEtterTermindato: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,

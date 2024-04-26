@@ -13,6 +13,7 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import AktivitetskravLabel from './AktivitetskravLabel';
 import AntallUkerFpLabel from './AntallUkerFpLabel';
+import ForeldrepengerLabel from './ForeldrepengerLabel';
 import styles from './oversiktLabels.module.css';
 
 interface Props {
@@ -49,11 +50,20 @@ const OversiktLabels: FunctionComponent<Props> = ({
     const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2, familiehendelsedato } =
         uttaksdata;
 
+    const skalViseAntallUkerLabels =
+        !erFarOgFar &&
+        (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMorHarRett');
+    const skalViseAktivitetskravLabels =
+        !erFarOgFar &&
+        søker2Tekst &&
+        startdatoPeriode2 &&
+        sluttdatoPeriode2 &&
+        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett');
+    const skalViseForeldrepengerLabel = erFarOgFar;
+
     return (
         <VStack gap={{ sm: '1', md: '2' }}>
-            {(hvemHarRett === 'beggeHarRett' ||
-                hvemHarRett === 'kunFarSøker1HarRett' ||
-                hvemHarRett === 'kunMorHarRett') && (
+            {skalViseAntallUkerLabels && (
                 <HStack gap="1">
                     <AntallUkerFpLabel
                         søkerTekst={søker1Tekst}
@@ -70,70 +80,72 @@ const OversiktLabels: FunctionComponent<Props> = ({
                     )}
                 </HStack>
             )}
-            {søker2Tekst &&
-                startdatoPeriode2 &&
-                sluttdatoPeriode2 &&
-                (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') && (
-                    <>
-                        <AktivitetskravLabel
-                            utenAktivitetskrav
-                            valgtStønadskonto={valgtStønadskonto}
-                            hvemPlanlegger={hvemPlanlegger}
-                            annenPartTekst={søker2Tekst}
-                            startdato={startdatoPeriode1}
-                            sluttdato={sluttdatoPeriode1}
-                            isBluePanel
-                        />
-                        <AktivitetskravLabel
-                            valgtStønadskonto={valgtStønadskonto}
-                            hvemPlanlegger={hvemPlanlegger}
-                            annenPartTekst={søker2Tekst}
-                            startdato={startdatoPeriode2}
-                            sluttdato={sluttdatoPeriode2}
-                        />
-                    </>
+            {skalViseAktivitetskravLabels && (
+                <>
+                    <AktivitetskravLabel
+                        utenAktivitetskrav
+                        valgtStønadskonto={valgtStønadskonto}
+                        hvemPlanlegger={hvemPlanlegger}
+                        annenPartTekst={søker2Tekst}
+                        startdato={startdatoPeriode1}
+                        sluttdato={sluttdatoPeriode1}
+                        isBluePanel
+                    />
+                    <AktivitetskravLabel
+                        valgtStønadskonto={valgtStønadskonto}
+                        hvemPlanlegger={hvemPlanlegger}
+                        annenPartTekst={søker2Tekst}
+                        startdato={startdatoPeriode2}
+                        sluttdato={sluttdatoPeriode2}
+                    />
+                </>
+            )}
+            <HStack gap="2">
+                {skalViseForeldrepengerLabel && (
+                    <ForeldrepengerLabel startdato={startdatoPeriode1} sluttdato={sluttdatoPeriode1} />
                 )}
-            <div className={styles.pinkPanel}>
-                <HStack gap="2" align="center">
-                    <BodyShort>
-                        {erFødt && (
-                            <FormattedMessage
-                                id="OversiktSteg.Fødselsdato"
-                                values={{
-                                    mnd: familiehendelsedato,
-                                    dato: intl.formatDate(barnet.fødselsdato, {
-                                        day: '2-digit',
-                                        month: 'short',
-                                    }),
-                                }}
-                            />
-                        )}
-                        {erIkkeFødt && (
-                            <FormattedMessage
-                                id="OversiktSteg.Termindato"
-                                values={{
-                                    dato: intl.formatDate(barnet.termindato, {
-                                        day: '2-digit',
-                                        month: 'short',
-                                    }),
-                                }}
-                            />
-                        )}
-                        {erAdoptert && (
-                            <FormattedMessage
-                                id="OversiktSteg.Omsorgsovertakelse"
-                                values={{
-                                    dato: intl.formatDate(barnet.overtakelsesdato, {
-                                        day: '2-digit',
-                                        month: 'short',
-                                    }),
-                                }}
-                            />
-                        )}
-                    </BodyShort>
-                    <HeartFillIcon color="#F68282" aria-hidden />
-                </HStack>
-            </div>
+                <div className={styles.pinkPanel}>
+                    <HStack gap="2" align="center">
+                        <BodyShort>
+                            {erFødt && (
+                                <FormattedMessage
+                                    id="OversiktSteg.Fødselsdato"
+                                    values={{
+                                        mnd: familiehendelsedato,
+                                        dato: intl.formatDate(barnet.fødselsdato, {
+                                            day: '2-digit',
+                                            month: 'short',
+                                        }),
+                                    }}
+                                />
+                            )}
+                            {erIkkeFødt && (
+                                <FormattedMessage
+                                    id="OversiktSteg.Termindato"
+                                    values={{
+                                        dato: intl.formatDate(barnet.termindato, {
+                                            day: '2-digit',
+                                            month: 'short',
+                                        }),
+                                    }}
+                                />
+                            )}
+                            {erAdoptert && (
+                                <FormattedMessage
+                                    id="OversiktSteg.Omsorgsovertakelse"
+                                    values={{
+                                        dato: intl.formatDate(barnet.overtakelsesdato, {
+                                            day: '2-digit',
+                                            month: 'short',
+                                        }),
+                                    }}
+                                />
+                            )}
+                        </BodyShort>
+                        <HeartFillIcon color="#F68282" aria-hidden />
+                    </HStack>
+                </div>
+            </HStack>
         </VStack>
     );
 };

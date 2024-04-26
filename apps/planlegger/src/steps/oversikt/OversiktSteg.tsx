@@ -2,8 +2,7 @@ import { InformationIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infobox from 'components/boxes/Infobox';
-import Infoboks from 'components/boxes/Infobox';
+import { default as Infoboks, default as Infobox } from 'components/boxes/Infobox';
 import Calendar from 'components/calendar/Calendar';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
@@ -13,6 +12,7 @@ import {
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
+import { Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -159,7 +159,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                             <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
                         </ToggleGroup.Item>
                     </ToggleGroup>
-                    {hvemHarRett === 'beggeHarRett' && (
+                    {hvemHarRett === 'beggeHarRett' && hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && (
                         <Select
                             defaultValue={fordeling?.antallUkerSøker1}
                             label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}

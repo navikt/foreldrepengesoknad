@@ -172,6 +172,16 @@ const finnDeltUttaksdata = (
             .format(ISO_DATE_FORMAT),
     );
 
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+        return {
+            familiehendelsedato,
+            startdatoPeriode1: startdatoPeriode1,
+            sluttdatoPeriode1: sluttdatoPeriode2,
+            startdatoPeriode2: undefined,
+            sluttdatoPeriode2: undefined,
+        };
+    }
+
     return {
         familiehendelsedato,
         startdatoPeriode1,
@@ -188,6 +198,24 @@ const finnEnsligUttaksdata = (
     hvemHarRett: HvemHarRett,
 ): Uttaksdata => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
+
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+        const startdatoSøker1 = dayjs(familiehendelsedato).add(1, 'day');
+
+        const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+        const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
+        const sluttAktivitetsfri = dayjs(familiehendelsedato).add(aktivitetsfriUker, 'weeks').subtract(1, 'day');
+
+        return {
+            familiehendelsedato,
+            startdatoPeriode1: getUttaksdagFraOgMedDato(startdatoSøker1.format(ISO_DATE_FORMAT)),
+            sluttdatoPeriode1: getUttaksdagTilOgMedDato(
+                dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
+            ),
+            startdatoPeriode2: undefined,
+            sluttdatoPeriode2: undefined,
+        };
+    }
 
     if (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
