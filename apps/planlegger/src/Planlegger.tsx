@@ -68,7 +68,7 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
 
     const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
         planleggerApi,
-        'https://foreldrepengesoknad-api.nav.no/rest/konto',
+        'https://foreldrepengesoknad-api.intern.dev.nav.no/rest/konto',
         params,
         options,
     );
