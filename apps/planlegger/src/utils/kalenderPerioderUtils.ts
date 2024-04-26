@@ -50,7 +50,7 @@ export const lagKalenderPerioder = (
     }
 
     if (hvemHarRett === 'beggeHarRett') {
-        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert) {
             return [
                 {
                     fom: familiehendelsedato,
@@ -109,7 +109,7 @@ export const lagKalenderPerioder = (
     }
 
     if (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett' || !erAdoptert) {
-        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert) {
             return [
                 {
                     fom: familiehendelsedato,

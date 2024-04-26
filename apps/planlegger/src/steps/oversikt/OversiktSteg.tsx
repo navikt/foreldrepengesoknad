@@ -159,28 +159,29 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                             <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
                         </ToggleGroup.Item>
                     </ToggleGroup>
-                    {hvemHarRett === 'beggeHarRett' && hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && (
-                        <Select
-                            defaultValue={fordeling?.antallUkerSøker1}
-                            label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}
-                            name="antallUkerSøker1"
-                            onChange={(e) => {
-                                lagreFordeling({ antallUkerSøker1: parseInt(e.target.value, 10) });
-                            }}
-                        >
-                            {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
-                                <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                    {finnFellesperiodeFordelingOptionTekst(
-                                        intl,
-                                        value,
-                                        hvemPlanlegger,
-                                        fornavnSøker1,
-                                        fornavnSøker2,
-                                    )}
-                                </option>
-                            ))}
-                        </Select>
-                    )}
+                    {hvemHarRett === 'beggeHarRett' &&
+                        (!barnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
+                            <Select
+                                defaultValue={fordeling?.antallUkerSøker1}
+                                label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}
+                                name="antallUkerSøker1"
+                                onChange={(e) => {
+                                    lagreFordeling({ antallUkerSøker1: parseInt(e.target.value, 10) });
+                                }}
+                            >
+                                {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
+                                    <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
+                                        {finnFellesperiodeFordelingOptionTekst(
+                                            intl,
+                                            value,
+                                            hvemPlanlegger,
+                                            fornavnSøker1,
+                                            fornavnSøker2,
+                                        )}
+                                    </option>
+                                ))}
+                            </Select>
+                        )}
                     <OversiktLabels
                         uttaksdata={
                             hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80

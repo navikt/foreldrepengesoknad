@@ -172,7 +172,7 @@ const finnDeltUttaksdata = (
             .format(ISO_DATE_FORMAT),
     );
 
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
         return {
             familiehendelsedato,
             startdatoPeriode1: startdatoPeriode1,
@@ -199,7 +199,7 @@ const finnEnsligUttaksdata = (
 ): Uttaksdata => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
         const startdatoSøker1 = dayjs(familiehendelsedato).add(1, 'day');
 
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
