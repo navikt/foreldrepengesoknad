@@ -38,6 +38,10 @@ const initLocale = (): LocaleAll => {
     return locale;
 };
 
+const retryCallback = async () => {
+    window.location.href = window.location.href.split('?')[0];
+};
+
 const AppContainer = () => {
     const origLocale = useMemo(() => initLocale(), []);
     const [locale, setLocale] = useState<LocaleAll>(origLocale);
@@ -50,7 +54,7 @@ const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
+            <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={retryCallback}>
                 <BrowserRouter>
                     <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
                 </BrowserRouter>

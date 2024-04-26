@@ -8,6 +8,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { StønadskontoType } from 'types/TilgjengeligeStønadskontoer';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -15,24 +16,24 @@ import FordelingSteg from './FordelingSteg';
 
 const DEFAULT_STØNADSKONTO = {
     '100': {
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 80,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
+        kontoer: [
+            { konto: StønadskontoType.Mødrekvote, dager: 75 },
+            { konto: StønadskontoType.Fedrekvote, dager: 75 },
+            { konto: StønadskontoType.Fellesperiode, dager: 80 },
+            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+        ],
         minsteretter: {
             farRundtFødsel: 0,
             toTette: 0,
         },
     },
     '80': {
-        kontoer: {
-            MØDREKVOTE: 95,
-            FEDREKVOTE: 95,
-            FELLESPERIODE: 90,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-        },
+        kontoer: [
+            { konto: StønadskontoType.Mødrekvote, dager: 95 },
+            { konto: StønadskontoType.Fedrekvote, dager: 95 },
+            { konto: StønadskontoType.Fellesperiode, dager: 90 },
+            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+        ],
         minsteretter: {
             farRundtFødsel: 0,
             toTette: 0,

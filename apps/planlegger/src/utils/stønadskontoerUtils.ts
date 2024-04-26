@@ -1,31 +1,32 @@
-import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
+import { StønadskontoType, TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 
 export const getAntallUker = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
-    return Object.values(stønadskontoer.kontoer).reduce((sum: number, dager) => sum + dager / 5, 0);
+    return Object.values(stønadskontoer.kontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);
+};
+
+const getDagerForKonto = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    stønadskontoType: StønadskontoType,
+) => {
+    const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
+    return konto ? konto.dager / 5 : 0;
 };
 
 export const getAntallUkerForeldrepengerFørFødsel = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-): number => {
-    return stønadskontoer.kontoer.FORELDREPENGER_FØR_FØDSEL ? stønadskontoer.kontoer.FORELDREPENGER_FØR_FØDSEL / 5 : 0;
-};
+): number => getDagerForKonto(stønadskontoer, StønadskontoType.ForeldrepengerFørFødsel);
 
-export const getAntallUkerMødrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
-    return stønadskontoer.kontoer.MØDREKVOTE ? stønadskontoer.kontoer.MØDREKVOTE / 5 : 0;
-};
+export const getAntallUkerMødrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.Mødrekvote);
 
-export const getAntallUkerFedrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
-    return stønadskontoer.kontoer.FEDREKVOTE ? stønadskontoer.kontoer.FEDREKVOTE / 5 : 0;
-};
+export const getAntallUkerFedrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.Fedrekvote);
 
-export const getAntallUkerFellesperiode = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
-    return stønadskontoer.kontoer.FELLESPERIODE ? stønadskontoer.kontoer.FELLESPERIODE / 5 : 0;
-};
+export const getAntallUkerFellesperiode = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.Fellesperiode);
 
-export const getAntallUkerForeldrepenger = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
-    return stønadskontoer.kontoer.FORELDREPENGER ? stønadskontoer.kontoer.FORELDREPENGER / 5 : 0;
-};
+export const getAntallUkerForeldrepenger = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.Foreldrepenger);
 
-export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
-    return stønadskontoer.kontoer.AKTIVITETSFRI_KVOTE ? stønadskontoer.kontoer.AKTIVITETSFRI_KVOTE / 5 : 0;
-};
+export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
