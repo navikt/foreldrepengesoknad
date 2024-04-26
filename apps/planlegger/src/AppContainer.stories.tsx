@@ -51,7 +51,7 @@ export const Default: Story = {
         initAmplitude();
         if (args.brukStønadskontoMock) {
             const apiMock = new MockAdapter(planleggerApi);
-            apiMock.onPost('/rest/konto').reply(() => {
+            apiMock.onPost('/konto').reply(() => {
                 return [200, kontoer];
             });
         }
