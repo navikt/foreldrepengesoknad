@@ -10,10 +10,14 @@
         "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}"
     },
     "dependencies": {
+        "@navikt/aksel-icons": "^6.3.3",
         "@navikt/ds-css": "^6.6.0",
         "@navikt/ds-react": "^6.6.0",
         "@navikt/fp-common": "workspace:*",
+        "@navikt/fp-formik": "workspace:*",
         "@types/react": "^18.2.73",
+        "classnames": "^2.5.1",
+        "dayjs": "^1.11.10",
         "react": "^18.2.0",
         "react-intl": "^6.6.4",
         "typescript": "^5.4.3"

@@ -13,9 +13,31 @@
     font-weight: 400;
 }
 
-.periode-liste-header__ikon {
+.periode-liste-header__hendelse {
     padding: 0.5rem 1rem;
     font-weight: 400;
     border-radius: 1.25rem;
-    background-color: var(--a-surface-action-subtle-hover);
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.periode-liste-header--farge-blaa {
+    color: var(--a-blue-400);
+}
+
+.periode-liste-header--farge-gronn {
+    color: var(--a-green-400);
+}
+
+.periode-liste-header--farge-bg-lysblaa {
+    background-color: var(--a-blue-50);
+}
+
+.periode-liste-header--farge-bg-gul {
+    background-color: var(--a-orange-100);
+}
+
+.periode-liste-header--farge-bg-gronn {
+    background-color: var(--a-green-100);
 }
