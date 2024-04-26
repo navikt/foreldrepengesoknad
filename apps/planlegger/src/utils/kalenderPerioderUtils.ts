@@ -49,32 +49,48 @@ export const lagKalenderPerioder = (
         ]);
     }
 
-    if (hvemHarRett === 'beggeHarRett' && startdatoPeriode2 && sluttdatoPeriode2) {
-        const perioder = [] as Period[];
-        if (hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
-            perioder.push({
-                fom: startdatoPeriode1,
-                tom: dayjs(familiehendelsedato).subtract(1, 'day').format(ISO_DATE_FORMAT),
-                color: DayColor.BLUE,
-            });
+    if (hvemHarRett === 'beggeHarRett') {
+        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+            return [
+                {
+                    fom: familiehendelsedato,
+                    tom: familiehendelsedato,
+                    color: DayColor.PINK,
+                },
+                {
+                    fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
+                    tom: sluttdatoPeriode1,
+                    color: DayColor.BLUE,
+                },
+            ];
         }
-        return perioder.concat(
-            {
-                fom: familiehendelsedato,
-                tom: familiehendelsedato,
-                color: DayColor.PINK,
-            },
-            {
-                fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
-                tom: sluttdatoPeriode1,
-                color: DayColor.BLUE,
-            },
-            {
-                fom: startdatoPeriode2,
-                tom: sluttdatoPeriode2,
-                color: DayColor.GREEN,
-            },
-        );
+        if (startdatoPeriode2 && sluttdatoPeriode2) {
+            const perioder = [] as Period[];
+            if (!erBarnetAdoptert(barnet)) {
+                perioder.push({
+                    fom: startdatoPeriode1,
+                    tom: dayjs(familiehendelsedato).subtract(1, 'day').format(ISO_DATE_FORMAT),
+                    color: DayColor.BLUE,
+                });
+            }
+            return perioder.concat(
+                {
+                    fom: familiehendelsedato,
+                    tom: familiehendelsedato,
+                    color: DayColor.PINK,
+                },
+                {
+                    fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
+                    tom: sluttdatoPeriode1,
+                    color: DayColor.BLUE,
+                },
+                {
+                    fom: startdatoPeriode2,
+                    tom: sluttdatoPeriode2,
+                    color: DayColor.GREEN,
+                },
+            );
+        }
     }
 
     if (hvemHarRett === 'kunFarSøker1HarRett') {
@@ -92,28 +108,41 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    if (
-        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett' || !erAdoptert) &&
-        startdatoPeriode2 &&
-        sluttdatoPeriode2
-    ) {
-        return [
-            {
-                fom: familiehendelsedato,
-                tom: familiehendelsedato,
-                color: DayColor.PINK,
-            },
-            {
-                fom: startdatoPeriode1,
-                tom: sluttdatoPeriode1,
-                color: DayColor.BLUE,
-            },
-            {
-                fom: startdatoPeriode2,
-                tom: sluttdatoPeriode2,
-                color: DayColor.GREEN,
-            },
-        ];
+    if (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett' || !erAdoptert) {
+        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+            return [
+                {
+                    fom: familiehendelsedato,
+                    tom: familiehendelsedato,
+                    color: DayColor.PINK,
+                },
+                {
+                    fom: startdatoPeriode1,
+                    tom: sluttdatoPeriode1,
+                    color: DayColor.BLUE,
+                },
+            ];
+        }
+
+        if (startdatoPeriode2 && sluttdatoPeriode2) {
+            return [
+                {
+                    fom: familiehendelsedato,
+                    tom: familiehendelsedato,
+                    color: DayColor.PINK,
+                },
+                {
+                    fom: startdatoPeriode1,
+                    tom: sluttdatoPeriode1,
+                    color: DayColor.BLUE,
+                },
+                {
+                    fom: startdatoPeriode2,
+                    tom: sluttdatoPeriode2,
+                    color: DayColor.GREEN,
+                },
+            ];
+        }
     }
 
     if ((hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') && erAdoptert) {
