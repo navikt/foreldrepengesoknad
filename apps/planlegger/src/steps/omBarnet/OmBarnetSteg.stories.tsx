@@ -34,7 +34,7 @@ const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click
 };
 
 const meta = {
-    title: 'OmBarnetSteg',
+    title: 'steg/OmBarnetSteg',
     component: OmBarnetSteg,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;
