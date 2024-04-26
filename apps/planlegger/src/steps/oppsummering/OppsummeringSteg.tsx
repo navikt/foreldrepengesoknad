@@ -7,10 +7,9 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
-import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Alert, BodyLong, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -36,7 +35,7 @@ const copyUrlToClipboard = async () => {
 };
 
 interface Props {
-    stønadskontoer?: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer?: TilgjengeligeStønadskontoer;
     locale: LocaleAll;
 }
 
@@ -54,9 +53,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
     const valgtStønadskonto =
-        stønadskontoer && hvorLangPeriode
-            ? mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[hvorLangPeriode.dekningsgrad])
-            : undefined;
+        stønadskontoer && hvorLangPeriode ? stønadskontoer[hvorLangPeriode.dekningsgrad] : undefined;
 
     const harRett =
         (erBarnetFødt(barnet) && dayjs(barnet.fødselsdato).isBefore(DATE_3_YEARS_AGO)) ||

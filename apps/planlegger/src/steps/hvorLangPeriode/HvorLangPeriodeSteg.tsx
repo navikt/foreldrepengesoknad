@@ -13,10 +13,9 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto } from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
@@ -30,7 +29,7 @@ import NårBareEnPartHarRettInfoboks from './infoboks/NårBareEnPartHarRettInfob
 import ValgtDekningsgradInfoboks from './infoboks/ValgtDekningsgradInfoboks';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer: TilgjengeligeStønadskontoer;
     locale: LocaleAll;
 }
 
@@ -77,18 +76,14 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
 
     const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, arbeidssituasjon, intl);
 
-    const stønadskonto100 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        stønadskontoer[Dekningsgrad.HUNDRE_PROSENT],
-    );
-    const stønadskonto80 = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(
-        stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
-    );
+    const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
+    const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
 
     const valgtStønadskonto = valgtDekningsgrad
         ? valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? stønadskonto100
             : stønadskonto80
-        : [];
+        : undefined;
 
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
@@ -171,7 +166,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 <FormattedMessage id="HvorLangPeriodeSteg.80" values={{ uker80: antallUker80 }} />
                             </Radio>
                         </GreenRadioGroup>
-                        {dekningsgrad && (
+                        {valgtStønadskonto && (
                             <ValgtDekningsgradInfoboks
                                 barnet={barnet}
                                 hvemPlanlegger={hvemPlanlegger}

@@ -11,14 +11,11 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoerDTO } from 'types/TilgjengeligeStønadskontoerDTO';
+import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import {
-    getAntallUkerFellesperiode,
-    mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto,
-} from 'utils/stønadskontoerUtils';
+import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
@@ -84,7 +81,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
 };
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoerDTO;
+    stønadskontoer: TilgjengeligeStønadskontoer;
     locale: LocaleAll;
 }
 
@@ -112,7 +109,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
         navigator.goToNextDefaultStep();
     };
 
-    const valgtStønadskonto = mapTilgjengeligStønadskontoDTOToTilgjengeligStønadskonto(stønadskontoer[dekningsgrad]);
+    const valgtStønadskonto = stønadskontoer[dekningsgrad];
 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 

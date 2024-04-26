@@ -18,7 +18,6 @@ const kontoer = {
         },
         minsteretter: {
             farRundtFødsel: 0,
-            generellMinsterett: 0,
             toTette: 0,
         },
     },
@@ -31,7 +30,6 @@ const kontoer = {
         },
         minsteretter: {
             farRundtFødsel: 0,
-            generellMinsterett: 0,
             toTette: 0,
         },
     },

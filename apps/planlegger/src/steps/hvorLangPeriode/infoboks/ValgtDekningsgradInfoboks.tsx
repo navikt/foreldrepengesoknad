@@ -7,14 +7,11 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker, erMorDelAvSøknaden, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import {
-    TilgjengeligStønadskonto,
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerForeldrepenger,
-} from 'utils/stønadskontoerUtils';
+import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
 import { Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
@@ -25,7 +22,7 @@ interface Props {
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    valgtStønadskonto: TilgjengeligStønadskonto[];
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     uttaksdata100: Uttaksdata;
     uttaksdata80: Uttaksdata;
     valgtDekningsgrad: Dekningsgrad;

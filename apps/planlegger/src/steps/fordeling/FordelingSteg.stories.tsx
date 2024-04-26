@@ -23,7 +23,6 @@ const DEFAULT_STØNADSKONTO = {
         },
         minsteretter: {
             farRundtFødsel: 0,
-            generellMinsterett: 0,
             toTette: 0,
         },
     },
@@ -36,7 +35,6 @@ const DEFAULT_STØNADSKONTO = {
         },
         minsteretter: {
             farRundtFødsel: 0,
-            generellMinsterett: 0,
             toTette: 0,
         },
     },

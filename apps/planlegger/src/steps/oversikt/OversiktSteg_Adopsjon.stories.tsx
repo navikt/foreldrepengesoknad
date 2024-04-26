@@ -16,7 +16,6 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import OversiktSteg from './OversiktSteg';
 
 const MINSTERETTER = {
-    generellMinsterett: 0,
     farRundtFødsel: 0,
     toTette: 0,
 };
@@ -147,20 +146,20 @@ export const MorOgFarKunFarHarRettMorErUfør: Story = {
         stønadskontoer: {
             '100': {
                 kontoer: {
-                    FORELDREPENGER: 200,
+                    FORELDREPENGER: 125,
+                    AKTIVITETSFRI_KVOTE: 75,
                 },
                 minsteretter: {
-                    generellMinsterett: 75,
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
             },
             '80': {
                 kontoer: {
-                    FORELDREPENGER: 250,
+                    FORELDREPENGER: 155,
+                    AKTIVITETSFRI_KVOTE: 95,
                 },
                 minsteretter: {
-                    generellMinsterett: 95,
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
@@ -180,20 +179,20 @@ export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
         stønadskontoer: {
             '100': {
                 kontoer: {
-                    FORELDREPENGER: 200,
+                    FORELDREPENGER: 160,
+                    AKTIVITETSFRI_KVOTE: 40,
                 },
                 minsteretter: {
-                    generellMinsterett: 40,
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
             },
             '80': {
                 kontoer: {
-                    FORELDREPENGER: 250,
+                    FORELDREPENGER: 210,
+                    AKTIVITETSFRI_KVOTE: 40,
                 },
                 minsteretter: {
-                    generellMinsterett: 40,
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
@@ -300,20 +299,20 @@ export const FarOgFarKunFarHarRett: Story = {
         stønadskontoer: {
             '80': {
                 kontoer: {
-                    FORELDREPENGER: 250,
+                    FORELDREPENGER: 210,
+                    AKTIVITETSFRI_KVOTE: 40,
                 },
                 minsteretter: {
-                    generellMinsterett: 40,
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
             },
             '100': {
                 kontoer: {
-                    FORELDREPENGER: 200,
+                    FORELDREPENGER: 160,
+                    AKTIVITETSFRI_KVOTE: 40,
                 },
                 minsteretter: {
-                    generellMinsterett: 40,
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
@@ -333,20 +332,20 @@ export const FarOgFarKunMedfarHarRett: Story = {
         stønadskontoer: {
             '80': {
                 kontoer: {
-                    FORELDREPENGER: 250,
+                    FORELDREPENGER: 145,
+                    AKTIVITETSFRI_KVOTE: 95,
                 },
                 minsteretter: {
-                    generellMinsterett: 95,
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
             },
             '100': {
                 kontoer: {
-                    FORELDREPENGER: 200,
+                    FORELDREPENGER: 125,
+                    AKTIVITETSFRI_KVOTE: 75,
                 },
                 minsteretter: {
-                    generellMinsterett: 75,
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
