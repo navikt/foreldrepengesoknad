@@ -1,4 +1,3 @@
-import Uttaksplanbuilder from './Uttaksplanbuilder';
 import {
     Forelder,
     InfoPeriode,
@@ -10,6 +9,8 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode,
 } from '@navikt/fp-common';
+
+import Uttaksplanbuilder from './Uttaksplanbuilder';
 
 const perioder: Periode[] = [
     {
@@ -237,7 +238,6 @@ describe('Uttaksplanbuilder tester', () => {
             false,
             undefined,
         ).leggTilPeriode(nyPeriode);
-
         expect(result.length).toBe(4);
         expect(result[2]).toEqual(nyPeriode);
 
@@ -263,7 +263,7 @@ describe('Uttaksplanbuilder tester', () => {
             undefined,
         ).leggTilPeriode(nyPeriode2);
 
-        expect(result2.length).toBe(7);
+        expect(result2.length).toBe(6);
         expect(result2[2]).toEqual(nyPeriode2);
         expect(result2[4]).toEqual(nyPeriode);
         expect(result2[4].tidsperiode).toEqual({ fom: new Date('2022-08-15'), tom: new Date('2022-08-26') });

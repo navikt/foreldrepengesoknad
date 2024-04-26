@@ -1,13 +1,14 @@
-import { settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 import {
     Forelder,
-    StønadskontoType,
     OppholdÅrsakType,
     Periode,
     Periodetype,
-    Uttaksperiode,
+    StønadskontoType,
     UttakAnnenPartInfoPeriode,
+    Uttaksperiode,
 } from '@navikt/fp-common';
+
+import { settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 
 const perioder: Periode[] = [
     {

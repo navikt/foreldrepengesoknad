@@ -7,55 +7,15 @@ import {
     Tidsperioden,
     Uttaksperiode,
     guid,
-    isForeldrepengerFørFødselUttaksperiode,
-    isOverskrivbarPeriode,
-    isUtsettelsesperiode,
     sorterPerioder,
 } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 
-import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
-
-const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] => {
-    const dagerIBerørtPeriode = Tidsperioden(berørtPeriode.tidsperiode).getAntallUttaksdager();
-
-    const førsteDel: Periode = {
-        ...berørtPeriode,
-        tidsperiode: {
-            fom: berørtPeriode.tidsperiode.fom,
-            tom: Uttaksdagen(nyPeriode.tidsperiode.fom).forrige(),
-        },
-    };
-
-    const dagerIFørsteDel = Tidsperioden(førsteDel.tidsperiode).getAntallUttaksdager();
-    const dagerIAndreDel = dagerIBerørtPeriode - dagerIFørsteDel;
-    const startDatoAndreDel = Uttaksdagen(nyPeriode.tidsperiode.tom).neste();
-
-    if (isOverskrivbarPeriode(berørtPeriode)) {
-        // Hvis berørt periode er overskrivbar, la forskyvPerioder ta seg av logikk for forskyving av datoer
-        const andreDel: Periode = {
-            ...berørtPeriode,
-            id: guid(),
-            tidsperiode: {
-                fom: nyPeriode.tidsperiode.fom,
-                tom: berørtPeriode.tidsperiode.tom,
-            },
-        };
-
-        return [førsteDel, nyPeriode, andreDel];
-    } else {
-        const andreDel: Periode = {
-            ...berørtPeriode,
-            id: guid(),
-            tidsperiode: {
-                fom: startDatoAndreDel,
-                tom: Uttaksdagen(startDatoAndreDel).leggTil(dagerIAndreDel - 1),
-            },
-        };
-
-        return [førsteDel, nyPeriode, andreDel];
-    }
-};
+import {
+    getPeriodeHullEllerPeriodeUtenUttak,
+    getTidsperiodeMellomPerioder,
+    normaliserPerioder,
+} from './uttaksplanbuilderUtils';
 
 export const splittPeriodePåDato = (periode: Periode, dato: Date): Periode[] => {
     const periodeFørDato: Periode = {
@@ -103,27 +63,6 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Uttaksperiod
     return [periodeFørFamDato, periodeFraOgMedFamDato];
 };
 
-const getAntallOverlappendeUttaksdager = (periode: Periode, nyPeriode: Periode): number => {
-    if (Periodene([periode]).finnOverlappendePerioder(nyPeriode).length > 0) {
-        const dateArray = [
-            dayjs(periode.tidsperiode.fom),
-            dayjs(periode.tidsperiode.tom),
-            dayjs(nyPeriode.tidsperiode.fom),
-            dayjs(nyPeriode.tidsperiode.tom),
-        ];
-        const minDate = dayjs.min(dateArray);
-        const maxDate = dayjs.max(dateArray);
-        const overlappendeTidsperiode = dateArray.filter((date) => date !== minDate && date !== maxDate);
-
-        return Tidsperioden({
-            fom: dayjs.min(overlappendeTidsperiode)!.toDate(),
-            tom: dayjs.max(overlappendeTidsperiode)!.toDate(),
-        }).getAntallUttaksdager();
-    }
-
-    return 0;
-};
-
 interface LeggTilPeriodeParams {
     perioder: Periode[];
     nyPeriode: Periode;
@@ -160,67 +99,63 @@ export const leggTilPeriode = ({
         return [...perioder];
     }
 
-    const berørtPeriode = perioder.find((p) => Tidsperioden(p.tidsperiode).inneholderDato(nyPeriodeFomDate));
+    const berørtePerioder = perioder.filter((p) => Tidsperioden(p.tidsperiode).overlapper(nyPeriode.tidsperiode));
+    if (berørtePerioder.length > 0) {
+        //TODO: Gjelder dette fortsatt?
+        // if (isForeldrepengerFørFødselUttaksperiode(berørtPeriode)) {
+        //     // Uttak som legges over FFF skal ikke tillates av validering. Ignore
+        //     return [...perioder];
+        // }
 
-    if (berørtPeriode) {
-        if (isUtsettelsesperiode(berørtPeriode) || isForeldrepengerFørFødselUttaksperiode(berørtPeriode)) {
-            // Uttak som legges over utsettelse eller FFF skal ikke tillates av validering. Ignore
-            return [...perioder];
+        const foregåendePerioder = Periodene(perioder).finnAlleForegåendePerioder(berørtePerioder[0]);
+        const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(
+            berørtePerioder[berørtePerioder.length - 1],
+        );
+
+        //TODO: Må endre navn i normaliserPerioder hvis denne skal brukes
+        const {
+            normaliserteEgnePerioder: normaliserteBerørtePerioder,
+            normaliserteAnnenPartsPerioder: normaliserteNyePerioder,
+        } = normaliserPerioder(berørtePerioder, [nyPeriode]);
+
+        const erstattedeBerørtePerioder = normaliserteBerørtePerioder.map((p) => {
+            const overlappendeNyPeriode = normaliserteNyePerioder.find((nyPeriode) =>
+                dayjs(nyPeriode.tidsperiode.fom).isSame(p.tidsperiode.fom, 'day'),
+            );
+            return overlappendeNyPeriode || p;
+        });
+
+        //Når ny periode starter før alle de gamle periodene
+        if (
+            dayjs(normaliserteNyePerioder[0].tidsperiode.fom).isBefore(
+                normaliserteBerørtePerioder[0].tidsperiode.fom,
+                'd',
+            )
+        ) {
+            erstattedeBerørtePerioder.unshift(normaliserteNyePerioder[0]);
         }
 
-        const foregåendePerioder = Periodene(perioder).finnAlleForegåendePerioder(berørtPeriode);
-        const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(berørtPeriode);
-        const antallDagerINyPeriode = Tidsperioden(nyPeriode.tidsperiode).getAntallUttaksdager();
-
-        if (dayjs(berørtPeriode.tidsperiode.fom).isSame(nyPeriodeFomDate)) {
-            return [
-                ...foregåendePerioder,
-                nyPeriode,
-                ...Periodene([berørtPeriode, ...påfølgendePerioder]).forskyvPerioder(antallDagerINyPeriode),
-            ];
+        //Når ny periode slutter etter alle de gamle periodene
+        if (
+            dayjs(normaliserteNyePerioder[normaliserteNyePerioder.length - 1].tidsperiode.fom).isAfter(
+                normaliserteBerørtePerioder[normaliserteBerørtePerioder.length - 1].tidsperiode.tom,
+                'd',
+            )
+        ) {
+            erstattedeBerørtePerioder.push(normaliserteNyePerioder[normaliserteNyePerioder.length - 1]);
         }
 
-        const berørtPeriodeSplittetPåNyPeriode = splittPeriodePåPeriode(berørtPeriode, nyPeriode);
-
-        if (isOverskrivbarPeriode(berørtPeriode)) {
-            // Hvis berørt periode er overskrivbar, la forskyvPerioder ta seg av logikk for overskriving
-            return [
-                ...foregåendePerioder,
-                berørtPeriodeSplittetPåNyPeriode[0],
-                berørtPeriodeSplittetPåNyPeriode[1],
-                ...Periodene([berørtPeriodeSplittetPåNyPeriode[2], ...påfølgendePerioder]).forskyvPerioder(
-                    antallDagerINyPeriode,
-                ),
-            ];
-        }
-
-        return [
-            ...foregåendePerioder,
-            ...berørtPeriodeSplittetPåNyPeriode,
-            ...Periodene(påfølgendePerioder).forskyvPerioder(antallDagerINyPeriode),
-        ];
+        return [...foregåendePerioder, ...erstattedeBerørtePerioder, ...påfølgendePerioder];
     } else {
         const førstePeriode = perioder[0];
         const sistePeriode = perioder[perioder.length - 1];
         const nyPeriodeFom = dayjs(nyPeriode.tidsperiode.fom);
-        const nyPeriodeTom = dayjs(nyPeriode.tidsperiode.tom);
 
         if (nyPeriodeFom.isBefore(førstePeriode.tidsperiode.fom, 'day')) {
             const tidsperiodeMellomNyPeriodeOgFørstePeriode = getTidsperiodeMellomPerioder(
                 nyPeriode.tidsperiode,
                 førstePeriode.tidsperiode,
             );
-
-            if (nyPeriodeTom.isSameOrAfter(førstePeriode.tidsperiode.fom, 'day')) {
-                if (nyPeriodeFom.isBefore(familiehendelsesdato, 'day')) {
-                    // Kan ikke overlappe perioder før fødsel
-                    return [...perioder];
-                }
-
-                const antallOverlappendeUttaksdager = getAntallOverlappendeUttaksdager(førstePeriode, nyPeriode);
-
-                return [nyPeriode, ...Periodene(perioder).forskyvPerioder(antallOverlappendeUttaksdager)];
-            }
 
             if (tidsperiodeMellomNyPeriodeOgFørstePeriode) {
                 return [
