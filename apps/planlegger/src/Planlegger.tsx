@@ -65,10 +65,10 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
         }),
         [arbeidssituasjon],
     );
-
+    console.log(Environment.REST_API_URL + '/rest/konto');
     const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
         planleggerApi,
-        'https://foreldrepengesoknad-api.intern.dev.nav.no/rest/konto',
+        Environment.REST_API_URL + '/rest/konto',
         params,
         options,
     );

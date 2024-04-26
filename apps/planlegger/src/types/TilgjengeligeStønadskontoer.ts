@@ -17,8 +17,13 @@ export type TilgjengeligeMinsterettskontoer = {
     [MinsterettType.toTette]: number;
 };
 
+export type Stønadskonto = {
+    konto: StønadskontoType;
+    dager: number;
+};
+
 export type TilgjengeligeStønadskontoerForDekningsgrad = {
-    kontoer: Partial<Record<StønadskontoType, number>>;
+    kontoer: Stønadskonto[];
     minsteretter: TilgjengeligeMinsterettskontoer;
 };
 
