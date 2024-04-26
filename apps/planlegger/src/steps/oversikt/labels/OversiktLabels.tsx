@@ -50,16 +50,16 @@ const OversiktLabels: FunctionComponent<Props> = ({
     const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2, familiehendelsedato } =
         uttaksdata;
 
+    const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const skalViseAntallUkerLabels =
-        !erFarOgFar &&
+        !erFarOgFarOgFødsel &&
         (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMorHarRett');
     const skalViseAktivitetskravLabels =
-        !erFarOgFar &&
+        !erFarOgFarOgFødsel &&
         søker2Tekst &&
         startdatoPeriode2 &&
         sluttdatoPeriode2 &&
         (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett');
-    const skalViseForeldrepengerLabel = erFarOgFar;
 
     return (
         <VStack gap={{ sm: '1', md: '2' }}>
@@ -101,7 +101,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
                 </>
             )}
             <HStack gap="2">
-                {skalViseForeldrepengerLabel && (
+                {erFarOgFarOgFødsel && (
                     <ForeldrepengerLabel startdato={startdatoPeriode1} sluttdato={sluttdatoPeriode1} />
                 )}
                 <div className={styles.pinkPanel}>
