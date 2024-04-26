@@ -51,7 +51,7 @@ export const Default: Story = {
         initAmplitude();
         if (args.brukStønadskontoMock) {
             const apiMock = new MockAdapter(planleggerApi);
-            apiMock.onPost('https://foreldrepengesoknad-api.nav.no/rest/konto').reply(() => {
+            apiMock.onPost('https://foreldrepengesoknad-api.intern.dev.nav.no/rest/konto').reply(() => {
                 return [200, kontoer];
             });
         }
