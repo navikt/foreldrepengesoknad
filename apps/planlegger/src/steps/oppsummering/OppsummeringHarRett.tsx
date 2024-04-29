@@ -16,6 +16,7 @@ import {
     finnSøker2Tekst,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
+    getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -67,6 +68,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     );
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet);
+    const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     return (
         <>
@@ -86,7 +89,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <VStack gap="5">
-                        {hvemHarRett === 'beggeHarRett' && !erFarOgFarFødsel && (
+                        {hvemHarRett === 'beggeHarRett' && !erFarOgFarFødsel && fornavnSøker2 && (
                             <GreenPanel>
                                 <Heading level="4" size="small">
                                     <FormattedMessage id="OppsummeringSteg.Perioden" />
@@ -108,7 +111,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="OppsummeringSteg.Periodene"
                                         values={{
-                                            hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                            hvem: getNavnGenitivEierform(fornavnSøker1, intl.locale),
                                             fom: intl.formatDate(startdatoPeriode1, {
                                                 day: '2-digit',
                                                 month: 'short',
@@ -127,7 +130,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="OppsummeringSteg.Periodene"
                                         values={{
-                                            hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
+                                            hvem: getNavnGenitivEierform(fornavnSøker2, intl.locale),
                                             fom: intl.formatDate(startdatoPeriode2, {
                                                 day: '2-digit',
                                                 month: 'short',
