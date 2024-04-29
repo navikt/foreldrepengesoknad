@@ -86,7 +86,7 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
-export const OppsummeringFlereForsørgereHundreProsentTermin: Story = {
+export const FlereForsørgereHundreProsentTermin: Story = {
     args: {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -112,7 +112,33 @@ export const OppsummeringFlereForsørgereHundreProsentTermin: Story = {
     },
 };
 
-export const OppsummeringAleneforsørgerÅttiProsentFødselToBarn: Story = {
+export const FarOgFarFødsel: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Anders Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        fordeling: {
+            antallUkerSøker1: 5,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: false,
+            termindato: '2022-10-24',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+    },
+};
+
+export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
     args: {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -137,7 +163,7 @@ export const OppsummeringAleneforsørgerÅttiProsentFødselToBarn: Story = {
     },
 };
 
-export const OppsummeringFlereForsørgereHundreProsentAdopsjon: Story = {
+export const FlereForsørgereHundreProsentAdopsjon: Story = {
     args: {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -185,7 +211,31 @@ export const HarIkkeRett: Story = {
     },
 };
 
-export const OppsummeringAleneforsørgerMorErUfør: Story = {
+export const KunMorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        omBarnet: {
+            erFødsel: false,
+            erBarnetFødt: true,
+            fødselsdato: '2022-07-10',
+            antallBarn: '1',
+            overtakelsesdato: '2022-010-10',
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+    },
+};
+
+export const AleneforsørgerMorErUfør: Story = {
     args: {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -196,6 +246,9 @@ export const OppsummeringAleneforsørgerMorErUfør: Story = {
             erBarnetFødt: false,
             termindato: '2022-10-24',
             antallBarn: '1',
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.UFØR,
