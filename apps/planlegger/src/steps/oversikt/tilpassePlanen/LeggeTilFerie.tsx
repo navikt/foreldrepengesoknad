@@ -2,7 +2,7 @@ import { ParasolBeachIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erAlenesøker, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
@@ -11,6 +11,7 @@ interface Props {
 }
 const LeggeTilFerie: React.FunctionComponent<Props> = ({ hvemPlanlegger }) => {
     const intl = useIntl();
+    const erAlenesøker = erAlene(hvemPlanlegger);
     return (
         <>
             <HStack gap="5" wrap={false}>
@@ -24,7 +25,7 @@ const LeggeTilFerie: React.FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                         <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
                     </Heading>
                     <BodyLong>
-                        {!erAlenesøker(hvemPlanlegger) ? (
+                        {!erAlenesøker ? (
                             <FormattedMessage
                                 id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
                                 values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
@@ -32,7 +33,7 @@ const LeggeTilFerie: React.FunctionComponent<Props> = ({ hvemPlanlegger }) => {
                         ) : (
                             <FormattedMessage
                                 id="OmÅTilpassePlanen.LeggeTilFerie.Tekst"
-                                values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
+                                values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger), erAlenesøker }}
                             />
                         )}
                     </BodyLong>
