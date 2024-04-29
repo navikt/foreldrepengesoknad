@@ -19,4 +19,14 @@ export default defineConfig({
     build: {
         sourcemap: true,
     },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './vitest/setupTests.ts',
+        coverage: {
+            include: ['src/**/*'],
+            exclude: [],
+        },
+        maxConcurrency: 10,
+    },
 });

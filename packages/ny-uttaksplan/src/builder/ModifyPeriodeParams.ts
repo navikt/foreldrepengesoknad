@@ -1,4 +1,4 @@
-import { Uttaksstatus } from 'utils/uttaksstatus';
+import { Uttaksstatus } from 'types/Uttaksstatus';
 
 import { Periode, TilgjengeligStønadskonto } from '@navikt/fp-common';
 
