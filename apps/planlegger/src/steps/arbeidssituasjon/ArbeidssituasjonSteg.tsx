@@ -35,6 +35,8 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
 
     const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
+    const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const oppdaterHvorLangPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
@@ -50,7 +52,16 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
 
     const onSubmit = (formValues: Arbeidssituasjon) => {
         oppdaterArbeidssituasjon(formValues);
-        navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
+
+        const minstEnJobber = formValues.status === Arbeidsstatus.JOBBER || formValues.jobberAnnenPart;
+
+        if (minstEnJobber) {
+            navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
+        } else {
+            oppdaterFordeling(undefined);
+            oppdaterHvorLangPeriode(undefined);
+            navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
+        }
     };
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
