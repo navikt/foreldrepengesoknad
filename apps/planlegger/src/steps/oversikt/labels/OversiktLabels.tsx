@@ -51,15 +51,20 @@ const OversiktLabels: FunctionComponent<Props> = ({
         uttaksdata;
 
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
+    const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
     const skalViseAntallUkerLabels =
         !erFarOgFarOgFødsel &&
-        (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMorHarRett');
+        (hvemHarRett === 'beggeHarRett' ||
+            (hvemHarRett === 'kunFarSøker1HarRett' && !erFarOgFarOgAdopsjon) ||
+            hvemHarRett === 'kunMorHarRett');
     const skalViseAktivitetskravLabels =
         !erFarOgFarOgFødsel &&
         søker2Tekst &&
         startdatoPeriode2 &&
         sluttdatoPeriode2 &&
-        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett');
+        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' ||
+            hvemHarRett === 'kunMedfarHarRett' ||
+            (hvemHarRett === 'kunFarSøker1HarRett' && erFarOgFarOgAdopsjon));
 
     return (
         <VStack gap={{ sm: '1', md: '2' }}>

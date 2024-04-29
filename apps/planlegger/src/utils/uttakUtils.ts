@@ -199,7 +199,31 @@ const finnEnsligUttaksdata = (
 ): Uttaksdata => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+        if (erBarnetAdoptert(barnet)) {
+            const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+            const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
+            const sluttAktivitetsfri = dayjs(familiehendelsedato)
+                .add(aktivitetsfriUker, 'weeks')
+                .add(erBarnetAdoptert(barnet) ? 0 : 6, 'weeks')
+                .subtract(1, 'day');
+
+            const startdatoSøker1 = erBarnetAdoptert(barnet)
+                ? dayjs(familiehendelsedato).add(1, 'day')
+                : dayjs(familiehendelsedato).add(6, 'weeks');
+
+            return {
+                familiehendelsedato,
+                startdatoPeriode1: getUttaksdagFraOgMedDato(startdatoSøker1.format(ISO_DATE_FORMAT)),
+                sluttdatoPeriode1: getUttaksdagTilOgMedDato(sluttAktivitetsfri.format(ISO_DATE_FORMAT)),
+                startdatoPeriode2: getUttaksdagFraOgMedDato(
+                    dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
+                ),
+                sluttdatoPeriode2: getUttaksdagTilOgMedDato(
+                    dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
+                ),
+            };
+        }
         const startdatoSøker1 = dayjs(familiehendelsedato).add(1, 'day');
 
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);

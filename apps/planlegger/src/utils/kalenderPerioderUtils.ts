@@ -25,6 +25,7 @@ export const lagKalenderPerioder = (
         finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1);
 
     const erAdoptert = erBarnetAdoptert(barnet);
+    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
 
     if (hvemHarRett === 'kunMorHarRett') {
         const perioder = [] as Period[];
@@ -50,7 +51,7 @@ export const lagKalenderPerioder = (
     }
 
     if (hvemHarRett === 'beggeHarRett') {
-        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert) {
+        if (erFarOgFar && !erAdoptert) {
             return [
                 {
                     fom: familiehendelsedato,
@@ -66,7 +67,7 @@ export const lagKalenderPerioder = (
         }
         if (startdatoPeriode2 && sluttdatoPeriode2) {
             const perioder = [] as Period[];
-            if (!erBarnetAdoptert(barnet)) {
+            if (!erAdoptert) {
                 perioder.push({
                     fom: startdatoPeriode1,
                     tom: dayjs(familiehendelsedato).subtract(1, 'day').format(ISO_DATE_FORMAT),
@@ -93,7 +94,7 @@ export const lagKalenderPerioder = (
         }
     }
 
-    if (hvemHarRett === 'kunFarSøker1HarRett') {
+    if (hvemHarRett === 'kunFarSøker1HarRett' && (!erFarOgFar || !erAdoptert)) {
         return [
             {
                 fom: familiehendelsedato,
@@ -108,8 +109,13 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    if (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett' || !erAdoptert) {
-        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert) {
+    if (
+        hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' ||
+        hvemHarRett === 'kunMedfarHarRett' ||
+        hvemHarRett === 'kunFarSøker1HarRett' ||
+        !erAdoptert
+    ) {
+        if (erFarOgFar && !erAdoptert) {
             return [
                 {
                     fom: familiehendelsedato,
