@@ -11,9 +11,10 @@ interface Props {
     erAlenesøker: boolean;
     fornavn: string;
     erSøker2?: boolean;
+    erFarOgFar: boolean;
 }
 
-const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSøker2 = false }) => {
+const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar }) => {
     return (
         <Infobox
             header={
@@ -31,7 +32,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                     values={{ erAlenesøker, navn: fornavn }}
                 />
             </BodyLong>
-            {!erSøker2 && (
+            {!erSøker2 && !erFarOgFar && (
                 <BodyLong>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"
