@@ -20,7 +20,7 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
-export const AdopsjonMorOgFarBeggeHarRett: Story = {
+export const AdopsjonMorOgFarBeggeHarRettToBarn: Story = {
     args: {
         hvemPlanlegger: {
             type: Situasjon.MOR_OG_FAR,
@@ -32,7 +32,7 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
             jobberAnnenPart: true,
         },
         barnet: {
-            antallBarn: '1',
+            antallBarn: '2',
             overtakelsesdato: '2022-01-01',
             fødselsdato: '2022-01-01',
             erFødsel: false,
