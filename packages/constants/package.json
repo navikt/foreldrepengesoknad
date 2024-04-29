@@ -9,11 +9,11 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "dayjs": "^1.11.10"
+        "dayjs": "^1.11.11"
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3"
+        "typescript": "^5.4.5"
     }
 }
