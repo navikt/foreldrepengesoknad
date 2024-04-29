@@ -76,7 +76,7 @@ describe('<OppsummeringSteg>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal kun vise periode ved fødsel far og far', async () => {
+    it('skal vise en periode ved fødsel far og far', async () => {
         render(<FarOgFarFødsel />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -85,7 +85,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText(/24. okt. 2022 – 08. sep. 2023/)).toBeInTheDocument();
     });
 
-    it('skal kun vise perioder ved adopsjon far og far', async () => {
+    it('skal vise perioder for begge fedrene ved adopsjon far og far', async () => {
         render(<FarOgFarAdopsjon />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);

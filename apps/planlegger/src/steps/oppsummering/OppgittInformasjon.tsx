@@ -87,7 +87,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" values={{ antallBarn }} />
                                 </Heading>
 
-                                {erFødt && (
+                                {barnet.erFødsel && erFødt && (
                                     <BodyLong>
                                         <FormattedMessage
                                             id="OppgittInformasjon.InformasjonOmBarn"
@@ -108,7 +108,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                         />
                                     </BodyLong>
                                 )}
-                                {!erFødt && !erAdoptert && (
+                                {barnet.erFødsel && !erFødt && !erAdoptert && (
                                     <BodyLong>
                                         <FormattedMessage
                                             id="OppgittInformasjon.InformasjonOmBarn"
