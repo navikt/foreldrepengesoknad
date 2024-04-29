@@ -144,6 +144,31 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 </BodyLong>
                             </GreenPanel>
                         )}
+                        {hvemHarRett === 'beggeHarRett' && erFarOgFarFødsel && (
+                            <GreenPanel>
+                                <Heading level="4" size="small">
+                                    <FormattedMessage id="OppsummeringSteg.Perioden" />
+                                </Heading>
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="OppsummeringSteg.Periode"
+                                        values={{
+                                            fom: intl.formatDate(startdatoPeriode1, {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
+                                            tom: intl.formatDate(sluttdatoPeriode1, {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
+                                            b: (msg: any) => <b>{msg}</b>,
+                                        }}
+                                    />
+                                </BodyLong>
+                            </GreenPanel>
+                        )}
                         <Calendar periods={uttaksperioder} useSmallerWidth />
                     </VStack>
                 </ExpansionCard.Content>
