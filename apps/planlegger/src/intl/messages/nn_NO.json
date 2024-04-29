@@ -154,7 +154,7 @@
     "OppsummeringSteg.Planen": "Planen {erAlenesøker, select, true {din} other {dykkar}}",
     "OppsummeringSteg.Perioden": "Perioden med foreldrepengar",
     "OppsummeringSteg.DereValgte": "De valde {prosent} % i {antallUker} veker og fordelar fellesperioden med {uker} veker til {hvem} og {uker2} veker til {hvem2}.",
-    "OppsummeringSteg.Periodene": "<b>{hvem}s periode:</b> {fom} – {tom}",
+    "OppsummeringSteg.Periodene": "<b>{hvem} periode:</b> {fom} – {tom}",
     "OppsummeringSteg.Periode": "<b>Periode:</b> {fom} – {tom}",
     "OppsummeringSteg.TilbakeTil": "Tilbake til spørsmåla",
     "OppsummeringSteg.AndreVeivisere": "Andre vegvisarar:",
